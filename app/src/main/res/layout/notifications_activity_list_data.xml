@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:background="@drawable/blueborder"
+    android:padding="5dp"
+    android:id="@+id/data_layout"
+	android:layout_marginTop="8dp">
+
+    <LinearLayout  android:layout_height="wrap_content" android:layout_width="match_parent">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/checkbox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/checkbox1_selector"
+				android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_marginLeft="5dp" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+            
+            <LinearLayout  android:layout_height="wrap_content" android:layout_width="match_parent">
+
+		        <LinearLayout android:layout_marginLeft="5dp" android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:orientation="vertical">
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.5"
+							android:text="@string/activity_key"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.1"
+							android:text="@string/colon"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:id="@+id/activity_key_textview"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="left|top"
+							android:textColor="@color/black"
+							android:textSize="13sp" />
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.5"
+							android:text="@string/activity_text"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.1"
+							android:text="@string/colon"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:id="@+id/activity_text_textview"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="left|top"
+							android:textColor="@color/black"
+							android:textSize="13sp" />
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.5"
+							android:text="@string/code_group"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.1"
+							android:text="@string/colon"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:id="@+id/code_group_textview"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="left|top"
+							android:textColor="@color/black"
+							android:textSize="13sp" />
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.5"
+							android:text="@string/code"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.1"
+							android:text="@string/colon"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:id="@+id/code_textview"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="left|top"
+							android:textColor="@color/black"
+							android:textSize="13sp" />
+					</LinearLayout>
+
+		        </LinearLayout>
+
+		        <LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="vertical">
+		           	<ImageView
+                        android:gravity="center"
+		           	    android:layout_width="33dp" android:layout_height="fill_parent" android:padding="5dp" android:src="@drawable/ic_right_arrow_icon"/>
+		        </LinearLayout>
+
+		    </LinearLayout>
+
+
+			<TextView
+				android:id="@+id/st_date" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/st_time" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/end_date" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/end_time" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/event_id" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/event_text" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/event_code_id" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/event_code_text" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/event_desc" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/cause_id" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/cause_text" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/causecode_id" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/causecode_text" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/causecode_desc" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/item_key" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+			<TextView
+				android:id="@+id/cause_key" android:visibility="gone"
+				android:layout_width="0dp"
+				android:layout_height="0dp"/>
+
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".25"
+        android:background="@drawable/ic_overlay_transparent" />
+
+    <RelativeLayout
+        android:id="@+id/wrapper"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".75"
+        android:background="@color/light_grey">
+
+        <!-- Header aligned to top -->
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/blueborder"
+            android:padding="8dp">
+
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/notifcation_count_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/filter_by"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/clear_all_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="@string/clear_all"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+        </RelativeLayout>
+        <!-- Header aligned to top -->
+
+        <!-- Footer aligned to bottom -->
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary">
+
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/close_filter_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/close"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:typeface="serif" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@color/white" />
+
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/filter_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/filter"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:typeface="serif" />
+        </LinearLayout>
+        <!-- Footer aligned to bottom -->
+
+        <!-- Scrollable Item below header and above footer -->
+        <ScrollView
+            android:id="@+id/scrollableContents"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/footer"
+            android:layout_below="@id/header">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="Select Plant"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/plant_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blueborder"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down_blue_24px"
+                    android:padding="@dimen/textPadding"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textSize" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/light_grey2" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/area_selector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Select Workcentre"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:typeface="serif" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/wrkcntr_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blueborder"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down_blue_24px"
+                    android:padding="@dimen/textPadding"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textSize" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="49dp"
+            android:gravity="center">
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:text="@string/start_calibration"/>
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/back_imageview"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_arrow_back_white_24px"
+                    android:padding="5dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/date_time_layout">
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:textSize="18sp" android:textColor="@color/red"
+                            android:text="@string/star" android:layout_gravity="left"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:textSize="14sp" android:textColor="@color/black"
+                            android:text="@string/start_date" android:layout_gravity="left"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <com.enstrapp.fieldtekpro.customfont.Font_Button
+                        android:textSize="13sp" android:textColor="@color/black" android:gravity="left"
+                        android:id="@+id/stdatetime_button" android:layout_width="fill_parent" android:padding="5dp"
+                        android:layout_height="45dp" android:drawableRight="@drawable/ic_date_range_black_24px" android:background="@color/white"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:textSize="18sp" android:textColor="@color/red"
+                            android:text="@string/star" android:layout_gravity="left" android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:textSize="14sp" android:textColor="@color/black"
+                            android:text="@string/end_date_time" android:layout_gravity="left" android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <com.enstrapp.fieldtekpro.customfont.Font_Button
+                        android:textSize="13sp" android:textColor="@color/black" android:gravity="left" android:layout_marginLeft="5dp"
+                        android:id="@+id/enddatetime_button" android:layout_width="fill_parent" android:padding="5dp"
+                        android:layout_height="45dp" android:drawableRight="@drawable/ic_date_range_black_24px" android:background="@color/white"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone">
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_data_found"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:drawableTop="@drawable/ic_no_data_icon"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/footer_layout">
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="49dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:text="@string/cancel"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimaryDark"/>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="20dp"
+                android:background="@color/white"
+                android:layout_gravity="center"/>
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/add_button"
+                android:layout_width="0dp"
+                android:layout_height="49dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:text="@string/add"
+                android:textSize="16sp"
+                android:typeface="serif"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimaryDark"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

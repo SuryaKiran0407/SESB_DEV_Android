@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/light_grey1">
+
+    <!-- start of navigation bar -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="49dp"
+        android:gravity="center">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/title_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/send_message"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/back_imageview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_back_white_24px"
+                android:padding="5dp"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/refresh_imageview"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_reload"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <!-- end of navigation bar -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" android:padding="8dp" android:layout_gravity="center" android:gravity="center">
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:textSize="15sp"
+            android:iconifiedByDefault="false"
+            android:background="@drawable/round_borders"
+            android:hint="Search...."
+            android:textColorHint="@color/light_grey"
+            android:focusable="false"/>
+        <com.enstrapp.fieldtekpro.customfont.Font_Checkbox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_all"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:id="@+id/users_all_checkbox"
+            android:theme="@style/CheckBox"
+            android:layout_gravity="left"
+            android:layout_marginTop="5dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scrollbars="none"
+            android:layout_marginTop="5dp"/>
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="fill_parent" android:id="@+id/no_data_textview"
+            android:layout_height="wrap_content" android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" android:padding="5dp" android:gravity="center"
+            android:text="@string/no_data_found" android:textColor="@color/red" android:visibility="gone"
+            android:textSize="16sp" android:drawableTop="@drawable/ic_no_data_icon"/>
+    </LinearLayout>
+
+
+    <LinearLayout android:layout_height="49dp" android:layout_width="match_parent" android:background="@color/dark_grey">
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:textColor="@color/white" android:textSize="16sp" android:id="@+id/cancel_button" android:background="@color/dark_grey" android:text="@string/cancel" android:layout_width="0dp" android:layout_weight="1" android:layout_height="49dp"></com.enstrapp.fieldtekpro.customfont.Font_Button>
+        <Button android:background="@color/white" android:layout_width="1dp" android:layout_height="30dp" android:layout_gravity="center"/>
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:textColor="@color/white" android:textSize="16sp" android:id="@+id/send_button" android:background="@color/dark_grey" android:text="@string/send" android:layout_width="0dp" android:layout_weight="1" android:layout_height="49dp"></com.enstrapp.fieldtekpro.customfont.Font_Button>
+    </LinearLayout>
+
+</LinearLayout>

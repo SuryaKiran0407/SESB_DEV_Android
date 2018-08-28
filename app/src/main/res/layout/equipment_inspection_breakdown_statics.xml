@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/mis_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:text="Equipment Breakdown Statistics"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/back_imageview"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_arrow_back_white_24px" />
+
+            <!--<ImageView
+                android:id="@+id/pfy"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="@color/white"
+                android:padding="3dp"
+                android:src="@drawable/pfy" />-->
+
+        </RelativeLayout>
+    </LinearLayout>
+    <!-- Header -->
+
+    <!-- <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+         android:orientation="horizontal">
+
+         <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_vertical"
+             android:layout_marginLeft="10dp"
+             android:layout_weight="1"
+             android:text="@string/mis_time"
+             android:textColor="@color/light_grey1"
+             android:textSize="16sp"
+             android:typeface="serif" />
+
+         <ImageView
+             android:id="@+id/refresh_imageview_brk"
+             android:layout_width="40dp"
+             android:layout_height="40dp"
+             android:layout_alignParentRight="true"
+             android:layout_centerVertical="true"
+             android:layout_marginBottom="5dp"
+             android:layout_marginRight="5dp"
+             android:background="@drawable/refresh_icon"
+             android:backgroundTint="@color/dark_blue_color"
+             android:paddingRight="5dp" />
+
+     </LinearLayout>
+
+     <LinearLayout
+         android:id="@+id/LinearLayout02"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal">
+
+         <Button
+             android:id="@+id/from_button"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="10dp"
+             android:layout_weight="1"
+             android:background="@drawable/edittext_border"
+             android:drawableRight="@drawable/calender_icon"
+             android:gravity="left"
+             android:hint="From"
+             android:padding="10dp"
+             android:singleLine="true"
+             android:textColor="@color/black"
+             android:textSize="14sp"
+             android:typeface="serif" />
+
+         <Button
+             android:id="@+id/to_button"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="5dp"
+             android:layout_marginRight="10dp"
+             android:layout_weight="1"
+             android:background="@drawable/edittext_border"
+             android:drawableRight="@drawable/calender_icon"
+             android:gravity="left"
+             android:hint="To"
+             android:padding="10dp"
+             android:singleLine="true"
+             android:textColor="@color/black"
+             android:textSize="14sp"
+             android:typeface="serif" />
+     </LinearLayout>-->
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:id="@+id/current_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:gravity="center"/>
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:id="@+id/break_down_hours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:padding="10dp" />
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:id="@+id/no_data_textview"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:text="@string/no_data_found"
+        android:padding="10dp"
+        android:visibility="gone"/>
+
+    <com.github.mikephil.charting.charts.CombinedChart
+        android:id="@+id/line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp" />
+
+</LinearLayout>

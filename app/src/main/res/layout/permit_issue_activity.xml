@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:background="@color/colorPrimary">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/approvals"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBar"
+        android:layout_above="@+id/footer_ll"
+        android:layout_marginTop="@dimen/recycler_margin"
+        android:layout_marginBottom="@dimen/recycler_margin"
+        android:layout_marginEnd="@dimen/recycler_margin"
+        android:layout_marginStart="@dimen/recycler_margin"
+        android:scrollbars="none" />
+
+    <LinearLayout
+        android:id="@+id/footer_ll"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:id="@+id/cancel_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight=".01"
+            android:background="@color/white" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:id="@+id/status_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/status"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/status_view"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight=".01"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:id="@+id/save_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/save"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</RelativeLayout>

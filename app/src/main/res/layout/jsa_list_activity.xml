@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="49dp"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/title_textview"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/jsa"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/back_imageview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_back_white_24px"
+                android:padding="5dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="55dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingBottom="20dp">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_recycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"/>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <LinearLayout
+                android:id="@+id/no_data_layout"
+                android:visibility="gone"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/no_data_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_data_found"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    android:drawableTop="@drawable/ic_no_data_icon"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/bottom_panel"
+                android:orientation="vertical"
+                android:gravity="right"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true">
+                <com.github.clans.fab.FloatingActionMenu
+                    android:id="@+id/floatingActionMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    fab:menu_fab_size="normal"
+                    fab:menu_showShadow="true"
+                    fab:menu_shadowColor="#66000000"
+                    fab:menu_shadowRadius="4dp"
+                    fab:menu_shadowXOffset="1dp"
+                    fab:menu_shadowYOffset="3dp"
+                    fab:menu_colorNormal="@color/dark_grey1"
+                    fab:menu_colorPressed="#E75043"
+                    fab:menu_colorRipple="#99FFFFFF"
+                    fab:menu_animationDelayPerItem="50"
+                    fab:menu_icon="@drawable/ic_fab_menu_icon"
+                    fab:menu_buttonSpacing="0dp"
+                    fab:menu_labels_margin="0dp"
+                    fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+                    fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+                    fab:menu_labels_paddingTop="4dp"
+                    fab:menu_labels_paddingRight="8dp"
+                    fab:menu_labels_paddingBottom="4dp"
+                    fab:menu_labels_paddingLeft="8dp"
+                    fab:menu_labels_padding="8dp"
+                    fab:menu_labels_textColor="#FFFFFF"
+                    fab:menu_labels_textSize="14sp"
+                    fab:menu_labels_cornerRadius="3dp"
+                    fab:menu_labels_colorNormal="#333333"
+                    fab:menu_labels_colorPressed="#444444"
+                    fab:menu_labels_colorRipple="#66FFFFFF"
+                    fab:menu_labels_showShadow="true"
+                    fab:menu_labels_singleLine="false"
+                    fab:menu_labels_ellipsize="none"
+                    fab:menu_labels_maxLines="-1"
+                    fab:menu_labels_position="left"
+                    fab:menu_openDirection="up"
+                    fab:menu_backgroundColor="#D8000000"
+                    android:theme="@style/AppTabTextAppearance">
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:id="@+id/create_fab_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_add_fab_icon"
+                        fab:fab_label="@string/create_jsa"
+                        fab:fab_size="mini"
+                        fab:fab_colorNormal="#D84315"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:id="@+id/refresh_fab_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_refresh_white_fab_icon"
+                        fab:fab_label="@string/refresh"
+                        fab:fab_size="mini"
+                        fab:fab_colorNormal="#FFC300"/>
+
+                </com.github.clans.fab.FloatingActionMenu>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

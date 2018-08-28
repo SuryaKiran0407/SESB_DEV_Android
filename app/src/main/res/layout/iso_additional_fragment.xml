@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/tagn_txt"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Edittext
+            android:id="@+id/tag_et"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blueborder"
+            android:gravity="start|top"
+            android:minLines="10"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/untagn_txt"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Edittext
+            android:id="@+id/unTag_et"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blueborder"
+            android:gravity="start|top"
+            android:minLines="10"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#54157b</color>//213556
+    <color name="colorPrimaryDark">#54157b</color>
+    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorAccent">#EF6C00</color>-->
+    <color name="footer_color">#EF4C4B</color>
+    <color name="body_color">#C0C0C0</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lime">#00FF00</color>
+    <color name="red">#FF0000</color>
+    <color name="dark_grey">#29273F</color>
+    <color name="dark_grey1">#640056</color>
+    <color name="dark_grey2">#808080</color>
+    <color name="light_grey">#E0E0E0</color>
+    <color name="light_grey1">#BBBBBB</color>
+    <color name="light_grey2">#666666</color>
+    <color name="orange">#e47100</color>
+    <color name="blue">#0000FF</color>
+    <color name="dark_green">#006400</color>
+    <color name="red1">#E13D31</color>
+    <color name="steelblue">#4682B4</color>
+</resources>

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/matrlList_ll"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/blueborder"
+    android:weightSum="1"
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:layout_weight=".1"
+        android:id="@+id/checkBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/checkBox_margin"
+        android:theme="@style/CheckBox" />
+
+    <!--<LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">-->
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false">-->
+
+    <LinearLayout
+        android:layout_weight=".8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_ll_padding"
+            android:layout_marginTop="@dimen/list_ll_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/operation_id"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textSize"
+                    android:typeface="serif" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/oprtnId_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSize"
+                    android:typeface="serif" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/list_below_ll_padding"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/part_id"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/textSize"
+                        android:typeface="serif" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:id="@+id/partId_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_ll_padding"
+            android:layout_marginTop="@dimen/list_ll_padding"
+            android:baselineAligned="false"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/component_txt"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:typeface="serif" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/compntTxt_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:typeface="serif" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/list_below_ll_padding"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quantity"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:typeface="serif" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/quantity_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:typeface="serif" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/detailed_iv"
+        android:layout_width="0dp"
+        android:layout_weight=".1"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:src="@drawable/ic_right_arrow_icon"/>
+    <!--</LinearLayout>-->
+
+    <!--<TextView
+        android:id="@+id/long_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="damage_description"
+        android:textSize="14sp"
+        android:typeface="serif"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/duration_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cause_description"
+        android:textSize="14sp"
+        android:typeface="serif"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/duration_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="damage_description"
+        android:textSize="14sp"
+        android:typeface="serif"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/plant_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="damage_description"
+        android:textSize="14sp"
+        android:typeface="serif"
+        android:visibility="gone" />-->
+
+    <!-- <TextView
+         android:id="@+id/plant_text"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />
+
+     <TextView
+         android:id="@+id/workcenter_id"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />
+
+     <TextView
+         android:id="@+id/workcenter_text"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />
+
+     <TextView
+         android:id="@+id/controlkey_id"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />
+
+     <TextView
+         android:id="@+id/controlkey_text"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />
+
+     <TextView
+         android:id="@+id/operation_custominfo"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />
+
+     <TextView
+         android:id="@+id/status"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />
+
+     <TextView
+         android:id="@+id/confirmed_work_text"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/damage_description"
+         android:textColor="@color/grey"
+         android:textSize="14sp"
+         android:typeface="serif"
+         android:visibility="gone" />-->
+
+    <!--</LinearLayout>-->
+
+</LinearLayout>

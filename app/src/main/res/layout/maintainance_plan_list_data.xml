@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:background="@drawable/blueborder"
+    android:padding="10dp"
+	android:layout_marginBottom="8dp"
+    android:id="@+id/maintain_plan_layout">
+
+    <LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="match_parent">
+        <LinearLayout android:layout_width="0dp" android:layout_weight="1.8" android:layout_height="wrap_content" android:orientation="vertical">
+            	<LinearLayout
+			       android:layout_width="fill_parent"
+			       android:layout_height="fill_parent" >
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.6"
+			           android:text="@string/order_number"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="left|top" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.1"
+			           android:text="@string/colon"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="center|top" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:id="@+id/aufnr_textview"
+			           android:layout_width="0dp"
+			           android:layout_height="wrap_content"
+			           android:layout_weight="1"
+			           android:layout_gravity="left|top"
+			           android:textColor="@color/black"
+			           android:textSize="14sp" />
+			   </LinearLayout>
+			   
+			    <LinearLayout
+			       android:layout_width="fill_parent"
+			       android:layout_height="fill_parent" >
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.6"
+			           android:text="@string/equip"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="left|top" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.1"
+			           android:text="@string/colon"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="center|top" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:id="@+id/equipment_textview"
+			           android:layout_width="0dp"
+			           android:layout_height="wrap_content"
+			           android:layout_weight="1"
+			           android:layout_gravity="left|top"
+			           android:textColor="@color/black"
+			           android:textSize="14sp" />
+			   </LinearLayout>
+			   
+			    <LinearLayout
+			       android:layout_width="fill_parent"
+			       android:layout_height="fill_parent" >
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.6"
+			           android:text="@string/maintaince_plan"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="top|left" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.1"
+			           android:text="@string/colon"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="center|top" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:id="@+id/maintaince_plan_textview"
+			           android:layout_width="0dp"
+			           android:layout_height="wrap_content"
+			           android:layout_weight="1"
+			           android:layout_gravity="left|top"
+			           android:textColor="@color/black"
+			           android:textSize="14sp" />
+			   </LinearLayout>
+			   
+			    <LinearLayout
+			       android:layout_width="fill_parent"
+			       android:layout_height="fill_parent" >
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.6"
+			           android:text="@string/maintaince_item"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="top|left" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.1"
+			           android:text="@string/colon"
+			           android:textColor="@color/light_grey2"
+			           android:textSize="14sp"
+			           android:gravity="center|top" />
+			       <com.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:id="@+id/maintaince_item_textview"
+			           android:layout_width="0dp"
+			           android:layout_height="wrap_content"
+			           android:layout_weight="1"
+			           android:layout_gravity="left|top"
+			           android:textColor="@color/black"
+			           android:textSize="14sp" />
+			   </LinearLayout>
+			   
+			    <!--<LinearLayout
+			       android:layout_width="fill_parent"
+			       android:layout_height="fill_parent" >
+			       <om.enstrapp.fieldtekpro.customfont.Font_TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.6"
+			           android:text="@string/start_date"
+			           android:textColor="@color/light_grey1"
+			           android:textSize="14sp"
+			           android:gravity="top|left" />
+			       <TextView
+			           android:layout_width="0dp"
+			           android:layout_height="fill_parent"
+			           android:layout_weight="0.1"
+			           android:text="@string/colon"
+			           android:textColor="@color/light_grey1"
+			           android:textSize="13sp"
+			           android:gravity="center|top" />
+			       <TextView
+			           android:id="@+id/start_date_textview"
+			           android:layout_width="0dp"
+			           android:layout_height="wrap_content"
+			           android:layout_weight="1"
+			           android:layout_gravity="left|top"
+			           android:textColor="@color/black"
+			           android:textSize="13sp" />
+			   </LinearLayout>-->
+			   
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_weight="0.2" android:layout_height="fill_parent" android:gravity="center" android:orientation="vertical" android:layout_marginLeft="10dp">
+			    <ImageView
+			        android:layout_width="40dp" android:id="@+id/function_location_detailedview_imageview"
+			        android:layout_height="40dp" android:padding="10dp"
+			        android:src="@drawable/ic_right_arrow_icon"/>
+        </LinearLayout>
+    </LinearLayout>
+    
+    <TextView
+       android:id="@+id/Wptxt_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+    <TextView
+       android:id="@+id/Strat_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+    <TextView
+       android:id="@+id/Mptyp_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+    <TextView
+       android:id="@+id/Iwerk_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+    <TextView
+       android:id="@+id/Arbpl_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Qmnum_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+         android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Mityp_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Addat_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Plnty_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Plnnr_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Plnal_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Plantext_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Strno_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Eqktx_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Pltxt_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+     <TextView
+       android:id="@+id/Tplnr_textview"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:visibility="gone" />
+	<TextView
+		android:id="@+id/call_number_textview"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:visibility="gone" />
+	<TextView
+		android:id="@+id/order_uuid_textview"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:visibility="gone" />
+	<TextView
+		android:id="@+id/order_status_textview"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:visibility="gone" />
+    
+</LinearLayout>

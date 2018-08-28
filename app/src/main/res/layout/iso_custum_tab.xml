@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/issue_iv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:src="@drawable/ic_create_circle_icon" />
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="@string/issue_permit"
+        android:textColor="@drawable/tab_text_color_selector"
+        android:textSize="14sp" />
+</LinearLayout>
+

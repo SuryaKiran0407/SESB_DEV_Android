@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/main_frag">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="1080dp"
+        android:layout_height="fill_parent"
+        android:background="@drawable/tata_power"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:gravity="center|right"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/settings_iv"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:gravity="center"
+            android:src="@drawable/ic_login_settings_icon"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/copyright_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:padding="5dp"
+            android:textColor="@color/body_color"
+            android:textSize="14sp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_client_logo1"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_app_icon"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
+            android:layout_marginTop="30dp">
+            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                android:id="@+id/username_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/employee_id"
+                android:inputType="text"
+                android:drawableLeft="@drawable/ic_login_user_icon"
+                android:drawablePadding="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/white"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="300dp"
+            android:textColorHint="@color/white"
+            android:layout_height="wrap_content" android:layout_marginTop="10dp">
+            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                android:id="@+id/password_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/sap_password"
+                android:inputType="textPassword"
+                android:drawableLeft="@drawable/ic_login_password_icon"
+                android:drawablePadding="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/white"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <com.enstrapp.fieldtekpro.customfont.Font_Checkbox
+                android:id="@+id/rememberme_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remember_me"
+                android:theme="@style/MyCheckBox"
+                android:layout_gravity="left"
+                android:textSize="16sp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:id="@+id/login_button"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:text="@string/login"
+            android:textSize="18sp"
+            android:background="@color/colorAccent"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+</FrameLayout>

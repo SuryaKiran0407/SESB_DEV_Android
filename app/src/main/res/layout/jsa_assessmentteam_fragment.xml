@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey1"
+    android:orientation="vertical"
+    android:gravity="center">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:divider="@color/light_grey"
+        android:dividerHeight="10dp"
+        android:scrollbars="none"/>
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:id="@+id/nodata_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/no_data_found"
+        android:textColor="@color/red"
+        android:textSize="15sp"
+        android:drawableTop="@drawable/ic_no_data_icon"
+        android:visibility="gone"
+        android:layout_marginTop="-100dp"/>
+
+
+</LinearLayout>

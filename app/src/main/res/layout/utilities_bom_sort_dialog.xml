@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/wrapper"
+        android:layout_width="fill_parent" android:weightSum="1"
+        android:orientation="vertical" android:layout_height="fill_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_weight="0.33" android:layout_height="fill_parent">
+            <LinearLayout
+                android:text="Button"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="fill_parent"
+                android:background="@drawable/ic_overlay_transparent">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/Button05"
+                android:text="Button"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_height="fill_parent"
+                android:background="@color/light_grey">
+
+					<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					  android:layout_width="match_parent"
+					  android:layout_height="match_parent" >
+
+					  <!-- Header aligned to top -->
+					  <RelativeLayout
+					    android:id="@+id/header"
+					    android:layout_width="match_parent"
+					    android:layout_height="50dp"
+					    android:layout_alignParentTop="true"
+					    android:gravity="center" >
+						   <RelativeLayout android:id="@+id/relativeLayout1"
+							android:layout_width="fill_parent" android:layout_height="wrap_content"
+							android:orientation="horizontal"
+							android:layout_margin="5dp"
+							android:padding="10dp">
+								<com.enstrapp.fieldtekpro.customfont.Font_TextView
+                                    android:layout_width="wrap_content"
+									android:layout_height="wrap_content"  android:layout_centerVertical="true"
+									android:layout_alignParentLeft="true"
+									android:text="@string/sort_by" android:textColor="@color/light_grey2"
+									android:textSize="15sp"/>
+								<com.enstrapp.fieldtekpro.customfont.Font_TextView
+                                    android:id="@+id/sort_clear_textview" android:layout_width="wrap_content"
+									android:layout_height="wrap_content"  android:layout_centerVertical="true"
+									android:layout_alignParentRight="true"
+									android:text="@string/clear_all" android:textColor="@color/red"
+									android:textSize="15sp"/>
+							</RelativeLayout>
+					  </RelativeLayout>
+					  <!-- Header aligned to top -->
+
+					  <!-- Scrollable Item below header and above footer -->
+					  <ScrollView
+					    android:id="@+id/scrollableContents"
+					    android:layout_width="fill_parent"
+					    android:layout_height="fill_parent"
+					    android:layout_marginTop="40dp">
+
+					    <LinearLayout
+					      android:layout_width="fill_parent"
+					      android:layout_height="wrap_content"
+					      android:gravity="left"
+					      android:orientation="vertical"
+					      android:padding="10dp">
+
+					      <com.enstrapp.fieldtekpro.customfont.Font_TextView
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:text="@string/description"
+					        android:textColor="@color/light_grey2"
+					        android:textSize="15sp" />
+
+				      	 <RadioGroup
+						   android:layout_width="fill_parent"
+						   android:layout_height="wrap_content"
+						   android:id="@+id/sort_radioGroup">
+						   <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+						      android:id="@+id/description_radiobutton1"
+						      android:layout_width="wrap_content"
+						      android:layout_height="wrap_content"
+						      android:text="@string/sort_text1"
+						      android:layout_gravity="left"
+						      android:textSize="15sp"
+						      android:padding="10dp"
+						      android:textColor="@color/colorPrimary"
+							  android:theme="@style/MyRadioButton"
+						      android:layout_marginTop="10dp"/>
+						   <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+						      android:id="@+id/description_radiobutton2"
+						      android:layout_width="wrap_content"
+						      android:layout_height="wrap_content"
+						      android:text="@string/sort_text2"
+						      android:layout_gravity="left"
+						      android:textSize="15sp"
+						      android:padding="10dp"
+							  android:theme="@style/MyRadioButton"
+						      android:textColor="@color/colorPrimary"/>
+						   <com.enstrapp.fieldtekpro.customfont.Font_Button
+					          android:layout_width="fill_parent"
+					          android:layout_height="2dp"
+					          android:layout_marginTop="10dp"
+					          android:layout_marginBottom="10dp"
+					          android:background="@color/light_grey2" />
+						   <com.enstrapp.fieldtekpro.customfont.Font_TextView
+					          android:layout_width="wrap_content"
+					          android:layout_height="wrap_content"
+					          android:text="@string/plant"
+					          android:textColor="@color/light_grey2"
+					          android:textSize="14sp" />
+						   <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+						      android:id="@+id/plant_radiobutton1"
+						      android:layout_width="wrap_content"
+						      android:layout_height="wrap_content"
+						      android:text="@string/sort_text5"
+						      android:layout_gravity="left"
+						      android:textSize="15sp"
+						      android:padding="10dp"
+							  android:theme="@style/MyRadioButton"
+						      android:textColor="@color/colorPrimary"
+						      android:layout_marginTop="10dp"/>
+						   <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+						      android:id="@+id/plant_radiobutton2"
+						      android:layout_width="wrap_content"
+						      android:layout_height="wrap_content"
+						      android:text="@string/sort_text6"
+						      android:layout_gravity="left"
+						      android:textSize="15sp"
+						      android:padding="10dp"
+							  android:theme="@style/MyRadioButton"
+						      android:textColor="@color/colorPrimary"/>
+						   <com.enstrapp.fieldtekpro.customfont.Font_Button
+					          android:layout_width="fill_parent"
+					          android:layout_height="2dp"
+					          android:layout_marginTop="10dp"
+					          android:layout_marginBottom="10dp"
+					          android:background="@color/light_grey2" />
+						   <com.enstrapp.fieldtekpro.customfont.Font_TextView
+							   android:id="@+id/text_textview"
+					          android:layout_width="wrap_content"
+					          android:layout_height="wrap_content"
+					          android:text="@string/bom_no"
+					          android:textColor="@color/light_grey2"
+					          android:textSize="14sp" />
+						   <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+						      android:id="@+id/bom_number_radiobutton1"
+						      android:layout_width="wrap_content"
+						      android:layout_height="wrap_content"
+						      android:text="@string/sort_text5"
+						      android:layout_gravity="left"
+						      android:textSize="15sp"
+						      android:padding="10dp"
+							  android:theme="@style/MyRadioButton"
+						      android:textColor="@color/colorPrimary"
+						      android:layout_marginTop="10dp"/>
+						   <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+						      android:id="@+id/bom_number_radiobutton2"
+						      android:layout_width="wrap_content"
+						      android:layout_height="wrap_content"
+						      android:text="@string/sort_text6"
+						      android:layout_gravity="left"
+						      android:textSize="15sp"
+						      android:padding="10dp"
+							  android:theme="@style/MyRadioButton"
+						      android:textColor="@color/colorPrimary"/>
+					     </RadioGroup>
+
+					    </LinearLayout>
+
+					  </ScrollView>
+
+					</RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

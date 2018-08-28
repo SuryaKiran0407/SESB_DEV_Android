@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="480dp"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey1"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:id="@+id/status_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/status"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_status_icon"
+        android:drawablePadding="5dp"
+        android:layout_marginRight="20dp"/>
+
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:id="@+id/create_order_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_order"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_application_icon"
+        android:drawablePadding="8dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"/>
+
+</LinearLayout>

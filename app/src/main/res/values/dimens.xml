@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textInputSideMargins">8dp</dimen>
+    <dimen name="textInputTopMargin">8dp</dimen>
+    <dimen name="textInputTopPadd">16dp</dimen>
+    <dimen name="textInputSidePadd">8dp</dimen>
+    <dimen name="textSize">14sp</dimen>
+    <dimen name="dropDownIconTopMarg">12dp</dimen>
+    <dimen name="dropDownIconEndMarg">5dp</dimen>
+    <dimen name="textPadding">8dp</dimen>
+    <dimen name="subhead_text">12dp</dimen>
+    <dimen name="layout_remove">4dp</dimen>
+    <dimen name="recycler_margin">8dp</dimen>
+    <dimen name="checkBox_margin">8dp</dimen>
+    <dimen name="list_below_ll_padding">8dp</dimen>
+    <dimen name="list_ll_padding">4dp</dimen>
+    <dimen name="default_icon_size">48dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_icon_margin">4dp</dimen>
+    <dimen name="toolbar_text_size">16sp</dimen>
+    <dimen name="side_layout">2dp</dimen>
+    <dimen name="footer_margin">6dp</dimen>
+    <dimen name="textview_padding">10dp</dimen>
+    <dimen name="icon_padding">3dp</dimen>
+    <dimen name="list_txt_padding">4dp</dimen>
+    <dimen name="fab_dimen">16dp</dimen>
+    <dimen name="fab_bottom_margin">64dp</dimen>
+    <dimen name="quant_padding">3dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

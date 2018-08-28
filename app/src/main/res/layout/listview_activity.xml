@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/layout" android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:background="@color/light_grey">
+
+	<!-- start of navigation bar -->
+	<RelativeLayout
+        android:layout_width="fill_parent" android:layout_height="48dp"
+		android:background="@color/colorPrimary" android:orientation="horizontal" >
+		<com.enstrapp.fieldtekpro.customfont.Font_TextView android:layout_width="wrap_content" android:id="@+id/title"
+			android:layout_height="wrap_content" android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true" android:padding="5dp"
+			android:text="@string/app_name" android:textColor="@color/white"
+			android:textSize="16sp" android:typeface="serif"/>
+		<ImageView
+			android:id="@+id/back_imageview"
+			android:layout_width="40dp"
+			android:layout_height="40dp"
+			android:layout_alignParentLeft="true"
+			android:layout_centerVertical="true"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:padding="5dp"
+			android:src="@drawable/ic_arrow_back_white_24px"/>
+	</RelativeLayout>
+	<!-- end of navigation bar -->
+
+
+	<LinearLayout
+		android:layout_width="match_parent" android:layout_height="fill_parent"
+		android:layout_weight="1"
+		android:orientation="vertical" android:padding="10dp">
+
+		<ListView
+			android:id="@+id/listview"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:divider="@color/light_grey"
+			android:cacheColorHint="#0000"
+			android:dividerHeight="10dp" android:scrollbars="none">
+		</ListView>
+		<com.enstrapp.fieldtekpro.customfont.Font_TextView android:layout_width="fill_parent" android:id="@+id/no_data_textview"
+			android:layout_height="fill_parent" android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true" android:padding="5dp" android:gravity="center"
+			android:text="@string/no_data_found" android:textColor="@color/red"
+			android:textSize="16sp" android:visibility="gone"/>
+	</LinearLayout>
+
+</LinearLayout>

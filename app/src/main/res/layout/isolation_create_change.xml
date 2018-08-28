@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <ImageButton
+                    android:id="@+id/back_iv"
+                    android:layout_width="@dimen/default_icon_size"
+                    android:layout_height="@dimen/default_icon_size"
+                    android:layout_marginTop="@dimen/toolbar_icon_margin"
+                    android:layout_marginStart="@dimen/toolbar_icon_margin"
+                    android:background="@color/colorPrimary"
+                    android:src="@drawable/ic_arrow_back_white_24px" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true">
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:id="@+id/status_tv"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        android:textColor="@color/light_grey1"/>
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:id="@+id/title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/isolation_list"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/toolbar_text_size" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/menu_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_fab_menu_icon" />
+            </RelativeLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorPrimary"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/white"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="15dp"
+            app:tabPaddingStart="15dp"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/Tab.TextAppearence"
+            app:tabTextColor="@color/colorPrimary_light" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="48dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <LinearLayout
+        android:id="@+id/order_footer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:id="@+id/cancel_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight=".01"
+            android:background="@color/white" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:id="@+id/status_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/status"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/status_view"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight=".01"
+            android:background="@color/white"
+            android:visibility="gone"/>
+
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:id="@+id/save_bt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/save"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_white_24px"
+        android:layout_gravity="bottom|end"
+        app:elevation="6dp"
+        android:layout_marginEnd="@dimen/fab_dimen"
+        android:layout_marginBottom="@dimen/fab_bottom_margin"
+        app:pressedTranslationZ="12dp" />
+
+    <!--<RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+
+    <!--<LinearLayout
+        android:id="@+id/order_footer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight=".01"
+            android:background="@color/white" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.995"
+            android:background="@color/colorPrimary"
+            android:text="@string/save"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>-->
+
+
+    <!--</RelativeLayout>-->
+</android.support.design.widget.CoordinatorLayout>

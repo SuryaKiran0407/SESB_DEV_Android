@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:background="@drawable/ic_overlay_transparent" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".75"
+        android:background="@color/light_grey">
+
+        <!-- Header aligned to top -->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/blueborder"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:weightSum="1">
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="start"
+                android:text="@string/filter_by"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/clearAll_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="end"
+                android:text="@string/clear_all"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <!-- Header aligned to top -->
+
+
+        <!-- Footer aligned to bottom -->
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:gravity="center">
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/closeBt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@color/white" />
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/filterBt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/filter"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <!-- Footer aligned to bottom -->
+
+
+        <!-- Scrollable Item below header and above footer -->
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/footer"
+            android:layout_below="@id/header"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/func_loc"
+                    android:textColor="@color/light_grey2"
+                    android:textSize="14sp" />
+                <com.enstrapp.fieldtekpro.customfont.Font_Button
+                    android:id="@+id/func_loc_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/blueborder"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:gravity="left|center"
+                    android:paddingLeft="5dp"/>
+
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/light_grey2" />
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Maintenance Plant"
+                    android:textColor="@color/light_grey2"
+                    android:textSize="14sp" />
+                <com.enstrapp.fieldtekpro.customfont.Font_Button
+                    android:id="@+id/maint_plant_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/blueborder"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:gravity="left|center"
+                    android:paddingLeft="5dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+</LinearLayout>

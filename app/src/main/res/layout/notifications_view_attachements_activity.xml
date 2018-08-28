@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/title_textview" android:layout_width="200dp"
+                android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:singleLine="true"
+                android:layout_centerVertical="true" android:padding="5dp" android:gravity="center"
+                android:text="@string/attachments" android:textColor="@color/white"
+                android:textSize="16sp" />
+            <ImageView
+                android:id="@+id/back_imageview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:src="@drawable/ic_arrow_back_white_24px"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/webView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/no_data_textview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_data_found"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/ic_no_data_icon"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+
+</LinearLayout>

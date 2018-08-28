@@ -1,0 +1,66 @@
+{
+  "project_info": {
+    "project_number": "1056969948976",
+    "firebase_url": "https://fieldtekpro-c941f.firebaseio.com",
+    "project_id": "fieldtekpro-c941f",
+    "storage_bucket": "fieldtekpro-c941f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056969948976:android:43108407f9b4e1b4",
+        "android_client_info": {
+          "package_name": "com.enstrapp.fieldtekpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056969948976-ba9qdla4f57fso1fr4v2maq158fsjqrt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enstrapp.fieldtekpro",
+            "certificate_hash": "54d131e26ef2ec222ede56adf53de9fb5b56bcc1"
+          }
+        },
+        {
+          "client_id": "1056969948976-h0aqa08qjthfhr2oo5o5a07cki1pc5sb.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1056969948976-h0aqa08qjthfhr2oo5o5a07cki1pc5sb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsq3ZTIcPfZBVOSBuMKQld9sGKbrcotbg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056969948976-h0aqa08qjthfhr2oo5o5a07cki1pc5sb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1056969948976-gfr3kjr9fums5bat2ot9o8jd01pp3odn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.enstrapp.Fieldtekpro"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

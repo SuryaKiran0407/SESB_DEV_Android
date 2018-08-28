@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight=".35"
+        android:background="@drawable/ic_overlay_transparent" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".65"
+        android:background="@color/light_grey">
+
+        <!-- Header aligned to top -->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/blueborder"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:weightSum="1">
+
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="start"
+                android:text="@string/sort_by"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/clearAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="end"
+                android:text="@string/clear_all"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <!-- Header aligned to top -->
+
+        <!-- Scrollable Item below header and above footer -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header"
+            android:layout_marginBottom="48dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ordr_sort_info"
+                    android:textColor="@color/dark_grey2"
+                    android:textSize="14sp" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/description"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <RadioGroup
+                    android:id="@+id/sort_rdg"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/sortAtoZ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:tag="1"
+                        android:text="@string/sort_text1"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/sortZtoA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:padding="8dp"
+                        android:tag="2"
+                        android:text="@string/sort_text2"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/light_grey2" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/priority"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/criticaltoLow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:tag="3"
+                        android:text="@string/sort_text3"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/lowtoCritical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:padding="8dp"
+                        android:tag="4"
+                        android:text="@string/sort_text4"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/light_grey2" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_date"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/stDt1to9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        android:padding="8dp"
+                        android:tag="5"
+                        android:text="@string/sort_text5"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/stDt9to1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:padding="8dp"
+                        android:tag="6"
+                        android:text="@string/sort_text6"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/light_grey2" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:id="@+id/text_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ordr_number"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/No1to9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:tag="7"
+                        android:text="@string/sort_text5"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+
+                    <com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+                        android:id="@+id/No9to1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:padding="8dp"
+                        android:tag="8"
+                        android:text="@string/sort_text6"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:theme="@style/CheckBox" />
+                </RadioGroup>
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/objectList_ll"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/blueborder"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/textInputSidePadd"
+        android:layout_marginEnd="@dimen/textInputSidePadd"
+        android:layout_marginTop="@dimen/list_ll_padding"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:text="@string/notif_no"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_weight=".01"
+            android:layout_height="wrap_content"
+            android:text="@string/colon"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/notifNo_tv"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_txt_padding"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/textInputSidePadd"
+        android:layout_marginEnd="@dimen/textInputSidePadd"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/func_loc"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_weight=".01"
+            android:layout_height="wrap_content"
+            android:text="@string/colon"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/funcLoc_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_txt_padding"
+            android:layout_weight=".7"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/textInputSidePadd"
+        android:layout_marginEnd="@dimen/textInputSidePadd"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:text="@string/equip"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_weight=".01"
+            android:layout_height="wrap_content"
+            android:text="@string/colon"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/equip_tv"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_txt_padding"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/textInputSidePadd"
+        android:layout_marginEnd="@dimen/textInputSidePadd"
+        android:layout_marginBottom="@dimen/list_ll_padding"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/description"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:layout_width="0dp"
+            android:layout_weight=".01"
+            android:layout_height="wrap_content"
+            android:text="@string/colon"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/equipTxt_tv"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_txt_padding"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize"
+            android:typeface="serif" />
+    </LinearLayout>
+</LinearLayout>

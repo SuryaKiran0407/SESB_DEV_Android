@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_grey">
+
+    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/date"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:calendarViewShown="false"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/MyDatePicker">
+    </DatePicker>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/dark_grey"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/footer_layout">
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/dark_grey"/>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="20dp"
+                android:background="@color/white"
+                android:layout_gravity="center"/>
+            <com.enstrapp.fieldtekpro.customfont.Font_Button
+                android:id="@+id/add_button"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="@string/add"
+                android:textSize="16sp"
+                android:typeface="serif"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/dark_grey"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

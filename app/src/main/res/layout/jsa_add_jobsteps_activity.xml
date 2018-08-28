@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/light_grey1">
+
+    <!-- start of navigation bar -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="49dp"
+        android:gravity="center">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/title_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/job_steps"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/back_imageview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_back_white_24px"
+                android:padding="5dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <!-- end of navigation bar -->
+
+
+    <LinearLayout
+    android:layout_width="match_parent" android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:orientation="vertical" android:layout_gravity="center" android:gravity="top"
+        android:layout_marginLeft="8dp" android:layout_marginRight="8dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bluedashborder"
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            android:padding="5dp"
+            android:layout_marginTop="10dp">
+            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                android:id="@+id/step_no_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/step_no"
+                android:maxLength="40"
+                android:textSize="@dimen/textSize"
+                android:enabled="false"
+                android:textColor="@color/dark_grey2"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            android:background="@drawable/blueborder"
+            android:padding="5dp"
+            android:layout_marginTop="8dp">
+            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                android:id="@+id/job_step_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/job_step_star"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="@dimen/textSize"
+                android:maxLength="40"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            android:background="@drawable/blueborder"
+            android:padding="5dp"
+            android:layout_marginTop="8dp">
+            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                android:id="@+id/pers_resp_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/person_resp"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="@dimen/textSize"
+                android:maxLength="40"/>
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout android:layout_height="49dp" android:layout_width="match_parent" android:background="@color/colorPrimary">
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:textColor="@color/white" android:textSize="16sp" android:id="@+id/cancel_button" android:background="@color/colorPrimary" android:text="@string/cancel" android:layout_width="0dp" android:layout_weight="1" android:layout_height="49dp"></com.enstrapp.fieldtekpro.customfont.Font_Button>
+        <Button android:background="@color/white" android:layout_width="1dp" android:layout_height="30dp" android:layout_gravity="center"/>
+        <com.enstrapp.fieldtekpro.customfont.Font_Button
+            android:textColor="@color/white" android:textSize="16sp" android:id="@+id/submit_button" android:background="@color/colorPrimary" android:text="@string/add" android:layout_width="0dp" android:layout_weight="1" android:layout_height="49dp"></com.enstrapp.fieldtekpro.customfont.Font_Button>
+    </LinearLayout>
+
+</LinearLayout>

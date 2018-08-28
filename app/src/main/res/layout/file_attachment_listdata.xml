@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/blueborder"
+    android:orientation="vertical"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/status_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:button="@drawable/checkbox_selector"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/pic_imageview"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:padding="1dp">
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:id="@+id/file_objtype_textview"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/footer_color"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="@string/high"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
+
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="wrap_content" android:orientation="vertical">
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:id="@+id/filename_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:maxLines="1"/>
+
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:id="@+id/file_path_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="15dp"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            android:visibility="gone"/>
+
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:id="@+id/file_size_textview"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="15dp"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/download_imageview"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/ic_right_arrow_icon"
+                        android:padding="10dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/uuid_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/status_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/content_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+</LinearLayout>
