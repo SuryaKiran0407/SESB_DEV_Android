@@ -2196,6 +2196,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
     }
 
 
+
     /*Posting Notification Complete to Backend Server*/
     private class Post_Notification_Complete extends AsyncTask<String, Integer, Void>
     {
@@ -2259,6 +2260,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
         }
     }
     /*Posting Notification Complete to Backend Server*/
+
 
 
     private class Get_Notification_Data extends AsyncTask<String, Integer, Void>
