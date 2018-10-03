@@ -355,6 +355,7 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                         intent.putExtra("kostl_id", nto.getCost_Center());
                         intent.putExtra("iwerk", nto.getIwerk());
                         intent.putExtra("ingrp_id", nto.getPlanner_Group());
+                        intent.putExtra("work_center", nto.getWork_Center());
                         setResult(RESULT_OK,intent);
                         FunctionLocation_Activity.this.finish();
                     }
@@ -391,6 +392,7 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                         intent.putExtra("kostl_id", nto.getCost_Center());
                         intent.putExtra("iwerk", nto.getIwerk());
                         intent.putExtra("ingrp_id", nto.getPlanner_Group());
+                        intent.putExtra("work_center", nto.getWork_Center());
                         setResult(RESULT_OK,intent);
                         FunctionLocation_Activity.this.finish();
                     }

@@ -43,6 +43,8 @@
         android:layout_marginTop="45dp"
         android:orientation="vertical">
 
+
+
         <LinearLayout
             android:id="@+id/floc_layout"
             android:layout_width="match_parent"
@@ -84,6 +86,8 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
+
+
         <LinearLayout
             android:id="@+id/equip_layout"
             android:layout_width="match_parent"
@@ -97,7 +101,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".9"
+                android:layout_weight=".8"
                 android:paddingEnd="@dimen/textInputSidePadd"
                 android:paddingStart="@dimen/textInputSidePadd"
                 android:paddingTop="@dimen/textInputTopPadd"
@@ -108,14 +112,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:hint="@string/equip"
+                    android:hint="@string/equip_numb"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textSize="@dimen/textSize" />
             </android.support.design.widget.TextInputLayout>
             <ImageView
+                android:id="@+id/equipmentsearch_imageview"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -123,7 +126,19 @@
                 android:layout_marginTop="@dimen/dropDownIconTopMarg"
                 android:layout_weight=".1"
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
+            <ImageView
+                android:id="@+id/equipmentscan_imageview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dropDownIconEndMarg"
+                android:layout_marginTop="@dimen/dropDownIconTopMarg"
+                android:layout_weight=".1"
+                android:src="@drawable/ic_barcode_icon2"
+                android:padding="2dp"/>
         </LinearLayout>
+
+
 
         <GridView
             android:id="@+id/gridview"

@@ -385,6 +385,8 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = "";
                 plannerGroup_edittext.setText(plannergroup_id);
+                workcenter_id = data.getStringExtra("work_center");
+                workCenter_edittext.setText(workcenter_id);
             }
             else if(requestCode == equipment_type)
             {

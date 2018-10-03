@@ -39,7 +39,7 @@ public class BOM_Reservation
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
 
-    public static String post_bom_reservation(Context activity, String BOM, String Component, String Component_text, String quantity, String Unit, String Plant, String storage_location, String Date, String movement_type_id, String costcenter_id)
+    public static String post_bom_reservation(Context activity, String BOM, String Component, String Component_text, String quantity, String Unit, String Plant, String storage_location, String Date, String movement_type_id, String costcenter_id, String order_number)
     {
         try
         {
@@ -82,7 +82,7 @@ public class BOM_Reservation
             bom_isReservHeader.setMovementType(movement_type_id);
             bom_isReservHeader.setPlant(Plant);
             bom_isReservHeader.setCostCenter(costcenter_id);
-            bom_isReservHeader.setOrderNo("");
+            bom_isReservHeader.setOrderNo(order_number);
             ArrayList<Model_BOM_IsReservHeader> bomheaderArrayList = new ArrayList<>();
             bomheaderArrayList.add(bom_isReservHeader);
             /*Adding BOM Header to Arraylist*/

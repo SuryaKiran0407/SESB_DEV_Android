@@ -20,6 +20,7 @@ import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -233,6 +234,39 @@ public class Notifications_Tasks_Add_Activity extends FragmentActivity implement
                 completedby = extras.getString("completedby");
                 completedby_edittext.setText(completedby);
                 selected_tasks_custom_info_arraylist = (ArrayList<HashMap<String, String>>)getIntent().getSerializableExtra("selected_tasks_custom_info_arraylist");
+            }
+            else
+            {
+                try
+                {
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+                    String formattedDate = df.format(c.getTime());
+                    SimpleDateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+                    String formattedDate_format = df1.format(c.getTime());
+                    SimpleDateFormat time_df = new SimpleDateFormat("HH:mm:ss");
+                    String formattedTime = time_df.format(c.getTime());
+                    SimpleDateFormat time_df1 = new SimpleDateFormat("HHmmss");
+                    String formattedTime_format = time_df1.format(c.getTime());
+                    planned_st_date = formattedDate;
+                    planned_st_date_formatted = formattedDate_format;
+                    start_datetime_edittext.setText(formattedDate+"  -  "+formattedTime);
+
+                    c.add(Calendar.DATE, 1);
+                    String formattedDate_new = df.format(c.getTime());
+                    String formattedDate_format_new = df1.format(c.getTime());
+                    planned_end_date = formattedDate_new;
+                    planned_end_date_formatted = formattedDate_format_new;
+                    end_datetime_edittext.setText(planned_end_date+"  -  "+formattedTime);
+
+                    planned_st_time = formattedTime;
+                    planned_end_time = formattedTime;
+                    planned_st_time_formatted = formattedTime_format;
+                    planned_end_time_formatted = formattedTime_format;
+                }
+                catch (Exception e)
+                {
+                }
             }
         }
 

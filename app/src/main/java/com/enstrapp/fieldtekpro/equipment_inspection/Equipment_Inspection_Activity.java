@@ -1,6 +1,12 @@
 package com.enstrapp.fieldtekpro.equipment_inspection;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +16,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.enstrapp.fieldtekpro.BarcodeScanner.Barcode_Scanner_Activity;
 import com.enstrapp.fieldtekpro.GPS.GPSTracker;
 import com.enstrapp.fieldtekpro.GPS.Location_Checker;
 import com.enstrapp.fieldtekpro.R;
@@ -22,7 +29,7 @@ import com.enstrapp.fieldtekpro.orders.Orders_Activity;
 public class Equipment_Inspection_Activity extends AppCompatActivity
 {
 
-    ImageView back_imageview;
+    ImageView back_imageview, equipmentscan_imageview;
     LinearLayout floc_layout, equip_layout;
     EditText floc_edittext, equipment_edittext;
     int floc_status = 0, equip_status = 1;
@@ -33,6 +40,11 @@ public class Equipment_Inspection_Activity extends AppCompatActivity
     String[] web1 = {"Create Notification","Statistics","History","Orders","Inspection Checklist", "Geo Tag", "Maintenance Plan"} ;
     int[] imageId1 = {R.drawable.ic_create_notif_icon,R.drawable.ic_statistics_icon,R.drawable.ic_history_icon1,R.drawable.ic_purchaseorder_icon,R.drawable.ic_checklist_icon1,R.drawable.ic_geotag_icon,R.drawable.ic_maintenanceplan_icon,};
     String selected_status = "";
+    private static final int ZXING_CAMERA_PERMISSION = 3;
+    int barcode_scan = 3;
+    private SQLiteDatabase FieldTekPro_db;
+    private static String DATABASE_NAME = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,12 +52,20 @@ public class Equipment_Inspection_Activity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.equipment_inspection_activity);
 
+
+        DATABASE_NAME = getString(R.string.database_name);
+        FieldTekPro_db = Equipment_Inspection_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+
+
         floc_layout = (LinearLayout)findViewById(R.id.floc_layout);
         equip_layout = (LinearLayout)findViewById(R.id.equip_layout);
         floc_edittext = (EditText)findViewById(R.id.floc_edittext);
         equipment_edittext = (EditText)findViewById(R.id.equipment_edittext);
         grid = (GridView)findViewById(R.id.gridview);
         back_imageview = (ImageView)findViewById(R.id.back_imageview);
+        equipmentscan_imageview = (ImageView)findViewById(R.id.equipmentscan_imageview);
+
+
 
         floc_layout.setOnClickListener(new View.OnClickListener()
         {
@@ -57,6 +77,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity
                 startActivityForResult(intent,floc_status);
             }
         });
+
+
 
         equip_layout.setOnClickListener(new View.OnClickListener()
         {
@@ -70,12 +92,33 @@ public class Equipment_Inspection_Activity extends AppCompatActivity
             }
         });
 
+
+
         back_imageview.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 Equipment_Inspection_Activity.this.finish();
+            }
+        });
+
+
+
+        equipmentscan_imageview.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (ContextCompat.checkSelfPermission(Equipment_Inspection_Activity.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(Equipment_Inspection_Activity.this,new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
+                }
+                else
+                {
+                    Intent intent = new Intent(Equipment_Inspection_Activity.this, Barcode_Scanner_Activity.class);
+                    startActivityForResult(intent,barcode_scan);
+                }
             }
         });
 
@@ -99,6 +142,7 @@ public class Equipment_Inspection_Activity extends AppCompatActivity
                 floc_edittext.setText(functionlocation_id);
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = "";
+                work_center_id = data.getStringExtra("work_center");
                 Equipment_Inspection_Grid_Adapter adapter = new Equipment_Inspection_Grid_Adapter(Equipment_Inspection_Activity.this, web, imageId);
                 grid.invalidateViews();
                 grid.setAdapter(adapter);
@@ -124,6 +168,76 @@ public class Equipment_Inspection_Activity extends AppCompatActivity
                 grid.setVisibility(View.VISIBLE);
                 selected_status = "equip";
                 grid_clicklistener();
+            }
+            else if(requestCode == barcode_scan)
+            {
+                String message = data.getStringExtra("MESSAGE");
+                equipment_edittext.setText(message);
+                if (message != null && !message.equals(""))
+                {
+                    try
+                    {
+                        Cursor cursor = FieldTekPro_db.rawQuery("select * from EtEqui where Equnr = ?", new String[]{message});
+                        if (cursor != null && cursor.getCount() > 0)
+                        {
+                            if (cursor.moveToFirst())
+                            {
+                                do
+                                {
+                                    equipment_id = message;
+                                    equipment_text = cursor.getString(5);
+                                    functionlocation_id = cursor.getString(1);
+                                    plant_id = cursor.getString(29);
+                                    plannergroup_id = cursor.getString(13);
+                                    plannergroup_text = "";
+                                    floc_edittext.setText(functionlocation_id);
+                                    work_center_id = cursor.getString(11);
+                                    floc_edittext.setText(functionlocation_id);
+                                }
+                                while (cursor.moveToNext());
+                            }
+                        }
+                        else
+                        {
+                            cursor.close();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    try
+                    {
+                        if (functionlocation_id != null && !functionlocation_id.equals(""))
+                        {
+                            Cursor cursor = FieldTekPro_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{functionlocation_id});
+                            if (cursor != null && cursor.getCount() > 0)
+                            {
+                                if (cursor.moveToFirst())
+                                {
+                                    do
+                                    {
+                                        functionlocation_text = cursor.getString(2);
+                                        floc_edittext.setText(functionlocation_id);
+                                    }
+                                    while (cursor.moveToNext());
+                                }
+                            }
+                            else
+                            {
+                                cursor.close();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    Equipment_Inspection_Grid_Adapter adapter = new Equipment_Inspection_Grid_Adapter(Equipment_Inspection_Activity.this, web1, imageId1);
+                    grid.invalidateViews();
+                    grid.setAdapter(adapter);
+                    grid.setVisibility(View.VISIBLE);
+                    selected_status = "equip";
+                    grid_clicklistener();
+                }
             }
         }
     }

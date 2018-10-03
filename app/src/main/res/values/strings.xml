@@ -548,6 +548,7 @@
     <string name="change_log_loading">Loading Alert Log...</string>
     <string name="call_number">Call Number</string>
     <string name="save_calibration">Saving Calibration Data in progress...</string>
+    <string name="order_num_star">* Order No.</string>
 
 
     <string-array name="wcm_wcd_type_list">

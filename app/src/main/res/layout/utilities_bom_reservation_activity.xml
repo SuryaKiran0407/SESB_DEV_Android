@@ -191,6 +191,8 @@
                         android:inputType="numberDecimal"/>
                 </android.support.design.widget.TextInputLayout>
 
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -200,7 +202,44 @@
                     android:background="@drawable/blueborder"
                     android:orientation="horizontal"
                     android:weightSum="1"
-                    android:id="@+id/costcenter_layout">
+                    android:id="@+id/ordernumber_layout"
+                    android:visibility="gone">
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".9"
+                        android:paddingEnd="@dimen/textInputSidePadd"
+                        android:paddingStart="@dimen/textInputSidePadd"
+                        android:paddingTop="@dimen/textInputTopPadd"
+                        android:textColorHint="@color/colorPrimary"
+                        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                        <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                            android:id="@+id/ordernumber_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:cursorVisible="true"
+                            android:focusable="true"
+                            android:hint="@string/order_num_star"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textSize="@dimen/textSize" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/textInputSideMargins"
+                    android:layout_marginStart="@dimen/textInputSideMargins"
+                    android:layout_marginTop="@dimen/textInputTopMargin"
+                    android:background="@drawable/blueborder"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:id="@+id/costcenter_layout"
+                    android:layout_marginBottom="20dp">
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -231,6 +270,7 @@
                         android:layout_weight=".1"
                         android:src="@drawable/ic_arrow_drop_down_blue_24px" />
                 </LinearLayout>
+
 
             </LinearLayout>
         </ScrollView>

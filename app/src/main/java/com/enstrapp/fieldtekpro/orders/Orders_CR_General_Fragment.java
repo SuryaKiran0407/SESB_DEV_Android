@@ -423,8 +423,12 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     ma.ohp.setPlant(data.getStringExtra("plant_id"));
                     ma.ohp.setPlantName(plantName(data.getStringExtra("plant_id")));
                     ma.ohp.setIwerk(data.getStringExtra("iwerk"));
+                    ma.ohp.setWrkCntrId(data.getStringExtra("work_center"));
+                    ma.ohp.setWrkCntrName(wrkCntrName(data.getStringExtra("work_center")));
+                    wrkCntr_tiet.setText(getResources().getString(R.string.hypen_text,
+                            data.getStringExtra("work_center"), wrkCntrName(data.getStringExtra("work_center"))));
                     ma.ohp.setPlnrGrpId(data.getStringExtra("ingrp_id"));
-                    ma.ohp.setPlnrGrpName("");
+                    ma.ohp.setPlnrGrpName(plnrGrpName(data.getStringExtra("ingrp_id")));
                     plannerGroup_tiet.setText(getResources().getString(R.string.hypen_text,
                             data.getStringExtra("ingrp_id"), plnrGrpName(data.getStringExtra("ingrp_id"))));
                     funcLocId_tiet.setText(data.getStringExtra("functionlocation_id"));

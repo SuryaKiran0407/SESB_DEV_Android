@@ -39,8 +39,8 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
     String Lgort = "", storage_location = "", costcenter_id = "", costcenter_text = "", Requirement_date = "", movement_type_id = "", movement_type_text = "", Plant = "", BOM = "", Component = "", Component_text = "", Quantity = "", Unit = "", req_date = "";
     ImageView back_imageview;
     Button reserve_button;
-    LinearLayout movement_type_layout, requirement_date_layout, costcenter_layout;
-    EditText movement_type_edittext, plant_edittext, requirement_date_edittext, quantity_edittext, costcenter_edittext;
+    LinearLayout ordernumber_layout, movement_type_layout, requirement_date_layout, costcenter_layout;
+    EditText ordernumber_edittext, movement_type_edittext, plant_edittext, requirement_date_edittext, quantity_edittext, costcenter_edittext;
     Error_Dialog error_dialog = new Error_Dialog();
     Custom_Progress_Dialog custom_progress_dialog = new Custom_Progress_Dialog();
     private SQLiteDatabase FieldTekPro_db;
@@ -117,6 +117,8 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
         requirement_date_layout = (LinearLayout) findViewById(R.id.requirement_date_layout);
         costcenter_layout = (LinearLayout) findViewById(R.id.costcenter_layout);
         costcenter_edittext = (EditText)findViewById(R.id.costcenter_edittext);
+        ordernumber_layout = (LinearLayout) findViewById(R.id.ordernumber_layout);
+        ordernumber_edittext = (EditText)findViewById(R.id.ordernumber_edittext);
 
         DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
         Date date = new Date();
@@ -182,151 +184,27 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
                     }
                     else
                     {
-                        if (costcenter_id != null && !costcenter_id.equals(""))
+                        if(movement_type_id.equalsIgnoreCase("261"))
                         {
-                            cd = new ConnectionDetector(BOM_Reservation_Activity.this);
-                            isInternetPresent = cd.isConnectingToInternet();
-                            if (isInternetPresent)
+                            if (ordernumber_edittext.getText().toString() != null && !ordernumber_edittext.getText().toString().equals(""))
                             {
-                                submit_decision_dialog = new Dialog(BOM_Reservation_Activity.this);
-                                submit_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                                submit_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                submit_decision_dialog.setCancelable(false);
-                                submit_decision_dialog.setCanceledOnTouchOutside(false);
-                                submit_decision_dialog.setContentView(R.layout.decision_dialog);
-                                ImageView imageView1 = (ImageView)submit_decision_dialog.findViewById(R.id.imageView1);
-                                Glide.with(BOM_Reservation_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
-                                TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
-                                description_textview.setText(getResources().getString(R.string.perform_reservation));
-                                Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
-                                Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
-                                submit_decision_dialog.show();
-                                ok_button.setOnClickListener(new View.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        submit_decision_dialog.dismiss();
-                                        new Get_Token().execute();
-                                    }
-                                });
-                                cancel_button.setOnClickListener(new View.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        submit_decision_dialog.dismiss();
-                                    }
-                                });
+                                post_bom_reservation();
                             }
                             else
                             {
-                                decision_dialog = new Dialog(BOM_Reservation_Activity.this);
-                                decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                                decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                decision_dialog.setCancelable(false);
-                                decision_dialog.setCanceledOnTouchOutside(false);
-                                decision_dialog.setContentView(R.layout.offline_decision_dialog);
-                                ImageView imageView1 = (ImageView)decision_dialog.findViewById(R.id.imageView1);
-                                Glide.with(BOM_Reservation_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
-                                TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
-                                Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-                                Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-                                Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
-                                description_textview.setText("No Internet Connectivity. Do you want to proceed Reservation with offline ?");
-                                confirm.setText("Yes");
-                                cancel.setText("No");
-                                decision_dialog.show();
-                                cancel.setOnClickListener(new View.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        decision_dialog.dismiss();
-                                    }
-                                });
-                                connect_button.setOnClickListener(new View.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        decision_dialog.dismiss();
-                                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                                        intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
-                                        startActivity(intent);
-                                    }
-                                });
-                                confirm.setOnClickListener(new View.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        UUID uniqueKey = UUID.randomUUID();
-                                        try
-                                        {
-                                            String sql = "Insert into BOM_RESERVE_HEADER (UUID, BOM_ID, PLANT, REQUIREMENT_DATE, MOVEMENT_TYPE_ID, MOVEMENT_TYPE_TEXT, ORDER_NUMBER, COST_CENTER_ID, COST_CENTER_TEXT, Quantity, Unit, Lgort) values(?,?,?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement statement = FieldTekPro_db.compileStatement(sql);
-                                            FieldTekPro_db.beginTransaction();
-                                            statement.clearBindings();
-                                            statement.bindString(1, uniqueKey.toString());
-                                            statement.bindString(2, Component);
-                                            statement.bindString(3, Plant);
-                                            statement.bindString(4, Requirement_date);
-                                            statement.bindString(5, movement_type_id);
-                                            statement.bindString(6, movement_type_text);
-                                            statement.bindString(7, "");
-                                            statement.bindString(8, costcenter_id);
-                                            statement.bindString(9, costcenter_text);
-                                            statement.bindString(10, quantity_edittext.getText().toString());
-                                            statement.bindString(11, "");
-                                            statement.bindString(12, storage_location);
-                                            statement.execute();
-                                            FieldTekPro_db.setTransactionSuccessful();
-                                            FieldTekPro_db.endTransaction();
-                                        }
-                                        catch (Exception e)
-                                        {
-                                        }
-
-                                        try
-                                        {
-                                            DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
-                                            DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
-                                            Date todaysdate = new Date();
-                                            String date = date_format.format(todaysdate.getTime());
-                                            String time = time_format.format(todaysdate.getTime());
-
-                                            String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement statement11 = FieldTekPro_db.compileStatement(sql11);
-                                            FieldTekPro_db.beginTransaction();
-                                            statement11.clearBindings();
-                                            statement11.bindString(1, date);
-                                            statement11.bindString(2, time);
-                                            statement11.bindString(3, "Reservation");
-                                            statement11.bindString(4, "Create");
-                                            statement11.bindString(5, "");
-                                            statement11.bindString(6, Component);
-                                            statement11.bindString(7, "Fail");
-                                            statement11.bindString(8, uniqueKey.toString());
-                                            statement11.bindString(9, "");
-                                            statement11.bindString(10, uniqueKey.toString());
-                                            statement11.execute();
-                                            FieldTekPro_db.setTransactionSuccessful();
-                                            FieldTekPro_db.endTransaction();
-                                        }
-                                        catch (Exception e)
-                                        {
-                                        }
-
-                                        decision_dialog.dismiss();
-                                        Toast.makeText(BOM_Reservation_Activity.this,"Reservation for Material "+Component+" saved offline successfully.", Toast.LENGTH_LONG).show();
-                                    }
-                                });
+                                error_dialog.show_error_dialog(BOM_Reservation_Activity.this,"Please Enter Order Number");
                             }
                         }
                         else
                         {
-                            error_dialog.show_error_dialog(BOM_Reservation_Activity.this,"Please Select Cost Center");
+                            if (costcenter_id != null && !costcenter_id.equals(""))
+                            {
+                                post_bom_reservation();
+                            }
+                            else
+                            {
+                                error_dialog.show_error_dialog(BOM_Reservation_Activity.this,"Please Select Cost Center");
+                            }
                         }
                     }
                 }
@@ -341,6 +219,153 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
             }
         }
     }
+
+
+
+    private void post_bom_reservation()
+    {
+        cd = new ConnectionDetector(BOM_Reservation_Activity.this);
+        isInternetPresent = cd.isConnectingToInternet();
+        if (isInternetPresent)
+        {
+            submit_decision_dialog = new Dialog(BOM_Reservation_Activity.this);
+            submit_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            submit_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            submit_decision_dialog.setCancelable(false);
+            submit_decision_dialog.setCanceledOnTouchOutside(false);
+            submit_decision_dialog.setContentView(R.layout.decision_dialog);
+            ImageView imageView1 = (ImageView)submit_decision_dialog.findViewById(R.id.imageView1);
+            Glide.with(BOM_Reservation_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
+            TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
+            description_textview.setText(getResources().getString(R.string.perform_reservation));
+            Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
+            Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
+            submit_decision_dialog.show();
+            ok_button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    submit_decision_dialog.dismiss();
+                    new Get_Token().execute();
+                }
+            });
+            cancel_button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    submit_decision_dialog.dismiss();
+                }
+            });
+        }
+        else
+        {
+            decision_dialog = new Dialog(BOM_Reservation_Activity.this);
+            decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            decision_dialog.setCancelable(false);
+            decision_dialog.setCanceledOnTouchOutside(false);
+            decision_dialog.setContentView(R.layout.offline_decision_dialog);
+            ImageView imageView1 = (ImageView)decision_dialog.findViewById(R.id.imageView1);
+            Glide.with(BOM_Reservation_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
+            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
+            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
+            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
+            Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
+            description_textview.setText("No Internet Connectivity. Do you want to proceed Reservation with offline ?");
+            confirm.setText("Yes");
+            cancel.setText("No");
+            decision_dialog.show();
+            cancel.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    decision_dialog.dismiss();
+                }
+            });
+            connect_button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    decision_dialog.dismiss();
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
+                    startActivity(intent);
+                }
+            });
+            confirm.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    UUID uniqueKey = UUID.randomUUID();
+                    try
+                    {
+                        String sql = "Insert into BOM_RESERVE_HEADER (UUID, BOM_ID, PLANT, REQUIREMENT_DATE, MOVEMENT_TYPE_ID, MOVEMENT_TYPE_TEXT, ORDER_NUMBER, COST_CENTER_ID, COST_CENTER_TEXT, Quantity, Unit, Lgort) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+                        SQLiteStatement statement = FieldTekPro_db.compileStatement(sql);
+                        FieldTekPro_db.beginTransaction();
+                        statement.clearBindings();
+                        statement.bindString(1, uniqueKey.toString());
+                        statement.bindString(2, Component);
+                        statement.bindString(3, Plant);
+                        statement.bindString(4, Requirement_date);
+                        statement.bindString(5, movement_type_id);
+                        statement.bindString(6, movement_type_text);
+                        statement.bindString(7, "");
+                        statement.bindString(8, costcenter_id);
+                        statement.bindString(9, costcenter_text);
+                        statement.bindString(10, quantity_edittext.getText().toString());
+                        statement.bindString(11, "");
+                        statement.bindString(12, storage_location);
+                        statement.execute();
+                        FieldTekPro_db.setTransactionSuccessful();
+                        FieldTekPro_db.endTransaction();
+                    }
+                    catch (Exception e)
+                    {
+                    }
+
+                    try
+                    {
+                        DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
+                        DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
+                        Date todaysdate = new Date();
+                        String date = date_format.format(todaysdate.getTime());
+                        String time = time_format.format(todaysdate.getTime());
+
+                        String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                        SQLiteStatement statement11 = FieldTekPro_db.compileStatement(sql11);
+                        FieldTekPro_db.beginTransaction();
+                        statement11.clearBindings();
+                        statement11.bindString(1, date);
+                        statement11.bindString(2, time);
+                        statement11.bindString(3, "Reservation");
+                        statement11.bindString(4, "Create");
+                        statement11.bindString(5, "");
+                        statement11.bindString(6, Component);
+                        statement11.bindString(7, "Fail");
+                        statement11.bindString(8, uniqueKey.toString());
+                        statement11.bindString(9, "");
+                        statement11.bindString(10, uniqueKey.toString());
+                        statement11.execute();
+                        FieldTekPro_db.setTransactionSuccessful();
+                        FieldTekPro_db.endTransaction();
+                    }
+                    catch (Exception e)
+                    {
+                    }
+
+                    decision_dialog.dismiss();
+                    Toast.makeText(BOM_Reservation_Activity.this,"Reservation for Material "+Component+" saved offline successfully.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+
 
     // Call Back method  to get the Message form other Activity
     @Override
@@ -360,6 +385,16 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
                 movement_type_id = data.getStringExtra("movement_type_id");
                 movement_type_text = data.getStringExtra("movement_type_text");
                 movement_type_edittext.setText(movement_type_id+" - "+movement_type_text);
+                if(movement_type_id.equalsIgnoreCase("261"))
+                {
+                    ordernumber_layout.setVisibility(View.VISIBLE);
+                    ordernumber_edittext.setText("");
+                }
+                else
+                {
+                    ordernumber_layout.setVisibility(View.GONE);
+                    ordernumber_edittext.setText("");
+                }
             }
             else if(requestCode == 2)
             {
@@ -482,7 +517,7 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
         {
             try
             {
-                bom_reservation_status = BOM_Reservation.post_bom_reservation(BOM_Reservation_Activity.this,BOM,Component,Component_text,quantity_edittext.getText().toString(),Unit,Plant,storage_location, Requirement_date, movement_type_id, costcenter_id);
+                bom_reservation_status = BOM_Reservation.post_bom_reservation(BOM_Reservation_Activity.this,BOM,Component,Component_text,quantity_edittext.getText().toString(),Unit,Plant,storage_location, Requirement_date, movement_type_id, costcenter_id, ordernumber_edittext.getText().toString());
             }
             catch (Exception e)
             {
