@@ -468,6 +468,8 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
                     @Override
                     public void onResponse(Call<SER_Login> call, Response<SER_Login> response)
                     {
+                        int login_response_status_code = response.code();
+                        Log.v("kiran_sss",login_response_status_code+"....");
                         /*int login_response_status_code = response.code();
                         if(login_response_status_code == 201)
                         {

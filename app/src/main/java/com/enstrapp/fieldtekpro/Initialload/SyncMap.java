@@ -215,7 +215,7 @@ public class SyncMap
                                     for(int i = 0; i < jsonArray.length(); i++)
                                     {
                                         statement.bindString(1, jsonArray.getJSONObject(i).optString("Sysid"));
-                                        statement.bindString(2, jsonArray.getJSONObject(i).optString("Endpoint"));
+                                        statement.bindString(2, jsonArray.getJSONObject(i).optString("Wsname"));
                                         statement.bindString(3, jsonArray.getJSONObject(i).optString("Zdoctype"));
                                         statement.bindString(4, jsonArray.getJSONObject(i).optString("Zactivity"));
                                         statement.bindString(5, jsonArray.getJSONObject(i).optString("Zwsrv"));

@@ -72,7 +72,7 @@ public class Equipment_Maintenance_Plan_Activity extends AppCompatActivity
     TextView no_data_textView;
     MaintenancePlan_Adapter maintenancePlan_adapter;
     int response_status_code = 0;
-    Response<MaintenancePlan_SER> response;
+    Response<EQ_MaintenancePlan_SER> response;
     ImageView back_imageview;
     Dialog decision_dialog;
     String function_location_id = "", equip_id = "", equip_name = "";
@@ -231,7 +231,7 @@ public class Equipment_Maintenance_Plan_Activity extends AppCompatActivity
                 Interface service = retrofit.create(Interface.class);
                 String credentials = username + ":" + password;
                 final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                Call<MaintenancePlan_SER> call = service.getMaintenancePlanData(url_link, basic, map);
+                Call<EQ_MaintenancePlan_SER> call = service.getEQMaintenancePlanData(url_link, basic, map);
                 response = call.execute();
                 response_status_code = response.code();
             }
@@ -255,11 +255,11 @@ public class Equipment_Maintenance_Plan_Activity extends AppCompatActivity
                     try
                     {
                         /*Reading Response Data and Parsing to Serializable*/
-                        MaintenancePlan_SER rs = response.body();
+                        EQ_MaintenancePlan_SER rs = response.body();
                         /*Reading Response Data and Parsing to Serializable*/
 
                         /*Converting GSON Response to JSON Data for Parsing*/
-                        String response_data = new Gson().toJson(rs.getD().getResults());
+                        String response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtMsoh().getResults());
                         /*Converting GSON Response to JSON Data for Parsing*/
 
                         /*Converting Response JSON Data to JSONArray for Reading*/

@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.notifications;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,20 +25,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Notifications_Create_Causecode_Fragment extends Fragment implements View.OnClickListener
+public class Notifications_Create_Causecode_Fragment extends Fragment
 {
+
 
     private List<Cause_Code_Object> causecode_list = new ArrayList<>();
     List cc_list = new ArrayList();
-    String cause_id = "",cause_text = "",causecode_id = "",causecode_text = "",cause_desc = "",item_key = "0001",object_part_id = "",object_part_text = "",objectcode_id = "",object_code_text = "",event_id = "",event_text = "",eventcode_id = "",eventcode_text = "",event_desc = "";
+    String selected_pos= "", selected_status = "I", cause_id = "",cause_text = "",causecode_id = "",causecode_text = "",cause_desc = "",item_key = "0001",object_part_id = "",object_part_text = "",objectcode_id = "",object_code_text = "",event_id = "",event_text = "",eventcode_id = "",eventcode_text = "",event_desc = "";
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     CAUSE_CODE_ADAPTER cause_code_adapter;
-    TextView remove_tv, noData_tv;
+    TextView noData_tv;
     Error_Dialog error_dialog = new Error_Dialog();
     int add_causecode_type = 1;
     ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist = new ArrayList<>();
     ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist = new ArrayList<>();
+    int count = 0, selected_position = 0;
+    boolean isSelected = false;
+    Notifications_Create_Activity nca;
+
 
     public Notifications_Create_Causecode_Fragment()
     {
@@ -51,18 +60,19 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
     {
         View rootView = inflater.inflate(R.layout.notifications_causecode_fragment, container, false);
 
-        remove_tv = (TextView)rootView.findViewById(R.id.remove_tv);
         noData_tv = (TextView)rootView.findViewById(R.id.noData_tv);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+
+        nca = (Notifications_Create_Activity) this.getActivity();
 
 
         recyclerView.setVisibility(View.GONE);
         noData_tv.setVisibility(View.VISIBLE);
 
-        remove_tv.setOnClickListener(this);
 
         return rootView;
     }
+
 
 
    @Override
@@ -72,6 +82,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
         if (isVisibleToUser && isResumed())
             onResume();
     }
+
 
 
     @Override
@@ -87,25 +98,89 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
             @Override
             public void onClick(View v)
             {
-                Notifications_Create_Header_Fragment header_tab = (Notifications_Create_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
-                Notifications_Create_Header_Object header_data = header_tab.getData();
-                String functionlocation_id = header_data.getFunctionlocation_id();
-                String equipment_id = header_data.getEquipment_id();
-                if ((equipment_id != null && !equipment_id.equals("")) || (functionlocation_id != null && !functionlocation_id.equals("")))
+                if (isSelected)
                 {
-                    Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-                    intent.putExtra("functionlocation_id",functionlocation_id);
-                    intent.putExtra("equipment_id",equipment_id);
-                    intent.putExtra("request_id", Integer.toString(add_causecode_type));
-                    startActivityForResult(intent, add_causecode_type);
+                    final Dialog delete_decision_dialog = new Dialog(getActivity());
+                    delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    delete_decision_dialog.setCancelable(false);
+                    delete_decision_dialog.setCanceledOnTouchOutside(false);
+                    delete_decision_dialog.setContentView(R.layout.decision_dialog);
+                    TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
+                    description_textview.setText("Do you want to delete the selected causecode?");
+                    Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                    delete_decision_dialog.show();
+                    ok_button.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            ArrayList<Cause_Code_Object> rmoop = new ArrayList<>();
+                            rmoop.addAll(causecode_list);
+
+                            for (Cause_Code_Object oo : rmoop)
+                            {
+                                if (oo.isSelected())
+                                {
+                                    causecode_list.remove(oo);
+                                }
+                                else
+                                {
+                                    oo.setSelected(false);
+                                }
+                            }
+
+                            nca.animateFab(false);
+                            isSelected = false;
+
+                            if (causecode_list.size() > 0)
+                            {
+                                cause_code_adapter = new CAUSE_CODE_ADAPTER(getActivity(),causecode_list);
+                                recyclerView.setAdapter(cause_code_adapter);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                noData_tv.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                recyclerView.setVisibility(View.GONE);
+                                noData_tv.setVisibility(View.VISIBLE);
+                            }
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
+                    cancel_button.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
                 }
                 else
                 {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / Function Location");
+                    Notifications_Create_Header_Fragment header_tab = (Notifications_Create_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
+                    Notifications_Create_Header_Object header_data = header_tab.getData();
+                    String functionlocation_id = header_data.getFunctionlocation_id();
+                    String equipment_id = header_data.getEquipment_id();
+                    if ((equipment_id != null && !equipment_id.equals("")) || (functionlocation_id != null && !functionlocation_id.equals("")))
+                    {
+                        Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
+                        intent.putExtra("functionlocation_id",functionlocation_id);
+                        intent.putExtra("equipment_id",equipment_id);
+                        intent.putExtra("request_id", Integer.toString(add_causecode_type));
+                        startActivityForResult(intent, add_causecode_type);
+                    }
+                    else
+                    {
+                        error_dialog.show_error_dialog(getActivity(), "Please select Equipment / Function Location");
+                    }
                 }
             }
         });
     }
+
 
 
     private static String makeFragmentName(int viewPagerId, int index)
@@ -113,17 +188,8 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
-    @Override
-    public void onClick(View v)
-    {
-        if(v == remove_tv)
-        {
-            //Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-            //startActivityForResult(intent, 1);
-        }
-    }
 
-    // Call Back method  to get the Message form other Activity
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -146,12 +212,66 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
                 causecode_id = data.getStringExtra("causecode_id");
                 causecode_text = data.getStringExtra("causecode_text");
                 cause_desc = data.getStringExtra("cause_descritpion");
+                selected_object_custom_info_arraylist.clear();
+                selected_cause_custom_info_arraylist.clear();
                 selected_object_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_object_custom_info_arraylist");
                 selected_cause_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_cause_custom_info_arraylist");
+                String itemkey = data.getStringExtra("itemkey");
+                String status = data.getStringExtra("status");
+                if (itemkey != null && !itemkey.equals(""))
+                {
+                    if(status.equalsIgnoreCase("U"))
+                    {
+                        selected_status = "U";
+                        item_key = data.getStringExtra("itemkey");
+                        String pos = data.getStringExtra("position");
+                        selected_position = Integer.parseInt(pos);
+                        selected_pos = pos;
+                        causecode_list.remove(selected_position);
+                    }
+                    else
+                    {
+                        selected_status = "I";
+                        item_key = data.getStringExtra("itemkey");
+                        String pos = data.getStringExtra("position");
+                        selected_position = Integer.parseInt(pos);
+                        selected_pos = pos;
+                        causecode_list.remove(selected_position);
+                    }
+                }
+                else
+                {
+                    if (causecode_list.size() > 0)
+                    {
+                        for (Cause_Code_Object bean : causecode_list)
+                        {
+                            cc_list.add(bean.getitem_key());
+                        }
+                        String max_id = Collections.max(cc_list).toString();
+                        int last_num = Integer.parseInt(max_id);
+                        int new_num = last_num + 1;
+                        String new_item_number = "";
+                        if(new_num >= 10)
+                        {
+                            new_item_number = "00"+new_num;
+                        }
+                        else
+                        {
+                            new_item_number = "000"+new_num;
+                        }
+                        item_key = new_item_number;
+                    }
+                    else
+                    {
+                        item_key = "0001";
+                    }
+                    selected_status = "I";
+                }
                 new Get_Added_CauseCode_Data().execute();
             }
         }
     }
+
 
 
     private class Get_Added_CauseCode_Data extends AsyncTask<Void, Integer, Void>
@@ -166,32 +286,16 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
         {
             try
             {
-                if (causecode_list.size() > 0)
+                if (selected_pos != null && !selected_pos.equals(""))
                 {
-                    for (Cause_Code_Object bean : causecode_list)
-                    {
-                        cc_list.add(bean.getitem_key());
-                    }
-                    String max_id = Collections.max(cc_list).toString();
-                    int last_num = Integer.parseInt(max_id);
-                    int new_num = last_num + 1;
-                    String new_item_number = "";
-                    if(new_num >= 10)
-                    {
-                        new_item_number = "00"+new_num;
-                    }
-                    else
-                    {
-                        new_item_number = "000"+new_num;
-                    }
-                    item_key = new_item_number;
+                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_object_custom_info_arraylist, selected_cause_custom_info_arraylist, false, selected_status);
+                    causecode_list.add(selected_position,to);
                 }
                 else
                 {
-                    item_key = "0001";
+                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_object_custom_info_arraylist, selected_cause_custom_info_arraylist, false, selected_status);
+                    causecode_list.add(to);
                 }
-                Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_object_custom_info_arraylist, selected_cause_custom_info_arraylist);
-                causecode_list.add(to);
             }
             catch (Exception e)
             {
@@ -226,6 +330,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
     }
 
 
+
     public class Cause_Code_Object
     {
         private String cause_key;
@@ -244,9 +349,11 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
         private String causecode_id;
         private String causecode_text;
         private String cause_desc;
+        private String status;
+        public boolean selected;
         ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist;
         ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist;
-        public Cause_Code_Object(String item_key, String object_part_id, String object_part_text, String objectcode_id, String object_code_text, String event_id, String event_text, String eventcode_id, String eventcode_text, String event_desc, String cause_id, String cause_text, String causecode_id, String causecode_text, String cause_desc, String cause_key, ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist, ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist)
+        public Cause_Code_Object(String item_key, String object_part_id, String object_part_text, String objectcode_id, String object_code_text, String event_id, String event_text, String eventcode_id, String eventcode_text, String event_desc, String cause_id, String cause_text, String causecode_id, String causecode_text, String cause_desc, String cause_key, ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist, ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist, boolean selected, String status)
         {
             this.item_key = item_key;
             this.object_part_id = object_part_id;
@@ -266,7 +373,26 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
             this.cause_key = cause_key;
             this.selected_object_custom_info_arraylist = selected_object_custom_info_arraylist;
             this.selected_cause_custom_info_arraylist = selected_cause_custom_info_arraylist;
+            this.selected = selected;
+            this.status = status;
         }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public boolean isSelected() {
+            return selected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
+
         public ArrayList<HashMap<String, String>> getSelected_cause_custom_info_arraylist() {
             return selected_cause_custom_info_arraylist;
         }
@@ -408,6 +534,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
     }
 
 
+
     public class CAUSE_CODE_ADAPTER extends RecyclerView.Adapter<CAUSE_CODE_ADAPTER.MyViewHolder>
     {
         private Context mContext;
@@ -416,6 +543,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
         {
             public TextView cause_key, item_key,causecode_text, causecode_desc, causecode_id,cause_text,cause_id, event_desc,event_code_text, event_code_id, event_text, event_id, objpart_code_text_tv, objpart_code_id_tv, objpart_text_tv, objpart_id_tv, cause_code_textview, cause_textview, event_textview, event_code_textview, event_description_textview;
             LinearLayout data_layout;
+            CheckBox checkbox;
             public MyViewHolder(View view)
             {
                 super(view);
@@ -441,6 +569,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
                 item_key = (TextView)view.findViewById(R.id.item_key);
                 cause_key = (TextView)view.findViewById(R.id.cause_key);
                 data_layout = (LinearLayout)view.findViewById(R.id.data_layout);
+                checkbox = (CheckBox)view.findViewById(R.id.checkbox);
             }
         }
         public CAUSE_CODE_ADAPTER(Context mContext, List<Cause_Code_Object> list)
@@ -455,7 +584,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
             return new CAUSE_CODE_ADAPTER.MyViewHolder(itemView);
         }
         @Override
-        public void onBindViewHolder(final CAUSE_CODE_ADAPTER.MyViewHolder holder, int position)
+        public void onBindViewHolder(final CAUSE_CODE_ADAPTER.MyViewHolder holder, final int position)
         {
             final Cause_Code_Object nto = type_details_list.get(position);
             holder.event_textview.setText(nto.getevent_text());
@@ -479,14 +608,89 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
             holder.causecode_desc.setText(nto.getcause_desc());
             holder.item_key.setText(nto.getitem_key());
             holder.cause_key.setText(nto.getCause_key());
-            /*holder.value_textview.setText(nto.getobject_part_id());
+            /*holder.value_textview.setText(nto.getobject_part_id());*/
+
+
             holder.data_layout.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
+                    Notifications_Create_Header_Fragment header_tab = (Notifications_Create_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
+                    Notifications_Create_Header_Object header_data = header_tab.getData();
+                    String functionlocation_id = header_data.getFunctionlocation_id();
+                    String equipment_id = header_data.getEquipment_id();//commited
+                    Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
+                    intent.putExtra("functionlocation_id",functionlocation_id);
+                    intent.putExtra("equipment_id",equipment_id);
+                    intent.putExtra("request_id", Integer.toString(add_causecode_type));
+                    intent.putExtra("position", Integer.toString(position));
+                    intent.putExtra("itemkey", holder.item_key.getText().toString());
+                    intent.putExtra("causekey", holder.cause_key.getText().toString());
+                    intent.putExtra("objectpart_id", holder.objpart_id_tv.getText().toString());
+                    intent.putExtra("objectpart_text", holder.objpart_text_tv.getText().toString());
+                    intent.putExtra("objectpartcode_id", holder.objpart_code_id_tv.getText().toString());
+                    intent.putExtra("objectpartcode_text", holder.objpart_code_text_tv.getText().toString());
+                    intent.putExtra("event_id", holder.event_id.getText().toString());
+                    intent.putExtra("event_text", holder.event_text.getText().toString());
+                    intent.putExtra("eventcode_id", holder.event_code_id.getText().toString());
+                    intent.putExtra("eventcode_text", holder.event_code_text.getText().toString());
+                    intent.putExtra("event_descritpion", holder.event_desc.getText().toString());
+                    intent.putExtra("cause_id", holder.cause_id.getText().toString());
+                    intent.putExtra("cause_text", holder.cause_text.getText().toString());
+                    intent.putExtra("causecode_id", holder.causecode_id.getText().toString());
+                    intent.putExtra("causecode_text", holder.causecode_text.getText().toString());
+                    intent.putExtra("cause_descritpion", holder.causecode_desc.getText().toString());
+                    intent.putExtra("status", "I");
+                    intent.putExtra("selected_object_custom_info_arraylist", nto.getSelected_object_custom_info_arraylist());
+                    intent.putExtra("selected_cause_custom_info_arraylist", nto.getSelected_cause_custom_info_arraylist());
+                    startActivityForResult(intent, add_causecode_type);
                 }
-            });*/
+            });
+
+
+
+            holder.checkbox.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (holder.checkbox.isChecked())
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(true);
+                        for (Cause_Code_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                                isSelected = true;
+                            }
+                        }
+                        if (count == 1)
+                            nca.animateFab(true);
+                    }
+                    else
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(false);
+                        for (Cause_Code_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                            }
+                        }
+                        if (count == 0)
+                        {
+                            nca.animateFab(false);
+                            isSelected = false;
+                        }
+                    }
+                }
+            });
+
+
         }
         @Override
         public int getItemCount()
@@ -496,9 +700,12 @@ public class Notifications_Create_Causecode_Fragment extends Fragment implements
     }
 
 
+
     public List<Cause_Code_Object> getCauseCodeData()
     {
         return causecode_list;
     }
+
+
 
 }

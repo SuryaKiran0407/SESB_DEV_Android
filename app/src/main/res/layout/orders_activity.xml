@@ -202,6 +202,17 @@
                 fab:fab_label="@string/scan"
                 fab:fab_size="mini" />
 
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/map_fab_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location_icon"
+                fab:fab_colorNormal="#16a085"
+                fab:fab_label="Map"
+                fab:fab_size="mini" />
+
+
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/refresh_fab_button"
                 android:layout_width="wrap_content"

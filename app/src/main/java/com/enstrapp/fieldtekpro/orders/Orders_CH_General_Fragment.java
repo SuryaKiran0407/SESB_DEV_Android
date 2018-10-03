@@ -560,6 +560,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     ma.ohp.setPlant(data.getStringExtra("plant_id"));
                     ma.ohp.setPlantName(plantName(data.getStringExtra("plant_id")));
                     ma.ohp.setIwerk(data.getStringExtra("iwerk"));
+                    plannerGroup_tiet.setText(getResources().getString(R.string.hypen_text,
+                            data.getStringExtra("ingrp_id"), plnrGrpName(data.getStringExtra("ingrp_id"))));
                     funcLocId_tiet.setText(data.getStringExtra("functionlocation_id"));
                     funcLocName_tiet.setText(data.getStringExtra("functionlocation_text"));
                     respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,

@@ -23,7 +23,7 @@ public class Geo_Tag_Details_Model
     @SerializedName("Udid")
     @Expose
     private String udid;
-    @SerializedName("ItGeoData")
+    @SerializedName("EtGeoData")
     @Expose
     private List<ItGeoData> ItGeoData = null;
 

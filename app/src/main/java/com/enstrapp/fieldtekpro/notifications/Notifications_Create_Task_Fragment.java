@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.notifications;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -22,7 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Notifications_Create_Task_Fragment extends Fragment implements View.OnClickListener
+public class Notifications_Create_Task_Fragment extends Fragment
 {
 
     private List<Task_Object> task_list = new ArrayList<>();
@@ -30,15 +34,20 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     TASK_ADAPTER task_adapter;
-    TextView remove_tv, noData_tv;
+    TextView noData_tv;
     Error_Dialog error_dialog = new Error_Dialog();
     int add_task_type = 1;
-    String item_key = "", completedby = "", completion_time_formatted = "", completion_time = "", completion_date_formatted = "", completion_date = "", planned_end_time_formatted = "", planned_st_time_formatted = "", success_status = "", completed_status = "", release_status = "", planned_end_time = "", planned_end_date_formatted = "", planned_end_date = "", planned_st_time = "", planned_st_date_formatted = "", planned_st_date = "", task_responsible = "", taskprocessor_text = "", taskprocessor_id = "", task_text = "", taskcodegroup_id = "", taskcodegroup_text ="", taskcode_id ="", taskcode_text = "";
+    String selected_pos = "", selected_status = "I", item_key = "", completedby = "", completion_time_formatted = "", completion_time = "", completion_date_formatted = "", completion_date = "", planned_end_time_formatted = "", planned_st_time_formatted = "", success_status = "", completed_status = "", release_status = "", planned_end_time = "", planned_end_date_formatted = "", planned_end_date = "", planned_st_time = "", planned_st_date_formatted = "", planned_st_date = "", task_responsible = "", taskprocessor_text = "", taskprocessor_id = "", task_text = "", taskcodegroup_id = "", taskcodegroup_text ="", taskcode_id ="", taskcode_text = "";
     ArrayList<HashMap<String, String>> selected_tasks_custom_info_arraylist = new ArrayList<>();
+    int count = 0, selected_position = 0;
+    boolean isSelected = false;
+    Notifications_Create_Activity nca;
+
 
     public Notifications_Create_Task_Fragment()
     {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -51,14 +60,12 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
     {
         View rootView = inflater.inflate(R.layout.notifications_task_fragment, container, false);
 
-        remove_tv = (TextView)rootView.findViewById(R.id.remove_tv);
         noData_tv = (TextView)rootView.findViewById(R.id.noData_tv);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        nca = (Notifications_Create_Activity) this.getActivity();
 
         recyclerView.setVisibility(View.GONE);
         noData_tv.setVisibility(View.VISIBLE);
-
-        remove_tv.setOnClickListener(this);
 
         return rootView;
     }
@@ -71,6 +78,7 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
         if (isVisibleToUser && isResumed())
             onResume();
     }
+
 
 
     @Override
@@ -86,25 +94,78 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(getActivity(), Notifications_Tasks_Add_Activity.class);
-                intent.putExtra("request_id", Integer.toString(add_task_type));
-                startActivityForResult(intent, add_task_type);
+                if (isSelected)
+                {
+                    final Dialog delete_decision_dialog = new Dialog(getActivity());
+                    delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    delete_decision_dialog.setCancelable(false);
+                    delete_decision_dialog.setCanceledOnTouchOutside(false);
+                    delete_decision_dialog.setContentView(R.layout.decision_dialog);
+                    TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
+                    description_textview.setText("Do you want to delete the selected task?");
+                    Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                    delete_decision_dialog.show();
+                    ok_button.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            ArrayList<Task_Object> rmoop = new ArrayList<>();
+                            rmoop.addAll(task_list);
+
+                            for (Task_Object oo : rmoop)
+                            {
+                                if (oo.isSelected())
+                                {
+                                    task_list.remove(oo);
+                                }
+                                else
+                                {
+                                    oo.setSelected(false);
+                                }
+                            }
+
+                            nca.animateFab(false);
+                            isSelected = false;
+
+                            if (task_list.size() > 0)
+                            {
+                                task_adapter = new TASK_ADAPTER(getActivity(),task_list);
+                                recyclerView.setAdapter(task_adapter);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                noData_tv.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                recyclerView.setVisibility(View.GONE);
+                                noData_tv.setVisibility(View.VISIBLE);
+                            }
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
+                    cancel_button.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
+                }
+                else
+                {
+                    Intent intent = new Intent(getActivity(), Notifications_Tasks_Add_Activity.class);
+                    intent.putExtra("request_id", Integer.toString(add_task_type));
+                    startActivityForResult(intent, add_task_type);
+                }
             }
         });
     }
 
 
-    @Override
-    public void onClick(View v)
-    {
-        if(v == remove_tv)
-        {
-            //Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-            //startActivityForResult(intent, 1);
-        }
-    }
 
-    // Call Back method  to get the Message form other Activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -138,6 +199,57 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
                 completion_time_formatted = data.getStringExtra("completion_time_formatted");
                 completedby = data.getStringExtra("completedby");
                 selected_tasks_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_tasks_custom_info_arraylist");
+                String itemkey = data.getStringExtra("task_itemkey");
+                String status = data.getStringExtra("status");
+                if (itemkey != null && !itemkey.equals(""))
+                {
+                    if(status.equalsIgnoreCase("U"))
+                    {
+                        selected_status = "U";
+                        item_key = data.getStringExtra("task_itemkey");
+                        String pos = data.getStringExtra("position");
+                        selected_position = Integer.parseInt(pos);
+                        selected_pos = pos;
+                        task_list.remove(selected_position);
+                    }
+                    else
+                    {
+                        selected_status = "I";
+                        item_key = data.getStringExtra("task_itemkey");
+                        String pos = data.getStringExtra("position");
+                        selected_position = Integer.parseInt(pos);
+                        selected_pos = pos;
+                        task_list.remove(selected_position);
+                    }
+                }
+                else
+                {
+                    if (task_list.size() > 0)
+                    {
+                        for (Task_Object bean : task_list)
+                        {
+                            cc_list.add(bean.getItem_key());
+                        }
+                        String max_id = Collections.max(cc_list).toString();
+                        int last_num = Integer.parseInt(max_id);
+                        int new_num = last_num + 1;
+                        String new_item_number = "";
+                        if(new_num >= 10)
+                        {
+                            new_item_number = "00"+new_num;
+                        }
+                        else
+                        {
+                            new_item_number = "000"+new_num;
+                        }
+                        item_key = new_item_number;
+                    }
+                    else
+                    {
+                        item_key = "0001";
+                    }
+                    selected_status = "I";
+                }
                 new Get_Added_Task_Data().execute();
             }
         }
@@ -156,32 +268,16 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
         {
             try
             {
-                if (task_list.size() > 0)
+                if (selected_pos != null && !selected_pos.equals(""))
                 {
-                    for (Task_Object bean : task_list)
-                    {
-                        cc_list.add(bean.getItem_key());
-                    }
-                    String max_id = Collections.max(cc_list).toString();
-                    int last_num = Integer.parseInt(max_id);
-                    int new_num = last_num + 1;
-                    String new_item_number = "";
-                    if(new_num >= 10)
-                    {
-                        new_item_number = "00"+new_num;
-                    }
-                    else
-                    {
-                        new_item_number = "000"+new_num;
-                    }
-                    item_key = new_item_number;
+                    Task_Object to = new Task_Object(item_key, taskcodegroup_id, taskcodegroup_text, taskcode_id, taskcode_text, task_text, taskprocessor_id, taskprocessor_text, task_responsible, planned_st_date, planned_st_date_formatted, planned_st_time, planned_st_time_formatted, planned_end_date, planned_end_date_formatted, planned_end_time, planned_end_time_formatted, release_status, completed_status, success_status, completion_date, completion_date_formatted, completion_time, completion_time_formatted, completedby, selected_tasks_custom_info_arraylist, false);
+                    task_list.add(selected_position,to);
                 }
                 else
                 {
-                    item_key = "0001";
+                    Task_Object to = new Task_Object(item_key, taskcodegroup_id, taskcodegroup_text, taskcode_id, taskcode_text, task_text, taskprocessor_id, taskprocessor_text, task_responsible, planned_st_date, planned_st_date_formatted, planned_st_time, planned_st_time_formatted, planned_end_date, planned_end_date_formatted, planned_end_time, planned_end_time_formatted, release_status, completed_status, success_status, completion_date, completion_date_formatted, completion_time, completion_time_formatted, completedby, selected_tasks_custom_info_arraylist, false);
+                    task_list.add(to);
                 }
-                Task_Object to = new Task_Object(item_key, taskcodegroup_id, taskcodegroup_text, taskcode_id, taskcode_text, task_text, taskprocessor_id, taskprocessor_text, task_responsible, planned_st_date, planned_st_date_formatted, planned_st_time, planned_st_time_formatted, planned_end_date, planned_end_date_formatted, planned_end_time, planned_end_time_formatted, release_status, completed_status, success_status, completion_date, completion_date_formatted, completion_time, completion_time_formatted, completedby,selected_tasks_custom_info_arraylist);
-                task_list.add(to);
             }
             catch (Exception e)
             {
@@ -216,10 +312,21 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
     }
 
 
+
     public class Task_Object
     {
         private String item_key = "", completedby = "", completion_time_formatted = "", completion_time = "", completion_date_formatted = "", completion_date = "", planned_end_time_formatted = "", planned_st_time_formatted = "", success_status = "", completed_status = "", release_status = "", planned_end_time = "", planned_end_date_formatted = "", planned_end_date = "", planned_st_time = "", planned_st_date_formatted = "", planned_st_date = "", task_responsible = "", taskprocessor_text = "", taskprocessor_id = "", task_text = "", taskcodegroup_id = "", taskcodegroup_text ="", taskcode_id ="", taskcode_text = "";
         ArrayList<HashMap<String, String>> selected_tasks_custom_info_arraylist;
+        public boolean selected;
+
+        public boolean isSelected() {
+            return selected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
+
         public String getItem_key() {
             return item_key;
         }
@@ -428,7 +535,7 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
             this.selected_tasks_custom_info_arraylist = selected_tasks_custom_info_arraylist;
         }
 
-        public Task_Object(String item_key, String taskcodegroup_id, String taskcodegroup_text, String taskcode_id, String taskcode_text, String task_text, String taskprocessor_id, String taskprocessor_text, String task_responsible, String planned_st_date, String planned_st_date_formatted, String planned_st_time, String planned_st_time_formatted, String planned_end_date, String planned_end_date_formatted, String planned_end_time, String planned_end_time_formatted, String release_status, String completed_status, String success_status, String completion_date, String completion_date_formatted, String completion_time, String completion_time_formatted, String completedby, ArrayList<HashMap<String, String>> selected_tasks_custom_info_arraylist)
+        public Task_Object(String item_key, String taskcodegroup_id, String taskcodegroup_text, String taskcode_id, String taskcode_text, String task_text, String taskprocessor_id, String taskprocessor_text, String task_responsible, String planned_st_date, String planned_st_date_formatted, String planned_st_time, String planned_st_time_formatted, String planned_end_date, String planned_end_date_formatted, String planned_end_time, String planned_end_time_formatted, String release_status, String completed_status, String success_status, String completion_date, String completion_date_formatted, String completion_time, String completion_time_formatted, String completedby, ArrayList<HashMap<String, String>> selected_tasks_custom_info_arraylist, boolean selected)
         {
             this.item_key = item_key;
             this.taskcodegroup_id = taskcodegroup_id;
@@ -456,9 +563,11 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
             this.completion_time_formatted = completion_time_formatted;
             this.completedby = completedby;
             this.selected_tasks_custom_info_arraylist = selected_tasks_custom_info_arraylist;
+            this.selected = selected;
         }
 
     }
+
 
 
     public class TASK_ADAPTER extends RecyclerView.Adapter<TASK_ADAPTER.MyViewHolder>
@@ -470,6 +579,7 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
             public TextView planned_start_date_textview, tasks_text_textview, tasks_code_group_textview, tasks_code_textview;
             LinearLayout data_layout;
             RadioButton release_radiobutton, completed_radiobutton, success_radiobutton;
+            CheckBox checkbox;
             public MyViewHolder(View view)
             {
                 super(view);
@@ -480,6 +590,8 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
                 release_radiobutton = (RadioButton)view.findViewById(R.id.release_radiobutton);
                 completed_radiobutton = (RadioButton)view.findViewById(R.id.completed_radiobutton);
                 success_radiobutton = (RadioButton)view.findViewById(R.id.success_radiobutton);
+                checkbox = (CheckBox)view.findViewById(R.id.checkbox);
+                data_layout = (LinearLayout)view.findViewById(R.id.data_layout);
             }
         }
         public TASK_ADAPTER(Context mContext, List<Task_Object> list)
@@ -494,7 +606,7 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
             return new TASK_ADAPTER.MyViewHolder(itemView);
         }
         @Override
-        public void onBindViewHolder(final TASK_ADAPTER.MyViewHolder holder, int position)
+        public void onBindViewHolder(final TASK_ADAPTER.MyViewHolder holder, final int position)
         {
             final Task_Object nto = type_details_list.get(position);
             holder.tasks_code_group_textview.setText(nto.getTaskcodegroup_id()+" - "+nto.getTaskcodegroup_text());
@@ -525,14 +637,86 @@ public class Notifications_Create_Task_Fragment extends Fragment implements View
                 holder.completed_radiobutton.setChecked(false);
                 holder.success_radiobutton.setChecked(false);
             }
-            /*
+
             holder.data_layout.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
+                    Intent intent = new Intent(getActivity(), Notifications_Tasks_Add_Activity.class);
+                    intent.putExtra("position", Integer.toString(position));
+                    intent.putExtra("request_id", Integer.toString(add_task_type));
+                    intent.putExtra("item_key", nto.getItem_key());
+                    intent.putExtra("taskcodegroup_id", nto.getTaskcodegroup_id());
+                    intent.putExtra("taskcodegroup_text", nto.getTaskcodegroup_text());
+                    intent.putExtra("taskcode_id", nto.getTaskcode_id());
+                    intent.putExtra("taskcode_text", nto.getTaskcode_text());
+                    intent.putExtra("task_text", nto.getTask_text());
+                    intent.putExtra("taskprocessor_id", nto.getTaskprocessor_id());
+                    intent.putExtra("taskprocessor_text", nto.getTaskprocessor_text());
+                    intent.putExtra("task_responsible", nto.getTask_responsible());
+                    intent.putExtra("planned_st_date", nto.getPlanned_st_date());
+                    intent.putExtra("planned_st_date_formatted", nto.getPlanned_st_date_formatted());
+                    intent.putExtra("planned_st_time", nto.getPlanned_st_time());
+                    intent.putExtra("planned_st_time_formatted", nto.getPlanned_st_time_formatted());
+                    intent.putExtra("planned_end_date", nto.getPlanned_end_date());
+                    intent.putExtra("planned_end_date_formatted", nto.getPlanned_end_date_formatted());
+                    intent.putExtra("planned_end_time", nto.getPlanned_end_time());
+                    intent.putExtra("planned_end_time_formatted", nto.getPlanned_end_time_formatted());
+                    intent.putExtra("release_status", nto.getRelease_status());
+                    intent.putExtra("completed_status", nto.getCompleted_status());
+                    intent.putExtra("success_status", nto.getSuccess_status());
+                    intent.putExtra("completion_date", nto.getCompletion_date());
+                    intent.putExtra("completion_date_formatted", nto.getCompletion_date_formatted());
+                    intent.putExtra("completion_time", nto.getCompletion_time());
+                    intent.putExtra("completion_time_formatted", nto.getCompletion_time_formatted());
+                    intent.putExtra("completedby", nto.getCompletedby());
+                    intent.putExtra("status", "I");
+                    startActivityForResult(intent, add_task_type);
                 }
-            });*/
+            });
+
+
+            holder.checkbox.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (holder.checkbox.isChecked())
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(true);
+                        for (Task_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                                isSelected = true;
+                            }
+                        }
+                        if (count == 1)
+                            nca.animateFab(true);
+                    }
+                    else
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(false);
+                        for (Task_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                            }
+                        }
+                        if (count == 0)
+                        {
+                            nca.animateFab(false);
+                            isSelected = false;
+                        }
+                    }
+                }
+            });
+
         }
         @Override
         public int getItemCount()

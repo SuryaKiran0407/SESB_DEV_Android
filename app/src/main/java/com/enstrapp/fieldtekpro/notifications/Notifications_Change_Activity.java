@@ -20,6 +20,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -1141,6 +1145,43 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
                 /*Fetching Cause Code Data*/
 
 
+
+                /*Fetching Cause Code Data Deletion*/
+                Notifications_Change_Causecode_Fragment causecode_fragment1 = (Notifications_Change_Causecode_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,1));
+                List<Notifications_Change_Causecode_Fragment.Cause_Code_Object> causecode_list_delete = causecode_fragment1.getCauseCodeData_Delete();
+                for(int i = 0 ; i < causecode_list_delete.size(); i++)
+                {
+                    Model_Notif_Causecode mnc = new Model_Notif_Causecode();
+                    mnc.setQmnum(qmnum);
+                    mnc.setItemKey(causecode_list_delete.get(i).getitem_key());
+                    mnc.setItempartGrp(causecode_list_delete.get(i).getobject_part_id());
+                    mnc.setPartgrptext(causecode_list_delete.get(i).getobject_part_text());
+                    mnc.setItempartCod(causecode_list_delete.get(i).getobjectcode_id());
+                    mnc.setPartcodetext(causecode_list_delete.get(i).getobject_code_text());
+                    mnc.setItemdefectGrp(causecode_list_delete.get(i).getevent_id());
+                    mnc.setDefectgrptext(causecode_list_delete.get(i).getevent_text());
+                    mnc.setItemdefectCod(causecode_list_delete.get(i).geteventcode_id());
+                    mnc.setDefectcodetext(causecode_list_delete.get(i).geteventcode_text());
+                    mnc.setItemdefectShtxt(causecode_list_delete.get(i).getevent_desc());
+                    mnc.setCauseKey(causecode_list_delete.get(i).getCause_key());
+                    mnc.setCauseGrp(causecode_list_delete.get(i).getcause_id());
+                    mnc.setCausegrptext(causecode_list_delete.get(i).getcause_text());
+                    mnc.setCauseCod(causecode_list_delete.get(i).getcausecode_id());
+                    mnc.setCausecodetext(causecode_list_delete.get(i).getcausecode_text());
+                    mnc.setCauseShtxt(causecode_list_delete.get(i).getcause_desc());
+                    mnc.setUsr01("");
+                    mnc.setUsr02("");
+                    mnc.setUsr03("");
+                    mnc.setUsr04("");
+                    mnc.setUsr05("");
+                    mnc.setAction("D");
+                    causecodeArrayList.add(mnc);
+                }
+                /*Fetching Cause Code Data Deletion*/
+
+
+
+
                 /*Fetching Activity Data*/
                 ActivityArrayList = new ArrayList<>();
                 Notifications_Change_Activity_Fragment activity_fragment = (Notifications_Change_Activity_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,2));
@@ -1229,6 +1270,33 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
                     ActivityArrayList.add(mnc);
                 }
                 /*Fetching Activity Data*/
+
+
+
+                /*Fetching Activity Data Deletion*/
+                ActivityArrayList = new ArrayList<>();
+                Notifications_Change_Activity_Fragment activity_fragment1 = (Notifications_Change_Activity_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,2));
+                List<Notifications_Change_Activity_Fragment.Activity_Object> activity_list_delete = activity_fragment1.getActivityData_Delete();
+                for(int i = 0 ; i < activity_list_delete.size(); i++)
+                {
+                    Model_Notif_Activity mnc = new Model_Notif_Activity();
+                    mnc.setQmnum(qmnum);
+                    mnc.setActvKey(activity_list_delete.get(i).getActivity_itemkey());
+                    mnc.setItemKey(activity_list_delete.get(i).getCause_itemkey());
+                    mnc.setActvGrp(activity_list_delete.get(i).getCodegroup_id());
+                    mnc.setActvCod(activity_list_delete.get(i).getCode_id());
+                    mnc.setActcodetext(activity_list_delete.get(i).getCode_text());
+                    mnc.setActvShtxt(activity_list_delete.get(i).getActivity_shtxt());
+                    mnc.setUsr01(activity_list_delete.get(i).getSt_date());
+                    mnc.setUsr02(activity_list_delete.get(i).getEnd_date());
+                    mnc.setUsr03(activity_list_delete.get(i).getSt_time());
+                    mnc.setUsr04(activity_list_delete.get(i).getEnd_time());
+                    mnc.setUsr05("");
+                    mnc.setAction("D");
+                    ActivityArrayList.add(mnc);
+                }
+                /*Fetching Activity Data Deletion*/
+
 
 
                 /*Fetching Task Data*/
@@ -1351,6 +1419,64 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
                     TasksArrayList.add(mnc);
                 }
                 /*Fetching Task Data*/
+
+
+
+                /*Fetching Task Data Deletion*/
+                Notifications_Change_Task_Fragment task_fragment1 = (Notifications_Change_Task_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,3));
+                List<Notifications_Change_Task_Fragment.Task_Object> task_list_delete = task_fragment1.getTaskData_Delete();
+                for(int i = 0 ; i < task_list_delete.size(); i++)
+                {
+                    Model_Notif_Task mnc = new Model_Notif_Task();
+                    mnc.setQmnum(qmnum);
+                    mnc.setItemKey(task_list_delete.get(i).getItem_key());
+                    mnc.setTaskKey(task_list_delete.get(i).getItem_key());
+                    mnc.setTaskGrp(task_list_delete.get(i).getTaskcodegroup_id());
+                    mnc.setTaskgrptext(task_list_delete.get(i).getTaskcodegroup_text());
+                    mnc.setTaskCod(task_list_delete.get(i).getTaskcode_id());
+                    mnc.setTaskcodetext(task_list_delete.get(i).getTaskcode_text());
+                    mnc.setTaskShtxt(task_list_delete.get(i).getTask_text());
+                    mnc.setPster(task_list_delete.get(i).getPlanned_st_date_formatted());
+                    mnc.setPeter(task_list_delete.get(i).getPlanned_end_date_formatted());
+                    mnc.setPstur(task_list_delete.get(i).getPlanned_st_time_formatted());
+                    mnc.setPetur(task_list_delete.get(i).getPlanned_end_time_formatted());
+                    mnc.setParvw(task_list_delete.get(i).getTaskprocessor_id());
+                    mnc.setParnr(task_list_delete.get(i).getTask_responsible());
+                    mnc.setErlnam(task_list_delete.get(i).getCompletedby());
+                    mnc.setErldat(task_list_delete.get(i).getCompletion_date_formatted());
+                    mnc.setErlzeit(task_list_delete.get(i).getCompletion_time_formatted());
+                    String release = task_list_delete.get(i).getRelease_status();
+                    if(release.equalsIgnoreCase("X"))
+                    {
+                        mnc.setRelease("X");
+                    }
+                    else
+                    {
+                        mnc.setRelease("");
+                    }
+                    String Complete = task_list_delete.get(i).getCompleted_status();
+                    if(Complete.equalsIgnoreCase("X"))
+                    {
+                        mnc.setComplete("X");
+                    }
+                    else
+                    {
+                        mnc.setComplete("");
+                    }
+                    String Success = task_list_delete.get(i).getSuccess_status();
+                    if(Success.equalsIgnoreCase("X"))
+                    {
+                        mnc.setSuccess("X");
+                    }
+                    else
+                    {
+                        mnc.setSuccess("");
+                    }
+                    mnc.setAction("D");
+                    TasksArrayList.add(mnc);
+                }
+                /*Fetching Task Data Deletion*/
+
 
 
                 /*Fetching Attachments Data*/
@@ -1549,6 +1675,47 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
             }
         }
     }
+
+
+
+    protected void animateFab(final boolean selected)
+    {
+        fab.clearAnimation();
+        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        shrink.setDuration(150);     // animation duration in milliseconds
+        shrink.setInterpolator(new DecelerateInterpolator());
+        shrink.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // Change FAB color and icon
+                if (selected) {
+                    fab.setBackgroundTintList(getResources().getColorStateList(R.color.red));
+                    fab.setImageResource(R.drawable.ic_delete_icon);
+                } else {
+                    fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
+                    fab.setImageResource(R.drawable.ic_add_white_24px);
+                }
+
+                // Scale up animation
+                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                expand.setDuration(100);     // animation duration in milliseconds
+                expand.setInterpolator(new AccelerateInterpolator());
+                fab.startAnimation(expand);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        fab.startAnimation(shrink);
+    }
+
 
 
 }

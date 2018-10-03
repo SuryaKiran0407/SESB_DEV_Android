@@ -99,7 +99,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
     static final int TODT = 6;
     String TYP = "", Iwerk = "";
     SysStsAdapter sysStsAdapter;
-    FloatingActionButton create_fab_button, filter_fab_button, refresh_fab_button, sort_fab_button;
+    FloatingActionButton map_fab_button, create_fab_button, filter_fab_button, refresh_fab_button, sort_fab_button;
     FloatingActionMenu floatingActionMenu;
     String person_responsible_id = "", pers_resp_status = "", sort_selected = "", attachment_clicked_status = "", filt_selected_wckt_ids = "", filt_wckt_text = "", filt_wckt_ids = "", filt_selected_status_ids = "", filt_status_ids = "", filt_selected_prior_ids = "", filt_priority_ids = "", filt_selected_notif_ids = "", filt_notification_ids = "";
     Button filt_notif_type_button, filt_priority_type_button, filt_status_type_button, filt_workcenter_type_button;
@@ -131,6 +131,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         list_recycleview = findViewById(R.id.orders_rv);
         no_data_layout = findViewById(R.id.ordersNoData_ll);
         title_tv = findViewById(R.id.orders_tv);
+        map_fab_button = (FloatingActionButton)findViewById(R.id.map_fab_button);
 
         DATABASE_NAME = Orders_Activity.this.getString(R.string.database_name);
         App_db = Orders_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
@@ -149,6 +150,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         refresh_fab_button.setOnClickListener(this);
         sort_fab_button.setOnClickListener(this);
         filter_fab_button.setOnClickListener(this);
+        map_fab_button.setOnClickListener(this);
         swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -264,6 +266,20 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             case (R.id.refresh_fab_button):
                 floatingActionMenu.close(true);
                 Refresh_Orders_Data();
+                break;
+
+
+            case (R.id.map_fab_button):
+                floatingActionMenu.close(true);
+                if (ordersList.size() > 0)
+                {
+                    Intent intent = new Intent(Orders_Activity.this, Orders_MapView_Activity.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    error_dialog.show_error_dialog(Orders_Activity.this, "No orders found for showing on map");
+                }
                 break;
 
             case (R.id.sort_fab_button):

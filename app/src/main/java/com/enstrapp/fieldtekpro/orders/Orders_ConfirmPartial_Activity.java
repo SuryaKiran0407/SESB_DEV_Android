@@ -95,6 +95,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         endTm_iv = findViewById(R.id.endTm_iv);
         endDt_iv = findViewById(R.id.endDt_iv);
         strtTm_iv = findViewById(R.id.strtTm_iv);
+        reason_tiet = findViewById(R.id.reason_tiet);
 
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
 

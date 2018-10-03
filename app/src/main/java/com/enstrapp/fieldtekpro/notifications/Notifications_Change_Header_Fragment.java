@@ -801,6 +801,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 equipid_edittext.setText("");
                 floc_edittext.setText(functionlocation_id);
                 flocname_edittext.setText(functionlocation_text);
+                plannergroup_id = data.getStringExtra("ingrp_id");
+                plannergroup_text = "";
+                plannerGroup_edittext.setText(plannergroup_id);
             }
             else if(requestCode == equipment_type)
             {

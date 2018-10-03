@@ -57,7 +57,11 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
     AttachmentsAdapter adapter;
     private static final int RESULT_LOAD_IMG = 2;
     private static final int REQUEST_CODE = 6384;
-    TextView remove_tv, noData_tv;
+    TextView noData_tv;
+    boolean isSelected = false;
+    Notifications_Create_Activity nca;
+    int count = 0;
+
 
     public Notifications_Create_Attachments_Fragment()
     {
@@ -76,6 +80,7 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
 
         attachments_rv = (RecyclerView)rootView.findViewById(R.id.attachments_rv);
         noData_tv = (TextView)rootView.findViewById(R.id.nofiles_textview);
+        nca = (Notifications_Create_Activity) this.getActivity();
 
         attachments_rv.setVisibility(View.GONE);
         noData_tv.setVisibility(View.VISIBLE);
@@ -106,80 +111,134 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-                dialog.setContentView(R.layout.notifications_attachments_select_dialog);
-                TextView camera_textview = (TextView)dialog.findViewById(R.id.camera_textview);
-                TextView gallery_textview = (TextView)dialog.findViewById(R.id.gallery_textview);
-                TextView file_textview = (TextView)dialog.findViewById(R.id.file_textview);
-                dialog.show();
-                camera_textview.setOnClickListener(new View.OnClickListener()
+                if (isSelected)
                 {
-                    @Override
-                    public void onClick(View v)
+                    final Dialog delete_decision_dialog = new Dialog(getActivity());
+                    delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    delete_decision_dialog.setCancelable(false);
+                    delete_decision_dialog.setCanceledOnTouchOutside(false);
+                    delete_decision_dialog.setContentView(R.layout.decision_dialog);
+                    TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
+                    description_textview.setText("Do you want to delete the selected attachment?");
+                    Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                    delete_decision_dialog.show();
+                    ok_button.setOnClickListener(new View.OnClickListener()
                     {
-                        if(attachments_list.size() >= 5)
+                        @Override
+                        public void onClick(View v)
                         {
-                            error_dialog.show_error_dialog(getActivity(),"You cannot attach more than 5 files");
-                        }
-                        else
-                        {
-                            if (!isDeviceSupportCamera())
+                            ArrayList<Notif_EtDocs_Parcelable> rmoop = new ArrayList<>();
+                            rmoop.addAll(attachments_list);
+
+                            for (Notif_EtDocs_Parcelable oo : rmoop)
                             {
-                                error_dialog.show_error_dialog(getActivity(),"Sorry! Your device doesn't support camera");
+                                if (oo.isSelected())
+                                {
+                                    attachments_list.remove(oo);
+                                }
+                                else
+                                {
+                                    oo.setSelected(false);
+                                }
+                            }
+
+                            nca.animateFab(false);
+                            isSelected = false;
+
+                            Display_Attachments();
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
+                    cancel_button.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
+                }
+                else
+                {
+                    final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+                    dialog.setContentView(R.layout.notifications_attachments_select_dialog);
+                    TextView camera_textview = (TextView)dialog.findViewById(R.id.camera_textview);
+                    TextView gallery_textview = (TextView)dialog.findViewById(R.id.gallery_textview);
+                    TextView file_textview = (TextView)dialog.findViewById(R.id.file_textview);
+                    dialog.show();
+                    camera_textview.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            if(attachments_list.size() >= 5)
+                            {
+                                error_dialog.show_error_dialog(getActivity(),"You cannot attach more than 5 files");
+                            }
+                            else
+                            {
+                                if (!isDeviceSupportCamera())
+                                {
+                                    error_dialog.show_error_dialog(getActivity(),"Sorry! Your device doesn't support camera");
+                                }
+                                else
+                                {
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(intent,CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+                                }
+                            }
+                        }
+                    });
+                    gallery_textview.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            if(attachments_list.size() >= 5)
+                            {
+                                error_dialog.show_error_dialog(getActivity(),"You cannot attach more than 5 files");
                             }
                             else
                             {
                                 dialog.dismiss();
-                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                startActivityForResult(intent,CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+                                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
                             }
                         }
-                    }
-                });
-                gallery_textview.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
+                    });
+                    file_textview.setOnClickListener(new View.OnClickListener()
                     {
-                        if(attachments_list.size() >= 5)
+                        @Override
+                        public void onClick(View v)
                         {
-                            error_dialog.show_error_dialog(getActivity(),"You cannot attach more than 5 files");
-                        }
-                        else
-                        {
-                            dialog.dismiss();
-                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-                        }
-                    }
-                });
-                file_textview.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if(attachments_list.size() >= 5)
-                        {
-                            error_dialog.show_error_dialog(getActivity(),"You cannot attach more than 5 files");
-                        }
-                        else
-                        {
-                            Intent target = FileUtils.createGetContentIntent();
-                            Intent intent = Intent.createChooser(target, "Choose File");
-                            try
+                            if(attachments_list.size() >= 5)
                             {
-                                dialog.dismiss();
-                                startActivityForResult(intent, REQUEST_CODE);
+                                error_dialog.show_error_dialog(getActivity(),"You cannot attach more than 5 files");
                             }
-                            catch (ActivityNotFoundException e)
+                            else
                             {
+                                Intent target = FileUtils.createGetContentIntent();
+                                Intent intent = Intent.createChooser(target, "Choose File");
+                                try
+                                {
+                                    dialog.dismiss();
+                                    startActivityForResult(intent, REQUEST_CODE);
+                                }
+                                catch (ActivityNotFoundException e)
+                                {
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
     }
+
 
 
     private boolean isDeviceSupportCamera()
@@ -193,6 +252,7 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
             return false; // no camera on this device
         }
     }
+
 
 
     @Override
@@ -596,6 +656,7 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
     }
 
 
+
     protected void Display_Attachments()
     {
         if(attachments_list.size() > 0)
@@ -607,8 +668,15 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
             attachments_rv.setItemAnimator(new DefaultItemAnimator());
             attachments_rv.setAdapter(adapter);
             attachments_rv.setVisibility(View.VISIBLE);
+            noData_tv.setVisibility(View.GONE);
+        }
+        else
+        {
+            attachments_rv.setVisibility(View.GONE);
+            noData_tv.setVisibility(View.VISIBLE);
         }
     }
+
 
 
     private class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.MyViewHolder>
@@ -705,6 +773,48 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
             {
                 holder.pic_imageview.setBackgroundResource(R.drawable.ic_txt_icon);
             }
+
+
+            holder.checkbox.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (holder.checkbox.isChecked())
+                    {
+                        count = 0;
+                        attachments_list.get(position).setSelected(true);
+                        for (Notif_EtDocs_Parcelable oop : attachments_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                                isSelected = true;
+                            }
+                        }
+                        if (count == 1)
+                            nca.animateFab(true);
+                    }
+                    else
+                    {
+                        count = 0;
+                        attachments_list.get(position).setSelected(false);
+                        for (Notif_EtDocs_Parcelable oop : attachments_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                            }
+                        }
+                        if (count == 0)
+                        {
+                            nca.animateFab(false);
+                            isSelected = false;
+                        }
+                    }
+                }
+            });
+
         }
         @Override
         public int getItemCount()

@@ -3,24 +3,31 @@ package com.enstrapp.fieldtekpro.orders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Operations_Add_Update_Activity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolBar;
-    TextInputEditText oprtnShrtTxt_tiet, duration_tiet, durationUnit_tiet, plant_tiet, wrkCntr_tiet;
+    TextInputEditText start_date_edittext, end_date_edittext, oprtnShrtTxt_tiet, duration_tiet, durationUnit_tiet, plant_tiet, wrkCntr_tiet;
     ImageView duration_iv, wrkCntr_iv;
     OrdrOprtnPrcbl oop = new OrdrOprtnPrcbl();
 
@@ -35,6 +42,9 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
     /*Written By SuryaKiran for Custom Info*/
     ArrayList<HashMap<String, String>> selected_operation_custom_info_arraylist = new ArrayList<>();
     /*Written By SuryaKiran for Custom Info*/
+
+    TextInputLayout start_date_layout, end_date_layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +61,10 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         toolBar = findViewById(R.id.toolBar);
         submit_bt = findViewById(R.id.submit_bt);
         cancel_bt = findViewById(R.id.cancel_bt);
+        start_date_layout = (TextInputLayout)findViewById(R.id.start_date_layout);
+        end_date_layout = (TextInputLayout)findViewById(R.id.end_date_layout);
+        start_date_edittext = (TextInputEditText)findViewById(R.id.start_date_edittext);
+        end_date_edittext = (TextInputEditText)findViewById(R.id.end_date_edittext);
 
         /*Written By SuryaKiran for Custom Info*/
         operations_custominfo_button = (Button)findViewById(R.id.operations_custominfo_button);
@@ -94,6 +108,101 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 wrkCntr_tiet.setText(oop.getWrkCntrId());
                 durationUnit_tiet.setText(oop.getDurationUnit());
                 submit_bt.setText(getResources().getString(R.string.update));
+
+
+                String action = oop.getStatus();
+                if(action.equalsIgnoreCase("I"))
+                {
+                }
+                else
+                {
+                    String StartDate_format = "", starttime_format = "";
+                    String startdate = oop.getFsavd();
+                    if (startdate.equals("00000000"))
+                    {
+                        start_date_layout.setVisibility(View.GONE);
+                        start_date_edittext.setText("");
+                    }
+                    else
+                    {
+                        DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                        DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                        Date date1;
+                        try
+                        {
+                            date1 = inputFormat.parse(startdate);
+                            String outputDateStr = outputFormat.format(date1);
+                            StartDate_format = outputDateStr;
+
+                            String starttime = oop.getUsr02();
+                            if (starttime.equals("000000"))
+                            {
+                                starttime_format = "";
+                            }
+                            else
+                            {
+                                String inputPattern1 = "HHmmss";
+                                String outputPattern1 = "HH:mm:ss";
+                                SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
+                                SimpleDateFormat outputFormat1 = new SimpleDateFormat(outputPattern1);
+                                Date date2 = inputFormat1.parse(starttime);
+                                starttime_format = outputFormat1.format(date2);
+                            }
+                        }
+                        catch (ParseException e)
+                        {
+                            StartDate_format = "";
+                            starttime_format = "";
+                        }
+                        start_date_edittext.setText(StartDate_format+"   "+starttime_format);
+                        start_date_layout.setVisibility(View.VISIBLE);
+                    }
+
+
+                    String EndDate_format = "", endtime_format = "";
+                    String enddate = oop.getSsedd();
+                    if (enddate.equals("00000000"))
+                    {
+                        end_date_layout.setVisibility(View.GONE);
+                        end_date_edittext.setText("");
+                    }
+                    else
+                    {
+                        DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                        DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                        Date date1;
+                        try
+                        {
+                            date1 = inputFormat.parse(enddate);
+                            String outputDateStr = outputFormat.format(date1);
+                            EndDate_format = outputDateStr;
+
+                            String endtime = oop.getUsr03();
+                            if (endtime.equals("000000"))
+                            {
+                                endtime_format = "";
+                            }
+                            else
+                            {
+                                String inputPattern1 = "HHmmss";
+                                String outputPattern1 = "HH:mm:ss";
+                                SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
+                                SimpleDateFormat outputFormat1 = new SimpleDateFormat(outputPattern1);
+                                Date date2 = inputFormat1.parse(endtime);
+                                endtime_format = outputFormat1.format(date2);
+                            }
+                        }
+                        catch (ParseException e)
+                        {
+                            EndDate_format = "";
+                            endtime_format = "";
+                        }
+                        end_date_edittext.setText(EndDate_format+"   "+endtime_format);
+                        end_date_layout.setVisibility(View.VISIBLE);
+                    }
+
+                }
+
 
                 /*Written By SuryaKiran for Custom Info*/
                 selected_operation_custom_info_arraylist = (ArrayList<HashMap<String, String>>)getIntent().getSerializableExtra("selected_operation_custom_info_arraylist");

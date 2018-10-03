@@ -97,6 +97,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity
                 equipment_text = "";
                 equipment_edittext.setText("");
                 floc_edittext.setText(functionlocation_id);
+                plannergroup_id = data.getStringExtra("ingrp_id");
+                plannergroup_text = "";
                 Equipment_Inspection_Grid_Adapter adapter = new Equipment_Inspection_Grid_Adapter(Equipment_Inspection_Activity.this, web, imageId);
                 grid.invalidateViews();
                 grid.setAdapter(adapter);

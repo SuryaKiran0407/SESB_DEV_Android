@@ -131,7 +131,7 @@ public class Calibration_Save
                     /*Reading Response Data and Parsing to Serializable*/
 
                     /*Converting GSON Response to JSON Data for Parsing*/
-                    /*String EtMessage = new Gson().toJson(rs.getD().getEtMessage().getResults());
+                    String EtMessage = new Gson().toJson(rs.getD().getEtMessage().getResults());
                     if (EtMessage != null && !EtMessage.equals(""))
                     {
                         StringBuilder Message_stringbuilder = new StringBuilder();
@@ -153,7 +153,7 @@ public class Calibration_Save
                     {
                         Get_Response = "Unable to process Calibration Data. Please try again.";
                         Get_Data = "";
-                    }*/
+                    }
                     /*Converting GSON Response to JSON Data for Parsing*/
 
                     App_db.execSQL("delete from EtQinspData");

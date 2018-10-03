@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.notifications;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,16 +32,17 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Notifications_Change_Activity_Fragment extends Fragment implements View.OnClickListener
+public class Notifications_Change_Activity_Fragment extends Fragment
 {
 
     private List<Activity_Object> activity_list = new ArrayList<>();
+    private List<Activity_Object> activity_list_delete = new ArrayList<>();
     List cc_list = new ArrayList();
     String selected_pos = "", selected_status = "", code_id ="", code_text ="", shttext ="", start_date ="", start_date_formatted = "", start_time ="", start_time_formatted = "", end_date ="", end_date_formatted ="", end_time = "", end_time_formatted = "", codegroup_id = "", codegroup_text ="", objectpartcode_id = "", cause_itemkey = "", cause_id = "",cause_text = "",causecode_id = "",causecode_text = "",cause_desc = "",item_key = "0001",object_part_id = "",object_part_text = "",objectcode_id = "",object_code_text = "",event_id = "",event_text = "",eventcode_id = "",eventcode_text = "",event_desc = "";
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     ACTIVITY_ADAPTER activity_adapter;
-    TextView remove_tv, noData_tv;
+    TextView noData_tv;
     Error_Dialog error_dialog = new Error_Dialog();
     int add_activity_type = 1, selected_position = 0;
     ArrayList<HashMap<String, String>> causecode_array_list = new ArrayList<HashMap<String, String>> ();
@@ -46,10 +51,15 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     ArrayList<HashMap<String, String>> selected_activity_custom_info_arraylist = new ArrayList<>();
+    int count = 0;
+    boolean isSelected = false;
+    Notifications_Change_Activity nca;
+
 
     public Notifications_Change_Activity_Fragment()
     {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -62,14 +72,15 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
     {
         View rootView = inflater.inflate(R.layout.notifications_activities_fragment, container, false);
 
-        remove_tv = (TextView)rootView.findViewById(R.id.remove_tv);
         noData_tv = (TextView)rootView.findViewById(R.id.noData_tv);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        nca = (Notifications_Change_Activity) this.getActivity();
 
         recyclerView.setVisibility(View.GONE);
         noData_tv.setVisibility(View.VISIBLE);
 
         activity_list.clear();
+        activity_list_delete.clear();
 
         DATABASE_NAME = getActivity().getString(R.string.database_name);
         App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
@@ -190,7 +201,8 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
                             activity_parcablearray.get(i).getUsr03(),
                             activity_parcablearray.get(i).getUsr04(),
                             activity_parcablearray.get(i).getStatus(),
-                            selected_activity_custom_info_arraylist
+                            selected_activity_custom_info_arraylist,
+                            false
                     );
                     activity_list.add(to);
                 }
@@ -211,8 +223,6 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
                 noData_tv.setVisibility(View.VISIBLE);
             }
         }
-
-        remove_tv.setOnClickListener(this);
 
         return rootView;
     }
@@ -278,35 +288,119 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
                 @Override
                 public void onClick(View v)
                 {
-                    Notifications_Change_Header_Fragment header_tab = (Notifications_Change_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
-                    Notifications_Create_Header_Object header_data = header_tab.getData();
-                    String functionlocation_id = header_data.getFunctionlocation_id();
-                    String equipment_id = header_data.getEquipment_id();
-                    Notifications_Change_Causecode_Fragment causecode_fragment = (Notifications_Change_Causecode_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,1));
-                    List<Notifications_Change_Causecode_Fragment.Cause_Code_Object> causecode_list = causecode_fragment.getCauseCodeData();
-                    if (causecode_list.size() > 0)
+                    if (isSelected)
                     {
-                        causecode_array_list.clear();
-                        for(int i = 0; i < causecode_list.size(); i++)
+                        final Dialog delete_decision_dialog = new Dialog(getActivity());
+                        delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        delete_decision_dialog.setCancelable(false);
+                        delete_decision_dialog.setCanceledOnTouchOutside(false);
+                        delete_decision_dialog.setContentView(R.layout.decision_dialog);
+                        TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
+                        description_textview.setText("Do you want to delete the selected activity?");
+                        Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
+                        Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                        delete_decision_dialog.show();
+                        ok_button.setOnClickListener(new View.OnClickListener()
                         {
-                            HashMap<String, String> array_hashmap = new HashMap<String, String>();
-                            array_hashmap.put("itemkey",causecode_list.get(i).getitem_key());
-                            array_hashmap.put("objpart_id",causecode_list.get(i).getobject_part_id());
-                            array_hashmap.put("event_id",causecode_list.get(i).getevent_id());
-                            array_hashmap.put("event_desc",causecode_list.get(i).getevent_desc());
-                            causecode_array_list.add(array_hashmap);
-                        }
-                        Intent intent = new Intent(getActivity(), Notifications_Activity_Add_Activity.class);
-                        intent.putExtra("functionlocation_id",functionlocation_id);
-                        intent.putExtra("equipment_id",equipment_id);
-                        intent.putExtra("causecode_array_list",causecode_array_list);
-                        intent.putExtra("request_id", Integer.toString(add_activity_type));
-                        intent.putExtra("status", "I");
-                        startActivityForResult(intent, add_activity_type);
+                            @Override
+                            public void onClick(View v)
+                            {
+                                for(int i = 0; i < activity_list.size(); i++)
+                                {
+                                    boolean selected_status = activity_list.get(i).isSelected();
+                                    if(selected_status)
+                                    {
+                                        String action = activity_list.get(i).getStatus();
+                                        if(action.equalsIgnoreCase("U"))
+                                        {
+                                            Activity_Object to = new Activity_Object(
+                                                    activity_list.get(i).getCause_itemkey(),
+                                                    activity_list.get(i).getCause_shtxt(),
+                                                    activity_list.get(i).getActivity_itemkey(),
+                                                    activity_list.get(i).getObj_part(),
+                                                    activity_list.get(i).getEvent_code(),
+                                                    activity_list.get(i).getCodegroup_id(),
+                                                    activity_list.get(i).getCodegroup_text(),
+                                                    activity_list.get(i).getCode_id(),
+                                                    activity_list.get(i).getCode_text(),
+                                                    activity_list.get(i).getCause_shtxt(),
+                                                    activity_list.get(i).getSt_date(),
+                                                    activity_list.get(i).getEnd_date(),
+                                                    activity_list.get(i).getSt_time(),
+                                                    activity_list.get(i).getEnd_time(),
+                                                    "D",
+                                                    activity_list.get(i).getSelected_activity_custom_info_arraylist(),
+                                                    false);
+                                            activity_list_delete.add(to);
+                                            activity_list.remove(i);
+                                        }
+                                        else
+                                        {
+                                            activity_list.remove(i);
+                                        }
+                                    }
+                                }
+
+                                nca.animateFab(false);
+                                isSelected = false;
+
+                                if (activity_list.size() > 0)
+                                {
+                                    activity_adapter = new ACTIVITY_ADAPTER(getActivity(),activity_list);
+                                    recyclerView.setAdapter(activity_adapter);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    noData_tv.setVisibility(View.GONE);
+                                }
+                                else
+                                {
+                                    recyclerView.setVisibility(View.GONE);
+                                    noData_tv.setVisibility(View.VISIBLE);
+                                }
+                                delete_decision_dialog.dismiss();
+                            }
+                        });
+                        cancel_button.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                delete_decision_dialog.dismiss();
+                            }
+                        });
                     }
                     else
                     {
-                        error_dialog.show_error_dialog(getActivity(), "Please add atleast one Notification Item");
+                        Notifications_Change_Header_Fragment header_tab = (Notifications_Change_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
+                        Notifications_Create_Header_Object header_data = header_tab.getData();
+                        String functionlocation_id = header_data.getFunctionlocation_id();
+                        String equipment_id = header_data.getEquipment_id();
+                        Notifications_Change_Causecode_Fragment causecode_fragment = (Notifications_Change_Causecode_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,1));
+                        List<Notifications_Change_Causecode_Fragment.Cause_Code_Object> causecode_list = causecode_fragment.getCauseCodeData();
+                        if (causecode_list.size() > 0)
+                        {
+                            causecode_array_list.clear();
+                            for(int i = 0; i < causecode_list.size(); i++)
+                            {
+                                HashMap<String, String> array_hashmap = new HashMap<String, String>();
+                                array_hashmap.put("itemkey",causecode_list.get(i).getitem_key());
+                                array_hashmap.put("objpart_id",causecode_list.get(i).getobject_part_id());
+                                array_hashmap.put("event_id",causecode_list.get(i).getevent_id());
+                                array_hashmap.put("event_desc",causecode_list.get(i).getevent_desc());
+                                causecode_array_list.add(array_hashmap);
+                            }
+                            Intent intent = new Intent(getActivity(), Notifications_Activity_Add_Activity.class);
+                            intent.putExtra("functionlocation_id",functionlocation_id);
+                            intent.putExtra("equipment_id",equipment_id);
+                            intent.putExtra("causecode_array_list",causecode_array_list);
+                            intent.putExtra("request_id", Integer.toString(add_activity_type));
+                            intent.putExtra("status", "I");
+                            startActivityForResult(intent, add_activity_type);
+                        }
+                        else
+                        {
+                            error_dialog.show_error_dialog(getActivity(), "Please add atleast one Notification Item");
+                        }
                     }
                 }
             });
@@ -319,17 +413,8 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
-    @Override
-    public void onClick(View v)
-    {
-        if(v == remove_tv)
-        {
-            //Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-            //startActivityForResult(intent, 1);
-        }
-    }
 
-    // Call Back method  to get the Message form other Activity
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -428,12 +513,12 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
             {
                 if (selected_pos != null && !selected_pos.equals(""))
                 {
-                    Activity_Object to = new Activity_Object(cause_itemkey,cause_text,item_key,objectpartcode_id,event_id,codegroup_id,codegroup_text,code_id,code_text,shttext,start_date_formatted,end_date_formatted,start_time_formatted,end_time_formatted,selected_status,selected_activity_custom_info_arraylist);
+                    Activity_Object to = new Activity_Object(cause_itemkey,cause_text,item_key,objectpartcode_id,event_id,codegroup_id,codegroup_text,code_id,code_text,shttext,start_date_formatted,end_date_formatted,start_time_formatted,end_time_formatted,selected_status,selected_activity_custom_info_arraylist, false);
                     activity_list.add(selected_position,to);
                 }
                 else
                 {
-                    Activity_Object to = new Activity_Object(cause_itemkey,cause_text,item_key,objectpartcode_id,event_id,codegroup_id,codegroup_text,code_id,code_text,shttext,start_date_formatted,end_date_formatted,start_time_formatted,end_time_formatted,selected_status,selected_activity_custom_info_arraylist);
+                    Activity_Object to = new Activity_Object(cause_itemkey,cause_text,item_key,objectpartcode_id,event_id,codegroup_id,codegroup_text,code_id,code_text,shttext,start_date_formatted,end_date_formatted,start_time_formatted,end_time_formatted,selected_status,selected_activity_custom_info_arraylist, false);
                     activity_list.add(to);
                 }
             }
@@ -470,6 +555,7 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
     }
 
 
+
     public class Activity_Object
     {
         private String cause_itemkey;
@@ -487,6 +573,7 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
         private String end_date;
         private String end_time;
         private String status;
+        public boolean selected;
         ArrayList<HashMap<String, String>> selected_activity_custom_info_arraylist;
 
         public ArrayList<HashMap<String, String>> getSelected_activity_custom_info_arraylist() {
@@ -617,7 +704,15 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
             this.end_time = end_time;
         }
 
-        public Activity_Object(String cause_itemkey, String cause_shtxt, String activity_itemkey, String obj_part, String event_code, String codegroup_id, String codegroup_text, String code_id, String code_text, String activity_shtxt, String st_date, String end_date, String st_time, String end_time, String status, ArrayList<HashMap<String, String>> selected_activity_custom_info_arraylist)
+        public boolean isSelected() {
+            return selected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
+
+        public Activity_Object(String cause_itemkey, String cause_shtxt, String activity_itemkey, String obj_part, String event_code, String codegroup_id, String codegroup_text, String code_id, String code_text, String activity_shtxt, String st_date, String end_date, String st_time, String end_time, String status, ArrayList<HashMap<String, String>> selected_activity_custom_info_arraylist, boolean selected)
         {
             this.cause_itemkey = cause_itemkey;
             this.cause_shtxt = cause_shtxt;
@@ -635,9 +730,11 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
             this.end_time = end_time;
             this.status = status;
             this.selected_activity_custom_info_arraylist = selected_activity_custom_info_arraylist;
+            this.selected = selected;
         }
 
     }
+
 
 
     public class ACTIVITY_ADAPTER extends RecyclerView.Adapter<ACTIVITY_ADAPTER.MyViewHolder>
@@ -648,6 +745,7 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
         {
             public TextView st_date, code_textview, activity_key_textview, activity_text_textview,code_group_textview;
             LinearLayout data_layout;
+            CheckBox checkbox;
             public MyViewHolder(View view)
             {
                 super(view);
@@ -656,6 +754,7 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
                 code_group_textview = (TextView) view.findViewById(R.id.code_group_textview);
                 code_textview = (TextView) view.findViewById(R.id.code_textview);
                 data_layout = (LinearLayout)view.findViewById(R.id.data_layout);
+                checkbox = (CheckBox)view.findViewById(R.id.checkbox);
             }
         }
         public ACTIVITY_ADAPTER(Context mContext, List<Activity_Object> list)
@@ -726,6 +825,49 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
                     }
                 }
             });
+
+
+            holder.checkbox.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (holder.checkbox.isChecked())
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(true);
+                        for (Activity_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                                isSelected = true;
+                            }
+                        }
+                        if (count == 1)
+                            nca.animateFab(true);
+                    }
+                    else
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(false);
+                        for (Activity_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                            }
+                        }
+                        if (count == 0)
+                        {
+                            nca.animateFab(false);
+                            isSelected = false;
+                        }
+                    }
+                }
+            });
+
+
         }
         @Override
         public int getItemCount()
@@ -738,6 +880,13 @@ public class Notifications_Change_Activity_Fragment extends Fragment implements 
     public List<Activity_Object> getActivityData()
     {
         return activity_list;
+    }
+
+
+
+    public List<Activity_Object> getActivityData_Delete()
+    {
+        return activity_list_delete;
     }
 
 

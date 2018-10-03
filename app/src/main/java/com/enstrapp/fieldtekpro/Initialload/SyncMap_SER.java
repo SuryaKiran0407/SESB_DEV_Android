@@ -55,6 +55,18 @@ public class SyncMap_SER
         @SerializedName("Zwsrv")
         @Expose
         private String zwsrv;
+        @SerializedName("Wsname")
+        @Expose
+        private String Wsname;
+
+        public String getWsname() {
+            return Wsname;
+        }
+
+        public void setWsname(String wsname) {
+            Wsname = wsname;
+        }
+
         public String getSysid()
         {
             return sysid;

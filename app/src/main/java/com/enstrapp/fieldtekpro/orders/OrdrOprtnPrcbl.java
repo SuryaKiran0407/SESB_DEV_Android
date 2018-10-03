@@ -27,6 +27,25 @@ public class OrdrOprtnPrcbl implements Parcelable {
     public String fsavd;
     public String ssedd;
     public String rueck;
+    public String usr02;
+    public String usr03;
+
+
+    public String getUsr02() {
+        return usr02;
+    }
+
+    public void setUsr02(String usr02) {
+        this.usr02 = usr02;
+    }
+
+    public String getUsr03() {
+        return usr03;
+    }
+
+    public void setUsr03(String usr03) {
+        this.usr03 = usr03;
+    }
 
     public String getLarnt() {
         return larnt;
@@ -282,6 +301,8 @@ public class OrdrOprtnPrcbl implements Parcelable {
         dest.writeString(this.fsavd);
         dest.writeString(this.ssedd);
         dest.writeString(this.rueck);
+        dest.writeString(this.usr02);
+        dest.writeString(this.usr03);
     }
 
     protected OrdrOprtnPrcbl(Parcel in) {
@@ -306,6 +327,8 @@ public class OrdrOprtnPrcbl implements Parcelable {
         this.fsavd = in.readString();
         this.ssedd = in.readString();
         this.rueck = in.readString();
+        this.usr02 = in.readString();
+        this.usr03 = in.readString();
     }
 
     public static final Creator<OrdrOprtnPrcbl> CREATOR = new Creator<OrdrOprtnPrcbl>() {

@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.notifications;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,16 +32,17 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Notifications_Change_Causecode_Fragment extends Fragment implements View.OnClickListener
+public class Notifications_Change_Causecode_Fragment extends Fragment
 {
 
     private List<Cause_Code_Object> causecode_list = new ArrayList<>();
+    private List<Cause_Code_Object> causecode_list_delete = new ArrayList<>();
     List cc_list = new ArrayList();
     String selected_status = "", selected_pos= "", cause_id = "",cause_text = "",causecode_id = "",causecode_text = "",cause_desc = "",item_key = "0001",object_part_id = "",object_part_text = "",objectcode_id = "",object_code_text = "",event_id = "",event_text = "",eventcode_id = "",eventcode_text = "",event_desc = "";
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     CAUSE_CODE_ADAPTER cause_code_adapter;
-    TextView remove_tv, noData_tv;
+    TextView noData_tv;
     Error_Dialog error_dialog = new Error_Dialog();
     int add_causecode_type = 1, selected_position = 0;
     NotifHeaderPrcbl nhp = new NotifHeaderPrcbl();
@@ -47,6 +51,9 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
     ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist = new ArrayList<>();
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
+    int count = 0;
+    boolean isSelected = false;
+    Notifications_Change_Activity nca;
 
 
     public Notifications_Change_Causecode_Fragment()
@@ -64,14 +71,15 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
     {
         View rootView = inflater.inflate(R.layout.notifications_causecode_fragment, container, false);
 
-        remove_tv = (TextView)rootView.findViewById(R.id.remove_tv);
         noData_tv = (TextView)rootView.findViewById(R.id.noData_tv);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        nca = (Notifications_Change_Activity) this.getActivity();
 
         recyclerView.setVisibility(View.GONE);
         noData_tv.setVisibility(View.VISIBLE);
 
         causecode_list.clear();
+        causecode_list_delete.clear();
         selected_object_custom_info_arraylist.clear();
         selected_cause_custom_info_arraylist.clear();
 
@@ -289,7 +297,8 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
                                 causecode_parcablearray.get(i).getCausKey(),
                                 causecode_parcablearray.get(i).getStatus(),
                                 selected_object_custom_info_arraylist,
-                                selected_cause_custom_info_arraylist);
+                                selected_cause_custom_info_arraylist,
+                                false);
                         causecode_list.add(to);
                     }
                 }
@@ -311,7 +320,6 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
             }
         }
 
-        remove_tv.setOnClickListener(this);
 
         return rootView;
     }
@@ -363,21 +371,108 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
                 @Override
                 public void onClick(View v)
                 {
-                    Notifications_Change_Header_Fragment header_tab = (Notifications_Change_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
-                    Notifications_Create_Header_Object header_data = header_tab.getData();
-                    String functionlocation_id = header_data.getFunctionlocation_id();
-                    String equipment_id = header_data.getEquipment_id();
-                    if ((equipment_id != null && !equipment_id.equals("")) || (functionlocation_id != null && !functionlocation_id.equals("")))
+                    if (isSelected)
                     {
-                        Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-                        intent.putExtra("functionlocation_id",functionlocation_id);
-                        intent.putExtra("equipment_id",equipment_id);
-                        intent.putExtra("request_id", Integer.toString(add_causecode_type));
-                        startActivityForResult(intent, add_causecode_type);
+                        final Dialog delete_decision_dialog = new Dialog(getActivity());
+                        delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        delete_decision_dialog.setCancelable(false);
+                        delete_decision_dialog.setCanceledOnTouchOutside(false);
+                        delete_decision_dialog.setContentView(R.layout.decision_dialog);
+                        TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
+                        description_textview.setText("Do you want to delete the selected causecode?");
+                        Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
+                        Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                        delete_decision_dialog.show();
+                        ok_button.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                for(int i = 0; i < causecode_list.size(); i++)
+                                {
+                                    boolean selected_status = causecode_list.get(i).isSelected();
+                                    if(selected_status)
+                                    {
+                                        String action = causecode_list.get(i).getStatus();
+                                        if(action.equalsIgnoreCase("U"))
+                                        {
+                                            Cause_Code_Object to = new Cause_Code_Object(
+                                                    causecode_list.get(i).getitem_key(),
+                                                    causecode_list.get(i).getobject_part_id(),
+                                                    causecode_list.get(i).getobject_part_text(),
+                                                    causecode_list.get(i).getobjectcode_id(),
+                                                    causecode_list.get(i).getobject_code_text(),
+                                                    causecode_list.get(i).getevent_id(),
+                                                    causecode_list.get(i).getevent_text(),
+                                                    causecode_list.get(i).geteventcode_id(),
+                                                    causecode_list.get(i).geteventcode_text(),
+                                                    causecode_list.get(i).getevent_desc(),
+                                                    causecode_list.get(i).getcause_id(),
+                                                    causecode_list.get(i).getcause_text(),
+                                                    causecode_list.get(i).getcausecode_id(),
+                                                    causecode_list.get(i).getcausecode_text(),
+                                                    causecode_list.get(i).getcause_desc(),
+                                                    causecode_list.get(i).getitem_key(),
+                                                    "D",
+                                                    causecode_list.get(i).getSelected_object_custom_info_arraylist(),
+                                                    causecode_list.get(i).getSelected_cause_custom_info_arraylist(),
+                                                    false);
+                                            causecode_list_delete.add(to);
+                                            causecode_list.remove(i);
+                                        }
+                                        else
+                                        {
+                                            causecode_list.remove(i);
+                                        }
+                                    }
+                                }
+
+                                nca.animateFab(false);
+                                isSelected = false;
+
+                                if (causecode_list.size() > 0)
+                                {
+                                    cause_code_adapter = new CAUSE_CODE_ADAPTER(getActivity(),causecode_list);
+                                    recyclerView.setAdapter(cause_code_adapter);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    noData_tv.setVisibility(View.GONE);
+                                }
+                                else
+                                {
+                                    recyclerView.setVisibility(View.GONE);
+                                    noData_tv.setVisibility(View.VISIBLE);
+                                }
+                                delete_decision_dialog.dismiss();
+                            }
+                        });
+                        cancel_button.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                delete_decision_dialog.dismiss();
+                            }
+                        });
                     }
                     else
                     {
-                        error_dialog.show_error_dialog(getActivity(), "Please select Equipment / Function Location");
+                        Notifications_Change_Header_Fragment header_tab = (Notifications_Change_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
+                        Notifications_Create_Header_Object header_data = header_tab.getData();
+                        String functionlocation_id = header_data.getFunctionlocation_id();
+                        String equipment_id = header_data.getEquipment_id();
+                        if ((equipment_id != null && !equipment_id.equals("")) || (functionlocation_id != null && !functionlocation_id.equals("")))
+                        {
+                            Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
+                            intent.putExtra("functionlocation_id",functionlocation_id);
+                            intent.putExtra("equipment_id",equipment_id);
+                            intent.putExtra("request_id", Integer.toString(add_causecode_type));
+                            startActivityForResult(intent, add_causecode_type);
+                        }
+                        else
+                        {
+                            error_dialog.show_error_dialog(getActivity(), "Please select Equipment / Function Location");
+                        }
                     }
                 }
             });
@@ -385,22 +480,14 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
     }
 
 
+
     private static String makeFragmentName(int viewPagerId, int index)
     {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
-    @Override
-    public void onClick(View v)
-    {
-        if(v == remove_tv)
-        {
-            //Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-            //startActivityForResult(intent, 1);
-        }
-    }
 
-    // Call Back method  to get the Message form other Activity
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -498,12 +585,12 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
             {
                 if (selected_pos != null && !selected_pos.equals(""))
                 {
-                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_status,selected_object_custom_info_arraylist,selected_cause_custom_info_arraylist);
+                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_status,selected_object_custom_info_arraylist,selected_cause_custom_info_arraylist, false);
                     causecode_list.add(selected_position,to);
                 }
                 else
                 {
-                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_status, selected_object_custom_info_arraylist,selected_cause_custom_info_arraylist);
+                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_status, selected_object_custom_info_arraylist,selected_cause_custom_info_arraylist, false);
                     causecode_list.add(to);
                 }
             }
@@ -559,9 +646,10 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
         private String causecode_text;
         private String cause_desc;
         private String status;
+        public boolean selected;
         ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist;
         ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist;
-        public Cause_Code_Object(String item_key, String object_part_id, String object_part_text, String objectcode_id, String object_code_text, String event_id, String event_text, String eventcode_id, String eventcode_text, String event_desc, String cause_id, String cause_text, String causecode_id, String causecode_text, String cause_desc, String cause_key, String status, ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist, ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist)
+        public Cause_Code_Object(String item_key, String object_part_id, String object_part_text, String objectcode_id, String object_code_text, String event_id, String event_text, String eventcode_id, String eventcode_text, String event_desc, String cause_id, String cause_text, String causecode_id, String causecode_text, String cause_desc, String cause_key, String status, ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist, ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist, boolean selected)
         {
             this.item_key = item_key;
             this.object_part_id = object_part_id;
@@ -580,9 +668,19 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
             this.cause_desc = cause_desc;
             this.cause_key = cause_key;
             this.status = status;
+            this.selected = selected;
             this.selected_object_custom_info_arraylist = selected_object_custom_info_arraylist;
             this.selected_cause_custom_info_arraylist = selected_cause_custom_info_arraylist;
         }
+
+        public boolean isSelected() {
+            return selected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
+
         public ArrayList<HashMap<String, String>> getSelected_cause_custom_info_arraylist() {
             return selected_cause_custom_info_arraylist;
         }
@@ -738,6 +836,7 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
         {
             public TextView cause_key, item_key,causecode_text, causecode_desc, causecode_id,cause_text,cause_id, event_desc,event_code_text, event_code_id, event_text, event_id, objpart_code_text_tv, objpart_code_id_tv, objpart_text_tv, objpart_id_tv, cause_code_textview, cause_textview, event_textview, event_code_textview, event_description_textview;
             LinearLayout data_layout;
+            CheckBox checkbox;
             public MyViewHolder(View view)
             {
                 super(view);
@@ -763,6 +862,7 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
                 item_key = (TextView)view.findViewById(R.id.item_key);
                 cause_key = (TextView)view.findViewById(R.id.cause_key);
                 data_layout = (LinearLayout)view.findViewById(R.id.data_layout);
+                checkbox = (CheckBox)view.findViewById(R.id.checkbox);
             }
         }
         public CAUSE_CODE_ADAPTER(Context mContext, List<Cause_Code_Object> list)
@@ -837,6 +937,49 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
                     startActivityForResult(intent, add_causecode_type);
                 }
             });
+
+
+            holder.checkbox.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (holder.checkbox.isChecked())
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(true);
+                        for (Cause_Code_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                                isSelected = true;
+                            }
+                        }
+                        if (count == 1)
+                            nca.animateFab(true);
+                    }
+                    else
+                    {
+                        count = 0;
+                        type_details_list.get(position).setSelected(false);
+                        for (Cause_Code_Object oop : type_details_list)
+                        {
+                            if (oop.isSelected())
+                            {
+                                count = count + 1;
+                            }
+                        }
+                        if (count == 0)
+                        {
+                            nca.animateFab(false);
+                            isSelected = false;
+                        }
+                    }
+                }
+            });
+
+
         }
         @Override
         public int getItemCount()
@@ -846,9 +989,18 @@ public class Notifications_Change_Causecode_Fragment extends Fragment implements
     }
 
 
+
     public List<Cause_Code_Object> getCauseCodeData()
     {
         return causecode_list;
     }
+
+
+
+    public List<Cause_Code_Object> getCauseCodeData_Delete()
+    {
+        return causecode_list_delete;
+    }
+
 
 }

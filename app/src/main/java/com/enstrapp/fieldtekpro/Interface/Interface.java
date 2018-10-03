@@ -24,6 +24,7 @@ import com.enstrapp.fieldtekpro.Utilities.MAC_Model1;
 import com.enstrapp.fieldtekpro.Utilities.Material_Availability_Check_SER;
 import com.enstrapp.fieldtekpro.Utilities.Model_BOM_Reservation;
 import com.enstrapp.fieldtekpro.Utilities.SER_BOM_Reservation;
+import com.enstrapp.fieldtekpro.equipment_inspection.EQ_MaintenancePlan_SER;
 import com.enstrapp.fieldtekpro.equipment_inspection.EquipmentHistory_SER;
 import com.enstrapp.fieldtekpro.equipment_inspection.EquipmentInspection_BreakStatics_SER;
 import com.enstrapp.fieldtekpro.equipment_inspection.Equipment_InspChk_SER;
@@ -33,6 +34,7 @@ import com.enstrapp.fieldtekpro.equipment_inspection.Model_INSP_CHK;
 import com.enstrapp.fieldtekpro.history.History_SER;
 import com.enstrapp.fieldtekpro.login.SER_Login;
 import com.enstrapp.fieldtekpro.maintenance_plan.MaintenancePlan_SER;
+import com.enstrapp.fieldtekpro.notifications.Attachment_Download_SER;
 import com.enstrapp.fieldtekpro.notifications.Model_Notif_Create;
 import com.enstrapp.fieldtekpro.orders.JSA_Create_SER;
 import com.enstrapp.fieldtekpro.orders.JSA_List_SER;
@@ -108,6 +110,10 @@ public interface Interface
     @GET
     Call<MaintenancePlan_SER> getMaintenancePlanData(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
+
+    @GET
+    Call<EQ_MaintenancePlan_SER> getEQMaintenancePlanData(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
+
     @GET
     Call<JSA_List_SER> getJSAListData(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
@@ -168,5 +174,9 @@ public interface Interface
 
     @POST
     Call<SER_Login> PostGeoTagData(@Url String anEmptyString, @Body Geo_Tag_Model body, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
+
+
+    @GET
+    Call<Attachment_Download_SER> getAttachmentURLDetails(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
 }
