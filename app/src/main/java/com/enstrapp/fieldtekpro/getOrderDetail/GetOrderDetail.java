@@ -798,6 +798,7 @@ public class GetOrderDetail {
                             oop.setAueru(cursor.getString(20));
                             oop.setUsr01(cursor.getString(25));
                             oop.setLarnt(cursor.getString(9));
+                            oop.setLarnt_text(cursor.getString(24));
                             oop.setFsavd(cursor.getString(12));
                             oop.setSsedd(cursor.getString(13));
                             oop.setRueck(cursor.getString(19));
@@ -816,6 +817,8 @@ public class GetOrderDetail {
                 if (cursor != null)
                     cursor.close();
             }
+
+
 
             /*Order Header Data*/
             try {
@@ -913,6 +916,8 @@ public class GetOrderDetail {
                             ohp.setPlant(cursor.getString(25));
                             ohp.setWrkCntrName(cursor.getString(36));
                             ohp.setIwerk(Iwerk);
+                            ohp.setActivitytype_id(cursor.getString(5));
+                            ohp.setActivitytype_text(cursor.getString(34));
                             ohp.setPosid(cursor.getString(55));
                             ohp.setRevnr(cursor.getString(56));
                             ohp.setBukrs(getBukrs(cursor.getString(9)));

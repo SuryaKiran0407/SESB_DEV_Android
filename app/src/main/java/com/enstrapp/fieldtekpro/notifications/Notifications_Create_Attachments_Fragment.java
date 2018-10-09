@@ -675,6 +675,7 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
             attachments_rv.setVisibility(View.GONE);
             noData_tv.setVisibility(View.VISIBLE);
         }
+        nca.updateTabDataCount();
     }
 
 
@@ -858,5 +859,19 @@ public class Notifications_Create_Attachments_Fragment extends Fragment
     {
         return attachments_list;
     }
+
+
+    public int AttachmentSize()
+    {
+        if (attachments_list.size() > 0)
+        {
+            return  attachments_list.size();
+        }
+        else
+        {
+            return  0;
+        }
+    }
+
 
 }

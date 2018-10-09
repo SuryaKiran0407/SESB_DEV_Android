@@ -43,6 +43,24 @@ public class OrdrHeaderPrcbl implements Parcelable {
     private String posid;
     private String revnr;
     private String bukrs;
+    private String activitytype_id;
+    private String activitytype_text;
+
+    public String getActivitytype_id() {
+        return activitytype_id;
+    }
+
+    public void setActivitytype_id(String activitytype_id) {
+        this.activitytype_id = activitytype_id;
+    }
+
+    public String getActivitytype_text() {
+        return activitytype_text;
+    }
+
+    public void setActivitytype_text(String activitytype_text) {
+        this.activitytype_text = activitytype_text;
+    }
 
     public String getBukrs() {
         return bukrs;
@@ -408,6 +426,8 @@ public class OrdrHeaderPrcbl implements Parcelable {
         dest.writeString(this.posid);
         dest.writeString(this.revnr);
         dest.writeString(this.bukrs);
+        dest.writeString(this.activitytype_id);
+        dest.writeString(this.activitytype_text);
         dest.writeTypedList(this.ordrOprtnPrcbls);
         dest.writeTypedList(this.ordrObjectPrcbls);
         dest.writeTypedList(this.ordrMatrlPrcbls);
@@ -450,6 +470,8 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.posid = in.readString();
         this.revnr = in.readString();
         this.bukrs = in.readString();
+        this.activitytype_id = in.readString();
+        this.activitytype_text = in.readString();
         this.ordrOprtnPrcbls = in.createTypedArrayList(OrdrOprtnPrcbl.CREATOR);
         this.ordrObjectPrcbls = in.createTypedArrayList(OrdrObjectPrcbl.CREATOR);
         this.ordrMatrlPrcbls = in.createTypedArrayList(OrdrMatrlPrcbl.CREATOR);

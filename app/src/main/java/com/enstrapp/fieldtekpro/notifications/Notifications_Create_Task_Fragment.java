@@ -142,6 +142,7 @@ public class Notifications_Create_Task_Fragment extends Fragment
                                 recyclerView.setVisibility(View.GONE);
                                 noData_tv.setVisibility(View.VISIBLE);
                             }
+                            nca.updateTabDataCount();
                             delete_decision_dialog.dismiss();
                         }
                     });
@@ -308,6 +309,7 @@ public class Notifications_Create_Task_Fragment extends Fragment
                 recyclerView.setVisibility(View.GONE);
                 noData_tv.setVisibility(View.VISIBLE);
             }
+            nca.updateTabDataCount();
         }
     }
 
@@ -729,6 +731,19 @@ public class Notifications_Create_Task_Fragment extends Fragment
     public List<Task_Object> getTaskData()
     {
         return task_list;
+    }
+
+
+    public int taskSize()
+    {
+        if (task_list.size() > 0)
+        {
+            return  task_list.size();
+        }
+        else
+        {
+            return  0;
+        }
     }
 
 

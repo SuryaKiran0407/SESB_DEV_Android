@@ -994,127 +994,120 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                 @Override
                 public void onClick(View v)
                 {
-                    if (holder.ParnrVw_textview.getText().toString() != null && !holder.ParnrVw_textview.getText().toString().equals(""))
+                    final String notif_number = holder.id_textview.getText().toString();
+                    cd = new ConnectionDetector(Notifications_List_Activity.this);
+                    isInternetPresent = cd.isConnectingToInternet();
+                    if (isInternetPresent)
                     {
-                        final String notif_number = holder.id_textview.getText().toString();
-                        cd = new ConnectionDetector(Notifications_List_Activity.this);
-                        isInternetPresent = cd.isConnectingToInternet();
-                        if (isInternetPresent)
+                        decision_dialog = new Dialog(Notifications_List_Activity.this);
+                        decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        decision_dialog.setCancelable(false);
+                        decision_dialog.setCanceledOnTouchOutside(false);
+                        decision_dialog.setContentView(R.layout.decision_dialog);
+                        ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
+                        TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
+                        Glide.with(Notifications_List_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
+                        Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
+                        Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
+                        description_textview.setText("Do you want to release the selected Notification "+notif_number+"?");
+                        decision_dialog.show();
+                        cancel.setOnClickListener(new View.OnClickListener()
                         {
-                            decision_dialog = new Dialog(Notifications_List_Activity.this);
-                            decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                            decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            decision_dialog.setCancelable(false);
-                            decision_dialog.setCanceledOnTouchOutside(false);
-                            decision_dialog.setContentView(R.layout.decision_dialog);
-                            ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
-                            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
-                            Glide.with(Notifications_List_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
-                            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-                            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-                            description_textview.setText("Do you want to release the selected Notification "+notif_number+"?");
-                            decision_dialog.show();
-                            cancel.setOnClickListener(new View.OnClickListener()
+                            @Override
+                            public void onClick(View v)
                             {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    decision_dialog.dismiss();
-                                }
-                            });
-                            confirm.setOnClickListener(new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    decision_dialog.dismiss();
-                                    new Post_Notification_Release().execute(notif_number);
-                                }
-                            });
-                            decision_dialog.show();
-                        }
-                        else
+                                decision_dialog.dismiss();
+                            }
+                        });
+                        confirm.setOnClickListener(new View.OnClickListener()
                         {
-                            decision_dialog = new Dialog(Notifications_List_Activity.this);
-                            decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                            decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            decision_dialog.setCancelable(false);
-                            decision_dialog.setCanceledOnTouchOutside(false);
-                            decision_dialog.setContentView(R.layout.offline_decision_dialog);
-                            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
-                            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-                            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-                            Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
-                            description_textview.setText("No Internet Connectivity. Do you want to proceed Notification Release with offline ?");
-                            confirm.setText("Yes");
-                            cancel.setText("No");
-                            decision_dialog.show();
-                            confirm.setOnClickListener(new View.OnClickListener()
+                            @Override
+                            public void onClick(View v)
                             {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    decision_dialog.dismiss();
-                                    progressDialog.show_progress_dialog(Notifications_List_Activity.this,getResources().getString(R.string.loading));
-                                    ContentValues cv = new ContentValues();
-                                    cv.put("Xstatus","NOPR");
-                                    cv.put("STATUS","NOPR");
-                                    App_db.update("DUE_NOTIFICATION_NotifHeader", cv, "Qmnum="+notif_number, null);
-
-                                    DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
-                                    DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
-                                    Date todaysdate = new Date();
-                                    String date = date_format.format(todaysdate.getTime());
-                                    String time = time_format.format(todaysdate.getTime());
-
-                                    UUID uniqueKey = UUID.randomUUID();
-
-                                    String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement statement11 = App_db.compileStatement(sql11);
-                                    App_db.beginTransaction();
-                                    statement11.clearBindings();
-                                    statement11.bindString(1, date);
-                                    statement11.bindString(2, time);
-                                    statement11.bindString(3, "Notification");
-                                    statement11.bindString(4, "Release");
-                                    statement11.bindString(5, username.toUpperCase().toString());
-                                    statement11.bindString(6, notif_number);
-                                    statement11.bindString(7, "Fail");
-                                    statement11.bindString(8, holder.uuid_textview.getText().toString());
-                                    statement11.bindString(9, "");
-                                    statement11.bindString(10, uniqueKey.toString());
-                                    statement11.execute();
-                                    App_db.setTransactionSuccessful();
-                                    App_db.endTransaction();
-
-                                    progressDialog.dismiss_progress_dialog();
-                                    new Get_Notifications_List_Data().execute();
-                                }
-                            });
-                            cancel.setOnClickListener(new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    decision_dialog.dismiss();
-                                }
-                            });
-                            connect_button.setOnClickListener(new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    decision_dialog.dismiss();
-                                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                                    intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
-                                    startActivity(intent);
-                                }
-                            });
-                        }
+                                decision_dialog.dismiss();
+                                new Post_Notification_Release().execute(notif_number);
+                            }
+                        });
+                        decision_dialog.show();
                     }
                     else
                     {
-                        error_dialog.show_error_dialog(Notifications_List_Activity.this,"Please Select Person Responsible for selected Notification");
+                        decision_dialog = new Dialog(Notifications_List_Activity.this);
+                        decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        decision_dialog.setCancelable(false);
+                        decision_dialog.setCanceledOnTouchOutside(false);
+                        decision_dialog.setContentView(R.layout.offline_decision_dialog);
+                        TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
+                        Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
+                        Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
+                        Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
+                        description_textview.setText("No Internet Connectivity. Do you want to proceed Notification Release with offline ?");
+                        confirm.setText("Yes");
+                        cancel.setText("No");
+                        decision_dialog.show();
+                        confirm.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                decision_dialog.dismiss();
+                                progressDialog.show_progress_dialog(Notifications_List_Activity.this,getResources().getString(R.string.loading));
+                                ContentValues cv = new ContentValues();
+                                cv.put("Xstatus","NOPR");
+                                cv.put("STATUS","NOPR");
+                                App_db.update("DUE_NOTIFICATION_NotifHeader", cv, "Qmnum="+notif_number, null);
+
+                                DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
+                                DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
+                                Date todaysdate = new Date();
+                                String date = date_format.format(todaysdate.getTime());
+                                String time = time_format.format(todaysdate.getTime());
+
+                                UUID uniqueKey = UUID.randomUUID();
+
+                                String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                SQLiteStatement statement11 = App_db.compileStatement(sql11);
+                                App_db.beginTransaction();
+                                statement11.clearBindings();
+                                statement11.bindString(1, date);
+                                statement11.bindString(2, time);
+                                statement11.bindString(3, "Notification");
+                                statement11.bindString(4, "Release");
+                                statement11.bindString(5, username.toUpperCase().toString());
+                                statement11.bindString(6, notif_number);
+                                statement11.bindString(7, "Fail");
+                                statement11.bindString(8, holder.uuid_textview.getText().toString());
+                                statement11.bindString(9, "");
+                                statement11.bindString(10, uniqueKey.toString());
+                                statement11.execute();
+                                App_db.setTransactionSuccessful();
+                                App_db.endTransaction();
+
+                                progressDialog.dismiss_progress_dialog();
+                                new Get_Notifications_List_Data().execute();
+                            }
+                        });
+                        cancel.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                decision_dialog.dismiss();
+                            }
+                        });
+                        connect_button.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                decision_dialog.dismiss();
+                                Intent intent = new Intent(Intent.ACTION_MAIN);
+                                intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
+                                startActivity(intent);
+                            }
+                        });
                     }
                 }
             });
@@ -2318,14 +2311,14 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                                 nap.setActvCod(cursor.getString(17));
                                 nap.setActvCodTxt(cursor.getString(18));
                                 nap.setActvShTxt(cursor.getString(19));
-                                nap.setUsr01(cursor.getString(20));
-                                nap.setUsr02(cursor.getString(21));
-                                nap.setUsr03(cursor.getString(22));
-                                nap.setUsr04(cursor.getString(23));
-                                nap.setUsr05(cursor.getString(24));
-                                nap.setFields(cursor.getString(25));
-                                nap.setStatus(cursor.getString(26));
-                                nap.setAction(cursor.getString(26));
+                                nap.setStartDate(cursor.getString(20));
+                                nap.setStartTime(cursor.getString(21));
+                                nap.setEndDate(cursor.getString(22));
+                                nap.setEndTime(cursor.getString(23));
+                                nap.setUsr05(cursor.getString(28));
+                                nap.setFields(cursor.getString(29));
+                                nap.setStatus(cursor.getString(30));
+                                nap.setAction(cursor.getString(30));
 
 
                                 /*Fetching Data for ItmPrtGrp, ItmDefectGrp from EtNotifItems*/

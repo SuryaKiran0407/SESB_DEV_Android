@@ -13,6 +13,17 @@ public class OrdrLngTxtSer {
     @SerializedName("TextLine")
     @Expose
     private String textLine;
+    @SerializedName("Tdid")
+    @Expose
+    private String Tdid;
+
+    public String getTdid() {
+        return Tdid;
+    }
+
+    public void setTdid(String tdid) {
+        Tdid = tdid;
+    }
 
     public String getAufnr() {
         return aufnr;

@@ -115,6 +115,17 @@ public class VHLP_SER
         @SerializedName("EtFields")
         @Expose
         private EtFields EtFields;
+        @SerializedName("EtIlart")
+        @Expose
+        private EtIlart EtIlart;
+
+        public VHLP_SER.EtIlart getEtIlart() {
+            return EtIlart;
+        }
+
+        public void setEtIlart(VHLP_SER.EtIlart etIlart) {
+            EtIlart = etIlart;
+        }
 
         public VHLP_SER.EtFields getEtFields() {
             return EtFields;
@@ -1218,6 +1229,61 @@ public class VHLP_SER
      /*ItemCodes*/
 
     /*EtNotifCodes*/
+
+
+
+    /*EtIlart*/
+    public class EtIlart
+    {
+        @SerializedName("results")
+        @Expose
+        private List<EtIlart_Result> results = null;
+        public List<EtIlart_Result> getResults()
+        {
+            return results;
+        }
+        public void setResults(List<EtIlart_Result> results)
+        {
+            this.results = results;
+        }
+    }
+    public class EtIlart_Result
+    {
+        @SerializedName("Auart")
+        @Expose
+        private String Auart;
+        @SerializedName("Ilart")
+        @Expose
+        private String Ilart;
+        @SerializedName("Ilatx")
+        @Expose
+        private String Ilatx;
+
+        public String getAuart() {
+            return Auart;
+        }
+
+        public void setAuart(String auart) {
+            Auart = auart;
+        }
+
+        public String getIlart() {
+            return Ilart;
+        }
+
+        public void setIlart(String ilart) {
+            Ilart = ilart;
+        }
+
+        public String getIlatx() {
+            return Ilatx;
+        }
+
+        public void setIlatx(String ilatx) {
+            Ilatx = ilatx;
+        }
+    }
+    /*EtIlart*/
 
 
     /*EtNotifTypes*/

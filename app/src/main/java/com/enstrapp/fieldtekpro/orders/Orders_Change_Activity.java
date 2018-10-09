@@ -1088,4 +1088,36 @@ public class Orders_Change_Activity extends AppCompatActivity {
             return "";
         }
     }
+
+
+
+    public void updateTabDataCount()
+    {
+        Orders_CH_Operation_Fragment operation_fragment = (Orders_CH_Operation_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
+        if(operation_fragment.OperationsSize() > 0)
+        {
+            order_tl.getTabAt(1).setText(getString(R.string.operation_p,operation_fragment.OperationsSize()));
+        }
+        else
+        {
+            order_tl.getTabAt(1).setText(getResources().getString(R.string.operations));
+        }
+
+
+
+        Orders_CH_Material_Fragment material_fragment = (Orders_CH_Material_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        if(material_fragment.MaterialSize() > 0)
+        {
+            order_tl.getTabAt(2).setText(getString(R.string.material_p,material_fragment.MaterialSize()));
+        }
+        else
+        {
+            order_tl.getTabAt(2).setText(getResources().getString(R.string.material));
+        }
+
+
+        setCustomFont(order_tl);
+    }
+
+
 }

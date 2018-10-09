@@ -273,6 +273,7 @@ public class Orders {
     private static final String KEY_DUE_ORDERS_Longtext_Aufnr = "Aufnr";
     private static final String KEY_DUE_ORDERS_Longtext_Activity = "Activity";
     private static final String KEY_DUE_ORDERS_Longtext_TextLine = "TextLine";
+    private static final String KEY_DUE_ORDERS_Longtext_Tdid = "Tdid";
     /* GET_DUE_ORDERS_Longtext Table and Fields Names */
 
     /* EtOrderOlist Table and Fields Names */
@@ -873,7 +874,8 @@ public class Orders {
                         + KEY_DUE_ORDERS_Longtext_UUID + " TEXT,"
                         + KEY_DUE_ORDERS_Longtext_Aufnr + " TEXT,"
                         + KEY_DUE_ORDERS_Longtext_Activity + " TEXT,"
-                        + KEY_DUE_ORDERS_Longtext_TextLine + " TEXT"
+                        + KEY_DUE_ORDERS_Longtext_TextLine + " TEXT,"
+                        + KEY_DUE_ORDERS_Longtext_Tdid + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_DUE_ORDERS_Longtext);
 		        /* GET_DUE_ORDERS_Longtext Table and Fields Names */
@@ -1530,13 +1532,14 @@ public class Orders {
                                             }
                                         }
                                         if (uuid != null && !uuid.equals("")) {
-                                            String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
+                                            String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
                                             SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                                             EtOrderLongtext_statement.clearBindings();
                                             EtOrderLongtext_statement.bindString(1, uuid);
                                             EtOrderLongtext_statement.bindString(2, Aufnr);
                                             EtOrderLongtext_statement.bindString(3, jsonArray.getJSONObject(j).optString("Activity"));
                                             EtOrderLongtext_statement.bindString(4, jsonArray.getJSONObject(j).optString("TextLine"));
+                                            EtOrderLongtext_statement.bindString(5, jsonArray.getJSONObject(j).optString("Tdid"));
                                             EtOrderLongtext_statement.execute();
                                         }
                                     }

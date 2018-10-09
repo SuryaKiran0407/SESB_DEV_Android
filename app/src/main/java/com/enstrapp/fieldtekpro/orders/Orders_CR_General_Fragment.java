@@ -40,14 +40,15 @@ import java.util.HashMap;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-public class Orders_CR_General_Fragment extends Fragment implements View.OnClickListener {
+public class Orders_CR_General_Fragment extends Fragment implements View.OnClickListener
+{
 
-    TextInputEditText ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet, funcLocName_tiet, equipId_tiet,
+    TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet, funcLocName_tiet, equipId_tiet,
             equipName_tiet, wrkCntr_tiet, respCostCntr_tiet, priority_tiet, plannerGroup_tiet,
             personResp_tiet, basicStDt_tiet, basicEnDt_tiet, sysCond_tiet, revision_tiet, wbs_tiet;
-    ImageView ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv, wrkCntr_iv, respCstCntr_iv,
+    ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv, wrkCntr_iv, respCstCntr_iv,
             priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv, basicEdDt_iv, sysCond_iv,
-            wbs_iv, revision_iv;
+            wbs_iv, revision_iv, longtext_imageview;
     TextView notifNum_tv;
     LinearLayout equipId_ll, wbs_ll, revision_ll;
     TextInputLayout equipName_til;
@@ -71,6 +72,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     private static final int STDT_SELECTED = 200;
     private static final int EDDT_SELECTED = 300;
     private static final int custom_info = 14;
+    private static final int long_text = 150;
+    private static final int activity_type = 151;
     Button header_custominfo_button;
     ArrayList<HashMap<String, String>> selected_custom_info_arraylist = new ArrayList<>();
 
@@ -122,10 +125,15 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         sysCond_tiet = rootView.findViewById(R.id.sysCond_tiet);
         notifNum_tv = rootView.findViewById(R.id.notifNum_tv);
         header_custominfo_button = (Button)rootView.findViewById(R.id.header_custominfo_button);
+        longtext_imageview = (ImageView)rootView.findViewById(R.id.longtext_imageview);
+        activity_type_imageview = (ImageView)rootView.findViewById(R.id.activity_type_imageview);
+        activity_type_edittext = (TextInputEditText)rootView.findViewById(R.id.activity_type_edittext);
+
 
         /*Written by SuryaKiran for Order Create from Notification Change*/
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null) {
+        if (bundle != null)
+        {
             ordrTyp_tiet.setText(bundle.getString("Order_type_id"));
             ordrLngTxt_tiet.setText(bundle.getString("short_text"));
             funcLocId_tiet.setText(bundle.getString("functionlocation_id"));
@@ -207,6 +215,9 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         wbs_iv.setOnClickListener(this);
         revision_iv.setOnClickListener(this);
         header_custominfo_button.setOnClickListener(this);
+        longtext_imageview.setOnClickListener(this);
+        activity_type_imageview.setOnClickListener(this);
+
 
         selected_custom_info_arraylist.clear();
 
@@ -218,31 +229,37 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         ma.ohp.setBasicStart(formattedDate);
         ma.ohp.setBasicEnd(formattedDate);
 
-        ordrLngTxt_tiet.addTextChangedListener(new TextWatcher() {
+        ordrLngTxt_tiet.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3)
+            {
                 ma.ohp.setOrdrShrtTxt("");
-                if (ordrLngTxt_tiet.getText().toString() != null && !ordrLngTxt_tiet.getText().toString().equals("")) {
-                    if (ordrLngTxt_tiet.getText().toString().contains("\n")) {
+                if (ordrLngTxt_tiet.getText().toString() != null && !ordrLngTxt_tiet.getText().toString().equals(""))
+                {
+                    if (ordrLngTxt_tiet.getText().toString().contains("\n"))
+                    {
                         String[] streets;
                         streets = ordrLngTxt_tiet.getText().toString().split("/n");
                         ma.ohp.setOrdrShrtTxt(streets[0]);
-                    } else {
+                    }
+                    else
+                    {
                         ma.ohp.setOrdrShrtTxt(ordrLngTxt_tiet.getText().toString());
                     }
-                    ma.ohp.setOrdrLngTxt(ordrLngTxt_tiet.getText().toString());
-                } else {
+                }
+                else
+                {
                     ma.ohp.setOrdrShrtTxt("");
-                    ma.ohp.setOrdrLngTxt("");
                 }
             }
-
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3)
+            {
             }
-
             @Override
-            public void afterTextChanged(Editable arg0) {
+            public void afterTextChanged(Editable arg0)
+            {
             }
         });
 
@@ -251,8 +268,33 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
 
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+
+            case (R.id.activity_type_imageview):
+                if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals(""))
+                {
+                    Intent activitytype_intent = new Intent(getActivity(), Activity_Type_Activity.class);
+                    activitytype_intent.putExtra("order_type",ma.ohp.getOrdrTypId());
+                    startActivityForResult(activitytype_intent, activity_type);
+                }
+                else
+                {
+                    error_dialog.show_error_dialog(getActivity(), "Please select Order Type");
+                }
+                break;
+
+            case (R.id.longtext_imageview):
+                Intent longtext_intent = new Intent(getActivity(), Order_LongText_Activity.class);
+                longtext_intent.putExtra("aufnr", "");
+                longtext_intent.putExtra("operation_id", "");
+                longtext_intent.putExtra("tdid", "");
+                longtext_intent.putExtra("longtext_new", ma.ohp.getOrdrLngTxt());
+                startActivityForResult(longtext_intent, long_text);
+                break;
+
 
             case (R.id.header_custominfo_button):
                 Intent custominfo_intent = new Intent(getActivity(), CustomInfo_Activity.class);
@@ -570,6 +612,36 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
                 }
                 break;
+
+
+            case (long_text):
+                if(resultCode == RESULT_OK)
+                {
+                    ma.ohp.setOrdrLngTxt(data.getStringExtra("longtext_new"));
+                    String longtext_text = data.getStringExtra("longtext_new");
+                    if(longtext_text.length() > 40)
+                    {
+                        ordrLngTxt_tiet.setText(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
+                        ma.ohp.setOrdrShrtTxt(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
+                    }
+                    else
+                    {
+                        ordrLngTxt_tiet.setText(longtext_text);
+                        ma.ohp.setOrdrShrtTxt(longtext_text);
+                    }
+                }
+
+
+            case (activity_type):
+                if(resultCode == RESULT_OK)
+                {
+                    ma.ohp.setActivitytype_id(data.getStringExtra("activitytype_id"));
+                    ma.ohp.setActivitytype_text(data.getStringExtra("activitytype_text"));
+                    activity_type_edittext.setText(data.getStringExtra("activitytype_id")+" - "+data.getStringExtra("activitytype_text"));
+                }
+
+
+                break;
         }
     }
 
@@ -650,6 +722,7 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         return "";
     }
 
+
     private String respCostCntrName(String respCostCntrId) {
         Cursor cursor = null;
         try {
@@ -669,22 +742,6 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         return "";
     }
 
-    /*public OrdrHeaderPrcbl getHeaderData() {
-        return ohp_h;
-    }*/
-
-    private String dateDisplayFormat(String date) {
-        String inputPattern = "yyyyMMdd";
-        String outputPattern = "MMM dd, yyyy";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-        try {
-            Date d = inputFormat.parse(date);
-            return outputFormat.format(d);
-        } catch (ParseException e) {
-            return date;
-        }
-    }
 
 
     public ArrayList<HashMap<String, String>> getHeaderCustominfoData()

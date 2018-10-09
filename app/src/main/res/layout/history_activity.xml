@@ -54,13 +54,16 @@
         android:id="@+id/swiperefreshlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="110dp">
+        android:layout_marginTop="110dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/history_list_recycleview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp"
+            android:layout_marginLeft="8dp"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout

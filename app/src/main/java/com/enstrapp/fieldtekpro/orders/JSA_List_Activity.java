@@ -675,7 +675,7 @@ public class JSA_List_Activity extends AppCompatActivity implements View.OnClick
                 InputStream inputStream = conection.getInputStream();
 
                 fileName = aufnr+"_"+ras_id;
-                fileExtension=".pdf";
+                fileExtension =".pdf";
                 String PATH = Environment.getExternalStorageDirectory() + "/FTekP CGPL/JSA/";
                 File file = new File(PATH);
                 file.mkdirs();

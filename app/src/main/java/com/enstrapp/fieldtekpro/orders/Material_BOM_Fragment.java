@@ -30,12 +30,13 @@ import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Material_BOM_Fragment extends Fragment {
+public class Material_BOM_Fragment extends Fragment
+{
 
     TextView title_textview, searchview_textview;
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
-    String BOMITEM_status = "", bom_id = "", bom_plant = "";
+    String BOMITEM_status = "", bom_id = "";
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
     RecyclerView bom_list_recycleview;
@@ -46,7 +47,7 @@ public class Material_BOM_Fragment extends Fragment {
     Dialog decision_dialog;
     Material_Components_Activity ma;
     Network_Connection_Dialog network_connection_dialog = new Network_Connection_Dialog();
-    LinearLayout no_data_layout;
+    LinearLayout no_data_layout, bottom_panel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +60,9 @@ public class Material_BOM_Fragment extends Fragment {
         FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
         no_data_layout = rootView.findViewById(R.id.no_data_layout);
         search = (SearchView) rootView.findViewById(R.id.search);
+        bottom_panel = (LinearLayout)rootView.findViewById(R.id.bottom_panel);
+
+        bottom_panel.setVisibility(View.GONE);
 
         bom_id = ma.equip;
         bom_list_recycleview = rootView.findViewById(R.id.list_recycleview);

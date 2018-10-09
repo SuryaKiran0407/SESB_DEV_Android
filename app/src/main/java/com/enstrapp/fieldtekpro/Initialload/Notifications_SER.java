@@ -2027,6 +2027,38 @@ public class Notifications_SER
             this.action = action;
         }
 
+        public String getStartDate() {
+            return StartDate;
+        }
+
+        public void setStartDate(String startDate) {
+            StartDate = startDate;
+        }
+
+        public String getStartTime() {
+            return StartTime;
+        }
+
+        public void setStartTime(String startTime) {
+            StartTime = startTime;
+        }
+
+        public String getEndDate() {
+            return EndDate;
+        }
+
+        public void setEndDate(String endDate) {
+            EndDate = endDate;
+        }
+
+        public String getEndTime() {
+            return EndTime;
+        }
+
+        public void setEndTime(String endTime) {
+            EndTime = endTime;
+        }
+
         @SerializedName("Qmnum")
         @Expose
         private String qmnum;
@@ -2081,6 +2113,18 @@ public class Notifications_SER
         @SerializedName("ActvShtxt")
         @Expose
         private String actvShtxt;
+        @SerializedName("StartDate")
+        @Expose
+        private String StartDate;
+        @SerializedName("StartTime")
+        @Expose
+        private String StartTime;
+        @SerializedName("EndDate")
+        @Expose
+        private String EndDate;
+        @SerializedName("EndTime")
+        @Expose
+        private String EndTime;
         @SerializedName("Usr01")
         @Expose
         private String usr01;

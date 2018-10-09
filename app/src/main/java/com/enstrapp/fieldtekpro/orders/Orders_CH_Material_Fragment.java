@@ -76,6 +76,7 @@ public class Orders_CH_Material_Fragment extends Fragment {
                 material_rv.setLayoutManager(layoutManager);
                 material_rv.setItemAnimator(new DefaultItemAnimator());
                 material_rv.setAdapter(materialAdapter);
+                ma.updateTabDataCount();
             }
         }
         return rootView;
@@ -139,11 +140,12 @@ public class Orders_CH_Material_Fragment extends Fragment {
                     isSelected = false;
                     ma.ohp.setOrdrMatrlPrcbls(omp_al);
                     materialAdapter.notifyDataSetChanged();
+                    ma.updateTabDataCount();
                     rmomp = null;
                 } else {
                     if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals("")) {
                         if (!ma.ohp.getOrdrTypId().equals("PM08")) {
-                            if (ma.ohp.getOrdrLngTxt() != null && !ma.ohp.getOrdrLngTxt().equals("")) {
+                            if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
                                 if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
 //                                    ma.addOprtn();
                                     Intent intent = new Intent(getActivity(), Material_Add_Update_Activity.class);
@@ -204,6 +206,7 @@ public class Orders_CH_Material_Fragment extends Fragment {
                         material_rv.setItemAnimator(new DefaultItemAnimator());
                         material_rv.setAdapter(materialAdapter);
                     }
+                    ma.updateTabDataCount();
                 }
                 break;
 
@@ -230,6 +233,7 @@ public class Orders_CH_Material_Fragment extends Fragment {
                     omp_d = null;
                     rmomp = null;
                     materialAdapter.notifyDataSetChanged();
+                    ma.updateTabDataCount();
                 }
                 break;
         }
@@ -454,6 +458,19 @@ public class Orders_CH_Material_Fragment extends Fragment {
             return "00" + String.valueOf(size + 1) + "0";
         } else {
             return "0" + String.valueOf(size + 1) + "0";
+        }
+    }
+
+
+    public int MaterialSize()
+    {
+        if (omp_al_rv.size() > 0)
+        {
+            return  omp_al_rv.size();
+        }
+        else
+        {
+            return  0;
         }
     }
 

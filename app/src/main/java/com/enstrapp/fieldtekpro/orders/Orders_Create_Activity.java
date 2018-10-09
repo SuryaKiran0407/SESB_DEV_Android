@@ -514,13 +514,14 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         }
                         else
                         {
-                            String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
+                            String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
                             SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                             EtOrderLongtext_statement.clearBindings();
                             EtOrderLongtext_statement.bindString(1, uniqueKey.toString());
                             EtOrderLongtext_statement.bindString(2, "ORD_"+timeStamp);
                             EtOrderLongtext_statement.bindString(3, "");
                             EtOrderLongtext_statement.bindString(4, long_text);
+                            EtOrderLongtext_statement.bindString(5, "");
                             EtOrderLongtext_statement.execute();
                         }
                         App_db.setTransactionSuccessful();
@@ -1073,5 +1074,22 @@ public class Orders_Create_Activity extends AppCompatActivity {
         return "";
     }
 
+
+
+    public void updateTabDataCount()
+    {
+        Orders_CR_Operation_Fragment operation_fragment = (Orders_CR_Operation_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
+        if(operation_fragment.OperationsSize() > 0)
+        {
+            order_tl.getTabAt(1).setText(getString(R.string.operation_p,operation_fragment.OperationsSize()));
+        }
+        else
+        {
+            order_tl.getTabAt(1).setText(getResources().getString(R.string.operations));
+        }
+
+
+        setCustomFont(order_tl);
+    }
 
 }

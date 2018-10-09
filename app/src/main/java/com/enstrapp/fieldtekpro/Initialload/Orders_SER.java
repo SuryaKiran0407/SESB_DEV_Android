@@ -3770,6 +3770,17 @@ public class Orders_SER {
         @SerializedName("TextLine")
         @Expose
         public String textLine;
+        @SerializedName("Tdid")
+        @Expose
+        public String Tdid;
+
+        public String getTdid() {
+            return Tdid;
+        }
+
+        public void setTdid(String tdid) {
+            Tdid = tdid;
+        }
 
         public String getAufnr() {
             return aufnr;

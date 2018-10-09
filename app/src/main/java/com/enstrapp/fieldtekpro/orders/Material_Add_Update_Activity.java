@@ -1,7 +1,10 @@
 package com.enstrapp.fieldtekpro.orders;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -49,6 +52,8 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
     Bundle bundle;
     ConnectionDetector cd;
     Boolean isInternetPresent = false;
+    private SQLiteDatabase FieldTekPro_db;
+    private static String DATABASE_NAME = "";
 
     /*Written By SuryaKiran for Custom Info*/
     Button material_custominfo_button;
@@ -74,6 +79,10 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         oprtnId_iv = findViewById(R.id.oprtnId_iv);
         component_iv = findViewById(R.id.component_iv);
         quantity_iv = findViewById(R.id.quantity_iv);
+
+
+        DATABASE_NAME = getString(R.string.database_name);
+        FieldTekPro_db = Material_Add_Update_Activity.this.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
 
 
         /*Written By SuryaKiran for Custom Info*/
@@ -111,8 +120,62 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 OprtnShrtTxt = omp.getOprtnShrtTxt();
                 component_tiet.setText(omp.getMatrlTxt());
                 quantity_tiet.setText(omp.getQuantity());
-                plant_tiet.setText(omp.getPlantId());
-                location_tiet.setText(omp.getLocation());
+
+                String plant_text = "";
+                try
+                {
+                    String plant_id = omp.getPlantId();
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
+                    if (cursor1 != null && cursor1.getCount() > 0)
+                    {
+                        if (cursor1.moveToFirst())
+                        {
+                            do
+                            {
+                                plant_text = cursor1.getString(2);
+                            }
+                            while (cursor1.moveToNext());
+                        }
+                    }
+                    else
+                    {
+                        cursor1.close();
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+                plant_tiet.setText(omp.getPlantId()+" - "+plant_text);
+
+
+
+                String loc_text = "";
+                try
+                {
+                    String loc_id = omp.getLocation();
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_SLOC where Lgort = ?", new String[]{loc_id});
+                    if (cursor1 != null && cursor1.getCount() > 0)
+                    {
+                        if (cursor1.moveToFirst())
+                        {
+                            do
+                            {
+                                loc_text = cursor1.getString(4);
+                            }
+                            while (cursor1.moveToNext());
+                        }
+                    }
+                    else
+                    {
+                        cursor1.close();
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+                location_tiet.setText(omp.getLocation()+" - "+loc_text);
+
+
                 reservation_tiet.setText(getResources().getString(R.string.hypen_text, omp.getRsnum(), omp.getRspos()));
                 receipt_tiet.setText(omp.getReceipt());
                 unloading_tiet.setText(omp.getUnloading());
@@ -253,8 +316,61 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 if (resultCode == RESULT_OK) {
                     MatrlId = (data.getStringExtra("component"));
                     component_tiet.setText(data.getStringExtra("component_txt"));
-                    plant_tiet.setText(data.getStringExtra("plant"));
-                    location_tiet.setText(data.getStringExtra("location"));
+
+                    String plant_text = "";
+                    try
+                    {
+                        String plant_id = data.getStringExtra("plant");
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
+                        if (cursor1 != null && cursor1.getCount() > 0)
+                        {
+                            if (cursor1.moveToFirst())
+                            {
+                                do
+                                {
+                                    plant_text = cursor1.getString(2);
+                                }
+                                while (cursor1.moveToNext());
+                            }
+                        }
+                        else
+                        {
+                            cursor1.close();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    plant_tiet.setText(data.getStringExtra("plant")+" - "+plant_text);
+
+
+
+                    String loc_text = "";
+                    try
+                    {
+                        String loc_id = data.getStringExtra("location");
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_SLOC where Lgort = ?", new String[]{loc_id});
+                        if (cursor1 != null && cursor1.getCount() > 0)
+                        {
+                            if (cursor1.moveToFirst())
+                            {
+                                do
+                                {
+                                    loc_text = cursor1.getString(4);
+                                }
+                                while (cursor1.moveToNext());
+                            }
+                        }
+                        else
+                        {
+                            cursor1.close();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    location_tiet.setText(data.getStringExtra("location")+" - "+loc_text);
+
                 }
                 break;
 

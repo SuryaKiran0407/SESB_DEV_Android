@@ -53,8 +53,10 @@ public class Order_CConfirmation {
     private static boolean success = false;
 
     public static String Get_Data(Context activity, ArrayList<ConfirmOrder_Prcbl> cop_al, ArrayList<Measurement_Parceble> mpo_al,
-                                  String transmitType, String operation, String orderId, String type) {
-        try {
+                                  String transmitType, String operation, String orderId, String type, String longtext_text)
+    {
+        try
+        {
             Get_Response = "";
             Get_Data = "";
             DATABASE_NAME = activity.getString(R.string.database_name);
@@ -271,13 +273,44 @@ public class Order_CConfirmation {
                     confirmOrderSer.setExecFinDate(cop.getExecFinDate());
                     confirmOrderSer.setExecFinTime(cop.getExecFinTime());
                     ItConfirmOrder_Al.add(confirmOrderSer);
+
+
+                    /*Adding Order Confirmation Longtext to Arraylist*/
+                    String order_confirm_longtext = longtext_text;
+                    if (order_confirm_longtext != null && !order_confirm_longtext.equals(""))
+                    {
+                        if(order_confirm_longtext.contains("\n"))
+                        {
+                            String[] longtext_array = order_confirm_longtext.split("\n");
+                            for(int i = 0; i < longtext_array.length; i++)
+                            {
+                                OrdrLngTxtSer mnc = new OrdrLngTxtSer();
+                                mnc.setAufnr(cop.getAufnr());
+                                mnc.setActivity(cop.getVornr());
+                                mnc.setTextLine(longtext_array[i]);
+                                mnc.setTdid("RMEL");
+                                ItOrderLongtext_Al.add(mnc);
+                            }
+                        }
+                        else
+                        {
+                            OrdrLngTxtSer mnc = new OrdrLngTxtSer();
+                            mnc.setAufnr(cop.getAufnr());
+                            mnc.setActivity(cop.getVornr());
+                            mnc.setTextLine(order_confirm_longtext);
+                            mnc.setTdid("RMEL");
+                            ItOrderLongtext_Al.add(mnc);
+                        }
+                    }
+                    /*Adding Order Confirmation Longtext to Arraylist*/
+
+
                 }
             }
 
             /*Adding Empty_Al to Arraylist*/
             ArrayList Empty_Al = new ArrayList<>();
 
-            /*Calling Notification Create Model with Data*/
 
             OrdrCreateSer ordrSer = new OrdrCreateSer();
             OrderPartialConfirm_Ser ordrpSer = new OrderPartialConfirm_Ser();
@@ -290,6 +323,7 @@ public class Order_CConfirmation {
                 ordrpSer.setIvCommit(true);
                 ordrpSer.setOperation(operation);
                 ordrpSer.setItConfirmOrder(ItConfirmOrder_Al);
+                ordrpSer.setItOrderLongtext(ItOrderLongtext_Al);
                 ordrpSer.setItDocs(ItDocs_Al);
                 ordrpSer.setItImrg(ItImrg_Al);
                 ordrpSer.setEsAufnr(Empty_Al);
@@ -317,6 +351,7 @@ public class Order_CConfirmation {
                 ordrSer.setIvCommit(true);
                 ordrSer.setOperation(operation);
                 ordrSer.setItConfirmOrderColl(ItConfirmOrderColl_Al);
+                ordrSer.setItOrderLongtext(ItOrderLongtext_Al);
                 ordrSer.setItDocs(ItDocs_Al);
                 ordrSer.setItImrg(ItImrg_Al);
                 ordrSer.setEsAufnr(Empty_Al);
@@ -615,13 +650,14 @@ public class Order_CConfirmation {
                                                 }
                                             }
                                             if (uuid != null && !uuid.equals("")) {
-                                                String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
+                                                String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
                                                 SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                                                 EtOrderLongtext_statement.clearBindings();
                                                 EtOrderLongtext_statement.bindString(1, uuid);
                                                 EtOrderLongtext_statement.bindString(2, Aufnr);
                                                 EtOrderLongtext_statement.bindString(3, jsonArray.getJSONObject(j).optString("Activity"));
                                                 EtOrderLongtext_statement.bindString(4, jsonArray.getJSONObject(j).optString("TextLine"));
+                                                EtOrderLongtext_statement.bindString(5, jsonArray.getJSONObject(j).optString("Tdid"));
                                                 EtOrderLongtext_statement.execute();
                                             }
                                         }
@@ -1168,10 +1204,9 @@ public class Order_CConfirmation {
                     /*Reading Data by using FOR Loop*/
                 }
             } else {
-                Get_Response = "Unable to Confirn Order. Please try again.";
+                Get_Response = "Unable to Confirm Order. Please try again.";
             }
         } catch (Exception e) {
-            Log.v("kiran_ee", e.getMessage() + "...");
             Get_Response = "Unable to Confirm Order. Please try again.";
         }
         return Get_Response;

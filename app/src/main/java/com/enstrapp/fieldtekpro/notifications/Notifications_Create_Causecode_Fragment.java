@@ -146,6 +146,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
                                 recyclerView.setVisibility(View.GONE);
                                 noData_tv.setVisibility(View.VISIBLE);
                             }
+                            nca.updateTabDataCount();
                             delete_decision_dialog.dismiss();
                         }
                     });
@@ -326,6 +327,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
                 recyclerView.setVisibility(View.GONE);
                 noData_tv.setVisibility(View.VISIBLE);
             }
+            nca.updateTabDataCount();
         }
     }
 
@@ -706,6 +708,19 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
         return causecode_list;
     }
 
+
+
+    public int causeSize()
+    {
+        if (causecode_list.size() > 0)
+        {
+            return  causecode_list.size();
+        }
+        else
+        {
+            return  0;
+        }
+    }
 
 
 }

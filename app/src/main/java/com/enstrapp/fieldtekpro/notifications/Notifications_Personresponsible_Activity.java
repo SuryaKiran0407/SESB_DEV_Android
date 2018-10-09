@@ -57,6 +57,14 @@ public class Notifications_Personresponsible_Activity extends AppCompatActivity 
             {
                 request_id = Integer.parseInt(request_ids);
             }
+            if (equip_id != null && !equip_id.equals(""))
+            {
+            }
+            else
+            {
+                plant_iwerk = extras.getString("plant_id");
+                workcenter_id = extras.getString("workcenter_id");
+            }
         }
 
         title_textview = (TextView)findViewById(R.id.title_textview);
@@ -98,24 +106,27 @@ public class Notifications_Personresponsible_Activity extends AppCompatActivity 
         @Override
         protected Void doInBackground(Void... params)
         {
-            try
+            if (equip_id != null && !equip_id.equals(""))
             {
-                Cursor cursor1 = FieldTekPro_db.rawQuery("select * from EtEqui where Equnr = ?", new String[]{equip_id});
-                if (cursor1 != null && cursor1.getCount() > 0)
+                try
                 {
-                    if (cursor1.moveToFirst())
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from EtEqui where Equnr = ?", new String[]{equip_id});
+                    if (cursor1 != null && cursor1.getCount() > 0)
                     {
-                        do
+                        if (cursor1.moveToFirst())
                         {
-                            plant_iwerk = cursor1.getString(10);
-                            workcenter_id = cursor1.getString(11);
+                            do
+                            {
+                                plant_iwerk = cursor1.getString(10);
+                                workcenter_id = cursor1.getString(11);
+                            }
+                            while (cursor1.moveToNext());
                         }
-                        while (cursor1.moveToNext());
                     }
                 }
-            }
-            catch(Exception e)
-            {
+                catch(Exception e)
+                {
+                }
             }
             try
             {

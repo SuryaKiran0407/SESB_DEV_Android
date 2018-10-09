@@ -310,16 +310,18 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
         }
         else if(v == personResp_layout)
         {
-            if (equiptext_edittext.getText().toString() != null && !equiptext_edittext.getText().toString().equals(""))
+            if (plant_id != null && !plant_id.equals(""))
             {
                 Intent planner_group_intent = new Intent(getActivity(), Notifications_Personresponsible_Activity.class);
+                planner_group_intent.putExtra("workcenter_id",workcenter_id);
+                planner_group_intent.putExtra("plant_id",plant_id);
                 planner_group_intent.putExtra("equip_id",equipid_edittext.getText().toString());
                 planner_group_intent.putExtra("request_id", Integer.toString(personResp));
                 startActivityForResult(planner_group_intent, personResp);
             }
             else
             {
-                error_dialog.show_error_dialog(getActivity(), "Please Select Equipment");
+                error_dialog.show_error_dialog(getActivity(), "Please Select Equipment or Function Location");
             }
         }
         else if(v == reqStDt_layout)
@@ -365,6 +367,14 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
             if(requestCode == longtext)
             {
                 longtext_text = data.getStringExtra("longtext_new");
+                if(longtext_text.length() > 40)
+                {
+                    notifshtTxt_edittext.setText(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
+                }
+                else
+                {
+                    notifshtTxt_edittext.setText(longtext_text);
+                }
             }
             else if(requestCode == notification_type)
             {
@@ -383,8 +393,8 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 floc_edittext.setText(functionlocation_id);
                 flocname_edittext.setText(functionlocation_text);
                 plannergroup_id = data.getStringExtra("ingrp_id");
-                plannergroup_text = "";
-                plannerGroup_edittext.setText(plannergroup_id);
+                plannergroup_text = data.getStringExtra("ingrp_text");
+                plannerGroup_edittext.setText(plannergroup_id+" - "+plannergroup_text);
                 workcenter_id = data.getStringExtra("work_center");
                 workCenter_edittext.setText(workcenter_id);
             }

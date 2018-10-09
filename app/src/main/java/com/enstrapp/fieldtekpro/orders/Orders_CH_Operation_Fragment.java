@@ -83,6 +83,7 @@ public class Orders_CH_Operation_Fragment extends Fragment {
             operations_rv.setLayoutManager(layoutManager);
             operations_rv.setItemAnimator(new DefaultItemAnimator());
             operations_rv.setAdapter(operationsAdapter);
+            ma.updateTabDataCount();
         }
         return rootView;
     }
@@ -101,7 +102,7 @@ public class Orders_CH_Operation_Fragment extends Fragment {
         if (!getUserVisibleHint())
             return;
 
-        if (ma.ohp.getOrdrLngTxt() != null && !ma.ohp.getOrdrLngTxt().equals("")) {
+        if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
             if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                 if (ma.ohp.getOrdrOprtnPrcbls() != null) {
                     operationsAdapter.notifyDataSetChanged();
@@ -167,12 +168,14 @@ public class Orders_CH_Operation_Fragment extends Fragment {
                     ma.animateFab(false);
                     isSelected = false;
                     operationsAdapter.notifyDataSetChanged();
+                    ma.updateTabDataCount();
                     rmoop = null;
 //                    addoop = null;
                 } else {
-                    if (ma.ohp.getOrdrLngTxt() != null && !ma.ohp.getOrdrLngTxt().equals("")) {
+                    if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
                         if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                             Intent intent = new Intent(getActivity(), Operations_Add_Update_Activity.class);
+                            intent.putExtra("order_id", ma.ohp.getOrdrId());
                             intent.putExtra("type_oprtn", "C");
                             intent.putExtra("ordrPlant", ma.ohp.getPlant());
                             intent.putExtra("ordrPlantName", ma.ohp.getPlantName());
@@ -204,6 +207,7 @@ public class Orders_CH_Operation_Fragment extends Fragment {
                     oop_al.add(oop);
                     oop_al_rv.add(oop);
                     ma.ohp.setOrdrOprtnPrcbls(oop_al);
+                    ma.updateTabDataCount();
                 }
                 break;
 
@@ -229,6 +233,7 @@ public class Orders_CH_Operation_Fragment extends Fragment {
                     ma.ohp.setOrdrOprtnPrcbls(oop_al);
                     rmoop = null;
                     oop = null;
+                    ma.updateTabDataCount();
                 }
                 break;
         }
@@ -457,6 +462,7 @@ public class Orders_CH_Operation_Fragment extends Fragment {
                         }
 
                         Intent intent = new Intent(getActivity(), Operations_Add_Update_Activity.class);
+                        intent.putExtra("order_id", ma.ohp.getOrdrId());
                         intent.putExtra("type_oprtn", "U");
                         intent.putExtra("cnfoprtn", operationsList.get(position));
                         intent.putExtra("selected_operation_custom_info_arraylist", selected_operation_custom_info_arraylist);
@@ -474,72 +480,6 @@ public class Orders_CH_Operation_Fragment extends Fragment {
         }
     }
 
-    private boolean oprtnCnfAuth() {
-        Cursor cursor = null;
-        try {
-            cursor = App_db.rawQuery("select * from GET_USER_FUNCTIONS_EtUsrf where Zdoctype='W' AND Zactivity='Z'", null);
-            if (cursor != null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        if (cursor.getString(5).equalsIgnoreCase("X")) {
-                            return false;
-                        } else {
-                            Cursor cursor1 = null;
-                            try {
-                                cursor1 = App_db.rawQuery("select * from Authorization_EtMusrf where Zdoctype='W' AND Zactivity='Z'", null);
-                                if (cursor1 != null && cursor1.getCount() > 0) {
-                                    if (cursor1.moveToFirst()) {
-                                        do {
-                                            if (cursor1.getString(5).equalsIgnoreCase("X"))
-                                                return false;
-                                            else
-                                                return true;
-                                        }
-                                        while (cursor1.moveToNext());
-                                    }
-                                }
-                            } catch (Exception e) {
-                                if (cursor1 != null)
-                                    cursor1.close();
-                            } finally {
-                                if (cursor1 != null)
-                                    cursor1.close();
-                            }
-                        }
-                    } while (cursor.moveToNext());
-                }
-            } else {
-                Cursor cursor1 = null;
-                try {
-                    cursor1 = App_db.rawQuery("select * from Authorization_EtMusrf where Zdoctype='W' AND Zactivity='Z'", null);
-                    if (cursor1 != null && cursor1.getCount() > 0) {
-                        if (cursor1.moveToFirst()) {
-                            do {
-                                if (cursor1.getString(5).equalsIgnoreCase("X"))
-                                    return false;
-                                else
-                                    return true;
-                            }
-                            while (cursor1.moveToNext());
-                        }
-                    }
-                } catch (Exception e) {
-                    if (cursor1 != null)
-                        cursor1.close();
-                } finally {
-                    if (cursor1 != null)
-                        cursor1.close();
-                }
-            }
-        } catch (Exception e) {
-            if (cursor != null)
-                cursor.close();
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return false;
-    }
 
     private String gnrtOprtnId(int size) {
         if (size < 9) {
@@ -548,4 +488,19 @@ public class Orders_CH_Operation_Fragment extends Fragment {
             return "0" + String.valueOf(size + 1) + "0";
         }
     }
+
+
+    public int OperationsSize()
+    {
+        if (oop_al_rv.size() > 0)
+        {
+            return  oop_al_rv.size();
+        }
+        else
+        {
+            return  0;
+        }
+    }
+
+
 }

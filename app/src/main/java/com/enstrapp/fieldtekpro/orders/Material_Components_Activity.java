@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +24,6 @@ public class Material_Components_Activity extends AppCompatActivity {
 
     TabLayout matrl_tl;
     ViewPager matrl_vp;
-    TabAdapter matrl_ta;
     String equip = "", iwerk = "";
     ImageView back_iv;
     TextView title_tv;
@@ -113,9 +113,12 @@ public class Material_Components_Activity extends AppCompatActivity {
 
         setupViewPager(matrl_vp);
 
-        try {
+        try
+        {
             setupTabIcons();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
         }
 
         matrl_vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -192,5 +195,26 @@ public class Material_Components_Activity extends AppCompatActivity {
             matrl_tl.getTabAt(i).setCustomView(prepareTabView(i));
         }
     }
+
+
+
+    public void refreshMyData(int size)
+    {
+        View view1 = LayoutInflater.from(Material_Components_Activity.this).inflate(R.layout.custom_tab, null);
+        TextView tv_title1 = (TextView) view1.findViewById(R.id.tv_title);
+        TextView badgeTv1 = (TextView) view1.findViewById(R.id.tv_count);
+        tv_title1.setText("General");
+        badgeTv1.setText("("+size+")");
+        matrl_tl.getTabAt(1).setCustomView(null);
+        matrl_tl.getTabAt(1).setCustomView(view1);
+    }
+
+
+    private static String makeFragmentName(int viewPagerId, int index)
+    {
+        return "android:switcher:" + viewPagerId + ":" + index;
+    }
+
+
 
 }

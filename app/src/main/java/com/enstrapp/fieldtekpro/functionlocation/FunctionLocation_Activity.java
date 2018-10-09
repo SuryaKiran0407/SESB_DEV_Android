@@ -348,6 +348,30 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                     @Override
                     public void onClick(View v)
                     {
+                        String ingrp_id = nto.getPlanner_Group();
+                        String ingrp_text = "";
+                        try
+                        {
+                            Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_EtIngrp where Ingrp = ?", new String[]{ingrp_id});
+                            if (cursor != null && cursor.getCount() > 0)
+                            {
+                                if (cursor.moveToFirst())
+                                {
+                                    do
+                                    {
+                                        ingrp_text = cursor.getString(3);
+                                    }
+                                    while (cursor.moveToNext());
+                                }
+                            }
+                            else
+                            {
+                                cursor.close();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
                         Intent intent=new Intent();
                         intent.putExtra("functionlocation_id",holder.id_textview.getText().toString());
                         intent.putExtra("functionlocation_text",holder.value_textview.getText().toString());
@@ -355,6 +379,7 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                         intent.putExtra("kostl_id", nto.getCost_Center());
                         intent.putExtra("iwerk", nto.getIwerk());
                         intent.putExtra("ingrp_id", nto.getPlanner_Group());
+                        intent.putExtra("ingrp_text", ingrp_text);
                         intent.putExtra("work_center", nto.getWork_Center());
                         setResult(RESULT_OK,intent);
                         FunctionLocation_Activity.this.finish();
@@ -385,6 +410,30 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                     }
                     else
                     {
+                        String ingrp_id = nto.getPlanner_Group();
+                        String ingrp_text = "";
+                        try
+                        {
+                            Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_EtIngrp where Ingrp = ?", new String[]{ingrp_id});
+                            if (cursor != null && cursor.getCount() > 0)
+                            {
+                                if (cursor.moveToFirst())
+                                {
+                                    do
+                                    {
+                                        ingrp_text = cursor.getString(3);
+                                    }
+                                    while (cursor.moveToNext());
+                                }
+                            }
+                            else
+                            {
+                                cursor.close();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
                         Intent intent=new Intent();
                         intent.putExtra("functionlocation_id",holder.id_textview.getText().toString());
                         intent.putExtra("functionlocation_text",holder.value_textview.getText().toString());
@@ -392,6 +441,7 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                         intent.putExtra("kostl_id", nto.getCost_Center());
                         intent.putExtra("iwerk", nto.getIwerk());
                         intent.putExtra("ingrp_id", nto.getPlanner_Group());
+                        intent.putExtra("ingrp_text", ingrp_text);
                         intent.putExtra("work_center", nto.getWork_Center());
                         setResult(RESULT_OK,intent);
                         FunctionLocation_Activity.this.finish();

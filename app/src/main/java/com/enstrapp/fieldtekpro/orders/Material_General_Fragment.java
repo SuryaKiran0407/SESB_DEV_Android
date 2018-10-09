@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,26 +16,33 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Material_General_Fragment extends Fragment {
+public class Material_General_Fragment extends Fragment
+{
 
     TextView title_textview, searchview_textview;
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
-    String BOMITEM_status = "", bom_id = "", bom_plant = "";
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
     RecyclerView bom_list_recycleview;
@@ -44,8 +52,14 @@ public class Material_General_Fragment extends Fragment {
     public SearchView search;
     Dialog decision_dialog;
     Material_Components_Activity ma;
-    LinearLayout no_data_layout;
+    LinearLayout no_data_layout, bottom_panel;
     Network_Connection_Dialog network_connection_dialog = new Network_Connection_Dialog();
+    FloatingActionButton filter_fab_button;
+    Button filt_storageloc_type_button;
+    int fil_storageloc_type = 0;
+    String filt_storageloc_ids = "", selected_storageloc_ids;
+    Error_Dialog error_dialog = new Error_Dialog();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,12 +70,134 @@ public class Material_General_Fragment extends Fragment {
         bom_list_recycleview = rootView.findViewById(R.id.list_recycleview);
         no_data_layout = rootView.findViewById(R.id.no_data_layout);
         search = (SearchView) rootView.findViewById(R.id.search);
+        filter_fab_button = (FloatingActionButton)rootView.findViewById(R.id.filter_fab_button);
+        bottom_panel = (LinearLayout)rootView.findViewById(R.id.bottom_panel);
+
+        bottom_panel.setVisibility(View.VISIBLE);
 
         ma = (Material_Components_Activity) this.getActivity();
-        new Get_STOCK_List_Data().execute();
+
+
+        filter_fab_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final Dialog dialog = new Dialog(getActivity(),R.style.AppThemeDialog_Dark);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.orders_material_filter_dialog);
+                dialog.setCancelable(true);
+                dialog.setCanceledOnTouchOutside(false);
+                filt_storageloc_type_button = (Button)dialog.findViewById(R.id.storage_location_button);
+                filt_storageloc_type_button.setText(filt_storageloc_ids);
+                TextView clearAll_textview = (TextView)dialog.findViewById(R.id.clearAll_textview);
+                Button filterBt = (Button)dialog.findViewById(R.id.filterBt);
+                Button closeBt = (Button)dialog.findViewById(R.id.closeBt);
+                dialog.show();
+                filt_storageloc_type_button.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent notification_type_intent = new Intent(getActivity(), Orders_StorageLocation_Filter_Activity.class);
+                        notification_type_intent.putExtra("iwerk", ma.iwerk);
+                        notification_type_intent.putExtra("request_id", Integer.toString(fil_storageloc_type));
+                        notification_type_intent.putExtra("filt_storageloc_ids", filt_storageloc_ids);
+                        startActivityForResult(notification_type_intent, fil_storageloc_type);
+                    }
+                });
+                closeBt.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialog.dismiss();
+                    }
+                });
+                clearAll_textview.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        filt_storageloc_ids = "";
+                        dialog.dismiss();
+                        new Get_STOCK_List_Data().execute();
+                    }
+                });
+                filterBt.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if ((filt_storageloc_ids != null && !filt_storageloc_ids.equals("")))
+                        {
+                            filt_storageloc_ids = filt_storageloc_ids.trim();
+                            if(filt_storageloc_ids.contains(","))
+                            {
+                                selected_storageloc_ids = filt_storageloc_ids.replace(",","|");
+                                selected_storageloc_ids = selected_storageloc_ids.substring(0, filt_storageloc_ids.length()-1);
+                            }
+                            CollectionUtils.filter(stockListObjects, new Predicate()
+                            {
+                                @Override
+                                public boolean evaluate(Object o)
+                                {
+                                    return ((STOCK_List_Object) o).getLocation().matches(selected_storageloc_ids);
+                                }
+                            });
+                            ((Material_Components_Activity) getActivity()).refreshMyData(stockListObjects.size());
+                            if (stockListObjects.size() > 0)
+                            {
+                                no_data_layout.setVisibility(View.GONE);
+                                bom_list_recycleview.setVisibility(View.VISIBLE);
+                                adapter.notifyDataSetChanged();
+                            }
+                            else
+                            {
+                                no_data_layout.setVisibility(View.VISIBLE);
+                                bom_list_recycleview.setVisibility(View.GONE);
+                            }
+                            dialog.dismiss();
+                        }
+                        else
+                        {
+                            error_dialog.show_error_dialog(getActivity(),"Please Select Atleast One Storage Location");
+                        }
+                    }
+                });
+            }
+        });
+
+
         return rootView;
 
     }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        new Get_STOCK_List_Data().execute();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && !data.equals(""))
+        {
+            if(requestCode == fil_storageloc_type)
+            {
+                filt_storageloc_ids = data.getStringExtra("filt_storageloc_ids");
+                filt_storageloc_type_button.setText(filt_storageloc_ids);
+            }
+        }
+    }
+
 
     private class Get_STOCK_List_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -126,7 +262,8 @@ public class Material_General_Fragment extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (stockListObjects.size() > 0) {
+            if (stockListObjects.size() > 0)
+            {
                 Collections.sort(stockListObjects, new Comparator<STOCK_List_Object>() {
                     @Override
                     public int compare(STOCK_List_Object rhs, STOCK_List_Object lhs) {
@@ -142,12 +279,16 @@ public class Material_General_Fragment extends Fragment {
                 search.setOnQueryTextListener(listener);
                 no_data_layout.setVisibility(View.GONE);
                 bom_list_recycleview.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else
+            {
                 no_data_layout.setVisibility(View.VISIBLE);
                 bom_list_recycleview.setVisibility(View.GONE);
             }
+            ((Material_Components_Activity) getActivity()).refreshMyData(stockListObjects.size());
         }
     }
+
 
     SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
         @Override
@@ -185,6 +326,7 @@ public class Material_General_Fragment extends Fragment {
             return false;
         }
     };
+
 
     public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHolder> {
         private Context mContext;
@@ -246,6 +388,7 @@ public class Material_General_Fragment extends Fragment {
             return bom_list_data.size();
         }
     }
+
 
     public class STOCK_List_Object {
         private String Material_Id;
@@ -314,6 +457,15 @@ public class Material_General_Fragment extends Fragment {
         public void setUnrestricted(String unrestricted) {
             Unrestricted = unrestricted;
         }
+    }
+
+
+    public int Sizee()
+    {
+        if (stockListObjects.size() > 0)
+            return  stockListObjects.size();
+        else
+            return 0;
     }
 
 }

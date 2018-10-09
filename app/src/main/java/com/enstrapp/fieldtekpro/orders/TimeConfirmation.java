@@ -157,12 +157,12 @@ public class TimeConfirmation extends AppCompatActivity implements View.OnClickL
         switch (requestCode) {
             case (EDDT):
                 if (resultCode == RESULT_OK) {
-                    endDt_tiet.setText(data.getStringExtra("selectedDate"));
+                    endDt_tiet.setText(data.getStringExtra("date_formatted"));
                 }
                 break;
             case (STDT):
                 if (resultCode == RESULT_OK) {
-                    strtDt_tiet.setText(data.getStringExtra("selectedDate"));
+                    strtDt_tiet.setText(data.getStringExtra("date_formatted"));
                 }
                 break;
             case (EDTM):

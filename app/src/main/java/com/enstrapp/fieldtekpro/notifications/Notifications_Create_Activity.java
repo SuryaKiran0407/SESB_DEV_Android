@@ -510,10 +510,10 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                 mnc.setActvCod(activity_list.get(i).getCode_id());
                 mnc.setActcodetext(activity_list.get(i).getCode_text());
                 mnc.setActvShtxt(activity_list.get(i).getActivity_shtxt());
-                mnc.setUsr01(activity_list.get(i).getSt_date());
-                mnc.setUsr02(activity_list.get(i).getEnd_date());
-                mnc.setUsr03(activity_list.get(i).getSt_time());
-                mnc.setUsr04(activity_list.get(i).getEnd_time());
+                mnc.setStartDate(activity_list.get(i).getSt_date());
+                mnc.setEndDate(activity_list.get(i).getEnd_date());
+                mnc.setStartTime(activity_list.get(i).getSt_time());
+                mnc.setEndTime(activity_list.get(i).getEnd_time());
                 mnc.setUsr05("");
                 mnc.setAction("I");
 
@@ -1489,6 +1489,57 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             }
         });
         fab.startAnimation(shrink);
+    }
+
+
+
+    public void updateTabDataCount()
+    {
+        Notifications_Create_Causecode_Fragment causecode_fragment = (Notifications_Create_Causecode_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
+        if(causecode_fragment.causeSize() > 0)
+        {
+            tablayout.getTabAt(1).setText(getString(R.string.causecode_p,causecode_fragment.causeSize()));
+        }
+        else
+        {
+            tablayout.getTabAt(1).setText(getResources().getString(R.string.cause_code1));
+        }
+
+
+        Notifications_Create_Activity_Fragment activity_fragment = (Notifications_Create_Activity_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
+        if(activity_fragment.activitySize() > 0)
+        {
+            tablayout.getTabAt(2).setText(getString(R.string.activity_p,activity_fragment.activitySize()));
+        }
+        else
+        {
+            tablayout.getTabAt(2).setText(getResources().getString(R.string.activity));
+        }
+
+
+        Notifications_Create_Task_Fragment task_fragment = (Notifications_Create_Task_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
+        if(task_fragment.taskSize() > 0)
+        {
+            tablayout.getTabAt(3).setText(getString(R.string.task_p,task_fragment.taskSize()));
+        }
+        else
+        {
+            tablayout.getTabAt(3).setText(getResources().getString(R.string.task));
+        }
+
+
+        Notifications_Create_Attachments_Fragment attachment_fragment = (Notifications_Create_Attachments_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
+        if(attachment_fragment.AttachmentSize() > 0)
+        {
+            tablayout.getTabAt(4).setText(getString(R.string.attachment_p,attachment_fragment.AttachmentSize()));
+        }
+        else
+        {
+            tablayout.getTabAt(4).setText(getResources().getString(R.string.attachments));
+        }
+
+
+        setCustomFont();
     }
 
 

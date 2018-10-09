@@ -36,6 +36,7 @@
                 android:textSize="@dimen/textSize" />
         </android.support.design.widget.TextInputLayout>
 
+
         <LinearLayout
             android:id="@+id/ordrTyp_ll"
             android:layout_width="match_parent"
@@ -81,28 +82,48 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/textInputSideMargins"
             android:layout_marginStart="@dimen/textInputSideMargins"
             android:layout_marginTop="@dimen/textInputTopMargin"
             android:background="@drawable/blueborder"
-            android:paddingEnd="@dimen/textInputSidePadd"
-            android:paddingStart="@dimen/textInputSidePadd"
-            android:paddingTop="@dimen/textInputTopPadd"
-            android:textColorHint="@color/colorPrimary"
-            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-
-            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                android:id="@+id/ordrLngTxt_tiet"
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:hint="@string/or_order_text"
-                android:maxLength="40"
-                android:textSize="@dimen/textSize" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_weight=".9"
+                android:paddingEnd="@dimen/textInputSidePadd"
+                android:paddingStart="@dimen/textInputSidePadd"
+                android:paddingTop="@dimen/textInputTopPadd"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                    android:id="@+id/ordrLngTxt_tiet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:hint="@string/or_order_text"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="@dimen/textSize" />
+            </android.support.design.widget.TextInputLayout>
+            <ImageView
+                android:id="@+id/longtext_imageview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dropDownIconEndMarg"
+                android:layout_marginTop="@dimen/dropDownIconTopMarg"
+                android:layout_weight=".1"
+                android:src="@drawable/ic_longtext_icon" />
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:id="@+id/notifNum_ll"
@@ -133,6 +154,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/textSize" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -176,6 +198,7 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -201,6 +224,7 @@
                 android:textColor="@color/dark_grey2"
                 android:textSize="@dimen/textSize" />
         </android.support.design.widget.TextInputLayout>
+
 
         <LinearLayout
             android:id="@+id/equipId_ll"
@@ -255,6 +279,7 @@
                 android:src="@drawable/ic_barcode_scanner" />
         </LinearLayout>
 
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/equipName_til"
             android:layout_width="match_parent"
@@ -281,6 +306,7 @@
                 android:textColor="@color/dark_grey2"
                 android:textSize="@dimen/textSize" />
         </android.support.design.widget.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -325,6 +351,7 @@
                 android:layout_weight=".1"
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -371,6 +398,7 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -398,7 +426,7 @@
                     android:backgroundTint="@android:color/transparent"
                     android:cursorVisible="false"
                     android:focusable="false"
-                    android:hint="@string/priority"
+                    android:hint="@string/priority_star"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textSize="@dimen/textSize" />
@@ -414,6 +442,7 @@
                 android:layout_weight=".1"
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -459,6 +488,7 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -503,6 +533,51 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/textInputSideMargins"
+            android:layout_marginStart="@dimen/textInputSideMargins"
+            android:layout_marginTop="@dimen/textInputTopMargin"
+            android:background="@drawable/blueborder"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".9"
+                android:paddingEnd="@dimen/textInputSidePadd"
+                android:paddingStart="@dimen/textInputSidePadd"
+                android:paddingTop="@dimen/textInputTopPadd"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                    android:id="@+id/activity_type_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="@string/activity_typ"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="@dimen/textSize" />
+            </android.support.design.widget.TextInputLayout>
+            <ImageView
+                android:id="@+id/activity_type_imageview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dropDownIconEndMarg"
+                android:layout_marginTop="@dimen/dropDownIconTopMarg"
+                android:layout_weight=".1"
+                android:src="@drawable/ic_arrow_drop_down_blue_24px" />
+        </LinearLayout>
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -545,6 +620,7 @@
                 android:layout_weight=".1"
                 android:src="@drawable/ic_date_range_black_24px" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

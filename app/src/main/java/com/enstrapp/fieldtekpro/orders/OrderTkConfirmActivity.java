@@ -67,7 +67,6 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
     ConnectionDetector cd;
     Boolean isInternetPresent = false;
     ArrayList<Measurement_Parceble> mpo_al = new ArrayList<>();
-    ArrayList<Notif_EtDocs_Parcelable> etdocs_al = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -331,7 +330,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Order_CConfirmation().Get_Data(OrderTkConfirmActivity.this, cop_al, mpo_al,"", "CCORD", ordrId, "ORCC");
+            Response = new Order_CConfirmation().Get_Data(OrderTkConfirmActivity.this, cop_al, mpo_al,"", "CCORD", ordrId, "ORCC" , "");
             return null;
         }
 
@@ -345,7 +344,6 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                 errorDialog.show_error_dialog(OrderTkConfirmActivity.this, Response.substring(2));
             else
                 errorDialog.show_error_dialog(OrderTkConfirmActivity.this, Response);
-
         }
     }
 

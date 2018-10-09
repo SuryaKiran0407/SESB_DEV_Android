@@ -135,7 +135,7 @@ public class Order_Create_Change {
                 ordrHdrSer.setAufnr(ohp.getOrdrId());
                 ordrHdrSer.setAuart(ohp.getOrdrTypId());
                 ordrHdrSer.setKtext(ohp.getOrdrShrtTxt());
-                ordrHdrSer.setIlart("");
+                ordrHdrSer.setIlart(ohp.getActivitytype_id());
                 ordrHdrSer.setErnam(username.toUpperCase().toString());
                 ordrHdrSer.setErdat(dateFormat(ohp.getBasicStart()));
                 ordrHdrSer.setPriok(ohp.getPriorityId());
@@ -175,7 +175,7 @@ public class Order_Create_Change {
                 ordrHdrSer.setPltxt(ohp.getFuncLocName());
                 ordrHdrSer.setEqktx(ohp.getEquipName());
                 ordrHdrSer.setPriokx(ohp.getPriorityTxt());
-                ordrHdrSer.setIlatx("");
+                ordrHdrSer.setIlatx(ohp.getActivitytype_text());
                 ordrHdrSer.setPlantname(ohp.getPlantName());
                 ordrHdrSer.setWkctrname(ohp.getWrkCntrName());
                 ordrHdrSer.setIngrpname(ohp.getPlnrGrpName());
@@ -193,6 +193,36 @@ public class Order_Create_Change {
                 ordrHdrSer.setUsr05("");
                 ordrHdrSer.setItOrderHeaderFields(header_custominfo);
                 ItOrderHeader_Al.add(ordrHdrSer);
+
+
+                /*Adding Order Longtext to Arraylist*/
+                String order_header_longtext = ohp.getOrdrLngTxt();
+                if (order_header_longtext != null && !order_header_longtext.equals(""))
+                {
+                    if(order_header_longtext.contains("\n"))
+                    {
+                        String[] longtext_array = order_header_longtext.split("\n");
+                        for(int i = 0; i < longtext_array.length; i++)
+                        {
+                            OrdrLngTxtSer mnc = new OrdrLngTxtSer();
+                            mnc.setAufnr(ohp.getOrdrId());
+                            mnc.setActivity("");
+                            mnc.setTextLine(longtext_array[i]);
+                            mnc.setTdid("");
+                            ItOrderLongtext_Al.add(mnc);
+                        }
+                    }
+                    else
+                    {
+                        OrdrLngTxtSer mnc = new OrdrLngTxtSer();
+                        mnc.setAufnr(ohp.getOrdrId());
+                        mnc.setActivity("");
+                        mnc.setTextLine(order_header_longtext);
+                        mnc.setTdid("");
+                        ItOrderLongtext_Al.add(mnc);
+                    }
+                }
+                /*Adding Order Longtext to Arraylist*/
 
 
                 if (ohp.getOrdrOprtnPrcbls() != null)
@@ -228,6 +258,37 @@ public class Order_Create_Change {
                         oprtnSer.setUsr04("");
                         oprtnSer.setUsr05("");
                         oprtnSer.setAction(ohp.getOrdrOprtnPrcbls().get(i).getStatus());
+
+
+                        /*Adding Operation Longtext to Arraylist*/
+                        String operation_longtext = ohp.getOrdrOprtnPrcbls().get(i).getOprtnLngTxt();
+                        if (operation_longtext != null && !operation_longtext.equals(""))
+                        {
+                            if(operation_longtext.contains("\n"))
+                            {
+                                String[] longtext_array = operation_longtext.split("\n");
+                                for(int j = 0; j < longtext_array.length; j++)
+                                {
+                                    OrdrLngTxtSer mnc = new OrdrLngTxtSer();
+                                    mnc.setAufnr(ohp.getOrdrId());
+                                    mnc.setActivity(ohp.getOrdrOprtnPrcbls().get(i).getOprtnId());
+                                    mnc.setTextLine(longtext_array[j]);
+                                    mnc.setTdid("");
+                                    ItOrderLongtext_Al.add(mnc);
+                                }
+                            }
+                            else
+                            {
+                                OrdrLngTxtSer mnc = new OrdrLngTxtSer();
+                                mnc.setAufnr(ohp.getOrdrId());
+                                mnc.setActivity(ohp.getOrdrOprtnPrcbls().get(i).getOprtnId());
+                                mnc.setTextLine(operation_longtext);
+                                mnc.setTdid("");
+                                ItOrderLongtext_Al.add(mnc);
+                            }
+                        }
+                        /*Adding Operation Longtext to Arraylist*/
+
 
                         operation_custominfo = new ArrayList<>();
                         String operation_id = ohp.getOrdrOprtnPrcbls().get(i).getOprtnId();
@@ -404,14 +465,6 @@ public class Order_Create_Change {
                         ItOrderComponents_Al.add(matrlSer);
                     }
 
-                if (ohp.getOrdrLngTxt() != null)
-                    for (String lngTxt : ohp.getOrdrLngTxt().split("\n")) {
-                        OrdrLngTxtSer lngTxtSer = new OrdrLngTxtSer();
-                        lngTxtSer.setAufnr("");
-                        lngTxtSer.setActivity("");
-                        lngTxtSer.setTextLine(lngTxt);
-                        ItOrderLongtext_Al.add(lngTxtSer);
-                    }
 
                 OrdrPermitSer permitSer = new OrdrPermitSer();
                 permitSer.setAufnr("");
@@ -890,6 +943,8 @@ public class Order_Create_Change {
             geoSer.setAltitude("");*/
             }
             /*Adding Empty_Al to Arraylist*/
+
+
             ArrayList Empty_Al = new ArrayList<>();
             ArrayList<EtWcmWdDataSer> etWcmWdDataSers = new ArrayList<>();
             EtWcmWdDataSer etser = new EtWcmWdDataSer();
@@ -1348,13 +1403,14 @@ public class Order_Create_Change {
                                                 }
                                             }
                                             if (uuid != null && !uuid.equals("")) {
-                                                String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
+                                                String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
                                                 SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                                                 EtOrderLongtext_statement.clearBindings();
                                                 EtOrderLongtext_statement.bindString(1, uuid);
                                                 EtOrderLongtext_statement.bindString(2, Aufnr);
                                                 EtOrderLongtext_statement.bindString(3, jsonArray.getJSONObject(j).optString("Activity"));
                                                 EtOrderLongtext_statement.bindString(4, jsonArray.getJSONObject(j).optString("TextLine"));
+                                                EtOrderLongtext_statement.bindString(5, jsonArray.getJSONObject(j).optString("Tdid"));
                                                 EtOrderLongtext_statement.execute();
                                             }
                                         }

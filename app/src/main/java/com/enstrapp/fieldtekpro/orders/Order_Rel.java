@@ -352,13 +352,14 @@ public class Order_Rel {
                                                     }
                                                 }
                                                 if (uuid != null && !uuid.equals("")) {
-                                                    String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
+                                                    String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
                                                     SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                                                     EtOrderLongtext_statement.clearBindings();
                                                     EtOrderLongtext_statement.bindString(1, uuid);
                                                     EtOrderLongtext_statement.bindString(2, Aufnr);
                                                     EtOrderLongtext_statement.bindString(3, jsonArray.getJSONObject(j).optString("Activity"));
                                                     EtOrderLongtext_statement.bindString(4, jsonArray.getJSONObject(j).optString("TextLine"));
+                                                    EtOrderLongtext_statement.bindString(5, jsonArray.getJSONObject(j).optString("Tdid"));
                                                     EtOrderLongtext_statement.execute();
                                                 }
                                             }

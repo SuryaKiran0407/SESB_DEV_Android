@@ -374,6 +374,7 @@
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
     <string name="confirm_text">Confirmation Text</string>
+    <string name="confirm_long_text">Confirmation Long Text</string>
     <string name="no_remaining_work">No Remaining Work :</string>
     <string name="final_confirmation">Final Confirmation :</string>
     <string name="time_confirmation">Time Confirmation</string>
@@ -400,7 +401,8 @@
     <string name="component_star">* Component</string>
     <string name="location">Location</string>
     <string name="receipt">Receipt</string>
-    <string name="unloading">Unloading</string>
+    <string name="receipt1">Goods Recipient</string>
+    <string name="unloading">Unloading Point</string>
     <string name="operation_mandate">Please select Operation ID</string>
     <string name="component_mandate">Please select Component</string>
     <string name="quantity_mandate">Please Enter Quatntity</string>
@@ -579,5 +581,14 @@
     <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
     <string name="title_activity_maps">Map</string>
+    <string name="task_p">Task (%1d)</string>
+    <string name="causecode_p">Cause Code (%1d)</string>
+    <string name="activity_p">Activity (%1d)</string>
+    <string name="partner_p">Partner (%1d)</string>
+    <string name="attachment_p">Attachment (%1d)</string>
+    <string name="operation_p">Operations (%1d)</string>
+    <string name="material_p">Material (%1d)</string>
+
+
 
 </resources>

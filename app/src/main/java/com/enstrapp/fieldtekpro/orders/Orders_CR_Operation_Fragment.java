@@ -29,7 +29,8 @@ import java.util.HashMap;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-public class Orders_CR_Operation_Fragment extends Fragment {
+public class Orders_CR_Operation_Fragment extends Fragment
+{
 
     TextView add_tv, remove_tv;
     RecyclerView operations_rv;
@@ -45,9 +46,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
     static final int OPRTN_CRT = 10;
     static final int OPRTN_UPDATE = 11;
     int count = 0;
-
     OperationsAdapter operationsAdapter;
-
     ArrayList<HashMap<String, String>> selected_operation_custom_info_arraylist = new ArrayList<>();
 
 
@@ -80,7 +79,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
 
         if (!getUserVisibleHint())
             return;
-        if (ma.ohp.getOrdrLngTxt() != null && !ma.ohp.getOrdrLngTxt().equals("")) {
+        if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
             if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                 if (ma.ohp.getOrdrOprtnPrcbls() != null) {
 //                    oop_al.addAll(ma.ohp.getOrdrOprtnPrcbls());
@@ -117,6 +116,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                 }
             }
         }
+        ma.updateTabDataCount();
         ma.fab.show();
         if(isSelected){
             ma.animateFab(true);
@@ -164,12 +164,14 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                     ma.ohp.setOrdrOprtnPrcbls(oop_al);
                     operationsAdapter.notifyDataSetChanged();
                     rmoop = null;
+                    ma.updateTabDataCount();
                 }
                 else
                 {
-                    if (ma.ohp.getOrdrLngTxt() != null && !ma.ohp.getOrdrLngTxt().equals("")) {
+                    if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
                         if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                             Intent intent = new Intent(getActivity(), Operations_Add_Update_Activity.class);
+                            intent.putExtra("order_id", ma.ohp.getOrdrId());
                             intent.putExtra("type_oprtn", "C");
                             intent.putExtra("ordrPlant", ma.ohp.getPlant());
                             intent.putExtra("ordrPlantName", ma.ohp.getPlantName());
@@ -239,6 +241,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                     oop_al.add(oop);
                     ma.ohp.setOrdrOprtnPrcbls(oop_al);
                     operationsAdapter.notifyDataSetChanged();
+                    ma.updateTabDataCount();
                 }
                 break;
 
@@ -301,6 +304,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                     rmoop = null;
                     ma.ohp.setOrdrOprtnPrcbls(oop_al);
                     operationsAdapter.notifyDataSetChanged();
+                    ma.updateTabDataCount();
                 }
                 break;
         }
@@ -432,6 +436,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                     }
 
                     Intent intent = new Intent(getActivity(), Operations_Add_Update_Activity.class);
+                    intent.putExtra("order_id", ma.ohp.getOrdrId());
                     intent.putExtra("type_oprtn", "U");
                     intent.putExtra("cnfoprtn", operationsList.get(position));
                     intent.putExtra("selected_operation_custom_info_arraylist", selected_custom_info_arraylist);
@@ -446,72 +451,6 @@ public class Orders_CR_Operation_Fragment extends Fragment {
         }
     }
 
-    private boolean oprtnCnfAuth() {
-        Cursor cursor = null;
-        try {
-            cursor = App_db.rawQuery("select * from GET_USER_FUNCTIONS_EtUsrf where Zdoctype='W' AND Zactivity='Z'", null);
-            if (cursor != null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        if (cursor.getString(5).equalsIgnoreCase("X")) {
-                            return false;
-                        } else {
-                            Cursor cursor1 = null;
-                            try {
-                                cursor1 = App_db.rawQuery("select * from Authorization_EtMusrf where Zdoctype='W' AND Zactivity='Z'", null);
-                                if (cursor1 != null && cursor1.getCount() > 0) {
-                                    if (cursor1.moveToFirst()) {
-                                        do {
-                                            if (cursor1.getString(5).equalsIgnoreCase("X"))
-                                                return false;
-                                            else
-                                                return true;
-                                        }
-                                        while (cursor1.moveToNext());
-                                    }
-                                }
-                            } catch (Exception e) {
-                                if (cursor1 != null)
-                                    cursor1.close();
-                            } finally {
-                                if (cursor1 != null)
-                                    cursor1.close();
-                            }
-                        }
-                    } while (cursor.moveToNext());
-                }
-            } else {
-                Cursor cursor1 = null;
-                try {
-                    cursor1 = App_db.rawQuery("select * from Authorization_EtMusrf where Zdoctype='W' AND Zactivity='Z'", null);
-                    if (cursor1 != null && cursor1.getCount() > 0) {
-                        if (cursor1.moveToFirst()) {
-                            do {
-                                if (cursor1.getString(5).equalsIgnoreCase("X"))
-                                    return false;
-                                else
-                                    return true;
-                            }
-                            while (cursor1.moveToNext());
-                        }
-                    }
-                } catch (Exception e) {
-                    if (cursor1 != null)
-                        cursor1.close();
-                } finally {
-                    if (cursor1 != null)
-                        cursor1.close();
-                }
-            }
-        } catch (Exception e) {
-            if (cursor != null)
-                cursor.close();
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return false;
-    }
 
     private String gnrtOprtnId(int size) {
         if (size < 9) {
@@ -528,6 +467,21 @@ public class Orders_CR_Operation_Fragment extends Fragment {
         return selected_operation_custom_info_arraylist;
     }
     /*Written By SuryaKiran to Return Custom Info Data*/
+
+
+
+
+    public int OperationsSize()
+    {
+        if (oop_al.size() > 0)
+        {
+            return  oop_al.size();
+        }
+        else
+        {
+            return  0;
+        }
+    }
 
 
 }

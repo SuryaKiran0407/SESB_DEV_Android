@@ -289,10 +289,12 @@ public class VHLP
     private static final String KEY_GET_EtIngrp_Ingrp = "Ingrp";
     private static final String KEY_GET_EtIngrp_Innam= "Innam";
 
+
     private static final String TABLE_ET_PARVW = "ET_PARVW";
     private static final String KEY_ET_PARVW_ID = "id";
     private static final String KEY_ET_PARVW_PARVW = "PARVW";
     private static final String KEY_ET_PARVW_VTEXT = "VTEXT";
+
 
     /* GET_LIST_COST_CENTER Table and Fields Names */
     private static final String TABLE_GET_LIST_COST_CENTER = "GET_LIST_COST_CENTER";
@@ -305,6 +307,7 @@ public class VHLP
     private static final String KEY_GET_LIST_COST_CENTER_Warea = "Warea";
 	/* GET_LIST_COST_CENTER Table and Fields Names */
 
+
     private static final String TABLE_EtPernr = "GET_EtPernr";
     private static final String KEY_EtPernr_ID = "id";
     private static final String KEY_EtPernr_Werks = "Werks";
@@ -312,6 +315,13 @@ public class VHLP
     private static final String KEY_EtPernr_Objid= "Objid";
     private static final String KEY_EtPernr_Lastname= "Lastname";
     private static final String KEY_EtPernr_Firstname= "Firstname";
+
+
+    private static final String TABLE_EtIlart = "EtIlart";
+    private static final String KEY_EtIlart_ID = "id";
+    private static final String KEY_EtIlart_Auart = "Auart";
+    private static final String KEY_EtIlart_Ilart = "Ilart";
+    private static final String KEY_EtIlart_Ilatx = "Ilatx";
 
 
     public static String Get_VHLP_Data(Activity activity, String transmit_type)
@@ -711,6 +721,19 @@ public class VHLP
                         + ")";
                 App_db.execSQL(CREATE_EtRevnr_TABLE);
 		        /* Creating EtRevnr Table with Fields */
+
+                /* EtIlart Table and Fields Names */
+                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EtIlart);
+                String CREATE_TABLE_EtIlart = "CREATE TABLE IF NOT EXISTS "+ TABLE_EtIlart+ ""
+                        + "( "
+                        + KEY_EtIlart_ID+ " INTEGER PRIMARY KEY,"
+                        + KEY_EtIlart_Auart + " TEXT,"
+                        + KEY_EtIlart_Ilart + " TEXT,"
+                        + KEY_EtIlart_Ilatx + " TEXT"
+                        + ")";
+                App_db.execSQL(CREATE_TABLE_EtIlart);
+                /* EtIlart Table and Fields Names */
+
             }
             else
             {
@@ -1044,6 +1067,37 @@ public class VHLP
                     {
                     }
                     /*Reading and Inserting Data into Database Table for EtIngrp*/
+
+
+
+                    /*Reading and Inserting Data into Database Table for EtIlart*/
+                    try
+                    {
+                        String EtIlart_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtIlart().getResults());
+                        if (EtIlart_response_data != null && !EtIlart_response_data.equals("") && !EtIlart_response_data.equals("null"))
+                        {
+                            JSONArray jsonArray = new JSONArray(EtIlart_response_data);
+                            if(jsonArray.length() > 0)
+                            {
+                                String EtIlart_sql = "Insert into EtIlart (Auart, Ilart, Ilatx) values(?,?,?);";
+                                SQLiteStatement EtIlart_statement = App_db.compileStatement(EtIlart_sql);
+                                EtIlart_statement.clearBindings();
+                                for(int j = 0; j < jsonArray.length(); j++)
+                                {
+                                    EtIlart_statement.bindString(1, jsonArray.getJSONObject(j).optString("Auart"));
+                                    EtIlart_statement.bindString(2, jsonArray.getJSONObject(j).optString("Ilart"));
+                                    EtIlart_statement.bindString(3, jsonArray.getJSONObject(j).optString("Ilatx"));
+                                    EtIlart_statement.execute();
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    /*Reading and Inserting Data into Database Table for EtIlart*/
+
+
 
 
                      /*Reading and Inserting Data into Database Table for EtConfReason*/

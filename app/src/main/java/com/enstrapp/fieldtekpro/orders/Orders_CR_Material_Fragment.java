@@ -145,7 +145,7 @@ public class Orders_CR_Material_Fragment extends Fragment {
                     rmomp = null;
                 } else {
                     if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals("")) {
-                        if (ma.ohp.getOrdrLngTxt() != null && !ma.ohp.getOrdrLngTxt().equals("")) {
+                        if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
                             if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                                 ma.addOprtn();
                                 Intent intent = new Intent(getActivity(), Material_Add_Update_Activity.class);

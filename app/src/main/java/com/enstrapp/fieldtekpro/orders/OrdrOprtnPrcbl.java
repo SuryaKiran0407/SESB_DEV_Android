@@ -24,12 +24,22 @@ public class OrdrOprtnPrcbl implements Parcelable {
     public String usr01;
     public String status;
     public String larnt;
+    public String larnt_text;
     public String fsavd;
     public String ssedd;
     public String rueck;
     public String usr02;
     public String usr03;
 
+
+
+    public String getLarnt_text() {
+        return larnt_text;
+    }
+
+    public void setLarnt_text(String larnt_text) {
+        this.larnt_text = larnt_text;
+    }
 
     public String getUsr02() {
         return usr02;
@@ -298,6 +308,7 @@ public class OrdrOprtnPrcbl implements Parcelable {
         dest.writeString(this.usr01);
         dest.writeString(this.status);
         dest.writeString(this.larnt);
+        dest.writeString(this.larnt_text);
         dest.writeString(this.fsavd);
         dest.writeString(this.ssedd);
         dest.writeString(this.rueck);
@@ -324,6 +335,7 @@ public class OrdrOprtnPrcbl implements Parcelable {
         this.usr01 = in.readString();
         this.status = in.readString();
         this.larnt = in.readString();
+        this.larnt_text = in.readString();
         this.fsavd = in.readString();
         this.ssedd = in.readString();
         this.rueck = in.readString();

@@ -139,7 +139,7 @@ public class Orders_CH_Permits_Fragment extends Fragment {
             @Override
 
             public void onClick(View v) {
-                if (ma.ohp.getOrdrLngTxt() != null && !ma.ohp.getOrdrLngTxt().equals("")) {
+                if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
                     if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                         if (ma.ohp.getPriorityId() != null && !ma.ohp.getPriorityId().equals("")) {
                             applicationTypes();

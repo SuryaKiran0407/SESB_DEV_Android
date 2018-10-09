@@ -352,7 +352,7 @@ public class Auto_Sync_BackgroundService extends Service
             cop.setStatus("TECO");
             cop_al.add(cop);
             if (cop_al.size() > 0)
-                Response = new Order_CConfirmation().Get_Data(context, cop_al, null, "", "CCORD", order_id, "TECO");
+                Response = new Order_CConfirmation().Get_Data(context, cop_al, null, "", "CCORD", order_id, "TECO", "");
             return null;
         }
         @Override
@@ -455,7 +455,7 @@ public class Auto_Sync_BackgroundService extends Service
                 }
                 /*Fetching Confirmation Data*/
 
-                Response = new Order_CConfirmation().Get_Data(context, cop_al, mpo_al,"", "CCORD", order_id, "ORCC");
+                Response = new Order_CConfirmation().Get_Data(context, cop_al, mpo_al,"", "CCORD", order_id, "ORCC", "");
             }
             catch (Exception e)
             {

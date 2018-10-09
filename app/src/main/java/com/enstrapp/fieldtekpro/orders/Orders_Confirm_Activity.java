@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -21,12 +22,13 @@ import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class Orders_Confirm_Activity extends AppCompatActivity {
 
     TextView orderStatus_tv, orderNo_tv, oprtnStatus_tv, oprtnNo_tv, start_tv, pause_tv, complete_tv;
-    TextInputEditText oprtnShrtTxt_tiet, oprtnLngTxt_tiet, ctrlKey_tiet, plant_tiet, wrkCntr_tiet,
+    TextInputEditText confirmation_longtext_edittext, oprtnShrtTxt_tiet, oprtnLngTxt_tiet, ctrlKey_tiet, plant_tiet, wrkCntr_tiet,
             actvyKey_tiet, plannedWrkUnt_tiet, cnfrmWrkUnt_tiet;
     Toolbar toolBar;
     ProgressBar progressBar;
@@ -36,6 +38,8 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
     private static String DATABASE_NAME = "";
     Error_Dialog errorDialog = new Error_Dialog();
     String strDt = "", endDt = "";
+    TextInputLayout confirmation_longtext_layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +67,22 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
         start_tv = findViewById(R.id.start_tv);
         pause_tv = findViewById(R.id.pause_tv);
         complete_tv = findViewById(R.id.complete_tv);
+        confirmation_longtext_layout = (TextInputLayout)findViewById(R.id.confirmation_longtext_layout);
+        confirmation_longtext_edittext = (TextInputEditText)findViewById(R.id.confirmation_longtext_edittext);
 
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
 
         setSupportActionBar(toolBar);
-        if (getSupportActionBar() != null) {
+        if (getSupportActionBar() != null)
+        {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
         Bundle bundle = getIntent().getExtras();
 
-        if (bundle != null) {
+        if (bundle != null)
+        {
             oop = bundle.getParcelable("cnfoprtn");
             strDt = bundle.getString("strDt");
             endDt = bundle.getString("endDt");
@@ -85,13 +93,52 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
             oprtnNo_tv.setText(oop.getOprtnId());
             oprtnShrtTxt_tiet.setText(oop.getOprtnShrtTxt());
             oprtnLngTxt_tiet.setText(oop.getOprtnLngTxt());
-            ctrlKey_tiet.setText(oop.getCntrlKeyId());
-            plant_tiet.setText(oop.getPlantTxt());
-            wrkCntr_tiet.setText(oop.getWrkCntrTxt());
-            actvyKey_tiet.setText("");
+            ctrlKey_tiet.setText(oop.getCntrlKeyId()+" - "+oop.getCntrlKeyTxt());
+            plant_tiet.setText(oop.getPlantId()+" - "+oop.getPlantTxt());
+            wrkCntr_tiet.setText(oop.getWrkCntrId()+" - "+oop.getWrkCntrTxt());
+            actvyKey_tiet.setText(oop.getLarnt()+" - "+oop.getLarnt_text());
             plannedWrkUnt_tiet.setText(oop.getDuration() + "/" + oop.getDurationUnit());
             cnfrmWrkUnt_tiet.setText(oop.getUsr01());
+
+
+            StringBuilder longtext_sBuilder = new StringBuilder();
+            try
+            {
+                Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_Longtext where Aufnr = ? and Activity = ? and Tdid = ?", new String[]{oop.getOrdrId() ,oop.getOprtnId(), "RMEL"});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    if (cursor.moveToFirst())
+                    {
+                        do
+                        {
+                            longtext_sBuilder.append(cursor.getString(4));
+                            longtext_sBuilder.append("\n");
+                        }
+                        while (cursor.moveToNext());
+                    }
+                }
+                else
+                {
+                    cursor.close();
+                }
+            }
+            catch (Exception e)
+            {
+            }
+
+            if(longtext_sBuilder.toString().length() > 0)
+            {
+                confirmation_longtext_layout.setVisibility(View.VISIBLE);
+                confirmation_longtext_edittext.setText(longtext_sBuilder.toString());
+            }
+            else
+            {
+                confirmation_longtext_layout.setVisibility(View.GONE);
+                confirmation_longtext_edittext.setText("");
+            }
+
         }
+
 
         complete_tv.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -46,26 +46,26 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
     CheckBox noRmngWrk_Cb, fnlCnfrm_Cb;
     Button cancel_bt, submit_bt;
     Toolbar toolBar;
-    ImageView actlUnt_iv, reason_iv, endTm_iv, endDt_iv, strtTm_iv, strtDt_iv;
+    ImageView actlUnt_iv, reason_iv, endTm_iv, endDt_iv, strtTm_iv, strtDt_iv, longtext_imageview;
     OrdrOprtnPrcbl oop;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     static final int DURATION = 110;
     static final int REASON = 150;
-    String endDt = "", strDt = "", Response = "", ReasonId = "";
+    String endDt = "", strDt = "", Response = "", ReasonId = "", longtext_text = "";
     static final int EDDT = 548;
     static final int STDT = 648;
     static final int EDTM = 748;
     static final int STTM = 588;
     Custom_Progress_Dialog customProgressDialog = new Custom_Progress_Dialog();
-    Success_Dialog successDialog = new Success_Dialog();
     ConnectionDetector cd;
     Boolean isInternetPresent = false;
     Error_Dialog errorDialog = new Error_Dialog();
-    ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
+    private static final int long_text = 100;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_confirmpartial_activity);
 
@@ -96,11 +96,14 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         endDt_iv = findViewById(R.id.endDt_iv);
         strtTm_iv = findViewById(R.id.strtTm_iv);
         reason_tiet = findViewById(R.id.reason_tiet);
+        longtext_imageview = (ImageView)findViewById(R.id.longtext_imageview);
+
 
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
 
         setSupportActionBar(toolBar);
-        if (getSupportActionBar() != null) {
+        if (getSupportActionBar() != null)
+        {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
@@ -130,6 +133,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             }
         });
 
+
         actlUnt_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +141,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 startActivityForResult(durationIntent, DURATION);
             }
         });
+
 
         reason_iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +152,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             }
         });
 
+
         strtDt_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +160,8 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 startActivityForResult(edDtIntent, STDT);
             }
         });
+
+
         endDt_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +169,8 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 startActivityForResult(edDtIntent, EDDT);
             }
         });
+
+
         endTm_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +178,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 startActivityForResult(edTmIntent, EDTM);
             }
         });
+
         strtTm_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,12 +186,30 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 startActivityForResult(edTmIntent, STTM);
             }
         });
+
         submit_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmationDialog(getString(R.string.oprtn_cnfrm_msg));
             }
         });
+
+
+
+        longtext_imageview.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent longtext_intent = new Intent(Orders_ConfirmPartial_Activity.this, Order_LongText_Activity.class);
+                longtext_intent.putExtra("aufnr", oop.getOrdrId());
+                longtext_intent.putExtra("operation_id", oop.getOprtnId());
+                longtext_intent.putExtra("tdid", "RMEL");
+                longtext_intent.putExtra("longtext_new", longtext_text);
+                startActivityForResult(longtext_intent, long_text);
+            }
+        });
+
 
         setActualWork(oop.getOrdrId(), oop.getOprtnId());
     }
@@ -196,20 +225,23 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 break;
 
             case (REASON):
-                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK)
+                {
                     ReasonId = data.getStringExtra("reason_unit");
                     reason_tiet.setText(data.getStringExtra("reason_txt"));
                 }
                 break;
 
             case (EDDT):
-                if (resultCode == RESULT_OK) {
-                    endDt_tiet.setText(data.getStringExtra("selectedDate"));
+                if (resultCode == RESULT_OK)
+                {
+                    endDt_tiet.setText(data.getStringExtra("date_formatted"));
                 }
                 break;
             case (STDT):
-                if (resultCode == RESULT_OK) {
-                    strtDt_tiet.setText(data.getStringExtra("selectedDate"));
+                if (resultCode == RESULT_OK)
+                {
+                    strtDt_tiet.setText(data.getStringExtra("date_formatted"));
                 }
                 break;
             case (EDTM):
@@ -221,6 +253,23 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     strtTm_tiet.setText(data.getStringExtra("selectedTime"));
                 }
+                break;
+
+            case (long_text):
+                if(resultCode == RESULT_OK)
+                {
+                    longtext_text = data.getStringExtra("longtext_new");
+
+                    if(longtext_text.length() > 40)
+                    {
+                        cnfrmTxt_tiet.setText(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
+                    }
+                    else
+                    {
+                        cnfrmTxt_tiet.setText(longtext_text);
+                    }
+                }
+                break;
         }
     }
 
@@ -417,39 +466,44 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
     }
 
 
-    public class GetToken extends AsyncTask<Void, Integer, Void> {
+    public class GetToken extends AsyncTask<Void, Integer, Void>
+    {
         String Response = "";
-
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
             customProgressDialog.show_progress_dialog(Orders_ConfirmPartial_Activity.this, getResources().getString(R.string.confirm_progs));
         }
-
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(Void... voids)
+        {
             Response = new Token().Get_Token(Orders_ConfirmPartial_Activity.this);
             return null;
         }
-
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Void aVoid)
+        {
             super.onPostExecute(aVoid);
             if (Response.equals("success"))
+            {
                 new POST_TK_CONFIRM().execute();
-            else {
+            }
+            else
+            {
                 customProgressDialog.dismiss_progress_dialog();
                 errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this, getResources().getString(R.string.unable_confirm));
             }
         }
     }
 
-    private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void> {
 
+    private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void>
+    {
         ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
-
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
             cop_al.clear();
             ConfirmOrder_Prcbl cop = new ConfirmOrder_Prcbl();
@@ -497,7 +551,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Order_CConfirmation().Get_Data(Orders_ConfirmPartial_Activity.this, cop_al, null, "", "CNORD", oop.getOrdrId(), "pc");
+            Response = new Order_CConfirmation().Get_Data(Orders_ConfirmPartial_Activity.this, cop_al, null, "", "CNORD", oop.getOrdrId(), "pc", longtext_text);
             return null;
         }
 
@@ -539,12 +593,13 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 cd = new ConnectionDetector(Orders_ConfirmPartial_Activity.this);
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
+                if (isInternetPresent)
+                {
                     cancel_dialog.dismiss();
                     new GetToken().execute();
-//                    new POST_TK_CONFIRM().execute();
-
-                } else {
+                }
+                else
+                {
                     new Network_Connection_Dialog().show_network_connection_dialog(Orders_ConfirmPartial_Activity.this);
                 }
             }

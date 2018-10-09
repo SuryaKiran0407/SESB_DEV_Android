@@ -379,6 +379,36 @@
                         android:textSize="@dimen/textSize" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/confirmation_longtext_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/textInputSideMargins"
+                android:layout_marginStart="@dimen/textInputSideMargins"
+                android:layout_marginTop="@dimen/textInputTopMargin"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bluedashborder"
+                android:paddingEnd="@dimen/textInputSidePadd"
+                android:paddingStart="@dimen/textInputSidePadd"
+                android:paddingTop="@dimen/textInputTopPadd"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                    android:id="@+id/confirmation_longtext_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:hint="@string/confirm_long_text"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:textSize="@dimen/textSize"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+
         </LinearLayout>
     </ScrollView>
 

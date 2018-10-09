@@ -1639,7 +1639,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(Void... voids)
+        {
             ohp = GetOrderDetail.GetData(Orders_Activity.this, orderUUID, orderId, orderStatus, Iwerk);
             return null;
         }
@@ -1648,7 +1649,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             customProgressDialog.dismiss_progress_dialog();
-            if (ohp != null) {
+            if (ohp != null)
+            {
                 Intent ordrIntent = new Intent(Orders_Activity.this, Orders_Change_Activity.class);
                 ordrIntent.putExtra("order", "U");
                 ordrIntent.putExtra("ordr_parcel", ohp);
@@ -2055,7 +2057,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             cop.setStatus("TECO");
             cop_al.add(cop);
             if (cop_al.size() > 0)
-                Response = new Order_CConfirmation().Get_Data(Orders_Activity.this, cop_al, null, "", "CCORD", orderId, "TECO");
+                Response = new Order_CConfirmation().Get_Data(Orders_Activity.this, cop_al, null, "", "CCORD", orderId, "TECO", "");
             return null;
         }
 

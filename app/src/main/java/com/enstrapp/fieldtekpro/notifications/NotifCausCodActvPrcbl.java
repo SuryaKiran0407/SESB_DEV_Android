@@ -30,6 +30,10 @@ public class NotifCausCodActvPrcbl implements Parcelable {
     private String ActvCod;
     private String ActvCodTxt;
     private String ActvShTxt;
+    private String StartDate;
+    private String StartTime;
+    private String EndDate;
+    private String EndTime;
     private String Usr01;
     private String Usr02;
     private String Usr03;
@@ -38,6 +42,38 @@ public class NotifCausCodActvPrcbl implements Parcelable {
     private String Status;
     private String Fields;
     private String Action;
+
+    public String getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(String startDate) {
+        StartDate = startDate;
+    }
+
+    public String getStartTime() {
+        return StartTime;
+    }
+
+    public void setStartTime(String startTime) {
+        StartTime = startTime;
+    }
+
+    public String getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(String endDate) {
+        EndDate = endDate;
+    }
+
+    public String getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(String endTime) {
+        EndTime = endTime;
+    }
 
     public String getFields() {
         return Fields;
@@ -339,6 +375,10 @@ public class NotifCausCodActvPrcbl implements Parcelable {
         dest.writeString(this.ActvCod);
         dest.writeString(this.ActvCodTxt);
         dest.writeString(this.ActvShTxt);
+        dest.writeString(this.StartDate);
+        dest.writeString(this.StartTime);
+        dest.writeString(this.EndDate);
+        dest.writeString(this.EndTime);
         dest.writeString(this.Usr01);
         dest.writeString(this.Usr02);
         dest.writeString(this.Usr03);
@@ -375,6 +415,10 @@ public class NotifCausCodActvPrcbl implements Parcelable {
         this.ActvCod = in.readString();
         this.ActvCodTxt = in.readString();
         this.ActvShTxt = in.readString();
+        this.StartDate = in.readString();
+        this.StartTime = in.readString();
+        this.EndDate = in.readString();
+        this.EndTime = in.readString();
         this.Usr01 = in.readString();
         this.Usr02 = in.readString();
         this.Usr03 = in.readString();

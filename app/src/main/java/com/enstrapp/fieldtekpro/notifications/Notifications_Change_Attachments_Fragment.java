@@ -52,6 +52,7 @@ import static android.app.Activity.RESULT_OK;
 public class Notifications_Change_Attachments_Fragment extends Fragment
 {
 
+    TextView noData_tv;
     Error_Dialog error_dialog = new Error_Dialog();
     private static final String IMAGE_DIRECTORY_NAME = "FIELDTEKPRO";
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
@@ -86,6 +87,7 @@ public class Notifications_Change_Attachments_Fragment extends Fragment
         View rootView = inflater.inflate(R.layout.notifications_attachments_fragment, container, false);
 
         attachments_rv = (RecyclerView)rootView.findViewById(R.id.attachments_rv);
+        noData_tv = (TextView)rootView.findViewById(R.id.nofiles_textview);
         nca = (Notifications_Change_Activity) this.getActivity();
 
         attachments_list.clear();
@@ -857,7 +859,14 @@ public class Notifications_Change_Attachments_Fragment extends Fragment
             attachments_rv.setItemAnimator(new DefaultItemAnimator());
             attachments_rv.setAdapter(adapter);
             attachments_rv.setVisibility(View.VISIBLE);
+            noData_tv.setVisibility(View.GONE);
         }
+        else
+        {
+            attachments_rv.setVisibility(View.GONE);
+            noData_tv.setVisibility(View.VISIBLE);
+        }
+        nca.updateTabDataCount();
     }
 
 
@@ -1153,6 +1162,20 @@ public class Notifications_Change_Attachments_Fragment extends Fragment
     public List<Notif_EtDocs_Parcelable> getAttachmentsData()
     {
         return attachments_list;
+    }
+
+
+
+    public int AttachmentSize()
+    {
+        if (attachments_list.size() > 0)
+        {
+            return  attachments_list.size();
+        }
+        else
+        {
+            return  0;
+        }
     }
 
 

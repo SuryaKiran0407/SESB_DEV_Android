@@ -1,6 +1,9 @@
 package com.enstrapp.fieldtekpro.orders;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -24,26 +27,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Operations_Add_Update_Activity extends AppCompatActivity implements View.OnClickListener {
+public class Operations_Add_Update_Activity extends AppCompatActivity implements View.OnClickListener
+{
 
     Toolbar toolBar;
     TextInputEditText start_date_edittext, end_date_edittext, oprtnShrtTxt_tiet, duration_tiet, durationUnit_tiet, plant_tiet, wrkCntr_tiet;
-    ImageView duration_iv, wrkCntr_iv;
+    ImageView duration_iv, wrkCntr_iv, longtext_imageview;
     OrdrOprtnPrcbl oop = new OrdrOprtnPrcbl();
-
-    String plant_id = "", ordrWrkCntr = "";
+    String plant_id = "", longtext_text = "", order_id = "";
     Button cancel_bt, submit_bt, operations_custominfo_button;
     static final int DURATION = 110;
     static final int PLANT_WRKCNTR = 120;
     static final int OPERATION_CUSTOMINFO = 130;
     Error_Dialog errorDialog = new Error_Dialog();
     Bundle bundle;
-
     /*Written By SuryaKiran for Custom Info*/
     ArrayList<HashMap<String, String>> selected_operation_custom_info_arraylist = new ArrayList<>();
     /*Written By SuryaKiran for Custom Info*/
-
     TextInputLayout start_date_layout, end_date_layout;
+    private static final int long_text = 150;
+
+    private SQLiteDatabase FieldTekPro_db;
+    private static String DATABASE_NAME = "";
 
 
     @Override
@@ -65,6 +70,11 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         end_date_layout = (TextInputLayout)findViewById(R.id.end_date_layout);
         start_date_edittext = (TextInputEditText)findViewById(R.id.start_date_edittext);
         end_date_edittext = (TextInputEditText)findViewById(R.id.end_date_edittext);
+        longtext_imageview = (ImageView)findViewById(R.id.longtext_imageview);
+
+
+        DATABASE_NAME = getString(R.string.database_name);
+        FieldTekPro_db = Operations_Add_Update_Activity.this.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
 
         /*Written By SuryaKiran for Custom Info*/
         operations_custominfo_button = (Button)findViewById(R.id.operations_custominfo_button);
@@ -88,6 +98,7 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         if (bundle != null)
         {
             plant_id = "";
+            order_id = bundle.getString("order_id");
             if (bundle.getString("type_oprtn").equalsIgnoreCase("C"))
             {
                 plant_tiet.setText(bundle.getString("ordrPlant"));
@@ -101,13 +112,71 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
             else
             {
                 oop = bundle.getParcelable("cnfoprtn");
+                if (oop.getOprtnLngTxt() != null && !oop.getOprtnLngTxt().equals(""))
+                {
+                    //longtext_text = oop.getOprtnLngTxt();
+                }
                 oprtnShrtTxt_tiet.setText(oop.getOprtnShrtTxt());
                 duration_tiet.setText(oop.getDuration());
                 plant_id = oop.getPlantId();
-                plant_tiet.setText(oop.getPlantId());
-                wrkCntr_tiet.setText(oop.getWrkCntrId());
                 durationUnit_tiet.setText(oop.getDurationUnit());
                 submit_bt.setText(getResources().getString(R.string.update));
+
+
+
+                String plant_text = "";
+                try
+                {
+                    String plant_id = oop.getPlantId();
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
+                    if (cursor1 != null && cursor1.getCount() > 0)
+                    {
+                        if (cursor1.moveToFirst())
+                        {
+                            do
+                            {
+                                plant_text = cursor1.getString(2);
+                            }
+                            while (cursor1.moveToNext());
+                        }
+                    }
+                    else
+                    {
+                        cursor1.close();
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+                plant_tiet.setText(oop.getPlantId()+" - "+plant_text);
+
+
+
+                String loc_text = "";
+                try
+                {
+                    String loc_id = oop.getWrkCntrId();
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_WKCTR where Arbpl = ?", new String[]{loc_id});
+                    if (cursor1 != null && cursor1.getCount() > 0)
+                    {
+                        if (cursor1.moveToFirst())
+                        {
+                            do
+                            {
+                                loc_text = cursor1.getString(8);
+                            }
+                            while (cursor1.moveToNext());
+                        }
+                    }
+                    else
+                    {
+                        cursor1.close();
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+                wrkCntr_tiet.setText(oop.getWrkCntrId()+" - "+loc_text);
 
 
                 String action = oop.getStatus();
@@ -215,6 +284,8 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         wrkCntr_iv.setOnClickListener(this);
         submit_bt.setOnClickListener(this);
         cancel_bt.setOnClickListener(this);
+        longtext_imageview.setOnClickListener(this);
+
 
         /*Written By SuryaKiran for Custom Info*/
         operations_custominfo_button.setOnClickListener(this);
@@ -234,6 +305,18 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
+            /*Written By SuryaKiran for Operation Long Text OnCLick*/
+            case (R.id.longtext_imageview):
+                Intent longtext_intent = new Intent(Operations_Add_Update_Activity.this, Order_LongText_Activity.class);
+                longtext_intent.putExtra("aufnr", order_id);
+                longtext_intent.putExtra("operation_id", oop.getOprtnId());
+                longtext_intent.putExtra("tdid", "");
+                longtext_intent.putExtra("longtext_new", longtext_text);
+                startActivityForResult(longtext_intent, long_text);
+                break;
+            /*Written By SuryaKiran for Operation Long Text OnCLick*/
+
 
             /*Written By SuryaKiran for Custom Info OnCLick*/
             case (R.id.operations_custominfo_button):
@@ -266,7 +349,7 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                             oop.setDuration("0");
                         else
                             oop.setDuration(duration_tiet.getText().toString());
-                        oop.setOprtnLngTxt(oprtnShrtTxt_tiet.getText().toString());
+                        oop.setOprtnLngTxt(longtext_text);
                         oop.setDurationUnit(durationUnit_tiet.getText().toString());
                         oop.setStatus("I");
                         Intent intent = new Intent();
@@ -281,7 +364,7 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                     if (!oprtnShrtTxt_tiet.getText().toString().equals("")) {
                         oop.setOprtnShrtTxt(oprtnShrtTxt_tiet.getText().toString());
                         oop.setDuration(duration_tiet.getText().toString());
-                        oop.setOprtnLngTxt(oprtnShrtTxt_tiet.getText().toString());
+                        oop.setOprtnLngTxt(oop.getOprtnLngTxt());
                         oop.setDurationUnit(durationUnit_tiet.getText().toString());
                         if (!oop.getStatus().equals("I"))
                             oop.setStatus("U");
@@ -321,8 +404,60 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                     oop.setPlantTxt(data.getStringExtra("plant_txt"));
                     oop.setWrkCntrId(data.getStringExtra("wrkCntr_id"));
                     oop.setWrkCntrTxt(data.getStringExtra("wrkCntr_txt"));
-                    plant_tiet.setText(data.getStringExtra("plant_id"));
-                    wrkCntr_tiet.setText(data.getStringExtra("wrkCntr_id"));
+
+                    String plant_text = "";
+                    try
+                    {
+                        String plant_id = data.getStringExtra("plant_id");
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
+                        if (cursor1 != null && cursor1.getCount() > 0)
+                        {
+                            if (cursor1.moveToFirst())
+                            {
+                                do
+                                {
+                                    plant_text = cursor1.getString(2);
+                                }
+                                while (cursor1.moveToNext());
+                            }
+                        }
+                        else
+                        {
+                            cursor1.close();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    plant_tiet.setText(data.getStringExtra("plant_id")+" - "+plant_text);
+
+
+                    String loc_text = "";
+                    try
+                    {
+                        String loc_id = data.getStringExtra("wrkCntr_id");
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_WKCTR where Arbpl = ?", new String[]{loc_id});
+                        if (cursor1 != null && cursor1.getCount() > 0)
+                        {
+                            if (cursor1.moveToFirst())
+                            {
+                                do
+                                {
+                                    loc_text = cursor1.getString(8);
+                                }
+                                while (cursor1.moveToNext());
+                            }
+                        }
+                        else
+                        {
+                            cursor1.close();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    wrkCntr_tiet.setText(data.getStringExtra("wrkCntr_id")+" - "+loc_text);
+
                 }
                 break;
 
@@ -335,6 +470,19 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 }
                 break;
             /*Written By SuryaKiran for Custom Info Added onActivityResult*/
+
+
+
+            /*Written By SuryaKiran for Operation Long Text onActivityResult*/
+            case (long_text):
+                if(resultCode == RESULT_OK)
+                {
+                    longtext_text = data.getStringExtra("longtext_new");
+                    oop.setOprtnLngTxt(longtext_text);
+                }
+                break;
+            /*Written By SuryaKiran for Operation Long Text onActivityResult*/
+
 
 
         }

@@ -530,28 +530,48 @@
                     android:theme="@style/CheckBox" />
             </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/textInputSideMargins"
                 android:layout_marginStart="@dimen/textInputSideMargins"
                 android:layout_marginTop="@dimen/textInputTopMargin"
                 android:background="@drawable/blueborder"
-                android:paddingEnd="@dimen/textInputSidePadd"
-                android:paddingStart="@dimen/textInputSidePadd"
-                android:paddingTop="@dimen/textInputTopPadd"
-                android:textColorHint="@color/colorPrimary"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-
-                <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                    android:id="@+id/cnfrmTxt_tiet"
-                    android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/transparent"
-                    android:hint="@string/confirm_text"
-                    android:maxLength="40"
-                    android:textSize="@dimen/textSize" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight=".9"
+                    android:paddingEnd="@dimen/textInputSidePadd"
+                    android:paddingStart="@dimen/textInputSidePadd"
+                    android:paddingTop="@dimen/textInputTopPadd"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                        android:id="@+id/cnfrmTxt_tiet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/confirm_text"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="@dimen/textSize" />
+                </android.support.design.widget.TextInputLayout>
+                <ImageView
+                    android:id="@+id/longtext_imageview"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/dropDownIconEndMarg"
+                    android:layout_marginTop="@dimen/dropDownIconTopMarg"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_longtext_icon" />
+            </LinearLayout>
+
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

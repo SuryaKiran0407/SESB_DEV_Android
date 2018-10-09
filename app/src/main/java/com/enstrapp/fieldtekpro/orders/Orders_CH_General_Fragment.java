@@ -48,15 +48,16 @@ import java.util.HashMap;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-public class Orders_CH_General_Fragment extends Fragment implements View.OnClickListener {
+public class Orders_CH_General_Fragment extends Fragment implements View.OnClickListener
+{
 
-    TextInputEditText ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet, funcLocName_tiet, equipId_tiet,
+    TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet, funcLocName_tiet, equipId_tiet,
             equipName_tiet, wrkCntr_tiet, respCostCntr_tiet, priority_tiet, plannerGroup_tiet,
             personResp_tiet, basicStDt_tiet, basicEnDt_tiet, sysCond_tiet, status_tiet,
             revision_tiet, wbs_tiet;
-    ImageView ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv, wrkCntr_iv, respCstCntr_iv,
+    ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv, wrkCntr_iv, respCstCntr_iv,
             priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv, basicEdDt_iv, sysCond_iv,
-            wbs_iv, revision_iv;
+            wbs_iv, revision_iv, longtext_imageview;
     TextView notifNum_tv;
     LinearLayout equipId_ll, notifNum_ll, ordrTyp_ll, wbs_ll, revision_ll;
     TextInputLayout equipName_til, status_til;
@@ -64,8 +65,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
 
-    String order = "";
-    OrdrHeaderPrcbl ohp_h = null;
+    String order = "", longtext_text = "";
     Error_Dialog error_dialog = new Error_Dialog();
     Orders_Change_Activity ma;
 
@@ -83,6 +83,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     static final int REVISO = 534;
     private static final int STDT_SELECTED = 200;
     private static final int EDDT_SELECTED = 300;
+    private static final int long_text = 150;
+    private static final int activity_type = 151;
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     private static final int custom_info = 14;
     Button header_custominfo_button;
@@ -137,6 +139,9 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         equipId_ll = rootView.findViewById(R.id.equipId_ll);
         equipName_til = rootView.findViewById(R.id.equipName_til);
         header_custominfo_button = (Button)rootView.findViewById(R.id.header_custominfo_button);
+        longtext_imageview = (ImageView)rootView.findViewById(R.id.longtext_imageview);
+        activity_type_imageview = (ImageView)rootView.findViewById(R.id.activity_type_imageview);
+        activity_type_edittext = (TextInputEditText)rootView.findViewById(R.id.activity_type_edittext);
 
         ma = (Orders_Change_Activity) this.getActivity();
         ordrTyp_tiet.setEnabled(false);
@@ -157,12 +162,14 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         wbs_iv.setOnClickListener(this);
         revision_iv.setOnClickListener(this);
         header_custominfo_button.setOnClickListener(this);
+        longtext_imageview.setOnClickListener(this);
+        activity_type_imageview.setOnClickListener(this);
 
         selected_custom_info_arraylist.clear();
 
         if (ma.ohp != null) {
             ordrTyp_tiet.setText(getResources().getString(R.string.hypen_text, ma.ohp.getOrdrTypId(), ma.ohp.getOrdrTypName()));
-            ordrLngTxt_tiet.setText(ma.ohp.getOrdrLngTxt());
+            ordrLngTxt_tiet.setText(ma.ohp.getOrdrShrtTxt());
             if (ma.ohp.getOrdrTypId().equals("PM08")) {
                 equipId_ll.setVisibility(View.GONE);
                 equipName_til.setVisibility(View.GONE);
@@ -247,6 +254,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
             basicStDt_tiet.setText(dateDisplayFormat(ma.ohp.getBasicStart()));
             basicEnDt_tiet.setText(dateDisplayFormat(ma.ohp.getBasicEnd()));
             sysCond_tiet.setText(ma.ohp.getSysCondName());
+            activity_type_edittext.setText(ma.ohp.getActivitytype_id()+" - "+ma.ohp.getActivitytype_text());
         }
 
         ordrLngTxt_tiet.addTextChangedListener(new TextWatcher() {
@@ -261,17 +269,13 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     } else {
                         ma.ohp.setOrdrShrtTxt(ordrLngTxt_tiet.getText().toString());
                     }
-                    ma.ohp.setOrdrLngTxt(ordrLngTxt_tiet.getText().toString());
                 } else {
                     ma.ohp.setOrdrShrtTxt("");
-                    ma.ohp.setOrdrLngTxt("");
                 }
             }
-
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             }
-
             @Override
             public void afterTextChanged(Editable arg0) {
             }
@@ -404,6 +408,28 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
+            case (R.id.activity_type_imageview):
+                if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals(""))
+                {
+                    Intent activitytype_intent = new Intent(getActivity(), Activity_Type_Activity.class);
+                    activitytype_intent.putExtra("order_type",ma.ohp.getOrdrTypId());
+                    startActivityForResult(activitytype_intent, activity_type);
+                }
+                else
+                {
+                    error_dialog.show_error_dialog(getActivity(), "Please select Order Type");
+                }
+                break;
+
+            case (R.id.longtext_imageview):
+                Intent longtext_intent = new Intent(getActivity(), Order_LongText_Activity.class);
+                longtext_intent.putExtra("aufnr", ma.ohp.getOrdrId());
+                longtext_intent.putExtra("operation_id", "");
+                longtext_intent.putExtra("tdid", "");
+                longtext_intent.putExtra("longtext_new", longtext_text);
+                startActivityForResult(longtext_intent, long_text);
+                break;
 
             case (R.id.header_custominfo_button):
                 Intent custominfo_intent = new Intent(getActivity(), CustomInfo_Activity.class);
@@ -706,6 +732,23 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
                 }
                 break;
+
+            case (long_text):
+                if(resultCode == RESULT_OK)
+                {
+                    longtext_text = data.getStringExtra("longtext_new");
+                    ma.ohp.setOrdrLngTxt(data.getStringExtra("longtext_new"));
+                }
+                break;
+
+
+            case (activity_type):
+                if(resultCode == RESULT_OK)
+                {
+                    ma.ohp.setActivitytype_id(data.getStringExtra("activitytype_id"));
+                    ma.ohp.setActivitytype_text(data.getStringExtra("activitytype_text"));
+                    activity_type_edittext.setText(data.getStringExtra("activitytype_id")+" - "+data.getStringExtra("activitytype_text"));
+                }
         }
     }
 

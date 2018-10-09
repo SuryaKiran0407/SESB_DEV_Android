@@ -384,7 +384,7 @@ public class Notification_Postpone
                                                 String Qmnum = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Qmnum"));
                                                 if (uuid != null && !uuid.equals(""))
                                                 {
-                                                    String EtNotifActvs_sql = "Insert into DUE_NOTIFICATION_EtNotifActvs (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt, CauseKey, ActvKey, ActvGrp, Actgrptext, ActvCod, Actcodetext, ActvShtxt, Usr01, Usr02, Usr03, Usr04, Usr05, Fields, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                    String EtNotifActvs_sql = "Insert into DUE_NOTIFICATION_EtNotifActvs (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt, CauseKey, ActvKey, ActvGrp, Actgrptext, ActvCod, Actcodetext, ActvShtxt, StartDate, StartTime, EndDate, EndTime, Usr01, Usr02, Usr03, Usr04, Usr05, Fields, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                                     SQLiteStatement EtNotifActvs_statement = App_db.compileStatement(EtNotifActvs_sql);
                                                     EtNotifActvs_statement.clearBindings();
                                                     EtNotifActvs_statement.bindString(1,uuid);
@@ -406,13 +406,17 @@ public class Notification_Postpone
                                                     EtNotifActvs_statement.bindString(17,jsonArray.getJSONObject(j).optString("ActvCod"));
                                                     EtNotifActvs_statement.bindString(18,jsonArray.getJSONObject(j).optString("Actcodetext"));
                                                     EtNotifActvs_statement.bindString(19,jsonArray.getJSONObject(j).optString("ActvShtxt"));
-                                                    EtNotifActvs_statement.bindString(20,jsonArray.getJSONObject(j).optString("Usr01"));
-                                                    EtNotifActvs_statement.bindString(21,jsonArray.getJSONObject(j).optString("Usr02"));
-                                                    EtNotifActvs_statement.bindString(22,jsonArray.getJSONObject(j).optString("Usr03"));
-                                                    EtNotifActvs_statement.bindString(23,jsonArray.getJSONObject(j).optString("Usr04"));
-                                                    EtNotifActvs_statement.bindString(24,jsonArray.getJSONObject(j).optString("Usr05"));
-                                                    EtNotifActvs_statement.bindString(25,"");
-                                                    EtNotifActvs_statement.bindString(26,"U");
+                                                    EtNotifActvs_statement.bindString(20,jsonArray.getJSONObject(j).optString("StartDate"));
+                                                    EtNotifActvs_statement.bindString(21,jsonArray.getJSONObject(j).optString("StartTime"));
+                                                    EtNotifActvs_statement.bindString(22,jsonArray.getJSONObject(j).optString("EndDate"));
+                                                    EtNotifActvs_statement.bindString(23,jsonArray.getJSONObject(j).optString("EndTime"));
+                                                    EtNotifActvs_statement.bindString(24,jsonArray.getJSONObject(j).optString("Usr01"));
+                                                    EtNotifActvs_statement.bindString(25,jsonArray.getJSONObject(j).optString("Usr02"));
+                                                    EtNotifActvs_statement.bindString(26,jsonArray.getJSONObject(j).optString("Usr03"));
+                                                    EtNotifActvs_statement.bindString(27,jsonArray.getJSONObject(j).optString("Usr04"));
+                                                    EtNotifActvs_statement.bindString(28,jsonArray.getJSONObject(j).optString("Usr05"));
+                                                    EtNotifActvs_statement.bindString(29,"");
+                                                    EtNotifActvs_statement.bindString(30,"U");
                                                     EtNotifActvs_statement.execute();
 
 

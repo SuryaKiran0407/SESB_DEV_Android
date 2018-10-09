@@ -84,7 +84,7 @@ public class DatePickerDialog extends Activity implements View.OnClickListener
             Intent intent=new Intent();
             intent.putExtra("date",selected_date);
             intent.putExtra("date_formatted",selected_date_formatted);
-            setResult(request_id,intent);
+            setResult(RESULT_OK,intent);
             DatePickerDialog.this.finish();
         }
     }
