@@ -54,6 +54,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
     Boolean isInternetPresent = false;
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
+    String plant_id = "", loc_id = "";
 
     /*Written By SuryaKiran for Custom Info*/
     Button material_custominfo_button;
@@ -146,7 +147,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 {
                 }
                 plant_tiet.setText(omp.getPlantId()+" - "+plant_text);
-
+                plant_id = omp.getPlantId();
 
 
                 String loc_text = "";
@@ -174,6 +175,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 {
                 }
                 location_tiet.setText(omp.getLocation()+" - "+loc_text);
+                loc_id = omp.getLocation();
 
 
                 reservation_tiet.setText(getResources().getString(R.string.hypen_text, omp.getRsnum(), omp.getRspos()));
@@ -342,7 +344,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                     {
                     }
                     plant_tiet.setText(data.getStringExtra("plant")+" - "+plant_text);
-
+                    plant_id = data.getStringExtra("plant");
 
 
                     String loc_text = "";
@@ -370,6 +372,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                     {
                     }
                     location_tiet.setText(data.getStringExtra("location")+" - "+loc_text);
+                    loc_id = data.getStringExtra("location");
 
                 }
                 break;
@@ -429,8 +432,8 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 Date = new SimpleDateFormat("yyyyMMdd").format(cDate);
                 AVAIL_STATUS = Material_Availability_Check.material_availability_check(Material_Add_Update_Activity.this,
                         "", MatrlId, component_tiet.getText().toString()
-                        , quantity_tiet.getText().toString(), Date, plant_tiet.getText().toString()
-                        , location_tiet.getText().toString());
+                        , quantity_tiet.getText().toString(), Date, plant_id
+                        , loc_id);
             } catch (Exception e) {
             }
             return null;
@@ -504,9 +507,9 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         omp_d.setOprtnShrtTxt(OprtnShrtTxt);
         omp_d.setMatrlId(MatrlId);
         omp_d.setMatrlTxt(component_tiet.getText().toString());
-        omp_d.setPlantId(plant_tiet.getText().toString());
+        omp_d.setPlantId(plant_id);
         omp_d.setQuantity(quantity_tiet.getText().toString());
-        omp_d.setLocation(location_tiet.getText().toString());
+        omp_d.setLocation(loc_id);
         omp_d.setReceipt(receipt_tiet.getText().toString());
         omp_d.setUnloading(unloading_tiet.getText().toString());
         omp_al.add(omp_d);

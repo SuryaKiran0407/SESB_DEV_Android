@@ -86,10 +86,8 @@ public class Material_Availability_Check
             itMatnrPost.setRdate(date);
             itMatnrPost.setErfmg(quantity);
 
-            /*Adding Notification Header to Arraylist*/
             ArrayList<ItMatnrPost> headerArrayList = new ArrayList<>();
             headerArrayList.add(itMatnrPost);
-            /*Adding Notification Header to Arraylist*/
 
             ArrayList headerArrayList1 = new ArrayList<>();
 
