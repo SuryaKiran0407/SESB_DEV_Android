@@ -45,6 +45,7 @@ import com.enstrapp.fieldtekpro.orders.PermitSer;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -53,8 +54,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
-public interface Interface
-{
+public interface Interface {
 
     @GET
     Call<SER_Login> getLoginDetails(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
@@ -171,10 +171,8 @@ public interface Interface
     @POST
     Call<Orders_SER> postPermitChange(@Url String anEmptyString, @Body PermitSer permitSer, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
-
     @POST
     Call<SER_Login> PostGeoTagData(@Url String anEmptyString, @Body Geo_Tag_Model body, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
-
 
     @GET
     Call<Attachment_Download_SER> getAttachmentURLDetails(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);

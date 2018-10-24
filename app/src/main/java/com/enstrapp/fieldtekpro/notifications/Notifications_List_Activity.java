@@ -2474,12 +2474,13 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                                 nap.setFilename(EtDocs_cursor.getString(5));
                                 nap.setFiletype(EtDocs_cursor.getString(6));
                                 nap.setFsize(EtDocs_cursor.getString(7));
-                                nap.setContent(EtDocs_cursor.getString(8));
+//                                nap.setContent(EtDocs_cursor.getString(8));
                                 nap.setDocid(EtDocs_cursor.getString(9));
                                 nap.setDoctype(EtDocs_cursor.getString(10));
                                 nap.setObjtype(EtDocs_cursor.getString(11));
                                 nap.setFilepath(EtDocs_cursor.getString(12));
                                 nap.setStatus(EtDocs_cursor.getString(13));
+                                nap.setContentX(EtDocs_cursor.getString(14));
                                 etdocs_parcablearray.add(nap);
                             }
                             while (EtDocs_cursor.moveToNext());

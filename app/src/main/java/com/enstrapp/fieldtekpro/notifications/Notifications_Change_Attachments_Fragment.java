@@ -109,7 +109,7 @@ public class Notifications_Change_Attachments_Fragment extends Fragment
                     notif_etDocs_parcelable.setFiletype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
                     notif_etDocs_parcelable.setFsize(etdocs_parcablearray.get(i).getFsize().trim());
                     notif_etDocs_parcelable.setFilepath(etdocs_parcablearray.get(i).getFilepath());
-                    notif_etDocs_parcelable.setContent(etdocs_parcablearray.get(i).getContent());
+                    notif_etDocs_parcelable.setContentX(etdocs_parcablearray.get(i).getContentX());
                     notif_etDocs_parcelable.setDocid(etdocs_parcablearray.get(i).getDocid());
                     notif_etDocs_parcelable.setDoctype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
                     notif_etDocs_parcelable.setObjtype(etdocs_parcablearray.get(i).getObjtype());
@@ -929,7 +929,7 @@ public class Notifications_Change_Attachments_Fragment extends Fragment
                 holder.checkbox.setVisibility(View.VISIBLE);
                 holder.file_size_textview.setVisibility(View.VISIBLE);
             }
-            holder.content_textview.setText(nep.getContent());
+            holder.content_textview.setText(nep.getContentX());
             String object_type = nep.getObjtype();
             if (object_type.equalsIgnoreCase("EQUI"))
             {

@@ -635,7 +635,7 @@ public class Notifications_Change
                                     {
                                         for(int j = 0; j < jsonArray.length(); j++)
                                         {
-                                            String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Filepath, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Filepath, Status, Contentx) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                             SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
                                             EtDocs_statement.clearBindings();
                                             EtDocs_statement.bindString(1,uuid);
@@ -651,6 +651,7 @@ public class Notifications_Change
                                             EtDocs_statement.bindString(11,jsonArray.getJSONObject(j).optString("Objtype"));
                                             EtDocs_statement.bindString(12,"");
                                             EtDocs_statement.bindString(13,"Old");
+                                            EtDocs_statement.bindString(14, jsonArray.getJSONObject(j).optString("Contentx"));
                                             EtDocs_statement.execute();
                                         }
                                     }

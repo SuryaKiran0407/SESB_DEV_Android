@@ -81,17 +81,17 @@ public class Notifications_View_Attachements_Activity extends AppCompatActivity
             {
                 if (filetype.contains("pdf"))
                 {
-                    new DownloadFileFromURL().execute(url);
+                    new DownloadFileFromURL().execute(getString(R.string.ip_address_port_attach,url));
                 }
                 else if (filetype.contains("doc"))
                 {
                     file_mimetype = "application/msword";
-                    new DownloadDOCFileFromURL().execute(url);
+                    new DownloadDOCFileFromURL().execute(getString(R.string.ip_address_port_attach,url));
                 }
                 else if (filetype.contains("xls"))
                 {
                     file_mimetype = "application/vnd.ms-excel";
-                    new DownloadDOCFileFromURL().execute(url);
+                    new DownloadDOCFileFromURL().execute(getString(R.string.ip_address_port_attach,url));
                 }
                 else
                 {
@@ -174,7 +174,7 @@ public class Notifications_View_Attachements_Activity extends AppCompatActivity
                 return true;
             }
         });
-        webView.loadUrl(url);
+        webView.loadUrl(getString(R.string.ip_address_port_attach,url));
     }
 
 

@@ -2437,6 +2437,17 @@ public class Notifications_SER
         @SerializedName("DocType")
         @Expose
         private String docType;
+        @SerializedName("Contentx")
+        @Expose
+        private String contentX;
+
+        public String getContentX() {
+            return contentX;
+        }
+
+        public void setContentX(String contentX) {
+            this.contentX = contentX;
+        }
 
         public String getObjtype() {
             return objtype;

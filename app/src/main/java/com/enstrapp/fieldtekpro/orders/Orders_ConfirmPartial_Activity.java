@@ -64,8 +64,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
     private static final int long_text = 100;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_confirmpartial_activity);
 
@@ -96,14 +95,13 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         endDt_iv = findViewById(R.id.endDt_iv);
         strtTm_iv = findViewById(R.id.strtTm_iv);
         reason_tiet = findViewById(R.id.reason_tiet);
-        longtext_imageview = (ImageView)findViewById(R.id.longtext_imageview);
+        longtext_imageview = (ImageView) findViewById(R.id.longtext_imageview);
 
 
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
 
         setSupportActionBar(toolBar);
-        if (getSupportActionBar() != null)
-        {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
@@ -195,12 +193,9 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         });
 
 
-
-        longtext_imageview.setOnClickListener(new View.OnClickListener()
-        {
+        longtext_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent longtext_intent = new Intent(Orders_ConfirmPartial_Activity.this, Order_LongText_Activity.class);
                 longtext_intent.putExtra("aufnr", oop.getOrdrId());
                 longtext_intent.putExtra("operation_id", oop.getOprtnId());
@@ -225,22 +220,19 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 break;
 
             case (REASON):
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     ReasonId = data.getStringExtra("reason_unit");
                     reason_tiet.setText(data.getStringExtra("reason_txt"));
                 }
                 break;
 
             case (EDDT):
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     endDt_tiet.setText(data.getStringExtra("date_formatted"));
                 }
                 break;
             case (STDT):
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     strtDt_tiet.setText(data.getStringExtra("date_formatted"));
                 }
                 break;
@@ -256,16 +248,12 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 break;
 
             case (long_text):
-                if(resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     longtext_text = data.getStringExtra("longtext_new");
 
-                    if(longtext_text.length() > 40)
-                    {
+                    if (longtext_text.length() > 40) {
                         cnfrmTxt_tiet.setText(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
-                    }
-                    else
-                    {
+                    } else {
                         cnfrmTxt_tiet.setText(longtext_text);
                     }
                 }
@@ -316,9 +304,10 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                         String min = formatter.format(minutes);
                         actlWrkUnt_tiet.setText(min + "");
                         actlUnt_tiet.setText("MIN");
-                    } else if (oop.getDurationUnit().equalsIgnoreCase("HR")) {
+                    } else if (oop.getDurationUnit().equalsIgnoreCase("HR") ||
+                            oop.getDurationUnit().equalsIgnoreCase("H")) {
                         double hours = total / 3600;
-                        NumberFormat formatter = new DecimalFormat("###.#");
+                        NumberFormat formatter = new DecimalFormat("###.###");
                         String hour = formatter.format(hours);
                         actlWrkUnt_tiet.setText(hour + "");
                         actlUnt_tiet.setText("HR");
@@ -392,7 +381,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                             actlUnt_tiet.setText("MIN");
                         } else if (oop.getDurationUnit().equalsIgnoreCase("HR")) {
                             double hours = final_total / 3600;
-                            NumberFormat formatter = new DecimalFormat("###.#");
+                            NumberFormat formatter = new DecimalFormat("###.###");
                             String hour = formatter.format(hours);
                             actlWrkUnt_tiet.setText(hour + "");
                             actlUnt_tiet.setText("HR");
@@ -407,7 +396,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                     }
                 }
             } else {
-                cursor.close();
+                actlWrkUnt_tiet.setText(oop.getUsr04());
             }
         } catch (Exception e) {
         } finally {
@@ -452,7 +441,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
 
     private String timeFormat(String date) {
         String tm = "";
-        if(date.equals(""))
+        if (date.equals(""))
             return "000000";
         if (date != null && !date.equals("")) {
             String[] time = date.split(":");
@@ -466,31 +455,27 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
     }
 
 
-    public class GetToken extends AsyncTask<Void, Integer, Void>
-    {
+    public class GetToken extends AsyncTask<Void, Integer, Void> {
         String Response = "";
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             customProgressDialog.show_progress_dialog(Orders_ConfirmPartial_Activity.this, getResources().getString(R.string.confirm_progs));
         }
+
         @Override
-        protected Void doInBackground(Void... voids)
-        {
+        protected Void doInBackground(Void... voids) {
             Response = new Token().Get_Token(Orders_ConfirmPartial_Activity.this);
             return null;
         }
+
         @Override
-        protected void onPostExecute(Void aVoid)
-        {
+        protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (Response.equals("success"))
-            {
+            if (Response.equals("success")) {
                 new POST_TK_CONFIRM().execute();
-            }
-            else
-            {
+            } else {
                 customProgressDialog.dismiss_progress_dialog();
                 errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this, getResources().getString(R.string.unable_confirm));
             }
@@ -498,12 +483,11 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
     }
 
 
-    private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void>
-    {
+    private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void> {
         ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             cop_al.clear();
             ConfirmOrder_Prcbl cop = new ConfirmOrder_Prcbl();
@@ -593,21 +577,17 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 cd = new ConnectionDetector(Orders_ConfirmPartial_Activity.this);
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent)
-                {
+                if (isInternetPresent) {
                     cancel_dialog.dismiss();
                     new GetToken().execute();
-                }
-                else
-                {
+                } else {
                     new Network_Connection_Dialog().show_network_connection_dialog(Orders_ConfirmPartial_Activity.this);
                 }
             }
         });
     }
 
-    public String dismissActivity(final Activity activity, String message)
-    {
+    public String dismissActivity(final Activity activity, String message) {
         final Dialog success_dialog = new Dialog(activity);
         success_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         success_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -620,11 +600,9 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         description_textview.setText(message);
         Glide.with(activity).load(R.drawable.success_checkmark).into(imageview);
         success_dialog.show();
-        ok_button.setOnClickListener(new View.OnClickListener()
-        {
+        ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 success_dialog.dismiss();
                 activity.finish();
                 Intent intent = new Intent(Orders_ConfirmPartial_Activity.this, Orders_Activity.class);

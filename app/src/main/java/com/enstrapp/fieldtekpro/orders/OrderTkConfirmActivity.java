@@ -42,6 +42,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
+import static android.view.View.VISIBLE;
+
 public class OrderTkConfirmActivity extends AppCompatActivity implements View.OnClickListener {
 
     Dialog decision_dialog;
@@ -374,6 +376,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                         oop.setFsavd(cursor.getString(12));
                         oop.setSsedd(cursor.getString(13));
                         oop.setRueck(cursor.getString(19));
+                        oop.setUsr04(cursor.getString(28));
                         oop.setStatus("");
                         oop_al.add(oop);
                     }
@@ -402,7 +405,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             no_data_layout.setVisibility(View.GONE);
             operations_rv.setAdapter(operationsAdapter);
         } else {
-            no_data_layout.setVisibility(View.VISIBLE);
+            no_data_layout.setVisibility(VISIBLE);
             operations_rv.setVisibility(View.GONE);
         }
     }
@@ -412,10 +415,10 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         private ArrayList<OrdrOprtnPrcbl> operationsList;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView oprtnId_tv, duration_tv, oprtnShrtTxt_tv;
+            public TextView oprtnId_tv, duration_tv, oprtnShrtTxt_tv, remainingWork_tv;
             ImageView red_iv, yellow_iv, green_iv, confirm_iv;
             CheckBox checkBox;
-            LinearLayout oprtnList_ll;
+            LinearLayout oprtnList_ll, remainingWork_ll;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -428,6 +431,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                 yellow_iv = view.findViewById(R.id.yellow_iv);
                 green_iv = view.findViewById(R.id.green_iv);
                 oprtnList_ll = view.findViewById(R.id.oprtnList_ll);
+                remainingWork_ll = view.findViewById(R.id.remainingWork_ll);
+                remainingWork_tv = view.findViewById(R.id.remainingWork_tv);
             }
         }
 
@@ -448,7 +453,9 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             if (!oop.getStatus().equals("D")) {
                 holder.oprtnId_tv.setText(oop.getOprtnId());
                 holder.duration_tv.setText(oop.getDuration() + " " + oop.getDurationUnit());
+                holder.remainingWork_ll.setVisibility(VISIBLE);
                 holder.oprtnShrtTxt_tv.setText(oop.getOprtnShrtTxt());
+                holder.remainingWork_tv.setText(oop.getUsr04() + " " + oop.getDurationUnit());
                 holder.checkBox.setTag(position);
                 holder.oprtnId_tv.setTag(position);
                 holder.checkBox.setChecked(oop.isSelected());

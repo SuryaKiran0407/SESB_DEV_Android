@@ -52,6 +52,15 @@ public class Notif_EtDocs_Parcelable implements  Parcelable
     @SerializedName("Status")
     @Expose
     private String Status;
+    private String contentX;
+
+    public String getContentX() {
+        return contentX;
+    }
+
+    public void setContentX(String contentX) {
+        this.contentX = contentX;
+    }
 
     public String getStatus() {
         return Status;
@@ -191,6 +200,7 @@ public class Notif_EtDocs_Parcelable implements  Parcelable
         dest.writeString(this.doctype);
         dest.writeString(this.objtype);
         dest.writeString(this.Status);
+        dest.writeString(this.contentX);
     }
 
     protected Notif_EtDocs_Parcelable(Parcel in) {
@@ -208,6 +218,7 @@ public class Notif_EtDocs_Parcelable implements  Parcelable
         this.doctype = in.readString();
         this.objtype = in.readString();
         this.Status = in.readString();
+        this.contentX = in.readString();
     }
 
     public static final Creator<Notif_EtDocs_Parcelable> CREATOR = new Creator<Notif_EtDocs_Parcelable>() {

@@ -804,6 +804,7 @@ public class GetOrderDetail {
                             oop.setRueck(cursor.getString(19));
                             oop.setUsr02(cursor.getString(26));
                             oop.setUsr03(cursor.getString(27));
+                            oop.setUsr04(cursor.getString(28));
                             oop.setStatus("");
                             oop_al.add(oop);
                         }
