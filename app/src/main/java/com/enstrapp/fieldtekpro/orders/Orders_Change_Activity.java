@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +83,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
 
-        if (bundle != null)
-        {
+        if (bundle != null) {
             ohp = bundle.getParcelable("ordr_parcel");
         }
 
@@ -103,7 +103,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
         orderStatus_bt.setVisibility(View.VISIBLE);
         order_vp = findViewById(R.id.order_vp);
         order_tl = findViewById(R.id.order_tl);
-        order_footer = (LinearLayout)findViewById(R.id.order_footer);
+        order_footer = (LinearLayout) findViewById(R.id.order_footer);
 
         orders_tv.setText(ohp.getOrdrId());
         status_tv.setText(ohp.getOrdrStatus());
@@ -174,7 +174,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     case 4:
                         break;
                     case 5:
-                        fab.hide();
+                        break;
                     case 6:
                         fab.hide();
                         break;
@@ -183,6 +183,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         break;
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
@@ -215,75 +216,48 @@ public class Orders_Change_Activity extends AppCompatActivity {
                                                     }
                                                     cd = new ConnectionDetector(Orders_Change_Activity.this);
                                                     isInternetPresent = cd.isConnectingToInternet();
-                                                    if (isInternetPresent)
-                                                    {
+                                                    if (isInternetPresent) {
                                                         confirmationDialog(getString(R.string.update_order));
-                                                    }
-                                                    else
-                                                    {
-                                                        if (ohp.getOrdrPermitPrcbls() != null)
-                                                        {
-                                                            if(ohp.getOrdrPermitPrcbls().size() > 0)
-                                                            {
+                                                    } else {
+                                                        if (ohp.getOrdrPermitPrcbls() != null) {
+                                                            if (ohp.getOrdrPermitPrcbls().size() > 0) {
                                                                 network_connection_dialog.show_network_connection_dialog(Orders_Change_Activity.this);
-                                                            }
-                                                            else
-                                                            {
+                                                            } else {
                                                                 Insert_Offline_Data();
                                                             }
-                                                        }
-                                                        else
-                                                        {
+                                                        } else {
                                                             Insert_Offline_Data();
                                                         }
                                                     }
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.revision_mandate));
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.wbs_mandate));
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             cd = new ConnectionDetector(Orders_Change_Activity.this);
                                             isInternetPresent = cd.isConnectingToInternet();
-                                            if (isInternetPresent)
-                                            {
-                                                if (ohp.getOrdrTypId().equals("PM08"))
-                                                {
+                                            if (isInternetPresent) {
+                                                if (ohp.getOrdrTypId().equals("PM08")) {
                                                     ohp.setEquipNum("");
                                                     ohp.setEquipName("");
                                                     ohp.setOrdrMatrlPrcbls(null);
                                                 }
                                                 confirmationDialog(getString(R.string.update_order));
-                                            }
-                                            else
-                                            {
-                                                if (ohp.getOrdrPermitPrcbls() != null)
-                                                {
-                                                    if(ohp.getOrdrPermitPrcbls().size() > 0)
-                                                    {
+                                            } else {
+                                                if (ohp.getOrdrPermitPrcbls() != null) {
+                                                    if (ohp.getOrdrPermitPrcbls().size() > 0) {
                                                         network_connection_dialog.show_network_connection_dialog(Orders_Change_Activity.this);
-                                                    }
-                                                    else
-                                                    {
+                                                    } else {
                                                         Insert_Offline_Data();
                                                     }
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     Insert_Offline_Data();
                                                 }
                                             }
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.plndGrp_mandate));
                                     }
                                 } else {
@@ -308,6 +282,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ohp = null;
+                deleteAttachments();
                 onBackPressed();
             }
         });
@@ -327,82 +302,73 @@ public class Orders_Change_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ohp = null;
+                deleteAttachments();
                 onBackPressed();
             }
         });
 
 
         /*Authorization For Change Notification */
-        String auth_change_status = Authorizations.Get_Authorizations_Data(Orders_Change_Activity.this,"W","U");
-        if (auth_change_status.equalsIgnoreCase("true"))
-        {
+        String auth_change_status = Authorizations.Get_Authorizations_Data(Orders_Change_Activity.this, "W", "U");
+        if (auth_change_status.equalsIgnoreCase("true")) {
             order_footer.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             order_footer.setVisibility(View.GONE);
         }
         /*Authorization For Change Notification */
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        deleteAttachments();
+        return super.onKeyDown(keyCode, event);
+    }
 
-
-    public void  Insert_Offline_Data()
-    {
+    public void Insert_Offline_Data() {
         decision_dialog = new Dialog(Orders_Change_Activity.this);
         decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         decision_dialog.setCancelable(false);
         decision_dialog.setCanceledOnTouchOutside(false);
         decision_dialog.setContentView(R.layout.offline_decision_dialog);
-        TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
-        Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-        Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-        Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
+        TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
+        Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+        Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+        Button connect_button = (Button) decision_dialog.findViewById(R.id.connect_button);
         description_textview.setText("No Internet Connectivity. Do you want to proceed Order Change with offline ?");
         confirm.setText("Yes");
         cancel.setText("No");
         decision_dialog.show();
-        cancel.setOnClickListener(new View.OnClickListener()
-        {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 decision_dialog.dismiss();
             }
         });
-        connect_button.setOnClickListener(new View.OnClickListener()
-        {
+        connect_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 decision_dialog.dismiss();
                 Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
+                intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
                 startActivity(intent);
             }
         });
-        confirm.setOnClickListener(new View.OnClickListener()
-        {
+        confirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                customProgressDialog.show_progress_dialog(Orders_Change_Activity.this,getResources().getString(R.string.loading));
-                try
-                {
+            public void onClick(View v) {
+                customProgressDialog.show_progress_dialog(Orders_Change_Activity.this, getResources().getString(R.string.loading));
+                try {
                     App_db.execSQL("delete from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{ohp.getOrdrId()});
                     App_db.execSQL("delete from DUE_ORDERS_Longtext where Aufnr = ?", new String[]{ohp.getOrdrId()});
                     App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations where Aufnr = ?", new String[]{ohp.getOrdrId()});
                     App_db.execSQL("delete from EtOrderComponents where Aufnr = ?", new String[]{ohp.getOrdrId()});
                     App_db.execSQL("delete from EtOrderOlist where Aufnr = ?", new String[]{ohp.getOrdrId()});
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
-                try
-                {
+                try {
                     App_db.beginTransaction();
                     String EtOrderHeader_sql = "Insert into DUE_ORDERS_EtOrderHeader (UUID, Aufnr, Auart, Ktext, Ilart, Ernam, Erdat, Priok, Equnr, Strno, TplnrInt, Bautl, Gltrp, Gstrp, Docs, Permits, Altitude, Latitude, Longitude, Qmnum, Closed, Completed, Ingrp, Arbpl, Werks, Bemot, Aueru, Auarttext, Qmartx, Qmtxt, Pltxt, Eqktx, Priokx , Ilatx, Plantname, Wkctrname, Ingrpname, Maktx, Xstatus, Usr01, Usr02, Usr03, Usr04, Usr05, Kokrs, Kostl, Anlzu, Anlzux, Ausvn, Ausbs, Auswk, Qmnam, ParnrVw, NameVw, Posid, Revnr) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                     SQLiteStatement EtOrderHeader_statement = App_db.compileStatement(EtOrderHeader_sql);
@@ -466,34 +432,26 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     EtOrderHeader_statement.execute();
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
-                try
-                {
+                try {
                     String long_text = ohp.getOrdrLngTxt();
-                    if (long_text != null && !long_text.equals(""))
-                    {
+                    if (long_text != null && !long_text.equals("")) {
                         App_db.beginTransaction();
-                        if(long_text.contains("\n"))
-                        {
+                        if (long_text.contains("\n")) {
                             String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
                             SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                             EtOrderLongtext_statement.clearBindings();
                             String[] longtext_array = long_text.split("\n");
-                            for(int i = 0; i < longtext_array.length; i++)
-                            {
+                            for (int i = 0; i < longtext_array.length; i++) {
                                 EtOrderLongtext_statement.bindString(1, ohp.getOrdrUUId());
                                 EtOrderLongtext_statement.bindString(2, ohp.getOrdrId());
                                 EtOrderLongtext_statement.bindString(3, "");
                                 EtOrderLongtext_statement.bindString(4, longtext_array[i]);
                                 EtOrderLongtext_statement.execute();
                             }
-                        }
-                        else
-                        {
+                        } else {
                             String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
                             SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                             EtOrderLongtext_statement.clearBindings();
@@ -506,22 +464,17 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         App_db.setTransactionSuccessful();
                         App_db.endTransaction();
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
-                try
-                {
+                try {
                     ArrayList<OrdrOprtnPrcbl> operations = ohp.getOrdrOprtnPrcbls();
-                    if (operations.size() > 0)
-                    {
+                    if (operations.size() > 0) {
                         App_db.beginTransaction();
                         String EtOrderOperations_sql = "Insert into DUE_ORDERS_EtOrderOperations (UUID,Aufnr,Vornr,Uvorn,Ltxa1,Arbpl,Werks,Steus,Larnt,Dauno,Daune,Fsavd,Ssedd,Pernr,Asnum,Plnty,Plnal,Plnnr,Rueck,Aueru,ArbplText,WerksText,SteusText,LarntText,Usr01,Usr02,Usr03,Usr04,Usr05,Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                         SQLiteStatement EtOrderOperations_statement = App_db.compileStatement(EtOrderOperations_sql);
                         EtOrderOperations_statement.clearBindings();
-                        for(int i = 0; i < operations.size(); i++)
-                        {
+                        for (int i = 0; i < operations.size(); i++) {
                             EtOrderOperations_statement.bindString(1, ohp.getOrdrUUId());
                             EtOrderOperations_statement.bindString(2, ohp.getOrdrId());
                             EtOrderOperations_statement.bindString(3, operations.get(i).getOprtnId());
@@ -557,23 +510,18 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         App_db.setTransactionSuccessful();
                         App_db.endTransaction();
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
 
-                try
-                {
+                try {
                     ArrayList<OrdrMatrlPrcbl> matrlPrcbls = ohp.getOrdrMatrlPrcbls();
-                    if(matrlPrcbls.size() > 0)
-                    {
+                    if (matrlPrcbls.size() > 0) {
                         App_db.beginTransaction();
                         String EtOrderComponents_sql = "Insert into EtOrderComponents (UUID, Aufnr, Vornr, Uvorn, Rsnum, Rspos, Matnr, Werks, Lgort, Posnr, Bdmng, Meins, Postp, MatnrText, WerksText, LgortText, PostpText, Usr01, Usr02, Usr03, Usr04, Usr05, Action, Wempf, Ablad) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                         SQLiteStatement EtOrderComponents_statement = App_db.compileStatement(EtOrderComponents_sql);
                         EtOrderComponents_statement.clearBindings();
-                        for(int i = 0; i < matrlPrcbls.size(); i++)
-                        {
+                        for (int i = 0; i < matrlPrcbls.size(); i++) {
                             EtOrderComponents_statement.bindString(1, ohp.getOrdrUUId());
                             EtOrderComponents_statement.bindString(2, ohp.getOrdrId());
                             EtOrderComponents_statement.bindString(3, matrlPrcbls.get(i).getOprtnId());
@@ -584,7 +532,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                             EtOrderComponents_statement.bindString(8, matrlPrcbls.get(i).getPlantId());
                             EtOrderComponents_statement.bindString(9, matrlPrcbls.get(i).getLocation());
                             EtOrderComponents_statement.bindString(10, matrlPrcbls.get(i).getPartId());
-                            EtOrderComponents_statement.bindString(11,matrlPrcbls.get(i).getQuantity());
+                            EtOrderComponents_statement.bindString(11, matrlPrcbls.get(i).getQuantity());
                             EtOrderComponents_statement.bindString(12, "");
                             EtOrderComponents_statement.bindString(13, "");
                             EtOrderComponents_statement.bindString(14, matrlPrcbls.get(i).getMatrlTxt());
@@ -592,7 +540,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                             EtOrderComponents_statement.bindString(16, "");
                             EtOrderComponents_statement.bindString(17, "");
                             EtOrderComponents_statement.bindString(18, "");
-                            EtOrderComponents_statement.bindString(19,"");
+                            EtOrderComponents_statement.bindString(19, "");
                             EtOrderComponents_statement.bindString(20, "");
                             EtOrderComponents_statement.bindString(21, "");
                             EtOrderComponents_statement.bindString(22, "");
@@ -604,22 +552,17 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         App_db.setTransactionSuccessful();
                         App_db.endTransaction();
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
-                try
-                {
+                try {
                     ArrayList<OrdrObjectPrcbl> objectPrcbls = ohp.getOrdrObjectPrcbls();
-                    if(objectPrcbls.size() > 0)
-                    {
+                    if (objectPrcbls.size() > 0) {
                         App_db.beginTransaction();
                         String EtOrderOlist_sql = "Insert into EtOrderOlist (UUID, Aufnr, Obknr, Obzae, Qmnum, Equnr, Strno, Tplnr, Bautl, Qmtxt, Pltxt, Eqktx, Maktx, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                         SQLiteStatement EtOrderOlist_statement = App_db.compileStatement(EtOrderOlist_sql);
                         EtOrderOlist_statement.clearBindings();
-                        for(int i = 0; i < objectPrcbls.size(); i++)
-                        {
+                        for (int i = 0; i < objectPrcbls.size(); i++) {
                             EtOrderOlist_statement.bindString(1, ohp.getOrdrUUId());
                             EtOrderOlist_statement.bindString(2, ohp.getOrdrId());
                             EtOrderOlist_statement.bindString(3, "");
@@ -639,45 +582,34 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         App_db.setTransactionSuccessful();
                         App_db.endTransaction();
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
-                try
-                {
+                try {
                     ArrayList<NotifOrdrStatusPrcbl> ordrStatusPrcbl = ohp.getOrdrStatusPrcbls();
-                    if(ordrStatusPrcbl.size() > 0)
-                    {
-                        for(int i = 0; i < ordrStatusPrcbl.size(); i++)
-                        {
-                            if(ordrStatusPrcbl.get(i).getAct().equalsIgnoreCase("X"))
-                            {
+                    if (ordrStatusPrcbl.size() > 0) {
+                        for (int i = 0; i < ordrStatusPrcbl.size(); i++) {
+                            if (ordrStatusPrcbl.get(i).getAct().equalsIgnoreCase("X")) {
                                 String txt04 = ordrStatusPrcbl.get(i).getTxt04();
                                 String txt30 = ordrStatusPrcbl.get(i).getTxt30();
                                 ContentValues cv = new ContentValues();
-                                cv.put("Action","I");
-                                cv.put("Act","X");
-                                App_db.update("EtOrderStatus", cv, "Aufnr = ? and Txt04 = ? and Txt30 = ?", new String[]{ohp.getOrdrId(),txt04,txt30});
-                            }
-                            else
-                            {
+                                cv.put("Action", "I");
+                                cv.put("Act", "X");
+                                App_db.update("EtOrderStatus", cv, "Aufnr = ? and Txt04 = ? and Txt30 = ?", new String[]{ohp.getOrdrId(), txt04, txt30});
+                            } else {
                                 String txt04 = ordrStatusPrcbl.get(i).getTxt04();
                                 String txt30 = ordrStatusPrcbl.get(i).getTxt30();
                                 ContentValues cv = new ContentValues();
-                                cv.put("Action","I");
-                                cv.put("Act","");
-                                App_db.update("EtOrderStatus", cv, "Aufnr = ? and Txt04 = ? and Txt30 = ?", new String[]{ohp.getOrdrId(),txt04,txt30});
+                                cv.put("Action", "I");
+                                cv.put("Act", "");
+                                App_db.update("EtOrderStatus", cv, "Aufnr = ? and Txt04 = ? and Txt30 = ?", new String[]{ohp.getOrdrId(), txt04, txt30});
                             }
                         }
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
-                try
-                {
+                try {
                     UUID uniqueKey = UUID.randomUUID();
                     DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
                     DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
@@ -702,9 +634,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     statement11.execute();
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
                 customProgressDialog.dismiss_progress_dialog();
@@ -713,7 +643,6 @@ public class Orders_Change_Activity extends AppCompatActivity {
             }
         });
     }
-
 
 
     @Override
@@ -758,8 +687,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
     }
 
 
-    private static String makeFragmentName(int viewPagerId, int index)
-    {
+    private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
@@ -770,17 +698,16 @@ public class Orders_Change_Activity extends AppCompatActivity {
         ArrayList<Model_CustomInfo> header_custominfo = new ArrayList<>();
         ArrayList<HashMap<String, String>> operation_custom_info_arraylist = new ArrayList<>();
         ArrayList<HashMap<String, String>> material_custom_info_arraylist = new ArrayList<>();
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             customProgressDialog.show_progress_dialog(Orders_Change_Activity.this, getResources().getString(R.string.change_order));
             /*Fetching Header Custom Info Data*/
-            Orders_CH_General_Fragment header_tab = (Orders_CH_General_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp,0));
+            Orders_CH_General_Fragment header_tab = (Orders_CH_General_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 0));
             ArrayList<HashMap<String, String>> header_custom_info_arraylist = header_tab.getHeaderCustominfoData();
-            if(header_custom_info_arraylist.size() > 0)
-            {
-                for(int i = 0; i < header_custom_info_arraylist.size(); i++)
-                {
+            if (header_custom_info_arraylist.size() > 0) {
+                for (int i = 0; i < header_custom_info_arraylist.size(); i++) {
                     Model_CustomInfo mnc = new Model_CustomInfo();
                     mnc.setZdoctype(header_custom_info_arraylist.get(i).get("Zdoctype"));
                     mnc.setZdoctypeItem(header_custom_info_arraylist.get(i).get("ZdoctypeItem"));
@@ -788,44 +715,33 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     mnc.setFieldname(header_custom_info_arraylist.get(i).get("Fieldname"));
                     mnc.setDatatype(header_custom_info_arraylist.get(i).get("Datatype"));
                     String datatype = header_custom_info_arraylist.get(i).get("Datatype");
-                    if(datatype.equalsIgnoreCase("DATS"))
-                    {
+                    if (datatype.equalsIgnoreCase("DATS")) {
                         String value = header_custom_info_arraylist.get(i).get("Value");
                         String inputPattern = "MMM dd, yyyy";
                         String outputPattern = "yyyyMMdd";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                        try
-                        {
+                        try {
                             Date date = inputFormat.parse(value);
-                            String formatted_date =  outputFormat.format(date);
+                            String formatted_date = outputFormat.format(date);
                             mnc.setValue(formatted_date);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             mnc.setValue("");
                         }
-                    }
-                    else if(datatype.equalsIgnoreCase("TIMS"))
-                    {
+                    } else if (datatype.equalsIgnoreCase("TIMS")) {
                         String value = header_custom_info_arraylist.get(i).get("Value");
                         String inputPattern = "HH:mm:ss";
                         String outputPattern = "HHmmss";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                        try
-                        {
+                        try {
                             Date date = inputFormat.parse(value);
-                            String formatted_date =  outputFormat.format(date);
+                            String formatted_date = outputFormat.format(date);
                             mnc.setValue(formatted_date);
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             mnc.setValue("");
                         }
-                    }
-                    else
-                    {
+                    } else {
                         mnc.setValue(header_custom_info_arraylist.get(i).get("Value"));
                     }
                     mnc.setFlabel(header_custom_info_arraylist.get(i).get("Flabel"));
@@ -840,7 +756,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... transmit) {
             String transmit_type = transmit[0];
-            Response = new Order_Create_Change().Post_Create_Order(Orders_Change_Activity.this, ohp, transmit_type, "CHORD", ohp.getOrdrId(), "", header_custominfo,operation_custom_info_arraylist,material_custom_info_arraylist);
+            Response = new Order_Create_Change().Post_Create_Order(Orders_Change_Activity.this, ohp, transmit_type, "CHORD", ohp.getOrdrId(), "", header_custominfo, operation_custom_info_arraylist, material_custom_info_arraylist, "");
             return null;
         }
 
@@ -861,8 +777,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
             } else if (Response[0].startsWith("E")) {
                 StringBuilder response = new StringBuilder();
                 String[] sp = Response[0].split("\n");
-                for(int i = 0; i < sp.length; i++){
-                    if(i >= 1)
+                for (int i = 0; i < sp.length; i++) {
+                    if (i >= 1)
                         response.append("\n");
                     response.append(sp[0].substring(2));
                 }
@@ -1090,28 +1006,19 @@ public class Orders_Change_Activity extends AppCompatActivity {
     }
 
 
-
-    public void updateTabDataCount()
-    {
+    public void updateTabDataCount() {
         Orders_CH_Operation_Fragment operation_fragment = (Orders_CH_Operation_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
-        if(operation_fragment.OperationsSize() > 0)
-        {
-            order_tl.getTabAt(1).setText(getString(R.string.operation_p,operation_fragment.OperationsSize()));
-        }
-        else
-        {
+        if (operation_fragment.OperationsSize() > 0) {
+            order_tl.getTabAt(1).setText(getString(R.string.operation_p, operation_fragment.OperationsSize()));
+        } else {
             order_tl.getTabAt(1).setText(getResources().getString(R.string.operations));
         }
 
 
-
         Orders_CH_Material_Fragment material_fragment = (Orders_CH_Material_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
-        if(material_fragment.MaterialSize() > 0)
-        {
-            order_tl.getTabAt(2).setText(getString(R.string.material_p,material_fragment.MaterialSize()));
-        }
-        else
-        {
+        if (material_fragment.MaterialSize() > 0) {
+            order_tl.getTabAt(2).setText(getString(R.string.material_p, material_fragment.MaterialSize()));
+        } else {
             order_tl.getTabAt(2).setText(getResources().getString(R.string.material));
         }
 
@@ -1119,5 +1026,11 @@ public class Orders_Change_Activity extends AppCompatActivity {
         setCustomFont(order_tl);
     }
 
+    private void deleteAttachments() {
+        try {
+            App_db.execSQL("delete from Orders_Attachments");
+        } catch (Exception e) {
 
+        }
+    }
 }

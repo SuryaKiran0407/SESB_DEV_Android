@@ -360,7 +360,7 @@
     <string name="operation_txt">Operation Text</string>
     <string name="remaining_work">Remaining Work  :</string>
     <string name="duration">Duration</string>
-    <string name="hr">HR</string>
+    <string name="hr">H</string>
     <string name="confirm_order">Confirmation Order</string>
     <string name="oprtn_shrt_txt">Operation Short Text</string>
     <string name="oprtn_lng_txt">Operation Long Text</string>

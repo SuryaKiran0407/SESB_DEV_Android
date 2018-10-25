@@ -3385,6 +3385,14 @@ public class Orders_SER {
             this.docType = docType;
         }
 
+        public String getContentX() {
+            return contentX;
+        }
+
+        public void setContentX(String contentX) {
+            this.contentX = contentX;
+        }
+
         @SerializedName("Objtype")
         @Expose
         public String objtype;
@@ -3415,6 +3423,9 @@ public class Orders_SER {
         @SerializedName("DocType")
         @Expose
         public String docType;
+        @SerializedName("Contentx")
+        @Expose
+        public String contentX;
     }
     /*For Parsing EtDocs*/
 

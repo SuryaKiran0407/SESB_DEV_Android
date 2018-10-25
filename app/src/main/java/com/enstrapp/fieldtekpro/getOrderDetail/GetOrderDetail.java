@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.notifications.Notif_EtDocs_Parcelable;
 import com.enstrapp.fieldtekpro.orders.OrdrHeaderPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrMatrlPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrObjectPrcbl;
@@ -33,6 +34,7 @@ public class GetOrderDetail {
         App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         OrdrHeaderPrcbl ohp = new OrdrHeaderPrcbl();
+        ArrayList<Notif_EtDocs_Parcelable> docs_al = new ArrayList<>();
         ArrayList<OrdrOprtnPrcbl> oop_al = new ArrayList<OrdrOprtnPrcbl>();
         ArrayList<OrdrObjectPrcbl> oobp_al = new ArrayList<OrdrObjectPrcbl>();
         ArrayList<OrdrMatrlPrcbl> omp_al = new ArrayList<OrdrMatrlPrcbl>();
@@ -819,7 +821,33 @@ public class GetOrderDetail {
                     cursor.close();
             }
 
+            try {
+                cursor = App_db.rawQuery("select * from DUE_ORDERS_EtDocs where Zobjid = ?",
+                        new String[]{orderId});
+                if (cursor != null && cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        Notif_EtDocs_Parcelable docs = new Notif_EtDocs_Parcelable();
+                        docs.setZobjid(cursor.getString(2));
+                        docs.setZdoctype(cursor.getString(3));
+                        docs.setZdoctypeitem(cursor.getString(4));
+                        docs.setFilename(cursor.getString(5));
+                        docs.setFiletype(cursor.getString(6));
+                        docs.setFsize(cursor.getString(7));
+                        docs.setContent("");
+                        docs.setDocid(cursor.getString(9));
+                        docs.setDoctype(cursor.getString(10));
+                        docs.setObjtype(cursor.getString(11));
+                        docs.setContentX(cursor.getString(12));
+                        docs.setStatus("old");
+                        docs_al.add(docs);
+                    }
+                }
+            } catch (Exception e) {
 
+            } finally {
+                if (cursor != null)
+                    cursor.close();
+            }
 
             /*Order Header Data*/
             try {
@@ -927,6 +955,7 @@ public class GetOrderDetail {
                             ohp.setOrdrMatrlPrcbls(omp_al);
                             ohp.setOrdrStatusPrcbls(orstp_al);
                             ohp.setOrdrPermitPrcbls(ww_al);
+                            ohp.setOrdrDocsPrcbls(docs_al);
                         }
                         while (cursor.moveToNext());
                     }

@@ -60,10 +60,8 @@ public class Order_Create_Change {
     private static ArrayList<Model_CustomInfo> operation_custominfo = new ArrayList<>();
     private static ArrayList<Model_CustomInfo> material_custominfo = new ArrayList<>();
 
-    public static String[] Post_Create_Order(Context activity, OrdrHeaderPrcbl ohp, String transmitType, String operation, String orderId, String type, ArrayList<Model_CustomInfo> header_custominfo, ArrayList<HashMap<String, String>> operation_custom_info_arraylist, ArrayList<HashMap<String, String>> material_custom_info_arraylist)
-    {
-        try
-        {
+    public static String[] Post_Create_Order(Context activity, OrdrHeaderPrcbl ohp, String transmitType, String operation, String orderId, String type, ArrayList<Model_CustomInfo> header_custominfo, ArrayList<HashMap<String, String>> operation_custom_info_arraylist, ArrayList<HashMap<String, String>> material_custom_info_arraylist, String uniqeId) {
+        try {
             Get_Response = "";
             Get_Data = "";
             DATABASE_NAME = activity.getString(R.string.database_name);
@@ -129,7 +127,7 @@ public class Order_Create_Change {
                 ordrHdrSer.setXstatus(type);
                 ItOrderHeader_Al.add(ordrHdrSer);
             } else {
-            /*Objects for Assigning Notification Header and Sending Data in BODY*/
+                /*Objects for Assigning Notification Header and Sending Data in BODY*/
                 Cursor cursor1 = null;
                 OrdrHdrSer ordrHdrSer = new OrdrHdrSer();
                 ordrHdrSer.setAufnr(ohp.getOrdrId());
@@ -197,13 +195,10 @@ public class Order_Create_Change {
 
                 /*Adding Order Longtext to Arraylist*/
                 String order_header_longtext = ohp.getOrdrLngTxt();
-                if (order_header_longtext != null && !order_header_longtext.equals(""))
-                {
-                    if(order_header_longtext.contains("\n"))
-                    {
+                if (order_header_longtext != null && !order_header_longtext.equals("")) {
+                    if (order_header_longtext.contains("\n")) {
                         String[] longtext_array = order_header_longtext.split("\n");
-                        for(int i = 0; i < longtext_array.length; i++)
-                        {
+                        for (int i = 0; i < longtext_array.length; i++) {
                             OrdrLngTxtSer mnc = new OrdrLngTxtSer();
                             mnc.setAufnr(ohp.getOrdrId());
                             mnc.setActivity("");
@@ -211,9 +206,7 @@ public class Order_Create_Change {
                             mnc.setTdid("");
                             ItOrderLongtext_Al.add(mnc);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         OrdrLngTxtSer mnc = new OrdrLngTxtSer();
                         mnc.setAufnr(ohp.getOrdrId());
                         mnc.setActivity("");
@@ -226,8 +219,7 @@ public class Order_Create_Change {
 
 
                 if (ohp.getOrdrOprtnPrcbls() != null)
-                    for (int i = 0; i < ohp.getOrdrOprtnPrcbls().size(); i++)
-                    {
+                    for (int i = 0; i < ohp.getOrdrOprtnPrcbls().size(); i++) {
                         OrdrOprtnSer oprtnSer = new OrdrOprtnSer();
                         oprtnSer.setAufnr(ohp.getOrdrOprtnPrcbls().get(i).getOrdrId());
                         oprtnSer.setVornr(ohp.getOrdrOprtnPrcbls().get(i).getOprtnId());
@@ -259,16 +251,12 @@ public class Order_Create_Change {
                         oprtnSer.setUsr05("");
                         oprtnSer.setAction(ohp.getOrdrOprtnPrcbls().get(i).getStatus());
 
-
                         /*Adding Operation Longtext to Arraylist*/
                         String operation_longtext = ohp.getOrdrOprtnPrcbls().get(i).getOprtnLngTxt();
-                        if (operation_longtext != null && !operation_longtext.equals(""))
-                        {
-                            if(operation_longtext.contains("\n"))
-                            {
+                        if (operation_longtext != null && !operation_longtext.equals("")) {
+                            if (operation_longtext.contains("\n")) {
                                 String[] longtext_array = operation_longtext.split("\n");
-                                for(int j = 0; j < longtext_array.length; j++)
-                                {
+                                for (int j = 0; j < longtext_array.length; j++) {
                                     OrdrLngTxtSer mnc = new OrdrLngTxtSer();
                                     mnc.setAufnr(ohp.getOrdrId());
                                     mnc.setActivity(ohp.getOrdrOprtnPrcbls().get(i).getOprtnId());
@@ -276,9 +264,7 @@ public class Order_Create_Change {
                                     mnc.setTdid("");
                                     ItOrderLongtext_Al.add(mnc);
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 OrdrLngTxtSer mnc = new OrdrLngTxtSer();
                                 mnc.setAufnr(ohp.getOrdrId());
                                 mnc.setActivity(ohp.getOrdrOprtnPrcbls().get(i).getOprtnId());
@@ -292,13 +278,10 @@ public class Order_Create_Change {
 
                         operation_custominfo = new ArrayList<>();
                         String operation_id = ohp.getOrdrOprtnPrcbls().get(i).getOprtnId();
-                        if(operation_custom_info_arraylist.size() > 0)
-                        {
-                            for(int j = 0; j < operation_custom_info_arraylist.size(); j++)
-                            {
+                        if (operation_custom_info_arraylist.size() > 0) {
+                            for (int j = 0; j < operation_custom_info_arraylist.size(); j++) {
                                 String op_id = operation_custom_info_arraylist.get(j).get("Operation_id");
-                                if(op_id.equalsIgnoreCase(operation_id))
-                                {
+                                if (op_id.equalsIgnoreCase(operation_id)) {
                                     Model_CustomInfo mnc = new Model_CustomInfo();
                                     mnc.setZdoctype(operation_custom_info_arraylist.get(j).get("Zdoctype"));
                                     mnc.setZdoctypeItem(operation_custom_info_arraylist.get(j).get("ZdoctypeItem"));
@@ -306,44 +289,33 @@ public class Order_Create_Change {
                                     mnc.setFieldname(operation_custom_info_arraylist.get(j).get("Fieldname"));
                                     mnc.setDatatype(operation_custom_info_arraylist.get(j).get("Datatype"));
                                     String datatype = operation_custom_info_arraylist.get(j).get("Datatype");
-                                    if(datatype.equalsIgnoreCase("DATS"))
-                                    {
+                                    if (datatype.equalsIgnoreCase("DATS")) {
                                         String value = operation_custom_info_arraylist.get(j).get("Value");
                                         String inputPattern = "MMM dd, yyyy";
                                         String outputPattern = "yyyyMMdd";
                                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                        try
-                                        {
+                                        try {
                                             Date date = inputFormat.parse(value);
-                                            String formatted_date =  outputFormat.format(date);
+                                            String formatted_date = outputFormat.format(date);
                                             mnc.setValue(formatted_date);
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                             mnc.setValue("");
                                         }
-                                    }
-                                    else if(datatype.equalsIgnoreCase("TIMS"))
-                                    {
+                                    } else if (datatype.equalsIgnoreCase("TIMS")) {
                                         String value = operation_custom_info_arraylist.get(j).get("Value");
                                         String inputPattern = "HH:mm:ss";
                                         String outputPattern = "HHmmss";
                                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                        try
-                                        {
+                                        try {
                                             Date date = inputFormat.parse(value);
-                                            String formatted_date =  outputFormat.format(date);
+                                            String formatted_date = outputFormat.format(date);
                                             mnc.setValue(formatted_date);
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                             mnc.setValue("");
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         mnc.setValue(operation_custom_info_arraylist.get(j).get("Value"));
                                     }
                                     mnc.setFlabel(operation_custom_info_arraylist.get(j).get("Flabel"));
@@ -353,15 +325,12 @@ public class Order_Create_Change {
                                 }
                             }
                             oprtnSer.setItOrderOperationFields(operation_custominfo);
-                        }
-                        else
-                        {
+                        } else {
                             oprtnSer.setItOrderOperationFields(operation_custominfo);
                         }
 
                         ItOrderOperations_Al.add(oprtnSer);
                     }
-
 
                 if (ohp.getOrdrMatrlPrcbls() != null)
                     for (int i = 0; i < ohp.getOrdrMatrlPrcbls().size(); i++) {
@@ -394,14 +363,11 @@ public class Order_Create_Change {
                         material_custominfo = new ArrayList<>();
                         String operation_id = ohp.getOrdrMatrlPrcbls().get(i).getOprtnId();
                         String part_id = ohp.getOrdrMatrlPrcbls().get(i).getPartId();
-                        if(material_custom_info_arraylist.size() > 0)
-                        {
-                            for(int j = 0; j < material_custom_info_arraylist.size(); j++)
-                            {
+                        if (material_custom_info_arraylist.size() > 0) {
+                            for (int j = 0; j < material_custom_info_arraylist.size(); j++) {
                                 String op_id = material_custom_info_arraylist.get(j).get("Operation_id");
                                 String p_id = material_custom_info_arraylist.get(j).get("Part_id");
-                                if(op_id.equalsIgnoreCase(operation_id) && p_id.equalsIgnoreCase(part_id))
-                                {
+                                if (op_id.equalsIgnoreCase(operation_id) && p_id.equalsIgnoreCase(part_id)) {
                                     Model_CustomInfo mnc = new Model_CustomInfo();
                                     mnc.setZdoctype(material_custom_info_arraylist.get(j).get("Zdoctype"));
                                     mnc.setZdoctypeItem(material_custom_info_arraylist.get(j).get("ZdoctypeItem"));
@@ -409,44 +375,33 @@ public class Order_Create_Change {
                                     mnc.setFieldname(material_custom_info_arraylist.get(j).get("Fieldname"));
                                     mnc.setDatatype(material_custom_info_arraylist.get(j).get("Datatype"));
                                     String datatype = material_custom_info_arraylist.get(j).get("Datatype");
-                                    if(datatype.equalsIgnoreCase("DATS"))
-                                    {
+                                    if (datatype.equalsIgnoreCase("DATS")) {
                                         String value = material_custom_info_arraylist.get(j).get("Value");
                                         String inputPattern = "MMM dd, yyyy";
                                         String outputPattern = "yyyyMMdd";
                                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                        try
-                                        {
+                                        try {
                                             Date date = inputFormat.parse(value);
-                                            String formatted_date =  outputFormat.format(date);
+                                            String formatted_date = outputFormat.format(date);
                                             mnc.setValue(formatted_date);
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                             mnc.setValue("");
                                         }
-                                    }
-                                    else if(datatype.equalsIgnoreCase("TIMS"))
-                                    {
+                                    } else if (datatype.equalsIgnoreCase("TIMS")) {
                                         String value = material_custom_info_arraylist.get(j).get("Value");
                                         String inputPattern = "HH:mm:ss";
                                         String outputPattern = "HHmmss";
                                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                        try
-                                        {
+                                        try {
                                             Date date = inputFormat.parse(value);
-                                            String formatted_date =  outputFormat.format(date);
+                                            String formatted_date = outputFormat.format(date);
                                             mnc.setValue(formatted_date);
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                             mnc.setValue("");
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         mnc.setValue(material_custom_info_arraylist.get(j).get("Value"));
                                     }
                                     mnc.setFlabel(material_custom_info_arraylist.get(j).get("Flabel"));
@@ -456,9 +411,7 @@ public class Order_Create_Change {
                                 }
                             }
                             matrlSer.setItOrderComponentsFields(material_custominfo);
-                        }
-                        else
-                        {
+                        } else {
                             matrlSer.setItOrderComponentsFields(material_custominfo);
                         }
 
@@ -920,6 +873,64 @@ public class Order_Create_Change {
                         ItWcmWwData_Al.add(wcmWwSer);
                     }
 
+                String id = "";
+                if (ohp.getOrdrId() != null && !ohp.getOrdrId().equals("")) {
+                    id = ohp.getOrdrId();
+                } else {
+                    id = "";
+                }
+                try {
+                    if (id != null && !id.equals(""))
+                        cursor1 = App_db.rawQuery("select * from Orders_Attachments where Object_id = ?", new String[]{id});
+                    else
+                        cursor1 = App_db.rawQuery("select * from Orders_Attachments where Object_id = ?", new String[]{uniqeId});
+                    if (cursor1 != null && cursor1.getCount() > 0) {
+                        if (cursor1.moveToFirst()) {
+                            do {
+                                String path = cursor1.getString(4);
+                                final File file = new File(path);
+                                if (file.exists()) {
+                                    Uri selectedUri = Uri.fromFile(file);
+                                    final String filee_name = file.getName();
+                                    final String fileExtension = MimeTypeMap.getFileExtensionFromUrl(selectedUri.toString());
+                                    final String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
+                                    final int file_size = Integer.parseInt(String.valueOf(file.length()));
+                                    byte[] byteArray = null;
+                                    InputStream inputStream = new FileInputStream(path);
+                                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                    byte[] b = new byte[4096 * 8];
+                                    int bytesRead = 0;
+                                    while ((bytesRead = inputStream.read(b)) != -1) {
+                                        bos.write(b, 0, bytesRead);
+                                    }
+                                    byteArray = bos.toByteArray();
+                                    final String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                                    OrdrDocSer ods = new OrdrDocSer();
+                                    ods.setZobjid(id);
+                                    ods.setZdoctype("Q");
+                                    ods.setZdoctypeItem("QH");
+                                    ods.setFilename(filee_name);
+                                    ods.setFiletype(fileExtension);
+                                    ods.setFsize(String.valueOf(file_size));
+                                    ods.setContent(encodedImage);
+                                    ods.setDocId("");
+                                    ods.setDocType("");
+                                    ods.setObjtype("BUS2038");
+                                    ItDocs_Al.add(ods);
+                                }
+                            }
+                            while (cursor1.moveToNext());
+                        }
+                    } else {
+                        cursor1.close();
+                    }
+                } catch (Exception e) {
+
+                } finally {
+                    if (cursor1 != null)
+                        cursor1.close();
+                }
 
                 /*if (ohp.getOrdrDocsPrcbls() != null)
                     for (int i = 0; i < ohp.getOrdrDocsPrcbls().size(); i++) {
@@ -1033,11 +1044,11 @@ public class Order_Create_Change {
                     /*Converting Response JSON Data to JSONArray for Reading*/
                     try {
                         JSONObject jsonObject = new JSONObject(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
+                        /*Converting Response JSON Data to JSONArray for Reading*/
 
-                    /*Reading Data by using FOR Loop*/
-                    /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                        *//*Reading Data by using FOR Loop*//*
+                        /*Reading Data by using FOR Loop*/
+                        /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
+                         *//*Reading Data by using FOR Loop*//*
                         JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
 */
                         success = false;
@@ -1050,7 +1061,7 @@ public class Order_Create_Change {
                                     JSONArray jsonArray1 = new JSONArray(EtOrderHeader_response_data1);
 
                                     for (int j = 0; j < jsonArray1.length(); j++) {
-                                        if(j >= 1)
+                                        if (j >= 1)
                                             message.append("\n");
                                         String Aufnr = jsonArray1.getJSONObject(j).optString("Aufnr");
                                         message.append(jsonArray1.getJSONObject(j).optString("Message"));
@@ -1065,9 +1076,9 @@ public class Order_Create_Change {
                                     success = false;
                                 }
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                                /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                                /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             }
                         } else {
                             if (jsonObject.has("EtMessages")) {
@@ -1096,6 +1107,7 @@ public class Order_Create_Change {
                                         App_db.execSQL("delete from DUE_ORDERS_EtOrderComponents_FIELDS where Aufnr = ?", new String[]{orderId});
                                         App_db.execSQL("delete from EtWcmWdDataTagtext where Aufnr = ?", new String[]{orderId});
                                         App_db.execSQL("delete from EtWcmWdDataUntagtext where Aufnr = ?", new String[]{orderId});
+                                        App_db.execSQL("delete from Orders_Attachments");
 
                                         try {
                                             if (jsonObject.has("EtWcmWaData")) {
@@ -1145,9 +1157,9 @@ public class Order_Create_Change {
                                     success = false;
                                 }
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                                /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                                /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             }
                         }
 
@@ -1167,11 +1179,11 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
                             App_db.beginTransaction();
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
                             if (jsonObject.has("EtOrderHeader")) {
 
                                 try {
@@ -1251,36 +1263,31 @@ public class Order_Create_Change {
                                                 EtOrderHeader_statement.execute();
 
 
-                                                try
-                                                {
+                                                try {
                                                     String Fields = jsonArray.getJSONObject(j).optString("EtOrderHeaderFields");
                                                     JSONObject Fields_jsonObject = new JSONObject(Fields);
                                                     String Fields_jsonObject_results = Fields_jsonObject.optString("results");
                                                     JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                    if(EtNotifHeader_Fields_jsonArray.length() > 0)
-                                                    {
+                                                    if (EtNotifHeader_Fields_jsonArray.length() > 0) {
                                                         String sql1 = "Insert into EtOrderHeader_CustomInfo (UUID,Aufnr,Zdoctype,ZdoctypeItem,Tabname,Fieldname,Value,Flabel,Sequence,Length,Datatype) values(?,?,?,?,?,?,?,?,?,?,?);";
                                                         SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                         statement1.clearBindings();
-                                                        for(int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++)
-                                                        {
-                                                            statement1.bindString(1,uuid);
-                                                            statement1.bindString(2,Aufnr);
-                                                            statement1.bindString(3,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                            statement1.bindString(4,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                            statement1.bindString(5,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                            statement1.bindString(6,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                            statement1.bindString(7,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                            statement1.bindString(8,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                            statement1.bindString(9,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                            statement1.bindString(10,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                            statement1.bindString(11,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
+                                                        for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
+                                                            statement1.bindString(1, uuid);
+                                                            statement1.bindString(2, Aufnr);
+                                                            statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
+                                                            statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
+                                                            statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
+                                                            statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
+                                                            statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
+                                                            statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
+                                                            statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
+                                                            statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
+                                                            statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
                                                             statement1.execute();
                                                         }
                                                     }
-                                                }
-                                                catch (Exception e)
-                                                {
+                                                } catch (Exception e) {
                                                 }
 
                                             }
@@ -1289,10 +1296,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
                             if (jsonObject.has("EtOrderOperations")) {
                                 try {
                                     String EtOrderOperations_response_data = new Gson().toJson(rs.getD().getEtOrderOperations().getResults());
@@ -1344,37 +1351,32 @@ public class Order_Create_Change {
                                                 EtOrderOperations_statement.execute();
 
 
-                                                try
-                                                {
+                                                try {
                                                     String Fields = jsonArray.getJSONObject(j).optString("EtOrderOperationsFields");
                                                     JSONObject Fields_jsonObject = new JSONObject(Fields);
                                                     String Fields_jsonObject_results = Fields_jsonObject.optString("results");
                                                     JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                    if(EtNotifHeader_Fields_jsonArray.length() > 0)
-                                                    {
+                                                    if (EtNotifHeader_Fields_jsonArray.length() > 0) {
                                                         String sql1 = "Insert into DUE_ORDERS_EtOrderOperations_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID) values(?,?,?,?,?,?,?,?,?,?,?,?);";
                                                         SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                         statement1.clearBindings();
-                                                        for(int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++)
-                                                        {
-                                                            statement1.bindString(1,uuid);
-                                                            statement1.bindString(2,Aufnr);
-                                                            statement1.bindString(3,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                            statement1.bindString(4,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                            statement1.bindString(5,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                            statement1.bindString(6,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                            statement1.bindString(7,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                            statement1.bindString(8,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                            statement1.bindString(9,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                            statement1.bindString(10,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                            statement1.bindString(11,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
-                                                            statement1.bindString(12,jsonArray.getJSONObject(j).optString("Vornr"));
+                                                        for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
+                                                            statement1.bindString(1, uuid);
+                                                            statement1.bindString(2, Aufnr);
+                                                            statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
+                                                            statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
+                                                            statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
+                                                            statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
+                                                            statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
+                                                            statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
+                                                            statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
+                                                            statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
+                                                            statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
+                                                            statement1.bindString(12, jsonArray.getJSONObject(j).optString("Vornr"));
                                                             statement1.execute();
                                                         }
                                                     }
-                                                }
-                                                catch (Exception e)
-                                                {
+                                                } catch (Exception e) {
                                                 }
 
 
@@ -1384,10 +1386,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
                             if (jsonObject.has("EtOrderLongtext")) {
                                 try {
                                     String EtOrderLongtext_response_data = new Gson().toJson(rs.getD().getEtOrderLongtext().getResults());
@@ -1418,10 +1420,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
                             if (jsonObject.has("EtOrderOlist")) {
                                 try {
                                     String EtOrderOlist_response_data = new Gson().toJson(rs.getD().getEtOrderOlist().getResults());
@@ -1461,10 +1463,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
                             if (jsonObject.has("EtOrderStatus")) {
                                 try {
                                     String EtOrderStatus_response_data = new Gson().toJson(rs.getD().getEtOrderStatus().getResults());
@@ -1504,16 +1506,16 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
                             if (jsonObject.has("EtDocs")) {
                                 try {
                                     String EtDocs_response_data = new Gson().toJson(rs.getD().getEtDocs().getResults());
                                     JSONArray jsonArray = new JSONArray(EtDocs_response_data);
                                     if (jsonArray.length() > 0) {
-                                        String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype) values(?,?,?,?,?,?,?,?,?,?,?);";
+                                        String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs (UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Contentx) values(?,?,?,?,?,?,?,?,?,?,?,?);";
                                         SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
                                         EtDocs_statement.clearBindings();
                                         for (int j = 0; j < jsonArray.length(); j++) {
@@ -1528,16 +1530,18 @@ public class Order_Create_Change {
                                             EtDocs_statement.bindString(9, jsonArray.getJSONObject(j).optString("DocId"));
                                             EtDocs_statement.bindString(10, jsonArray.getJSONObject(j).optString("DocType"));
                                             EtDocs_statement.bindString(11, jsonArray.getJSONObject(j).optString("Objtype"));
+                                            EtDocs_statement.bindString(12, jsonArray.getJSONObject(j).optString("Contentx"));
                                             EtDocs_statement.execute();
                                         }
                                     }
                                 } catch (Exception e) {
+                                    Log.v("Docs_exception", "" + e.getMessage());
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
                             if (jsonObject.has("EtWcmWwData")) {
                                 try {
                                     String EtWcmWwData_response_data = new Gson().toJson(rs.getD().getEtWcmWwData().getResults());
@@ -1594,10 +1598,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
 
 
-                         /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
                             if (jsonObject.has("EtWcmWaData")) {
                                 try {
                                     String EtWcmWaData_response_data = new Gson().toJson(rs.getD().getEtWcmWaData().getResults());
@@ -1656,10 +1660,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
                             if (jsonObject.has("EtWcmWaChkReq")) {
                                 try {
                                     String EtWcmWaChkReq_response_data = new Gson().toJson(rs.getD().getEtWcmWaChkReq().getResults());
@@ -1688,10 +1692,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                             if (jsonObject.has("EtWcmWdData")) {
                                 try {
                                     String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getEtWcmWdData().getResults());
@@ -1780,10 +1784,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                             if (jsonObject.has("EtWcmWdItemData")) {
                                 try {
                                     String EtWcmWdItemData_response_data = new Gson().toJson(rs.getD().getEtWcmWdItemData().getResults());
@@ -1836,10 +1840,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
                             if (jsonObject.has("EtWcmWcagns")) {
                                 try {
                                     String EtWcmWcagns_response_data = new Gson().toJson(rs.getD().getEtWcmWcagns().getResults());
@@ -1892,10 +1896,10 @@ public class Order_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                            /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             if (jsonObject.has("EtOrderComponents")) {
                                 try {
                                     String EtOrderComponents_response_data = new Gson().toJson(rs.getD().getEtOrderComponents().getResults());
@@ -1942,38 +1946,33 @@ public class Order_Create_Change {
                                                 EtOrderComponents_statement.execute();
 
 
-                                                try
-                                                {
+                                                try {
                                                     String Fields = jsonArray.getJSONObject(j).optString("EtOrderComponentsFields");
                                                     JSONObject Fields_jsonObject = new JSONObject(Fields);
                                                     String Fields_jsonObject_results = Fields_jsonObject.optString("results");
                                                     JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                    if(EtNotifHeader_Fields_jsonArray.length() > 0)
-                                                    {
+                                                    if (EtNotifHeader_Fields_jsonArray.length() > 0) {
                                                         String sql1 = "Insert into DUE_ORDERS_EtOrderComponents_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID, PartID) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                                         SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                         statement1.clearBindings();
-                                                        for(int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++)
-                                                        {
-                                                            statement1.bindString(1,uuid);
-                                                            statement1.bindString(2,Aufnr);
-                                                            statement1.bindString(3,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                            statement1.bindString(4,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                            statement1.bindString(5,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                            statement1.bindString(6,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                            statement1.bindString(7,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                            statement1.bindString(8,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                            statement1.bindString(9,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                            statement1.bindString(10,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                            statement1.bindString(11,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
-                                                            statement1.bindString(12,jsonArray.getJSONObject(j).optString("Vornr"));
-                                                            statement1.bindString(13,jsonArray.getJSONObject(j).optString("Posnr"));
+                                                        for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
+                                                            statement1.bindString(1, uuid);
+                                                            statement1.bindString(2, Aufnr);
+                                                            statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
+                                                            statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
+                                                            statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
+                                                            statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
+                                                            statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
+                                                            statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
+                                                            statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
+                                                            statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
+                                                            statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
+                                                            statement1.bindString(12, jsonArray.getJSONObject(j).optString("Vornr"));
+                                                            statement1.bindString(13, jsonArray.getJSONObject(j).optString("Posnr"));
                                                             statement1.execute();
                                                         }
                                                     }
-                                                }
-                                                catch (Exception e)
-                                                {
+                                                } catch (Exception e) {
                                                 }
 
 

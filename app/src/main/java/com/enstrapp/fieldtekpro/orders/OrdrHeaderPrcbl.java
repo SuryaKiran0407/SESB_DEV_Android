@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.enstrapp.fieldtekpro.Parcelable_Objects.EtDocsPrcbl;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
+import com.enstrapp.fieldtekpro.notifications.Notif_EtDocs_Parcelable;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,12 @@ public class OrdrHeaderPrcbl implements Parcelable {
     private String bukrs;
     private String activitytype_id;
     private String activitytype_text;
+    private ArrayList<OrdrOprtnPrcbl> ordrOprtnPrcbls;
+    private ArrayList<OrdrObjectPrcbl> ordrObjectPrcbls;
+    private ArrayList<OrdrMatrlPrcbl> ordrMatrlPrcbls;
+    private ArrayList<NotifOrdrStatusPrcbl> ordrStatusPrcbls;
+    private ArrayList<OrdrPermitPrcbl> ordrPermitPrcbls;
+    private ArrayList<Notif_EtDocs_Parcelable> ordrDocsPrcbls;
 
     public String getActivitytype_id() {
         return activitytype_id;
@@ -102,20 +109,11 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.ordrId = ordrId;
     }
 
-    private ArrayList<OrdrOprtnPrcbl> ordrOprtnPrcbls;
-
-    private ArrayList<OrdrObjectPrcbl> ordrObjectPrcbls;
-
-    private ArrayList<OrdrMatrlPrcbl> ordrMatrlPrcbls;
-    private ArrayList<NotifOrdrStatusPrcbl> ordrStatusPrcbls;
-    private ArrayList<OrdrPermitPrcbl> ordrPermitPrcbls;
-    private ArrayList<EtDocsPrcbl> ordrDocsPrcbls;
-
-    public ArrayList<EtDocsPrcbl> getOrdrDocsPrcbls() {
+    public ArrayList<Notif_EtDocs_Parcelable> getOrdrDocsPrcbls() {
         return ordrDocsPrcbls;
     }
 
-    public void setOrdrDocsPrcbls(ArrayList<EtDocsPrcbl> ordrDocsPrcbls) {
+    public void setOrdrDocsPrcbls(ArrayList<Notif_EtDocs_Parcelable> ordrDocsPrcbls) {
         this.ordrDocsPrcbls = ordrDocsPrcbls;
     }
 
@@ -477,7 +475,7 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.ordrMatrlPrcbls = in.createTypedArrayList(OrdrMatrlPrcbl.CREATOR);
         this.ordrStatusPrcbls = in.createTypedArrayList(NotifOrdrStatusPrcbl.CREATOR);
         this.ordrPermitPrcbls = in.createTypedArrayList(OrdrPermitPrcbl.CREATOR);
-        this.ordrDocsPrcbls = in.createTypedArrayList(EtDocsPrcbl.CREATOR);
+        this.ordrDocsPrcbls = in.createTypedArrayList(Notif_EtDocs_Parcelable.CREATOR);
     }
 
     public static final Creator<OrdrHeaderPrcbl> CREATOR = new Creator<OrdrHeaderPrcbl>() {

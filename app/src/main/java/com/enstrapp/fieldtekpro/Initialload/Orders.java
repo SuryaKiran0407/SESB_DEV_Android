@@ -328,6 +328,7 @@ public class Orders {
     private static final String KEY_DUE_ORDERS_EtDocs_DocId = "DocId";
     private static final String KEY_DUE_ORDERS_EtDocs_DocType = "DocType";
     private static final String KEY_DUE_ORDERS_EtDocs_Objtype = "Objtype";
+    private static final String KEY_DUE_ORDERS_EtDocs_Contentx = "Contentx";
 	/* GET_DUE_ORDERS_EtDocs Table and Fields Names */
 
     /* EtWcmWwData Table and Fields Names */
@@ -941,7 +942,8 @@ public class Orders {
                         + KEY_DUE_ORDERS_EtDocs_Content + " TEXT,"
                         + KEY_DUE_ORDERS_EtDocs_DocId + " TEXT,"
                         + KEY_DUE_ORDERS_EtDocs_DocType + " TEXT,"
-                        + KEY_DUE_ORDERS_EtDocs_Objtype + " TEXT"
+                        + KEY_DUE_ORDERS_EtDocs_Objtype + " TEXT,"
+                        + KEY_DUE_ORDERS_EtDocs_Contentx + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_DUE_ORDERS_EtDocs);
 		        /* Creating DUE_ORDERS_EtDocs Table with Fields */
@@ -1642,7 +1644,7 @@ public class Orders {
                                 String EtDocs_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtDocs().getResults());
                                 JSONArray jsonArray = new JSONArray(EtDocs_response_data);
                                 if (jsonArray.length() > 0) {
-                                    String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype) values(?,?,?,?,?,?,?,?,?,?,?);";
+                                    String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs (UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Contentx) values(?,?,?,?,?,?,?,?,?,?,?,?);";
                                     SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
                                     EtDocs_statement.clearBindings();
                                     for (int j = 0; j < jsonArray.length(); j++) {
@@ -1657,6 +1659,7 @@ public class Orders {
                                         EtDocs_statement.bindString(9, jsonArray.getJSONObject(j).optString("DocId"));
                                         EtDocs_statement.bindString(10, jsonArray.getJSONObject(j).optString("DocType"));
                                         EtDocs_statement.bindString(11, jsonArray.getJSONObject(j).optString("Objtype"));
+                                        EtDocs_statement.bindString(12, jsonArray.getJSONObject(j).optString("Contentx"));
                                         EtDocs_statement.execute();
                                     }
                                 }

@@ -1214,7 +1214,7 @@ public class Permit_Create_Change {
                                     String EtDocs_response_data = new Gson().toJson(rs.getD().getEtDocs().getResults());
                                     JSONArray jsonArray = new JSONArray(EtDocs_response_data);
                                     if (jsonArray.length() > 0) {
-                                        String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype) values(?,?,?,?,?,?,?,?,?,?,?);";
+                                        String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Contentx) values(?,?,?,?,?,?,?,?,?,?,?,?);";
                                         SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
                                         EtDocs_statement.clearBindings();
                                         for (int j = 0; j < jsonArray.length(); j++) {
@@ -1229,6 +1229,7 @@ public class Permit_Create_Change {
                                             EtDocs_statement.bindString(9, jsonArray.getJSONObject(j).optString("DocId"));
                                             EtDocs_statement.bindString(10, jsonArray.getJSONObject(j).optString("DocType"));
                                             EtDocs_statement.bindString(11, jsonArray.getJSONObject(j).optString("Objtype"));
+                                            EtDocs_statement.bindString(12, jsonArray.getJSONObject(j).optString("Contentx"));
                                             EtDocs_statement.execute();
                                         }
                                     }
