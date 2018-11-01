@@ -23,9 +23,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class JSA_Change_Hazards_Fragment extends Fragment
-{
-
+public class JSA_Change_Hazards_Fragment extends Fragment {
 
     RecyclerView recyclerView;
     TextView nodata_textview;
@@ -37,25 +35,22 @@ public class JSA_Change_Hazards_Fragment extends Fragment
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
 
-    public JSA_Change_Hazards_Fragment()
-    {
+    public JSA_Change_Hazards_Fragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.jsa_assessmentteam_fragment, container, false);
 
-        ma = (JSA_Change_Activity)this.getActivity();
+        ma = (JSA_Change_Activity) this.getActivity();
 
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
-        nodata_textview = (TextView)rootView.findViewById(R.id.nodata_textview);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        nodata_textview = (TextView) rootView.findViewById(R.id.nodata_textview);
 
         recyclerView.setVisibility(View.GONE);
         nodata_textview.setVisibility(View.VISIBLE);
@@ -64,34 +59,33 @@ public class JSA_Change_Hazards_Fragment extends Fragment
         FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             rasid = bundle.getString("rasid");
-            try
-            {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtJSARisks where Rasid = ?", new String[]{rasid});
-                if (cursor != null && cursor.getCount() > 0)
-                {
-                    if (cursor.moveToFirst())
-                    {
-                        do
-                        {
-                            Hazards_List_Object olo = new Hazards_List_Object(cursor.getString(3), cursor.getString(16), cursor.getString(13), cursor.getString(15), cursor.getString(7)+" - "+cursor.getString(14), cursor.getString(5), "", false, cursor.getString(6));
+            try {
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtJSARisks where Rasid" +
+                        " = ?", new String[]{rasid});
+                if (cursor != null && cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Hazards_List_Object olo =
+                                    new Hazards_List_Object(cursor.getString(3),
+                                            cursor.getString(16),
+                                            cursor.getString(13),
+                                            cursor.getString(15),
+                                            cursor.getString(7)
+                                                    + " - " + cursor.getString(14),
+                                            cursor.getString(5), "",
+                                            false, cursor.getString(6));
                             jobsteps_list.add(olo);
                         }
                         while (cursor.moveToNext());
                     }
-                }
-                else
-                {
+                } else {
                     cursor.close();
                 }
+            } catch (Exception e) {
             }
-            catch (Exception e)
-            {
-            }
-            if(jobsteps_list.size() > 0)
-            {
+            if (jobsteps_list.size() > 0) {
                 recyclerView.setVisibility(View.VISIBLE);
                 nodata_textview.setVisibility(View.GONE);
                 assess_adapter = new Assess_Adapter(getActivity(), jobsteps_list);
@@ -100,9 +94,7 @@ public class JSA_Change_Hazards_Fragment extends Fragment
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(assess_adapter);
-            }
-            else
-            {
+            } else {
                 recyclerView.setVisibility(View.GONE);
                 nodata_textview.setVisibility(View.VISIBLE);
             }
@@ -119,57 +111,58 @@ public class JSA_Change_Hazards_Fragment extends Fragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         if (!getUserVisibleHint())
             return;
-        JSA_Change_Activity jsa_change_activity = (JSA_Change_Activity)this. getActivity();
+        JSA_Change_Activity jsa_change_activity = (JSA_Change_Activity) this.getActivity();
         jsa_change_activity.add_fab.hide();
     }
 
 
-    public class Assess_Adapter extends RecyclerView.Adapter<Assess_Adapter.MyViewHolder>
-    {
+    public class Assess_Adapter extends RecyclerView.Adapter<Assess_Adapter.MyViewHolder> {
         private Context mContext;
         private List<Hazards_List_Object> list_data;
-        public class MyViewHolder extends RecyclerView.ViewHolder
-        {
-            public TextView job_steps_textview, hazard_categories_textview, hazard_textview, risk_id_textview;
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            public TextView job_steps_textview, hazard_categories_textview, hazard_textview,
+                    risk_id_textview;
             public CheckBox checkBox;
             public LinearLayout layout, riskid_layout;
-            public MyViewHolder(View view)
-            {
+
+            public MyViewHolder(View view) {
                 super(view);
                 job_steps_textview = (TextView) view.findViewById(R.id.job_steps_textview);
-                hazard_categories_textview = (TextView) view.findViewById(R.id.hazard_categories_textview);
+                hazard_categories_textview = view.findViewById(R.id.hazard_categories_textview);
                 hazard_textview = (TextView) view.findViewById(R.id.hazard_textview);
-                checkBox = (CheckBox)view.findViewById(R.id.checkBox);
+                checkBox = (CheckBox) view.findViewById(R.id.checkBox);
                 checkBox.setVisibility(View.GONE);
-                layout = (LinearLayout)view.findViewById(R.id.layout);
+                layout = (LinearLayout) view.findViewById(R.id.layout);
                 risk_id_textview = (TextView) view.findViewById(R.id.risk_id_textview);
                 riskid_layout = (LinearLayout) view.findViewById(R.id.riskid_layout);
                 riskid_layout.setVisibility(View.VISIBLE);
             }
         }
-        public Assess_Adapter(Context mContext, List<Hazards_List_Object> list)
-        {
+
+        public Assess_Adapter(Context mContext, List<Hazards_List_Object> list) {
             this.mContext = mContext;
             this.list_data = list;
         }
+
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.jsa_hazards_list_data, parent, false);
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.jsa_hazards_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
+
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position)
-        {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final Hazards_List_Object olo = list_data.get(position);
-            holder.job_steps_textview.setText(olo.getJobstep_id()+" - "+olo.getJobstep_text());
-            holder.hazard_categories_textview.setText(olo.getHazardcategory_id()+" - "+olo.getHazardcategory_text());
+            holder.job_steps_textview.setText(olo.getJobstep_id() + " - " + olo.getJobstep_text());
+            holder.hazard_categories_textview.setText(olo.getHazardcategory_id() + " - "
+                    + olo.getHazardcategory_text());
             holder.hazard_textview.setText(olo.getHazard_data());
             holder.job_steps_textview.setTextColor(getResources().getColor(R.color.dark_grey2));
             holder.hazard_categories_textview.setTextColor(getResources().getColor(R.color.dark_grey2));
@@ -178,16 +171,14 @@ public class JSA_Change_Hazards_Fragment extends Fragment
             holder.risk_id_textview.setText(olo.getUuid());
             holder.risk_id_textview.setTextColor(getResources().getColor(R.color.dark_grey2));
         }
+
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return list_data.size();
         }
     }
 
-
-    public class Hazards_List_Object
-    {
+    public class Hazards_List_Object {
         private String jobstep_id;
         private String jobstep_text;
         private String hazardcategory_id;
@@ -217,9 +208,11 @@ public class JSA_Change_Hazards_Fragment extends Fragment
         public String getHazard_data() {
             return hazard_data;
         }
+
         public void setHazard_data(String hazard_data) {
             this.hazard_data = hazard_data;
         }
+
         public String getJobstep_id() {
             return jobstep_id;
         }
@@ -269,8 +262,7 @@ public class JSA_Change_Hazards_Fragment extends Fragment
             isSelected = selected;
         }
 
-        public Hazards_List_Object(String jobstep_id, String jobstep_text, String hazardcategory_id, String hazardcategory_text, String hazard_data, String uuid, String hazard_array, boolean isSelected, String person_resp)
-        {
+        public Hazards_List_Object(String jobstep_id, String jobstep_text, String hazardcategory_id, String hazardcategory_text, String hazard_data, String uuid, String hazard_array, boolean isSelected, String person_resp) {
             this.jobstep_id = jobstep_id;
             this.jobstep_text = jobstep_text;
             this.hazardcategory_id = hazardcategory_id;
@@ -282,6 +274,4 @@ public class JSA_Change_Hazards_Fragment extends Fragment
             this.person_resp = person_resp;
         }
     }
-
-
 }

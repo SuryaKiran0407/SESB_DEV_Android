@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import com.enstrapp.fieldtekpro.R;
+
 public class MessageDialogFragment extends DialogFragment {
     public interface MessageDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
@@ -34,9 +36,9 @@ public class MessageDialogFragment extends DialogFragment {
         builder.setMessage(mMessage)
                 .setTitle(mTitle);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onDialogPositiveClick(MessageDialogFragment.this);
                 }
             }

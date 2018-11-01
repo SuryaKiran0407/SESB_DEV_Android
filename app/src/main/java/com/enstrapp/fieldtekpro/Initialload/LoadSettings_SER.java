@@ -6,83 +6,78 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class LoadSettings_SER
-{
+public class LoadSettings_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
     }
 
 
-    public class Result
-    {
+    public class Result {
         @SerializedName("EsIload")
         @Expose
         private EsIload esIload;
         @SerializedName("EsRefresh")
         @Expose
         private EsRefresh esRefresh;
-        public void setEsIload(EsIload esIload)
-        {
+
+        public void setEsIload(EsIload esIload) {
             this.esIload = esIload;
         }
-        public EsIload getEsIload()
-        {
+
+        public EsIload getEsIload() {
             return esIload;
         }
-        public EsRefresh getEsRefresh()
-        {
+
+        public EsRefresh getEsRefresh() {
             return esRefresh;
         }
-        public void setEsRefresh(EsRefresh esRefresh)
-        {
+
+        public void setEsRefresh(EsRefresh esRefresh) {
             this.esRefresh = esRefresh;
         }
     }
 
 
     /*For Parsing EsIload*/
-    public class EsIload
-    {
+    public class EsIload {
         @SerializedName("results")
         @Expose
         private List<Result_> results = null;
-        public List<Result_> getResults()
-        {
+
+        public List<Result_> getResults() {
             return results;
         }
-        public void setResults(List<Result_> results)
-        {
+
+        public void setResults(List<Result_> results) {
             this.results = results;
         }
     }
 
-    public class Result_
-    {
+    public class Result_ {
         @SerializedName("Vhlp")
         @Expose
         private String vhlp;
@@ -116,117 +111,114 @@ public class LoadSettings_SER
         @SerializedName("Nfcd")
         @Expose
         private String nfcd;
-        public String getVhlp()
-        {
+
+        public String getVhlp() {
             return vhlp;
         }
-        public void setVhlp(String vhlp)
-        {
+
+        public void setVhlp(String vhlp) {
             this.vhlp = vhlp;
         }
-        public String getFloc()
-        {
+
+        public String getFloc() {
             return floc;
         }
-        public void setFloc(String floc)
-        {
+
+        public void setFloc(String floc) {
             this.floc = floc;
         }
-        public String getEqui()
-        {
+
+        public String getEqui() {
             return equi;
         }
-        public void setEqui(String equi)
-        {
+
+        public void setEqui(String equi) {
             this.equi = equi;
         }
-        public String getMat()
-        {
+
+        public String getMat() {
             return mat;
         }
-        public void setMat(String mat)
-        {
+
+        public void setMat(String mat) {
             this.mat = mat;
         }
-        public String getStock()
-        {
+
+        public String getStock() {
             return stock;
         }
-        public void setStock(String stock)
-        {
+
+        public void setStock(String stock) {
             this.stock = stock;
         }
-        public String getEbom()
-        {
+
+        public String getEbom() {
             return ebom;
         }
-        public void setEbom(String ebom)
-        {
+
+        public void setEbom(String ebom) {
             this.ebom = ebom;
         }
-        public String getDnot()
-        {
+
+        public String getDnot() {
             return dnot;
         }
-        public void setDnot(String dnot)
-        {
+
+        public void setDnot(String dnot) {
             this.dnot = dnot;
         }
-        public String getDord()
-        {
+
+        public String getDord() {
             return dord;
         }
-        public void setDord(String dord)
-        {
+
+        public void setDord(String dord) {
             this.dord = dord;
         }
-        public String getAuth()
-        {
+
+        public String getAuth() {
             return auth;
         }
-        public void setAuth(String auth)
-        {
+
+        public void setAuth(String auth) {
             this.auth = auth;
         }
-        public String getSett()
-        {
+
+        public String getSett() {
             return sett;
         }
-        public void setSett(String sett)
-        {
+
+        public void setSett(String sett) {
             this.sett = sett;
         }
-        public String getNfcd()
-        {
+
+        public String getNfcd() {
             return nfcd;
         }
-        public void setNfcd(String nfcd)
-        {
+
+        public void setNfcd(String nfcd) {
             this.nfcd = nfcd;
         }
     }
     /*For Parsing EsIload*/
 
 
-
     /*For Parsing EsRefresh*/
-    public class EsRefresh
-    {
+    public class EsRefresh {
         @SerializedName("results")
         @Expose
         private List<Result__> results = null;
-        public List<Result__> getResults()
-        {
+
+        public List<Result__> getResults() {
             return results;
         }
-        public void setResults(List<Result__> results)
-        {
+
+        public void setResults(List<Result__> results) {
             this.results = results;
         }
     }
 
-    public class Result__
-    {
+    public class Result__ {
         @SerializedName("Vhlp")
         @Expose
         private String vhlp;
@@ -260,94 +252,92 @@ public class LoadSettings_SER
         @SerializedName("Nfcd")
         @Expose
         private String nfcd;
-        public String getVhlp()
-        {
+
+        public String getVhlp() {
             return vhlp;
         }
-        public void setVhlp(String vhlp)
-        {
+
+        public void setVhlp(String vhlp) {
             this.vhlp = vhlp;
         }
-        public String getFloc()
-        {
+
+        public String getFloc() {
             return floc;
         }
-        public void setFloc(String floc)
-        {
+
+        public void setFloc(String floc) {
             this.floc = floc;
         }
-        public String getEqui()
-        {
+
+        public String getEqui() {
             return equi;
         }
-        public void setEqui(String equi)
-        {
+
+        public void setEqui(String equi) {
             this.equi = equi;
         }
-        public String getMat()
-        {
+
+        public String getMat() {
             return mat;
         }
-        public void setMat(String mat)
-        {
+
+        public void setMat(String mat) {
             this.mat = mat;
         }
-        public String getStock()
-        {
+
+        public String getStock() {
             return stock;
         }
-        public void setStock(String stock)
-        {
+
+        public void setStock(String stock) {
             this.stock = stock;
         }
-        public String getEbom()
-        {
+
+        public String getEbom() {
             return ebom;
         }
-        public void setEbom(String ebom)
-        {
+
+        public void setEbom(String ebom) {
             this.ebom = ebom;
         }
-        public String getDnot()
-        {
+
+        public String getDnot() {
             return dnot;
         }
 
-        public void setDnot(String dnot)
-        {
+        public void setDnot(String dnot) {
             this.dnot = dnot;
         }
 
-        public String getDord()
-        {
+        public String getDord() {
             return dord;
         }
-        public void setDord(String dord)
-        {
+
+        public void setDord(String dord) {
             this.dord = dord;
         }
-        public String getAuth()
-        {
+
+        public String getAuth() {
             return auth;
         }
-        public void setAuth(String auth)
-        {
+
+        public void setAuth(String auth) {
             this.auth = auth;
         }
-        public String getSett()
-        {
+
+        public String getSett() {
             return sett;
         }
-        public void setSett(String sett)
-        {
+
+        public void setSett(String sett) {
             this.sett = sett;
         }
-        public String getNfcd()
-        {
+
+        public String getNfcd() {
             return nfcd;
         }
-        public void setNfcd(String nfcd)
-        {
+
+        public void setNfcd(String nfcd) {
             this.nfcd = nfcd;
         }
     }

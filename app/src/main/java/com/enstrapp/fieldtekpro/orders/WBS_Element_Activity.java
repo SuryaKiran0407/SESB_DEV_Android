@@ -110,8 +110,8 @@ public class WBS_Element_Activity extends AppCompatActivity implements View.OnCl
                     cursor.close();
                 }
             } catch (Exception e) {
-            }finally {
-                if(cursor != null)
+            } finally {
+                if (cursor != null)
                     cursor.close();
             }
             /*if (!(type_list.size() > 0)){
@@ -163,7 +163,7 @@ public class WBS_Element_Activity extends AppCompatActivity implements View.OnCl
                 no_data_textview.setVisibility(View.VISIBLE);
                 list_recycleview.setVisibility(GONE);
                 no_data_layout.setVisibility(View.VISIBLE);
-                no_data_textview.setText(getString(R.string.nodata_wbs,iwerk));
+                no_data_textview.setText(getString(R.string.nodata_wbs, iwerk));
             }
             custom_progress_dialog.dismiss_progress_dialog();
         }

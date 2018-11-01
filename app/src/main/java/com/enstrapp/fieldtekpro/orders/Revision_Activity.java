@@ -67,9 +67,11 @@ public class Revision_Activity extends AppCompatActivity implements View.OnClick
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -86,7 +88,8 @@ public class Revision_Activity extends AppCompatActivity implements View.OnClick
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Revision_Activity.this, getResources().getString(R.string.loading));
+            custom_progress_dialog.show_progress_dialog(Revision_Activity.this,
+                    getResources().getString(R.string.loading));
             type_list.clear();
         }
 
@@ -94,11 +97,13 @@ public class Revision_Activity extends AppCompatActivity implements View.OnClick
         protected Void doInBackground(Void... params) {
             Cursor cursor = null;
             try {
-                cursor = FieldTekPro_db.rawQuery("select * from EtRevnr where Iwerk = ?", new String[]{iwerk});
+                cursor = FieldTekPro_db.rawQuery("select * from EtRevnr where Iwerk = ?",
+                        new String[]{iwerk});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Type_Object nto = new Type_Object(cursor.getString(2), cursor.getString(3));
+                            Type_Object nto = new Type_Object(cursor.getString(2),
+                                    cursor.getString(3));
                             type_list.add(nto);
                         }
                         while (cursor.moveToNext());
@@ -111,32 +116,8 @@ public class Revision_Activity extends AppCompatActivity implements View.OnClick
                 if(cursor != null)
                     cursor.close();
             }
-            /*if (!(type_list.size() > 0)){
-                try {
-                    cursor = FieldTekPro_db.rawQuery("select * from EtRevnr", null);
-                    if (cursor != null && cursor.getCount() > 0) {
-                        if (cursor.moveToFirst()) {
-                            do {
-                                Type_Object nto = new Type_Object(cursor.getString(2), cursor.getString(3));
-                                type_list.add(nto);
-                            }
-                            while (cursor.moveToNext());
-                        }
-                    } else {
-                        cursor.close();
-                    }
-                } catch (Exception e) {
-                }finally{
-                    if(cursor != null)
-                        cursor.close();
-                }
-            }*/
-            return null;
-        }
 
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
+            return null;
         }
 
         @Override
@@ -146,7 +127,8 @@ public class Revision_Activity extends AppCompatActivity implements View.OnClick
                 title_textview.setText(getResources().getString(R.string.revision) + " (" + type_list.size() + ")");
                 adapter = new TYPE_ADAPTER(Revision_Activity.this, type_list);
                 list_recycleview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Revision_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Revision_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 list_recycleview.setItemAnimator(new DefaultItemAnimator());
                 list_recycleview.setAdapter(adapter);
@@ -174,7 +156,8 @@ public class Revision_Activity extends AppCompatActivity implements View.OnClick
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId().toString(), type_list.get(i).getText().toString());
+                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
+                            type_list.get(i).getText());
                     filteredList.add(nto);
                 }
             }
@@ -224,7 +207,8 @@ public class Revision_Activity extends AppCompatActivity implements View.OnClick
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.f4_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 

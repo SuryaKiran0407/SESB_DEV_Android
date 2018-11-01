@@ -1,7 +1,6 @@
 package com.enstrapp.fieldtekpro.equipment_inspection;
 
 
-import com.enstrapp.fieldtekpro.Utilities.MAC_Model1;
 import com.google.gson.annotations.SerializedName;
 
 public class Geo_Tag_Model

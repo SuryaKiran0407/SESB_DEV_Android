@@ -41,7 +41,7 @@ public class ComplianceBarFragment extends Fragment {
     ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
     BarData barData;
     BarDataSet barDataSet;
-    TextView  compliance_text;
+    TextView compliance_text;
 
     Notification_Analysis_Activity ma;
     String swerk_c = "", wrkcnt_c = "", swerk_name_c = "", wrkcnt_name_c = "", swerk_ct = "",
@@ -79,7 +79,7 @@ public class ComplianceBarFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.mis_notif_compliance_fragment, container, false);
 
         barChart = rootView.findViewById(R.id.bar_chart);
-        ma=(Notification_Analysis_Activity)this.getActivity();
+        ma = (Notification_Analysis_Activity) this.getActivity();
         noData_tv = rootView.findViewById(R.id.no_data_textview);
         compliance_text = rootView.findViewById(R.id.compliance_text);
 
@@ -90,6 +90,7 @@ public class ComplianceBarFragment extends Fragment {
         return rootView;
 
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -252,7 +253,7 @@ public class ComplianceBarFragment extends Fragment {
                                         plant_dialog.dismiss();
                                     } else {
                                         if (swerk_ct.equals("") && swerk_ctp.equals("") && swerk_c.equals(""))
-                                            show_error_dialog("Please select PLANT");
+                                            show_error_dialog(getString(R.string.slct_palnt));
                                         else
                                             plant_dialog.dismiss();
                                     }
@@ -321,7 +322,7 @@ public class ComplianceBarFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -401,7 +402,7 @@ public class ComplianceBarFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_ct.equals("") && wrkcnt_ctp.equals("") && wrkcnt_c.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -457,7 +458,7 @@ public class ComplianceBarFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -536,7 +537,7 @@ public class ComplianceBarFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_ct.equals("") && wrkcnt_ctp.equals("") && wrkcnt_c.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -569,7 +570,7 @@ public class ComplianceBarFragment extends Fragment {
                                 wrkcnt_dialog.show();
                             } else if (swerk_c.equals("") || swerk_c == null) {
                                 if (swerk_ct.equals("") || swerk_ct == null) {
-                                    show_error_dialog("Please select PLANT");
+                                    show_error_dialog(getString(R.string.slct_palnt));
                                 } else {
                                     art_fo_c.clear();
                                     for (int i = 0; i < art_o_c.size(); i++) {
@@ -597,7 +598,7 @@ public class ComplianceBarFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -676,7 +677,7 @@ public class ComplianceBarFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_ct.equals("") && wrkcnt_ctp.equals("") && wrkcnt_c.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -830,6 +831,7 @@ public class ComplianceBarFragment extends Fragment {
 
         }
     }
+
     public class FILTER_PLANT_TYPE_Adapter extends BaseAdapter {
         Context mContext;
         LayoutInflater inflater;
@@ -1027,7 +1029,7 @@ public class ComplianceBarFragment extends Fragment {
                 holder.key = (TextView) view.findViewById(R.id.key);
                 view.setTag(holder);
             } else {
-                holder = ( ViewHolder) view.getTag();
+                holder = (ViewHolder) view.getTag();
             }
 
             if (!wrkcnt_ctp.equals("")) {
@@ -1123,14 +1125,14 @@ public class ComplianceBarFragment extends Fragment {
     }
 
 
-    public void setMonthYear(String month_year){
+    public void setMonthYear(String month_year) {
         this.month_year = month_year;
     }
 
     public void getData() {
         progressdialog = new ProgressDialog(getActivity(), ProgressDialog.THEME_HOLO_LIGHT);
         progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressdialog.setMessage("Loading...");
+        progressdialog.setMessage(getString(R.string.loading));
         progressdialog.setCancelable(false);
         progressdialog.setCanceledOnTouchOutside(false);
         progressdialog.show();
@@ -1600,116 +1602,93 @@ public class ComplianceBarFragment extends Fragment {
     public void plantWrkcntSelector(String plant, final String wrkcnt) {
 
 
-            if (plant.equals("")) {
+        if (plant.equals("")) {
+            tt_so.clear();
+            filter.clear();
+            for (int i = 0; i < tt_o.size(); i++) {
+                Mis_EtNotifTypeTotal_Object cp = new Mis_EtNotifTypeTotal_Object();
+                cp.setmTotal_tt(tt_o.get(i).getmTotal_tt());
+                cp.setmSwerk_tt(tt_o.get(i).getmSwerk_tt());
+                cp.setmArbpl_tt(tt_o.get(i).getmArbpl_tt());
+                cp.setmQmart_tt(tt_o.get(i).getmQmart_tt());
+                cp.setmQmartx_tt(tt_o.get(i).getmQmartx_tt());
+                cp.setmOuts_tt(tt_o.get(i).getmOuts_tt());
+                cp.setmInpr_tt(tt_o.get(i).getmInpr_tt());
+                cp.setmComp_tt(tt_o.get(i).getmComp_tt());
+                cp.setmDele_tt(tt_o.get(i).getmDele_tt());
+                tt_so.add(cp);
+                filter.add(cp);
+            }
+        } else {
+            tt_so.clear();
+            filter.clear();
+            if (wrkcnt.equals("")) {
+                for (int i = 0; i < tt_o.size(); i++) {
+                    if (tt_o.get(i).getmSwerk_tt().equals(plant)) {
+                        Mis_EtNotifTypeTotal_Object cp = new Mis_EtNotifTypeTotal_Object();
+                        cp.setmTotal_tt(tt_o.get(i).getmTotal_tt());
+                        cp.setmSwerk_tt(tt_o.get(i).getmSwerk_tt());
+                        cp.setmArbpl_tt(tt_o.get(i).getmArbpl_tt());
+                        cp.setmQmart_tt(tt_o.get(i).getmQmart_tt());
+                        cp.setmQmartx_tt(tt_o.get(i).getmQmartx_tt());
+                        cp.setmOuts_tt(tt_o.get(i).getmOuts_tt());
+                        cp.setmInpr_tt(tt_o.get(i).getmInpr_tt());
+                        cp.setmComp_tt(tt_o.get(i).getmComp_tt());
+                        cp.setmDele_tt(tt_o.get(i).getmDele_tt());
+                        tt_so.add(cp);
+                        filter.add(cp);
+                    }
+                }
+            } else {
                 tt_so.clear();
                 filter.clear();
                 for (int i = 0; i < tt_o.size(); i++) {
-                    Mis_EtNotifTypeTotal_Object cp = new Mis_EtNotifTypeTotal_Object();
-                    cp.setmTotal_tt(tt_o.get(i).getmTotal_tt());
-                    cp.setmSwerk_tt(tt_o.get(i).getmSwerk_tt());
-                    cp.setmArbpl_tt(tt_o.get(i).getmArbpl_tt());
-                    cp.setmQmart_tt(tt_o.get(i).getmQmart_tt());
-                    cp.setmQmartx_tt(tt_o.get(i).getmQmartx_tt());
-                    cp.setmOuts_tt(tt_o.get(i).getmOuts_tt());
-                    cp.setmInpr_tt(tt_o.get(i).getmInpr_tt());
-                    cp.setmComp_tt(tt_o.get(i).getmComp_tt());
-                    cp.setmDele_tt(tt_o.get(i).getmDele_tt());
-                    tt_so.add(cp);
-                    filter.add(cp);
-                }
-            } else {
-                tt_so.clear();
-                filter.clear();
-                if (wrkcnt.equals("")) {
-                    for (int i = 0; i < tt_o.size(); i++) {
-                        if (tt_o.get(i).getmSwerk_tt().equals(plant)) {
-                            Mis_EtNotifTypeTotal_Object cp = new Mis_EtNotifTypeTotal_Object();
-                            cp.setmTotal_tt(tt_o.get(i).getmTotal_tt());
-                            cp.setmSwerk_tt(tt_o.get(i).getmSwerk_tt());
-                            cp.setmArbpl_tt(tt_o.get(i).getmArbpl_tt());
-                            cp.setmQmart_tt(tt_o.get(i).getmQmart_tt());
-                            cp.setmQmartx_tt(tt_o.get(i).getmQmartx_tt());
-                            cp.setmOuts_tt(tt_o.get(i).getmOuts_tt());
-                            cp.setmInpr_tt(tt_o.get(i).getmInpr_tt());
-                            cp.setmComp_tt(tt_o.get(i).getmComp_tt());
-                            cp.setmDele_tt(tt_o.get(i).getmDele_tt());
-                            tt_so.add(cp);
-                            filter.add(cp);
-                        }
-                    }
-                } else {
-                    tt_so.clear();
-                    filter.clear();
-                    for (int i = 0; i < tt_o.size(); i++) {
-                        if (tt_o.get(i).getmSwerk_tt().equals(plant) && tt_o.get(i).getmArbpl_tt().equals(wrkcnt)) {
-                            Mis_EtNotifTypeTotal_Object cp = new Mis_EtNotifTypeTotal_Object();
-                            cp.setmTotal_tt(tt_o.get(i).getmTotal_tt());
-                            cp.setmSwerk_tt(tt_o.get(i).getmSwerk_tt());
-                            cp.setmArbpl_tt(tt_o.get(i).getmArbpl_tt());
-                            cp.setmQmart_tt(tt_o.get(i).getmQmart_tt());
-                            cp.setmQmartx_tt(tt_o.get(i).getmQmartx_tt());
-                            cp.setmOuts_tt(tt_o.get(i).getmOuts_tt());
-                            cp.setmInpr_tt(tt_o.get(i).getmInpr_tt());
-                            cp.setmComp_tt(tt_o.get(i).getmComp_tt());
-                            cp.setmDele_tt(tt_o.get(i).getmDele_tt());
-                            tt_so.add(cp);
-                            filter.add(cp);
-                        }
+                    if (tt_o.get(i).getmSwerk_tt().equals(plant) && tt_o.get(i).getmArbpl_tt().equals(wrkcnt)) {
+                        Mis_EtNotifTypeTotal_Object cp = new Mis_EtNotifTypeTotal_Object();
+                        cp.setmTotal_tt(tt_o.get(i).getmTotal_tt());
+                        cp.setmSwerk_tt(tt_o.get(i).getmSwerk_tt());
+                        cp.setmArbpl_tt(tt_o.get(i).getmArbpl_tt());
+                        cp.setmQmart_tt(tt_o.get(i).getmQmart_tt());
+                        cp.setmQmartx_tt(tt_o.get(i).getmQmartx_tt());
+                        cp.setmOuts_tt(tt_o.get(i).getmOuts_tt());
+                        cp.setmInpr_tt(tt_o.get(i).getmInpr_tt());
+                        cp.setmComp_tt(tt_o.get(i).getmComp_tt());
+                        cp.setmDele_tt(tt_o.get(i).getmDele_tt());
+                        tt_so.add(cp);
+                        filter.add(cp);
                     }
                 }
             }
+        }
 
-            if (plant.equals("")) {
+        if (plant.equals("")) {
 
-            } else {
-                for (int i = 0; i < pt_o_c.size(); i++) {
-                    if (pt_o_c.get(i).getmSwerk_pt().equals(plant)) {
-                        pt_o_c.get(i).setmChecked("y");
-                        swerk_name_c = pt_o_c.get(i).getmName_pt();
-                    }
+        } else {
+            for (int i = 0; i < pt_o_c.size(); i++) {
+                if (pt_o_c.get(i).getmSwerk_pt().equals(plant)) {
+                    pt_o_c.get(i).setmChecked("y");
+                    swerk_name_c = pt_o_c.get(i).getmName_pt();
                 }
             }
+        }
 
-            if (wrkcnt.equals("")) {
+        if (wrkcnt.equals("")) {
 
-            } else {
-                for (int i = 0; i < art_o_c.size(); i++) {
-                    if (art_o_c.get(i).getmArbpl_art().equals(wrkcnt)) {
-                        art_o_c.get(i).setmChecked("y");
-                        wrkcnt_name_c = art_o_c.get(i).getmName_art();
-                    }
+        } else {
+            for (int i = 0; i < art_o_c.size(); i++) {
+                if (art_o_c.get(i).getmArbpl_art().equals(wrkcnt)) {
+                    art_o_c.get(i).setmChecked("y");
+                    wrkcnt_name_c = art_o_c.get(i).getmName_art();
                 }
             }
+        }
 
-            tt_fo.clear();
-            for (int i = 0; i < tt_so.size(); i++) {
-                String notif = tt_so.get(i).getmQmart_tt();
-                if (tt_fo.size() > 0) {
-                    if (contains(tt_fo, notif)) {
+        tt_fo.clear();
+        for (int i = 0; i < tt_so.size(); i++) {
+            String notif = tt_so.get(i).getmQmart_tt();
+            if (tt_fo.size() > 0) {
+                if (contains(tt_fo, notif)) {
 
-                    } else {
-                        for (int j = 0; j < filter.size(); j++) {
-                            if (filter.get(j).getmQmart_tt().equals(notif)) {
-                                if (!filter.get(j).getmComp_tt().equals("") && filter.get(j).getmComp_tt() != null) {
-                                    total_comp = total_comp + Integer.parseInt(filter.get(j).getmComp_tt().trim());
-                                    total_tot = total_tot + Integer.parseInt(filter.get(j).getmTotal_tt().trim());
-                                } else {
-                                    total_comp = total_comp + 0;
-                                    total_tot = total_tot + 0;
-                                }
-                            }
-                        }
-                        Mis_EtNotifTypeTotal_Object tt_cf_o = new Mis_EtNotifTypeTotal_Object();
-                        tt_cf_o.setmTotal_tt(String.valueOf(total_tot));
-                        tt_cf_o.setmSwerk_tt(tt_so.get(i).getmSwerk_tt());
-                        tt_cf_o.setmArbpl_tt(tt_so.get(i).getmArbpl_tt());
-                        tt_cf_o.setmQmart_tt(notif);
-                        tt_cf_o.setmQmartx_tt(tt_so.get(i).getmQmartx_tt());
-                        tt_cf_o.setmComp_tt(String.valueOf(total_comp));
-                        tt_fo.add(tt_cf_o);
-                        total_comp = 0;
-                        total_tot = 0;
-                    }
                 } else {
                     for (int j = 0; j < filter.size(); j++) {
                         if (filter.get(j).getmQmart_tt().equals(notif)) {
@@ -1733,97 +1712,120 @@ public class ComplianceBarFragment extends Fragment {
                     total_comp = 0;
                     total_tot = 0;
                 }
-            }
-
-            barEntries = new ArrayList<BarEntry>();
-            int h = 0;
-            name.clear();
-            Compliance.clear();
-            for (int k = 0; k < tt_fo.size(); k++) {
-                if (!tt_fo.get(k).getmComp_tt().equals("0")) {
-                    Compliance.add((Float.parseFloat(tt_fo.get(k).getmComp_tt().trim()) / Float.parseFloat(tt_fo.get(k).getmTotal_tt().trim())) * 100);
-                } else {
-                    Compliance.add(0f);
-                }
-
-                if (Compliance.get(k) == 0) {
-
-                } else {
-                    barEntries.add(new BarEntry(h, Compliance.get(k)));
-                    h++;
-                    name.add(tt_fo.get(k).getmQmart_tt());
-                }
-            }
-
-            if (!(barEntries.size() <= 0)) {
-                names = new String[name.size()];
-                for (int i = 0; i < name.size(); i++) {
-                    names[i] = name.get(i);
-                }
-
-                barDataSet = new BarDataSet(barEntries, "Compliance");
-                barDataSet.setColor(Color.rgb(49, 84, 154));
-                barDataSet.setValueTextSize(12f);
-                barDataSet.setValueFormatter(new MyValueFormatterPercent());
-
-                Legend l = barChart.getLegend();
-                l.setWordWrapEnabled(true);
-                l.setTextSize(12);
-                l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-                l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-                l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-                l.setDrawInside(false);
-
-                XAxis xAxis = barChart.getXAxis();
-                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                xAxis.setDrawGridLines(false);
-                xAxis.setGranularity(1f); // only intervals of 1 day
-                xAxis.setLabelCount(7);
-                xAxis.setValueFormatter(new MyXAxisValueFormatter(names));
-
-                barData = new BarData(barDataSet);
-                if (barEntries.size() == 1) {
-                    barData.setBarWidth(0.4f);
-                } else if (barEntries.size() == 2) {
-                    barData.setBarWidth(0.5f);
-                } else if (barEntries.size() == 3) {
-                    barData.setBarWidth(0.6f);
-                }
-
-                YAxis rightAxis = barChart.getAxisRight();
-                rightAxis.setDrawLabels(false);
-
-                barChart.getDescription().setEnabled(false);
-                barChart.setExtraOffsets(2, 2, 2, 2);
-                barChart.highlightValues(null);
-                barChart.getAxisLeft().setAxisMinimum(0);
-                barChart.getAxisLeft().setDrawLabels(true);
-                barChart.getAxisLeft().setDrawGridLines(true);
-                barChart.getAxisRight().setDrawGridLines(false);
-                barChart.getAxisLeft().setDrawAxisLine(true);
-                barChart.getAxisRight().setDrawAxisLine(false);
-                barChart.getLegend().setEnabled(true);
-                barChart.animateY(1000);
-                barChart.getXAxis().setLabelCount(Compliance.size(), false);
-                barChart.notifyDataSetChanged();//Required if changes are made to pie value
-                barChart.setData(barData);
-                barChart.invalidate();// for refreshing the chart
-                if (!swerk_c.equals("")) {
-                    if (!wrkcnt_c.equals("")) {
-                        compliance_text.setText(swerk_name_c + " - " + wrkcnt_name_c + "\n" + month_year);
-                    } else {
-                        compliance_text.setText(swerk_name_c + "\n" +month_year);
-                    }
-                } else {
-                    compliance_text.setText(month_year);
-                }
-                noData_tv.setVisibility(View.GONE);
-                barChart.setVisibility(View.VISIBLE);
             } else {
-                barChart.setVisibility(View.GONE);
-                noData_tv.setVisibility(View.VISIBLE);
-                compliance_text.setText("");
+                for (int j = 0; j < filter.size(); j++) {
+                    if (filter.get(j).getmQmart_tt().equals(notif)) {
+                        if (!filter.get(j).getmComp_tt().equals("") && filter.get(j).getmComp_tt() != null) {
+                            total_comp = total_comp + Integer.parseInt(filter.get(j).getmComp_tt().trim());
+                            total_tot = total_tot + Integer.parseInt(filter.get(j).getmTotal_tt().trim());
+                        } else {
+                            total_comp = total_comp + 0;
+                            total_tot = total_tot + 0;
+                        }
+                    }
+                }
+                Mis_EtNotifTypeTotal_Object tt_cf_o = new Mis_EtNotifTypeTotal_Object();
+                tt_cf_o.setmTotal_tt(String.valueOf(total_tot));
+                tt_cf_o.setmSwerk_tt(tt_so.get(i).getmSwerk_tt());
+                tt_cf_o.setmArbpl_tt(tt_so.get(i).getmArbpl_tt());
+                tt_cf_o.setmQmart_tt(notif);
+                tt_cf_o.setmQmartx_tt(tt_so.get(i).getmQmartx_tt());
+                tt_cf_o.setmComp_tt(String.valueOf(total_comp));
+                tt_fo.add(tt_cf_o);
+                total_comp = 0;
+                total_tot = 0;
             }
+        }
+
+        barEntries = new ArrayList<BarEntry>();
+        int h = 0;
+        name.clear();
+        Compliance.clear();
+        for (int k = 0; k < tt_fo.size(); k++) {
+            if (!tt_fo.get(k).getmComp_tt().equals("0")) {
+                Compliance.add((Float.parseFloat(tt_fo.get(k).getmComp_tt().trim()) / Float.parseFloat(tt_fo.get(k).getmTotal_tt().trim())) * 100);
+            } else {
+                Compliance.add(0f);
+            }
+
+            if (Compliance.get(k) == 0) {
+
+            } else {
+                barEntries.add(new BarEntry(h, Compliance.get(k)));
+                h++;
+                name.add(tt_fo.get(k).getmQmart_tt());
+            }
+        }
+
+        if (!(barEntries.size() <= 0)) {
+            names = new String[name.size()];
+            for (int i = 0; i < name.size(); i++) {
+                names[i] = name.get(i);
+            }
+
+            barDataSet = new BarDataSet(barEntries, "Compliance");
+            barDataSet.setColor(Color.rgb(49, 84, 154));
+            barDataSet.setValueTextSize(12f);
+            barDataSet.setValueFormatter(new MyValueFormatterPercent());
+
+            Legend l = barChart.getLegend();
+            l.setWordWrapEnabled(true);
+            l.setTextSize(12);
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+            l.setDrawInside(false);
+
+            XAxis xAxis = barChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setDrawGridLines(false);
+            xAxis.setGranularity(1f); // only intervals of 1 day
+            xAxis.setLabelCount(7);
+            xAxis.setValueFormatter(new MyXAxisValueFormatter(names));
+
+            barData = new BarData(barDataSet);
+            if (barEntries.size() == 1) {
+                barData.setBarWidth(0.4f);
+            } else if (barEntries.size() == 2) {
+                barData.setBarWidth(0.5f);
+            } else if (barEntries.size() == 3) {
+                barData.setBarWidth(0.6f);
+            }
+
+            YAxis rightAxis = barChart.getAxisRight();
+            rightAxis.setDrawLabels(false);
+
+            barChart.getDescription().setEnabled(false);
+            barChart.setExtraOffsets(2, 2, 2, 2);
+            barChart.highlightValues(null);
+            barChart.getAxisLeft().setAxisMinimum(0);
+            barChart.getAxisLeft().setDrawLabels(true);
+            barChart.getAxisLeft().setDrawGridLines(true);
+            barChart.getAxisRight().setDrawGridLines(false);
+            barChart.getAxisLeft().setDrawAxisLine(true);
+            barChart.getAxisRight().setDrawAxisLine(false);
+            barChart.getLegend().setEnabled(true);
+            barChart.animateY(1000);
+            barChart.getXAxis().setLabelCount(Compliance.size(), false);
+            barChart.notifyDataSetChanged();//Required if changes are made to pie value
+            barChart.setData(barData);
+            barChart.invalidate();// for refreshing the chart
+            if (!swerk_c.equals("")) {
+                if (!wrkcnt_c.equals("")) {
+                    compliance_text.setText(swerk_name_c + " - " + wrkcnt_name_c + "\n" + month_year);
+                } else {
+                    compliance_text.setText(swerk_name_c + "\n" + month_year);
+                }
+            } else {
+                compliance_text.setText(month_year);
+            }
+            noData_tv.setVisibility(View.GONE);
+            barChart.setVisibility(View.VISIBLE);
+        } else {
+            barChart.setVisibility(View.GONE);
+            noData_tv.setVisibility(View.VISIBLE);
+            compliance_text.setText("");
+        }
 
 
     }

@@ -41,7 +41,6 @@ import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 import org.json.JSONArray;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,11 +61,17 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
     Notifications_Tab_Adapter orders_ta;
     Button cancel_button, submit_button;
     Map<String, String> notif_create_status;
-    String longtext = "", primary_user_resp = "", workcenter_id = "", workcenter_text = "", notification_type_id = "", notification_type_text = "", notif_text = "", functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "", priority_type_id = "", priority_type_text = "", plannergroup_id = "", plannergroup_text = "", Reported_by = "", personresponsible_id = "", personresponsible_text = "", req_st_date = "", req_st_time = "", req_end_date = "", req_end_time = "", mal_st_date = "", mal_st_time = "", mal_end_date = "", mal_end_time = "", effect_id = "", effect_text = "", plant_id = "";
+    String longtext = "", primary_user_resp = "", workcenter_id = "", workcenter_text = "",
+            notification_type_id = "", notification_type_text = "", notif_text = "",
+            functionlocation_id = "", functionlocation_text = "", equipment_id = "",
+            equipment_text = "", priority_type_id = "", priority_type_text = "",
+            plannergroup_id = "", plannergroup_text = "", Reported_by = "", personresponsible_id = "",
+            personresponsible_text = "", req_st_date = "", req_st_time = "", req_end_date = "",
+            req_end_time = "", mal_st_date = "", mal_st_time = "", mal_end_date = "", mal_end_time = "",
+            effect_id = "", effect_text = "", plant_id = "";
     Error_Dialog error_dialog = new Error_Dialog();
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
-    Network_Connection_Dialog network_connection_dialog = new Network_Connection_Dialog();
     Custom_Progress_Dialog custom_progress_dialog = new Custom_Progress_Dialog();
     FloatingActionButton fab;
     ArrayList<Model_Notif_Causecode> causecodeArrayList = new ArrayList<>();
@@ -84,12 +89,10 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
     Notification_Duplicate_Adapter notification_duplicate_adapter;
     ArrayList<HashMap<String, String>> header_custom_info_arraylist = new ArrayList<>();
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications_orders_create_change_activity);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -104,14 +107,15 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         }
 
         DATABASE_NAME = Notifications_Create_Activity.this.getString(R.string.database_name);
-        App_db = Notifications_Create_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        App_db = Notifications_Create_Activity.this
+                .openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         viewpager = findViewById(R.id.viewpager);
         tablayout = findViewById(R.id.tablayout);
-        cancel_button = (Button) findViewById(R.id.cancel_button);
-        submit_button = (Button) findViewById(R.id.save_button);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        back_iv = (ImageView) findViewById(R.id.back_iv);
+        cancel_button = findViewById(R.id.cancel_button);
+        submit_button = findViewById(R.id.save_button);
+        fab = findViewById(R.id.fab);
+        back_iv = findViewById(R.id.back_iv);
 
         orders_ta = new Notifications_Tab_Adapter(this, getSupportFragmentManager());
         orders_ta.addFragment(new Notifications_Create_Header_Fragment(), getResources().getString(R.string.header));
@@ -162,7 +166,6 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         back_iv.setOnClickListener(this);
     }
 
-
     public void setCustomFont() {
         ViewGroup vg = (ViewGroup) tablayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
@@ -172,17 +175,16 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             for (int i = 0; i < tabChildsCount; i++) {
                 View tabViewChild = vgTab.getChildAt(i);
                 if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/metropolis_medium.ttf"));
+                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(),
+                            "fonts/metropolis_medium.ttf"));
                 }
             }
         }
     }
 
-
     private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
-
 
     @Override
     public void onClick(View v) {
@@ -192,7 +194,9 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             Notifications_Create_Activity.this.finish();
         } else if (v == submit_button) {
             /*Fetching Header Data*/
-            Notifications_Create_Header_Fragment header_tab = (Notifications_Create_Header_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
+            Notifications_Create_Header_Fragment header_tab =
+                    (Notifications_Create_Header_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
             Notifications_Create_Header_Object header_data = header_tab.getData();
             notification_type_id = header_data.getNotification_type_id();
             notification_type_text = header_data.getNotification_type_text();
@@ -270,9 +274,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                     header_custominfo.add(mnc);
                 }
             }
-
             /*Fetching Header Data*/
-
 
             /*Adding Notification Longtext to Arraylist*/
             if (longtext != null && !longtext.equals("")) {
@@ -297,11 +299,13 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             }
             /*Adding Notification Longtext to Arraylist*/
 
-
             /*Fetching Cause Code Data*/
             causecodeArrayList = new ArrayList<>();
-            Notifications_Create_Causecode_Fragment causecode_fragment = (Notifications_Create_Causecode_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
-            List<Notifications_Create_Causecode_Fragment.Cause_Code_Object> causecode_list = causecode_fragment.getCauseCodeData();
+            Notifications_Create_Causecode_Fragment causecode_fragment =
+                    (Notifications_Create_Causecode_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
+            List<Notifications_Create_Causecode_Fragment.Cause_Code_Object> causecode_list =
+                    causecode_fragment.getCauseCodeData();
             for (int i = 0; i < causecode_list.size(); i++) {
                 Model_Notif_Causecode mnc = new Model_Notif_Causecode();
                 mnc.setQmnum("");
@@ -330,7 +334,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
 
                 object_custominfo.clear();
                 /*Fetching Object Custom Fields*/
-                ArrayList<HashMap<String, String>> selected_object_custominfo = causecode_list.get(i).getSelected_object_custom_info_arraylist();
+                ArrayList<HashMap<String, String>> selected_object_custominfo =
+                        causecode_list.get(i).getSelected_object_custom_info_arraylist();
                 if (selected_object_custominfo.size() > 0) {
                     for (int j = 0; j < selected_object_custominfo.size(); j++) {
                         Model_CustomInfo model_customInfo = new Model_CustomInfo();
@@ -378,9 +383,9 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                 mnc.setItNotifItemsFields(object_custominfo);
                 /*Fetching Object Custom Fields*/
 
-
                 /*Fetching Cause Custom Fields*/
-                ArrayList<HashMap<String, String>> selected_cause_custominfo = causecode_list.get(i).getSelected_cause_custom_info_arraylist();
+                ArrayList<HashMap<String, String>> selected_cause_custominfo =
+                        causecode_list.get(i).getSelected_cause_custom_info_arraylist();
                 if (selected_cause_custominfo.size() > 0) {
                     for (int j = 0; j < selected_cause_custominfo.size(); j++) {
                         Model_CustomInfo model_customInfo = new Model_CustomInfo();
@@ -426,18 +431,18 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                     }
                 }
                 mnc.setItNotifItemsFields(object_custominfo);
-                /*Fetching Cause Custom Fields*/
-
-
                 causecodeArrayList.add(mnc);
+                /*Fetching Cause Custom Fields*/
             }
             /*Fetching Cause Code Data*/
 
-
             /*Fetching Activity Data*/
             ActivityArrayList = new ArrayList<>();
-            Notifications_Create_Activity_Fragment activity_fragment = (Notifications_Create_Activity_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
-            List<Notifications_Create_Activity_Fragment.Activity_Object> activity_list = activity_fragment.getActivityData();
+            Notifications_Create_Activity_Fragment activity_fragment =
+                    (Notifications_Create_Activity_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
+            List<Notifications_Create_Activity_Fragment.Activity_Object> activity_list =
+                    activity_fragment.getActivityData();
             for (int i = 0; i < activity_list.size(); i++) {
                 Model_Notif_Activity mnc = new Model_Notif_Activity();
                 mnc.setQmnum("");
@@ -456,7 +461,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
 
                 activity_custominfo.clear();
                 /*Fetching Activity Custom Fields*/
-                ArrayList<HashMap<String, String>> selected_activity_custominfo = activity_list.get(i).getSelected_activity_custom_info_arraylist();
+                ArrayList<HashMap<String, String>> selected_activity_custominfo =
+                        activity_list.get(i).getSelected_activity_custom_info_arraylist();
                 if (selected_activity_custominfo.size() > 0) {
                     for (int j = 0; j < selected_activity_custominfo.size(); j++) {
                         Model_CustomInfo model_customInfo = new Model_CustomInfo();
@@ -502,17 +508,16 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                     }
                 }
                 mnc.setItNotifActvsFields(activity_custominfo);
-                /*Fetching Activity Custom Fields*/
-
-
                 ActivityArrayList.add(mnc);
+                /*Fetching Activity Custom Fields*/
             }
             /*Fetching Activity Data*/
 
-
             /*Fetching Task Data*/
             TasksArrayList = new ArrayList<>();
-            Notifications_Create_Task_Fragment task_fragment = (Notifications_Create_Task_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
+            Notifications_Create_Task_Fragment task_fragment =
+                    (Notifications_Create_Task_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
             List<Notifications_Create_Task_Fragment.Task_Object> task_list = task_fragment.getTaskData();
             for (int i = 0; i < task_list.size(); i++) {
                 Model_Notif_Task mnc = new Model_Notif_Task();
@@ -553,10 +558,10 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                 }
                 mnc.setAction("I");
 
-
                 task_custominfo = new ArrayList<>();
                 /*Fetching Task Custom Fields*/
-                ArrayList<HashMap<String, String>> selected_task_custominfo = task_list.get(i).getSelected_tasks_custom_info_arraylist();
+                ArrayList<HashMap<String, String>> selected_task_custominfo =
+                        task_list.get(i).getSelected_tasks_custom_info_arraylist();
                 if (selected_task_custominfo.size() > 0) {
                     for (int j = 0; j < selected_task_custominfo.size(); j++) {
                         Model_CustomInfo model_customInfo = new Model_CustomInfo();
@@ -602,16 +607,16 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                     }
                 }
                 mnc.setItNotfTaskFields(task_custominfo);
-                /*Fetching Task Custom Fields*/
-
                 TasksArrayList.add(mnc);
+                /*Fetching Task Custom Fields*/
             }
             /*Fetching Task Data*/
 
-
             /*Fetching Attachments Data*/
             AttachmentsArrayList = new ArrayList<>();
-            Notifications_Create_Attachments_Fragment attachment_fragment = (Notifications_Create_Attachments_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
+            Notifications_Create_Attachments_Fragment attachment_fragment =
+                    (Notifications_Create_Attachments_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
             List<Notif_EtDocs_Parcelable> attachment_list = attachment_fragment.getAttachmentsData();
             for (int i = 0; i < attachment_list.size(); i++) {
                 Model_Notif_Attachments mnc = new Model_Notif_Attachments();
@@ -629,29 +634,38 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             }
             /*Fetching Attachments Data*/
 
-
             if (notification_type_id != null && !notification_type_id.equals("")) {
                 if (notif_text != null && !notif_text.equals("")) {
-                    if ((equipment_id != null && !equipment_id.equals("")) || (functionlocation_id != null && !functionlocation_id.equals(""))) {
+                    if ((equipment_id != null && !equipment_id.equals("")) ||
+                            (functionlocation_id != null && !functionlocation_id.equals(""))) {
                         if (workcenter_id != null && !workcenter_id.equals("")) {
                             if (priority_type_id != null && !priority_type_id.equals("")) {
                                 if (plannergroup_id != null && !plannergroup_id.equals("")) {
-                                    if (req_st_date != null && !req_st_date.equals("") && req_st_time != null && !req_st_time.equals("")) {
+                                    if (req_st_date != null && !req_st_date.equals("") &&
+                                            req_st_time != null && !req_st_time.equals("")) {
                                         cd = new ConnectionDetector(Notifications_Create_Activity.this);
                                         isInternetPresent = cd.isConnectingToInternet();
                                         if (isInternetPresent) {
-                                            submit_decision_dialog = new Dialog(Notifications_Create_Activity.this);
-                                            submit_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                                            submit_decision_dialog =
+                                                    new Dialog(Notifications_Create_Activity.this);
+                                            submit_decision_dialog.getWindow()
+                                                    .setBackgroundDrawableResource(android.R.color.transparent);
                                             submit_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                             submit_decision_dialog.setCancelable(false);
                                             submit_decision_dialog.setCanceledOnTouchOutside(false);
                                             submit_decision_dialog.setContentView(R.layout.decision_dialog);
-                                            ImageView imageView1 = (ImageView) submit_decision_dialog.findViewById(R.id.imageView1);
-                                            Glide.with(Notifications_Create_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
-                                            TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
-                                            description_textview.setText("Do you want to submit for notification creation ?");
-                                            Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
-                                            Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
+                                            ImageView imageView1 = submit_decision_dialog
+                                                    .findViewById(R.id.imageView1);
+                                            Glide.with(Notifications_Create_Activity.this)
+                                                    .load(R.drawable.error_dialog_gif).into(imageView1);
+                                            TextView description_textview = submit_decision_dialog
+                                                    .findViewById(R.id.description_textview);
+                                            description_textview
+                                                    .setText(getString(R.string.notifcreate_submitdialog));
+                                            Button ok_button = submit_decision_dialog
+                                                    .findViewById(R.id.yes_button);
+                                            Button cancel_button = submit_decision_dialog
+                                                    .findViewById(R.id.no_button);
                                             submit_decision_dialog.show();
                                             ok_button.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -667,35 +681,53 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                 }
                                             });
                                         } else {
-                                            decision_dialog = new Dialog(Notifications_Create_Activity.this);
-                                            decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                                            decision_dialog =
+                                                    new Dialog(Notifications_Create_Activity.this);
+                                            decision_dialog.getWindow()
+                                                    .setBackgroundDrawableResource(android.R.color.transparent);
                                             decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                             decision_dialog.setCancelable(false);
                                             decision_dialog.setCanceledOnTouchOutside(false);
                                             decision_dialog.setContentView(R.layout.offline_decision_dialog);
-                                            TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
-                                            Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
-                                            Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
-                                            Button connect_button = (Button) decision_dialog.findViewById(R.id.connect_button);
-                                            description_textview.setText("No Internet Connectivity. Do you want to proceed Notification Create with offline ?");
-                                            confirm.setText("Yes");
-                                            cancel.setText("No");
+                                            TextView description_textview = decision_dialog
+                                                    .findViewById(R.id.description_textview);
+                                            Button confirm = decision_dialog.findViewById(R.id.yes_button);
+                                            Button cancel = decision_dialog.findViewById(R.id.no_button);
+                                            Button connect_button = decision_dialog
+                                                    .findViewById(R.id.connect_button);
+                                            description_textview
+                                                    .setText(getString(R.string.notifcreate_offline));
+                                            confirm.setText(getString(R.string.yes));
+                                            cancel.setText(getString(R.string.no));
                                             decision_dialog.show();
                                             confirm.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    custom_progress_dialog.show_progress_dialog(Notifications_Create_Activity.this, getResources().getString(R.string.loading));
-
+                                                    custom_progress_dialog
+                                                            .show_progress_dialog(Notifications_Create_Activity.this, getResources().getString(R.string.loading));
                                                     String timeStamp = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + "";
                                                     UUID uniqueKey = UUID.randomUUID();
                                                     try {
-                                                        /*DateFormat date_format = new SimpleDateFormat("ddMMyyyyHHmmss");
-                                                        Date todaysdate = new Date();
-                                                        String date_time = date_format.format(todaysdate.getTime());*/
-
                                                         App_db.beginTransaction();
-                                                        String EtNotifHeader_sql = "Insert into DUE_NOTIFICATION_NotifHeader (UUID,NotifType,Qmnum,NotifShorttxt,FunctionLoc,Equipment,Bautl,ReportedBy,MalfuncStdate,MalfuncEddate,MalfuncSttime,MalfuncEdtime,BreakdownInd,Priority,Ingrp,Arbpl,Werks,Strmn,Ltrmn,Aufnr,Docs,Altitude,Latitude,Longitude,Closed,Completed,Createdon,Qmartx,Pltxt,Eqktx,Priokx,Auftext,Auarttext,Plantname,Wkctrname,Ingrpname,Maktx,Xstatus,Usr01,Usr02,Usr03,Usr04,Usr05,STATUS,ParnrVw,NameVw,Auswk,Shift,Noofperson,Auswkt, Strur, Ltrur, sort_malfc, Qmdat) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                                        SQLiteStatement EtNotifHeader_statement = App_db.compileStatement(EtNotifHeader_sql);
+                                                        String EtNotifHeader_sql =
+                                                                "Insert into DUE_NOTIFICATION_NotifHeader" +
+                                                                        " (UUID,NotifType,Qmnum,NotifShorttxt," +
+                                                                        "FunctionLoc,Equipment,Bautl,ReportedBy," +
+                                                                        "MalfuncStdate,MalfuncEddate,MalfuncSttime," +
+                                                                        "MalfuncEdtime,BreakdownInd,Priority,Ingrp," +
+                                                                        "Arbpl,Werks,Strmn,Ltrmn,Aufnr,Docs," +
+                                                                        "Altitude,Latitude,Longitude,Closed," +
+                                                                        "Completed,Createdon,Qmartx,Pltxt,Eqktx," +
+                                                                        "Priokx,Auftext,Auarttext,Plantname," +
+                                                                        "Wkctrname,Ingrpname,Maktx,Xstatus,Usr01," +
+                                                                        "Usr02,Usr03,Usr04,Usr05,STATUS,ParnrVw," +
+                                                                        "NameVw,Auswk,Shift,Noofperson,Auswkt," +
+                                                                        " Strur, Ltrur, sort_malfc, Qmdat)" +
+                                                                        " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                                                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                                                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                        SQLiteStatement EtNotifHeader_statement = App_db
+                                                                .compileStatement(EtNotifHeader_sql);
                                                         EtNotifHeader_statement.clearBindings();
                                                         EtNotifHeader_statement.bindString(1, uniqueKey.toString());
                                                         EtNotifHeader_statement.bindString(2, notification_type_id);
@@ -765,8 +797,12 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                         if (longtext != null && !longtext.equals("")) {
                                                             App_db.beginTransaction();
                                                             if (longtext.contains("\n")) {
-                                                                String EtNotifLongtext_sql = "Insert into DUE_NOTIFICATIONS_EtNotifLongtext (UUID, Qmnum, Objtype, TextLine, Objkey) values(?,?,?,?,?);";
-                                                                SQLiteStatement EtNotifLongtext_statement = App_db.compileStatement(EtNotifLongtext_sql);
+                                                                String EtNotifLongtext_sql =
+                                                                        "Insert into DUE_NOTIFICATIONS_EtNotifLongtext" +
+                                                                                " (UUID, Qmnum, Objtype, TextLine," +
+                                                                                " Objkey) values(?,?,?,?,?);";
+                                                                SQLiteStatement EtNotifLongtext_statement = App_db
+                                                                        .compileStatement(EtNotifLongtext_sql);
                                                                 EtNotifLongtext_statement.clearBindings();
                                                                 String[] longtext_array = longtext.split("\n");
                                                                 for (int i = 0; i < longtext_array.length; i++) {
@@ -778,8 +814,12 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                                     EtNotifLongtext_statement.execute();
                                                                 }
                                                             } else {
-                                                                String EtNotifLongtext_sql = "Insert into DUE_NOTIFICATIONS_EtNotifLongtext (UUID, Qmnum, Objtype, TextLine, Objkey) values(?,?,?,?,?);";
-                                                                SQLiteStatement EtNotifLongtext_statement = App_db.compileStatement(EtNotifLongtext_sql);
+                                                                String EtNotifLongtext_sql =
+                                                                        "Insert into DUE_NOTIFICATIONS_EtNotifLongtext" +
+                                                                                " (UUID, Qmnum, Objtype, TextLine," +
+                                                                                " Objkey) values(?,?,?,?,?);";
+                                                                SQLiteStatement EtNotifLongtext_statement = App_db
+                                                                        .compileStatement(EtNotifLongtext_sql);
                                                                 EtNotifLongtext_statement.clearBindings();
                                                                 EtNotifLongtext_statement.bindString(1, uniqueKey.toString());
                                                                 EtNotifLongtext_statement.bindString(2, "NOT_" + timeStamp);
@@ -795,11 +835,25 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                     }
 
                                                     try {
-                                                        String EtNotifItems_sql = "Insert into DUE_NOTIFICATIONS_EtNotifItems (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt, CauseKey, CauseGrp, Causegrptext, CauseCod, Causecodetext, CauseShtxt, Usr01, Usr02, Usr03, Usr04, Usr05, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                                        SQLiteStatement EtNotifItems_statement = App_db.compileStatement(EtNotifItems_sql);
+                                                        String EtNotifItems_sql =
+                                                                "Insert into DUE_NOTIFICATIONS_EtNotifItems" +
+                                                                        " (UUID, Qmnum, ItemKey, ItempartGrp," +
+                                                                        " Partgrptext, ItempartCod, Partcodetext," +
+                                                                        " ItemdefectGrp, Defectgrptext," +
+                                                                        " ItemdefectCod, Defectcodetext," +
+                                                                        " ItemdefectShtxt, CauseKey, CauseGrp," +
+                                                                        " Causegrptext, CauseCod, Causecodetext," +
+                                                                        " CauseShtxt, Usr01, Usr02, Usr03, Usr04," +
+                                                                        " Usr05, Status) values(?,?,?,?,?,?,?,?," +
+                                                                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                        SQLiteStatement EtNotifItems_statement = App_db
+                                                                .compileStatement(EtNotifItems_sql);
                                                         EtNotifItems_statement.clearBindings();
-                                                        Notifications_Create_Causecode_Fragment causecode_fragment = (Notifications_Create_Causecode_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
-                                                        List<Notifications_Create_Causecode_Fragment.Cause_Code_Object> causecode_list = causecode_fragment.getCauseCodeData();
+                                                        Notifications_Create_Causecode_Fragment causecode_fragment =
+                                                                (Notifications_Create_Causecode_Fragment) getSupportFragmentManager()
+                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
+                                                        List<Notifications_Create_Causecode_Fragment.Cause_Code_Object> causecode_list =
+                                                                causecode_fragment.getCauseCodeData();
                                                         if (causecode_list.size() > 0) {
                                                             App_db.beginTransaction();
                                                             for (int i = 0; i < causecode_list.size(); i++) {
@@ -836,11 +890,24 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                     }
 
                                                     try {
-                                                        String EtNotifActvs_sql = "Insert into DUE_NOTIFICATION_EtNotifActvs (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt, CauseKey, ActvKey, ActvGrp, Actgrptext, ActvCod, Actcodetext, ActvShtxt, Usr01, Usr02, Usr03, Usr04, Usr05, Fields, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                                        SQLiteStatement EtNotifActvs_statement = App_db.compileStatement(EtNotifActvs_sql);
+                                                        String EtNotifActvs_sql =
+                                                                "Insert into DUE_NOTIFICATION_EtNotifActvs" +
+                                                                        " (UUID, Qmnum, ItemKey, ItempartGrp," +
+                                                                        " Partgrptext, ItempartCod, Partcodetext," +
+                                                                        " ItemdefectGrp, Defectgrptext, ItemdefectCod," +
+                                                                        " Defectcodetext, ItemdefectShtxt, CauseKey," +
+                                                                        " ActvKey, ActvGrp, Actgrptext, ActvCod, Actcodetext," +
+                                                                        " ActvShtxt, Usr01, Usr02, Usr03, Usr04, Usr05," +
+                                                                        " Fields, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                                                        "?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                        SQLiteStatement EtNotifActvs_statement = App_db
+                                                                .compileStatement(EtNotifActvs_sql);
                                                         EtNotifActvs_statement.clearBindings();
-                                                        Notifications_Create_Activity_Fragment activity_fragment = (Notifications_Create_Activity_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
-                                                        List<Notifications_Create_Activity_Fragment.Activity_Object> activity_list = activity_fragment.getActivityData();
+                                                        Notifications_Create_Activity_Fragment activity_fragment =
+                                                                (Notifications_Create_Activity_Fragment) getSupportFragmentManager()
+                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
+                                                        List<Notifications_Create_Activity_Fragment.Activity_Object> activity_list =
+                                                                activity_fragment.getActivityData();
                                                         if (activity_list.size() > 0) {
                                                             App_db.beginTransaction();
                                                             for (int i = 0; i < activity_list.size(); i++) {
@@ -879,11 +946,17 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                     }
 
                                                     try {
-                                                        String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Filepath, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                        String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs" +
+                                                                "(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, " +
+                                                                "Filetype, Fsize, Content, DocId, DocType, Objtype," +
+                                                                " Filepath, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                                         SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
                                                         EtDocs_statement.clearBindings();
-                                                        Notifications_Create_Attachments_Fragment attachment_fragment = (Notifications_Create_Attachments_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
-                                                        List<Notif_EtDocs_Parcelable> attachment_list = attachment_fragment.getAttachmentsData();
+                                                        Notifications_Create_Attachments_Fragment attachment_fragment =
+                                                                (Notifications_Create_Attachments_Fragment) getSupportFragmentManager()
+                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
+                                                        List<Notif_EtDocs_Parcelable> attachment_list =
+                                                                attachment_fragment.getAttachmentsData();
                                                         if (attachment_list.size() > 0) {
                                                             App_db.beginTransaction();
                                                             for (int i = 0; i < attachment_list.size(); i++) {
@@ -915,7 +988,9 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                         String date = date_format.format(todaysdate.getTime());
                                                         String time = time_format.format(todaysdate.getTime());
 
-                                                        String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                                        String sql11 = "Insert into Alert_Log (DATE, TIME," +
+                                                                " DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
+                                                                " STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
                                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                                         App_db.beginTransaction();
                                                         statement11.clearBindings();
@@ -951,35 +1026,42 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                 public void onClick(View v) {
                                                     decision_dialog.dismiss();
                                                     Intent intent = new Intent(Intent.ACTION_MAIN);
-                                                    intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+                                                    intent.setClassName("com.android.settings",
+                                                            "com.android.settings.wifi.WifiSettings");
                                                     startActivity(intent);
                                                 }
                                             });
                                         }
                                     } else {
-                                        error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Please Select Required Start Date & Time");
+                                        error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                                                getString(R.string.notifcreate_reqstrtdtmandate));
                                     }
                                 } else {
-                                    error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Please Select Planner Group");
+                                    error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                                            getString(R.string.plndGrp_mandate));
                                 }
                             } else {
-                                error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Please Select Priority");
+                                error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                                        getString(R.string.priority_mandate));
                             }
                         } else {
-                            error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Please Select Work Center");
+                            error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                                    getString(R.string.wrkCntr_mandate));
                         }
                     } else {
-                        error_dialog.show_error_dialog(Notifications_Create_Activity.this, getResources().getString(R.string.equipFunc_mandate));
+                        error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                                getResources().getString(R.string.equipFunc_mandate));
                     }
                 } else {
-                    error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Please Enter Notification Short Text");
+                    error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                            getString(R.string.notification_shrttxtmandate));
                 }
             } else {
-                error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Please Select Notification Type");
+                error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                        getString(R.string.notification_typemandate));
             }
         }
     }
-
 
     private class Get_Token extends AsyncTask<Void, Integer, Void> {
         String token_status = "";
@@ -987,7 +1069,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Notifications_Create_Activity.this, getResources().getString(R.string.create_notif_inprogress));
+            custom_progress_dialog.show_progress_dialog(Notifications_Create_Activity.this,
+                    getResources().getString(R.string.create_notif_inprogress));
         }
 
         @Override
@@ -1012,25 +1095,35 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                 new Post_Create_Notification().execute("");
             } else {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Unable to process Notification Create. Please try again");
+                error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                        getString(R.string.notification_unabletocreate));
             }
         }
     }
-
 
     /*Posting Notification Create to Backend Server*/
     private class Post_Create_Notification extends AsyncTask<String, Integer, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Notifications_Create_Activity.this, getResources().getString(R.string.create_notif_inprogress));
+            custom_progress_dialog.show_progress_dialog(Notifications_Create_Activity.this,
+                    getResources().getString(R.string.create_notif_inprogress));
         }
 
         @Override
         protected Void doInBackground(String... params) {
             try {
                 String transmit_type = params[0];
-                notif_create_status = Notifications_Create.Post_NotifCreate_Data(Notifications_Create_Activity.this, transmit_type, notification_type_id, notif_text, functionlocation_id, equipment_id, equipment_text, priority_type_id, priority_type_text, plannergroup_id, plannergroup_text, Reported_by, personresponsible_id, personresponsible_text, req_st_date, req_st_time, req_end_date, req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time, effect_id, effect_text, plant_id, workcenter_id, primary_user_resp, causecodeArrayList, ActivityArrayList, AttachmentsArrayList, LongtextsArrayList, TasksArrayList, header_custominfo);
+                notif_create_status = Notifications_Create
+                        .Post_NotifCreate_Data(Notifications_Create_Activity.this,
+                                transmit_type, notification_type_id, notif_text, functionlocation_id,
+                                equipment_id, equipment_text, priority_type_id, priority_type_text,
+                                plannergroup_id, plannergroup_text, Reported_by, personresponsible_id,
+                                personresponsible_text, req_st_date, req_st_time, req_end_date,
+                                req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time,
+                                effect_id, effect_text, plant_id, workcenter_id, primary_user_resp,
+                                causecodeArrayList, ActivityArrayList, AttachmentsArrayList,
+                                LongtextsArrayList, TasksArrayList, header_custominfo);
             } catch (Exception e) {
             }
             return null;
@@ -1044,7 +1137,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (notif_create_status.get("response_status") != null && !notif_create_status.get("response_status").equals("")) {
+            if (notif_create_status.get("response_status") != null &&
+                    !notif_create_status.get("response_status").equals("")) {
                 if (notif_create_status.get("response_status").equalsIgnoreCase("Duplicate")) {
                     String duplicate_data = notif_create_status.get("response_data");
                     if (duplicate_data != null && !duplicate_data.equals("")) {
@@ -1056,7 +1150,9 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                 String Priok_text = "";
                                 if (Priok != null && !Priok.equals("")) {
                                     try {
-                                        Cursor cursor = App_db.rawQuery("select * from GET_NOTIFICATION_PRIORITY where Priok = ?", new String[]{Priok});
+                                        Cursor cursor = App_db.rawQuery("select *" +
+                                                        " from GET_NOTIFICATION_PRIORITY where Priok = ?",
+                                                new String[]{Priok});
                                         if (cursor != null && cursor.getCount() > 0) {
                                             if (cursor.moveToFirst()) {
                                                 do {
@@ -1074,7 +1170,9 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                 } else {
                                     Priok_text = "";
                                 }
-                                Notif_Dup_List_Object olo = new Notif_Dup_List_Object(Priok_text, jsonArray.getJSONObject(i).optString("Qmnum"), jsonArray.getJSONObject(i).optString("Qmtxt"));
+                                Notif_Dup_List_Object olo = new Notif_Dup_List_Object(Priok_text,
+                                        jsonArray.getJSONObject(i).optString("Qmnum"),
+                                        jsonArray.getJSONObject(i).optString("Qmtxt"));
                                 notification_duplicate_list.add(olo);
                             }
                             if (notification_duplicate_list.size() > 0) {
@@ -1085,7 +1183,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                 });
                             }
                             custom_progress_dialog.dismiss_progress_dialog();
-                            final Dialog aa = new Dialog(Notifications_Create_Activity.this, R.style.AppThemeDialog_Dark);
+                            final Dialog aa = new Dialog(Notifications_Create_Activity.this,
+                                    R.style.AppThemeDialog_Dark);
                             aa.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             aa.setCancelable(false);
                             aa.setCanceledOnTouchOutside(false);
@@ -1094,13 +1193,17 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                             Button no_button = (Button) aa.findViewById(R.id.no_button);
                             TextView title_textView = (TextView) aa.findViewById(R.id.title_textview);
                             RecyclerView recyclerview = (RecyclerView) aa.findViewById(R.id.recyclerview);
-                            notification_duplicate_adapter = new Notification_Duplicate_Adapter(Notifications_Create_Activity.this, notification_duplicate_list);
+                            notification_duplicate_adapter =
+                                    new Notification_Duplicate_Adapter(Notifications_Create_Activity.this,
+                                            notification_duplicate_list);
                             recyclerview.setHasFixedSize(true);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Notifications_Create_Activity.this);
+                            RecyclerView.LayoutManager layoutManager =
+                                    new LinearLayoutManager(Notifications_Create_Activity.this);
                             recyclerview.setLayoutManager(layoutManager);
                             recyclerview.setItemAnimator(new DefaultItemAnimator());
                             recyclerview.setAdapter(notification_duplicate_adapter);
-                            title_textView.setText(getString(R.string.dup_notif) + " (" + notification_duplicate_list.size() + ")");
+                            title_textView.setText(getString(R.string.dup_notif)
+                                    + " (" + notification_duplicate_list.size() + ")");
                             aa.show();
                             no_button.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -1119,7 +1222,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                         }
                     } else {
                         custom_progress_dialog.dismiss_progress_dialog();
-                        error_dialog.show_error_dialog(Notifications_Create_Activity.this, "No Duplicate Notifications Found. Please try again.");
+                        error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                                getString(R.string.notification_dupnotfound));
                     }
                 } else if (notif_create_status.get("response_status").equalsIgnoreCase("success")) {
                     custom_progress_dialog.dismiss_progress_dialog();
@@ -1129,11 +1233,13 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                     success_dialog.setCancelable(false);
                     success_dialog.setCanceledOnTouchOutside(false);
                     success_dialog.setContentView(R.layout.error_dialog);
-                    ImageView imageview = (ImageView) success_dialog.findViewById(R.id.imageView1);
-                    TextView description_textview = (TextView) success_dialog.findViewById(R.id.description_textview);
-                    Button ok_button = (Button) success_dialog.findViewById(R.id.ok_button);
-                    description_textview.setText("Notification " + notif_create_status.get("response_data") + " has been created successfully.");
-                    Glide.with(Notifications_Create_Activity.this).load(R.drawable.success_checkmark).into(imageview);
+                    ImageView imageview = success_dialog.findViewById(R.id.imageView1);
+                    TextView description_textview = success_dialog.findViewById(R.id.description_textview);
+                    Button ok_button = success_dialog.findViewById(R.id.ok_button);
+                    description_textview.setText(getString(R.string.notification_createsuccess,
+                            notif_create_status.get("response_data")));
+                    Glide.with(Notifications_Create_Activity.this)
+                            .load(R.drawable.success_checkmark).into(imageview);
                     success_dialog.show();
                     ok_button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1144,28 +1250,30 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                     });
                 } else if (notif_create_status.get("response_status").startsWith("E")) {
                     custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Notifications_Create_Activity.this, notif_create_status.get("response_status").toString().substring(1));
+                    error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                            notif_create_status.get("response_status").substring(1));
                 } else {
                     custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Unable to process Notification Create. Please try again.");
+                    error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                            getString(R.string.notification_unabletocreate));
                 }
             } else {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Notifications_Create_Activity.this, "Unable to process Notification Create. Please try again.");
+                error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                        getString(R.string.notification_unabletocreate));
             }
         }
     }
     /*Posting Notification Create to Backend Server*/
 
-
     /*RecyclerView Adapter Duplicate Notification Create*/
-    public class Notification_Duplicate_Adapter extends RecyclerView.Adapter<Notification_Duplicate_Adapter.MyViewHolder> {
+    public class Notification_Duplicate_Adapter extends
+            RecyclerView.Adapter<Notification_Duplicate_Adapter.MyViewHolder> {
         private Context mContext;
         private List<Notif_Dup_List_Object> list_data;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView notif_no_textview, notif_text_textview, priority_textview;
-
             public MyViewHolder(View view) {
                 super(view);
                 notif_no_textview = (TextView) view.findViewById(R.id.notif_no_textview);
@@ -1181,7 +1289,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.notifications_duplicate_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.notifications_duplicate_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -1199,7 +1308,6 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         }
     }
     /*RecyclerView Adapter Duplicate Notification Create*/
-
 
     /*Objects for  Duplicate Notification Create*/
     public class Notif_Dup_List_Object {
@@ -1239,16 +1347,15 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
     }
     /*Objects for  Duplicate Notification Create*/
 
-
     protected void animateFab(final boolean selected) {
         fab.clearAnimation();
-        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         shrink.setDuration(150);     // animation duration in milliseconds
         shrink.setInterpolator(new DecelerateInterpolator());
         shrink.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
@@ -1261,9 +1368,10 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                     fab.setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
                     fab.setImageResource(R.drawable.ic_add_white_24px);
                 }
-
                 // Scale up animation
-                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
                 expand.setDuration(100);     // animation duration in milliseconds
                 expand.setInterpolator(new AccelerateInterpolator());
                 fab.startAnimation(expand);
@@ -1271,48 +1379,47 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
         fab.startAnimation(shrink);
     }
 
-
     public void updateTabDataCount() {
-        Notifications_Create_Causecode_Fragment causecode_fragment = (Notifications_Create_Causecode_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
+        Notifications_Create_Causecode_Fragment causecode_fragment =
+                (Notifications_Create_Causecode_Fragment) getSupportFragmentManager()
+                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
         if (causecode_fragment.causeSize() > 0) {
             tablayout.getTabAt(1).setText(getString(R.string.causecode_p, causecode_fragment.causeSize()));
         } else {
             tablayout.getTabAt(1).setText(getResources().getString(R.string.cause_code1));
         }
 
-
-        Notifications_Create_Activity_Fragment activity_fragment = (Notifications_Create_Activity_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
+        Notifications_Create_Activity_Fragment activity_fragment =
+                (Notifications_Create_Activity_Fragment) getSupportFragmentManager()
+                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
         if (activity_fragment.activitySize() > 0) {
             tablayout.getTabAt(2).setText(getString(R.string.activity_p, activity_fragment.activitySize()));
         } else {
             tablayout.getTabAt(2).setText(getResources().getString(R.string.activity));
         }
 
-
-        Notifications_Create_Task_Fragment task_fragment = (Notifications_Create_Task_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
+        Notifications_Create_Task_Fragment task_fragment =
+                (Notifications_Create_Task_Fragment) getSupportFragmentManager()
+                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
         if (task_fragment.taskSize() > 0) {
             tablayout.getTabAt(3).setText(getString(R.string.task_p, task_fragment.taskSize()));
         } else {
             tablayout.getTabAt(3).setText(getResources().getString(R.string.task));
         }
 
-
-        Notifications_Create_Attachments_Fragment attachment_fragment = (Notifications_Create_Attachments_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
+        Notifications_Create_Attachments_Fragment attachment_fragment =
+                (Notifications_Create_Attachments_Fragment) getSupportFragmentManager()
+                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
         if (attachment_fragment.AttachmentSize() > 0) {
             tablayout.getTabAt(4).setText(getString(R.string.attachment_p, attachment_fragment.AttachmentSize()));
         } else {
             tablayout.getTabAt(4).setText(getResources().getString(R.string.attachments));
         }
-
-
         setCustomFont();
     }
-
-
 }

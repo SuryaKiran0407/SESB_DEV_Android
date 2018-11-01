@@ -237,7 +237,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
 
             if (swerk.equals("")) {
                 try {
-                    if (value.equals("Outstanding")) {
+                    if (value.equals(getString(R.string.outstanding))) {
                         entries = new ArrayList<PieEntry>();
                         Outs1.clear();
                         swerk_p.clear();
@@ -301,7 +301,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                             } else {
                                 entries.add(new PieEntry((float) Outs1.get(j), tt_fo.get(j).getmAuart_tt() + "-" + tt_fo.get(j).getmAuartx_tt() + " (" + Outs1.get(j) + ")"));
                                 Label_List_Object llo_o = new Label_List_Object();
-                                llo_o.setLabel(tt_fo.get(j).getmAuart_tt()+ "-" + tt_fo.get(j).getmAuartx_tt() + " (" + Outs1.get(j) + ")");
+                                llo_o.setLabel(tt_fo.get(j).getmAuart_tt() + "-" + tt_fo.get(j).getmAuartx_tt() + " (" + Outs1.get(j) + ")");
                                 llo.add(llo_o);
                             }
                         }
@@ -395,7 +395,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Inprogress")) {
+                    if (value.equals(getString(R.string.inprgs))) {
                         entries = new ArrayList<PieEntry>();
                         Inpr1.clear();
                         swerk_p.clear();
@@ -551,7 +551,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Completed")) {
+                    if (value.equals(getString(R.string.compltd))) {
                         entries = new ArrayList<PieEntry>();
                         Comp1.clear();
                         swerk_p.clear();
@@ -736,7 +736,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                             swerk_txt = pt_o.get(k).getmName_pt();
                         }
                     }
-                    if (value.equals("Outstanding")) {
+                    if (value.equals(getString(R.string.outstanding))) {
                         entries = new ArrayList<PieEntry>();
                         Outs1.clear();
                         swerk_p.clear();
@@ -758,7 +758,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                             }
 
                             for (int i = 0; i < tt_swerk.size(); i++) {
-                                String order= tt_swerk.get(i).getmAuart_tt();
+                                String order = tt_swerk.get(i).getmAuart_tt();
                                 if (tt_fo.size() > 0) {
                                     if (contains(tt_fo, order)) {
 
@@ -906,7 +906,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                                 String[] parts = label.split("-");
                                 part1 = parts[0];
 
-                                Intent intent = new Intent(OrderStatusPieActivity.this,OrderTypeListActivity.class);
+                                Intent intent = new Intent(OrderStatusPieActivity.this, OrderTypeListActivity.class);
                                 intent.putExtra("value1", part1);
                                 /*intent.putExtra("month", month);
                                 intent.putExtra("year", year);
@@ -926,7 +926,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Inprogress")) {
+                    if (value.equals(getString(R.string.inprgs))) {
                         entries = new ArrayList<PieEntry>();
                         Inpr1.clear();
                         swerk_p.clear();
@@ -1096,7 +1096,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                                 String[] parts = label.split("-");
                                 part1 = parts[0];
 
-                                Intent intent = new Intent( OrderStatusPieActivity.this, OrderTypeListActivity.class);
+                                Intent intent = new Intent(OrderStatusPieActivity.this, OrderTypeListActivity.class);
                                 intent.putExtra("value1", part1);
                                 /*intent.putExtra("month", month);
                                 intent.putExtra("year", year);
@@ -1116,7 +1116,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Completed")) {
+                    if (value.equals(getString(R.string.compltd))) {
                         entries = new ArrayList<PieEntry>();
                         Comp1.clear();
                         swerk_p.clear();
@@ -1374,7 +1374,7 @@ public class OrderStatusPieActivity extends AppCompatActivity {
                         intent.putExtra("wrkcnt", wrkcnt);
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(OrderStatusPieActivity.this,OrderTypeListActivity.class);
+                        Intent intent = new Intent(OrderStatusPieActivity.this, OrderTypeListActivity.class);
                         intent.putExtra("value1", part1);
                         /*intent.putExtra("month", month);
                         intent.putExtra("year", year);

@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
@@ -32,8 +33,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -49,8 +53,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatActivity implements View.OnClickListener
-{
+public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView home_imageview;
     String status = "timeout";
@@ -75,14 +78,12 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
     String DATABASE_NAME = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.equipment_inspection_breakdown_statics);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             equip_id = extras.getString("equipment_id");
             equip_name = extras.getString("equipment_text");
         }
@@ -114,32 +115,26 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
 
         cd = new ConnectionDetector(getApplicationContext());
         isInternetPresent = cd.isConnectingToInternet();
-        if (isInternetPresent)
-        {
+        if (isInternetPresent) {
             breakdown_statistics = new Breakdown_Statistics();
             breakdown_statistics.execute();
-        }
-        else
-        {
+        } else {
             mChart.setVisibility(View.GONE);
             no_data.setVisibility(View.VISIBLE);
-            no_data.setText("No Network Available. Please Check your Internet Connection.");
+            no_data.setText(getString(R.string.network_connection_dialog_text));
         }
 
     }
 
 
-    public void onClick(View v)
-    {
-        if (v == home_imageview)
-        {
+    public void onClick(View v) {
+        if (v == home_imageview) {
             Equipment_Inspection_Breakdown_Statics_Activity.this.finish();
         }
     }
 
 
-    private class Breakdown_Statistics extends AsyncTask<Void, Integer, Void>
-    {
+    private class Breakdown_Statistics extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -150,21 +145,19 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
             progressdialog.setCanceledOnTouchOutside(false);
             progressdialog.show();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 /* Initializing Shared Preferences */
-                FieldTekPro_SharedPref =getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+                FieldTekPro_SharedPref = getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
                 FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
                 username = FieldTekPro_SharedPref.getString("Username", null);
                 password = FieldTekPro_SharedPref.getString("Password", null);
                 String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
                 /* Initializing Shared Preferences */
                 Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"EB", "RD", webservice_type});
-                if (cursor != null && cursor.getCount() > 0)
-                {
+                if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
                 }
@@ -175,30 +168,28 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                 UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
                 device_uuid = deviceUuid.toString();
                 /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-                String URL =getString(R.string.ip_address);
+                String URL = getString(R.string.ip_address);
 
                 Map<String, String> map = new HashMap<>();
                 map.put("Muser", username.toUpperCase().toString());
                 map.put("DEVICESNO", device_serial_number);
                 map.put("UDID", device_uuid);
-                map.put("Ivequnr",equip_id );
+                map.put("Ivequnr", equip_id);
                 map.put("ivyear", "");
                 map.put("LOW", "");
                 map.put("HIGH", "");
                 map.put("DeviceId", device_id);
                 map.put("ivtransmittype", "MISR");
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-               Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
                 Interface service = retrofit.create(Interface.class);
                 String credentials = username + ":" + password;
                 final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                 Call<EquipmentInspection_BreakStatics_SER> call = service.getEquipmentInspectionAnalysis(url_link, basic, map);
                 Response<EquipmentInspection_BreakStatics_SER> response = call.execute();
                 int response_status_code = response.code();
-                if (response_status_code == 200)
-                {
-                    if (response.isSuccessful() && response.body() != null)
-                    {
+                if (response_status_code == 200) {
+                    if (response.isSuccessful() && response.body() != null) {
 
                         /*Reading Response Data and Parsing to Serializable*/
                         EquipmentInspection_BreakStatics_SER rs = response.body();
@@ -219,16 +210,12 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                             JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
 
                             /*Reading and Inserting Data into Database Table for EsBkdneqTotal*/
-                            if (jsonObject.has("EsBkdneqTotal"))
-                            {
-                                try
-                                {
+                            if (jsonObject.has("EsBkdneqTotal")) {
+                                try {
                                     String EsBkdneqTotal_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtBkdneqMonthTotal().getResults());
                                     JSONArray jsonArray = new JSONArray(EsBkdneqTotal_response_data);
-                                    if (jsonArray.length() > 0)
-                                    {
-                                        for (int j = 0; j < jsonArray.length(); j++)
-                                        {
+                                    if (jsonArray.length() > 0) {
+                                        for (int j = 0; j < jsonArray.length(); j++) {
                                             tot_m2_time = jsonArray.getJSONObject(j).optString("TotM2");
                                             Mis_Break_Stat_Object bpt_o = new Mis_Break_Stat_Object();
                                             bpt_o.setIwerk(jsonArray.getJSONObject(j).optString("Iwerk"));
@@ -249,41 +236,30 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                                             bmt.add(bpt_o);
                                         }
                                     }
-                                }
-                                catch (Exception e)
-                                {
+                                } catch (Exception e) {
                                 }
                             }
                             status = "success";
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                if (e.getMessage() == null)
-                {
+            } catch (Exception e) {
+                if (e.getMessage() == null) {
                     status = "exception";
-                }
-                else if (e.getMessage().equalsIgnoreCase("Read timed out"))
-                {
+                } else if (e.getMessage().equalsIgnoreCase("Read timed out")) {
                     status = "timeout";
-                }
-                else
-                {
+                } else {
                     status = "exception";
                 }
             }
             return null;
         }
+
         @Override
-        protected void onPostExecute(Void aVoid)
-        {
+        protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            try
-            {
-                if (status.equalsIgnoreCase("success"))
-                {
+            try {
+                if (status.equalsIgnoreCase("success")) {
                     final List<BarEntry> entries = new ArrayList<>();
                     ArrayList<Entry> line_c = new ArrayList<Entry>();
                     ArrayList<Entry> line_m = new ArrayList<Entry>();
@@ -291,71 +267,48 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                     String inputPattern = "yyyyMM";
                     SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                     SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                    if (tot_m2_time != null && !tot_m2_time.equals(""))
-                    {
-                        if (tot_m2_time.contains(","))
-                        {
+                    if (tot_m2_time != null && !tot_m2_time.equals("")) {
+                        if (tot_m2_time.contains(",")) {
                             String[] break_s = tot_m2_time.split(",");
                             String one = break_s[0];
                             String two = break_s[1].substring(0, 2);
                             String brk_hrs = one + "." + two;
                             break_time.setText("Total Breakdown Time : " + brk_hrs + " hrs");
-                        }
-                        else
-                        {
+                        } else {
                             break_time.setText("Total Breakdown Time : " + tot_m2_time + " hrs");
                         }
-                    }
-                    else
-                    {
+                    } else {
                         break_time.setVisibility(View.GONE);
                     }
-                    if (bmt.size() > 0)
-                    {
+                    if (bmt.size() > 0) {
                         mttr = new float[bmt.size()];
                         count_m = new float[bmt.size()];
                         SpmonSS = new String[bmt.size()];
-                        for (int j = 0; j < bmt.size(); j++)
-                        {
-                            try
-                            {
-                                if (bmt.get(j).getCount() != null && !bmt.get(j).getCount().equals(""))
-                                {
+                        for (int j = 0; j < bmt.size(); j++) {
+                            try {
+                                if (bmt.get(j).getCount() != null && !bmt.get(j).getCount().equals("")) {
                                     count_m[j] = Float.parseFloat(bmt.get(j).getCount());
-                                }
-                                else
-                                {
+                                } else {
                                     count_m[j] = 0;
                                 }
-                                if (bmt.get(j).getMttrHours() != null && !bmt.get(j).getMttrHours().equals(""))
-                                {
+                                if (bmt.get(j).getMttrHours() != null && !bmt.get(j).getMttrHours().equals("")) {
                                     mttr[j] = Float.parseFloat(bmt.get(j).getMttrHours());
-                                }
-                                else
-                                {
+                                } else {
                                     mttr[j] = 0;
                                 }
 
-                                if (bmt.get(j).getSpmon() != null && !bmt.get(j).getSpmon().equals("") && !bmt.get(j).getSpmon().equals("null"))
-                                {
-                                    try
-                                    {
+                                if (bmt.get(j).getSpmon() != null && !bmt.get(j).getSpmon().equals("") && !bmt.get(j).getSpmon().equals("null")) {
+                                    try {
                                         date = inputFormat.parse(bmt.get(j).getSpmon().substring(1));
                                         String dateS = outputFormat.format(date);
                                         SpmonS.add(dateS);
                                         SpmonSS[j] = "" + dateS;
+                                    } catch (Exception e) {
                                     }
-                                    catch (Exception e)
-                                    {
-                                    }
-                                }
-                                else
-                                {
+                                } else {
                                     SpmonSS[j] = "";
                                 }
-                            }
-                            catch (Exception nfe)
-                            {
+                            } catch (Exception nfe) {
                             }
                             line_m.add(new Entry(j, mttr[j]));
                             line_c.add(new Entry(j, count_m[j]));
@@ -396,13 +349,10 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                         xAxis.setDrawGridLines(false);
                         xAxis.setGranularity(1f); // only intervals of 1 day
                         xAxis.setValueFormatter(new MyXAxisValueFormatter(SpmonSS));
-                        if (entries.size() == 1)
-                        {
+                        if (entries.size() == 1) {
                             xAxis.setAxisMaximum(data.getXMax() + 0.5f);
                             xAxis.setAxisMinimum(data.getXMin() - 0.5f);
-                        }
-                        else
-                        {
+                        } else {
                             xAxis.setAxisMaximum(data.getXMax() + 0.25f);
                             xAxis.setAxisMinimum(data.getXMin() - 0.25f);
                         }
@@ -427,23 +377,17 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                         mChart.invalidate();
                         mChart.setVisibility(View.VISIBLE);
                         no_data.setVisibility(View.GONE);
-                    }
-                    else
-                    {
+                    } else {
                         progressdialog.dismiss();
                         mChart.setVisibility(View.GONE);
                         no_data.setVisibility(View.VISIBLE);
                     }
-                }
-                else
-                {
+                } else {
                     progressdialog.dismiss();
                     mChart.setVisibility(View.GONE);
                     no_data.setVisibility(View.VISIBLE);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
 
         }

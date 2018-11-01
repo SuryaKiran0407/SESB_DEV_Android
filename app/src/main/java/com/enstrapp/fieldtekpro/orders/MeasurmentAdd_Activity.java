@@ -89,7 +89,8 @@ public class MeasurmentAdd_Activity extends AppCompatActivity implements View.On
         time_tiet.setText(formattedDate1);
         date_tiet.setText(formattedDate);
 
-        reding_tiet.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(10, 2)});
+        reding_tiet.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(10,
+                2)});
     }
 
     @Override
@@ -101,9 +102,12 @@ public class MeasurmentAdd_Activity extends AppCompatActivity implements View.On
                 break;
 
             case (R.id.submit_bt):
-                if (mesurPnt_tiet.getText().toString() != null && !mesurPnt_tiet.getText().toString().equals("")) {
-                    if (date_tiet.getText().toString() != null && !date_tiet.getText().toString().equals("")) {
-                        if (time_tiet.getText().toString() != null && !time_tiet.getText().toString().equals("")) {
+                if (mesurPnt_tiet.getText().toString() != null &&
+                        !mesurPnt_tiet.getText().toString().equals("")) {
+                    if (date_tiet.getText().toString() != null &&
+                            !date_tiet.getText().toString().equals("")) {
+                        if (time_tiet.getText().toString() != null &&
+                                !time_tiet.getText().toString().equals("")) {
                             if (normal_rb.isChecked())
                                 mpo.setAtbez("OK");
                             else if (alaram_rb.isChecked())
@@ -118,13 +122,16 @@ public class MeasurmentAdd_Activity extends AppCompatActivity implements View.On
                             setResult(RESULT_OK, submitIntent);
                             MeasurmentAdd_Activity.this.finish();
                         } else {
-                            errorDialog.show_error_dialog(MeasurmentAdd_Activity.this, getString(R.string.time_mandate));
+                            errorDialog.show_error_dialog(MeasurmentAdd_Activity.this,
+                                    getString(R.string.time_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(MeasurmentAdd_Activity.this, getString(R.string.date_mandate));
+                        errorDialog.show_error_dialog(MeasurmentAdd_Activity.this,
+                                getString(R.string.date_mandate));
                     }
                 } else {
-                    errorDialog.show_error_dialog(MeasurmentAdd_Activity.this, getString(R.string.measurment_mandate));
+                    errorDialog.show_error_dialog(MeasurmentAdd_Activity.this,
+                            getString(R.string.measurment_mandate));
                 }
                 break;
 
@@ -137,23 +144,27 @@ public class MeasurmentAdd_Activity extends AppCompatActivity implements View.On
                 break;
 
             case (R.id.mesurPnt_iv):
-                Intent mpTtLIntent = new Intent(MeasurmentAdd_Activity.this, MeasurementPointList_Activity.class);
+                Intent mpTtLIntent = new Intent(MeasurmentAdd_Activity.this,
+                        MeasurementPointList_Activity.class);
                 mpTtLIntent.putExtra("equip", equip);
                 startActivityForResult(mpTtLIntent, MPTT);
                 break;
 
             case (R.id.date_iv):
-                Intent stDtIntent = new Intent(MeasurmentAdd_Activity.this, DatePickerDialog.class);
+                Intent stDtIntent = new Intent(MeasurmentAdd_Activity.this,
+                        DatePickerDialog.class);
                 startActivityForResult(stDtIntent, DATE);
                 break;
 
             case (R.id.time_iv):
-                Intent stTmIntent = new Intent(MeasurmentAdd_Activity.this, TimePickerDialog.class);
+                Intent stTmIntent = new Intent(MeasurmentAdd_Activity.this,
+                        TimePickerDialog.class);
                 startActivityForResult(stTmIntent, TIME);
                 break;
 
             case (R.id.valuation_iv):
-                Intent valuIntent = new Intent(MeasurmentAdd_Activity.this, Valuation_Activity.class);
+                Intent valuIntent = new Intent(MeasurmentAdd_Activity.this,
+                        Valuation_Activity.class);
                 valuIntent.putExtra("equip", equip);
                 startActivityForResult(valuIntent, VALUA);
                 break;
@@ -173,8 +184,9 @@ public class MeasurmentAdd_Activity extends AppCompatActivity implements View.On
                 if (resultCode == RESULT_OK) {
                     mpo.setPoint(data.getStringExtra("mptt_id"));
                     mpo.setPttxt(data.getStringExtra("mptt_txt"));
-                    mesurPnt_tiet.setText(getString(R.string.hypen_text, data.getStringExtra("mptt_id"),
-                            data.getStringExtra("mptt_txt")));
+                    mesurPnt_tiet
+                            .setText(getString(R.string.hypen_text, data.getStringExtra("mptt_id"),
+                                    data.getStringExtra("mptt_txt")));
                 }
                 break;
 
@@ -195,8 +207,9 @@ public class MeasurmentAdd_Activity extends AppCompatActivity implements View.On
             case (VALUA):
                 if (resultCode == RESULT_OK) {
                     mpo.setVlcod(data.getStringExtra("valu_id"));
-                    valuation_tiet.setText(getString(R.string.hypen_text, data.getStringExtra("valu_id"),
-                            data.getStringExtra("valu_txt")));
+                    valuation_tiet
+                            .setText(getString(R.string.hypen_text, data.getStringExtra("valu_id"),
+                                    data.getStringExtra("valu_txt")));
                 }
                 break;
         }
@@ -207,11 +220,13 @@ public class MeasurmentAdd_Activity extends AppCompatActivity implements View.On
         Pattern mPattern;
 
         public DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
-            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
+            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," +
+                    (digitsAfterZero - 1) + "})?)||(\\.)?");
         }
 
         @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
+                                   int dstart, int dend) {
 
             Matcher matcher = mPattern.matcher(dest);
             if (!matcher.matches())

@@ -59,8 +59,8 @@ public class PermitRepAnalysis {
     private static final String KEY_EsPermitAppr_ID = "ID";
     private static final String KEY_EsPermitAppr_Total = "Total";
     private static final String KEY_EsPermitAppr_Red = "Red";
-    private static final String KEY_EsPermitAppr_Yellow= "Yellow";
-    private static final String KEY_EsPermitAppr_Green= "Green";
+    private static final String KEY_EsPermitAppr_Yellow = "Yellow";
+    private static final String KEY_EsPermitAppr_Green = "Green";
 
     /*EsPermitAppr Tabel and Fieldnames*/
 
@@ -69,11 +69,11 @@ public class PermitRepAnalysis {
     private static final String KEY_EtPermitTotalWerks_ID = "ID";
     private static final String KEY_EtPermitTotalWerks_Iwerk = "Iwerk";
     private static final String KEY_EtPermitTotalWerks_Name = "Name";
-    private static final String KEY_EtPermitTotalWerks_Total= "Total";
-    private static final String KEY_EtPermitTotalWerks_Crea= "Crea";
-    private static final String KEY_EtPermitTotalWerks_Prep= "Prep";
-    private static final String KEY_EtPermitTotalWerks_Clsd= "Clsd";
-    private static final String KEY_EtPermitTotalWerks_Reje= "Reje";
+    private static final String KEY_EtPermitTotalWerks_Total = "Total";
+    private static final String KEY_EtPermitTotalWerks_Crea = "Crea";
+    private static final String KEY_EtPermitTotalWerks_Prep = "Prep";
+    private static final String KEY_EtPermitTotalWerks_Clsd = "Clsd";
+    private static final String KEY_EtPermitTotalWerks_Reje = "Reje";
 
     /*EtPermitTotalWerks Tabel and Fieldnames*/
 
@@ -83,25 +83,25 @@ public class PermitRepAnalysis {
     private static final String KEY_EtPermitApprWerks_ID = "ID";
     private static final String KEY_EtPermitApprWerks_Iwerk = "Iwerk";
     private static final String KEY_EtPermitApprWerks_Name = "Name";
-    private static final String KEY_EtPermitApprWerks_Total= "Total";
-    private static final String KEY_EtPermitApprWerks_Red= "Red";
-    private static final String KEY_EtPermitApprWerks_Yellow= "Yellow";
-    private static final String KEY_EtPermitApprWerks_Green= "Green";
+    private static final String KEY_EtPermitApprWerks_Total = "Total";
+    private static final String KEY_EtPermitApprWerks_Red = "Red";
+    private static final String KEY_EtPermitApprWerks_Yellow = "Yellow";
+    private static final String KEY_EtPermitApprWerks_Green = "Green";
 
     /*EtPermitApprWerks Tabel and Fieldnames*/
 
 
-/*EtPermitTotalArbpl Tabel and Fieldnames*/
+    /*EtPermitTotalArbpl Tabel and Fieldnames*/
     private static final String TABLE_EtPermitTotalArbpl = "EtPermitTotalArbpl";
     private static final String KEY_EtPermitTotalArbpl_ID = "ID";
     private static final String KEY_EtPermitTotalArbpl_Iwerk = "Iwerk";
     private static final String KEY_EtPermitTotalArbpl_Arbpl = "Arbpl";
     private static final String KEY_EtPermitTotalArbpl_Name = "Name";
-    private static final String KEY_EtPermitTotalArbpl_Total= "Total";
-    private static final String KEY_EtPermitTotalArbpl_Crea= "Crea";
-    private static final String KEY_EtPermitTotalArbpl_Prep= "Prep";
-    private static final String KEY_EtPermitTotalArbpl_Clsd= "Clsd";
-    private static final String KEY_EtPermitTotalArbpl_Reje= "Reje";
+    private static final String KEY_EtPermitTotalArbpl_Total = "Total";
+    private static final String KEY_EtPermitTotalArbpl_Crea = "Crea";
+    private static final String KEY_EtPermitTotalArbpl_Prep = "Prep";
+    private static final String KEY_EtPermitTotalArbpl_Clsd = "Clsd";
+    private static final String KEY_EtPermitTotalArbpl_Reje = "Reje";
 
 
     /*EtPermitTotalArbpl Tabel and Fieldnames*/
@@ -112,10 +112,10 @@ public class PermitRepAnalysis {
     private static final String KEY_EtPermitApprArbpl_Iwerk = "Iwerk";
     private static final String KEY_EtPermitApprArbpl_Arbpl = "Arbpl";
     private static final String KEY_EtPermitApprArbpl_Name = "Name";
-    private static final String KEY_EtPermitApprArbpl_Total= "Total";
-    private static final String KEY_EtPermitApprArbpl_Red= "Red";
-    private static final String KEY_EtPermitApprArbpl_Yellow= "Yellow";
-    private static final String KEY_EtPermitApprArbpl_Green= "Green";
+    private static final String KEY_EtPermitApprArbpl_Total = "Total";
+    private static final String KEY_EtPermitApprArbpl_Red = "Red";
+    private static final String KEY_EtPermitApprArbpl_Yellow = "Yellow";
+    private static final String KEY_EtPermitApprArbpl_Green = "Green";
 
     /*EtPermitApprArbpl Tabel and Fieldnames*/
 
@@ -125,26 +125,26 @@ public class PermitRepAnalysis {
     private static final String KEY_EtPermitWw_Iwerk = "Iwerk";
     private static final String KEY_EtPermitWw_Arbpl = "Arbpl";
     private static final String KEY_EtPermitWw_Crea = "Crea";
-    private static final String KEY_EtPermitWw_Prep= "Prep";
-    private static final String KEY_EtPermitWw_Clsd= "Clsd";
-    private static final String KEY_EtPermitWw_Reje= "Reje";
-    private static final String KEY_EtPermitWw_Red= "Red";
-    private static final String KEY_EtPermitWw_Yellow= "Yellow";
-    private static final String KEY_EtPermitWw_Green= "Green";
-    private static final String KEY_EtPermitWw_Aufnr= "Aufnr";
-    private static final String KEY_EtPermitWw_Wapnr= "Wapnr";
-    private static final String KEY_EtPermitWw_Objart= "Objart";
-    private static final String KEY_EtPermitWw_Objnr= "Objnr";
-    private static final String KEY_EtPermitWw_Stxt= "Stxt";
-    private static final String KEY_EtPermitWw_Datefr= "Datefr";
-    private static final String KEY_EtPermitWw_Timefr= "Timefr";
-    private static final String KEY_EtPermitWw_Dateto= "Dateto";
-    private static final String KEY_EtPermitWw_Timeto= "Timeto";
-    private static final String KEY_EtPermitWw_Priok= "Priok";
-    private static final String KEY_EtPermitWw_Tplnr= "Tplnr";
-    private static final String KEY_EtPermitWw_Equnr= "Equnr";
-    private static final String KEY_EtPermitWw_Eqktx= "Eqktx";
-    private static final String KEY_EtPermitWw_Refobj= "Refobj";
+    private static final String KEY_EtPermitWw_Prep = "Prep";
+    private static final String KEY_EtPermitWw_Clsd = "Clsd";
+    private static final String KEY_EtPermitWw_Reje = "Reje";
+    private static final String KEY_EtPermitWw_Red = "Red";
+    private static final String KEY_EtPermitWw_Yellow = "Yellow";
+    private static final String KEY_EtPermitWw_Green = "Green";
+    private static final String KEY_EtPermitWw_Aufnr = "Aufnr";
+    private static final String KEY_EtPermitWw_Wapnr = "Wapnr";
+    private static final String KEY_EtPermitWw_Objart = "Objart";
+    private static final String KEY_EtPermitWw_Objnr = "Objnr";
+    private static final String KEY_EtPermitWw_Stxt = "Stxt";
+    private static final String KEY_EtPermitWw_Datefr = "Datefr";
+    private static final String KEY_EtPermitWw_Timefr = "Timefr";
+    private static final String KEY_EtPermitWw_Dateto = "Dateto";
+    private static final String KEY_EtPermitWw_Timeto = "Timeto";
+    private static final String KEY_EtPermitWw_Priok = "Priok";
+    private static final String KEY_EtPermitWw_Tplnr = "Tplnr";
+    private static final String KEY_EtPermitWw_Equnr = "Equnr";
+    private static final String KEY_EtPermitWw_Eqktx = "Eqktx";
+    private static final String KEY_EtPermitWw_Refobj = "Refobj";
 
     /*EtPermitWw Tabel and Fieldnames*/
 
@@ -154,29 +154,29 @@ public class PermitRepAnalysis {
     private static final String KEY_EtPermitWa_ID = "ID";
     private static final String KEY_EtPermitWa_Iwerk = "Iwerk";
     private static final String KEY_EtPermitWa_Crea = "Crea";
-    private static final String KEY_EtPermitWa_Prep= "Prep";
-    private static final String KEY_EtPermitWa_Clsd= "Clsd";
-    private static final String KEY_EtPermitWa_Reje= "Reje";
-    private static final String KEY_EtPermitWa_Red= "Red";
-    private static final String KEY_EtPermitWa_Yellow= "Yellow";
-    private static final String KEY_EtPermitWa_Green= "Green";
-    private static final String KEY_EtPermitWa_Aufnr= "Aufnr";
-    private static final String KEY_EtPermitWa_Wapnr= "Wapnr";
-    private static final String KEY_EtPermitWa_Wapinr= "Wapinr";
-    private static final String KEY_EtPermitWa_Objart= "Objart";
-    private static final String KEY_EtPermitWa_Objtyp= "Objtyp";
-    private static final String KEY_EtPermitWa_Objnr= "Objnr";
-    private static final String KEY_EtPermitWa_Stxt= "Stxt";
-    private static final String KEY_EtPermitWa_Arbpl= "Arbpl";
-    private static final String KEY_EtPermitWa_Datefr= "Datefr";
-    private static final String KEY_EtPermitWa_Timefr= "Timefr";
-    private static final String KEY_EtPermitWa_Dateto= "Dateto";
-    private static final String KEY_EtPermitWa_Timeto= "Timeto";
-    private static final String KEY_EtPermitWa_Priok= "Priok";
-    private static final String KEY_EtPermitWa_Tplnr= "Tplnr";
-    private static final String KEY_EtPermitWa_Equnr= "Equnr";
-    private static final String KEY_EtPermitWa_Eqktx= "Eqktx";
-    private static final String KEY_EtPermitWa_Refobj= "Refobj";
+    private static final String KEY_EtPermitWa_Prep = "Prep";
+    private static final String KEY_EtPermitWa_Clsd = "Clsd";
+    private static final String KEY_EtPermitWa_Reje = "Reje";
+    private static final String KEY_EtPermitWa_Red = "Red";
+    private static final String KEY_EtPermitWa_Yellow = "Yellow";
+    private static final String KEY_EtPermitWa_Green = "Green";
+    private static final String KEY_EtPermitWa_Aufnr = "Aufnr";
+    private static final String KEY_EtPermitWa_Wapnr = "Wapnr";
+    private static final String KEY_EtPermitWa_Wapinr = "Wapinr";
+    private static final String KEY_EtPermitWa_Objart = "Objart";
+    private static final String KEY_EtPermitWa_Objtyp = "Objtyp";
+    private static final String KEY_EtPermitWa_Objnr = "Objnr";
+    private static final String KEY_EtPermitWa_Stxt = "Stxt";
+    private static final String KEY_EtPermitWa_Arbpl = "Arbpl";
+    private static final String KEY_EtPermitWa_Datefr = "Datefr";
+    private static final String KEY_EtPermitWa_Timefr = "Timefr";
+    private static final String KEY_EtPermitWa_Dateto = "Dateto";
+    private static final String KEY_EtPermitWa_Timeto = "Timeto";
+    private static final String KEY_EtPermitWa_Priok = "Priok";
+    private static final String KEY_EtPermitWa_Tplnr = "Tplnr";
+    private static final String KEY_EtPermitWa_Equnr = "Equnr";
+    private static final String KEY_EtPermitWa_Eqktx = "Eqktx";
+    private static final String KEY_EtPermitWa_Refobj = "Refobj";
 
     /*EtPermitWa Tabel and Fieldnames*/
 
@@ -185,34 +185,34 @@ public class PermitRepAnalysis {
     private static final String KEY_EtPermitWd_ID = "ID";
     private static final String KEY_EtPermitWd_Iwerk = "Iwerk";
     private static final String KEY_EtPermitWd_Crea = "Crea";
-    private static final String KEY_EtPermitWd_Prep= "Prep";
-    private static final String KEY_EtPermitWd_Clsd= "Clsd";
-    private static final String KEY_EtPermitWd_Reje= "Reje";
-    private static final String KEY_EtPermitWd_Red= "Red";
-    private static final String KEY_EtPermitWd_Yellow= "Yellow";
-    private static final String KEY_EtPermitWd_Green= "Green";
-    private static final String KEY_EtPermitWd_Aufnr= "Aufnr";
-    private static final String KEY_EtPermitWd_Wapnr= "Wapnr";
-    private static final String KEY_EtPermitWd_Wapinr= "Wapinr";
-    private static final String KEY_EtPermitWd_Wcnr= "Wcnr";
-    private static final String KEY_EtPermitWd_Objart= "Objart";
-    private static final String KEY_EtPermitWd_Objtyp= "Objtyp";
-    private static final String KEY_EtPermitWd_Objnr= "Objnr";
-    private static final String KEY_EtPermitWd_Stxt= "Stxt";
-    private static final String KEY_EtPermitWd_Arbpl= "Arbpl";
-    private static final String KEY_EtPermitWd_Datefr= "Datefr";
-    private static final String KEY_EtPermitWd_Timefr= "Timefr";
-    private static final String KEY_EtPermitWd_Dateto= "Dateto";
-    private static final String KEY_EtPermitWd_Timeto= "Timeto";
-    private static final String KEY_EtPermitWd_Priok= "Priok";
-    private static final String KEY_EtPermitWd_Tplnr= "Tplnr";
-    private static final String KEY_EtPermitWd_Equnr= "Equnr";
-    private static final String KEY_EtPermitWd_Eqktx= "Eqktx";
-    private static final String KEY_EtPermitWd_Refobj= "Refobj";
+    private static final String KEY_EtPermitWd_Prep = "Prep";
+    private static final String KEY_EtPermitWd_Clsd = "Clsd";
+    private static final String KEY_EtPermitWd_Reje = "Reje";
+    private static final String KEY_EtPermitWd_Red = "Red";
+    private static final String KEY_EtPermitWd_Yellow = "Yellow";
+    private static final String KEY_EtPermitWd_Green = "Green";
+    private static final String KEY_EtPermitWd_Aufnr = "Aufnr";
+    private static final String KEY_EtPermitWd_Wapnr = "Wapnr";
+    private static final String KEY_EtPermitWd_Wapinr = "Wapinr";
+    private static final String KEY_EtPermitWd_Wcnr = "Wcnr";
+    private static final String KEY_EtPermitWd_Objart = "Objart";
+    private static final String KEY_EtPermitWd_Objtyp = "Objtyp";
+    private static final String KEY_EtPermitWd_Objnr = "Objnr";
+    private static final String KEY_EtPermitWd_Stxt = "Stxt";
+    private static final String KEY_EtPermitWd_Arbpl = "Arbpl";
+    private static final String KEY_EtPermitWd_Datefr = "Datefr";
+    private static final String KEY_EtPermitWd_Timefr = "Timefr";
+    private static final String KEY_EtPermitWd_Dateto = "Dateto";
+    private static final String KEY_EtPermitWd_Timeto = "Timeto";
+    private static final String KEY_EtPermitWd_Priok = "Priok";
+    private static final String KEY_EtPermitWd_Tplnr = "Tplnr";
+    private static final String KEY_EtPermitWd_Equnr = "Equnr";
+    private static final String KEY_EtPermitWd_Eqktx = "Eqktx";
+    private static final String KEY_EtPermitWd_Refobj = "Refobj";
 
     /*EtPermitWd Tabel and Fieldnames*/
 
-    public static String Get_PermitReport_Analysis_Data(Activity activity, String transmit_type,String month, String year) {
+    public static String Get_PermitReport_Analysis_Data(Activity activity, String transmit_type, String month, String year) {
         try {
 
             DATABASE_NAME = activity.getString(R.string.database_name);
@@ -226,13 +226,13 @@ public class PermitRepAnalysis {
                     + KEY_EsPermitTotal_Total + " TEXT,"
                     + KEY_EsPermitTotal_Crea + " TEXT,"
                     + KEY_EsPermitTotal_Prep + " TEXT,"
-                    + KEY_EsPermitTotal_Clsd+ " TEXT,"
+                    + KEY_EsPermitTotal_Clsd + " TEXT,"
                     + KEY_EsPermitTotal_Reje + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_EsPermitTotal);
-                /* Creating EsPermitTotal Table with Fields */
+            /* Creating EsPermitTotal Table with Fields */
 
-                /* Creating EsPermitAppr Table with Fields */
+            /* Creating EsPermitAppr Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EsPermitAppr);
             String CREATE_TABLE_EsPermitAppr = "CREATE TABLE IF NOT EXISTS " + TABLE_EsPermitAppr + ""
                     + "( "
@@ -240,13 +240,13 @@ public class PermitRepAnalysis {
                     + KEY_EsPermitAppr_Total + " TEXT,"
                     + KEY_EsPermitAppr_Red + " TEXT,"
                     + KEY_EsPermitAppr_Yellow + " TEXT,"
-                    + KEY_EsPermitAppr_Green+ " TEXT"
+                    + KEY_EsPermitAppr_Green + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_EsPermitAppr);
-                /* Creating EsPermitAppr Table with Fields */
+            /* Creating EsPermitAppr Table with Fields */
 
 
-                /* Creating EtPermitTotalWerks Table with Fields */
+            /* Creating EtPermitTotalWerks Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtPermitTotalWerks);
             String CREATE_TABLE_EtPermitTotalWerks = "CREATE TABLE IF NOT EXISTS " + TABLE_EtPermitTotalWerks + ""
                     + "( "
@@ -254,13 +254,13 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitTotalWerks_Iwerk + " TEXT,"
                     + KEY_EtPermitTotalWerks_Name + " TEXT,"
                     + KEY_EtPermitTotalWerks_Total + " TEXT,"
-                    + KEY_EtPermitTotalWerks_Crea+ " TEXT,"
-                    + KEY_EtPermitTotalWerks_Prep+ " TEXT,"
-                    + KEY_EtPermitTotalWerks_Clsd+ " TEXT,"
-                    + KEY_EtPermitTotalWerks_Reje+ " TEXT"
+                    + KEY_EtPermitTotalWerks_Crea + " TEXT,"
+                    + KEY_EtPermitTotalWerks_Prep + " TEXT,"
+                    + KEY_EtPermitTotalWerks_Clsd + " TEXT,"
+                    + KEY_EtPermitTotalWerks_Reje + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtPermitTotalWerks);
-                /* Creating EtPermitTotalWerks Table with Fields */
+            /* Creating EtPermitTotalWerks Table with Fields */
 
             /* Creating EtPermitApprWerks Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtPermitApprWerks);
@@ -270,16 +270,16 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitApprWerks_Iwerk + " TEXT,"
                     + KEY_EtPermitApprWerks_Name + " TEXT,"
                     + KEY_EtPermitApprWerks_Total + " TEXT,"
-                    + KEY_EtPermitApprWerks_Red+ " TEXT,"
-                    + KEY_EtPermitApprWerks_Yellow+ " TEXT,"
-                    + KEY_EtPermitApprWerks_Green+ " TEXT"
+                    + KEY_EtPermitApprWerks_Red + " TEXT,"
+                    + KEY_EtPermitApprWerks_Yellow + " TEXT,"
+                    + KEY_EtPermitApprWerks_Green + " TEXT"
 
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtPermitApprWerks);
-                /* Creating EtPermitApprWerks Table with Fields */
+            /* Creating EtPermitApprWerks Table with Fields */
 
 
-                /* Creating EtPermitTotalArbpl Table with Fields */
+            /* Creating EtPermitTotalArbpl Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtPermitTotalArbpl);
             String CREATE_TABLE_EtPermitTotalArbpl = "CREATE TABLE IF NOT EXISTS " + TABLE_EtPermitTotalArbpl + ""
                     + "( "
@@ -294,9 +294,9 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitTotalArbpl_Reje + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtPermitTotalArbpl);
-                /* Creating EtPermitTotalArbpl Table with Fields */
+            /* Creating EtPermitTotalArbpl Table with Fields */
 
-/* Creating EtPermitApprArbpl Table with Fields */
+            /* Creating EtPermitApprArbpl Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtPermitApprArbpl);
             String CREATE_TABLE_EtPermitApprArbpl = "CREATE TABLE IF NOT EXISTS " + TABLE_EtPermitApprArbpl + ""
                     + "( "
@@ -305,16 +305,16 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitApprArbpl_Arbpl + " TEXT,"
                     + KEY_EtPermitApprArbpl_Name + " TEXT,"
                     + KEY_EtPermitApprArbpl_Total + " TEXT,"
-                    + KEY_EtPermitApprArbpl_Red+ " TEXT,"
-                    + KEY_EtPermitApprArbpl_Yellow+ " TEXT,"
-                    + KEY_EtPermitApprArbpl_Green+ " TEXT"
+                    + KEY_EtPermitApprArbpl_Red + " TEXT,"
+                    + KEY_EtPermitApprArbpl_Yellow + " TEXT,"
+                    + KEY_EtPermitApprArbpl_Green + " TEXT"
 
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtPermitApprArbpl);
-                /* Creating EtPermitApprArbpl Table with Fields */
+            /* Creating EtPermitApprArbpl Table with Fields */
 
 
-/* Creating EtPermitWw Table with Fields */
+            /* Creating EtPermitWw Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtPermitWw);
             String CREATE_TABLE_EtPermitWw = "CREATE TABLE IF NOT EXISTS " + TABLE_EtPermitWw + ""
                     + "( "
@@ -323,31 +323,31 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitWw_Arbpl + " TEXT,"
                     + KEY_EtPermitWw_Crea + " TEXT,"
                     + KEY_EtPermitWw_Prep + " TEXT,"
-                    + KEY_EtPermitWw_Clsd+ " TEXT,"
-                    + KEY_EtPermitWw_Reje+ " TEXT,"
-                    + KEY_EtPermitWw_Red+ " TEXT,"
+                    + KEY_EtPermitWw_Clsd + " TEXT,"
+                    + KEY_EtPermitWw_Reje + " TEXT,"
+                    + KEY_EtPermitWw_Red + " TEXT,"
                     + KEY_EtPermitWw_Yellow + " TEXT,"
                     + KEY_EtPermitWw_Green + " TEXT,"
                     + KEY_EtPermitWw_Aufnr + " TEXT,"
                     + KEY_EtPermitWw_Wapnr + " TEXT,"
 
-                    + KEY_EtPermitWw_Objart+ " TEXT,"
-                    + KEY_EtPermitWw_Objnr+ " TEXT,"
+                    + KEY_EtPermitWw_Objart + " TEXT,"
+                    + KEY_EtPermitWw_Objnr + " TEXT,"
                     + KEY_EtPermitWw_Stxt + " TEXT,"
                     + KEY_EtPermitWw_Datefr + " TEXT,"
-                    + KEY_EtPermitWw_Timefr+ " TEXT,"
+                    + KEY_EtPermitWw_Timefr + " TEXT,"
                     + KEY_EtPermitWw_Dateto + " TEXT,"
-                    + KEY_EtPermitWw_Timeto+ " TEXT,"
-                    + KEY_EtPermitWw_Priok+ " TEXT,"
-                    + KEY_EtPermitWw_Tplnr+ " TEXT,"
-                    + KEY_EtPermitWw_Equnr+ " TEXT,"
-                    + KEY_EtPermitWw_Eqktx+ " TEXT,"
-                    + KEY_EtPermitWw_Refobj+ " TEXT"
+                    + KEY_EtPermitWw_Timeto + " TEXT,"
+                    + KEY_EtPermitWw_Priok + " TEXT,"
+                    + KEY_EtPermitWw_Tplnr + " TEXT,"
+                    + KEY_EtPermitWw_Equnr + " TEXT,"
+                    + KEY_EtPermitWw_Eqktx + " TEXT,"
+                    + KEY_EtPermitWw_Refobj + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtPermitWw);
-                /* Creating EtPermitWw Table with Fields */
+            /* Creating EtPermitWw Table with Fields */
 
-                /* Creating EtPermitWa Table with Fields */
+            /* Creating EtPermitWa Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtPermitWa);
             String CREATE_TABLE_EtPermitWa = "CREATE TABLE IF NOT EXISTS " + TABLE_EtPermitWa + ""
                     + "( "
@@ -355,34 +355,34 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitWa_Iwerk + " TEXT,"
                     + KEY_EtPermitWa_Crea + " TEXT,"
                     + KEY_EtPermitWa_Prep + " TEXT,"
-                    + KEY_EtPermitWa_Clsd+ " TEXT,"
-                    + KEY_EtPermitWa_Reje+ " TEXT,"
-                    + KEY_EtPermitWa_Red+ " TEXT,"
+                    + KEY_EtPermitWa_Clsd + " TEXT,"
+                    + KEY_EtPermitWa_Reje + " TEXT,"
+                    + KEY_EtPermitWa_Red + " TEXT,"
                     + KEY_EtPermitWa_Yellow + " TEXT,"
                     + KEY_EtPermitWa_Green + " TEXT,"
                     + KEY_EtPermitWa_Aufnr + " TEXT,"
                     + KEY_EtPermitWa_Wapnr + " TEXT,"
                     + KEY_EtPermitWa_Wapinr + " TEXT,"
 
-                    + KEY_EtPermitWa_Objart+ " TEXT,"
-                    + KEY_EtPermitWa_Objtyp+ " TEXT,"
-                    + KEY_EtPermitWa_Objnr+ " TEXT,"
+                    + KEY_EtPermitWa_Objart + " TEXT,"
+                    + KEY_EtPermitWa_Objtyp + " TEXT,"
+                    + KEY_EtPermitWa_Objnr + " TEXT,"
                     + KEY_EtPermitWa_Stxt + " TEXT,"
                     + KEY_EtPermitWa_Arbpl + " TEXT,"
                     + KEY_EtPermitWa_Datefr + " TEXT,"
-                    + KEY_EtPermitWa_Timefr+ " TEXT,"
+                    + KEY_EtPermitWa_Timefr + " TEXT,"
                     + KEY_EtPermitWa_Dateto + " TEXT,"
-                    + KEY_EtPermitWa_Timeto+ " TEXT,"
-                    + KEY_EtPermitWa_Priok+ " TEXT,"
-                    + KEY_EtPermitWa_Tplnr+ " TEXT,"
-                    + KEY_EtPermitWa_Equnr+ " TEXT,"
-                    + KEY_EtPermitWa_Eqktx+ " TEXT,"
-                    + KEY_EtPermitWa_Refobj+ " TEXT"
+                    + KEY_EtPermitWa_Timeto + " TEXT,"
+                    + KEY_EtPermitWa_Priok + " TEXT,"
+                    + KEY_EtPermitWa_Tplnr + " TEXT,"
+                    + KEY_EtPermitWa_Equnr + " TEXT,"
+                    + KEY_EtPermitWa_Eqktx + " TEXT,"
+                    + KEY_EtPermitWa_Refobj + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtPermitWa);
-                /* Creating EtPermitWa Table with Fields */
+            /* Creating EtPermitWa Table with Fields */
 
-                /* Creating EtPermitWd Table with Fields */
+            /* Creating EtPermitWd Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtPermitWd);
             String CREATE_TABLE_EtPermitWd = "CREATE TABLE IF NOT EXISTS " + TABLE_EtPermitWd + ""
                     + "( "
@@ -391,9 +391,9 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitWd_Arbpl + " TEXT,"
                     + KEY_EtPermitWd_Crea + " TEXT,"
                     + KEY_EtPermitWd_Prep + " TEXT,"
-                    + KEY_EtPermitWd_Clsd+ " TEXT,"
-                    + KEY_EtPermitWd_Reje+ " TEXT,"
-                    + KEY_EtPermitWd_Red+ " TEXT,"
+                    + KEY_EtPermitWd_Clsd + " TEXT,"
+                    + KEY_EtPermitWd_Reje + " TEXT,"
+                    + KEY_EtPermitWd_Red + " TEXT,"
                     + KEY_EtPermitWd_Yellow + " TEXT,"
                     + KEY_EtPermitWd_Green + " TEXT,"
                     + KEY_EtPermitWd_Aufnr + " TEXT,"
@@ -401,24 +401,24 @@ public class PermitRepAnalysis {
                     + KEY_EtPermitWd_Wapinr + " TEXT,"
                     + KEY_EtPermitWd_Wcnr + " TEXT,"
 
-                    + KEY_EtPermitWd_Objart+ " TEXT,"
-                    + KEY_EtPermitWd_Objtyp+ " TEXT,"
-                    + KEY_EtPermitWd_Objnr+ " TEXT,"
+                    + KEY_EtPermitWd_Objart + " TEXT,"
+                    + KEY_EtPermitWd_Objtyp + " TEXT,"
+                    + KEY_EtPermitWd_Objnr + " TEXT,"
                     + KEY_EtPermitWd_Stxt + " TEXT,"
                     + KEY_EtPermitWd_Datefr + " TEXT,"
-                    + KEY_EtPermitWd_Timefr+ " TEXT,"
+                    + KEY_EtPermitWd_Timefr + " TEXT,"
                     + KEY_EtPermitWd_Dateto + " TEXT,"
-                    + KEY_EtPermitWd_Timeto+ " TEXT,"
-                    + KEY_EtPermitWd_Priok+ " TEXT,"
-                    + KEY_EtPermitWd_Tplnr+ " TEXT,"
-                    + KEY_EtPermitWd_Equnr+ " TEXT,"
-                    + KEY_EtPermitWd_Eqktx+ " TEXT,"
-                    + KEY_EtPermitWd_Refobj+ " TEXT"
+                    + KEY_EtPermitWd_Timeto + " TEXT,"
+                    + KEY_EtPermitWd_Priok + " TEXT,"
+                    + KEY_EtPermitWd_Tplnr + " TEXT,"
+                    + KEY_EtPermitWd_Equnr + " TEXT,"
+                    + KEY_EtPermitWd_Eqktx + " TEXT,"
+                    + KEY_EtPermitWd_Refobj + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtPermitWd);
-                /* Creating EtPermitWd Table with Fields */
+            /* Creating EtPermitWd Table with Fields */
 
-                /* Initializing Shared Preferences */
+            /* Initializing Shared Preferences */
             FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username", null);
@@ -429,8 +429,7 @@ public class PermitRepAnalysis {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
-            }
-            else {
+            } else {
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -482,7 +481,7 @@ public class PermitRepAnalysis {
 
                         /*Reading and Inserting Data into Database Table for EsPermitTotal UUID*/
                         App_db.beginTransaction();
-                            /*Reading and Inserting Data into Database Table for EsPermitTotal*/
+                        /*Reading and Inserting Data into Database Table for EsPermitTotal*/
                         if (jsonObject.has("EsPermitTotal")) {
                             try {
                                 String EsPermitTotal_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEsPermitTotal().getResults());
@@ -503,7 +502,7 @@ public class PermitRepAnalysis {
                             } catch (Exception e) {
                             }
                         }
-                            /*Reading and Inserting Data into Database Table for EsPermitTotal*/
+                        /*Reading and Inserting Data into Database Table for EsPermitTotal*/
 
 
                         /*Reading and Inserting Data into Database Table for EsPermitAppr*/
@@ -532,7 +531,7 @@ public class PermitRepAnalysis {
 
 
 
-/*Reading and Inserting Data into Database Table for EtPermitTotalWerks*/
+                        /*Reading and Inserting Data into Database Table for EtPermitTotalWerks*/
 
                         if (jsonObject.has("EtPermitTotalWerks")) {
                             try {
@@ -558,7 +557,7 @@ public class PermitRepAnalysis {
                         }
                         /*Reading and Inserting Data into Database Table for EtPermitTotalWerks*/
 
-/*Reading and Inserting Data into Database Table for EtPermitApprWerks*/
+                        /*Reading and Inserting Data into Database Table for EtPermitApprWerks*/
 
                         if (jsonObject.has("EtPermitApprWerks")) {
                             try {
@@ -584,7 +583,7 @@ public class PermitRepAnalysis {
                         /*Reading and Inserting Data into Database Table for EtPermitApprWerks*/
 
 
-                       /*Reading and Inserting Data into Database Table for EtPermitTotalArbpl*/
+                        /*Reading and Inserting Data into Database Table for EtPermitTotalArbpl*/
 
                         if (jsonObject.has("EtPermitTotalArbpl")) {
                             try {
@@ -612,7 +611,7 @@ public class PermitRepAnalysis {
                         /*Reading and Inserting Data into Database Table for EtPermitTotalArbpl*/
 
 
-/*Reading and Inserting Data into Database Table for EtPermitApprArbpl*/
+                        /*Reading and Inserting Data into Database Table for EtPermitApprArbpl*/
 
                         if (jsonObject.has("EtPermitApprArbpl")) {
                             try {
@@ -666,12 +665,12 @@ public class PermitRepAnalysis {
                                         EtPermitWw_statement.bindString(12, jsonArray.getJSONObject(j).optString("Objart"));
                                         EtPermitWw_statement.bindString(13, jsonArray.getJSONObject(j).optString("Objnr"));
                                         EtPermitWw_statement.bindString(14, jsonArray.getJSONObject(j).optString("Stxt"));
-                                        EtPermitWw_statement.bindString(15,jsonArray.getJSONObject(j).optString("Datefr"));
+                                        EtPermitWw_statement.bindString(15, jsonArray.getJSONObject(j).optString("Datefr"));
                                         EtPermitWw_statement.bindString(16, jsonArray.getJSONObject(j).optString("Timefr"));
                                         EtPermitWw_statement.bindString(17, jsonArray.getJSONObject(j).optString("Dateto"));
                                         EtPermitWw_statement.bindString(18, jsonArray.getJSONObject(j).optString("Timeto"));
                                         EtPermitWw_statement.bindString(19, jsonArray.getJSONObject(j).optString("Priok"));
-                                        EtPermitWw_statement.bindString(20,jsonArray.getJSONObject(j).optString("Tplnr"));
+                                        EtPermitWw_statement.bindString(20, jsonArray.getJSONObject(j).optString("Tplnr"));
                                         EtPermitWw_statement.bindString(21, jsonArray.getJSONObject(j).optString("Equnr"));
                                         EtPermitWw_statement.bindString(22, jsonArray.getJSONObject(j).optString("Eqktx"));
                                         EtPermitWw_statement.bindString(23, jsonArray.getJSONObject(j).optString("Refobj"));
@@ -708,12 +707,12 @@ public class PermitRepAnalysis {
                                         EtPermitWa_statement.bindString(12, jsonArray.getJSONObject(j).optString("Objart"));
                                         EtPermitWa_statement.bindString(13, jsonArray.getJSONObject(j).optString("Objtyp"));
                                         EtPermitWa_statement.bindString(14, jsonArray.getJSONObject(j).optString("Objnr"));
-                                        EtPermitWa_statement.bindString(15,jsonArray.getJSONObject(j).optString("Stxt"));
+                                        EtPermitWa_statement.bindString(15, jsonArray.getJSONObject(j).optString("Stxt"));
                                         EtPermitWa_statement.bindString(16, jsonArray.getJSONObject(j).optString("Arbpl"));
                                         EtPermitWa_statement.bindString(17, jsonArray.getJSONObject(j).optString("Datefr"));
                                         EtPermitWa_statement.bindString(18, jsonArray.getJSONObject(j).optString("Timefr"));
                                         EtPermitWa_statement.bindString(19, jsonArray.getJSONObject(j).optString("Dateto"));
-                                        EtPermitWa_statement.bindString(20,jsonArray.getJSONObject(j).optString("Timeto"));
+                                        EtPermitWa_statement.bindString(20, jsonArray.getJSONObject(j).optString("Timeto"));
                                         EtPermitWa_statement.bindString(21, jsonArray.getJSONObject(j).optString("Priok"));
                                         EtPermitWa_statement.bindString(22, jsonArray.getJSONObject(j).optString("Tplnr"));
                                         EtPermitWa_statement.bindString(23, jsonArray.getJSONObject(j).optString("Equnr"));
@@ -754,11 +753,11 @@ public class PermitRepAnalysis {
                                         EtPermitWd_statement.bindString(14, jsonArray.getJSONObject(j).optString("Objart"));
                                         EtPermitWd_statement.bindString(15, jsonArray.getJSONObject(j).optString("Objtyp"));
                                         EtPermitWd_statement.bindString(16, jsonArray.getJSONObject(j).optString("Objnr"));
-                                        EtPermitWd_statement.bindString(17,jsonArray.getJSONObject(j).optString("Stxt"));
+                                        EtPermitWd_statement.bindString(17, jsonArray.getJSONObject(j).optString("Stxt"));
                                         EtPermitWd_statement.bindString(18, jsonArray.getJSONObject(j).optString("Datefr"));
                                         EtPermitWd_statement.bindString(19, jsonArray.getJSONObject(j).optString("Timefr"));
                                         EtPermitWd_statement.bindString(20, jsonArray.getJSONObject(j).optString("Dateto"));
-                                        EtPermitWd_statement.bindString(21,jsonArray.getJSONObject(j).optString("Timeto"));
+                                        EtPermitWd_statement.bindString(21, jsonArray.getJSONObject(j).optString("Timeto"));
                                         EtPermitWd_statement.bindString(22, jsonArray.getJSONObject(j).optString("Priok"));
                                         EtPermitWd_statement.bindString(23, jsonArray.getJSONObject(j).optString("Tplnr"));
                                         EtPermitWd_statement.bindString(24, jsonArray.getJSONObject(j).optString("Equnr"));

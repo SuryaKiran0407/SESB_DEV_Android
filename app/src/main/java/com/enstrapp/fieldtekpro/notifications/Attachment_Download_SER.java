@@ -4,8 +4,6 @@ package com.enstrapp.fieldtekpro.notifications;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Attachment_Download_SER
 {
 

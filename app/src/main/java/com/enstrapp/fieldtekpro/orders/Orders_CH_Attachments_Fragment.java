@@ -83,7 +83,8 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.notifications_attachments_fragment, container, false);
+        View rootView = inflater
+                .inflate(R.layout.notifications_attachments_fragment, container, false);
 
         attachments_rv = (RecyclerView) rootView.findViewById(R.id.attachments_rv);
         noData_tv = (TextView) rootView.findViewById(R.id.nofiles_textview);
@@ -102,14 +103,17 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                     Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
                     notif_etDocs_parcelable.setZobjid(etdocs_parcablearray.get(i).getZobjid());
                     notif_etDocs_parcelable.setZdoctype(etdocs_parcablearray.get(i).getZdoctype());
-                    notif_etDocs_parcelable.setZdoctypeitem(etdocs_parcablearray.get(i).getZdoctypeitem());
+                    notif_etDocs_parcelable
+                            .setZdoctypeitem(etdocs_parcablearray.get(i).getZdoctypeitem());
                     notif_etDocs_parcelable.setFilename(etdocs_parcablearray.get(i).getFilename());
-                    notif_etDocs_parcelable.setFiletype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
+                    notif_etDocs_parcelable
+                            .setFiletype(etdocs_parcablearray.get(i).getFiletype().toLowerCase());
                     notif_etDocs_parcelable.setFsize(etdocs_parcablearray.get(i).getFsize().trim());
                     notif_etDocs_parcelable.setFilepath(etdocs_parcablearray.get(i).getFilepath());
                     notif_etDocs_parcelable.setContentX(etdocs_parcablearray.get(i).getContentX());
                     notif_etDocs_parcelable.setDocid(etdocs_parcablearray.get(i).getDocid());
-                    notif_etDocs_parcelable.setDoctype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
+                    notif_etDocs_parcelable
+                            .setDoctype(etdocs_parcablearray.get(i).getFiletype().toLowerCase());
                     notif_etDocs_parcelable.setObjtype(etdocs_parcablearray.get(i).getObjtype());
                     notif_etDocs_parcelable.setStatus(etdocs_parcablearray.get(i).getStatus());
                     String status = etdocs_parcablearray.get(i).getStatus();
@@ -143,14 +147,12 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
         return rootView;
     }
 
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed())
             onResume();
     }
-
 
     @Override
     public void onResume() {
@@ -159,7 +161,8 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
             return;
         String xstatus = ma.ohp.getOrdrStatus();
         if (xstatus.equalsIgnoreCase("TECO")) {
-            String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "W", "U");
+            String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "W",
+                    "U");
             if (auth_status.equalsIgnoreCase("true")) {
                 if (ma.ohp.getOrdrId().startsWith("ORD")) {
                     ma.fab.hide();
@@ -170,7 +173,8 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                 ma.fab.hide();
             }
         } else {
-            String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "W", "U");
+            String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "W",
+                    "U");
             if (auth_status.equalsIgnoreCase("true")) {
                 if (ma.ohp.getOrdrId().startsWith("ORD")) {
                     ma.fab.hide();
@@ -185,15 +189,17 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                 public void onClick(View v) {
                     if (isSelected) {
                         final Dialog delete_decision_dialog = new Dialog(getActivity());
-                        delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        delete_decision_dialog.getWindow()
+                                .setBackgroundDrawableResource(android.R.color.transparent);
                         delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         delete_decision_dialog.setCancelable(false);
                         delete_decision_dialog.setCanceledOnTouchOutside(false);
                         delete_decision_dialog.setContentView(R.layout.decision_dialog);
-                        TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
-                        description_textview.setText("Do you want to delete the selected attachment?");
-                        Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
-                        Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                        TextView description_textview = delete_decision_dialog
+                                .findViewById(R.id.description_textview);
+                        description_textview.setText(getString(R.string.attachment_delete));
+                        Button ok_button = delete_decision_dialog.findViewById(R.id.yes_button);
+                        Button cancel_button = delete_decision_dialog.findViewById(R.id.no_button);
                         delete_decision_dialog.show();
                         ok_button.setOnClickListener(new View.OnClickListener() {
                             @Override

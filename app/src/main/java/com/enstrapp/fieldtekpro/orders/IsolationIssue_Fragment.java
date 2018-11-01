@@ -26,7 +26,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-public class IsolationIssue_Fragment extends Fragment{
+public class IsolationIssue_Fragment extends Fragment {
 
     RecyclerView recyclerView;
     TextView noData_tv;
@@ -50,8 +50,8 @@ public class IsolationIssue_Fragment extends Fragment{
         wcgnWd_al = ma.iso.getWcagnsPrcbl_Al();
 
         if (wcgnWd_al != null) {
-            if(ma.iso.getPrep() != null){
-                if(ma.iso.getPrep().equals("X"))
+            if (ma.iso.getPrep() != null) {
+                if (ma.iso.getPrep().equals("X"))
                     prep = "X";
                 else
                     prep = "";

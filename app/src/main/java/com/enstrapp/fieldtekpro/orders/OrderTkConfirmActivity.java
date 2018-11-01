@@ -27,11 +27,10 @@ import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.R;
-import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
-import com.enstrapp.fieldtekpro.notifications.Notif_EtDocs_Parcelable;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -96,7 +95,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         back_ib = findViewById(R.id.back_ib);
 
         DATABASE_NAME = OrderTkConfirmActivity.this.getString(R.string.database_name);
-        App_db = OrderTkConfirmActivity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        App_db = OrderTkConfirmActivity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,
+                null);
 
         back_ib.setOnClickListener(this);
         mDoc_bt.setOnClickListener(this);
@@ -116,7 +116,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                 break;
 
             case (R.id.attachments_ib):
-                Intent attachIntent = new Intent(OrderTkConfirmActivity.this, OrdersConfirmAttachment_Activity.class);
+                Intent attachIntent = new Intent(OrderTkConfirmActivity.this,
+                        OrdersConfirmAttachment_Activity.class);
                 attachIntent.putExtra("ordrId", ordrId);
                 startActivity(attachIntent);
 
@@ -130,12 +131,14 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                 if (oprtnSelected) {
                     confirmationDialog(getString(R.string.confirm_msg));
                 } else {
-                    errorDialog.show_error_dialog(OrderTkConfirmActivity.this, getString(R.string.select_one));
+                    errorDialog.show_error_dialog(OrderTkConfirmActivity.this,
+                            getString(R.string.select_one));
                 }
                 break;
 
             case (R.id.mDoc_bt):
-                Intent mDocIntent = new Intent(OrderTkConfirmActivity.this, Measurment_Activity.class);
+                Intent mDocIntent = new Intent(OrderTkConfirmActivity.this,
+                        Measurment_Activity.class);
                 mDocIntent.putExtra("equipId", equip);
                 mDocIntent.putExtra("ordrId", ordrId);
                 mDocIntent.putExtra("UUID", orderUUID);
@@ -151,7 +154,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                         oprtnSelected = true;
                 }
                 if (oprtnSelected) {
-                    Intent intent = new Intent(OrderTkConfirmActivity.this, TimeConfirmation.class);
+                    Intent intent = new Intent(OrderTkConfirmActivity.this,
+                            TimeConfirmation.class);
                     intent.putExtra("type", "C");
                     if (slctStDt != null && !slctStDt.equals(""))
                         intent.putExtra("stDt", slctStDt);
@@ -187,7 +191,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                         intent.putExtra("emply", "");
                     startActivityForResult(intent, COPY);
                 } else {
-                    errorDialog.show_error_dialog(OrderTkConfirmActivity.this, getString(R.string.select_one));
+                    errorDialog.show_error_dialog(OrderTkConfirmActivity.this,
+                            getString(R.string.select_one));
                 }
                 break;
 
@@ -204,8 +209,6 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                     operationsAdapter.notifyDataSetChanged();
                 }
                 break;
-
-
         }
     }
 
@@ -240,7 +243,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(OrderTkConfirmActivity.this, getResources().getString(R.string.confirm_progs));
+            customProgressDialog.show_progress_dialog(OrderTkConfirmActivity.this,
+                    getResources().getString(R.string.confirm_progs));
         }
 
         @Override
@@ -256,11 +260,11 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                 new POST_TK_CONFIRM().execute();
             else {
                 customProgressDialog.dismiss_progress_dialog();
-                errorDialog.show_error_dialog(OrderTkConfirmActivity.this, getResources().getString(R.string.unable_confirm));
+                errorDialog.show_error_dialog(OrderTkConfirmActivity.this,
+                        getResources().getString(R.string.unable_confirm));
             }
         }
     }
-
 
     private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void> {
 
@@ -269,7 +273,6 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            customProgressDialog.show_progress_dialog(OrderTkConfirmActivity.this, getString(R.string.confirm_msg));
             cop_al.clear();
             for (OrdrOprtnPrcbl oop : oop_al) {
                 if (oop.isSelected()) {
@@ -332,7 +335,9 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Order_CConfirmation().Get_Data(OrderTkConfirmActivity.this, cop_al, mpo_al,"", "CCORD", ordrId, "ORCC" , "");
+            Response = new Order_CConfirmation().Get_Data(OrderTkConfirmActivity.this,
+                    cop_al, mpo_al, "", "CCORD", ordrId, "ORCC",
+                    "");
             return null;
         }
 
@@ -341,9 +346,11 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             super.onPostExecute(aVoid);
             customProgressDialog.dismiss_progress_dialog();
             if (Response.startsWith("S"))
-                successDialog.dismissActivity(OrderTkConfirmActivity.this, Response.substring(2));
+                successDialog.dismissActivity(OrderTkConfirmActivity.this,
+                        Response.substring(2));
             else if (Response.startsWith("E"))
-                errorDialog.show_error_dialog(OrderTkConfirmActivity.this, Response.substring(2));
+                errorDialog.show_error_dialog(OrderTkConfirmActivity.this,
+                        Response.substring(2));
             else
                 errorDialog.show_error_dialog(OrderTkConfirmActivity.this, Response);
         }
@@ -353,7 +360,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         oop_al.clear();
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderOperations where UUID = ?" + "ORDER BY id DESC", new String[]{orderUUID});
+            cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderOperations where UUID = ?"
+                    + "ORDER BY id DESC", new String[]{orderUUID});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -399,7 +407,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             });
             operationsAdapter = new OperationsAdapter(OrderTkConfirmActivity.this, oop_al);
             operations_rv.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(OrderTkConfirmActivity.this);
+            RecyclerView.LayoutManager layoutManager =
+                    new LinearLayoutManager(OrderTkConfirmActivity.this);
             operations_rv.setLayoutManager(layoutManager);
             operations_rv.setItemAnimator(new DefaultItemAnimator());
             no_data_layout.setVisibility(View.GONE);
@@ -443,7 +452,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_operation_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.orders_operation_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -475,15 +485,6 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                         } else {
                             operationsList.get((Integer) v.getTag()).setSelected(false);
                             selectAll_cb.setChecked(false);
-                            /*for (OrdrOprtnPrcbl oop : operationsList) {
-                                if (oop.isSelected()) {
-                                    count = count + 1;
-                                }
-                            }
-                            if (count == 0) {
-                                ma.animateFab(false);
-                                isSelected = false;
-                            }*/
                         }
                     }
                 });
@@ -505,7 +506,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                 holder.confirm_iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(OrderTkConfirmActivity.this, TimeConfirmation.class);
+                        Intent intent = new Intent(OrderTkConfirmActivity.this,
+                                TimeConfirmation.class);
                         intent.putExtra("type", "D");
                         if (slctStDt != null && !slctStDt.equals(""))
                             intent.putExtra("stDt", slctStDt);
@@ -570,13 +572,14 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
     }
 
     private void confirmationDialog(String message) {
-        final Dialog cancel_dialog = new Dialog(OrderTkConfirmActivity.this, R.style.PauseDialog);
+        final Dialog cancel_dialog =
+                new Dialog(OrderTkConfirmActivity.this, R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.network_error_dialog);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.ok_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.cancel_button);
@@ -593,65 +596,64 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             public void onClick(View v) {
                 cd = new ConnectionDetector(OrderTkConfirmActivity.this);
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent)
-                {
+                if (isInternetPresent) {
                     cancel_dialog.dismiss();
                     new GetToken().execute();
-                }
-                else
-                {
+                } else {
                     cancel_dialog.dismiss();
                     decision_dialog = new Dialog(OrderTkConfirmActivity.this);
-                    decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    decision_dialog.getWindow()
+                            .setBackgroundDrawableResource(android.R.color.transparent);
                     decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     decision_dialog.setCancelable(false);
                     decision_dialog.setCanceledOnTouchOutside(false);
                     decision_dialog.setContentView(R.layout.offline_decision_dialog);
-                    TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
-                    Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-                    Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-                    Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
-                    description_textview.setText("No Internet Connectivity. Do you want to proceed Order Time Confirmation with offline ?");
-                    confirm.setText("Yes");
-                    cancel.setText("No");
+                    TextView description_textview = decision_dialog
+                            .findViewById(R.id.description_textview);
+                    Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+                    Button connect_button = decision_dialog.findViewById(R.id.connect_button);
+                    description_textview.setText(getString(R.string.ordtimecnfr_offline));
+                    confirm.setText(getString(R.string.yes));
+                    cancel.setText(getString(R.string.no));
                     decision_dialog.show();
-                    cancel.setOnClickListener(new View.OnClickListener()
-                    {
+                    cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             decision_dialog.dismiss();
                         }
                     });
-                    connect_button.setOnClickListener(new View.OnClickListener()
-                    {
+                    connect_button.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             decision_dialog.dismiss();
                             Intent intent = new Intent(Intent.ACTION_MAIN);
-                            intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
+                            intent.setClassName("com.android.settings",
+                                    "com.android.settings.wifi.WifiSettings");
                             startActivity(intent);
                         }
                     });
-                    confirm.setOnClickListener(new View.OnClickListener()
-                    {
+                    confirm.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
-                            try
-                            {
+                        public void onClick(View v) {
+                            try {
                                 decision_dialog.dismiss();
-                                customProgressDialog.show_progress_dialog(OrderTkConfirmActivity.this,getResources().getString(R.string.loading));
+                                customProgressDialog
+                                        .show_progress_dialog(OrderTkConfirmActivity.this,
+                                                getResources().getString(R.string.loading));
                                 App_db.beginTransaction();
                                 UUID uniqueKey = UUID.randomUUID();
-                                String TKConfirm_sql = "Insert into Orders_TKConfirm (UUID, Aufnr, Vornr, ConfNo, ConfText, ActWork, UnWork, PlanWork, Learr, Bemot, Grund, Leknw, Aueru, Ausor, Loart, Status, Rsnum, PostgDate, Plant, WorkCntr, ExecStartDate, ExecStartTime, ExecFinDate, ExecFinTime, Pernr) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement TKConfirm_statement = App_db.compileStatement(TKConfirm_sql);
+                                String TKConfirm_sql = "Insert into Orders_TKConfirm (UUID, Aufnr," +
+                                        " Vornr, ConfNo, ConfText, ActWork, UnWork, PlanWork," +
+                                        " Learr, Bemot, Grund, Leknw, Aueru, Ausor, Loart, Status," +
+                                        " Rsnum, PostgDate, Plant, WorkCntr, ExecStartDate, " +
+                                        "ExecStartTime, ExecFinDate, ExecFinTime, Pernr) " +
+                                        "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                SQLiteStatement TKConfirm_statement = App_db
+                                        .compileStatement(TKConfirm_sql);
                                 TKConfirm_statement.clearBindings();
-                                for (OrdrOprtnPrcbl oop : oop_al)
-                                {
-                                    if (oop.isSelected())
-                                    {
+                                for (OrdrOprtnPrcbl oop : oop_al) {
+                                    if (oop.isSelected()) {
                                         TKConfirm_statement.bindString(1, uniqueKey.toString());
                                         TKConfirm_statement.bindString(2, oop.getOrdrId());
                                         TKConfirm_statement.bindString(3, oop.getOprtnId());
@@ -663,34 +665,22 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                                         TKConfirm_statement.bindString(9, "");
                                         TKConfirm_statement.bindString(10, "");
                                         TKConfirm_statement.bindString(11, "");
-                                        if (slctNoRmWrk != null && !slctNoRmWrk.equals(""))
-                                        {
-                                            if (slctNoRmWrk.equals("X"))
-                                            {
+                                        if (slctNoRmWrk != null && !slctNoRmWrk.equals("")) {
+                                            if (slctNoRmWrk.equals("X")) {
                                                 TKConfirm_statement.bindString(12, "X");
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 TKConfirm_statement.bindString(12, "");
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             TKConfirm_statement.bindString(12, "");
                                         }
-                                        if (slctFnlCnfrm != null && !slctFnlCnfrm.equals(""))
-                                        {
-                                            if (slctFnlCnfrm.equals("X"))
-                                            {
+                                        if (slctFnlCnfrm != null && !slctFnlCnfrm.equals("")) {
+                                            if (slctFnlCnfrm.equals("X")) {
                                                 TKConfirm_statement.bindString(13, "X");
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 TKConfirm_statement.bindString(13, "");
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             TKConfirm_statement.bindString(13, "");
                                         }
                                         TKConfirm_statement.bindString(14, "");
@@ -712,8 +702,9 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                                 App_db.endTransaction();
 
                                 ContentValues cv = new ContentValues();
-                                cv.put("Xstatus","CNF");
-                                App_db.update("DUE_ORDERS_EtOrderHeader", cv, "Aufnr="+ordrId, null);
+                                cv.put("Xstatus", "CNF");
+                                App_db.update("DUE_ORDERS_EtOrderHeader", cv,
+                                        "Aufnr=" + ordrId, null);
 
                                 DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
                                 DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
@@ -721,7 +712,10 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                                 String date = date_format.format(todaysdate.getTime());
                                 String time = time_format.format(todaysdate.getTime());
 
-                                String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                String sql11 = "Insert into Alert_Log (DATE, TIME, " +
+                                        "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
+                                        " STATUS, UUID, MESSAGE, LOG_UUID)" +
+                                        "ō values(?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 App_db.beginTransaction();
                                 statement11.clearBindings();
@@ -739,12 +733,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                                 App_db.setTransactionSuccessful();
                                 App_db.endTransaction();
                                 OrderTkConfirmActivity.this.finish();
-                            }
-                            catch (Exception e)
-                            {
-                            }
-                            finally
-                            {
+                            } catch (Exception e) {
+                            } finally {
                                 customProgressDialog.dismiss_progress_dialog();
                             }
                         }

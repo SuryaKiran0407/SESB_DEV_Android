@@ -46,17 +46,9 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.f4_list_activity);
 
-        /*Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals("")) {
-                request_id = Integer.parseInt(request_ids);
-            }
-        }*/
-
         Bundle extra = getIntent().getExtras();
 
-        if(extra != null)
+        if (extra != null)
             plant = extra.getString("plant");
 
         title_textview = (TextView) findViewById(R.id.title_textview);
@@ -71,9 +63,11 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -97,12 +91,14 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from  GET_EtConfReason where Werks = ?", new String[]{plant});
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from  GET_EtConfReason where" +
+                        " Werks = ?", new String[]{plant});
                 if (cursor != null && cursor.getCount() > 0) {
 
                     if (cursor.moveToFirst()) {
                         do {
-                            Type_Object nto = new Type_Object(cursor.getString(2), cursor.getString(3));
+                            Type_Object nto = new Type_Object(cursor.getString(2),
+                                    cursor.getString(3));
                             type_list.add(nto);
                         }
                         while (cursor.moveToNext());
@@ -116,18 +112,14 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (type_list.size() > 0) {
                 title_textview.setText(getResources().getString(R.string.reason) + " (" + type_list.size() + ")");
                 adapter = new TYPE_ADAPTER(Reason_Activity.this, type_list);
                 list_recycleview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Reason_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Reason_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 list_recycleview.setItemAnimator(new DefaultItemAnimator());
                 list_recycleview.setAdapter(adapter);
@@ -154,12 +146,14 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId().toString(), type_list.get(i).getText().toString());
+                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
+                            type_list.get(i).getText());
                     filteredList.add(nto);
                 }
             }
             if (filteredList.size() > 0) {
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Reason_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Reason_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 adapter = new TYPE_ADAPTER(Reason_Activity.this, filteredList);
                 list_recycleview.setAdapter(adapter);
@@ -186,7 +180,7 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView id_textview, value_textview;
-            LinearLayout data_layout,id_ll;
+            LinearLayout data_layout, id_ll;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -204,7 +198,8 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.f4_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -264,5 +259,4 @@ public class Reason_Activity extends AppCompatActivity implements View.OnClickLi
             onBackPressed();
         }
     }
-
 }

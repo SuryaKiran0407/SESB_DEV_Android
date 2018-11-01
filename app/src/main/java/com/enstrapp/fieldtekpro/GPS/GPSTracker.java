@@ -23,210 +23,206 @@ import com.enstrapp.fieldtekpro.R;
 
 public class GPSTracker extends Service implements LocationListener {
 
-	Dialog network_error_dialog;
-	private final Context mContext;
+    Dialog network_error_dialog;
+    private final Context mContext;
 
-	// flag for GPS status
-	boolean isGPSEnabled = false;
+    // flag for GPS status
+    boolean isGPSEnabled = false;
 
-	// flag for network status
-	boolean isNetworkEnabled = false;
+    // flag for network status
+    boolean isNetworkEnabled = false;
 
-	// flag for GPS status
-	boolean canGetLocation = false;
+    // flag for GPS status
+    boolean canGetLocation = false;
 
-	Location location; // location
-	double latitude; // latitude
-	double longitude; // longitude
+    Location location; // location
+    double latitude; // latitude
+    double longitude; // longitude
 
-	// The minimum distance to change Updates in meters
-	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    // The minimum distance to change Updates in meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
 
-	// The minimum time between updates in milliseconds
-	private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    // The minimum time between updates in milliseconds
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
-	// Declaring a Location Manager
-	protected LocationManager locationManager;
+    // Declaring a Location Manager
+    protected LocationManager locationManager;
 
-	public GPSTracker(Context context) {
-		this.mContext = context;
-		getLocation();
-	}
+    public GPSTracker(Context context) {
+        this.mContext = context;
+        getLocation();
+    }
 
-	public Location getLocation() {
-		try {
-			locationManager = (LocationManager) mContext
-					.getSystemService(LOCATION_SERVICE);
+    public Location getLocation() {
+        try {
+            locationManager = (LocationManager) mContext
+                    .getSystemService(LOCATION_SERVICE);
 
-			// getting GPS status
-			isGPSEnabled = locationManager
-					.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            // getting GPS status
+            isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-			// getting network status
-			isNetworkEnabled = locationManager
-					.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            // getting network status
+            isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-			if (!isGPSEnabled && !isNetworkEnabled) {
-				// no network provider is enabled
-			} else {
-				this.canGetLocation = true;
-				if (isNetworkEnabled) {
-					if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-						// TODO: Consider calling
-						//    ActivityCompat#requestPermissions
-						// here to request the missing permissions, and then overriding
-						//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-						//                                          int[] grantResults)
-						// to handle the case where the user grants the permission. See the documentation
-						// for ActivityCompat#requestPermissions for more details.
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // no network provider is enabled
+            } else {
+                this.canGetLocation = true;
+                if (isNetworkEnabled) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
 
-						locationManager.requestLocationUpdates(
-								LocationManager.NETWORK_PROVIDER,
-								MIN_TIME_BW_UPDATES,
-								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-						Log.d("Network", "Network");
-						if (locationManager != null) {
-							location = locationManager
-									.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-							if (location != null) {
-								latitude = location.getLatitude();
-								longitude = location.getLongitude();
-							}
-						}
+                        locationManager.requestLocationUpdates(
+                                LocationManager.NETWORK_PROVIDER,
+                                MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        Log.d("Network", "Network");
+                        if (locationManager != null) {
+                            location = locationManager
+                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+                        }
 
-						return location;
-					}
+                        return location;
+                    }
 
-				}
-				// if GPS Enabled get lat/long using GPS Services
-				if (isGPSEnabled) {
-					if (location == null) {
-						locationManager.requestLocationUpdates(
-								LocationManager.GPS_PROVIDER,
-								MIN_TIME_BW_UPDATES,
-								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-						Log.d("GPS Enabled", "GPS Enabled");
-						if (locationManager != null) {
-							location = locationManager
-									.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-							if (location != null) {
-								latitude = location.getLatitude();
-								longitude = location.getLongitude();
-							}
-						}
-					}
-				}
-			}
+                }
+                // if GPS Enabled get lat/long using GPS Services
+                if (isGPSEnabled) {
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(
+                                LocationManager.GPS_PROVIDER,
+                                MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        Log.d("GPS Enabled", "GPS Enabled");
+                        if (locationManager != null) {
+                            location = locationManager
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+                        }
+                    }
+                }
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return location;
-	}
-	
-	/**
-	 * Stop using GPS listener
-	 * Calling this function will stop using GPS in your app
-	 * */
-	public void stopUsingGPS(){
-		if(locationManager != null){
-			locationManager.removeUpdates(GPSTracker.this);
-		}		
-	}
-	
-	/**
-	 * Function to get latitude
-	 * */
-	public double getLatitude(){
-		if(location != null){
-			latitude = location.getLatitude();
-		}
-		
-		// return latitude
-		return latitude;
-	}
-	
-	/**
-	 * Function to get longitude
-	 * */
-	public double getLongitude(){
-		if(location != null){
-			longitude = location.getLongitude();
-		}
-		
-		// return longitude
-		return longitude;
-	}
-	
-	/**
-	 * Function to check GPS/wifi enabled
-	 * @return boolean
-	 * */
-	public boolean canGetLocation() {
-		return this.canGetLocation;
-	}
-	
-	/**
-	 * Function to show settings alert dialog
-	 * On pressing Settings button will lauch Settings Options
-	 * */
-	public void showSettingsAlert()
-	{
-		network_error_dialog = new Dialog(mContext);
-		network_error_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-		network_error_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		network_error_dialog.setCancelable(true);
-		network_error_dialog.setCanceledOnTouchOutside(false);
-		network_error_dialog.setContentView(R.layout.network_error_dialog);
-		final TextView description_textview = (TextView) network_error_dialog.findViewById(R.id.description_textview);
-		final TextView description_textview1 = (TextView) network_error_dialog.findViewById(R.id.description_textview1);
-		Button ok_button = (Button) network_error_dialog.findViewById(R.id.ok_button);
-		Button cancel_button = (Button) network_error_dialog.findViewById(R.id.cancel_button);
-		description_textview.setText("GPS is not enabled. Do you want to go to settings menu?");
-		ok_button.setText("Settings");
-		cancel_button.setText("Cancel");
-		description_textview1.setVisibility(View.GONE);
-		network_error_dialog.show();
-		ok_button.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				network_error_dialog.dismiss();
-				Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-				mContext.startActivity(intent);
-			}
-		});
-		cancel_button.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				network_error_dialog.dismiss();
-			}
-		});
-	}
+        return location;
+    }
 
-	@Override
-	public void onLocationChanged(Location location) {
-	}
+    /**
+     * Stop using GPS listener
+     * Calling this function will stop using GPS in your app
+     */
+    public void stopUsingGPS() {
+        if (locationManager != null) {
+            locationManager.removeUpdates(GPSTracker.this);
+        }
+    }
 
-	@Override
-	public void onProviderDisabled(String provider) {
-	}
+    /**
+     * Function to get latitude
+     */
+    public double getLatitude() {
+        if (location != null) {
+            latitude = location.getLatitude();
+        }
 
-	@Override
-	public void onProviderEnabled(String provider) {
-	}
+        // return latitude
+        return latitude;
+    }
 
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-	}
+    /**
+     * Function to get longitude
+     */
+    public double getLongitude() {
+        if (location != null) {
+            longitude = location.getLongitude();
+        }
 
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return null;
-	}
+        // return longitude
+        return longitude;
+    }
+
+    /**
+     * Function to check GPS/wifi enabled
+     *
+     * @return boolean
+     */
+    public boolean canGetLocation() {
+        return this.canGetLocation;
+    }
+
+    /**
+     * Function to show settings alert dialog
+     * On pressing Settings button will lauch Settings Options
+     */
+    public void showSettingsAlert() {
+        network_error_dialog = new Dialog(mContext);
+        network_error_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        network_error_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        network_error_dialog.setCancelable(true);
+        network_error_dialog.setCanceledOnTouchOutside(false);
+        network_error_dialog.setContentView(R.layout.network_error_dialog);
+        final TextView description_textview = (TextView) network_error_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview1 = (TextView) network_error_dialog.findViewById(R.id.description_textview1);
+        Button ok_button = (Button) network_error_dialog.findViewById(R.id.ok_button);
+        Button cancel_button = (Button) network_error_dialog.findViewById(R.id.cancel_button);
+        description_textview.setText(getString(R.string.gps_notenabled));
+        ok_button.setText(getString(R.string.settings));
+        cancel_button.setText(getString(R.string.cancel));
+        description_textview1.setVisibility(View.GONE);
+        network_error_dialog.show();
+        ok_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                network_error_dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                mContext.startActivity(intent);
+            }
+        });
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                network_error_dialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
 
 }

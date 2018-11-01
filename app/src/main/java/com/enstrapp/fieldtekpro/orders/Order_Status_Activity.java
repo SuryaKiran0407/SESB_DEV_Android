@@ -63,14 +63,14 @@ public class Order_Status_Activity extends AppCompatActivity {
             woco = bundle.getString("woco");
             type = bundle.getString("type");
             heading = bundle.getString("heading");
-            if (type != null){
-                if(type.equals("WA")){
+            if (type != null) {
+                if (type.equals("WA")) {
                     WA = true;
-                }else{
+                } else {
                     WA = false;
                 }
                 orders_tv.setText(heading);
-            }else{
+            } else {
                 WA = false;
             }
             if (woco != null)
@@ -146,7 +146,6 @@ public class Order_Status_Activity extends AppCompatActivity {
         });
 
         new Get_Order_Data().execute();
-
     }
 
     private class Get_Order_Data extends AsyncTask<Void, Integer, Void> {
@@ -165,7 +164,7 @@ public class Order_Status_Activity extends AppCompatActivity {
                 sysSts_al.clear();
 
                 for (NotifOrdrStatusPrcbl osp : osp_al) {
-                    if(WA){
+                    if (WA) {
                         if (osp.getStonr().equals("00") && osp.getStat().startsWith("E")) {
                             if (osp.getAct().equalsIgnoreCase("X"))
                                 osp.setSelected(true);
@@ -212,7 +211,6 @@ public class Order_Status_Activity extends AppCompatActivity {
                             sysSts_al.add(osp);
                         }
                     }
-
                 }
             }
             return null;
@@ -231,5 +229,4 @@ public class Order_Status_Activity extends AppCompatActivity {
             tabLayout.setupWithViewPager(viewPager);
         }
     }
-
 }

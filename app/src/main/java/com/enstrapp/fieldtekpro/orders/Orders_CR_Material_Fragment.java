@@ -2,8 +2,6 @@ package com.enstrapp.fieldtekpro.orders;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,14 +19,10 @@ import android.widget.TextView;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 public class Orders_CR_Material_Fragment extends Fragment {
     OrdrHeaderPrcbl ohp_h = null;
@@ -55,27 +49,6 @@ public class Orders_CR_Material_Fragment extends Fragment {
 
         material_rv = rootView.findViewById(R.id.recyclerView);
         ma = (Orders_Create_Activity) this.getActivity();
-
-
-        /*if (order.equals("C")) {
-        } else {
-            if (((Orders_Change_Activity) this.getActivity()).ohp != null) {
-                ohp_h = ((Orders_Change_Activity) this.getActivity()).ohp;
-                omp_al.clear();
-                if (ohp_h != null) {
-                    ordrPlant = ohp_h.getPlant();
-                    omp_al.addAll(ohp_h.getOrdrMatrlPrcbls());
-                    if (omp_al.size() > 0) {
-                        materialAdapter = new MaterialAdapter(getActivity(), omp_al);
-                        material_rv.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                        material_rv.setLayoutManager(layoutManager);
-                        material_rv.setItemAnimator(new DefaultItemAnimator());
-                        material_rv.setAdapter(materialAdapter);
-                    }
-                }
-            }
-        }*/
         materialAdapter = new MaterialAdapter(getActivity(), omp_al);
         material_rv.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -101,8 +74,6 @@ public class Orders_CR_Material_Fragment extends Fragment {
             return;
 
         if (ma.ohp.getOrdrMatrlPrcbls() != null) {
-            /*ordrPlant = ohp_h.getPlant();
-            omp_al.addAll(ohp_h.getOrdrMatrlPrcbls());*/
             if (omp_al.size() > 0) {
                 materialAdapter = new MaterialAdapter(getActivity(), omp_al);
                 material_rv.setHasFixedSize(true);
@@ -118,9 +89,9 @@ public class Orders_CR_Material_Fragment extends Fragment {
                 ma.fab.hide();
             } else {
                 ma.fab.show();
-                if(isSelected){
+                if (isSelected) {
                     ma.animateFab(true);
-                } else{
+                } else {
                     ma.animateFab(false);
                 }
             }
@@ -156,13 +127,16 @@ public class Orders_CR_Material_Fragment extends Fragment {
                                 intent.putExtra("oprtn_list", ma.ohp.getOrdrOprtnPrcbls());
                                 startActivityForResult(intent, MATRL_CRT);
                             } else {
-                                errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.equipFunc_mandate));
+                                errorDialog.show_error_dialog(getActivity(),
+                                        getResources().getString(R.string.equipFunc_mandate));
                             }
                         } else {
-                            errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.text_mandate));
+                            errorDialog.show_error_dialog(getActivity(),
+                                    getResources().getString(R.string.text_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.ordTyp_mandate));
+                        errorDialog.show_error_dialog(getActivity(),
+                                getResources().getString(R.string.ordTyp_mandate));
                     }
                 }
             }
@@ -176,32 +150,27 @@ public class Orders_CR_Material_Fragment extends Fragment {
             case (MATRL_CRT):
                 if (resultCode == RESULT_OK) {
 
-
                     ArrayList<OrdrMatrlPrcbl> omp_al_d = new ArrayList<OrdrMatrlPrcbl>();
                     omp_al_d = data.getParcelableArrayListExtra("omp_prcbl_al");
-
 
                     /*Written By SuryaKiran for Updating Custom Info Data*/
                     String Operation_id = omp_al_d.get(0).getOprtnId();
                     String part_id = gnrtMatrlId(omp_al.size());
-                    Log.v("kiran_part_id",part_id+"....");
-                    if(selected_material_custom_info_arraylist.size() > 0)
-                    {
-                        for (int i = selected_material_custom_info_arraylist.size() - 1; i >= 0; i--)
-                        {
+                    Log.v("kiran_part_id", part_id + "....");
+                    if (selected_material_custom_info_arraylist.size() > 0) {
+                        for (int i = selected_material_custom_info_arraylist.size() - 1; i >= 0; i--) {
                             String op_id = selected_material_custom_info_arraylist.get(i).get("Operation_id");
                             String pt_id = selected_material_custom_info_arraylist.get(i).get("Part_id");
-                            if(pt_id.equalsIgnoreCase(part_id))
-                            {
+                            if (pt_id.equalsIgnoreCase(part_id)) {
                                 selected_material_custom_info_arraylist.remove(i);
                             }
                         }
                     }
-                    ArrayList<HashMap<String, String>> operation_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_material_custom_info_arraylist");
-                    if(operation_custom_info_arraylist.size() > 0)
-                    {
-                        for(int i = 0; i < operation_custom_info_arraylist.size(); i++)
-                        {
+                    ArrayList<HashMap<String, String>> operation_custom_info_arraylist =
+                            (ArrayList<HashMap<String, String>>) data
+                                    .getSerializableExtra("selected_material_custom_info_arraylist");
+                    if (operation_custom_info_arraylist.size() > 0) {
+                        for (int i = 0; i < operation_custom_info_arraylist.size(); i++) {
                             HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                             custom_info_hashMap.put("Operation_id", Operation_id);
                             custom_info_hashMap.put("Part_id", part_id);
@@ -220,21 +189,12 @@ public class Orders_CR_Material_Fragment extends Fragment {
                     }
                     /*Written By SuryaKiran for Updating Custom Info Data*/
 
-
-
-                   /* if (ma.ohp.getOrdrMatrlPrcbls() != null) {
-                        for (int i = 0; i < omp_al_d.size(); i++) {
-                            omp_al_d.get(i).setPartId(gnrtMatrlId(omp_al.size()));
-                        }
-                    } else {*/
                     for (int i = 0; i < omp_al_d.size(); i++) {
                         OrdrMatrlPrcbl omp = new OrdrMatrlPrcbl();
                         omp = omp_al_d.get(i);
                         omp.setPartId(gnrtMatrlId(omp_al.size()));
-//                            omp_al_d.get(i).setPartId(gnrtMatrlId(omp_al.size()));
                         omp_al.add(omp);
                     }
-//                    }
                     omp_al_d = null;
                     ma.ohp.setOrdrMatrlPrcbls(omp_al);
                     materialAdapter.notifyDataSetChanged();
@@ -242,32 +202,27 @@ public class Orders_CR_Material_Fragment extends Fragment {
                 break;
 
             case (MATRL_UPDT):
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     OrdrMatrlPrcbl omp_d = new OrdrMatrlPrcbl();
                     omp_d = data.getParcelableExtra("omp_prcbl");
-
 
                     /*Written By SuryaKiran for Updating Custom Info Data*/
                     String Operation_id = omp_d.getOprtnId();
                     String part_id = omp_d.getPartId();
-                    if(selected_material_custom_info_arraylist.size() > 0)
-                    {
-                        for (int i = selected_material_custom_info_arraylist.size() - 1; i >= 0; i--)
-                        {
+                    if (selected_material_custom_info_arraylist.size() > 0) {
+                        for (int i = selected_material_custom_info_arraylist.size() - 1; i >= 0; i--) {
                             String op_id = selected_material_custom_info_arraylist.get(i).get("Operation_id");
                             String pt_id = selected_material_custom_info_arraylist.get(i).get("Part_id");
-                            if(pt_id.equalsIgnoreCase(part_id))
-                            {
+                            if (pt_id.equalsIgnoreCase(part_id)) {
                                 selected_material_custom_info_arraylist.remove(i);
                             }
                         }
                     }
-                    ArrayList<HashMap<String, String>> operation_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_material_custom_info_arraylist");
-                    if(operation_custom_info_arraylist.size() > 0)
-                    {
-                        for(int i = 0; i < operation_custom_info_arraylist.size(); i++)
-                        {
+                    ArrayList<HashMap<String, String>> operation_custom_info_arraylist =
+                            (ArrayList<HashMap<String, String>>) data
+                                    .getSerializableExtra("selected_material_custom_info_arraylist");
+                    if (operation_custom_info_arraylist.size() > 0) {
+                        for (int i = 0; i < operation_custom_info_arraylist.size(); i++) {
                             HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                             custom_info_hashMap.put("Operation_id", Operation_id);
                             custom_info_hashMap.put("Part_id", part_id);
@@ -285,7 +240,6 @@ public class Orders_CR_Material_Fragment extends Fragment {
                         }
                     }
                     /*Written By SuryaKiran for Updating Custom Info Data*/
-
 
                     ArrayList<OrdrMatrlPrcbl> omp_al_d = new ArrayList<>();
                     omp_al_d.addAll(omp_al);
@@ -332,7 +286,8 @@ public class Orders_CR_Material_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_material_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.orders_material_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -382,7 +337,8 @@ public class Orders_CR_Material_Fragment extends Fragment {
                     intent.putExtra("oprtn_list", ma.ohp.getOrdrOprtnPrcbls());
                     intent.putExtra("ordrEquip", ma.ohp.getEquipNum());
                     intent.putExtra("iwerk", ma.ohp.getIwerk());
-                    intent.putExtra("selected_material_custom_info_arraylist", selected_material_custom_info_arraylist);
+                    intent.putExtra("selected_material_custom_info_arraylist",
+                            selected_material_custom_info_arraylist);
                     startActivityForResult(intent, MATRL_UPDT);
                 }
             });
@@ -402,12 +358,9 @@ public class Orders_CR_Material_Fragment extends Fragment {
         }
     }
 
-
     /*Written By SuryaKiran to Return Custom Info Data*/
-    public ArrayList<HashMap<String, String>> getMaterialCustominfoData()
-    {
+    public ArrayList<HashMap<String, String>> getMaterialCustominfoData() {
         return selected_material_custom_info_arraylist;
     }
     /*Written By SuryaKiran to Return Custom Info Data*/
-
 }

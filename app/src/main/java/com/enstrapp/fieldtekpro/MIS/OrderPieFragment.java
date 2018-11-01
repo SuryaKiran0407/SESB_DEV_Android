@@ -54,7 +54,7 @@ public class OrderPieFragment extends Fragment {
     float out_f, inpr_f, comp_f;
     String OrderAnalysis_Status = "";
     int req_monthyear = 0;
-    String  plantName_s = "", wrkcntrName_s = "",
+    String plantName_s = "", wrkcntrName_s = "",
             swerk_s = "", wrkcntr_s = "", swerkT_s = "", wrkcntrNameW_s = "", wrkcntrW_s = "",
             plantNameT_s = "", swerkTp_s = "", plantNameTp_s = "", wrkcntrT_s = "",
             wrkcntrNameT_s = "";
@@ -73,7 +73,7 @@ public class OrderPieFragment extends Fragment {
     private static int count = 0;
     PieDataSet pieDataSet;
     PieData pieData;
-   Order_Analysis_Activity ma;
+    Order_Analysis_Activity ma;
     FILTER_PLANT_TYPE_Adapter filter_plant_type_adapter;
     WKCENTER_TYPE_ADAPTER wkcenter_type_adapter;
 
@@ -97,7 +97,7 @@ public class OrderPieFragment extends Fragment {
         pieChart = rootView.findViewById(R.id.pieChart);
         label_list = rootView.findViewById(R.id.label_list);
         noData_tv = rootView.findViewById(R.id.no_data_textview);
-        ma=(Order_Analysis_Activity) this.getActivity();
+        ma = (Order_Analysis_Activity) this.getActivity();
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,
@@ -105,7 +105,7 @@ public class OrderPieFragment extends Fragment {
 
         Calendar c = Calendar.getInstance();
         int day = c.get(Calendar.DATE);
-        int month = c.get(Calendar.MONTH)+1;
+        int month = c.get(Calendar.MONTH) + 1;
         int year = c.get(Calendar.YEAR);
 
         inputFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -120,14 +120,14 @@ public class OrderPieFragment extends Fragment {
             selected_month = month_format.format(date);
             selected_year = year_format.format(date);
         } catch (Exception e) {
-            Toast.makeText(getActivity(), "Error in Date Parsing", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.date_parserr), Toast.LENGTH_SHORT).show();
         }
 
         monthYear_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MonthYearPickerDialog.class);
-                startActivityForResult(intent,req_monthyear);
+                startActivityForResult(intent, req_monthyear);
             }
         });
 
@@ -136,12 +136,14 @@ public class OrderPieFragment extends Fragment {
 
         return rootView;
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed())
             onResume();
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -149,7 +151,7 @@ public class OrderPieFragment extends Fragment {
         if (!getUserVisibleHint())
             return;
         else {
-           ma.iv_filter.setOnClickListener(new View.OnClickListener() {
+            ma.iv_filter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     filter_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
@@ -342,7 +344,7 @@ public class OrderPieFragment extends Fragment {
 
                                         if (swerkT_s.equals("") && swerkTp_s.equals("")
                                                 && swerk_s.equals(""))
-                                            show_error_dialog("Please select PLANT");
+                                            show_error_dialog(getString(R.string.slct_palnt));
                                         else
                                             plant_dialog.dismiss();
                                     }
@@ -391,7 +393,7 @@ public class OrderPieFragment extends Fragment {
                                             R.style.ErrorDialog;
                                     TextView select_wrkcnt = wrkcntr_dialog
                                             .findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = wrkcntr_dialog
                                             .findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = wrkcntr_dialog
@@ -487,7 +489,7 @@ public class OrderPieFragment extends Fragment {
 
                                                 if (wrkcntrT_s.equals("") && wrkcntrW_s.equals("")
                                                         && wrkcntr_s.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcntr_dialog.dismiss();
                                             }
@@ -550,7 +552,7 @@ public class OrderPieFragment extends Fragment {
                                             R.style.ErrorDialog;
                                     TextView select_wrkcnt = wrkcntr_dialog
                                             .findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = wrkcntr_dialog
                                             .findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = wrkcntr_dialog
@@ -646,7 +648,7 @@ public class OrderPieFragment extends Fragment {
 
                                                 if (wrkcntrT_s.equals("") && wrkcntrW_s.equals("")
                                                         && wrkcntr_s.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcntr_dialog.dismiss();
                                             }
@@ -682,7 +684,7 @@ public class OrderPieFragment extends Fragment {
                             } else if (swerk_s.equals("") || swerk_s == null) {
 
                                 if (swerkT_s.equals("") || swerkT_s == null) {
-                                    show_error_dialog("Please select PLANT");
+                                    show_error_dialog(getString(R.string.slct_palnt));
                                 } else {
                                     art_fo.clear();
 
@@ -716,7 +718,7 @@ public class OrderPieFragment extends Fragment {
                                             R.style.ErrorDialog;
                                     TextView select_wrkcnt = wrkcntr_dialog
                                             .findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = wrkcntr_dialog
                                             .findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = wrkcntr_dialog
@@ -812,7 +814,7 @@ public class OrderPieFragment extends Fragment {
 
                                                 if (wrkcntrT_s.equals("") && wrkcntrW_s.equals("")
                                                         && wrkcntr_s.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcntr_dialog.dismiss();
                                             }
@@ -977,6 +979,7 @@ public class OrderPieFragment extends Fragment {
             });
         }
     }
+
     public class FILTER_PLANT_TYPE_Adapter extends BaseAdapter {
         Context mContext;
         LayoutInflater inflater;
@@ -1294,7 +1297,7 @@ public class OrderPieFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressdialog = new ProgressDialog(getContext(),ProgressDialog.THEME_HOLO_LIGHT);
+            progressdialog = new ProgressDialog(getContext(), ProgressDialog.THEME_HOLO_LIGHT);
             progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressdialog.setMessage(getResources().getString(
                     R.string.loading));
@@ -1465,25 +1468,25 @@ public class OrderPieFragment extends Fragment {
                     if (out_f == 0) {
 
                     } else {
-                        entries.add(new PieEntry(out_f, "Outstanding"));
+                        entries.add(new PieEntry(out_f, getString(R.string.outstanding)));
                         Label_List_Object llo_o = new Label_List_Object();
-                        llo_o.setLabel("Outstanding");
+                        llo_o.setLabel(getString(R.string.outstanding));
                         llo.add(llo_o);
                     }
                     if (inpr_f == 0) {
 
                     } else {
-                        entries.add(new PieEntry(inpr_f, "Inprogress"));
+                        entries.add(new PieEntry(inpr_f, getString(R.string.inprgs)));
                         Label_List_Object llo_o = new Label_List_Object();
-                        llo_o.setLabel("Inprogress");
+                        llo_o.setLabel(getString(R.string.inprgs));
                         llo.add(llo_o);
                     }
                     if (comp_f == 0) {
 
                     } else {
-                        entries.add(new PieEntry(comp_f, "Completed"));
+                        entries.add(new PieEntry(comp_f, getString(R.string.compltd)));
                         Label_List_Object llo_o = new Label_List_Object();
-                        llo_o.setLabel("Completed");
+                        llo_o.setLabel(getString(R.string.compltd));
                         llo.add(llo_o);
                     }
 
@@ -1492,13 +1495,13 @@ public class OrderPieFragment extends Fragment {
                     final int[] MY_COLORS = new int[entries.size()];
 
                     for (int j = 0; j < entries.size(); j++) {
-                        if (entries.get(j).getLabel().equals("Outstanding")) {
+                        if (entries.get(j).getLabel().equals(getString(R.string.outstanding))) {
                             MY_COLORS[j] = Color.rgb(255, 255, 0);                  //yellow
                             llo.get(j).setColor(Color.rgb(255, 255, 0));
-                        } else if (entries.get(j).getLabel().equals("Inprogress")) {
+                        } else if (entries.get(j).getLabel().equals(getString(R.string.inprgs))) {
                             MY_COLORS[j] = Color.rgb(51, 51, 255);                  //blue
                             llo.get(j).setColor(Color.rgb(51, 51, 255));
-                        } else if (entries.get(j).getLabel().equals("Completed")) {
+                        } else if (entries.get(j).getLabel().equals(getString(R.string.compltd))) {
                             MY_COLORS[j] = Color.rgb(50, 205, 50);                 //green
                             llo.get(j).setColor(Color.rgb(50, 205, 50));
                         }
@@ -1522,8 +1525,8 @@ public class OrderPieFragment extends Fragment {
                             int index = (int) h.getX();
                             String label = entries.get(index).getLabel();
 
-                            if (label.equals("Outstanding")) {
-                                String value = "Outstanding";
+                            if (label.equals(getString(R.string.outstanding))) {
+                                String value = getString(R.string.outstanding);
                                 String phase = "0";
                                 Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                                 intent.putExtra("value", value);
@@ -1531,8 +1534,8 @@ public class OrderPieFragment extends Fragment {
                                 intent.putExtra("iwerk", "");
                                 intent.putExtra("wrkcntr_s", "");
                                 startActivity(intent);
-                            } else if (label.equals("Inprogress")) {
-                                String value = "Inprogress";
+                            } else if (label.equals(getString(R.string.inprgs))) {
+                                String value = getString(R.string.inprgs);
                                 String phase = "2";
                                 Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                                 intent.putExtra("value", value);
@@ -1540,8 +1543,8 @@ public class OrderPieFragment extends Fragment {
                                 intent.putExtra("iwerk", "");
                                 intent.putExtra("wrkcntr_s", "");
                                 startActivity(intent);
-                            } else if (label.equals("Completed")) {
-                                String value = "Completed";
+                            } else if (label.equals(getString(R.string.compltd))) {
+                                String value = getString(R.string.compltd);
                                 String phase = "3";
                                 Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                                 intent.putExtra("value", value);
@@ -1583,13 +1586,13 @@ public class OrderPieFragment extends Fragment {
                     pieChart.setRotationEnabled(true);
                     pieChart.setDrawEntryLabels(false);
                     pieChart.setDragDecelerationFrictionCoef(0.95f);
-                    pieChart.setCenterText("Order Analysis");
+                    pieChart.setCenterText(getString(R.string.order_analysis));
                     pieChart.setHoleColor(Color.LTGRAY);
                     pieChart.setTransparentCircleColor(Color.LTGRAY);
                     pieChart.setCenterTextSize(14);
                     pieChart.notifyDataSetChanged();//Required if changes are made to pie value
                     pieChart.invalidate();// for refreshing the chart
-               progressdialog.dismiss();
+                    progressdialog.dismiss();
                     pieChart.setData(pieData);
                     label_list.setVisibility(View.VISIBLE);
                 } else {
@@ -1603,17 +1606,14 @@ public class OrderPieFragment extends Fragment {
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !data.equals(""))
-        {
-            if(requestCode == req_monthyear)
-            {
+        if (data != null && !data.equals("")) {
+            if (requestCode == req_monthyear) {
                 selected_month = data.getStringExtra("selected_month");
                 selected_year = data.getStringExtra("selected_year");
                 String selected_month_formatted = data.getStringExtra("selected_month_formatted");
-                monthYear_bt.setText(selected_month_formatted+","+" "+selected_year);
+                monthYear_bt.setText(selected_month_formatted + "," + " " + selected_year);
                 new Get_OrderAnalysis_Data_().execute(selected_month, selected_year);
             }
         }
@@ -1653,8 +1653,8 @@ public class OrderPieFragment extends Fragment {
 
                     if (plantAll_b) {
 
-                        if (label_name.getText().equals("Outstanding")) {
-                            String value = "Outstanding";
+                        if (label_name.getText().equals(getString(R.string.outstanding))) {
+                            String value = getString(R.string.outstanding);
                             String phase = "1";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("value", value);
@@ -1662,8 +1662,8 @@ public class OrderPieFragment extends Fragment {
                             intent.putExtra("iwerk", "");
                             intent.putExtra("wrkcntr_s", "");
                             startActivity(intent);
-                        } else if (label_name.getText().equals("Inprogress")) {
-                            String value = "Inprogress";
+                        } else if (label_name.getText().equals(getString(R.string.inprgs))) {
+                            String value = getString(R.string.inprgs);
                             String phase = "2";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("value", value);
@@ -1671,8 +1671,8 @@ public class OrderPieFragment extends Fragment {
                             intent.putExtra("iwerk", "");
                             intent.putExtra("wrkcntr_s", "");
                             startActivity(intent);
-                        } else if (label_name.getText().equals("Completed")) {
-                            String value = "Completed";
+                        } else if (label_name.getText().equals(getString(R.string.compltd))) {
+                            String value = getString(R.string.compltd);
                             String phase = "3";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("value", value);
@@ -1683,8 +1683,8 @@ public class OrderPieFragment extends Fragment {
                         }
                     } else {
 
-                        if (label_name.getText().equals("Outstanding")) {
-                            String value = "Outstanding";
+                        if (label_name.getText().equals(getString(R.string.outstanding))) {
+                            String value = getString(R.string.outstanding);
                             String phase = "0";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -1695,8 +1695,8 @@ public class OrderPieFragment extends Fragment {
                             intent.putExtra("iwerk", "");
                             intent.putExtra("wrkcntr_s", "");
                             startActivity(intent);
-                        } else if (label_name.getText().equals("Inprogress")) {
-                            String value = "Inprogress";
+                        } else if (label_name.getText().equals(getString(R.string.inprgs))) {
+                            String value = getString(R.string.inprgs);
                             String phase = "2";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -1707,8 +1707,8 @@ public class OrderPieFragment extends Fragment {
                             intent.putExtra("wrkcntr_s", "");
                             intent.putExtra("phase", phase);
                             startActivity(intent);
-                        } else if (label_name.getText().equals("Completed")) {
-                            String value = "Completed";
+                        } else if (label_name.getText().equals(getString(R.string.compltd))) {
+                            String value = getString(R.string.compltd);
                             String phase = "3";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -1726,6 +1726,7 @@ public class OrderPieFragment extends Fragment {
             return listV;
         }
     }
+
     public void allPlant() {
         try {
             if (out_s != null && !out_s.equals("")) {
@@ -1756,25 +1757,25 @@ public class OrderPieFragment extends Fragment {
         if (out_f == 0) {
 
         } else {
-            entries.add(new PieEntry(out_f, "Outstanding"));
+            entries.add(new PieEntry(out_f, getString(R.string.outstanding)));
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Outstanding");
+            llo_o.setLabel(getString(R.string.outstanding));
             llo.add(llo_o);
         }
         if (inpr_f == 0) {
 
         } else {
-            entries.add(new PieEntry(inpr_f, "Inprogress"));
+            entries.add(new PieEntry(inpr_f, getString(R.string.inprgs)));
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Inprogress");
+            llo_o.setLabel(getString(R.string.inprgs));
             llo.add(llo_o);
         }
         if (comp_f == 0) {
 
         } else {
-            entries.add(new PieEntry(comp_f, "Completed"));
+            entries.add(new PieEntry(comp_f, getString(R.string.compltd)));
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Completed");
+            llo_o.setLabel(getString(R.string.compltd));
             llo.add(llo_o);
         }
 
@@ -1783,13 +1784,13 @@ public class OrderPieFragment extends Fragment {
         final int[] MY_COLORS = new int[entries.size()];
 
         for (int j = 0; j < entries.size(); j++) {
-            if (entries.get(j).getLabel().equals("Outstanding")) {
+            if (entries.get(j).getLabel().equals(getString(R.string.outstanding))) {
                 MY_COLORS[j] = Color.rgb(255, 255, 0);
                 llo.get(j).setColor(Color.rgb(255, 255, 0));
-            } else if (entries.get(j).getLabel().equals("Inprogress")) {
+            } else if (entries.get(j).getLabel().equals(getString(R.string.inprgs))) {
                 MY_COLORS[j] = Color.rgb(51, 51, 255);
                 llo.get(j).setColor(Color.rgb(51, 51, 255));
-            } else if (entries.get(j).getLabel().equals("Completed")) {
+            } else if (entries.get(j).getLabel().equals(getString(R.string.compltd))) {
                 MY_COLORS[j] = Color.rgb(50, 205, 50);
                 llo.get(j).setColor(Color.rgb(50, 205, 50));
             }
@@ -1813,8 +1814,8 @@ public class OrderPieFragment extends Fragment {
                 int index = (int) h.getX();
                 String label = entries.get(index).getLabel();
 
-                if (label.equals("Outstanding")) {
-                    String value = "Outstanding";
+                if (label.equals(getString(R.string.outstanding))) {
+                    String value = getString(R.string.outstanding);
                     String phase = "0";
                     Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                     intent.putExtra("value", value);
@@ -1822,8 +1823,8 @@ public class OrderPieFragment extends Fragment {
                     intent.putExtra("iwerk", "");
                     intent.putExtra("wrkcntr_s", "");
                     startActivity(intent);
-                } else if (label.equals("Inprogress")) {
-                    String value = "Inprogress";
+                } else if (label.equals(getString(R.string.inprgs))) {
+                    String value = getString(R.string.inprgs);
                     String phase = "2";
                     Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                     intent.putExtra("value", value);
@@ -1831,8 +1832,8 @@ public class OrderPieFragment extends Fragment {
                     intent.putExtra("iwerk", "");
                     intent.putExtra("wrkcntr_s", "");
                     startActivity(intent);
-                } else if (label.equals("Completed")) {
-                    String value = "Completed";
+                } else if (label.equals(getString(R.string.compltd))) {
+                    String value = getString(R.string.compltd);
                     String phase = "3";
                     Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                     intent.putExtra("value", value);
@@ -1872,7 +1873,7 @@ public class OrderPieFragment extends Fragment {
         pieChart.setRotationEnabled(true);
         pieChart.setDrawEntryLabels(false);
         pieChart.setDragDecelerationFrictionCoef(0.95f);
-        pieChart.setCenterText("Order Analysis");
+        pieChart.setCenterText(getString(R.string.order_analysis));
         pieChart.setHoleColor(Color.LTGRAY);
         pieChart.setTransparentCircleColor(Color.LTGRAY);
         pieChart.setCenterTextSize(14);
@@ -1881,6 +1882,7 @@ public class OrderPieFragment extends Fragment {
         /*progressdialog.dismiss();*/
         pieChart.setData(pieData);
     }
+
     public void plantWrkcntSelector(String plant, final String wrkcntr_s) {
 
         if (wrkcntr_s.equals("")) {
@@ -1930,27 +1932,27 @@ public class OrderPieFragment extends Fragment {
                 if (out_f == 0) {
 
                 } else {
-                    entries.add(new PieEntry(out_f, "Outstanding"));
+                    entries.add(new PieEntry(out_f, getString(R.string.outstanding)));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Outstanding");
+                    llo_o.setLabel(getString(R.string.outstanding));
                     llo.add(llo_o);
                 }
 
                 if (inpr_f == 0) {
 
                 } else {
-                    entries.add(new PieEntry(inpr_f, "Inprogress"));
+                    entries.add(new PieEntry(inpr_f, getString(R.string.inprgs)));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Inprogress");
+                    llo_o.setLabel(getString(R.string.inprgs));
                     llo.add(llo_o);
                 }
 
                 if (comp_f == 0) {
 
                 } else {
-                    entries.add(new PieEntry(comp_f, "Completed"));
+                    entries.add(new PieEntry(comp_f, getString(R.string.compltd)));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Completed");
+                    llo_o.setLabel(getString(R.string.compltd));
                     llo.add(llo_o);
                 }
 
@@ -1960,13 +1962,13 @@ public class OrderPieFragment extends Fragment {
 
                 for (int j = 0; j < entries.size(); j++) {
 
-                    if (entries.get(j).getLabel().equals("Outstanding")) {
+                    if (entries.get(j).getLabel().equals(getString(R.string.outstanding))) {
                         MY_COLORS[j] = Color.rgb(255, 255, 0);
                         llo.get(j).setColor(Color.rgb(255, 255, 0));
-                    } else if (entries.get(j).getLabel().equals("Inprogress")) {
+                    } else if (entries.get(j).getLabel().equals(getString(R.string.inprgs))) {
                         MY_COLORS[j] = Color.rgb(51, 51, 255);
                         llo.get(j).setColor(Color.rgb(51, 51, 255));
-                    } else if (entries.get(j).getLabel().equals("Completed")) {
+                    } else if (entries.get(j).getLabel().equals(getString(R.string.compltd))) {
                         MY_COLORS[j] = Color.rgb(50, 205, 50);
                         llo.get(j).setColor(Color.rgb(50, 205, 50));
                     }
@@ -1991,8 +1993,8 @@ public class OrderPieFragment extends Fragment {
                         int index = (int) h.getX();
                         String label = entries.get(index).getLabel();
 
-                        if (label.equals("Outstanding")) {
-                            String value = "Outstanding";
+                        if (label.equals(getString(R.string.outstanding))) {
+                            String value = getString(R.string.outstanding);
                             String phase = "0";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -2012,8 +2014,8 @@ public class OrderPieFragment extends Fragment {
                                 intent.putExtra("wrkcntr_s", wrkcntr_s);
                             }
                             startActivity(intent);
-                        } else if (label.equals("Inprogress")) {
-                            String value = "Inprogress";
+                        } else if (label.equals(getString(R.string.inprgs))) {
+                            String value = getString(R.string.inprgs);
                             String phase = "2";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -2032,8 +2034,8 @@ public class OrderPieFragment extends Fragment {
                             }
                             intent.putExtra("phase", phase);
                             startActivity(intent);
-                        } else if (label.equals("Completed")) {
-                            String value = "Completed";
+                        } else if (label.equals(getString(R.string.compltd))) {
+                            String value = getString(R.string.compltd);
                             String phase = "3";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -2133,25 +2135,25 @@ public class OrderPieFragment extends Fragment {
                 if (out_f == 0) {
 
                 } else {
-                    entries.add(new PieEntry(out_f, "Outstanding"));
+                    entries.add(new PieEntry(out_f, getString(R.string.outstanding)));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Outstanding");
+                    llo_o.setLabel(getString(R.string.outstanding));
                     llo.add(llo_o);
                 }
                 if (inpr_f == 0) {
 
                 } else {
-                    entries.add(new PieEntry(inpr_f, "Inprogress"));
+                    entries.add(new PieEntry(inpr_f, getString(R.string.inprgs)));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Inprogress");
+                    llo_o.setLabel(getString(R.string.inprgs));
                     llo.add(llo_o);
                 }
                 if (comp_f == 0) {
 
                 } else {
-                    entries.add(new PieEntry(comp_f, "Completed"));
+                    entries.add(new PieEntry(comp_f, getString(R.string.compltd)));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Completed");
+                    llo_o.setLabel(getString(R.string.compltd));
                     llo.add(llo_o);
                 }
 
@@ -2160,13 +2162,13 @@ public class OrderPieFragment extends Fragment {
                 final int[] MY_COLORS = new int[entries.size()];
 
                 for (int j = 0; j < entries.size(); j++) {
-                    if (entries.get(j).getLabel().equals("Outstanding")) {
+                    if (entries.get(j).getLabel().equals(getString(R.string.outstanding))) {
                         MY_COLORS[j] = Color.rgb(255, 255, 0);
                         llo.get(j).setColor(Color.rgb(255, 255, 0));
-                    } else if (entries.get(j).getLabel().equals("Inprogress")) {
+                    } else if (entries.get(j).getLabel().equals(getString(R.string.inprgs))) {
                         MY_COLORS[j] = Color.rgb(51, 51, 255);
                         llo.get(j).setColor(Color.rgb(51, 51, 255));
-                    } else if (entries.get(j).getLabel().equals("Completed")) {
+                    } else if (entries.get(j).getLabel().equals(getString(R.string.compltd))) {
                         MY_COLORS[j] = Color.rgb(50, 205, 50);
                         llo.get(j).setColor(Color.rgb(50, 205, 50));
                     }
@@ -2191,8 +2193,8 @@ public class OrderPieFragment extends Fragment {
                         int index = (int) h.getX();
                         String label = entries.get(index).getLabel();
 
-                        if (label.equals("Outstanding")) {
-                            String value = "Outstanding";
+                        if (label.equals(getString(R.string.outstanding))) {
+                            String value = getString(R.string.outstanding);
                             String phase = "0";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -2211,8 +2213,8 @@ public class OrderPieFragment extends Fragment {
                                 intent.putExtra("wrkcntr_s", wrkcntr_s);
                             }
                             startActivity(intent);
-                        } else if (label.equals("Inprogress")) {
-                            String value = "Inprogress";
+                        } else if (label.equals(getString(R.string.inprgs))) {
+                            String value = getString(R.string.inprgs);
                             String phase = "2";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);
@@ -2231,8 +2233,8 @@ public class OrderPieFragment extends Fragment {
                             }
                             intent.putExtra("phase", phase);
                             startActivity(intent);
-                        } else if (label.equals("Completed")) {
-                            String value = "Completed";
+                        } else if (label.equals(getString(R.string.compltd))) {
+                            String value = getString(R.string.compltd);
                             String phase = "3";
                             Intent intent = new Intent(getActivity(), OrderStatusPieActivity.class);
                             intent.putExtra("total", out_f);

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.enstrapp.fieldtekpro.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,6 @@ public class Notifications_Tab_Adapter extends FragmentPagerAdapter {
     private Context mContext;
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
-
-    private String tabTitles[] = new String[]{"Header", "Cause Code", "Activity", "Attachments"};
 
     public Notifications_Tab_Adapter(Context context, FragmentManager fm) {
         super(fm);
@@ -26,8 +26,7 @@ public class Notifications_Tab_Adapter extends FragmentPagerAdapter {
         return mFragmentList.get(position);
     }
 
-    public void addFragment(Fragment fragment, String title)
-    {
+    public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
@@ -41,5 +40,4 @@ public class Notifications_Tab_Adapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
     }
-
 }

@@ -17,8 +17,7 @@ import com.enstrapp.fieldtekpro.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Notifications_Status_WithNum_Fragment extends Fragment
-{
+public class Notifications_Status_WithNum_Fragment extends Fragment {
 
     RecyclerView list_recycleview;
     TextView no_data_textview;
@@ -26,41 +25,32 @@ public class Notifications_Status_WithNum_Fragment extends Fragment
     Status_Adapter status_adapter;
     Notifications_Status_Activity nsa;
 
-    public Notifications_Status_WithNum_Fragment()
-    {
+    public Notifications_Status_WithNum_Fragment() {
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.notifications_status_fragemnt, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater
+                .inflate(R.layout.notifications_status_fragemnt, container, false);
 
-
-        list_recycleview = (RecyclerView)rootView.findViewById(R.id.list_recycleview);
+        list_recycleview = (RecyclerView) rootView.findViewById(R.id.list_recycleview);
         no_data_textview = (TextView) rootView.findViewById(R.id.no_data_textview);
 
-        nsa = (Notifications_Status_Activity)this.getActivity();
+        nsa = (Notifications_Status_Activity) this.getActivity();
 
-        try
-        {
+        try {
             status_withNum_array = nsa.status_withNum_array;
+        } catch (Exception e) {
         }
-        catch (Exception e)
-        {
-        }
-        if (status_withNum_array.size() > 0)
-        {
+        if (status_withNum_array.size() > 0) {
             list_recycleview.setHasFixedSize(true);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             list_recycleview.setLayoutManager(mLayoutManager);
-            status_adapter = new Status_Adapter(getActivity(),status_withNum_array);
+            status_adapter = new Status_Adapter(getActivity(), status_withNum_array);
             list_recycleview.setAdapter(status_adapter);
             list_recycleview.setVisibility(View.VISIBLE);
             no_data_textview.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             list_recycleview.setVisibility(View.GONE);
             no_data_textview.setVisibility(View.VISIBLE);
         }
@@ -68,17 +58,16 @@ public class Notifications_Status_WithNum_Fragment extends Fragment
         return rootView;
     }
 
-
-    public class Status_Adapter extends RecyclerView.Adapter<Status_Adapter.MyViewHolder>
-    {
+    public class Status_Adapter extends RecyclerView.Adapter<Status_Adapter.MyViewHolder> {
         private Context mContext;
         private List<Notif_Status_WithNum_Prcbl> list_data;
-        public class MyViewHolder extends RecyclerView.ViewHolder
-        {
-            public TextView txt04_textview, txt30_textview, act_textview, checked_status_textview, act_status_textview;
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            public TextView txt04_textview, txt30_textview, act_textview, checked_status_textview,
+                    act_status_textview;
             CheckBox status_checkbox;
-            public MyViewHolder(View view)
-            {
+
+            public MyViewHolder(View view) {
                 super(view);
                 txt04_textview = (TextView) view.findViewById(R.id.txt04_textview);
                 txt30_textview = (TextView) view.findViewById(R.id.txt30_textview);
@@ -88,92 +77,75 @@ public class Notifications_Status_WithNum_Fragment extends Fragment
                 act_status_textview = (TextView) view.findViewById(R.id.act_status_textview);
             }
         }
-        public Status_Adapter(Context mContext, List<Notif_Status_WithNum_Prcbl> list)
-        {
+
+        public Status_Adapter(Context mContext, List<Notif_Status_WithNum_Prcbl> list) {
             this.mContext = mContext;
             this.list_data = list;
         }
+
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.notifications_orders_status_list_data, parent, false);
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.notifications_orders_status_list_data, parent,
+                            false);
             return new MyViewHolder(itemView);
         }
+
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position)
-        {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final Notif_Status_WithNum_Prcbl olo = list_data.get(position);
             holder.txt04_textview.setText(olo.getTxt04());
             holder.txt30_textview.setText(olo.getTxt30());
             holder.checked_status_textview.setText(olo.getChecked_Status());
             holder.act_status_textview.setText(olo.getAct_Status());
             holder.act_textview.setText(olo.getAct());
-            if(holder.act_textview.getText().toString().equalsIgnoreCase("X"))
-            {
+            if (holder.act_textview.getText().toString().equalsIgnoreCase("X")) {
                 holder.status_checkbox.setChecked(true);
                 holder.status_checkbox.setEnabled(false);
-            }
-            else if(holder.checked_status_textview.getText().toString().equalsIgnoreCase("true"))
-            {
-                if(holder.act_status_textview.getText().toString().equalsIgnoreCase("X"))
-                {
+            } else if (holder.checked_status_textview.getText().toString()
+                    .equalsIgnoreCase("true")) {
+                if (holder.act_status_textview.getText().toString().
+                        equalsIgnoreCase("X")) {
                     holder.status_checkbox.setChecked(true);
                     holder.status_checkbox.setEnabled(true);
-                }
-                else
-                {
+                } else {
                     holder.status_checkbox.setChecked(false);
                     holder.status_checkbox.setEnabled(true);
                 }
-            }
-            else
-            {
+            } else {
                 holder.status_checkbox.setChecked(false);
                 holder.status_checkbox.setEnabled(true);
             }
 
-            holder.status_checkbox.setOnClickListener(new View.OnClickListener()
-            {
+            holder.status_checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if(holder.status_checkbox.isChecked())
-                    {
+                public void onClick(View v) {
+                    if (holder.status_checkbox.isChecked()) {
                         String txt04 = holder.txt04_textview.getText().toString();
-                        for (int i = 0; i < list_data.size(); i++)
-                        {
+                        for (int i = 0; i < list_data.size(); i++) {
                             String txt = list_data.get(i).getTxt04();
-                            if(txt.equalsIgnoreCase(txt04))
-                            {
+                            if (txt.equalsIgnoreCase(txt04)) {
                                 status_withNum_array.get(i).setAct("X");
                                 status_withNum_array.get(i).setAct_Status("X");
-                            }
-                            else
-                            {
+                            } else {
                                 status_withNum_array.get(i).setAct("");
                                 status_withNum_array.get(i).setAct_Status("");
                             }
                         }
                         status_adapter.notifyDataSetChanged();
-                    }
-                    else
-                    {
+                    } else {
                     }
                 }
             });
         }
+
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return list_data.size();
         }
     }
 
-
-    public ArrayList<Notif_Status_WithNum_Prcbl> getstatus_withNumData()
-    {
+    public ArrayList<Notif_Status_WithNum_Prcbl> getstatus_withNumData() {
         return status_withNum_array;
     }
-
-
 }

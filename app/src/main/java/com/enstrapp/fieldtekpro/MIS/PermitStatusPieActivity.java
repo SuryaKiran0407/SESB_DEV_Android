@@ -97,33 +97,20 @@ public class PermitStatusPieActivity extends AppCompatActivity {
         workcenter = intent.getExtras().getString("workcenter");
         application = intent.getExtras().getString("application");
         plant = intent.getExtras().getString("wrk_name");
-        if(value.equals("Crea"))
-        {
-            header="Created" + " Permits";
-        }
-        else if(value.equals("Prep"))
-        {
-            header="Prepared"+" Permits";
-        }
-        else if(value.equals("Clsd"))
-        {
-            header="Closed"+" Permits";
-        }
-        else if(value.equals("Reje"))
-        {
-            header="Rejected"+" Permits";
-        }
-        else if(value.equals("Red"))
-        {
-            header="Not Issued"+" Permits";
-        }
-        else if(value.equals("Yellow"))
-        {
-            header="Partially Issued"+" Permits";
-        }
-        else if(value.equals("Green"))
-        {
-            header="Issued"+" Permits";
+        if (value.equals("Crea")) {
+            header = getString(R.string.crea_perm);
+        } else if (value.equals("Prep")) {
+            header = getString(R.string.prep_perm);
+        } else if (value.equals("Clsd")) {
+            header = getString(R.string.clsd_perm);
+        } else if (value.equals("Reje")) {
+            header = getString(R.string.reje_perm);
+        } else if (value.equals("Red")) {
+            header = getString(R.string.noissue_perm);
+        } else if (value.equals("Yellow")) {
+            header = getString(R.string.patissu_perm);
+        } else if (value.equals("Green")) {
+            header = getString(R.string.issue_perm);
         }
 
         header_tv.setText(header);
@@ -178,7 +165,7 @@ public class PermitStatusPieActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(PermitStatusPieActivity.this,getResources().getString(R.string.loading));
+            custom_progress_dialog.show_progress_dialog(PermitStatusPieActivity.this, getResources().getString(R.string.loading));
             EtPermitWa.clear();
             EtPermitWa_c.clear();
             EtPermitWd.clear();
@@ -284,7 +271,7 @@ public class PermitStatusPieActivity extends AppCompatActivity {
                 } else {
                 }*/
             } catch (Exception e) {
-                Log.v("kiran_ee123",e.getMessage()+"...");
+                Log.v("kiran_ee123", e.getMessage() + "...");
             } finally {
                 cursor1.close();
             }
@@ -602,7 +589,7 @@ public class PermitStatusPieActivity extends AppCompatActivity {
             EtPermitWa_c.addAll(EtPermitWa);
 
             /*for (Mis_EtPermitWa_Object bean : EtPermitWa) {
-                *//*String wapnr = bean.getWapnr();
+             *//*String wapnr = bean.getWapnr();
                 Log.v("permit_wapnr", "" + wapnr + "...." + wapnr_list.size());*//*
                 for (int i = 0; i < wapnr_list.size(); i++) {
 //                    if (wapnr_list.get(i).equals(wapnr)) {
@@ -679,7 +666,7 @@ public class PermitStatusPieActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-           // total_record.setText("Total Count : " + EtPermitWa_wa.size());
+            // total_record.setText("Total Count : " + EtPermitWa_wa.size());
 
             ArrayList<String> permit_wd1 = new ArrayList<String>();
 
@@ -792,7 +779,7 @@ public class PermitStatusPieActivity extends AppCompatActivity {
                 } else if (!Iwerk_plant.equals("") && !workcenter.equals("")) {
                     pieChart.setCenterText(Name_plant + " " + plant_name1);
                 } else {
-                    pieChart.setCenterText("Permits");
+                    pieChart.setCenterText(getString(R.string.permit));
                 }
                 pieChart.setHoleColor(Color.LTGRAY);
                 pieChart.setTransparentCircleColor(Color.LTGRAY);
@@ -854,14 +841,14 @@ public class PermitStatusPieActivity extends AppCompatActivity {
     }
 
 
-        private static boolean contains(final List<Mis_EtPermitWa_Object> transaction, final String search) {
-            for (final Mis_EtPermitWa_Object transactionLine : transaction) {
-                if (transactionLine.getObjtyp().equals(search)) {
-                    return true;
-                }
+    private static boolean contains(final List<Mis_EtPermitWa_Object> transaction, final String search) {
+        for (final Mis_EtPermitWa_Object transactionLine : transaction) {
+            if (transactionLine.getObjtyp().equals(search)) {
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
 }
 

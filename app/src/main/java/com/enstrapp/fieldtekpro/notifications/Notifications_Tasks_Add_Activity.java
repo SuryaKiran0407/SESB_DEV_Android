@@ -24,78 +24,82 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Notifications_Tasks_Add_Activity extends FragmentActivity implements View.OnClickListener
-{
+public class Notifications_Tasks_Add_Activity extends FragmentActivity implements View.OnClickListener {
 
     int request_id = 0;
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
     Error_Dialog error_dialog = new Error_Dialog();
     ImageView back_imageview;
-    LinearLayout end_datetime_layout, start_datetime_layout, tasks_codegroup_layout, tasks_code_layout, tasks_processor_layout;
-    EditText completedby_edittext, completion_datetime_edittext, end_datetime_edittext, start_datetime_edittext, tasks_codegroup_edittext, tasks_code_edittext, task_text_edittext, tasks_processor_edittext, responsible_edittext;
-    int tasks_custom_info = 7, taskcodegroup = 1, taskcode = 2, taskprocessor = 3, planned_st_datetime = 4, planned_end_datetime = 5, completion_datetime = 6;
-    String completion_time_formatted = "", completion_time = "", completion_date_formatted = "", completion_date = "", planned_end_time_formatted = "", planned_end_time = "", planned_end_date_formatted = "", planned_end_date = "", planned_st_time_formatted = "", planned_st_time = "", planned_st_date_formatted = "", planned_st_date = "", taskcodegroup_id = "", taskcodegroup_text = "", taskcode_id = "", taskcode_text = "", taskprocessor_id = "", taskprocessor_text = "";
+    LinearLayout end_datetime_layout, start_datetime_layout, tasks_codegroup_layout,
+            tasks_code_layout, tasks_processor_layout;
+    EditText completedby_edittext, completion_datetime_edittext, end_datetime_edittext,
+            start_datetime_edittext, tasks_codegroup_edittext, tasks_code_edittext,
+            task_text_edittext, tasks_processor_edittext, responsible_edittext;
+    int tasks_custom_info = 7, taskcodegroup = 1, taskcode = 2, taskprocessor = 3,
+            planned_st_datetime = 4, planned_end_datetime = 5;
+    String completion_time_formatted = "", completion_time = "", completion_date_formatted = "",
+            completion_date = "", planned_end_time_formatted = "", planned_end_time = "",
+            planned_end_date_formatted = "", planned_end_date = "", planned_st_time_formatted = "",
+            planned_st_time = "", planned_st_date_formatted = "", planned_st_date = "",
+            taskcodegroup_id = "", taskcodegroup_text = "", taskcode_id = "", taskcode_text = "",
+            taskprocessor_id = "", taskprocessor_text = "";
     RadioGroup status_radiogroup;
     RadioButton release_radiobutton, completed_radiobutton, success_radiobutton;
     Button cancel_button, add_button;
-    String completedby = "", completed_status = "", success_status = "", release_status = "", position = "", itemkey = "", causekey = "", status = "I", task_text = "", task_responsible = "";
+    String completedby = "", completed_status = "", success_status = "", release_status = "",
+            position = "", itemkey = "", causekey = "", status = "I", task_text = "",
+            task_responsible = "";
     Button tasks_custominfo_button;
     ArrayList<HashMap<String, String>> selected_tasks_custom_info_arraylist = new ArrayList<>();
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications_tasks_add_activity);
 
-        tasks_codegroup_layout = (LinearLayout)findViewById(R.id.tasks_codegroup_layout);
-        back_imageview = (ImageView)findViewById(R.id.back_imageview);
-        tasks_codegroup_edittext = (EditText)findViewById(R.id.tasks_codegroup_edittext);
-        tasks_code_layout = (LinearLayout)findViewById(R.id.tasks_code_layout);
-        tasks_code_edittext = (EditText)findViewById(R.id.tasks_code_edittext);
-        task_text_edittext = (EditText)findViewById(R.id.task_text_edittext);
-        tasks_processor_layout = (LinearLayout)findViewById(R.id.tasks_processor_layout);
-        tasks_processor_edittext = (EditText)findViewById(R.id.tasks_processor_edittext);
-        responsible_edittext = (EditText)findViewById(R.id.responsible_edittext);
-        start_datetime_layout = (LinearLayout)findViewById(R.id.start_datetime_layout);
-        start_datetime_edittext = (EditText)findViewById(R.id.start_datetime_edittext);
-        end_datetime_layout = (LinearLayout)findViewById(R.id.end_datetime_layout);
-        end_datetime_edittext = (EditText)findViewById(R.id.end_datetime_edittext);
-        status_radiogroup = (RadioGroup)findViewById(R.id.status_radiogroup);
-        release_radiobutton = (RadioButton)findViewById(R.id.release_radiobutton);
-        completed_radiobutton = (RadioButton)findViewById(R.id.completed_radiobutton);
-        success_radiobutton = (RadioButton)findViewById(R.id.success_radiobutton);
-        completion_datetime_edittext = (EditText)findViewById(R.id.completion_datetime_edittext);
-        completedby_edittext = (EditText)findViewById(R.id.completedby_edittext);
-        add_button = (Button)findViewById(R.id.add_button);
-        cancel_button = (Button)findViewById(R.id.cancel_button);
-        tasks_custominfo_button = (Button)findViewById(R.id.tasks_custominfo_button);
-
+        tasks_codegroup_layout = (LinearLayout) findViewById(R.id.tasks_codegroup_layout);
+        back_imageview = (ImageView) findViewById(R.id.back_imageview);
+        tasks_codegroup_edittext = (EditText) findViewById(R.id.tasks_codegroup_edittext);
+        tasks_code_layout = (LinearLayout) findViewById(R.id.tasks_code_layout);
+        tasks_code_edittext = (EditText) findViewById(R.id.tasks_code_edittext);
+        task_text_edittext = (EditText) findViewById(R.id.task_text_edittext);
+        tasks_processor_layout = (LinearLayout) findViewById(R.id.tasks_processor_layout);
+        tasks_processor_edittext = (EditText) findViewById(R.id.tasks_processor_edittext);
+        responsible_edittext = (EditText) findViewById(R.id.responsible_edittext);
+        start_datetime_layout = (LinearLayout) findViewById(R.id.start_datetime_layout);
+        start_datetime_edittext = (EditText) findViewById(R.id.start_datetime_edittext);
+        end_datetime_layout = (LinearLayout) findViewById(R.id.end_datetime_layout);
+        end_datetime_edittext = (EditText) findViewById(R.id.end_datetime_edittext);
+        status_radiogroup = (RadioGroup) findViewById(R.id.status_radiogroup);
+        release_radiobutton = (RadioButton) findViewById(R.id.release_radiobutton);
+        completed_radiobutton = (RadioButton) findViewById(R.id.completed_radiobutton);
+        success_radiobutton = (RadioButton) findViewById(R.id.success_radiobutton);
+        completion_datetime_edittext = (EditText) findViewById(R.id.completion_datetime_edittext);
+        completedby_edittext = (EditText) findViewById(R.id.completedby_edittext);
+        add_button = (Button) findViewById(R.id.add_button);
+        cancel_button = (Button) findViewById(R.id.cancel_button);
+        tasks_custominfo_button = (Button) findViewById(R.id.tasks_custominfo_button);
 
         selected_tasks_custom_info_arraylist.clear();
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals(""))
-            {
+            if (request_ids != null && !request_ids.equals("")) {
                 request_id = Integer.parseInt(request_ids);
             }
             position = extras.getString("position");
-            if (position != null && !position.equals(""))
-            {
+            if (position != null && !position.equals("")) {
                 add_button.setText("Update");
                 status = extras.getString("status");
                 itemkey = extras.getString("item_key");
                 taskcodegroup_id = extras.getString("taskcodegroup_id");
                 taskcodegroup_text = extras.getString("taskcodegroup_text");
-                tasks_codegroup_edittext.setText(taskcodegroup_id+" - "+taskcodegroup_text);
+                tasks_codegroup_edittext.setText(taskcodegroup_id + " - " + taskcodegroup_text);
                 taskcode_id = extras.getString("taskcode_id");
                 taskcode_text = extras.getString("taskcode_text");
-                tasks_code_edittext.setText(taskcode_id+" - "+taskcode_text);
+                tasks_code_edittext.setText(taskcode_id + " - " + taskcode_text);
                 task_text = extras.getString("task_text");
                 task_text_edittext.setText(task_text);
                 taskprocessor_id = extras.getString("taskprocessor_id");
@@ -104,94 +108,71 @@ public class Notifications_Tasks_Add_Activity extends FragmentActivity implement
                 task_responsible = extras.getString("task_responsible");
                 responsible_edittext.setText(task_responsible);
                 planned_st_date_formatted = extras.getString("planned_st_date_formatted");
-                if (planned_st_date_formatted != null && !planned_st_date_formatted.equals(""))
-                {
-                    try
-                    {
+                if (planned_st_date_formatted != null && !planned_st_date_formatted.equals("")) {
+                    try {
                         String inputPattern = "yyyyMMdd";
                         String outputPattern = "MMM dd, yyyy";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
                         Date date = inputFormat.parse(planned_st_date_formatted);
                         planned_st_date = outputFormat.format(date);
-                    }
-                    catch (ParseException e)
-                    {
+                    } catch (ParseException e) {
                     }
                 }
                 planned_st_time_formatted = extras.getString("planned_st_time_formatted");
-                if (planned_st_time_formatted != null && !planned_st_time_formatted.equals(""))
-                {
-                    try
-                    {
+                if (planned_st_time_formatted != null && !planned_st_time_formatted.equals("")) {
+                    try {
                         String inputPattern = "HHmmss";
                         String outputPattern = "HH:mm:ss";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
                         Date date = inputFormat.parse(planned_st_time_formatted);
                         planned_st_time = outputFormat.format(date);
-                    }
-                    catch (ParseException e)
-                    {
+                    } catch (ParseException e) {
                     }
                 }
-                start_datetime_edittext.setText(planned_st_date+"  -  "+planned_st_time);
+                start_datetime_edittext.setText(planned_st_date + "  -  " + planned_st_time);
                 planned_end_date_formatted = extras.getString("planned_end_date_formatted");
-                if (planned_end_date_formatted != null && !planned_end_date_formatted.equals(""))
-                {
-                    try
-                    {
+                if (planned_end_date_formatted != null && !planned_end_date_formatted.equals("")) {
+                    try {
                         String inputPattern = "yyyyMMdd";
                         String outputPattern = "MMM dd, yyyy";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
                         Date date = inputFormat.parse(planned_end_date_formatted);
                         planned_end_date = outputFormat.format(date);
-                    }
-                    catch (ParseException e)
-                    {
+                    } catch (ParseException e) {
                     }
                 }
                 planned_end_time_formatted = extras.getString("planned_end_time_formatted");
-                if (planned_end_time_formatted != null && !planned_end_time_formatted.equals(""))
-                {
-                    try
-                    {
+                if (planned_end_time_formatted != null && !planned_end_time_formatted.equals("")) {
+                    try {
                         String inputPattern = "HHmmss";
                         String outputPattern = "HH:mm:ss";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
                         Date date = inputFormat.parse(planned_end_time_formatted);
                         planned_end_time = outputFormat.format(date);
-                    }
-                    catch (ParseException e)
-                    {
+                    } catch (ParseException e) {
                     }
                 }
-                end_datetime_edittext.setText(planned_end_date+"  -  "+planned_end_time);
+                end_datetime_edittext.setText(planned_end_date + "  -  " + planned_end_time);
                 release_status = extras.getString("release_status");
                 completed_status = extras.getString("completed_status");
                 success_status = extras.getString("success_status");
-                if(release_status.equalsIgnoreCase("X"))
-                {
+                if (release_status.equalsIgnoreCase("X")) {
                     release_radiobutton.setChecked(true);
                     completed_radiobutton.setChecked(false);
                     success_radiobutton.setChecked(false);
-                }
-                else if(completed_status.equalsIgnoreCase("X"))
-                {
+                } else if (completed_status.equalsIgnoreCase("X")) {
                     release_radiobutton.setChecked(false);
                     completed_radiobutton.setChecked(true);
                     success_radiobutton.setChecked(false);
-                }
-                else if(success_status.equalsIgnoreCase("X"))
-                {
+                } else if (success_status.equalsIgnoreCase("X")) {
                     release_radiobutton.setChecked(false);
                     completed_radiobutton.setChecked(false);
                     success_radiobutton.setChecked(true);
-                }
-                else
-                {
+                } else {
                     release_radiobutton.setChecked(false);
                     completed_radiobutton.setChecked(false);
                     success_radiobutton.setChecked(false);
@@ -199,46 +180,36 @@ public class Notifications_Tasks_Add_Activity extends FragmentActivity implement
 
 
                 completion_date_formatted = extras.getString("completion_date_formatted");
-                if (completion_date_formatted != null && !completion_date_formatted.equals(""))
-                {
-                    try
-                    {
+                if (completion_date_formatted != null && !completion_date_formatted.equals("")) {
+                    try {
                         String inputPattern = "yyyyMMdd";
                         String outputPattern = "MMM dd, yyyy";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
                         Date date = inputFormat.parse(completion_date_formatted);
                         completion_date = outputFormat.format(date);
-                    }
-                    catch (ParseException e)
-                    {
+                    } catch (ParseException e) {
                     }
                 }
                 completion_time_formatted = extras.getString("completion_time_formatted");
-                if (completion_time_formatted != null && !completion_time_formatted.equals(""))
-                {
-                    try
-                    {
+                if (completion_time_formatted != null && !completion_time_formatted.equals("")) {
+                    try {
                         String inputPattern = "HHmmss";
                         String outputPattern = "HH:mm:ss";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
                         Date date = inputFormat.parse(completion_time_formatted);
                         completion_time = outputFormat.format(date);
-                    }
-                    catch (ParseException e)
-                    {
+                    } catch (ParseException e) {
                     }
                 }
-                completion_datetime_edittext.setText(completion_date+"  -  "+completion_time);
+                completion_datetime_edittext.setText(completion_date + "  -  " + completion_time);
                 completedby = extras.getString("completedby");
                 completedby_edittext.setText(completedby);
-                selected_tasks_custom_info_arraylist = (ArrayList<HashMap<String, String>>)getIntent().getSerializableExtra("selected_tasks_custom_info_arraylist");
-            }
-            else
-            {
-                try
-                {
+                selected_tasks_custom_info_arraylist = (ArrayList<HashMap<String, String>>) getIntent()
+                        .getSerializableExtra("selected_tasks_custom_info_arraylist");
+            } else {
+                try {
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
                     String formattedDate = df.format(c.getTime());
@@ -250,30 +221,26 @@ public class Notifications_Tasks_Add_Activity extends FragmentActivity implement
                     String formattedTime_format = time_df1.format(c.getTime());
                     planned_st_date = formattedDate;
                     planned_st_date_formatted = formattedDate_format;
-                    start_datetime_edittext.setText(formattedDate+"  -  "+formattedTime);
+                    start_datetime_edittext.setText(formattedDate + "  -  " + formattedTime);
 
                     c.add(Calendar.DATE, 1);
                     String formattedDate_new = df.format(c.getTime());
                     String formattedDate_format_new = df1.format(c.getTime());
                     planned_end_date = formattedDate_new;
                     planned_end_date_formatted = formattedDate_format_new;
-                    end_datetime_edittext.setText(planned_end_date+"  -  "+formattedTime);
+                    end_datetime_edittext.setText(planned_end_date + "  -  " + formattedTime);
 
                     planned_st_time = formattedTime;
                     planned_end_time = formattedTime;
                     planned_st_time_formatted = formattedTime_format;
                     planned_end_time_formatted = formattedTime_format;
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
             }
         }
 
-
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-
 
         cancel_button.setOnClickListener(this);
         add_button.setOnClickListener(this);
@@ -284,211 +251,174 @@ public class Notifications_Tasks_Add_Activity extends FragmentActivity implement
         start_datetime_layout.setOnClickListener(this);
         end_datetime_layout.setOnClickListener(this);
         tasks_custominfo_button.setOnClickListener(this);
-
     }
 
-
     @Override
-    public void onClick(View v)
-    {
-        if(v == tasks_custominfo_button)
-        {
-            Intent custominfo_intent = new Intent(Notifications_Tasks_Add_Activity.this, CustomInfo_Activity.class);
-            custominfo_intent.putExtra("Zdoctype","Q");
-            custominfo_intent.putExtra("ZdoctypeItem","QT");
-            custominfo_intent.putExtra("custom_info_arraylist",selected_tasks_custom_info_arraylist);
+    public void onClick(View v) {
+        if (v == tasks_custominfo_button) {
+            Intent custominfo_intent =
+                    new Intent(Notifications_Tasks_Add_Activity.this,
+                            CustomInfo_Activity.class);
+            custominfo_intent.putExtra("Zdoctype", "Q");
+            custominfo_intent.putExtra("ZdoctypeItem", "QT");
+            custominfo_intent.putExtra("custom_info_arraylist",
+                    selected_tasks_custom_info_arraylist);
             custominfo_intent.putExtra("request_id", Integer.toString(tasks_custom_info));
-            startActivityForResult(custominfo_intent,tasks_custom_info);
-        }
-        else if (v == cancel_button)
-        {
+            startActivityForResult(custominfo_intent, tasks_custom_info);
+        } else if (v == cancel_button) {
             Notifications_Tasks_Add_Activity.this.finish();
-        }
-        else if (v == back_imageview)
-        {
+        } else if (v == back_imageview) {
             Notifications_Tasks_Add_Activity.this.finish();
-        }
-        else if(v == tasks_codegroup_layout)
-        {
-            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,Notifications_Tasks_TaskCodeGroup_Activity.class);
+        } else if (v == tasks_codegroup_layout) {
+            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,
+                    Notifications_Tasks_TaskCodeGroup_Activity.class);
             intent.putExtra("request_id", Integer.toString(taskcodegroup));
             startActivityForResult(intent, taskcodegroup);
-        }
-        else if(v == tasks_code_layout)
-        {
-            if (taskcodegroup_id != null && !taskcodegroup_id.equals(""))
-            {
-                Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,Notifications_Tasks_TaskCode_Activity.class);
+        } else if (v == tasks_code_layout) {
+            if (taskcodegroup_id != null && !taskcodegroup_id.equals("")) {
+                Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,
+                        Notifications_Tasks_TaskCode_Activity.class);
                 intent.putExtra("request_id", Integer.toString(taskcode));
                 intent.putExtra("taskcodegroup_id", taskcodegroup_id);
                 startActivityForResult(intent, taskcode);
+            } else {
+                error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,
+                        getString(R.string.select_taskcodegrp));
             }
-            else
-            {
-                error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,"Please Select Task Code Group");
-            }
-        }
-        else if(v == tasks_processor_layout)
-        {
-            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,Notifications_Tasks_TaskProcessor_Activity.class);
+        } else if (v == tasks_processor_layout) {
+            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,
+                    Notifications_Tasks_TaskProcessor_Activity.class);
             intent.putExtra("request_id", Integer.toString(taskprocessor));
             startActivityForResult(intent, taskprocessor);
-        }
-        else if(v == start_datetime_layout)
-        {
-            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this, DateTimePickerDialog.class);
+        } else if (v == start_datetime_layout) {
+            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,
+                    DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(planned_st_datetime));
-            startActivityForResult(intent,planned_st_datetime);
-        }
-        else if(v == end_datetime_layout)
-        {
-            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this, DateTimePickerDialog.class);
+            startActivityForResult(intent, planned_st_datetime);
+        } else if (v == end_datetime_layout) {
+            Intent intent = new Intent(Notifications_Tasks_Add_Activity.this,
+                    DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(planned_end_datetime));
-            startActivityForResult(intent,planned_end_datetime);
-        }
-        else if (v == add_button)
-        {
-            if (taskcodegroup_id != null && !taskcodegroup_id.equals(""))
-            {
-                if (taskcode_id != null && !taskcode_id.equals(""))
-                {
-                    if (task_text_edittext.getText().toString() != null && !task_text_edittext.getText().toString().equals(""))
-                    {
-                        if (planned_st_date != null && !planned_st_date.equals(""))
-                        {
-                            if (planned_end_date != null && !planned_end_date.equals(""))
-                            {
-                                Intent intent=new Intent();
-                                intent.putExtra("taskcodegroup_id",taskcodegroup_id);
-                                intent.putExtra("taskcodegroup_text",taskcodegroup_text);
-                                intent.putExtra("taskcode_id",taskcode_id);
-                                intent.putExtra("taskcode_text",taskcode_text);
-                                intent.putExtra("task_text",task_text_edittext.getText().toString());
-                                intent.putExtra("taskprocessor_id",taskprocessor_id);
-                                intent.putExtra("taskprocessor_text",taskprocessor_text);
-                                intent.putExtra("task_responsible",responsible_edittext.getText().toString());
-                                intent.putExtra("planned_st_date",planned_st_date);
-                                intent.putExtra("planned_st_date_formatted",planned_st_date_formatted);
-                                intent.putExtra("planned_st_time",planned_st_time);
-                                intent.putExtra("planned_st_time_formatted",planned_st_time_formatted);
-                                intent.putExtra("planned_end_date",planned_end_date);
-                                intent.putExtra("planned_end_date_formatted",planned_end_date_formatted);
-                                intent.putExtra("planned_end_time",planned_end_time);
-                                intent.putExtra("planned_end_time_formatted",planned_end_time_formatted);
-                                if(release_radiobutton.isChecked())
-                                {
-                                    intent.putExtra("release_status","X");
+            startActivityForResult(intent, planned_end_datetime);
+        } else if (v == add_button) {
+            if (taskcodegroup_id != null && !taskcodegroup_id.equals("")) {
+                if (taskcode_id != null && !taskcode_id.equals("")) {
+                    if (task_text_edittext.getText().toString() != null &&
+                            !task_text_edittext.getText().toString().equals("")) {
+                        if (planned_st_date != null && !planned_st_date.equals("")) {
+                            if (planned_end_date != null && !planned_end_date.equals("")) {
+                                Intent intent = new Intent();
+                                intent.putExtra("taskcodegroup_id", taskcodegroup_id);
+                                intent.putExtra("taskcodegroup_text", taskcodegroup_text);
+                                intent.putExtra("taskcode_id", taskcode_id);
+                                intent.putExtra("taskcode_text", taskcode_text);
+                                intent.putExtra("task_text",
+                                        task_text_edittext.getText().toString());
+                                intent.putExtra("taskprocessor_id", taskprocessor_id);
+                                intent.putExtra("taskprocessor_text", taskprocessor_text);
+                                intent.putExtra("task_responsible",
+                                        responsible_edittext.getText().toString());
+                                intent.putExtra("planned_st_date", planned_st_date);
+                                intent.putExtra("planned_st_date_formatted",
+                                        planned_st_date_formatted);
+                                intent.putExtra("planned_st_time", planned_st_time);
+                                intent.putExtra("planned_st_time_formatted",
+                                        planned_st_time_formatted);
+                                intent.putExtra("planned_end_date", planned_end_date);
+                                intent.putExtra("planned_end_date_formatted",
+                                        planned_end_date_formatted);
+                                intent.putExtra("planned_end_time", planned_end_time);
+                                intent.putExtra("planned_end_time_formatted",
+                                        planned_end_time_formatted);
+                                if (release_radiobutton.isChecked()) {
+                                    intent.putExtra("release_status", "X");
+                                } else {
+                                    intent.putExtra("release_status", "");
                                 }
-                                else
-                                {
-                                    intent.putExtra("release_status","");
+                                if (completed_radiobutton.isChecked()) {
+                                    intent.putExtra("completed_status", "X");
+                                } else {
+                                    intent.putExtra("completed_status", "");
                                 }
-                                if(completed_radiobutton.isChecked())
-                                {
-                                    intent.putExtra("completed_status","X");
+                                if (success_radiobutton.isChecked()) {
+                                    intent.putExtra("success_status", "X");
+                                } else {
+                                    intent.putExtra("success_status", "");
                                 }
-                                else
-                                {
-                                    intent.putExtra("completed_status","");
-                                }
-                                if(success_radiobutton.isChecked())
-                                {
-                                    intent.putExtra("success_status","X");
-                                }
-                                else
-                                {
-                                    intent.putExtra("success_status","");
-                                }
-                                intent.putExtra("completion_date",completion_date);
-                                intent.putExtra("completion_date_formatted",completion_date_formatted);
-                                intent.putExtra("completion_time",completion_time);
-                                intent.putExtra("completion_time_formatted",completion_time_formatted);
-                                intent.putExtra("completedby",completedby_edittext.getText().toString());
-                                intent.putExtra("task_itemkey",itemkey);
-                                intent.putExtra("position",position);
-                                intent.putExtra("status",status);
-                                intent.putExtra("selected_tasks_custom_info_arraylist",selected_tasks_custom_info_arraylist);
-                                setResult(request_id,intent);
+                                intent.putExtra("completion_date", completion_date);
+                                intent.putExtra("completion_date_formatted",
+                                        completion_date_formatted);
+                                intent.putExtra("completion_time", completion_time);
+                                intent.putExtra("completion_time_formatted",
+                                        completion_time_formatted);
+                                intent.putExtra("completedby",
+                                        completedby_edittext.getText().toString());
+                                intent.putExtra("task_itemkey", itemkey);
+                                intent.putExtra("position", position);
+                                intent.putExtra("status", status);
+                                intent.putExtra("selected_tasks_custom_info_arraylist",
+                                        selected_tasks_custom_info_arraylist);
+                                setResult(request_id, intent);
                                 Notifications_Tasks_Add_Activity.this.finish();
+                            } else {
+                                error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,
+                                        getString(R.string.select_plannenddt_time));
                             }
-                            else
-                            {
-                                error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,"Please Select Planned End Date & Time");
-                            }
+                        } else {
+                            error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,
+                                    getString(R.string.select_plannstrtdt_time));
                         }
-                        else
-                        {
-                            error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,"Please Select Planned Start Date & Time");
-                        }
+                    } else {
+                        error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,
+                                getString(R.string.enter_tasktxt));
                     }
-                    else
-                    {
-                        error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,"Please Enter Task text");
-                    }
+                } else {
+                    error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,
+                            getString(R.string.enter_taskcode));
                 }
-                else
-                {
-                    error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,"Please Select Task Code");
-                }
-            }
-            else
-            {
-                error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,"Please Select Task Code Group");
+            } else {
+                error_dialog.show_error_dialog(Notifications_Tasks_Add_Activity.this,
+                        getString(R.string.enter_taskcodegrp));
             }
         }
     }
 
-
     // Call Back method  to get the Message form other Activity
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !data.equals(""))
-        {
-            if(requestCode == taskcodegroup)
-            {
+        if (data != null && !data.equals("")) {
+            if (requestCode == taskcodegroup) {
                 taskcodegroup_id = data.getStringExtra("taskcodegroup_id");
                 taskcodegroup_text = data.getStringExtra("taskcodegroup_text");
                 tasks_codegroup_edittext.setText(taskcodegroup_id);
                 taskcode_id = "";
                 taskcode_text = "";
                 tasks_code_edittext.setText("");
-            }
-            else if(requestCode == taskcode)
-            {
+            } else if (requestCode == taskcode) {
                 taskcode_id = data.getStringExtra("taskcode_id");
                 taskcode_text = data.getStringExtra("taskcode_text");
                 tasks_code_edittext.setText(taskcode_id);
-            }
-            else if(requestCode == taskprocessor)
-            {
+            } else if (requestCode == taskprocessor) {
                 taskprocessor_id = data.getStringExtra("taskprocessor_id");
                 taskprocessor_text = data.getStringExtra("taskprocessor_text");
                 tasks_processor_edittext.setText(taskprocessor_id);
-            }
-            else if(requestCode == planned_st_datetime)
-            {
+            } else if (requestCode == planned_st_datetime) {
                 planned_st_date = data.getStringExtra("date");
                 planned_st_date_formatted = data.getStringExtra("date_formatted");
                 planned_st_time = data.getStringExtra("time");
                 planned_st_time_formatted = data.getStringExtra("time_formatted");
-                start_datetime_edittext.setText(planned_st_date+"  -  "+planned_st_time);
-            }
-            else if(requestCode == planned_end_datetime)
-            {
+                start_datetime_edittext.setText(planned_st_date + "  -  " + planned_st_time);
+            } else if (requestCode == planned_end_datetime) {
                 planned_end_date = data.getStringExtra("date");
                 planned_end_date_formatted = data.getStringExtra("date_formatted");
                 planned_end_time = data.getStringExtra("time");
                 planned_end_time_formatted = data.getStringExtra("time_formatted");
-                end_datetime_edittext.setText(planned_end_date+"  -  "+planned_end_time);
-            }
-            else if(requestCode == tasks_custom_info)
-            {
-                selected_tasks_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
+                end_datetime_edittext.setText(planned_end_date + "  -  " + planned_end_time);
+            } else if (requestCode == tasks_custom_info) {
+                selected_tasks_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data
+                        .getSerializableExtra("selected_custom_info_arraylist");
             }
         }
     }
-
-
 }

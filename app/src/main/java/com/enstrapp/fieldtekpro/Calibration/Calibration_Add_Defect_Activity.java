@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +29,10 @@ import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Calibration_Add_Defect_Activity extends AppCompatActivity implements View.OnClickListener
-{
+public class Calibration_Add_Defect_Activity extends AppCompatActivity implements View.OnClickListener {
 
-    String order_id = "", Insp_Lot = "",damage_id = "",damage_text = "",damage_code_id = "",damage_code_text = "";
-    Button object_part_button, object_part_code_button,defect_grp_button, defect_code_button, cancel_button, submit_button;
+    String order_id = "", Insp_Lot = "", damage_id = "", damage_text = "", damage_code_id = "", damage_code_text = "";
+    Button object_part_button, object_part_code_button, defect_grp_button, defect_code_button, cancel_button, submit_button;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     Dialog object_part_dialog, object_part_code_dialog, damage_dialog, damage_code_dialog;
@@ -56,30 +55,28 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_add_defect_activity);
 
         DATABASE_NAME = getApplicationContext().getString(R.string.database_name);
-        App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+        App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             Insp_Lot = extras.getString("Insp_Lot");
             order_id = extras.getString("order_id");
         }
 
-        object_part_button = (Button)findViewById(R.id.object_part_button);
-        object_part_code_button = (Button)findViewById(R.id.object_part_code_button);
-        defect_grp_button = (Button)findViewById(R.id.defect_grp_button);
-        defect_code_button = (Button)findViewById(R.id.defect_code_button);
-        no_of_defects_edittext = (EditText)findViewById(R.id.no_of_defects_edittext);
-        defect_description_edittext = (EditText)findViewById(R.id.defect_description_edittext);
-        submit_button = (Button)findViewById(R.id.submit_button);
-        cancel_button = (Button)findViewById(R.id.cancel_button);
-        back_imageview = (ImageView)findViewById(R.id.back_imageview);
+        object_part_button = (Button) findViewById(R.id.object_part_button);
+        object_part_code_button = (Button) findViewById(R.id.object_part_code_button);
+        defect_grp_button = (Button) findViewById(R.id.defect_grp_button);
+        defect_code_button = (Button) findViewById(R.id.defect_code_button);
+        no_of_defects_edittext = (EditText) findViewById(R.id.no_of_defects_edittext);
+        defect_description_edittext = (EditText) findViewById(R.id.defect_description_edittext);
+        submit_button = (Button) findViewById(R.id.submit_button);
+        cancel_button = (Button) findViewById(R.id.cancel_button);
+        back_imageview = (ImageView) findViewById(R.id.back_imageview);
 
         object_part_button.setOnClickListener(this);
         object_part_code_button.setOnClickListener(this);
@@ -93,71 +90,51 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
 
 
     @Override
-    public void onClick(View v)
-    {
-        if(v == back_imageview)
-        {
+    public void onClick(View v) {
+        if (v == back_imageview) {
             Calibration_Add_Defect_Activity.this.finish();
-        }
-        else if(v == cancel_button)
-        {
+        } else if (v == cancel_button) {
             Calibration_Add_Defect_Activity.this.finish();
-        }
-        else if(v == submit_button)
-        {
-            if (object_part_id != null && !object_part_id.equals(""))
-            {
-                if (object_part_code_id != null && !object_part_code_id.equals(""))
-                {
-                    if (damage_id != null && !damage_id.equals(""))
-                    {
-                        if (damage_code_id != null && !damage_code_id.equals(""))
-                        {
-                            Intent intent=new Intent();
-                            intent.putExtra("object_part_id",object_part_id);
-                            intent.putExtra("object_part_text",object_part_text);
-                            intent.putExtra("object_part_code_id",object_part_code_id);
-                            intent.putExtra("object_part_code_text",object_part_code_text);
-                            intent.putExtra("defect_id",damage_id);
-                            intent.putExtra("defect_text",damage_text);
-                            intent.putExtra("defect_code_id",damage_code_id);
-                            intent.putExtra("defect_code_text",damage_code_text);
-                            intent.putExtra("defect_description",defect_description_edittext.getText().toString());
-                            intent.putExtra("num_defects",no_of_defects_edittext.getText().toString());
-                            setResult(1,intent);
+        } else if (v == submit_button) {
+            if (object_part_id != null && !object_part_id.equals("")) {
+                if (object_part_code_id != null && !object_part_code_id.equals("")) {
+                    if (damage_id != null && !damage_id.equals("")) {
+                        if (damage_code_id != null && !damage_code_id.equals("")) {
+                            Intent intent = new Intent();
+                            intent.putExtra("object_part_id", object_part_id);
+                            intent.putExtra("object_part_text", object_part_text);
+                            intent.putExtra("object_part_code_id", object_part_code_id);
+                            intent.putExtra("object_part_code_text", object_part_code_text);
+                            intent.putExtra("defect_id", damage_id);
+                            intent.putExtra("defect_text", damage_text);
+                            intent.putExtra("defect_code_id", damage_code_id);
+                            intent.putExtra("defect_code_text", damage_code_text);
+                            intent.putExtra("defect_description", defect_description_edittext.getText().toString());
+                            intent.putExtra("num_defects", no_of_defects_edittext.getText().toString());
+                            setResult(1, intent);
                             Calibration_Add_Defect_Activity.this.finish();//finishing activity
+                        } else {
+                            error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,
+                                    getString(R.string.pls_slctdfctcod));
                         }
-                        else
-                        {
-                            error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,"Please select defect code");
-                        }
+                    } else {
+                        error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,
+                                getString(R.string.pls_dfctgrp));
                     }
-                    else
-                    {
-                        error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,"Please select defect group");
-                    }
+                } else {
+                    error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,
+                            getString(R.string.notifcause_selectobjprtcode));
                 }
-                else
-                {
-                    error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,"Please select object part code");
-                }
+            } else {
+                error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this, getString(R.string.notifcause_selectobjprt));
             }
-            else
-            {
-                error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,"Please select object part");
-            }
-        }
-        else if(v == object_part_button)
-        {
+        } else if (v == object_part_button) {
             object_part_list.clear();
             try {
                 Cursor cursor = App_db.rawQuery("select DISTINCT Codegruppe, Kurztext from Get_NOTIFCODES_ObjectCodes", null);
-                if (cursor != null && cursor.getCount() > 0)
-                {
-                    if (cursor.moveToFirst())
-                    {
-                        do
-                        {
+                if (cursor != null && cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("Codegruppe", cursor.getString(0));
                             map.put("Kurztext", cursor.getString(1));
@@ -165,17 +142,12 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                         }
                         while (cursor.moveToNext());
                     }
-                }
-                else
-                {
+                } else {
                     cursor.close();
                 }
+            } catch (Exception e) {
             }
-            catch (Exception e)
-            {
-            }
-            if (object_part_list.size() > 0)
-            {
+            if (object_part_list.size() > 0) {
                 object_part_dialog = new Dialog(Calibration_Add_Defect_Activity.this, android.R.style.Theme_Black_NoTitleBar);
                 object_part_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 object_part_dialog.setCancelable(true);
@@ -220,21 +192,14 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                     }
                 });
             }
-        }
-        else if(v == object_part_code_button)
-        {
-            if (object_part_id != null && !object_part_id.equals(""))
-            {
+        } else if (v == object_part_code_button) {
+            if (object_part_id != null && !object_part_id.equals("")) {
                 object_part_code_list.clear();
-                try
-                {
+                try {
                     Cursor cursor = App_db.rawQuery("select * from Get_NOTIFCODES_ObjectCodes where Codegruppe = ?", new String[]{object_part_id});
-                    if (cursor != null && cursor.getCount() > 0)
-                    {
-                        if (cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
                                 HashMap<String, String> map = new HashMap<String, String>();
                                 map.put("Code", cursor.getString(5));
                                 map.put("Kurztext1", cursor.getString(6));
@@ -242,17 +207,12 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                             }
                             while (cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor.close();
                     }
+                } catch (Exception e) {
                 }
-                catch (Exception e)
-                {
-                }
-                if (object_part_code_list.size() > 0)
-                {
+                if (object_part_code_list.size() > 0) {
                     object_part_code_dialog = new Dialog(Calibration_Add_Defect_Activity.this, android.R.style.Theme_Translucent_NoTitleBar);
                     object_part_code_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     object_part_code_dialog.setCancelable(true);
@@ -269,17 +229,13 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                     object_part_code_adapter = new OBJECT_PART_CODE_ADAPTER(Calibration_Add_Defect_Activity.this, object_part_code_list);
                     priority_listview.setAdapter(object_part_code_adapter);//OBJECT_PART_CODE_ADAPTER object_part_code_adapter
                     object_part_code_dialog.show();
-                    back_imageview.setOnClickListener(new View.OnClickListener()
-                    {
+                    back_imageview.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             object_part_code_dialog.dismiss();
                         }
                     });
-                }
-                else
-                {
+                } else {
                     object_part_code_dialog = new Dialog(Calibration_Add_Defect_Activity.this, android.R.style.Theme_Translucent_NoTitleBar);
                     object_part_code_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     object_part_code_dialog.setCancelable(true);
@@ -301,25 +257,18 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                         }
                     });
                 }
+            } else {
+                error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,
+                        getString(R.string.notifcause_selectobjprt));
             }
-            else
-            {
-                error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,"Please Select Object Part");
-            }
-        }
-        else if(v == defect_grp_button)
-        {
+        } else if (v == defect_grp_button) {
             new Get_Damage_Data().execute();
-        }
-        else if(v == defect_code_button)
-        {
-            if (damage_id != null && !damage_id.equals(""))
-            {
+        } else if (v == defect_code_button) {
+            if (damage_id != null && !damage_id.equals("")) {
                 new Get_Damage_Code_Data().execute();
-            }
-            else
-            {
-                error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,"Please Select Defect Group");
+            } else {
+                error_dialog.show_error_dialog(Calibration_Add_Defect_Activity.this,
+                        getString(R.string.pls_dfctgrp));
             }
         }
     }
@@ -365,7 +314,7 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                     object_part_dialog.dismiss();
                     object_part_id = id_textview.getText().toString();
                     object_part_text = text_textview.getText().toString();
-                    object_part_button.setText(object_part_id+" - "+object_part_text);
+                    object_part_button.setText(object_part_id + " - " + object_part_text);
                     object_part_code_id = "";
                     object_part_code_text = "";
                     object_part_code_button.setText("");
@@ -416,7 +365,7 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                     object_part_code_dialog.dismiss();
                     object_part_code_id = id_textview.getText().toString();
                     object_part_code_text = text_textview.getText().toString();
-                    object_part_code_button.setText(object_part_code_id+" - "+object_part_code_text);
+                    object_part_code_button.setText(object_part_code_id + " - " + object_part_code_text);
                 }
             });
 
@@ -561,7 +510,7 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
                     damage_code_id = "";
                     damage_code_text = "";
                     //defect_code_button.setText("");
-                    defect_grp_button.setText(damage_id+" - "+damage_text);
+                    defect_grp_button.setText(damage_id + " - " + damage_text);
                     damage_dialog.dismiss();
                 }
             });
@@ -569,7 +518,6 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
             return vi;
         }
     }
-
 
 
     private class Get_Damage_Code_Data extends AsyncTask<Void, Integer, Void> {
@@ -703,7 +651,7 @@ public class Calibration_Add_Defect_Activity extends AppCompatActivity implement
             data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    defect_code_button.setText(id_textview.getText().toString()+" - "+text_textview.getText().toString());
+                    defect_code_button.setText(id_textview.getText().toString() + " - " + text_textview.getText().toString());
                     damage_code_id = id_textview.getText().toString();
                     damage_code_text = text_textview.getText().toString();
                     damage_code_dialog.dismiss();

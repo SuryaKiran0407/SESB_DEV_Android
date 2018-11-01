@@ -28,15 +28,15 @@ import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class Orders_Confirm_Activity extends AppCompatActivity {
 
     TextView orderStatus_tv, orderNo_tv, oprtnStatus_tv, oprtnNo_tv, start_tv, pause_tv, complete_tv,
             reset_tv;
-    TextInputEditText confirmation_longtext_edittext, oprtnShrtTxt_tiet, oprtnLngTxt_tiet, ctrlKey_tiet, plant_tiet, wrkCntr_tiet,
-            actvyKey_tiet, plannedWrkUnt_tiet, cnfrmWrkUnt_tiet;
+    TextInputEditText confirmation_longtext_edittext, oprtnShrtTxt_tiet, oprtnLngTxt_tiet,
+            ctrlKey_tiet, plant_tiet, wrkCntr_tiet, actvyKey_tiet, plannedWrkUnt_tiet,
+            cnfrmWrkUnt_tiet;
     Toolbar toolBar;
     ProgressBar progressBar;
     OrdrOprtnPrcbl oop;
@@ -48,14 +48,14 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
     String strDt = "", endDt = "";
     TextInputLayout confirmation_longtext_layout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_confirm_activity);
 
         DATABASE_NAME = Orders_Confirm_Activity.this.getString(R.string.database_name);
-        App_db = Orders_Confirm_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        App_db = Orders_Confirm_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,
+                null);
 
         reset_tv = findViewById(R.id.reset_tv);
         progressBar = findViewById(R.id.progressBar);
@@ -76,8 +76,8 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
         start_tv = findViewById(R.id.start_tv);
         pause_tv = findViewById(R.id.pause_tv);
         complete_tv = findViewById(R.id.complete_tv);
-        confirmation_longtext_layout = (TextInputLayout) findViewById(R.id.confirmation_longtext_layout);
-        confirmation_longtext_edittext = (TextInputEditText) findViewById(R.id.confirmation_longtext_edittext);
+        confirmation_longtext_layout = findViewById(R.id.confirmation_longtext_layout);
+        confirmation_longtext_edittext = findViewById(R.id.confirmation_longtext_edittext);
 
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
 
@@ -93,10 +93,7 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
             oop = bundle.getParcelable("cnfoprtn");
             strDt = bundle.getString("strDt");
             endDt = bundle.getString("endDt");
-//            orderStatus_tv.setText();
             orderNo_tv.setText(oop.getOrdrId());
-//            oprtnStatus_tv,
-//            if (oop.aueru().equalsIgnoreCase("X"))
             oprtnNo_tv.setText(oop.getOprtnId());
             oprtnShrtTxt_tiet.setText(oop.getOprtnShrtTxt());
             oprtnLngTxt_tiet.setText(oop.getOprtnLngTxt());
@@ -109,7 +106,9 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
 
             StringBuilder longtext_sBuilder = new StringBuilder();
             try {
-                Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_Longtext where Aufnr = ? and Activity = ? and Tdid = ?", new String[]{oop.getOrdrId(), oop.getOprtnId(), "RMEL"});
+                Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_Longtext where" +
+                        " Aufnr = ? and Activity = ? and Tdid = ?", new String[]{oop.getOrdrId(),
+                        oop.getOprtnId(), "RMEL"});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -152,14 +151,14 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 start_tv.setVisibility(View.GONE);
                 pause_tv.setVisibility(View.VISIBLE);
-                //view_second.setBackground(getResources().getDrawable(R.drawable.new_icon1));
                 oprtnStatus_tv.setText(getResources().getString(R.string.start));
 
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 String startDate = sdf.format(cal.getTime());
 
-                String sql = "Insert into ORDER_CONFIRMATION_TIMER (UUID, Order_No, Operation_ID, Timestamp, STATUS, seconds) values(?,?,?,?,?,?);";
+                String sql = "Insert into ORDER_CONFIRMATION_TIMER (UUID, Order_No, Operation_ID," +
+                        " Timestamp, STATUS, seconds) values(?,?,?,?,?,?);";
                 SQLiteStatement statement = App_db.compileStatement(sql);
                 App_db.beginTransaction();
                 UUID uniqueKey_uuid = UUID.randomUUID();
@@ -191,7 +190,9 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
         });
 
         if (orderRel(oop.getOrdrId())) {
-            String auth_status = Authorizations.Get_Authorizations_Data(Orders_Confirm_Activity.this, "W", "TK");
+            String auth_status = Authorizations
+                    .Get_Authorizations_Data(Orders_Confirm_Activity.this, "W",
+                            "TK");
             if (auth_status.equalsIgnoreCase("true")) {
                 footer_ll.setVisibility(View.VISIBLE);
             } else {
@@ -238,12 +239,14 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
                             cursor.close();
                             Cursor cursor1 = null;
                             try {
-                                cursor1 = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?",
+                                cursor1 = App_db.rawQuery("select * from " +
+                                                "DUE_ORDERS_EtOrderHeader where Aufnr = ?",
                                         new String[]{ordrId});
                                 if (cursor1 != null && cursor1.getCount() > 0) {
                                     if (cursor1.moveToFirst()) {
                                         do {
-                                            if (cursor1.getString(39).equalsIgnoreCase("CNF"))
+                                            if (cursor1.getString(39)
+                                                    .equalsIgnoreCase("CNF"))
                                                 return false;
                                         } while (cursor1.moveToNext());
                                     }
@@ -292,7 +295,8 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
     private boolean complete(String orderId, String operationId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?" + " order by id desc", new String[]{orderId, operationId});
+            cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No =" +
+                    " ? and Operation_ID = ?" + " order by id desc", new String[]{orderId, operationId});
             if (cursor != null && cursor.getCount() > 0)
                 return true;
             else
@@ -308,13 +312,14 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
     private void pauseFunc() {
         start_tv.setVisibility(View.VISIBLE);
         pause_tv.setVisibility(View.GONE);
-        //view_second.setBackground(getResources().getDrawable(R.drawable.pause_icon1));
         oprtnStatus_tv.setText(getResources().getString(R.string.pause));
         progressBar.setVisibility(View.GONE);
 
         String start_date = "";
         try {
-            Cursor cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?" + " order by id desc", new String[]{oop.getOrdrId(), oop.getOprtnId()});
+            Cursor cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where " +
+                            "Order_No = ? and Operation_ID = ?" + " order by id desc",
+                    new String[]{oop.getOrdrId(), oop.getOprtnId()});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 start_date = cursor.getString(4);
@@ -345,7 +350,8 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
 
             double seconds = diff / 1000;
 
-            String sql = "Insert into ORDER_CONFIRMATION_TIMER (UUID, Order_No, Operation_ID, Timestamp, STATUS, seconds) values(?,?,?,?,?,?);";
+            String sql = "Insert into ORDER_CONFIRMATION_TIMER (UUID, Order_No, Operation_ID, " +
+                    "Timestamp, STATUS, seconds) values(?,?,?,?,?,?);";
             SQLiteStatement statement = App_db.compileStatement(sql);
             App_db.beginTransaction();
             UUID uniqueKey_uuid = UUID.randomUUID();
@@ -362,7 +368,9 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
 
             int total = 0;
             try {
-                Cursor cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?" + " order by id desc", new String[]{oop.getOrdrId(), oop.getOprtnId()});
+                Cursor cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where" +
+                                " Order_No = ? and Operation_ID = ?" + " order by id desc",
+                        new String[]{oop.getOrdrId(), oop.getOprtnId()});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -378,16 +386,11 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
                 }
             } catch (Exception e) {
             }
-
-			    /*double minutes = seconds / 60;
-                double hours = seconds / 3600;
-			    double dayss = seconds / 86400;*/
-
         } catch (Exception e) {
         }
     }
 
-    private void resetDialog(String message){
+    private void resetDialog(String message) {
         final Dialog error_dialog = new Dialog(Orders_Confirm_Activity.this);
         error_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         error_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -395,16 +398,15 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
         error_dialog.setCanceledOnTouchOutside(false);
         error_dialog.setContentView(R.layout.error_dialog);
         ImageView imageview = (ImageView) error_dialog.findViewById(R.id.imageView1);
-        TextView description_textview = (TextView) error_dialog.findViewById(R.id.description_textview);
+        TextView description_textview = error_dialog.findViewById(R.id.description_textview);
         Button ok_button = (Button) error_dialog.findViewById(R.id.ok_button);
         description_textview.setText(message);
-        Glide.with(Orders_Confirm_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
+        Glide.with(Orders_Confirm_Activity.this)
+                .load(R.drawable.error_dialog_gif).into(imageview);
         error_dialog.show();
-        ok_button.setOnClickListener(new View.OnClickListener()
-        {
+        ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 error_dialog.dismiss();
                 pauseFunc();
                 App_db.execSQL("delete from ORDER_CONFIRMATION_TIMER where Order_No = ? and " +

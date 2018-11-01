@@ -29,7 +29,7 @@ public class FormatSelectorDialogFragment extends DialogFragment {
 
     public static FormatSelectorDialogFragment newInstance(FormatSelectorDialogListener listener, ArrayList<Integer> selectedIndices) {
         FormatSelectorDialogFragment fragment = new FormatSelectorDialogFragment();
-        if(selectedIndices == null) {
+        if (selectedIndices == null) {
             selectedIndices = new ArrayList<Integer>();
         }
         fragment.mSelectedIndices = new ArrayList<Integer>(selectedIndices);
@@ -39,7 +39,7 @@ public class FormatSelectorDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if(mSelectedIndices == null || mListener == null) {
+        if (mSelectedIndices == null || mListener == null) {
             dismiss();
             return null;
         }
@@ -47,9 +47,9 @@ public class FormatSelectorDialogFragment extends DialogFragment {
         String[] formats = new String[ZXingScannerView.ALL_FORMATS.size()];
         boolean[] checkedIndices = new boolean[ZXingScannerView.ALL_FORMATS.size()];
         int i = 0;
-        for(BarcodeFormat format : ZXingScannerView.ALL_FORMATS) {
+        for (BarcodeFormat format : ZXingScannerView.ALL_FORMATS) {
             formats[i] = format.toString();
-            if(mSelectedIndices.contains(i)) {
+            if (mSelectedIndices.contains(i)) {
                 checkedIndices[i] = true;
             } else {
                 checkedIndices[i] = false;
@@ -76,7 +76,7 @@ public class FormatSelectorDialogFragment extends DialogFragment {
                                 }
                             }
                         })
-                        // Set the action buttons
+                // Set the action buttons
                 .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {

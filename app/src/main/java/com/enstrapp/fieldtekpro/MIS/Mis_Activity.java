@@ -8,13 +8,14 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-
 import com.enstrapp.fieldtekpro.R;
 
 
 public class Mis_Activity extends AppCompatActivity {
     GridView grid;
-    String[] web = {"Permit Report", "Notification Analysis", "Breakdown Statistics", "Order Analysis"};
+    String[] web = {getString(R.string.mis_permitrep_analysis),
+            getString(R.string.mis_notif_analysis), getString(R.string.mis_break),
+            getString(R.string.order_analysis)};
     int[] imageId = {R.drawable.permit_mis_icon, R.drawable.notif_analysis_mis_icon, R.drawable.breakdown_mis_icon, R.drawable.order_analysis_ico};
     ImageView back_imageview;
 
@@ -31,17 +32,17 @@ public class Mis_Activity extends AppCompatActivity {
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (web[+position].equals("Permit Report")) {
+                if (web[+position].equals(getString(R.string.mis_permitrep_analysis))) {
                     Intent orders_intent = new Intent(Mis_Activity.this, PermitReportMainActivity.class);
                     startActivity(orders_intent);
 
-                } else if (web[+position].equals("Notification Analysis")) {
+                } else if (web[+position].equals(getString(R.string.mis_notif_analysis))) {
                     Intent orders_intent = new Intent(Mis_Activity.this, Notification_Analysis_Activity.class);
                     startActivity(orders_intent);
-                } else if (web[+position].equals("Breakdown Statistics")) {
+                } else if (web[+position].equals(getString(R.string.mis_break))) {
                     Intent mis_intent = new Intent(Mis_Activity.this, BreakStats_Pie.class);
                     startActivity(mis_intent);
-                } else if (web[+position].equals("Order Analysis")) {
+                } else if (web[+position].equals(getString(R.string.order_analysis))) {
                     Intent mis_intent = new Intent(Mis_Activity.this, Order_Analysis_Activity.class);
                     startActivity(mis_intent);
                 }

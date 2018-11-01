@@ -37,7 +37,6 @@ public class Requirements_Fragment extends Fragment {
         noData_tv = rootView.findViewById(R.id.noData_tv);
         operations_ll = rootView.findViewById(R.id.operations_ll);
 
-
         if (ma.requ_al != null) {
             if (ma.requ_al.size() > 0) {
                 requirementAdapter = new RequirementAdapter(getActivity(), ma.requ_al);
@@ -52,7 +51,6 @@ public class Requirements_Fragment extends Fragment {
                 noData_tv.setVisibility(View.VISIBLE);
                 operations_ll.setVisibility(View.GONE);
             }
-
         }
         return rootView;
     }
@@ -116,7 +114,8 @@ public class Requirements_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.workrequir_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.workrequir_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -142,5 +141,4 @@ public class Requirements_Fragment extends Fragment {
             return requirementData_list.size();
         }
     }
-
 }

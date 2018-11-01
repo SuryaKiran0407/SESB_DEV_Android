@@ -20,7 +20,8 @@ public class Get_Isolation_Detail {
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
 
-    public static ArrayList<OrdrPermitPrcbl> GetData(Activity activity, String orderId, String refObj, String Iwerk) {
+    public static ArrayList<OrdrPermitPrcbl> GetData(Activity activity, String orderId, String refObj,
+                                                     String Iwerk) {
 
         DATABASE_NAME = activity.getString(R.string.database_name);
         App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);

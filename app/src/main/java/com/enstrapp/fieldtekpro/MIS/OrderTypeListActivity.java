@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-
 import com.enstrapp.fieldtekpro.R;
 
 import java.util.ArrayList;
@@ -406,7 +405,7 @@ public class OrderTypeListActivity extends AppCompatActivity {
 
         public Mis_Order_Analysis_Data_Adapter(Context context, ArrayList<Mis_EtOrdRep_Object> re_op) {
             mContext = context;
-            this.re_ol=re_op;
+            this.re_ol = re_op;
             inflater = LayoutInflater.from(mContext);
             this.re_f = new ArrayList<Mis_EtOrdRep_Object>();
             this.re_f.addAll(re_op);
@@ -429,7 +428,7 @@ public class OrderTypeListActivity extends AppCompatActivity {
                 equip_no = (TextView) view.findViewById(R.id.equip_no);
                 equpi_desc = (TextView) view.findViewById(R.id.equip_desc);
                 notif_rep_detail = (ImageView) view.findViewById(R.id.notif_rep_detailedview);
-                f_loc=(TextView) view.findViewById(R.id.tplnr);
+                f_loc = (TextView) view.findViewById(R.id.tplnr);
             }
         }
 

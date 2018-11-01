@@ -94,7 +94,7 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
         footer_layout = (LinearLayout) findViewById(R.id.footer_layout);
 
 
-        title_textview.setText("Isolation List");
+        title_textview.setText(getString(R.string.isolation_list));
 
 
         DATABASE_NAME = getString(R.string.database_name);
@@ -134,7 +134,7 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
                 String tagged = permit_list.get(i).getTagged().toLowerCase();
                 String untagged = permit_list.get(i).getUntagged().toLowerCase();
                 if (ordNo.contains(query) || permitNo.contains(query) || permitTxt.contains(query) || authGrp.contains(query)
-                         || tagged.contains(query) || untagged.contains(query)) {
+                        || tagged.contains(query) || untagged.contains(query)) {
                     PermitList_Object nto = new PermitList_Object(permit_list.get(i).getOrder_num(), permit_list.get(i).getPmsog(),
                             permit_list.get(i).getGntxt(), permit_list.get(i).getGenvname(),
                             permit_list.get(i).getCrname(), permit_list.get(i).getObjnr(),
@@ -358,7 +358,7 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
                                         } catch (Exception e) {
                                         }
                                     }
-                                    PermitList_Object nto = new PermitList_Object(cursor.getString(2), cursor.getString(7), cursor.getString(8), cursor.getString(10), cursor.getString(13), cursor.getString(3), date_format, cursor.getString(12), cursor.getString(4), cursor.getString(14), Geniakt_status, permit_number, floc_number, permit_text, auth_grp, permit_type, wcnr, ref_obj,tagged,untagged);
+                                    PermitList_Object nto = new PermitList_Object(cursor.getString(2), cursor.getString(7), cursor.getString(8), cursor.getString(10), cursor.getString(13), cursor.getString(3), date_format, cursor.getString(12), cursor.getString(4), cursor.getString(14), Geniakt_status, permit_number, floc_number, permit_text, auth_grp, permit_type, wcnr, ref_obj, tagged, untagged);
                                     permit_list.add(nto);
                                 } else {
                                 }
@@ -630,7 +630,7 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
                 ImageView imageView1 = (ImageView) submit_decision_dialog.findViewById(R.id.imageView1);
                 Glide.with(IsolationList_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
                 TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
-                description_textview.setText("Do you want to submit for isolation list ?");
+                description_textview.setText(getString(R.string.submit_isolation));
                 Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
                 Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
                 submit_decision_dialog.show();
@@ -795,7 +795,7 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
                     if (selected_orderUUID != null && !selected_orderUUID.equals("")) {
                         new Get_Order_Data().execute();
                     } else {
-                        error_dialog.show_error_dialog(IsolationList_Activity.this, "No data found for Order " + selected_orderID);
+                        error_dialog.show_error_dialog(IsolationList_Activity.this, getString(R.string.no_ordr, selected_orderID));
                     }
                 }
             });
@@ -882,7 +882,8 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(IsolationList_Activity.this, "Submitting Isolation List Data...");
+            customProgressDialog.show_progress_dialog(IsolationList_Activity.this,
+                    getString(R.string.submit_isolistdata));
         }
 
         @Override
@@ -906,7 +907,8 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
                 new Post_Permit_List_Data().execute("");
             } else {
                 customProgressDialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(IsolationList_Activity.this, "Unable to process isolation submission. Please try again");
+                error_dialog.show_error_dialog(IsolationList_Activity.this,
+                        getString(R.string.isola_unable));
             }
         }
     }
@@ -975,7 +977,8 @@ public class IsolationList_Activity extends AppCompatActivity implements View.On
             } else if (response_status.startsWith("E")) {
                 error_dialog.show_error_dialog(IsolationList_Activity.this, response_status.substring(1));
             } else {
-                error_dialog.show_error_dialog(IsolationList_Activity.this, "Unable to process isolation submission. Please try again.");
+                error_dialog.show_error_dialog(IsolationList_Activity.this,
+                        getString(R.string.isola_unable));
             }
             customProgressDialog.dismiss_progress_dialog();
         }

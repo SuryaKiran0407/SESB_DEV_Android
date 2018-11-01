@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
-import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
@@ -168,7 +167,7 @@ public class Orders {
     private static final String KEY_EtImrg_Vlcod = "Vlcod";
     private static final String KEY_EtImrg_Action = "Action";
     private static final String KEY_EtImrg_Equnr = "Equnr";
-   /* EtImrg Table and Fields Names */
+    /* EtImrg Table and Fields Names */
 
     /* DUE_ORDERS_EtOrderHeader and Fields Names */
     private static final String TABLE_DUE_ORDERS_EtOrderHeader = "DUE_ORDERS_EtOrderHeader";
@@ -293,7 +292,7 @@ public class Orders {
     private static final String KEY_GET_EtOrderOlist_Eqktx = "Eqktx";
     private static final String KEY_GET_EtOrderOlist_Maktx = "Maktx";
     private static final String KEY_GET_EtOrderOlist_Action = "Action";
-	/* EtOrderOlist Table and Fields Names */
+    /* EtOrderOlist Table and Fields Names */
 
     /* EtOrderStatus Table and Fields Names */
     private static final String TABLE_EtOrderStatus = "EtOrderStatus";
@@ -312,7 +311,7 @@ public class Orders {
     private static final String KEY_EtOrderStatus_Txt04 = "Txt04";
     private static final String KEY_EtOrderStatus_Txt30 = "Txt30";
     private static final String KEY_EtOrderStatus_Action = "Action";
-	/* EtOrderStatus Table and Fields Names */
+    /* EtOrderStatus Table and Fields Names */
 
     /* GET_DUE_ORDERS_EtDocs Table and Fields Names */
     private static final String TABLE_GET_DUE_ORDERS_EtDocs = "DUE_ORDERS_EtDocs";
@@ -329,7 +328,7 @@ public class Orders {
     private static final String KEY_DUE_ORDERS_EtDocs_DocType = "DocType";
     private static final String KEY_DUE_ORDERS_EtDocs_Objtype = "Objtype";
     private static final String KEY_DUE_ORDERS_EtDocs_Contentx = "Contentx";
-	/* GET_DUE_ORDERS_EtDocs Table and Fields Names */
+    /* GET_DUE_ORDERS_EtDocs Table and Fields Names */
 
     /* EtWcmWwData Table and Fields Names */
     private static final String TABLE_GET_EtWcmWwData = "EtWcmWwData";
@@ -365,7 +364,7 @@ public class Orders {
     private static final String KEY_GET_EtWcmWwData_Action = "Action";
     private static final String KEY_GET_EtWcmWwData_Begru = "Begru";
     private static final String KEY_GET_EtWcmWwData_Begtx = "Begtx";
-	/* EtWcmWwData Table and Fields Names */
+    /* EtWcmWwData Table and Fields Names */
 
     /* EtWcmWaData Table and Fields Names */
     private static final String TABLE_GET_EtWcmWaData = "EtWcmWaData";
@@ -403,7 +402,7 @@ public class Orders {
     private static final String KEY_GET_EtWcmWaData_Begru = "Begru";
     private static final String KEY_GET_EtWcmWaData_Begtx = "Begtx";
     private static final String KEY_GET_EtWcmWaData_Extperiod = "Extperiod";
-	/* EtWcmWaData Table and Fields Names */
+    /* EtWcmWaData Table and Fields Names */
 
     /* EtWcmWaChkReq Table and Fields Names */
     private static final String TABLE_GET_EtWcmWaChkReq = "EtWcmWaChkReq";
@@ -418,7 +417,7 @@ public class Orders {
     private static final String KEY_GET_EtWcmWaChkReq_Needgrp = "Needgrp";
     private static final String KEY_GET_EtWcmWaChkReq_Tplnr = "Tplnr";
     private static final String KEY_GET_EtWcmWaChkReq_Equnr = "Equnr";
-	/* EtWcmWaChkReq Table and Fields Names */
+    /* EtWcmWaChkReq Table and Fields Names */
 
     /* EtWcmWdData Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdData = "EtWcmWdData";
@@ -454,7 +453,7 @@ public class Orders {
     private static final String KEY_GET_EtWcmWdData_Action = "Action";
     private static final String KEY_GET_EtWcmWdData_Begru = "Begru";
     private static final String KEY_GET_EtWcmWdData_Begtx = "Begtx";
-	/* EtWcmWdData Table and Fields Names */
+    /* EtWcmWdData Table and Fields Names */
 
     /* EtWcmWdDataTagtext Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdDataTagtext = "EtWcmWdDataTagtext";
@@ -465,7 +464,7 @@ public class Orders {
     private static final String KEY_EtWcmWdDataTagtext_FormatCol = "FormatCol";
     private static final String KEY_EtWcmWdDataTagtext_TextLine = "TextLine ";
     private static final String KEY_EtWcmWdDataTagtext_Action = "Action";
-	/* EtWcmWdDataTagtext Table and Fields Names */
+    /* EtWcmWdDataTagtext Table and Fields Names */
 
     /* EtWcmWdDataUntagtext Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdDataUntagtext = "EtWcmWdDataUntagtext";
@@ -476,7 +475,7 @@ public class Orders {
     private static final String KEY_EtWcmWdDataUntagtext_FormatCol = "FormatCol";
     private static final String KEY_EtWcmWdDataUntagtext_TextLine = "TextLine ";
     private static final String KEY_EtWcmWdDataUntagtext_Action = "Action";
-	/* EtWcmWdDataUntagtext Table and Fields Names */
+    /* EtWcmWdDataUntagtext Table and Fields Names */
 
     /* EtWcmWdItemData Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdItemData = "EtWcmWdItemData";
@@ -550,7 +549,7 @@ public class Orders {
     private static final String KEY_GET_EtWcmWcagns_Wcmuse = "Wcmuse";
     private static final String KEY_GET_EtWcmWcagns_Gendatum = "Gendatum";
     private static final String KEY_GET_EtWcmWcagns_Gentime = "Gentime";
-	/* EtWcmWcagns Table and Fields Names */
+    /* EtWcmWcagns Table and Fields Names */
 
     /* EtOrderComponents and Fields Names */
     private static final String TABLE_DUE_ORDERS_EtOrderComponents = "EtOrderComponents";
@@ -580,80 +579,77 @@ public class Orders {
     private static final String KEY_DUE_ORDERS_EtOrderComponentsp_Action = "Action";
     private static final String KEY_DUE_ORDERS_EtOrderComponentsp_Wempf = "Wempf";
     private static final String KEY_DUE_ORDERS_EtOrderComponentsp_Ablad = "Ablad";
-	/* EtOrderComponents and Fields Names */
+    /* EtOrderComponents and Fields Names */
 
 
-    public static String Get_DORD_Data(Context context, String transmit_type, String order_number)
-    {
-        try
-        {
+    public static String Get_DORD_Data(Context context, String transmit_type, String order_number) {
+        try {
             DATABASE_NAME = context.getString(R.string.database_name);
             App_db = context.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-            if (transmit_type.equalsIgnoreCase("LOAD"))
-            {
+            if (transmit_type.equalsIgnoreCase("LOAD")) {
                 /* DUE_ORDERS_EtOrderComponents_FIELDS Table and Fields Names */
-                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_DUE_ORDERS_EtOrderComponents_FIELDS);
-                String CREATE_DUE_ORDERS_EtOrderComponents_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS "+ TABLE_DUE_ORDERS_EtOrderComponents_FIELDS+ ""
+                App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents_FIELDS);
+                String CREATE_DUE_ORDERS_EtOrderComponents_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents_FIELDS + ""
                         + "( "
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_id+ " INTEGER PRIMARY KEY,"//0
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_uuid+ " TEXT,"//1
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Aufnr+ " TEXT,"//2
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Zdoctype+ " TEXT,"//3
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_ZdoctypeItem+ " TEXT,"//4
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Tabname+ " TEXT,"//5
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Fieldname+ " TEXT,"//6
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Value+ " TEXT,"//7
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Flabel+ " TEXT,"//8
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Sequence+ " TEXT,"//9
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Length+ " TEXT,"//10
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_Datatype+ " TEXT,"//11
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_OperationID+ " TEXT,"//12
-                        + DUE_ORDERS_EtOrderComponents_FIELDS_PartID+ " TEXT"//13
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_id + " INTEGER PRIMARY KEY,"//0
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_uuid + " TEXT,"//1
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Aufnr + " TEXT,"//2
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Zdoctype + " TEXT,"//3
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_ZdoctypeItem + " TEXT,"//4
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Tabname + " TEXT,"//5
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Fieldname + " TEXT,"//6
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Value + " TEXT,"//7
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Flabel + " TEXT,"//8
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Sequence + " TEXT,"//9
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Length + " TEXT,"//10
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_Datatype + " TEXT,"//11
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_OperationID + " TEXT,"//12
+                        + DUE_ORDERS_EtOrderComponents_FIELDS_PartID + " TEXT"//13
                         + ")";
                 App_db.execSQL(CREATE_DUE_ORDERS_EtOrderComponents_FIELDS_TABLE);
-		        /* DUE_ORDERS_EtOrderComponents_FIELDS Table and Fields Names */
+                /* DUE_ORDERS_EtOrderComponents_FIELDS Table and Fields Names */
 
 
                 /* DUE_ORDERS_EtOrderOperations_FIELDS Table and Fields Names */
-                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_DUE_ORDERS_EtOrderOperations_FIELDS);
-                String CREATE_DUE_ORDERS_EtOrderOperations_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS "+ TABLE_DUE_ORDERS_EtOrderOperations_FIELDS+ ""
+                App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations_FIELDS);
+                String CREATE_DUE_ORDERS_EtOrderOperations_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations_FIELDS + ""
                         + "( "
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_id+ " INTEGER PRIMARY KEY,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_uuid+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Aufnr+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Zdoctype+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_ZdoctypeItem+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Tabname+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Fieldname+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Value+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Flabel+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Sequence+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Length+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Datatype+ " TEXT,"
-                        + DUE_ORDERS_EtOrderOperations_FIELDS_Operationid+ " TEXT"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_id + " INTEGER PRIMARY KEY,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_uuid + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Aufnr + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Zdoctype + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_ZdoctypeItem + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Tabname + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Fieldname + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Value + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Flabel + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Sequence + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Length + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Datatype + " TEXT,"
+                        + DUE_ORDERS_EtOrderOperations_FIELDS_Operationid + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_DUE_ORDERS_EtOrderOperations_FIELDS_TABLE);
-		        /* DUE_ORDERS_EtOrderOperations_FIELDS Table and Fields Names */
+                /* DUE_ORDERS_EtOrderOperations_FIELDS Table and Fields Names */
 
                 /* Creating Header Custom_Info Table with Fields */
-                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_Custom_Info_Fields);
-                String Custom_Info_Fields_TABLE = "CREATE TABLE IF NOT EXISTS "+ TABLE_Custom_Info_Fields+ ""
+                App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_Custom_Info_Fields);
+                String Custom_Info_Fields_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_Custom_Info_Fields + ""
                         + "( "
-                        + KEY_Custom_Info_id+ " INTEGER PRIMARY KEY,"
-                        + KEY_Custom_Info_uuid+ " TEXT,"
-                        + KEY_Custom_Info_Aufnr+ " TEXT,"
-                        + KEY_Custom_Info_Zdoctype+ " TEXT,"
-                        + KEY_Custom_Info_ZdoctypeItem+ " TEXT,"
-                        + KEY_Custom_Info_Tabname+ " TEXT,"
-                        + KEY_Custom_Info_Fieldname+ " TEXT,"
-                        + KEY_Custom_Info_Value+ " TEXT,"
-                        + KEY_Custom_Info_Flabel+ " TEXT,"
-                        + KEY_Custom_Info_Sequence+ " TEXT,"
-                        + KEY_Custom_Info_Length+ " TEXT,"
-                        + KEY_Custom_Info_Datatype+ " TEXT"
+                        + KEY_Custom_Info_id + " INTEGER PRIMARY KEY,"
+                        + KEY_Custom_Info_uuid + " TEXT,"
+                        + KEY_Custom_Info_Aufnr + " TEXT,"
+                        + KEY_Custom_Info_Zdoctype + " TEXT,"
+                        + KEY_Custom_Info_ZdoctypeItem + " TEXT,"
+                        + KEY_Custom_Info_Tabname + " TEXT,"
+                        + KEY_Custom_Info_Fieldname + " TEXT,"
+                        + KEY_Custom_Info_Value + " TEXT,"
+                        + KEY_Custom_Info_Flabel + " TEXT,"
+                        + KEY_Custom_Info_Sequence + " TEXT,"
+                        + KEY_Custom_Info_Length + " TEXT,"
+                        + KEY_Custom_Info_Datatype + " TEXT"
                         + ")";
                 App_db.execSQL(Custom_Info_Fields_TABLE);
-		        /* Creating Header Custom_Info Table with Fields */
+                /* Creating Header Custom_Info Table with Fields */
 
 
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_Orders_Tkconfirm);
@@ -715,7 +711,7 @@ public class Orders {
                         + ")";
                 App_db.execSQL(CREATE_TABLE_EtWcmWdDataUntagtext);
 
-		        /* Orders TKConfirm Attachments */
+                /* Orders TKConfirm Attachments */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_Orders_Attachments);
                 String CREATE_TABLE_Orders_Attachments = "CREATE TABLE IF NOT EXISTS " + TABLE_Orders_Attachments + ""
                         + "( "
@@ -727,7 +723,7 @@ public class Orders {
                         + KEY_Orders_Attachments_jsaid + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_Orders_Attachments);
-		        /* Orders TKConfirm Attachments */
+                /* Orders TKConfirm Attachments */
 
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtImrg);
                 String CREATE_TABLE_EtImrg = "CREATE TABLE IF NOT EXISTS " + TABLE_EtImrg + ""
@@ -826,9 +822,9 @@ public class Orders {
                         + KEY_DUE_ORDERS_EtOrderHeader_Revnr + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_DUE_ORDERS_EtOrderHeader_TABLE);
-		        /* Creating TABLE_DUE_ORDERS_EtOrderHeader Table with Fields */
+                /* Creating TABLE_DUE_ORDERS_EtOrderHeader Table with Fields */
 
-		        /* DUE_ORDERS_EtOrderOperations and Fields Names */
+                /* DUE_ORDERS_EtOrderOperations and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations);
                 String CREATE_DUE_ORDERS_EtOrderOperations_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations + ""
                         + "( "
@@ -865,9 +861,9 @@ public class Orders {
                         + KEY_DUE_ORDERS_EtOrderOperations_Action + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_DUE_ORDERS_EtOrderOperations_TABLE);
-		        /* DUE_ORDERS_EtOrderOperations and Fields Names */
+                /* DUE_ORDERS_EtOrderOperations and Fields Names */
 
-		        /* GET_DUE_ORDERS_Longtext Table and Fields Names */
+                /* GET_DUE_ORDERS_Longtext Table and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_DUE_ORDERS_Longtext);
                 String CREATE_TABLE_GET_DUE_ORDERS_Longtext = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_DUE_ORDERS_Longtext + ""
                         + "( "
@@ -879,9 +875,9 @@ public class Orders {
                         + KEY_DUE_ORDERS_Longtext_Tdid + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_DUE_ORDERS_Longtext);
-		        /* GET_DUE_ORDERS_Longtext Table and Fields Names */
+                /* GET_DUE_ORDERS_Longtext Table and Fields Names */
 
-		        /* Creating EtOrderOlist Table with Fields */
+                /* Creating EtOrderOlist Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtOrderOlist);
                 String CREATE_TABLE_GET_EtOrderOlist = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtOrderOlist + ""
                         + "( "
@@ -902,9 +898,9 @@ public class Orders {
                         + KEY_GET_EtOrderOlist_Action + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_EtOrderOlist);
-		        /* Creating EtOrderOlist Table with Fields */
+                /* Creating EtOrderOlist Table with Fields */
 
-		        /* Creating EtOrderStatus Table with Fields */
+                /* Creating EtOrderStatus Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtOrderStatus);
                 String CREATE_TABLE_EtOrderStatus = "CREATE TABLE IF NOT EXISTS " + TABLE_EtOrderStatus + ""
                         + "( "
@@ -925,9 +921,9 @@ public class Orders {
                         + KEY_EtOrderStatus_Action + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_EtOrderStatus);
-		        /* Creating EtOrderStatus Table with Fields */
+                /* Creating EtOrderStatus Table with Fields */
 
-		        /* Creating DUE_ORDERS_EtDocs Table with Fields */
+                /* Creating DUE_ORDERS_EtDocs Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_DUE_ORDERS_EtDocs);
                 String CREATE_TABLE_GET_DUE_ORDERS_EtDocs = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_DUE_ORDERS_EtDocs + ""
                         + "( "
@@ -946,9 +942,9 @@ public class Orders {
                         + KEY_DUE_ORDERS_EtDocs_Contentx + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_DUE_ORDERS_EtDocs);
-		        /* Creating DUE_ORDERS_EtDocs Table with Fields */
+                /* Creating DUE_ORDERS_EtDocs Table with Fields */
 
-		        /* Creating CREATE_TABLE_GET_EtWcmWwData Table with Fields */
+                /* Creating CREATE_TABLE_GET_EtWcmWwData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWwData);
                 String CREATE_TABLE_GET_EtWcmWwData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWwData + ""
                         + "( "
@@ -986,9 +982,9 @@ public class Orders {
                         + KEY_GET_EtWcmWwData_Begtx + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_EtWcmWwData);
-		        /* Creating CREATE_TABLE_GET_EtWcmWwData Table with Fields */
+                /* Creating CREATE_TABLE_GET_EtWcmWwData Table with Fields */
 
-		        /* Creating EtWcmWaData Table with Fields */
+                /* Creating EtWcmWaData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWaData);
                 String CREATE_TABLE_GET_EtWcmWaDataa = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWaData + ""
                         + "( "
@@ -1028,9 +1024,9 @@ public class Orders {
                         + KEY_GET_EtWcmWaData_Extperiod + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_EtWcmWaDataa);
-		        /* Creating EtWcmWaData Table with Fields */
+                /* Creating EtWcmWaData Table with Fields */
 
-		        /* Creating EtWcmWaChkReq Table with Fields */
+                /* Creating EtWcmWaChkReq Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWaChkReq);
                 String CREATE_TABLE_GET_EtWcmWaChkReq = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWaChkReq + ""
                         + "( "
@@ -1047,9 +1043,9 @@ public class Orders {
                         + KEY_GET_EtWcmWaChkReq_Equnr + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_EtWcmWaChkReq);
-		        /* Creating EtWcmWaChkReq Table with Fields */
+                /* Creating EtWcmWaChkReq Table with Fields */
 
-		        /* Creating EtWcmWdData Table with Fields */
+                /* Creating EtWcmWdData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdData);
                 String CREATE_TABLE_GET_EtWcmWdData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdData + ""
                         + "( "
@@ -1087,9 +1083,9 @@ public class Orders {
                         + KEY_GET_EtWcmWdData_Begtx + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_EtWcmWdData);
-		        /* Creating EtWcmWdData Table with Fields */
+                /* Creating EtWcmWdData Table with Fields */
 
-		        /* Creating EtWcmWdItemData Table with Fields */
+                /* Creating EtWcmWdItemData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdItemData);
                 String CREATE_TABLE_GET_EtWcmWdItemData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdItemData + ""
                         + "( "
@@ -1133,9 +1129,9 @@ public class Orders {
                         + KEY_GET_EtWcmWdItemData_Eug + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_EtWcmWdItemData);
-		        /* Creating EtWcmWdItemData Table with Fields */
+                /* Creating EtWcmWdItemData Table with Fields */
 
-		        /* Creating EtWcmWcagns Table with Fields */
+                /* Creating EtWcmWcagns Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWcagns);
                 String CREATE_TABLE_GET_EtWcmWcagns = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWcagns + ""
                         + "( "
@@ -1169,9 +1165,9 @@ public class Orders {
                         + KEY_GET_EtWcmWcagns_Gentime + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_GET_EtWcmWcagns);
-		        /* Creating EtWcmWcagns Table with Fields */
+                /* Creating EtWcmWcagns Table with Fields */
 
-		        /* Creating EtOrderComponents with Fields */
+                /* Creating EtOrderComponents with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents);
                 String CREATE_DUE_ORDERS_EtOrderComponents_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents + ""
                         + "( "
@@ -1203,7 +1199,7 @@ public class Orders {
                         + KEY_DUE_ORDERS_EtOrderComponentsp_Ablad + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_DUE_ORDERS_EtOrderComponents_TABLE);
-		        /* Creating EtOrderComponents Table with Fields */
+                /* Creating EtOrderComponents Table with Fields */
             } else if (transmit_type.equalsIgnoreCase("Single_Ord")) {
             } else {
                 App_db.execSQL("delete from Orders_TKConfirm");
@@ -1230,19 +1226,19 @@ public class Orders {
             username = FieldTekPro_SharedPref.getString("Username", null);
             password = FieldTekPro_SharedPref.getString("Password", null);
             String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
-		    /* Initializing Shared Preferences */
+            /* Initializing Shared Preferences */
             Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"C2", "DO", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
             String androidId = "" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = context.getString(R.string.ip_address);
             Map<String, String> map = new HashMap<>();
             map.put("IvUser", username.toUpperCase().toString());
@@ -1381,36 +1377,31 @@ public class Orders {
                                             EtOrderHeader_statement.execute();
 
 
-                                            try
-                                            {
+                                            try {
                                                 String Fields = jsonArray.getJSONObject(j).optString("EtOrderHeaderFields");
                                                 JSONObject Fields_jsonObject = new JSONObject(Fields);
                                                 String Fields_jsonObject_results = Fields_jsonObject.optString("results");
                                                 JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                if(EtNotifHeader_Fields_jsonArray.length() > 0)
-                                                {
+                                                if (EtNotifHeader_Fields_jsonArray.length() > 0) {
                                                     String sql1 = "Insert into EtOrderHeader_CustomInfo (UUID,Aufnr,Zdoctype,ZdoctypeItem,Tabname,Fieldname,Value,Flabel,Sequence,Length,Datatype) values(?,?,?,?,?,?,?,?,?,?,?);";
                                                     SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                     statement1.clearBindings();
-                                                    for(int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++)
-                                                    {
-                                                        statement1.bindString(1,uuid);
-                                                        statement1.bindString(2,Aufnr);
-                                                        statement1.bindString(3,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                        statement1.bindString(4,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                        statement1.bindString(5,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                        statement1.bindString(6,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                        statement1.bindString(7,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                        statement1.bindString(8,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                        statement1.bindString(9,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                        statement1.bindString(10,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                        statement1.bindString(11,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
+                                                    for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
+                                                        statement1.bindString(1, uuid);
+                                                        statement1.bindString(2, Aufnr);
+                                                        statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
+                                                        statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
+                                                        statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
+                                                        statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
+                                                        statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
+                                                        statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
+                                                        statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
+                                                        statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
+                                                        statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
                                                         statement1.execute();
                                                     }
                                                 }
-                                            }
-                                            catch (Exception e)
-                                            {
+                                            } catch (Exception e) {
                                             }
 
 
@@ -1475,37 +1466,32 @@ public class Orders {
                                             EtOrderOperations_statement.execute();
 
 
-                                            try
-                                            {
+                                            try {
                                                 String Fields = jsonArray.getJSONObject(j).optString("EtOrderOperationsFields");
                                                 JSONObject Fields_jsonObject = new JSONObject(Fields);
                                                 String Fields_jsonObject_results = Fields_jsonObject.optString("results");
                                                 JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                if(EtNotifHeader_Fields_jsonArray.length() > 0)
-                                                {
+                                                if (EtNotifHeader_Fields_jsonArray.length() > 0) {
                                                     String sql1 = "Insert into DUE_ORDERS_EtOrderOperations_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID) values(?,?,?,?,?,?,?,?,?,?,?,?);";
                                                     SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                     statement1.clearBindings();
-                                                    for(int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++)
-                                                    {
-                                                        statement1.bindString(1,uuid);
-                                                        statement1.bindString(2,Aufnr);
-                                                        statement1.bindString(3,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                        statement1.bindString(4,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                        statement1.bindString(5,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                        statement1.bindString(6,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                        statement1.bindString(7,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                        statement1.bindString(8,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                        statement1.bindString(9,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                        statement1.bindString(10,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                        statement1.bindString(11,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
-                                                        statement1.bindString(12,jsonArray.getJSONObject(j).optString("Vornr"));
+                                                    for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
+                                                        statement1.bindString(1, uuid);
+                                                        statement1.bindString(2, Aufnr);
+                                                        statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
+                                                        statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
+                                                        statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
+                                                        statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
+                                                        statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
+                                                        statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
+                                                        statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
+                                                        statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
+                                                        statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
+                                                        statement1.bindString(12, jsonArray.getJSONObject(j).optString("Vornr"));
                                                         statement1.execute();
                                                     }
                                                 }
-                                            }
-                                            catch (Exception e)
-                                            {
+                                            } catch (Exception e) {
                                             }
 
 
@@ -1729,7 +1715,7 @@ public class Orders {
                         /*Reading and Inserting Data into Database Table for EtWcmWwData*/
 
 
-                         /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
                         if (jsonObject.has("EtWcmWaData")) {
                             try {
                                 String EtWcmWaData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWaData().getResults());
@@ -2074,38 +2060,33 @@ public class Orders {
                                             EtOrderComponents_statement.execute();
 
 
-                                            try
-                                            {
+                                            try {
                                                 String Fields = jsonArray.getJSONObject(j).optString("EtOrderComponentsFields");
                                                 JSONObject Fields_jsonObject = new JSONObject(Fields);
                                                 String Fields_jsonObject_results = Fields_jsonObject.optString("results");
                                                 JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                if(EtNotifHeader_Fields_jsonArray.length() > 0)
-                                                {
+                                                if (EtNotifHeader_Fields_jsonArray.length() > 0) {
                                                     String sql1 = "Insert into DUE_ORDERS_EtOrderComponents_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID, PartID) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                                     SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                     statement1.clearBindings();
-                                                    for(int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++)
-                                                    {
-                                                        statement1.bindString(1,uuid);
-                                                        statement1.bindString(2,Aufnr);
-                                                        statement1.bindString(3,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                        statement1.bindString(4,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                        statement1.bindString(5,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                        statement1.bindString(6,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                        statement1.bindString(7,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                        statement1.bindString(8,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                        statement1.bindString(9,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                        statement1.bindString(10,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                        statement1.bindString(11,EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
-                                                        statement1.bindString(12,jsonArray.getJSONObject(j).optString("Vornr"));
-                                                        statement1.bindString(13,jsonArray.getJSONObject(j).optString("Posnr"));
+                                                    for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
+                                                        statement1.bindString(1, uuid);
+                                                        statement1.bindString(2, Aufnr);
+                                                        statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
+                                                        statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
+                                                        statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
+                                                        statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
+                                                        statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
+                                                        statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
+                                                        statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
+                                                        statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
+                                                        statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
+                                                        statement1.bindString(12, jsonArray.getJSONObject(j).optString("Vornr"));
+                                                        statement1.bindString(13, jsonArray.getJSONObject(j).optString("Posnr"));
                                                         statement1.execute();
                                                     }
                                                 }
-                                            }
-                                            catch (Exception e)
-                                            {
+                                            } catch (Exception e) {
                                             }
 
 

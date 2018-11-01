@@ -70,13 +70,16 @@ public class Objects_Add_Activity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.equipId_iv):
-                Intent equipIdIntent = new Intent(Objects_Add_Activity.this, Equipment_Activity.class);
-                equipIdIntent.putExtra("functionlocation_id", funcLocId_tiet.getText().toString());
+                Intent equipIdIntent = new Intent(Objects_Add_Activity.this,
+                        Equipment_Activity.class);
+                equipIdIntent.putExtra("functionlocation_id",
+                        funcLocId_tiet.getText().toString());
                 startActivityForResult(equipIdIntent, OBJCT_EQUIP);
                 break;
 
             case (R.id.funcLoc_iv):
-                Intent funcLocIntent = new Intent(Objects_Add_Activity.this, FunctionLocation_Activity.class);
+                Intent funcLocIntent = new Intent(Objects_Add_Activity.this,
+                        FunctionLocation_Activity.class);
                 startActivityForResult(funcLocIntent, OBJCT_FUNC);
                 break;
 
@@ -95,7 +98,8 @@ public class Objects_Add_Activity extends AppCompatActivity implements View.OnCl
                     setResult(RESULT_OK, intent);
                     Objects_Add_Activity.this.finish();
                 } else {
-                    errorDialog.show_error_dialog(Objects_Add_Activity.this, getResources().getString(R.string.any_one));
+                    errorDialog.show_error_dialog(Objects_Add_Activity.this,
+                            getResources().getString(R.string.any_one));
                 }
                 break;
 

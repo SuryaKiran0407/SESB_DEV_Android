@@ -17,7 +17,6 @@ import com.enstrapp.fieldtekpro.Initialload.Orders_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Header_Custominfo;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -50,7 +49,9 @@ public class Order_Create_Change {
     private static String DATABASE_NAME = "";
     private static SharedPreferences app_sharedpreferences;
     private static SharedPreferences.Editor app_editor;
-    private static String cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "", Get_Data = "";
+    private static String cookie = "", token = "", password = "", url_link = "", username = "",
+            device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "",
+            Get_Data = "";
     private static Map<String, String> response = new HashMap<String, String>();
     private static Check_Empty checkempty = new Check_Empty();
     private static ArrayList<HashMap<String, String>> orders_uuid_list = new ArrayList<HashMap<String, String>>();
@@ -60,36 +61,55 @@ public class Order_Create_Change {
     private static ArrayList<Model_CustomInfo> operation_custominfo = new ArrayList<>();
     private static ArrayList<Model_CustomInfo> material_custominfo = new ArrayList<>();
 
-    public static String[] Post_Create_Order(Context activity, OrdrHeaderPrcbl ohp, String transmitType, String operation, String orderId, String type, ArrayList<Model_CustomInfo> header_custominfo, ArrayList<HashMap<String, String>> operation_custom_info_arraylist, ArrayList<HashMap<String, String>> material_custom_info_arraylist, String uniqeId) {
+    public static String[] Post_Create_Order(Context activity, OrdrHeaderPrcbl ohp,
+                                             String transmitType, String operation,
+                                             String orderId, String type,
+                                             ArrayList<Model_CustomInfo> header_custominfo,
+                                             ArrayList<HashMap<String, String>>
+                                                     operation_custom_info_arraylist,
+                                             ArrayList<HashMap<String, String>>
+                                                     material_custom_info_arraylist,
+                                             String uniqeId) {
         try {
             Get_Response = "";
             Get_Data = "";
             DATABASE_NAME = activity.getString(R.string.database_name);
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             /* Initializing Shared Preferences */
-            app_sharedpreferences = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            app_sharedpreferences = activity
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             app_editor = app_sharedpreferences.edit();
             username = app_sharedpreferences.getString("Username", null);
             password = app_sharedpreferences.getString("Password", null);
             token = app_sharedpreferences.getString("token", null);
             cookie = app_sharedpreferences.getString("cookie", null);
-            String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+            String webservice_type = app_sharedpreferences.getString("webservice_type",
+                    null);
             /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"W", "U", webservice_type});
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = " +
+                    "? and Zactivity = ? and Endpoint = ?", new String[]{"W", "U", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure.getString(activity.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(120000, TimeUnit.SECONDS)
+                    .writeTimeout(120000, TimeUnit.SECONDS)
+                    .readTimeout(120000, TimeUnit.SECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
 
             /*For Send Data in POST Header*/
@@ -2011,10 +2031,10 @@ public class Order_Create_Change {
                     /*Reading Data by using FOR Loop*/
                 }
             } else {
-                Get_Response = "Unable to Create Order. Please try again.";
+                Get_Response = activity.getString(R.string.crtordr_unable);
             }
         } catch (Exception e) {
-            Get_Response = "Unable to Create Order. Please try again.";
+            Get_Response = activity.getString(R.string.crtordr_unable);
         }
         String[] response = new String[2];
         response[0] = Get_Response;

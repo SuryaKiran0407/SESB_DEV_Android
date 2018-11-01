@@ -9,7 +9,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,25 +29,23 @@ import com.enstrapp.fieldtekpro.equipment.Equipment_Activity;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.functionlocation.FunctionLocation_Activity;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-public class Orders_CR_General_Fragment extends Fragment implements View.OnClickListener
-{
+public class Orders_CR_General_Fragment extends Fragment implements View.OnClickListener {
 
-    TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet, funcLocName_tiet, equipId_tiet,
+    TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet,
+            funcLocName_tiet, equipId_tiet,
             equipName_tiet, wrkCntr_tiet, respCostCntr_tiet, priority_tiet, plannerGroup_tiet,
             personResp_tiet, basicStDt_tiet, basicEnDt_tiet, sysCond_tiet, revision_tiet, wbs_tiet;
-    ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv, wrkCntr_iv, respCstCntr_iv,
-            priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv, basicEdDt_iv, sysCond_iv,
-            wbs_iv, revision_iv, longtext_imageview;
+    ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv,
+            wrkCntr_iv, respCstCntr_iv, priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv,
+            basicEdDt_iv, sysCond_iv, wbs_iv, revision_iv, longtext_imageview;
     TextView notifNum_tv;
     LinearLayout equipId_ll, wbs_ll, revision_ll;
     TextInputLayout equipName_til;
@@ -76,7 +73,6 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     private static final int activity_type = 151;
     Button header_custominfo_button;
     ArrayList<HashMap<String, String>> selected_custom_info_arraylist = new ArrayList<>();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,41 +120,40 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         basicEnDt_tiet = rootView.findViewById(R.id.basicEnDt_tiet);
         sysCond_tiet = rootView.findViewById(R.id.sysCond_tiet);
         notifNum_tv = rootView.findViewById(R.id.notifNum_tv);
-        header_custominfo_button = (Button)rootView.findViewById(R.id.header_custominfo_button);
-        longtext_imageview = (ImageView)rootView.findViewById(R.id.longtext_imageview);
-        activity_type_imageview = (ImageView)rootView.findViewById(R.id.activity_type_imageview);
-        activity_type_edittext = (TextInputEditText)rootView.findViewById(R.id.activity_type_edittext);
-
+        header_custominfo_button = (Button) rootView.findViewById(R.id.header_custominfo_button);
+        longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
+        activity_type_imageview = (ImageView) rootView.findViewById(R.id.activity_type_imageview);
+        activity_type_edittext = (TextInputEditText) rootView.findViewById(R.id.activity_type_edittext);
 
         /*Written by SuryaKiran for Order Create from Notification Change*/
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             ordrTyp_tiet.setText(bundle.getString("Order_type_id"));
             ordrLngTxt_tiet.setText(bundle.getString("short_text"));
             funcLocId_tiet.setText(bundle.getString("functionlocation_id"));
             equipId_tiet.setText(bundle.getString("equipment_id"));
             wrkCntr_tiet.setText(bundle.getString("workcenter"));
             String pri = bundle.getString("priority_id");
-            if (pri != null && !pri.equals(""))
-            {
-                priority_tiet.setText(bundle.getString("priority_id") + " - " + bundle.getString("priority_name"));
+            if (pri != null && !pri.equals("")) {
+                priority_tiet.setText(bundle.getString("priority_id") + " - "
+                        + bundle.getString("priority_name"));
             }
             String plann = bundle.getString("plannergrp_id");
-            if (plann != null && !plann.equals(""))
-            {
-                plannerGroup_tiet.setText(bundle.getString("plannergrp_id") + " - " + bundle.getString("plannergrp_text"));
+            if (plann != null && !plann.equals("")) {
+                plannerGroup_tiet.setText(bundle.getString("plannergrp_id") + " - "
+                        + bundle.getString("plannergrp_text"));
             }
             String persp = bundle.getString("prsnresp_id");
-            if (persp != null && !persp.equals(""))
-            {
-                personResp_tiet.setText(bundle.getString("prsnresp_id") + " - " + bundle.getString("prsnresp_text"));
+            if (persp != null && !persp.equals("")) {
+                personResp_tiet.setText(bundle.getString("prsnresp_id") + " - "
+                        + bundle.getString("prsnresp_text"));
             }
             String floc_id = bundle.getString("functionlocation_id");
             String floc_name = "", costcenter_id = "";
             if (floc_id != null && !floc_id.equals("")) {
                 try {
-                    Cursor cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{floc_id});
+                    Cursor cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                            new String[]{floc_id});
                     if (cursor != null && cursor.getCount() > 0) {
                         if (cursor.moveToFirst()) {
                             do {
@@ -177,7 +172,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
             String equip_name = "";
             if (equip_id != null && !equip_id.equals("")) {
                 try {
-                    Cursor cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?", new String[]{equip_id});
+                    Cursor cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?",
+                            new String[]{equip_id});
                     if (cursor != null && cursor.getCount() > 0) {
                         if (cursor.moveToFirst()) {
                             do {
@@ -195,10 +191,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
             funcLocName_tiet.setText(floc_name);
             equipName_tiet.setText(equip_name);
             respCostCntr_tiet.setText(costcenter_id);
-
         }
-         /*Written by SuryaKiran for Order Create from Notification Change*/
-
+        /*Written by SuryaKiran for Order Create from Notification Change*/
 
         ordrTyp_iv.setOnClickListener(this);
         funcLoc_iv.setOnClickListener(this);
@@ -218,7 +212,6 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         longtext_imageview.setOnClickListener(this);
         activity_type_imageview.setOnClickListener(this);
 
-
         selected_custom_info_arraylist.clear();
 
         Calendar c = Calendar.getInstance();
@@ -229,60 +222,48 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         ma.ohp.setBasicStart(formattedDate);
         ma.ohp.setBasicEnd(formattedDate);
 
-        ordrLngTxt_tiet.addTextChangedListener(new TextWatcher()
-        {
+        ordrLngTxt_tiet.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3)
-            {
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 ma.ohp.setOrdrShrtTxt("");
-                if (ordrLngTxt_tiet.getText().toString() != null && !ordrLngTxt_tiet.getText().toString().equals(""))
-                {
-                    if (ordrLngTxt_tiet.getText().toString().contains("\n"))
-                    {
+                if (ordrLngTxt_tiet.getText().toString() != null &&
+                        !ordrLngTxt_tiet.getText().toString().equals("")) {
+                    if (ordrLngTxt_tiet.getText().toString().contains("\n")) {
                         String[] streets;
                         streets = ordrLngTxt_tiet.getText().toString().split("/n");
                         ma.ohp.setOrdrShrtTxt(streets[0]);
-                    }
-                    else
-                    {
+                    } else {
                         ma.ohp.setOrdrShrtTxt(ordrLngTxt_tiet.getText().toString());
                     }
-                }
-                else
-                {
+                } else {
                     ma.ohp.setOrdrShrtTxt("");
                 }
             }
+
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3)
-            {
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             }
+
             @Override
-            public void afterTextChanged(Editable arg0)
-            {
+            public void afterTextChanged(Editable arg0) {
             }
         });
 
         return rootView;
     }
 
-
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
 
             case (R.id.activity_type_imageview):
-                if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals(""))
-                {
-                    Intent activitytype_intent = new Intent(getActivity(), Activity_Type_Activity.class);
-                    activitytype_intent.putExtra("order_type",ma.ohp.getOrdrTypId());
+                if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals("")) {
+                    Intent activitytype_intent = new Intent(getActivity(),
+                            Activity_Type_Activity.class);
+                    activitytype_intent.putExtra("order_type", ma.ohp.getOrdrTypId());
                     startActivityForResult(activitytype_intent, activity_type);
-                }
-                else
-                {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Order Type");
+                } else {
+                    error_dialog.show_error_dialog(getActivity(), getString(R.string.ordTyp_mandate));
                 }
                 break;
 
@@ -295,14 +276,14 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                 startActivityForResult(longtext_intent, long_text);
                 break;
 
-
             case (R.id.header_custominfo_button):
                 Intent custominfo_intent = new Intent(getActivity(), CustomInfo_Activity.class);
-                custominfo_intent.putExtra("Zdoctype","W");
-                custominfo_intent.putExtra("ZdoctypeItem","WH");
-                custominfo_intent.putExtra("custom_info_arraylist",selected_custom_info_arraylist);
+                custominfo_intent.putExtra("Zdoctype", "W");
+                custominfo_intent.putExtra("ZdoctypeItem", "WH");
+                custominfo_intent.putExtra("custom_info_arraylist",
+                        selected_custom_info_arraylist);
                 custominfo_intent.putExtra("request_id", Integer.toString(custom_info));
-                startActivityForResult(custominfo_intent,custom_info);
+                startActivityForResult(custominfo_intent, custom_info);
                 break;
 
             case (R.id.ordrTyp_iv):
@@ -317,7 +298,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
 
             case (R.id.equipId_iv):
                 Intent equipIdIntent = new Intent(getActivity(), Equipment_Activity.class);
-                equipIdIntent.putExtra("functionlocation_id", funcLocId_tiet.getText().toString());
+                equipIdIntent.putExtra("functionlocation_id",
+                        funcLocId_tiet.getText().toString());
                 startActivityForResult(equipIdIntent, EQUIP_ID);
                 break;
 
@@ -333,7 +315,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     wrkCntrIntent.putExtra("plant_id", ma.ohp.getPlant());
                     startActivityForResult(wrkCntrIntent, WRKCNTR_ID);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -345,7 +328,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     respCstCntrIntent.putExtra("bukrs", ma.ohp.getBukrs());
                     startActivityForResult(respCstCntrIntent, RESP_COST_CNTR);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -361,18 +345,21 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     plnrGrpIntent.putExtra("iwerk", ma.ohp.getIwerk());
                     startActivityForResult(plnrGrpIntent, PLNR_GRP);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
             case (R.id.personResp_iv):
                 if (!equipName_tiet.getText().toString().equals("") ||
                         (!funcLocId_tiet.getText().toString().equals(""))) {
-                    Intent perRespIntent = new Intent(getActivity(), Personresponsible_Activity.class);
+                    Intent perRespIntent = new Intent(getActivity(),
+                            Personresponsible_Activity.class);
                     perRespIntent.putExtra("werks", ma.ohp.getPlant());
                     startActivityForResult(perRespIntent, PER_RESP);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -392,10 +379,12 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
             case (R.id.sysCond_iv):
                 if (!equipName_tiet.getText().toString().equals("") ||
                         (!funcLocId_tiet.getText().toString().equals(""))) {
-                    Intent sysCondIntent = new Intent(getActivity(), SystemCondidtions_Activity.class);
+                    Intent sysCondIntent = new Intent(getActivity(),
+                            SystemCondidtions_Activity.class);
                     startActivityForResult(sysCondIntent, SYS_COND);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -406,7 +395,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     WBSIntent.putExtra("iwerk", ma.ohp.getIwerk());
                     startActivityForResult(WBSIntent, WBS_ELE);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -417,13 +407,12 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     WBSIntent.putExtra("iwerk", ma.ohp.getIwerk());
                     startActivityForResult(WBSIntent, REVISO);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
-
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -607,49 +596,41 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                 break;
 
             case (custom_info):
-                if (resultCode == RESULT_OK)
-                {
-                    selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
+                if (resultCode == RESULT_OK) {
+                    selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data
+                            .getSerializableExtra("selected_custom_info_arraylist");
                 }
                 break;
 
-
             case (long_text):
-                if(resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     ma.ohp.setOrdrLngTxt(data.getStringExtra("longtext_new"));
                     String longtext_text = data.getStringExtra("longtext_new");
-                    if(longtext_text.length() > 40)
-                    {
+                    if (longtext_text.length() > 40) {
                         ordrLngTxt_tiet.setText(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
                         ma.ohp.setOrdrShrtTxt(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
-                    }
-                    else
-                    {
+                    } else {
                         ordrLngTxt_tiet.setText(longtext_text);
                         ma.ohp.setOrdrShrtTxt(longtext_text);
                     }
                 }
 
-
             case (activity_type):
-                if(resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     ma.ohp.setActivitytype_id(data.getStringExtra("activitytype_id"));
                     ma.ohp.setActivitytype_text(data.getStringExtra("activitytype_text"));
-                    activity_type_edittext.setText(data.getStringExtra("activitytype_id")+" - "+data.getStringExtra("activitytype_text"));
+                    activity_type_edittext.setText(data.getStringExtra("activitytype_id")
+                            + " - " + data.getStringExtra("activitytype_text"));
                 }
-
-
                 break;
         }
     }
 
-
     private String funcLocName(String funcLocId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{funcLocId});
+            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                    new String[]{funcLocId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
@@ -668,7 +649,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     private String wrkCntrName(String wrkCntrId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_WKCTR where Arbpl = ?", new String[]{wrkCntrId});
+            cursor = App_db.rawQuery("select * from GET_WKCTR where Arbpl = ?",
+                    new String[]{wrkCntrId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(8);
@@ -687,7 +669,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     private String plnrGrpName(String plnrGrpId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ?", new String[]{plnrGrpId});
+            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ?",
+                    new String[]{plnrGrpId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(3);
@@ -706,7 +689,8 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     private String plantName(String plantId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plantId});
+            cursor = App_db.rawQuery("select * from GET_PLANTS where Werks = ?",
+                    new String[]{plantId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
@@ -722,11 +706,11 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         return "";
     }
 
-
     private String respCostCntrName(String respCostCntrId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_LIST_COST_CENTER where Kostl = ?", new String[]{respCostCntrId});
+            cursor = App_db.rawQuery("select * from GET_LIST_COST_CENTER where Kostl = ?",
+                    new String[]{respCostCntrId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(3);
@@ -742,11 +726,7 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         return "";
     }
 
-
-
-    public ArrayList<HashMap<String, String>> getHeaderCustominfoData()
-    {
+    public ArrayList<HashMap<String, String>> getHeaderCustominfoData() {
         return selected_custom_info_arraylist;
     }
-
 }

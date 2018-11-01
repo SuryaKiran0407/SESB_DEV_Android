@@ -29,9 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class JSA_Hazards_Fragment extends Fragment
-{
-
+public class JSA_Hazards_Fragment extends Fragment {
 
     RecyclerView recyclerView;
     TextView nodata_textview;
@@ -44,30 +42,25 @@ public class JSA_Hazards_Fragment extends Fragment
     JSA_Add_Activity ma;
     Dialog delete_decision_dialog;
 
-
-    public JSA_Hazards_Fragment()
-    {
+    public JSA_Hazards_Fragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.jsa_assessmentteam_fragment, container, false);
 
-        ma = (JSA_Add_Activity)this.getActivity();
+        ma = (JSA_Add_Activity) this.getActivity();
 
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
-        nodata_textview = (TextView)rootView.findViewById(R.id.nodata_textview);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        nodata_textview = (TextView) rootView.findViewById(R.id.nodata_textview);
 
         recyclerView.setVisibility(View.GONE);
         nodata_textview.setVisibility(View.VISIBLE);
-
 
         return rootView;
     }
@@ -80,68 +73,58 @@ public class JSA_Hazards_Fragment extends Fragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         if (!getUserVisibleHint())
             return;
-        JSA_Add_Activity jsa_add_activity = (JSA_Add_Activity)this. getActivity();
+        JSA_Add_Activity jsa_add_activity = (JSA_Add_Activity) this.getActivity();
         jsa_add_activity.add_fab.show();
-        jsa_add_activity.add_fab.setOnClickListener(new View.OnClickListener()
-        {
+        jsa_add_activity.add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if(Selected_status)
-                {
+            public void onClick(View v) {
+                if (Selected_status) {
                     delete_decision_dialog = new Dialog(getActivity());
-                    delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    delete_decision_dialog.getWindow()
+                            .setBackgroundDrawableResource(android.R.color.transparent);
                     delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     delete_decision_dialog.setCancelable(false);
                     delete_decision_dialog.setCanceledOnTouchOutside(false);
                     delete_decision_dialog.setContentView(R.layout.decision_dialog);
-                    ImageView imageView1 = (ImageView)delete_decision_dialog.findViewById(R.id.imageView1);
+                    ImageView imageView1 = delete_decision_dialog.findViewById(R.id.imageView1);
                     Glide.with(getActivity()).load(R.drawable.error_dialog_gif).into(imageView1);
-                    TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
-                    description_textview.setText("Do you want to delete selected Hazard ?");
-                    Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
-                    Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                    TextView description_textview = delete_decision_dialog
+                            .findViewById(R.id.description_textview);
+                    description_textview.setText(getString(R.string.jsa_hzrddel));
+                    Button ok_button = delete_decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel_button = delete_decision_dialog.findViewById(R.id.no_button);
                     delete_decision_dialog.show();
-                    ok_button.setOnClickListener(new View.OnClickListener()
-                    {
+                    ok_button.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             ArrayList selected_assessmentteam_count = new ArrayList();
-                            for (Hazards_List_Object bean : jobsteps_list)
-                            {
-                                if (bean.getSelected())
-                                {
+                            for (Hazards_List_Object bean : jobsteps_list) {
+                                if (bean.getSelected()) {
                                     selected_assessmentteam_count.add(bean.getUuid());
                                 }
                             }
-                            for (int i = jobsteps_list.size() - 1; i >= 0; i--)
-                            {
+                            for (int i = jobsteps_list.size() - 1; i >= 0; i--) {
                                 String delete_item_key = jobsteps_list.get(i).getUuid();
-                                if (selected_assessmentteam_count.contains(delete_item_key))
-                                {
+                                if (selected_assessmentteam_count.contains(delete_item_key)) {
                                     jobsteps_list.remove(i);
                                 }
                             }
-                            if(jobsteps_list.size() > 0)
-                            {
+                            if (jobsteps_list.size() > 0) {
                                 recyclerView.setVisibility(View.VISIBLE);
                                 nodata_textview.setVisibility(View.GONE);
                                 assess_adapter = new Assess_Adapter(getActivity(), jobsteps_list);
                                 recyclerView.setHasFixedSize(true);
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                                RecyclerView.LayoutManager layoutManager =
+                                        new LinearLayoutManager(getActivity());
                                 recyclerView.setLayoutManager(layoutManager);
                                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                                 recyclerView.setAdapter(assess_adapter);
-                            }
-                            else
-                            {
+                            } else {
                                 recyclerView.setVisibility(View.GONE);
                                 nodata_textview.setVisibility(View.VISIBLE);
                             }
@@ -150,52 +133,44 @@ public class JSA_Hazards_Fragment extends Fragment
                             delete_decision_dialog.dismiss();
                         }
                     });
-                    cancel_button.setOnClickListener(new View.OnClickListener()
-                    {
+                    cancel_button.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             delete_decision_dialog.dismiss();
                         }
                     });
-                }
-                else
-                {
-                    JSA_JobSteps_Fragment jobsteps_fragment = (JSA_JobSteps_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,3));
-                    List<JSA_JobSteps_Fragment.JobStep_List_Object> jobsteps_list_objects  = jobsteps_fragment.getJobStepsData();
-                    if (jobsteps_list_objects.size() > 0)
-                    {
+                } else {
+                    JSA_JobSteps_Fragment jobsteps_fragment =
+                            (JSA_JobSteps_Fragment) getFragmentManager()
+                                    .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
+                    List<JSA_JobSteps_Fragment.JobStep_List_Object> jobsteps_list_objects =
+                            jobsteps_fragment.getJobStepsData();
+                    if (jobsteps_list_objects.size() > 0) {
                         Gson gson = new Gson();
-                        Type type = new TypeToken<List<JSA_JobSteps_Fragment.JobStep_List_Object>>() {}.getType();
+                        Type type = new TypeToken<List<JSA_JobSteps_Fragment.JobStep_List_Object>>() {
+                        }.getType();
                         String json = gson.toJson(jobsteps_list_objects, type);
                         Intent intent = new Intent(getActivity(), JSA_Add_Hazards_Activity.class);
-                        intent.putExtra("jobstep_list",json);
-                        startActivityForResult(intent,add_hazard);
-                    }
-                    else
-                    {
-                        error_dialog.show_error_dialog(getActivity(),"Please Add Atleast One Job Step");
+                        intent.putExtra("jobstep_list", json);
+                        startActivityForResult(intent, add_hazard);
+                    } else {
+                        error_dialog.show_error_dialog(getActivity(),
+                                getString(R.string.jsa_jobstpatleast));
                     }
                 }
             }
         });
     }
 
-
-    private static String makeFragmentName(int viewPagerId, int index)
-    {
+    private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !data.equals(""))
-        {
-            if(requestCode == add_hazard)
-            {
+        if (data != null && !data.equals("")) {
+            if (requestCode == add_hazard) {
                 String jobstep_id = data.getStringExtra("jobstep_id");
                 String jobstep_text = data.getStringExtra("jobstep_text");
                 String person_resp = data.getStringExtra("person_resp");
@@ -203,25 +178,24 @@ public class JSA_Hazards_Fragment extends Fragment
                 String hazardcategory_text = data.getStringExtra("hazardcategory_text");
                 String hazard_array = data.getStringExtra("hazard_data");
                 Gson gson = new Gson();
-                Type type = new TypeToken<List<JSA_Hazards_List_Activity.Type_Object>>() {}.getType();
+                Type type = new TypeToken<List<JSA_Hazards_List_Activity.Type_Object>>() {
+                }.getType();
                 List<JSA_Hazards_List_Activity.Type_Object> objectList = gson.fromJson(hazard_array, type);
                 StringBuilder stringBuilder = new StringBuilder();
-                for(int i = 0; i < objectList.size(); i++)
-                {
+                for (int i = 0; i < objectList.size(); i++) {
                     boolean checked_status = objectList.get(i).getSelected_status();
-                    if(checked_status)
-                    {
+                    if (checked_status) {
                         stringBuilder.append(objectList.get(i).getWork_text());
                         stringBuilder.append(", ");
                     }
                 }
                 UUID uniqueKey = UUID.randomUUID();
-                Hazards_List_Object olo = new Hazards_List_Object(jobstep_id, jobstep_text, hazardcategory_id, hazardcategory_text, stringBuilder.toString(), uniqueKey.toString(), hazard_array, false, person_resp);
+                Hazards_List_Object olo = new Hazards_List_Object(jobstep_id, jobstep_text,
+                        hazardcategory_id, hazardcategory_text, stringBuilder.toString(),
+                        uniqueKey.toString(), hazard_array, false, person_resp);
                 jobsteps_list.add(olo);
-                if(jobsteps_list.size() > 0)
-                {
-                    if(selected_hazard >= 0)
-                    {
+                if (jobsteps_list.size() > 0) {
+                    if (selected_hazard >= 0) {
                         jobsteps_list.remove(selected_hazard);
                     }
                     selected_hazard = -1;
@@ -233,9 +207,7 @@ public class JSA_Hazards_Fragment extends Fragment
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(assess_adapter);
-                }
-                else
-                {
+                } else {
                     recyclerView.setVisibility(View.GONE);
                     nodata_textview.setVisibility(View.VISIBLE);
                 }
@@ -243,114 +215,98 @@ public class JSA_Hazards_Fragment extends Fragment
         }
     }
 
-
-    public class Assess_Adapter extends RecyclerView.Adapter<Assess_Adapter.MyViewHolder>
-    {
+    public class Assess_Adapter extends RecyclerView.Adapter<Assess_Adapter.MyViewHolder> {
         private Context mContext;
         private List<Hazards_List_Object> list_data;
-        public class MyViewHolder extends RecyclerView.ViewHolder
-        {
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView job_steps_textview, hazard_categories_textview, hazard_textview;
             public CheckBox checkBox;
             public LinearLayout layout;
-            public MyViewHolder(View view)
-            {
+
+            public MyViewHolder(View view) {
                 super(view);
                 job_steps_textview = (TextView) view.findViewById(R.id.job_steps_textview);
                 hazard_categories_textview = (TextView) view.findViewById(R.id.hazard_categories_textview);
                 hazard_textview = (TextView) view.findViewById(R.id.hazard_textview);
-                checkBox = (CheckBox)view.findViewById(R.id.checkBox);
-                layout = (LinearLayout)view.findViewById(R.id.layout);
+                checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+                layout = (LinearLayout) view.findViewById(R.id.layout);
             }
         }
-        public Assess_Adapter(Context mContext, List<Hazards_List_Object> list)
-        {
+
+        public Assess_Adapter(Context mContext, List<Hazards_List_Object> list) {
             this.mContext = mContext;
             this.list_data = list;
         }
+
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.jsa_hazards_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
+
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position)
-        {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final Hazards_List_Object olo = list_data.get(position);
-            holder.job_steps_textview.setText(olo.getJobstep_id()+" - "+olo.getJobstep_text());
-            holder.hazard_categories_textview.setText(olo.getHazardcategory_id()+" - "+olo.getHazardcategory_text());
+            holder.job_steps_textview.setText(olo.getJobstep_id() + " - " + olo.getJobstep_text());
+            holder.hazard_categories_textview.setText(olo.getHazardcategory_id() + " - "
+                    + olo.getHazardcategory_text());
             holder.hazard_textview.setText(olo.getHazard_data());
-            holder.checkBox.setOnClickListener(new View.OnClickListener()
-            {
+            holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (holder.checkBox.isChecked())
-                    {
+                public void onClick(View v) {
+                    if (holder.checkBox.isChecked()) {
                         list_data.get(position).setSelected(true);
                         Selected_status = true;
                         int count = 0;
-                        for(Hazards_List_Object alo : list_data)
-                        {
-                            if(alo.getSelected())
-                            {
+                        for (Hazards_List_Object alo : list_data) {
+                            if (alo.getSelected()) {
                                 count = count + 1;
                             }
                         }
-                        if (count == 1)
-                        {
+                        if (count == 1) {
                             ma.animateFab(true);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         int count = 0;
                         list_data.get(position).setSelected(false);
-                        for(Hazards_List_Object alo : list_data)
-                        {
-                            if(alo.getSelected())
-                            {
+                        for (Hazards_List_Object alo : list_data) {
+                            if (alo.getSelected()) {
                                 count = count + 1;
                             }
                         }
-                        if (count == 0)
-                        {
+                        if (count == 0) {
                             ma.animateFab(false);
                             Selected_status = false;
                         }
                     }
                 }
             });
-            holder.layout.setOnClickListener(new View.OnClickListener()
-            {
+            holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     selected_hazard = position;
                     Intent intent = new Intent(getActivity(), JSA_Add_Hazards_Activity.class);
-                    intent.putExtra("jobstep_list","");
-                    intent.putExtra("jobstep_id",olo.getJobstep_id());
-                    intent.putExtra("jobstep_text",olo.getJobstep_text());
-                    intent.putExtra("hazardcategory_id",olo.getHazardcategory_id());
-                    intent.putExtra("hazardcategory_text",olo.getHazardcategory_text());
-                    intent.putExtra("hazard_data",olo.getHazard_data());
-                    intent.putExtra("hazard_array",olo.getHazard_array());
-                    intent.putExtra("Person_resp",olo.getPerson_resp());
-                    startActivityForResult(intent,add_hazard);
+                    intent.putExtra("jobstep_list", "");
+                    intent.putExtra("jobstep_id", olo.getJobstep_id());
+                    intent.putExtra("jobstep_text", olo.getJobstep_text());
+                    intent.putExtra("hazardcategory_id", olo.getHazardcategory_id());
+                    intent.putExtra("hazardcategory_text", olo.getHazardcategory_text());
+                    intent.putExtra("hazard_data", olo.getHazard_data());
+                    intent.putExtra("hazard_array", olo.getHazard_array());
+                    intent.putExtra("Person_resp", olo.getPerson_resp());
+                    startActivityForResult(intent, add_hazard);
                 }
             });
         }
+
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return list_data.size();
         }
     }
 
-
-    public class Hazards_List_Object
-    {
+    public class Hazards_List_Object {
         private String jobstep_id;
         private String jobstep_text;
         private String hazardcategory_id;
@@ -380,9 +336,11 @@ public class JSA_Hazards_Fragment extends Fragment
         public String getHazard_data() {
             return hazard_data;
         }
+
         public void setHazard_data(String hazard_data) {
             this.hazard_data = hazard_data;
         }
+
         public String getJobstep_id() {
             return jobstep_id;
         }
@@ -415,7 +373,6 @@ public class JSA_Hazards_Fragment extends Fragment
             this.hazardcategory_text = hazardcategory_text;
         }
 
-
         public String getUuid() {
             return uuid;
         }
@@ -432,8 +389,9 @@ public class JSA_Hazards_Fragment extends Fragment
             isSelected = selected;
         }
 
-        public Hazards_List_Object(String jobstep_id, String jobstep_text, String hazardcategory_id, String hazardcategory_text, String hazard_data, String uuid, String hazard_array, boolean isSelected, String person_resp)
-        {
+        public Hazards_List_Object(String jobstep_id, String jobstep_text, String hazardcategory_id,
+                                   String hazardcategory_text, String hazard_data, String uuid,
+                                   String hazard_array, boolean isSelected, String person_resp) {
             this.jobstep_id = jobstep_id;
             this.jobstep_text = jobstep_text;
             this.hazardcategory_id = hazardcategory_id;
@@ -446,11 +404,7 @@ public class JSA_Hazards_Fragment extends Fragment
         }
     }
 
-
-    public List<Hazards_List_Object> getHazardListData()
-    {
+    public List<Hazards_List_Object> getHazardListData() {
         return jobsteps_list;
     }
-
-
 }

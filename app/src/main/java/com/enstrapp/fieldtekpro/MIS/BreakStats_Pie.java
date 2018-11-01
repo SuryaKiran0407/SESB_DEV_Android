@@ -29,7 +29,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
-
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.equipment_inspection.Mis_Break_Stat_Object;
 import com.enstrapp.fieldtekpro.equipment_inspection.MyMarkerView;
@@ -476,7 +475,7 @@ public class BreakStats_Pie extends Activity {
                                 area_dialog.setContentView(R.layout.permit_plant_dialog);
                                 area_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                 TextView select_wrkcnt = (TextView) area_dialog.findViewById(R.id.select_notif);
-                                select_wrkcnt.setText("Select Area");
+                                select_wrkcnt.setText(getString(R.string.area_slct));
                                 TextView clear_all_textview = (TextView) area_dialog.findViewById(R.id.clear_all_textview);
                                 clear_all_textview.setVisibility(View.GONE);
                                 Button cancel_filter_button = (Button) area_dialog.findViewById(R.id.cancel_filter_button);
@@ -592,7 +591,7 @@ public class BreakStats_Pie extends Activity {
                                 area_dialog.setContentView(R.layout.permit_plant_dialog);
                                 area_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                 TextView select_wrkcnt = (TextView) area_dialog.findViewById(R.id.select_notif);
-                                select_wrkcnt.setText("Select Area");
+                                select_wrkcnt.setText(getString(R.string.area_slct));
                                 TextView clear_all_textview = (TextView) area_dialog.findViewById(R.id.clear_all_textview);
                                 clear_all_textview.setVisibility(View.GONE);
                                 Button cancel_filter_button = (Button) area_dialog.findViewById(R.id.cancel_filter_button);
@@ -692,7 +691,7 @@ public class BreakStats_Pie extends Activity {
                             area_dialog.show();
                         } else if (iwerk.equals("") || iwerk == null) {
                             if (iwerk_t.equals("") || iwerk_t == null) {
-                                show_error_dialog("Please select PLANT");
+                                show_error_dialog(getString(R.string.slct_palnt));
                             } else {
                                 bwt_f.clear();
                                 for (int i = 0; i < bwt.size(); i++) {
@@ -712,7 +711,7 @@ public class BreakStats_Pie extends Activity {
                                 area_dialog.setContentView(R.layout.permit_plant_dialog);
                                 area_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                 TextView select_wrkcnt = (TextView) area_dialog.findViewById(R.id.select_notif);
-                                select_wrkcnt.setText("Select Area");
+                                select_wrkcnt.setText(getString(R.string.area_slct));
                                 TextView clear_all_textview = (TextView) area_dialog.findViewById(R.id.clear_all_textview);
                                 clear_all_textview.setVisibility(View.GONE);
                                 Button cancel_filter_button = (Button) area_dialog.findViewById(R.id.cancel_filter_button);
@@ -922,7 +921,7 @@ public class BreakStats_Pie extends Activity {
                     int pf = Integer.parseInt(fy);
                     pf = pf - 1;
                     fy = String.valueOf(pf);
-                    show_confirmation_dialg("Do you want to see FY" + fy + " Data");
+                    show_confirmation_dialg(getString(R.string.fy_data, fy));
 
                 } else {
                     noInternet();
@@ -959,20 +958,20 @@ public class BreakStats_Pie extends Activity {
                 username = FieldTekPro_SharedPref.getString("Username", null);
                 password = FieldTekPro_SharedPref.getString("Password", null);
                 String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
-            /* Initializing Shared Preferences */
+                /* Initializing Shared Preferences */
                 Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"R1", "RD", webservice_type});
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
                 } else {
                 }
-            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
                 device_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 device_serial_number = Build.SERIAL;
                 String androidId = "" + Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
                 device_uuid = deviceUuid.toString();
-            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
                 String URL = getString(R.string.ip_address);
 
 
@@ -1000,28 +999,28 @@ public class BreakStats_Pie extends Activity {
                 if (response_status_code == 200) {
                     if (response.isSuccessful() && response.body() != null) {
 
-                    /*Reading Response Data and Parsing to Serializable*/
+                        /*Reading Response Data and Parsing to Serializable*/
                         BreakStatsPie_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
+                        /*Reading Response Data and Parsing to Serializable*/
 
-                    /*Converting GSON Response to JSON Data for Parsing*/
+                        /*Converting GSON Response to JSON Data for Parsing*/
                         String response_data = new Gson().toJson(rs.getD().getResults());
-                    /*Converting GSON Response to JSON Data for Parsing*/
+                        /*Converting GSON Response to JSON Data for Parsing*/
 
-                    /*Converting Response JSON Data to JSONArray for Reading*/
+                        /*Converting Response JSON Data to JSONArray for Reading*/
                         JSONArray response_data_jsonArray = new JSONArray(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-
-                    /*Reading Data by using FOR Loop*/
-                        for (int i = 0; i < response_data_jsonArray.length(); i++) {
+                        /*Converting Response JSON Data to JSONArray for Reading*/
 
                         /*Reading Data by using FOR Loop*/
+                        for (int i = 0; i < response_data_jsonArray.length(); i++) {
+
+                            /*Reading Data by using FOR Loop*/
                             JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
 
-                        /*Reading and Inserting Data into Database Table for EsPermitTotal UUID*/
+                            /*Reading and Inserting Data into Database Table for EsPermitTotal UUID*/
                             // App_db.beginTransaction();
 
-                        /*Reading and Inserting Data into Database Table for EsPermitTotal*/
+                            /*Reading and Inserting Data into Database Table for EsPermitTotal*/
                             if (jsonObject.has("EtBkdnMonthTotal")) {
                                 try {
                                     String EtBkdnMonthTotal_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtBkdnMonthTotal().getResults());
@@ -1248,7 +1247,7 @@ public class BreakStats_Pie extends Activity {
                                     bmpt_o.setName(bpmt.get(l).getName());
                                     bmpt_o.setMttrHours(bpmt.get(l).getMttrHours());
                                     //bmpt_o.setTotM2(bpmt.get(l).getMtbrHours());
-                                    iwerk=bpmt.get(l).getIwerk();
+                                    iwerk = bpmt.get(l).getIwerk();
 
 
                                     bmpt_o.setCount(bpmt.get(l).getCount());
@@ -1256,14 +1255,12 @@ public class BreakStats_Pie extends Activity {
                                     bmpt_o.setSpmon(bpmt.get(l).getSpmon());
                                     bpmt_c.add(bmpt_o);
                                     Log.v("break_pie", "" + bpmt.get(l).getSpmon());
-                              /*  }*/
+                                    /*  }*/
                                 }
                             }
-                            for(int k=0;k<bpt.size();k++)
-                            {
-                                if(bpt.get(k).getIwerk().equals(iwerk))
-                                {
-                                    plant_name=bpt.get(k).getName();
+                            for (int k = 0; k < bpt.size(); k++) {
+                                if (bpt.get(k).getIwerk().equals(iwerk)) {
+                                    plant_name = bpt.get(k).getName();
                                 }
                             }
 
@@ -1562,7 +1559,7 @@ public class BreakStats_Pie extends Activity {
                             } else {
                                 plant_head.setText(plant_name + " - " + area);
                             }
-                            heading.setText("MTTR Monthly Trend - FY" + fy);
+                            heading.setText(getString(R.string.monthly_mttrfy, fy));
                             progressdialog.dismiss();
                             mChart.setData(data);
                         } catch (NumberFormatException nfe) {
@@ -1912,7 +1909,7 @@ CombinedChart.DrawOrder.LINE});
                     rightAxis.setDrawLabels(false);
 
                     mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.BAR, */
-/*CombinedChart.DrawOrder.LINE, *//*
+    /*CombinedChart.DrawOrder.LINE, *//*
 CombinedChart.DrawOrder.LINE});
                     mChart.getDescription().setEnabled(false);
                     mChart.setExtraOffsets(2, 2, 2, 2);
@@ -2148,7 +2145,7 @@ CombinedChart.DrawOrder.LINE});
                 mChart.getXAxis().setLabelCount(bpmt_c.size(), false);
                 mChart.notifyDataSetChanged();//Required if changes are made to pie value
                 plant_head.setText(plant_name);
-                heading.setText("MTTR Monthly Trend - FY" + fy);
+                heading.setText(getString(R.string.monthly_mttrfy, fy));
                 progressdialog.dismiss();
                 mChart.setData(data);
                 mChart.invalidate();// for refreshing the chart
@@ -2508,8 +2505,8 @@ CombinedChart.DrawOrder.LINE});
         Button confirm = (Button) aa.findViewById(R.id.ok_button);
         Button cancel = (Button) aa.findViewById(R.id.cancel_button);
         favoritetextview.setText(string);
-        confirm.setText("Yes");
-        cancel.setText("No");
+        confirm.setText(getString(R.string.yes));
+        cancel.setText(getString(R.string.no));
         aa.show();
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

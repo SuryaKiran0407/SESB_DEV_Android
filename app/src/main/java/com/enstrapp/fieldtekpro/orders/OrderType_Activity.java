@@ -33,7 +33,6 @@ public class OrderType_Activity extends AppCompatActivity {
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     public SearchView search;
-
     ArrayList<HashMap<String, String>> ordrTypList = new ArrayList<HashMap<String, String>>();
     OrdrTypAdapter ordrTypAdapter;
 
@@ -65,15 +64,18 @@ public class OrderType_Activity extends AppCompatActivity {
         if (ordrTypList.size() > 0) {
             ordrTypAdapter = new OrdrTypAdapter(OrderType_Activity.this, ordrTypList);
             ordrType_rv.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(OrderType_Activity.this);
+            RecyclerView.LayoutManager layoutManager =
+                    new LinearLayoutManager(OrderType_Activity.this);
             ordrType_rv.setLayoutManager(layoutManager);
             ordrType_rv.setItemAnimator(new DefaultItemAnimator());
             ordrType_rv.setAdapter(ordrTypAdapter);
         }
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -116,7 +118,8 @@ public class OrderType_Activity extends AppCompatActivity {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data,
+                    parent, false);
             return new MyViewHolder(itemView);
         }
 

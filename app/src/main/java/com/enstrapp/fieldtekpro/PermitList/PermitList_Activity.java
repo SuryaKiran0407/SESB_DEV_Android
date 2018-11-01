@@ -8,8 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -94,7 +94,7 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
         submit_button = (Button) findViewById(R.id.submit_button);
         footer_layout = (LinearLayout) findViewById(R.id.footer_layout);
 
-        title_textview.setText("Permit List");
+        title_textview.setText(getString(R.string.permit_list));
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
@@ -114,7 +114,7 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
         /* Initializing Shared Preferences */
         app_sharedpreferences = PermitList_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         app_editor = app_sharedpreferences.edit();
-        username = app_sharedpreferences.getString("Username",null);
+        username = app_sharedpreferences.getString("Username", null);
         /* Initializing Shared Preferences */
 
         new Get_Permit_List_Data().execute();
@@ -123,13 +123,10 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
         cancel_button.setOnClickListener(this);
         submit_button.setOnClickListener(this);
 
-        String auth_PI_status = Authorizations.Get_Authorizations_Data(PermitList_Activity.this,"C","PI");
-        if (auth_PI_status.equalsIgnoreCase("true"))
-        {
+        String auth_PI_status = Authorizations.Get_Authorizations_Data(PermitList_Activity.this, "C", "PI");
+        if (auth_PI_status.equalsIgnoreCase("true")) {
             footer_layout.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             footer_layout.setVisibility(View.GONE);
         }
 
@@ -145,15 +142,15 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
                 String permitNo = permit_list.get(i).getPermit_number().toLowerCase();
                 String permitTxt = permit_list.get(i).getPermit_text().toLowerCase();
                 String authGrp = permit_list.get(i).getAuth_grp().toLowerCase();
-                if (ordNo.contains(query) || permitNo.contains(query)|| permitTxt.contains(query)|| authGrp.contains(query)) {
+                if (ordNo.contains(query) || permitNo.contains(query) || permitTxt.contains(query) || authGrp.contains(query)) {
                     PermitList_Object nto = new PermitList_Object(permit_list.get(i).getOrder_num(), permit_list.get(i).getPmsog(),
-                           permit_list.get(i).getGntxt(), permit_list.get(i).getGenvname(),
-                           permit_list.get(i).getCrname(), permit_list.get(i).getObjnr(),
-                           permit_list.get(i).getDate_time(), permit_list.get(i).getWerk(),
-                           permit_list.get(i).getCounter(), permit_list.get(i).getHilvl(),
-                           permit_list.get(i).isGeniakt_status(), permit_list.get(i).getPermit_number(),
-                           permit_list.get(i).getFloc_number(), permit_list.get(i).getPermit_text(),
-                           permit_list.get(i).getAuth_grp(), permit_list.get(i).getPermit_typ());
+                            permit_list.get(i).getGntxt(), permit_list.get(i).getGenvname(),
+                            permit_list.get(i).getCrname(), permit_list.get(i).getObjnr(),
+                            permit_list.get(i).getDate_time(), permit_list.get(i).getWerk(),
+                            permit_list.get(i).getCounter(), permit_list.get(i).getHilvl(),
+                            permit_list.get(i).isGeniakt_status(), permit_list.get(i).getPermit_number(),
+                            permit_list.get(i).getFloc_number(), permit_list.get(i).getPermit_text(),
+                            permit_list.get(i).getAuth_grp(), permit_list.get(i).getPermit_typ());
                     filteredList.add(nto);
                 }
             }
@@ -318,17 +315,12 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
                                         }
                                     }
                                     String type = cursor.getString(7);
-                                    if(type.equalsIgnoreCase("I_TAG") || type.equalsIgnoreCase("I_TAGGED"))
-                                    {
-                                    }
-                                    else
-                                    {
+                                    if (type.equalsIgnoreCase("I_TAG") || type.equalsIgnoreCase("I_TAGGED")) {
+                                    } else {
                                         PermitList_Object nto = new PermitList_Object(cursor.getString(2), cursor.getString(7), cursor.getString(8), cursor.getString(10), cursor.getString(13), cursor.getString(3), date_format, cursor.getString(12), cursor.getString(4), cursor.getString(14), Geniakt_status, permit_number, floc_number, permit_text, auth_grp, permit_type);
                                         permit_list.add(nto);
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                 }
                             }
                             while (cursor.moveToNext());
@@ -558,7 +550,7 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
                 ImageView imageView1 = (ImageView) submit_decision_dialog.findViewById(R.id.imageView1);
                 Glide.with(PermitList_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
                 TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
-                description_textview.setText("Do you want to submit for permit list ?");
+                description_textview.setText(getString(R.string.permit_submit));
                 Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
                 Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
                 submit_decision_dialog.show();
@@ -707,7 +699,8 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
                     if (selected_orderUUID != null && !selected_orderUUID.equals("")) {
                         new Get_Order_Data().execute();
                     } else {
-                        error_dialog.show_error_dialog(PermitList_Activity.this, "No data found for Order " + selected_orderID);
+                        error_dialog.show_error_dialog(PermitList_Activity.this,
+                                getString(R.string.no_ordr, selected_orderID));
                     }
                 }
             });
@@ -759,7 +752,8 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(PermitList_Activity.this, "Submitting Permit List Data...");
+            custom_progress_dialog.show_progress_dialog(PermitList_Activity.this,
+                    getString(R.string.submit_permitlist));
         }
 
         @Override
@@ -783,7 +777,8 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
                 new Post_Permit_List_Data().execute("");
             } else {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(PermitList_Activity.this, "Unable to process permit submission. Please try again");
+                error_dialog.show_error_dialog(PermitList_Activity.this,
+                        getString(R.string.unable_permitsub));
             }
         }
     }
@@ -855,7 +850,8 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
                 error_dialog.show_error_dialog(PermitList_Activity.this, response_status.substring(1));
             } else {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(PermitList_Activity.this, "Unable to process permit submission. Please try again.");
+                error_dialog.show_error_dialog(PermitList_Activity.this,
+                        getString(R.string.unable_permitsub));
             }
         }
     }
@@ -1060,7 +1056,7 @@ public class PermitList_Activity extends AppCompatActivity implements View.OnCli
         return "";
     }
 
-    private String getPermitName(String PermitType){
+    private String getPermitName(String PermitType) {
         Cursor cursor1 = null;
         try {
             cursor1 = FieldTekPro_db.rawQuery("select * from EtWcmTypes where Iwerk = ? and Objtyp = ?", new String[]{selected_Iwerk, PermitType});

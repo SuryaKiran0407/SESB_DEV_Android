@@ -44,7 +44,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -75,7 +74,8 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.notifications_attachments_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.notifications_attachments_fragment, container,
+                false);
 
         attachments_rv = (RecyclerView) rootView.findViewById(R.id.attachments_rv);
         noData_tv = (TextView) rootView.findViewById(R.id.nofiles_textview);
@@ -90,14 +90,12 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
         return rootView;
     }
 
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed())
             onResume();
     }
-
 
     @Override
     public void onResume() {
@@ -110,15 +108,17 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
             public void onClick(View v) {
                 if (isSelected) {
                     final Dialog delete_decision_dialog = new Dialog(getActivity());
-                    delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    delete_decision_dialog.getWindow()
+                            .setBackgroundDrawableResource(android.R.color.transparent);
                     delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     delete_decision_dialog.setCancelable(false);
                     delete_decision_dialog.setCanceledOnTouchOutside(false);
                     delete_decision_dialog.setContentView(R.layout.decision_dialog);
-                    TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
-                    description_textview.setText("Do you want to delete the selected attachment?");
-                    Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
-                    Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                    TextView description_textview = delete_decision_dialog
+                            .findViewById(R.id.description_textview);
+                    description_textview.setText(getString(R.string.attachment_delete));
+                    Button ok_button = delete_decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel_button = delete_decision_dialog.findViewById(R.id.no_button);
                     delete_decision_dialog.show();
                     ok_button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -151,7 +151,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                     final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
                     dialog.setContentView(R.layout.notifications_attachments_select_dialog);
                     TextView camera_textview = (TextView) dialog.findViewById(R.id.camera_textview);
-                    TextView gallery_textview = (TextView) dialog.findViewById(R.id.gallery_textview);
+                    TextView gallery_textview = dialog.findViewById(R.id.gallery_textview);
                     TextView file_textview = (TextView) dialog.findViewById(R.id.file_textview);
                     dialog.show();
                     camera_textview.setOnClickListener(new View.OnClickListener() {

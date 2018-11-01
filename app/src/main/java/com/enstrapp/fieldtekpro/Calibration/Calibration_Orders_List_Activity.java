@@ -1,7 +1,6 @@
 package com.enstrapp.fieldtekpro.Calibration;
 
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -24,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Initialload.Calibration;
 import com.enstrapp.fieldtekpro.Initialload.Orders;
@@ -31,6 +31,7 @@ import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,8 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Calibration_Orders_List_Activity extends AppCompatActivity
-{
+public class Calibration_Orders_List_Activity extends AppCompatActivity {
     ImageView back_imageview;
     RecyclerView recyclerview;
     TextView no_data_textview, title_textview;
@@ -56,27 +56,24 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
     FloatingActionButton refresh_fab_button;
     SwipeRefreshLayout swiperefreshlayout;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_orders_list_activity);
 
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             equip_id = extras.getString("equipment_id");
             plant = extras.getString("plant_id");
         }
 
-        back_imageview = (ImageView)findViewById(R.id.back_imageview);
-        recyclerview = (RecyclerView)findViewById(R.id.recyclerview);
-        no_data_textview = (TextView)findViewById(R.id.no_data_textview);
-        title_textview = (TextView)findViewById(R.id.title_textview);
-        refresh_fab_button = (FloatingActionButton)findViewById(R.id.refresh_fab_button);
-        swiperefreshlayout = (SwipeRefreshLayout)findViewById(R.id.swiperefreshlayout);
+        back_imageview = (ImageView) findViewById(R.id.back_imageview);
+        recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
+        no_data_textview = (TextView) findViewById(R.id.no_data_textview);
+        title_textview = (TextView) findViewById(R.id.title_textview);
+        refresh_fab_button = (FloatingActionButton) findViewById(R.id.refresh_fab_button);
+        swiperefreshlayout = (SwipeRefreshLayout) findViewById(R.id.swiperefreshlayout);
 
 
         DATABASE_NAME = getString(R.string.database_name);
@@ -86,42 +83,34 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
         new Get_Calib_Orders_Data().execute();
 
 
-        back_imageview.setOnClickListener(new View.OnClickListener()
-        {
+        back_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Calibration_Orders_List_Activity.this.finish();
             }
         });
 
 
-        swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
+        swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh()
-            {
+            public void onRefresh() {
                 Refresh_Data();
             }
         });
 
-        swiperefreshlayout.setColorSchemeResources(R.color.red,R.color.lime,R.color.colorAccent,R.color.red,R.color.blue,R.color.black,R.color.orange);
+        swiperefreshlayout.setColorSchemeResources(R.color.red, R.color.lime, R.color.colorAccent, R.color.red, R.color.blue, R.color.black, R.color.orange);
 
-        refresh_fab_button.setOnClickListener(new View.OnClickListener()
-        {
+        refresh_fab_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Refresh_Data();
             }
         });
 
 
-        refresh_fab_button.setOnClickListener(new View.OnClickListener()
-        {
+        refresh_fab_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Refresh_Data();
             }
         });
@@ -129,12 +118,10 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
     }
 
 
-    public void Refresh_Data()
-    {
+    public void Refresh_Data() {
         cd = new ConnectionDetector(getApplicationContext());
         isInternetPresent = cd.isConnectingToInternet();
-        if (isInternetPresent)
-        {
+        if (isInternetPresent) {
             decision_dialog = new Dialog(Calibration_Orders_List_Activity.this);
             decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -142,96 +129,74 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
             decision_dialog.setCanceledOnTouchOutside(false);
             decision_dialog.setContentView(R.layout.decision_dialog);
             ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
-            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
+            TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
             Glide.with(Calibration_Orders_List_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
-            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-            description_textview.setText("All Relavent Data will be loaded from server. Do you want to continue?");
+            Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+            Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+            description_textview.setText(getString(R.string.refresh_text));
             decision_dialog.show();
-            cancel.setOnClickListener(new View.OnClickListener()
-            {
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     decision_dialog.dismiss();
                     swiperefreshlayout.setRefreshing(false);
                 }
             });
-            confirm.setOnClickListener(new View.OnClickListener()
-            {
+            confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     decision_dialog.dismiss();
                     swiperefreshlayout.setRefreshing(false);
                     new Get_Calibration_Data().execute();
                 }
             });
-        }
-        else
-        {
+        } else {
             network_connection_dialog.show_network_connection_dialog(Calibration_Orders_List_Activity.this);
         }
     }
 
 
-    private class Get_Calib_Orders_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Calib_Orders_Data extends AsyncTask<Void, Integer, Void> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Calibration_Orders_List_Activity.this,getResources().getString(R.string.loading));
+            custom_progress_dialog.show_progress_dialog(Calibration_Orders_List_Activity.this, getResources().getString(R.string.loading));
             ordersList.clear();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 Cursor cursor = FieldTekPro_db.rawQuery("select DISTINCT Aufnr from EtQinspData where Equnr = ?", new String[]{equip_id});
-                if(cursor!=null && cursor.getCount()> 0)
-                {
+                if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
-                    do
-                    {
+                    do {
                         String Aufnr = cursor.getString(0);
 
 
                         String vkatart = "";
-                        try
-                        {
+                        try {
                             Cursor cursor1 = null;
                             cursor1 = FieldTekPro_db.rawQuery("select * from EtQudData Where Aufnr = ?", new String[]{Aufnr});
-                            if (cursor1 != null && cursor1.getCount() > 0)
-                            {
-                                if (cursor1.moveToFirst())
-                                {
-                                    do
-                                    {
+                            if (cursor1 != null && cursor1.getCount() > 0) {
+                                if (cursor1.moveToFirst()) {
+                                    do {
                                         vkatart = cursor1.getString(5);
                                     }
                                     while (cursor1.moveToNext());
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 cursor1.close();
                                 vkatart = "";
                             }
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             vkatart = "";
                         }
 
                         Cursor cursor1 = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{Aufnr});
-                        if (cursor1 != null && cursor1.getCount() > 0)
-                        {
-                            if (cursor1.moveToFirst())
-                            {
-                                do
-                                {
+                        if (cursor1 != null && cursor1.getCount() > 0) {
+                            if (cursor1.moveToFirst()) {
+                                do {
                                     Orders_List_Object olo = new Orders_List_Object(
                                             cursor1.getString(2),
                                             cursor1.getString(33),
@@ -244,40 +209,33 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
                                 }
                                 while (cursor1.moveToNext());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             cursor1.close();
                         }
 
                     }
                     while
-                    (
-                        cursor.moveToNext()
-                    );
-                }
-                else
-                {
+                            (
+                            cursor.moveToNext()
+                            );
+                } else {
                     cursor.close();
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(ordersList.size() > 0)
-            {
-                title_textview.setText(getResources().getString(R.string.calibration)+" ("+ordersList.size()+")");
+            if (ordersList.size() > 0) {
+                title_textview.setText(getResources().getString(R.string.calibration) + " (" + ordersList.size() + ")");
                 ordersAdapter = new OrdersAdapter(Calibration_Orders_List_Activity.this, ordersList);
                 recyclerview.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Calibration_Orders_List_Activity.this);
@@ -286,10 +244,8 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
                 recyclerview.setAdapter(ordersAdapter);
                 no_data_textview.setVisibility(View.GONE);
                 recyclerview.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                title_textview.setText(getResources().getString(R.string.calibration)+" (0)");
+            } else {
+                title_textview.setText(getResources().getString(R.string.calibration) + " (0)");
                 no_data_textview.setVisibility(View.VISIBLE);
                 recyclerview.setVisibility(View.GONE);
             }
@@ -298,19 +254,17 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
     }
 
 
-    private class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHolder>
-    {
+    private class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHolder> {
         private Context mContext;
         private List<Orders_List_Object> orders_list_data;
 
-        public class MyViewHolder extends RecyclerView.ViewHolder
-        {
-            public TextView shortText_tv, basicStart_tv, status_tv, orderId_tv, priority_tv,woco_status_tv;
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            public TextView shortText_tv, basicStart_tv, status_tv, orderId_tv, priority_tv, woco_status_tv;
             FrameLayout orders_fl;
             LinearLayout layout, release_layout, teco_layout, cnf_ll;
             ImageView status_iv, woco_iv;
-            public MyViewHolder(View view)
-            {
+
+            public MyViewHolder(View view) {
                 super(view);
                 shortText_tv = view.findViewById(R.id.description_textview);
                 basicStart_tv = view.findViewById(R.id.date_time_textview);
@@ -323,24 +277,24 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
                 layout = (LinearLayout) view.findViewById(R.id.layout);
                 release_layout = view.findViewById(R.id.release_layout);
                 status_iv = view.findViewById(R.id.status_iv);
-                woco_status_tv = (TextView)view.findViewById(R.id.woco_status_tv);
-                woco_iv = (ImageView)view.findViewById(R.id.woco_iv);
+                woco_status_tv = (TextView) view.findViewById(R.id.woco_status_tv);
+                woco_iv = (ImageView) view.findViewById(R.id.woco_iv);
             }
         }
-        public OrdersAdapter(Context mContext, List<Orders_List_Object> list)
-        {
+
+        public OrdersAdapter(Context mContext, List<Orders_List_Object> list) {
             this.mContext = mContext;
             this.orders_list_data = list;
         }
+
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_listview_const, parent, false);
             return new MyViewHolder(itemView);
         }
+
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position)
-        {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
             final Orders_List_Object olo = orders_list_data.get(position);
             holder.orderId_tv.setText(olo.getOrderId());
             holder.shortText_tv.setText(olo.getOrderShortText());
@@ -349,28 +303,19 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
             holder.priority_tv.setText(olo.getPriorityText());
             holder.woco_status_tv.setText(olo.getVkatart());
 
-            if (holder.priority_tv.getText().toString().contains("Critical"))
-            {
+            if (holder.priority_tv.getText().toString().contains("Critical")) {
                 holder.priority_tv.setVisibility(View.VISIBLE);
                 holder.priority_tv.setBackground(getDrawable(R.drawable.critical_round));
-            }
-            else if (holder.priority_tv.getText().toString().contains("High"))
-            {
+            } else if (holder.priority_tv.getText().toString().contains("High")) {
                 holder.priority_tv.setVisibility(View.VISIBLE);
                 holder.priority_tv.setBackground(getDrawable(R.drawable.high_round));
-            }
-            else if (holder.priority_tv.getText().toString().contains("Medium"))
-            {
+            } else if (holder.priority_tv.getText().toString().contains("Medium")) {
                 holder.priority_tv.setVisibility(View.VISIBLE);
                 holder.priority_tv.setBackground(getDrawable(R.drawable.medium_round));
-            }
-            else if (holder.priority_tv.getText().toString().contains("Low"))
-            {
+            } else if (holder.priority_tv.getText().toString().contains("Low")) {
                 holder.priority_tv.setVisibility(View.VISIBLE);
                 holder.priority_tv.setBackground(getDrawable(R.drawable.low_round));
-            }
-            else
-            {
+            } else {
                 holder.priority_tv.setVisibility(View.GONE);
             }
 
@@ -379,70 +324,51 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
             holder.cnf_ll.setVisibility(View.GONE);
             holder.status_iv.setVisibility(View.GONE);
 
-            if (holder.status_tv.getText().toString().equalsIgnoreCase("CRTD"))
-            {
+            if (holder.status_tv.getText().toString().equalsIgnoreCase("CRTD")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("CANC"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("CANC")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.red_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("REL"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("REL")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.blue_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("ISSU"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("ISSU")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.lightgren_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("DLFL"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("DLFL")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.red_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("CLSD"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("CLSD")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.green_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("CNF"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("CNF")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.orange_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
-            }
-            else
-            {
+            } else {
                 holder.status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             }
 
-            if (holder.woco_status_tv.getText().toString() != null && !holder.woco_status_tv.getText().toString().equals(""))
-            {
+            if (holder.woco_status_tv.getText().toString() != null && !holder.woco_status_tv.getText().toString().equals("")) {
                 holder.woco_iv.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 holder.woco_iv.setVisibility(View.GONE);
             }
 
-            holder.orders_fl.setOnClickListener(new View.OnClickListener()
-            {
+            holder.orders_fl.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     Intent operation_intent = new Intent(Calibration_Orders_List_Activity.this, Calibration_Orders_Operations_List_Activity.class);
-                    operation_intent.putExtra("order_id",holder.orderId_tv.getText().toString());
-                    operation_intent.putExtra("plant_id",olo.getWerks());
-                    operation_intent.putExtra("equip_id",equip_id);
+                    operation_intent.putExtra("order_id", holder.orderId_tv.getText().toString());
+                    operation_intent.putExtra("plant_id", olo.getWerks());
+                    operation_intent.putExtra("equip_id", equip_id);
                     startActivity(operation_intent);
                 }
             });
 
         }
+
         @Override
         public int getItemCount() {
             return orders_list_data.size();
@@ -450,8 +376,7 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
     }
 
 
-    private class Orders_List_Object
-    {
+    private class Orders_List_Object {
         private String orderId;
         private String priorityText;
         private String basicStartDate;
@@ -459,8 +384,8 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
         private String orderStatus;
         private String Werks;
         private String vkatart;
-        public Orders_List_Object(String orderId, String priorityText, String basicStartDate, String orderShortText, String orderStatus, String Werks, String vkatart)
-        {
+
+        public Orders_List_Object(String orderId, String priorityText, String basicStartDate, String orderShortText, String orderStatus, String Werks, String vkatart) {
             this.orderId = orderId;
             this.priorityText = priorityText;
             this.basicStartDate = basicStartDate;
@@ -481,15 +406,19 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
         public String getWerks() {
             return Werks;
         }
+
         public void setWerks(String werks) {
             Werks = werks;
         }
+
         public String getOrderStatus() {
             return orderStatus;
         }
+
         public void setOrderStatus(String orderStatus) {
             this.orderStatus = orderStatus;
         }
+
         public String getOrderId() {
             return orderId;
         }
@@ -525,92 +454,75 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity
     }
 
 
-    private String dateFormat(String date)
-    {
-        if (!date.equals("00000000"))
-        {
+    private String dateFormat(String date) {
+        if (!date.equals("00000000")) {
             DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
             DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
             Date date1;
-            try
-            {
+            try {
                 date1 = inputFormat.parse(date);
                 return outputFormat.format(date1);
-            }
-            catch (ParseException e)
-            {
+            } catch (ParseException e) {
                 return "";
             }
-        }
-        else
-        {
+        } else {
             return "";
         }
     }
 
 
-    public class Get_Calibration_Data extends AsyncTask<Void, Integer, Void>
-    {
+    public class Get_Calibration_Data extends AsyncTask<Void, Integer, Void> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Calibration_Orders_List_Activity.this,getResources().getString(R.string.refreshing_data));
+            custom_progress_dialog.show_progress_dialog(Calibration_Orders_List_Activity.this, getResources().getString(R.string.refreshing_data));
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 Calibration_Status = Calibration.Get_Calibration_Data(Calibration_Orders_List_Activity.this, "REFR");
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             new Get_DORD_Data().execute();
         }
     }
 
 
-    public class Get_DORD_Data extends AsyncTask<Void, Integer, Void>
-    {
+    public class Get_DORD_Data extends AsyncTask<Void, Integer, Void> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
 
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
-                DORD_Status = Orders.Get_DORD_Data(Calibration_Orders_List_Activity.this,"REFR","");
-            }
-            catch (Exception e)
-            {
+        protected Void doInBackground(Void... params) {
+            try {
+                DORD_Status = Orders.Get_DORD_Data(Calibration_Orders_List_Activity.this, "REFR", "");
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Log.v("kiran_DORD_Status",DORD_Status+"...");
+            Log.v("kiran_DORD_Status", DORD_Status + "...");
             custom_progress_dialog.dismiss_progress_dialog();
             new Get_Calib_Orders_Data().execute();
         }

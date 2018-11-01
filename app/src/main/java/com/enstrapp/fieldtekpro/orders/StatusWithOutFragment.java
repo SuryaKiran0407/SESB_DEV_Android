@@ -82,7 +82,8 @@ public class StatusWithOutFragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_with_cb_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.status_with_cb_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -115,5 +116,4 @@ public class StatusWithOutFragment extends Fragment {
             return wthOtsStsList.size();
         }
     }
-
 }

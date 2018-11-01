@@ -6,69 +6,66 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class MeasurementPoint_SER
-{
+public class MeasurementPoint_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
     }
 
 
-    public class Result
-    {
+    public class Result {
         @SerializedName("EquiMPs")
         @Expose
         private EquiMPs EquiMPs;
+
         public MeasurementPoint_SER.EquiMPs getEquiMPs() {
             return EquiMPs;
         }
+
         public void setEquiMPs(MeasurementPoint_SER.EquiMPs equiMPs) {
             EquiMPs = equiMPs;
         }
     }
 
 
-
-    public class EquiMPs
-    {
+    public class EquiMPs {
         @SerializedName("results")
         @Expose
         private List<EquiMPs_Result> results = null;
-        public List<EquiMPs_Result> getResults()
-        {
+
+        public List<EquiMPs_Result> getResults() {
             return results;
         }
-        public void setResults(List<EquiMPs_Result> results)
-        {
+
+        public void setResults(List<EquiMPs_Result> results) {
             this.results = results;
         }
     }
-    public class EquiMPs_Result
-    {
+
+    public class EquiMPs_Result {
         @SerializedName("Tplnr")
         @Expose
         private String tplnr;

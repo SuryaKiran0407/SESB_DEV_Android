@@ -34,11 +34,11 @@ import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
-import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
-import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 
 import org.json.JSONArray;
 
@@ -88,7 +88,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
         }
 
         DATABASE_NAME = Orders_Change_Activity.this.getString(R.string.database_name);
-        App_db = Orders_Change_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        App_db = Orders_Change_Activity.this
+                .openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         fab = findViewById(R.id.fab);
         fab.hide();
@@ -202,13 +203,17 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     else
                         WBS = false;
                     if (ohp.getOrdrShrtTxt() != null && !ohp.getOrdrShrtTxt().equals("")) {
-                        if ((ohp.getEquipNum() != null && !ohp.getEquipNum().equals("")) || (ohp.getFuncLocId() != null && !ohp.getFuncLocId().equals(""))) {
+                        if ((ohp.getEquipNum() != null && !ohp.getEquipNum().equals("")) ||
+                                (ohp.getFuncLocId() != null && !ohp.getFuncLocId().equals(""))) {
                             if (ohp.getPriorityId() != null && !ohp.getPriorityId().equals("")) {
                                 if (ohp.getWrkCntrId() != null && !ohp.getWrkCntrId().equals("")) {
-                                    if (ohp.getPlnrGrpId() != null && !ohp.getPlnrGrpId().equals("")) {
+                                    if (ohp.getPlnrGrpId() != null &&
+                                            !ohp.getPlnrGrpId().equals("")) {
                                         if (WBS) {
-                                            if (ohp.getPosid() != null && !ohp.getPosid().equals("")) {
-                                                if (ohp.getRevnr() != null && !ohp.getRevnr().equals("")) {
+                                            if (ohp.getPosid() != null &&
+                                                    !ohp.getPosid().equals("")) {
+                                                if (ohp.getRevnr() != null &&
+                                                        !ohp.getRevnr().equals("")) {
                                                     if (ohp.getOrdrTypId().equals("PM08")) {
                                                         ohp.setEquipNum("");
                                                         ohp.setEquipName("");
@@ -258,22 +263,28 @@ public class Orders_Change_Activity extends AppCompatActivity {
                                             }
                                         }
                                     } else {
-                                        error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.plndGrp_mandate));
+                                        error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                                                getResources().getString(R.string.plndGrp_mandate));
                                     }
                                 } else {
-                                    error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.wrkCntr_mandate));
+                                    error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                                            getResources().getString(R.string.wrkCntr_mandate));
                                 }
                             } else {
-                                error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.priority_mandate));
+                                error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                                        getResources().getString(R.string.priority_mandate));
                             }
                         } else {
-                            error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.equipFunc_mandate));
+                            error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                                    getResources().getString(R.string.equipFunc_mandate));
                         }
                     } else {
-                        error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.text_mandate));
+                        error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                                getResources().getString(R.string.text_mandate));
                     }
                 } else {
-                    error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.ordTyp_mandate));
+                    error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                            getResources().getString(R.string.ordTyp_mandate));
                 }
             }
         });
@@ -290,7 +301,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
         orderStatus_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent statusIntent = new Intent(Orders_Change_Activity.this, Order_Status_Activity.class);
+                Intent statusIntent = new Intent(Orders_Change_Activity.this,
+                        Order_Status_Activity.class);
                 statusIntent.putExtra("statusObject", ohp.getOrdrStatusPrcbls());
                 statusIntent.putExtra("ordrId", ohp.getOrdrId());
                 statusIntent.putExtra("status", ohp.getOrdrStatus());
@@ -307,16 +319,15 @@ public class Orders_Change_Activity extends AppCompatActivity {
             }
         });
 
-
         /*Authorization For Change Notification */
-        String auth_change_status = Authorizations.Get_Authorizations_Data(Orders_Change_Activity.this, "W", "U");
+        String auth_change_status = Authorizations
+                .Get_Authorizations_Data(Orders_Change_Activity.this, "W", "U");
         if (auth_change_status.equalsIgnoreCase("true")) {
             order_footer.setVisibility(View.VISIBLE);
         } else {
             order_footer.setVisibility(View.GONE);
         }
         /*Authorization For Change Notification */
-
     }
 
     @Override
@@ -336,9 +347,9 @@ public class Orders_Change_Activity extends AppCompatActivity {
         Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
         Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
         Button connect_button = (Button) decision_dialog.findViewById(R.id.connect_button);
-        description_textview.setText("No Internet Connectivity. Do you want to proceed Order Change with offline ?");
-        confirm.setText("Yes");
-        cancel.setText("No");
+        description_textview.setText(getString(R.string.ordchg_offline));
+        confirm.setText(getString(R.string.yes));
+        cancel.setText(getString(R.string.no));
         decision_dialog.show();
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -351,16 +362,19 @@ public class Orders_Change_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 decision_dialog.dismiss();
                 Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+                intent.setClassName("com.android.settings",
+                        "com.android.settings.wifi.WifiSettings");
                 startActivity(intent);
             }
         });
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customProgressDialog.show_progress_dialog(Orders_Change_Activity.this, getResources().getString(R.string.loading));
+                customProgressDialog.show_progress_dialog(Orders_Change_Activity.this,
+                        getResources().getString(R.string.loading));
                 try {
-                    App_db.execSQL("delete from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{ohp.getOrdrId()});
+                    App_db.execSQL("delete from DUE_ORDERS_EtOrderHeader where Aufnr = ?",
+                            new String[]{ohp.getOrdrId()});
                     App_db.execSQL("delete from DUE_ORDERS_Longtext where Aufnr = ?", new String[]{ohp.getOrdrId()});
                     App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations where Aufnr = ?", new String[]{ohp.getOrdrId()});
                     App_db.execSQL("delete from EtOrderComponents where Aufnr = ?", new String[]{ohp.getOrdrId()});
@@ -644,7 +658,6 @@ public class Orders_Change_Activity extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -666,7 +679,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Orders_Change_Activity.this, getResources().getString(R.string.change_order));
+            customProgressDialog.show_progress_dialog(Orders_Change_Activity.this,
+                    getResources().getString(R.string.change_order));
         }
 
         @Override
@@ -682,15 +696,14 @@ public class Orders_Change_Activity extends AppCompatActivity {
             if (Response.equals("success"))
                 new Create_Order().execute("");
             else
-                error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.unable_change));
+                error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                        getResources().getString(R.string.unable_change));
         }
     }
-
 
     private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
-
 
     public class Create_Order extends AsyncTask<String, Integer, Void> {
         String[] Response = new String[2];
@@ -702,10 +715,14 @@ public class Orders_Change_Activity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Orders_Change_Activity.this, getResources().getString(R.string.change_order));
+            customProgressDialog.show_progress_dialog(Orders_Change_Activity.this,
+                    getResources().getString(R.string.change_order));
             /*Fetching Header Custom Info Data*/
-            Orders_CH_General_Fragment header_tab = (Orders_CH_General_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 0));
-            ArrayList<HashMap<String, String>> header_custom_info_arraylist = header_tab.getHeaderCustominfoData();
+            Orders_CH_General_Fragment header_tab =
+                    (Orders_CH_General_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.order_vp, 0));
+            ArrayList<HashMap<String, String>> header_custom_info_arraylist =
+                    header_tab.getHeaderCustominfoData();
             if (header_custom_info_arraylist.size() > 0) {
                 for (int i = 0; i < header_custom_info_arraylist.size(); i++) {
                     Model_CustomInfo mnc = new Model_CustomInfo();
@@ -756,7 +773,11 @@ public class Orders_Change_Activity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... transmit) {
             String transmit_type = transmit[0];
-            Response = new Order_Create_Change().Post_Create_Order(Orders_Change_Activity.this, ohp, transmit_type, "CHORD", ohp.getOrdrId(), "", header_custominfo, operation_custom_info_arraylist, material_custom_info_arraylist, "");
+            Response = new Order_Create_Change()
+                    .Post_Create_Order(Orders_Change_Activity.this, ohp, transmit_type,
+                            "CHORD", ohp.getOrdrId(), "",
+                            header_custominfo, operation_custom_info_arraylist,
+                            material_custom_info_arraylist, "");
             return null;
         }
 
@@ -773,7 +794,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         response.append("\n");
                     response.append(sp[0].substring(2));
                 }
-                successDialog.dismissActivity(Orders_Change_Activity.this, response.toString());
+                successDialog.dismissActivity(Orders_Change_Activity.this
+                        , response.toString());
             } else if (Response[0].startsWith("E")) {
                 StringBuilder response = new StringBuilder();
                 String[] sp = Response[0].split("\n");
@@ -782,21 +804,25 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         response.append("\n");
                     response.append(sp[0].substring(2));
                 }
-                error_dialog.show_error_dialog(Orders_Change_Activity.this, response.toString());
+                error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                        response.toString());
             } else if (Response[0].startsWith("W")) {
                 try {
                     JSONArray wcd_Json = new JSONArray(Response[1]);
                     if (wcd_Json.length() > 0) {
                         for (int i = 0; i < wcd_Json.length(); i++) {
-                            WcdDup_Object wdo = new WcdDup_Object(wcd_Json.getJSONObject(i).getString("Aufnr"),
-                                    wcd_Json.getJSONObject(i).getString("Stxt"),
-                                    wcd_Json.getJSONObject(i).getString("Sysst"),
-                                    wcd_Json.getJSONObject(i).getString("Wcnr"));
+                            WcdDup_Object wdo =
+                                    new WcdDup_Object(wcd_Json.getJSONObject(i)
+                                            .getString("Aufnr"),
+                                            wcd_Json.getJSONObject(i).getString("Stxt"),
+                                            wcd_Json.getJSONObject(i).getString("Sysst"),
+                                            wcd_Json.getJSONObject(i).getString("Wcnr"));
                             wcdDup_al.add(wdo);
                         }
                         if (wcdDup_al.size() > 0) {
                             final Dialog aa = new Dialog(Orders_Change_Activity.this);
-                            aa.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                            aa.getWindow()
+                                    .setBackgroundDrawableResource(android.R.color.transparent);
                             aa.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             aa.setCancelable(false);
                             aa.setCanceledOnTouchOutside(false);
@@ -804,9 +830,9 @@ public class Orders_Change_Activity extends AppCompatActivity {
                             aa.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                             Button yes_button = (Button) aa.findViewById(R.id.yes_button);
                             Button no_button = (Button) aa.findViewById(R.id.no_button);
-                            TextView title_textView = (TextView) aa.findViewById(R.id.title_textview);
+                            TextView title_textView = aa.findViewById(R.id.title_textview);
                             TextView text_msg = (TextView) aa.findViewById(R.id.text_msg);
-                            RecyclerView list_recycleview = (RecyclerView) aa.findViewById(R.id.recyclerview);
+                            RecyclerView list_recycleview = aa.findViewById(R.id.recyclerview);
                             title_textView.setText(getString(R.string.open_iso));
                             text_msg.setText("Do you want to continue?");
                             yes_button.setOnClickListener(new View.OnClickListener() {
@@ -823,9 +849,12 @@ public class Orders_Change_Activity extends AppCompatActivity {
                                 }
                             });
                             if (wcdDup_al.size() > 0) {
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Orders_Change_Activity.this);
+                                RecyclerView.LayoutManager layoutManager =
+                                        new LinearLayoutManager(Orders_Change_Activity.this);
                                 list_recycleview.setLayoutManager(layoutManager);
-                                WcdDupAdapter adapter = new WcdDupAdapter(Orders_Change_Activity.this, wcdDup_al);
+                                WcdDupAdapter adapter =
+                                        new WcdDupAdapter(Orders_Change_Activity.this,
+                                                wcdDup_al);
                                 list_recycleview.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                                 list_recycleview.setVisibility(View.VISIBLE);
@@ -833,7 +862,6 @@ public class Orders_Change_Activity extends AppCompatActivity {
                                 list_recycleview.setVisibility(GONE);
                             }
                             aa.show();
-
                         }
                     }
                 } catch (Exception e) {
@@ -841,7 +869,6 @@ public class Orders_Change_Activity extends AppCompatActivity {
                 }
             } else
                 error_dialog.show_error_dialog(Orders_Change_Activity.this, Response[0]);
-
         }
     }
 
@@ -868,7 +895,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.wcd_dup_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.wcd_dup_list,
+                    parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -887,15 +915,15 @@ public class Orders_Change_Activity extends AppCompatActivity {
         }
     }
 
-
     private void confirmationDialog(String message) {
-        final Dialog cancel_dialog = new Dialog(Orders_Change_Activity.this, R.style.PauseDialog);
+        final Dialog cancel_dialog =
+                new Dialog(Orders_Change_Activity.this, R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.network_error_dialog);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.ok_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.cancel_button);
@@ -917,7 +945,9 @@ public class Orders_Change_Activity extends AppCompatActivity {
 
     protected void animateFab(final boolean selected) {
         fab.clearAnimation();
-        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
         shrink.setDuration(150);     // animation duration in milliseconds
         shrink.setInterpolator(new DecelerateInterpolator());
         shrink.setAnimationListener(new Animation.AnimationListener() {
@@ -938,7 +968,9 @@ public class Orders_Change_Activity extends AppCompatActivity {
                 }
 
                 // Scale up animation
-                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f,
+                        1f, Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
                 expand.setDuration(100);     // animation duration in milliseconds
                 expand.setInterpolator(new AccelerateInterpolator());
                 fab.startAnimation(expand);
@@ -952,26 +984,6 @@ public class Orders_Change_Activity extends AppCompatActivity {
         fab.startAnimation(shrink);
     }
 
-    /*Update the color and drawable resources to match your project. Add a tab selection listener in your onCreate method and call the animate function when a tab is selected.
-
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(TabLayout.Tab tab) {
-            mViewPager.setCurrentItem(tab.getPosition());
-            animateFab(tab.getPosition());
-        }
-
-        @Override
-        public void onTabUnselected(TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabReselected(TabLayout.Tab tab) {
-
-        }
-    });*/
-
     public void setCustomFont(TabLayout tabLayout) {
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
@@ -981,7 +993,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
             for (int i = 0; i < tabChildsCount; i++) {
                 View tabViewChild = vgTab.getChildAt(i);
                 if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/metropolis_medium.ttf"));
+                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(),
+                            "fonts/metropolis_medium.ttf"));
                 }
             }
         }
@@ -1005,23 +1018,24 @@ public class Orders_Change_Activity extends AppCompatActivity {
         }
     }
 
-
     public void updateTabDataCount() {
-        Orders_CH_Operation_Fragment operation_fragment = (Orders_CH_Operation_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
+        Orders_CH_Operation_Fragment operation_fragment =
+                (Orders_CH_Operation_Fragment) getSupportFragmentManager()
+                        .findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
         if (operation_fragment.OperationsSize() > 0) {
             order_tl.getTabAt(1).setText(getString(R.string.operation_p, operation_fragment.OperationsSize()));
         } else {
             order_tl.getTabAt(1).setText(getResources().getString(R.string.operations));
         }
 
-
-        Orders_CH_Material_Fragment material_fragment = (Orders_CH_Material_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        Orders_CH_Material_Fragment material_fragment =
+                (Orders_CH_Material_Fragment) getSupportFragmentManager()
+                        .findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
         if (material_fragment.MaterialSize() > 0) {
             order_tl.getTabAt(2).setText(getString(R.string.material_p, material_fragment.MaterialSize()));
         } else {
             order_tl.getTabAt(2).setText(getResources().getString(R.string.material));
         }
-
 
         setCustomFont(order_tl);
     }

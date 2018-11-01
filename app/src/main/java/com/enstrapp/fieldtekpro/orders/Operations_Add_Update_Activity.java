@@ -9,11 +9,9 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
@@ -27,11 +25,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Operations_Add_Update_Activity extends AppCompatActivity implements View.OnClickListener
-{
+public class Operations_Add_Update_Activity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolBar;
-    TextInputEditText start_date_edittext, end_date_edittext, oprtnShrtTxt_tiet, duration_tiet, durationUnit_tiet, plant_tiet, wrkCntr_tiet;
+    TextInputEditText start_date_edittext, end_date_edittext, oprtnShrtTxt_tiet, duration_tiet,
+            durationUnit_tiet, plant_tiet, wrkCntr_tiet;
     ImageView duration_iv, wrkCntr_iv, longtext_imageview;
     OrdrOprtnPrcbl oop = new OrdrOprtnPrcbl();
     String plant_id = "", longtext_text = "", order_id = "";
@@ -46,10 +44,8 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
     /*Written By SuryaKiran for Custom Info*/
     TextInputLayout start_date_layout, end_date_layout;
     private static final int long_text = 150;
-
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +62,19 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         toolBar = findViewById(R.id.toolBar);
         submit_bt = findViewById(R.id.submit_bt);
         cancel_bt = findViewById(R.id.cancel_bt);
-        start_date_layout = (TextInputLayout)findViewById(R.id.start_date_layout);
-        end_date_layout = (TextInputLayout)findViewById(R.id.end_date_layout);
-        start_date_edittext = (TextInputEditText)findViewById(R.id.start_date_edittext);
-        end_date_edittext = (TextInputEditText)findViewById(R.id.end_date_edittext);
-        longtext_imageview = (ImageView)findViewById(R.id.longtext_imageview);
+        start_date_layout = (TextInputLayout) findViewById(R.id.start_date_layout);
+        end_date_layout = (TextInputLayout) findViewById(R.id.end_date_layout);
+        start_date_edittext = (TextInputEditText) findViewById(R.id.start_date_edittext);
+        end_date_edittext = (TextInputEditText) findViewById(R.id.end_date_edittext);
+        longtext_imageview = (ImageView) findViewById(R.id.longtext_imageview);
 
 
         DATABASE_NAME = getString(R.string.database_name);
-        FieldTekPro_db = Operations_Add_Update_Activity.this.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        FieldTekPro_db = Operations_Add_Update_Activity.this.openOrCreateDatabase(DATABASE_NAME,
+                Context.MODE_PRIVATE, null);
 
         /*Written By SuryaKiran for Custom Info*/
-        operations_custominfo_button = (Button)findViewById(R.id.operations_custominfo_button);
+        operations_custominfo_button = (Button) findViewById(R.id.operations_custominfo_button);
         /*Written By SuryaKiran for Custom Info*/
 
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
@@ -88,19 +85,16 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-
         /*Written By SuryaKiran for Custom Info*/
         selected_operation_custom_info_arraylist.clear();
         /*Written By SuryaKiran for Custom Info*/
 
         bundle = getIntent().getExtras();
 
-        if (bundle != null)
-        {
+        if (bundle != null) {
             plant_id = "";
             order_id = bundle.getString("order_id");
-            if (bundle.getString("type_oprtn").equalsIgnoreCase("C"))
-            {
+            if (bundle.getString("type_oprtn").equalsIgnoreCase("C")) {
                 plant_tiet.setText(bundle.getString("ordrPlant"));
                 wrkCntr_tiet.setText(bundle.getString("ordrWrkCntr"));
                 plant_id = bundle.getString("ordrPlant");
@@ -108,12 +102,9 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 oop.setPlantTxt(bundle.getString("ordrPlantName"));
                 oop.setWrkCntrId(bundle.getString("ordrWrkCntr"));
                 oop.setWrkCntrTxt(bundle.getString("ordrWrkCntrName"));
-            }
-            else
-            {
+            } else {
                 oop = bundle.getParcelable("cnfoprtn");
-                if (oop.getOprtnLngTxt() != null && !oop.getOprtnLngTxt().equals(""))
-                {
+                if (oop.getOprtnLngTxt() != null && !oop.getOprtnLngTxt().equals("")) {
                     //longtext_text = oop.getOprtnLngTxt();
                 }
                 oprtnShrtTxt_tiet.setText(oop.getOprtnShrtTxt());
@@ -122,94 +113,65 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 durationUnit_tiet.setText(oop.getDurationUnit());
                 submit_bt.setText(getResources().getString(R.string.update));
 
-
-
                 String plant_text = "";
-                try
-                {
+                try {
                     String plant_id = oop.getPlantId();
-                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
-                    if (cursor1 != null && cursor1.getCount() > 0)
-                    {
-                        if (cursor1.moveToFirst())
-                        {
-                            do
-                            {
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where " +
+                            "Werks = ?", new String[]{plant_id});
+                    if (cursor1 != null && cursor1.getCount() > 0) {
+                        if (cursor1.moveToFirst()) {
+                            do {
                                 plant_text = cursor1.getString(2);
                             }
                             while (cursor1.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor1.close();
                     }
+                } catch (Exception e) {
                 }
-                catch (Exception e)
-                {
-                }
-                plant_tiet.setText(oop.getPlantId()+" - "+plant_text);
-
-
+                plant_tiet.setText(oop.getPlantId() + " - " + plant_text);
 
                 String loc_text = "";
-                try
-                {
+                try {
                     String loc_id = oop.getWrkCntrId();
-                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_WKCTR where Arbpl = ?", new String[]{loc_id});
-                    if (cursor1 != null && cursor1.getCount() > 0)
-                    {
-                        if (cursor1.moveToFirst())
-                        {
-                            do
-                            {
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_WKCTR where" +
+                            " Arbpl = ?", new String[]{loc_id});
+                    if (cursor1 != null && cursor1.getCount() > 0) {
+                        if (cursor1.moveToFirst()) {
+                            do {
                                 loc_text = cursor1.getString(8);
                             }
                             while (cursor1.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor1.close();
                     }
+                } catch (Exception e) {
                 }
-                catch (Exception e)
-                {
-                }
-                wrkCntr_tiet.setText(oop.getWrkCntrId()+" - "+loc_text);
-
+                wrkCntr_tiet.setText(oop.getWrkCntrId() + " - " + loc_text);
 
                 String action = oop.getStatus();
-                if(action.equalsIgnoreCase("I"))
-                {
-                }
-                else
-                {
+                if (action.equalsIgnoreCase("I")) {
+                } else {
                     String StartDate_format = "", starttime_format = "";
                     String startdate = oop.getFsavd();
-                    if (startdate.equals("00000000"))
-                    {
+                    if (startdate.equals("00000000")) {
                         start_date_layout.setVisibility(View.GONE);
                         start_date_edittext.setText("");
-                    }
-                    else
-                    {
+                    } else {
                         DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
                         DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
                         Date date1;
-                        try
-                        {
+                        try {
                             date1 = inputFormat.parse(startdate);
                             String outputDateStr = outputFormat.format(date1);
                             StartDate_format = outputDateStr;
 
                             String starttime = oop.getUsr02();
-                            if (starttime.equals("000000"))
-                            {
+                            if (starttime.equals("000000")) {
                                 starttime_format = "";
-                            }
-                            else
-                            {
+                            } else {
                                 String inputPattern1 = "HHmmss";
                                 String outputPattern1 = "HH:mm:ss";
                                 SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
@@ -217,42 +179,32 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                                 Date date2 = inputFormat1.parse(starttime);
                                 starttime_format = outputFormat1.format(date2);
                             }
-                        }
-                        catch (ParseException e)
-                        {
+                        } catch (ParseException e) {
                             StartDate_format = "";
                             starttime_format = "";
                         }
-                        start_date_edittext.setText(StartDate_format+"   "+starttime_format);
+                        start_date_edittext.setText(StartDate_format + "   " + starttime_format);
                         start_date_layout.setVisibility(View.VISIBLE);
                     }
 
-
                     String EndDate_format = "", endtime_format = "";
                     String enddate = oop.getSsedd();
-                    if (enddate.equals("00000000"))
-                    {
+                    if (enddate.equals("00000000")) {
                         end_date_layout.setVisibility(View.GONE);
                         end_date_edittext.setText("");
-                    }
-                    else
-                    {
+                    } else {
                         DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
                         DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
                         Date date1;
-                        try
-                        {
+                        try {
                             date1 = inputFormat.parse(enddate);
                             String outputDateStr = outputFormat.format(date1);
                             EndDate_format = outputDateStr;
 
                             String endtime = oop.getUsr03();
-                            if (endtime.equals("000000"))
-                            {
+                            if (endtime.equals("000000")) {
                                 endtime_format = "";
-                            }
-                            else
-                            {
+                            } else {
                                 String inputPattern1 = "HHmmss";
                                 String outputPattern1 = "HH:mm:ss";
                                 SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
@@ -260,23 +212,20 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                                 Date date2 = inputFormat1.parse(endtime);
                                 endtime_format = outputFormat1.format(date2);
                             }
-                        }
-                        catch (ParseException e)
-                        {
+                        } catch (ParseException e) {
                             EndDate_format = "";
                             endtime_format = "";
                         }
-                        end_date_edittext.setText(EndDate_format+"   "+endtime_format);
+                        end_date_edittext.setText(EndDate_format + "   " + endtime_format);
                         end_date_layout.setVisibility(View.VISIBLE);
                     }
-
                 }
 
-
                 /*Written By SuryaKiran for Custom Info*/
-                selected_operation_custom_info_arraylist = (ArrayList<HashMap<String, String>>)getIntent().getSerializableExtra("selected_operation_custom_info_arraylist");
+                selected_operation_custom_info_arraylist =
+                        (ArrayList<HashMap<String, String>>) getIntent()
+                                .getSerializableExtra("selected_operation_custom_info_arraylist");
                 /*Written By SuryaKiran for Custom Info*/
-
             }
         }
 
@@ -285,7 +234,6 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         submit_bt.setOnClickListener(this);
         cancel_bt.setOnClickListener(this);
         longtext_imageview.setOnClickListener(this);
-
 
         /*Written By SuryaKiran for Custom Info*/
         operations_custominfo_button.setOnClickListener(this);
@@ -308,7 +256,8 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
 
             /*Written By SuryaKiran for Operation Long Text OnCLick*/
             case (R.id.longtext_imageview):
-                Intent longtext_intent = new Intent(Operations_Add_Update_Activity.this, Order_LongText_Activity.class);
+                Intent longtext_intent = new Intent(Operations_Add_Update_Activity.this,
+                        Order_LongText_Activity.class);
                 longtext_intent.putExtra("aufnr", order_id);
                 longtext_intent.putExtra("operation_id", oop.getOprtnId());
                 longtext_intent.putExtra("tdid", "");
@@ -317,26 +266,30 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 break;
             /*Written By SuryaKiran for Operation Long Text OnCLick*/
 
-
             /*Written By SuryaKiran for Custom Info OnCLick*/
             case (R.id.operations_custominfo_button):
-                Intent custominfo_intent = new Intent(Operations_Add_Update_Activity.this, CustomInfo_Activity.class);
-                custominfo_intent.putExtra("Zdoctype","W");
-                custominfo_intent.putExtra("ZdoctypeItem","WO");
-                custominfo_intent.putExtra("custom_info_arraylist",selected_operation_custom_info_arraylist);
-                custominfo_intent.putExtra("request_id", Integer.toString(OPERATION_CUSTOMINFO));
-                startActivityForResult(custominfo_intent,OPERATION_CUSTOMINFO);
+                Intent custominfo_intent = new Intent(Operations_Add_Update_Activity.this,
+                        CustomInfo_Activity.class);
+                custominfo_intent.putExtra("Zdoctype", "W");
+                custominfo_intent.putExtra("ZdoctypeItem", "WO");
+                custominfo_intent.putExtra("custom_info_arraylist",
+                        selected_operation_custom_info_arraylist);
+                custominfo_intent.putExtra("request_id",
+                        Integer.toString(OPERATION_CUSTOMINFO));
+                startActivityForResult(custominfo_intent, OPERATION_CUSTOMINFO);
                 break;
             /*Written By SuryaKiran for Custom Info OnCLick*/
 
 
             case (R.id.duration_iv):
-                Intent durationIntent = new Intent(Operations_Add_Update_Activity.this, Duration_Activity.class);
+                Intent durationIntent = new Intent(Operations_Add_Update_Activity.this,
+                        Duration_Activity.class);
                 startActivityForResult(durationIntent, DURATION);
                 break;
 
             case (R.id.wrkCntr_iv):
-                Intent wrkCntrIntent = new Intent(Operations_Add_Update_Activity.this, WrkCntrPlant_Activity.class);
+                Intent wrkCntrIntent = new Intent(Operations_Add_Update_Activity.this,
+                        WrkCntrPlant_Activity.class);
                 wrkCntrIntent.putExtra("werks", plant_id);
                 startActivityForResult(wrkCntrIntent, PLANT_WRKCNTR);
                 break;
@@ -354,11 +307,13 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                         oop.setStatus("I");
                         Intent intent = new Intent();
                         intent.putExtra("oop", oop);
-                        intent.putExtra("selected_operation_custom_info_arraylist", selected_operation_custom_info_arraylist);
+                        intent.putExtra("selected_operation_custom_info_arraylist",
+                                selected_operation_custom_info_arraylist);
                         setResult(RESULT_OK, intent);
                         Operations_Add_Update_Activity.this.finish();
                     } else {
-                        errorDialog.show_error_dialog(Operations_Add_Update_Activity.this, getResources().getString(R.string.oprtnTxt_mandate));
+                        errorDialog.show_error_dialog(Operations_Add_Update_Activity.this,
+                                getResources().getString(R.string.oprtnTxt_mandate));
                     }
                 } else {
                     if (!oprtnShrtTxt_tiet.getText().toString().equals("")) {
@@ -370,11 +325,13 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                             oop.setStatus("U");
                         Intent intent = new Intent();
                         intent.putExtra("oop", oop);
-                        intent.putExtra("selected_operation_custom_info_arraylist", selected_operation_custom_info_arraylist);
+                        intent.putExtra("selected_operation_custom_info_arraylist",
+                                selected_operation_custom_info_arraylist);
                         setResult(RESULT_OK, intent);
                         Operations_Add_Update_Activity.this.finish();
                     } else {
-                        errorDialog.show_error_dialog(Operations_Add_Update_Activity.this, getResources().getString(R.string.oprtnTxt_mandate));
+                        errorDialog.show_error_dialog(Operations_Add_Update_Activity.this,
+                                getResources().getString(R.string.oprtnTxt_mandate));
                     }
                 }
                 break;
@@ -406,84 +363,63 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                     oop.setWrkCntrTxt(data.getStringExtra("wrkCntr_txt"));
 
                     String plant_text = "";
-                    try
-                    {
+                    try {
                         String plant_id = data.getStringExtra("plant_id");
-                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
-                        if (cursor1 != null && cursor1.getCount() > 0)
-                        {
-                            if (cursor1.moveToFirst())
-                            {
-                                do
-                                {
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS " +
+                                "where Werks = ?", new String[]{plant_id});
+                        if (cursor1 != null && cursor1.getCount() > 0) {
+                            if (cursor1.moveToFirst()) {
+                                do {
                                     plant_text = cursor1.getString(2);
                                 }
                                 while (cursor1.moveToNext());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             cursor1.close();
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-                    plant_tiet.setText(data.getStringExtra("plant_id")+" - "+plant_text);
-
+                    plant_tiet.setText(data.getStringExtra("plant_id") + " - " + plant_text);
 
                     String loc_text = "";
-                    try
-                    {
+                    try {
                         String loc_id = data.getStringExtra("wrkCntr_id");
-                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_WKCTR where Arbpl = ?", new String[]{loc_id});
-                        if (cursor1 != null && cursor1.getCount() > 0)
-                        {
-                            if (cursor1.moveToFirst())
-                            {
-                                do
-                                {
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_WKCTR where" +
+                                " Arbpl = ?", new String[]{loc_id});
+                        if (cursor1 != null && cursor1.getCount() > 0) {
+                            if (cursor1.moveToFirst()) {
+                                do {
                                     loc_text = cursor1.getString(8);
                                 }
                                 while (cursor1.moveToNext());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             cursor1.close();
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-                    wrkCntr_tiet.setText(data.getStringExtra("wrkCntr_id")+" - "+loc_text);
-
+                    wrkCntr_tiet.setText(data.getStringExtra("wrkCntr_id") + " - " + loc_text);
                 }
                 break;
-
 
             /*Written By SuryaKiran for Custom Info Added onActivityResult*/
             case (OPERATION_CUSTOMINFO):
-                if (resultCode == RESULT_OK)
-                {
-                    selected_operation_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
+                if (resultCode == RESULT_OK) {
+                    selected_operation_custom_info_arraylist =
+                            (ArrayList<HashMap<String, String>>) data
+                                    .getSerializableExtra("selected_custom_info_arraylist");
                 }
                 break;
             /*Written By SuryaKiran for Custom Info Added onActivityResult*/
 
-
-
             /*Written By SuryaKiran for Operation Long Text onActivityResult*/
             case (long_text):
-                if(resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     longtext_text = data.getStringExtra("longtext_new");
                     oop.setOprtnLngTxt(longtext_text);
                 }
                 break;
             /*Written By SuryaKiran for Operation Long Text onActivityResult*/
-
-
 
         }
     }

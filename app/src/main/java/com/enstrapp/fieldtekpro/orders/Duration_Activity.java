@@ -45,14 +45,6 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.f4_list_activity);
 
-        /*Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals("")) {
-                request_id = Integer.parseInt(request_ids);
-            }
-        }*/
-
         title_textview = (TextView) findViewById(R.id.title_textview);
         no_data_textview = (TextView) findViewById(R.id.no_data_textview);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
@@ -65,9 +57,11 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -84,19 +78,22 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Duration_Activity.this, getResources().getString(R.string.loading));
+            custom_progress_dialog.show_progress_dialog(Duration_Activity.this,
+                    getResources().getString(R.string.loading));
             type_list.clear();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_UNITS where UnitType = 'D' ", null);
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_UNITS where " +
+                        "UnitType = 'D' ", null);
                 if (cursor != null && cursor.getCount() > 0) {
 
                     if (cursor.moveToFirst()) {
                         do {
-                            Type_Object nto = new Type_Object(cursor.getString(1), cursor.getString(2));
+                            Type_Object nto = new Type_Object(cursor.getString(1),
+                                    cursor.getString(2));
                             type_list.add(nto);
                         }
                         while (cursor.moveToNext());
@@ -121,7 +118,8 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
                 title_textview.setText(getResources().getString(R.string.duaration_unit) + " (" + type_list.size() + ")");
                 adapter = new TYPE_ADAPTER(Duration_Activity.this, type_list);
                 list_recycleview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Duration_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Duration_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 list_recycleview.setItemAnimator(new DefaultItemAnimator());
                 list_recycleview.setAdapter(adapter);
@@ -148,12 +146,14 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId().toString(), type_list.get(i).getText().toString());
+                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
+                            type_list.get(i).getText());
                     filteredList.add(nto);
                 }
             }
             if (filteredList.size() > 0) {
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Duration_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Duration_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 adapter = new TYPE_ADAPTER(Duration_Activity.this, filteredList);
                 list_recycleview.setAdapter(adapter);
@@ -180,7 +180,7 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView id_textview, value_textview;
-            LinearLayout data_layout,id_ll;
+            LinearLayout data_layout, id_ll;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -198,7 +198,8 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.f4_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -213,7 +214,8 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
-                    intent.putExtra("duration_unit", holder.value_textview.getText().toString());
+                    intent.putExtra("duration_unit",
+                            holder.value_textview.getText().toString());
                     setResult(RESULT_OK, intent);
                     Duration_Activity.this.finish();
                 }
@@ -258,5 +260,4 @@ public class Duration_Activity extends AppCompatActivity implements View.OnClick
             onBackPressed();
         }
     }
-
 }

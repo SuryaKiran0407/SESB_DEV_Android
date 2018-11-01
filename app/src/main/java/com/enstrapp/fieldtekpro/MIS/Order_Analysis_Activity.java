@@ -32,7 +32,7 @@ public class Order_Analysis_Activity extends AppCompatActivity {
         back_ib = findViewById(R.id.back_ib);
         viewpager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tab);
-        iv_filter=(ImageView)findViewById(R.id.iv_filter);
+        iv_filter = (ImageView) findViewById(R.id.iv_filter);
 
         back_ib.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +51,7 @@ public class Order_Analysis_Activity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-               OrderPieFragment fag1 = (OrderPieFragment) getSupportFragmentManager()
+                OrderPieFragment fag1 = (OrderPieFragment) getSupportFragmentManager()
                         .findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                 String month_year = fag1.getMonth_year();                                           //Month&Year for Compliance Chart
                 OrderComplianceBarFragment tab1 = (OrderComplianceBarFragment) getSupportFragmentManager()

@@ -23,7 +23,6 @@ import com.enstrapp.fieldtekpro.DateTime.DatePickerDialog;
 import com.enstrapp.fieldtekpro.DateTime.TimePickerDialog;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.R;
-import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -69,7 +68,8 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         setContentView(R.layout.order_confirmpartial_activity);
 
         DATABASE_NAME = Orders_ConfirmPartial_Activity.this.getString(R.string.database_name);
-        App_db = Orders_ConfirmPartial_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        App_db = Orders_ConfirmPartial_Activity.this
+                .openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         employee_tiet = findViewById(R.id.employee_tiet);
         actlUnt_tiet = findViewById(R.id.actlUnt_tiet);
@@ -97,7 +97,6 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         reason_tiet = findViewById(R.id.reason_tiet);
         longtext_imageview = (ImageView) findViewById(R.id.longtext_imageview);
 
-
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
 
         setSupportActionBar(toolBar);
@@ -123,7 +122,6 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             fnlCnfrm_Cb.setChecked(true);
         }
 
-
         cancel_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,48 +129,48 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             }
         });
 
-
         actlUnt_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent durationIntent = new Intent(Orders_ConfirmPartial_Activity.this, Duration_Activity.class);
+                Intent durationIntent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        Duration_Activity.class);
                 startActivityForResult(durationIntent, DURATION);
             }
         });
 
-
         reason_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent reasonIntent = new Intent(Orders_ConfirmPartial_Activity.this, Reason_Activity.class);
+                Intent reasonIntent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        Reason_Activity.class);
                 reasonIntent.putExtra("plant", oop.getPlantId());
                 startActivityForResult(reasonIntent, REASON);
             }
         });
 
-
         strtDt_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edDtIntent = new Intent(Orders_ConfirmPartial_Activity.this, DatePickerDialog.class);
+                Intent edDtIntent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        DatePickerDialog.class);
                 startActivityForResult(edDtIntent, STDT);
             }
         });
 
-
         endDt_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edDtIntent = new Intent(Orders_ConfirmPartial_Activity.this, DatePickerDialog.class);
+                Intent edDtIntent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        DatePickerDialog.class);
                 startActivityForResult(edDtIntent, EDDT);
             }
         });
 
-
         endTm_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edTmIntent = new Intent(Orders_ConfirmPartial_Activity.this, TimePickerDialog.class);
+                Intent edTmIntent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        TimePickerDialog.class);
                 startActivityForResult(edTmIntent, EDTM);
             }
         });
@@ -180,7 +178,8 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         strtTm_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edTmIntent = new Intent(Orders_ConfirmPartial_Activity.this, TimePickerDialog.class);
+                Intent edTmIntent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        TimePickerDialog.class);
                 startActivityForResult(edTmIntent, STTM);
             }
         });
@@ -192,11 +191,11 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             }
         });
 
-
         longtext_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent longtext_intent = new Intent(Orders_ConfirmPartial_Activity.this, Order_LongText_Activity.class);
+                Intent longtext_intent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        Order_LongText_Activity.class);
                 longtext_intent.putExtra("aufnr", oop.getOrdrId());
                 longtext_intent.putExtra("operation_id", oop.getOprtnId());
                 longtext_intent.putExtra("tdid", "RMEL");
@@ -204,7 +203,6 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 startActivityForResult(longtext_intent, long_text);
             }
         });
-
 
         setActualWork(oop.getOrdrId(), oop.getOprtnId());
     }
@@ -250,9 +248,9 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             case (long_text):
                 if (resultCode == RESULT_OK) {
                     longtext_text = data.getStringExtra("longtext_new");
-
                     if (longtext_text.length() > 40) {
-                        cnfrmTxt_tiet.setText(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
+                        cnfrmTxt_tiet.setText(longtext_text.substring(0,
+                                Math.min(longtext_text.length(), 40)));
                     } else {
                         cnfrmTxt_tiet.setText(longtext_text);
                     }
@@ -274,14 +272,17 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
     private void setActualWork(String ordrId, String oprtnId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?" + " order by id desc", new String[]{ordrId, oprtnId});
+            cursor = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No =" +
+                    " ? and Operation_ID = ?" + " order by id desc", new String[]{ordrId, oprtnId});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 String status = cursor.getString(5);
                 if (status.equals("P")) {
                     double total = 0;
                     try {
-                        Cursor cursor1 = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?" + " order by id desc", new String[]{ordrId, oprtnId});
+                        Cursor cursor1 = App_db.rawQuery("select * from" +
+                                " ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?"
+                                + " order by id desc", new String[]{ordrId, oprtnId});
                         if (cursor1 != null && cursor1.getCount() > 0) {
                             if (cursor1.moveToFirst()) {
                                 do {
@@ -321,7 +322,9 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 } else if (status.equals("S")) {
                     String start_date = "";
                     try {
-                        Cursor cursor1 = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?" + " order by id desc", new String[]{ordrId, oprtnId});
+                        Cursor cursor1 = App_db.rawQuery("select * from " +
+                                "ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?"
+                                + " order by id desc", new String[]{ordrId, oprtnId});
                         if (cursor1 != null && cursor1.getCount() > 0) {
                             cursor1.moveToNext();
                             start_date = cursor1.getString(4);
@@ -354,7 +357,9 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
 
                         double total = 0;
                         try {
-                            Cursor cursor1 = App_db.rawQuery("select * from ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID = ?" + " order by id desc", new String[]{ordrId, oprtnId});
+                            Cursor cursor1 = App_db.rawQuery("select * from " +
+                                    "ORDER_CONFIRMATION_TIMER where Order_No = ? and Operation_ID " +
+                                    "= ?" + " order by id desc", new String[]{ordrId, oprtnId});
                             if (cursor1 != null && cursor1.getCount() > 0) {
                                 if (cursor1.moveToFirst()) {
                                     do {
@@ -454,14 +459,14 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         }
     }
 
-
     public class GetToken extends AsyncTask<Void, Integer, Void> {
         String Response = "";
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Orders_ConfirmPartial_Activity.this, getResources().getString(R.string.confirm_progs));
+            customProgressDialog.show_progress_dialog(Orders_ConfirmPartial_Activity.this,
+                    getResources().getString(R.string.confirm_progs));
         }
 
         @Override
@@ -477,11 +482,11 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                 new POST_TK_CONFIRM().execute();
             } else {
                 customProgressDialog.dismiss_progress_dialog();
-                errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this, getResources().getString(R.string.unable_confirm));
+                errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this,
+                        getResources().getString(R.string.unable_confirm));
             }
         }
     }
-
 
     private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void> {
         ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
@@ -535,7 +540,9 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Order_CConfirmation().Get_Data(Orders_ConfirmPartial_Activity.this, cop_al, null, "", "CNORD", oop.getOrdrId(), "pc", longtext_text);
+            Response = new Order_CConfirmation().Get_Data(Orders_ConfirmPartial_Activity.this,
+                    cop_al, null, "", "CNORD", oop.getOrdrId(),
+                    "pc", longtext_text);
             return null;
         }
 
@@ -546,7 +553,8 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             if (Response.startsWith("S"))
                 dismissActivity(Orders_ConfirmPartial_Activity.this, Response.substring(2));
             else if (Response.startsWith("E"))
-                errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this, Response.substring(2));
+                errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this,
+                        Response.substring(2));
             else
                 errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this, Response);
 
@@ -554,13 +562,14 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
     }
 
     private void confirmationDialog(String message) {
-        final Dialog cancel_dialog = new Dialog(Orders_ConfirmPartial_Activity.this, R.style.PauseDialog);
+        final Dialog cancel_dialog = new Dialog(Orders_ConfirmPartial_Activity.this,
+                R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.network_error_dialog);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.ok_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.cancel_button);
@@ -581,7 +590,8 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
                     cancel_dialog.dismiss();
                     new GetToken().execute();
                 } else {
-                    new Network_Connection_Dialog().show_network_connection_dialog(Orders_ConfirmPartial_Activity.this);
+                    new Network_Connection_Dialog()
+                            .show_network_connection_dialog(Orders_ConfirmPartial_Activity.this);
                 }
             }
         });
@@ -595,7 +605,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         success_dialog.setCanceledOnTouchOutside(false);
         success_dialog.setContentView(R.layout.error_dialog);
         ImageView imageview = (ImageView) success_dialog.findViewById(R.id.imageView1);
-        TextView description_textview = (TextView) success_dialog.findViewById(R.id.description_textview);
+        TextView description_textview = success_dialog.findViewById(R.id.description_textview);
         Button ok_button = (Button) success_dialog.findViewById(R.id.ok_button);
         description_textview.setText(message);
         Glide.with(activity).load(R.drawable.success_checkmark).into(imageview);
@@ -605,7 +615,8 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 success_dialog.dismiss();
                 activity.finish();
-                Intent intent = new Intent(Orders_ConfirmPartial_Activity.this, Orders_Activity.class);
+                Intent intent = new Intent(Orders_ConfirmPartial_Activity.this,
+                        Orders_Activity.class);
                 startActivity(intent);
             }
         });

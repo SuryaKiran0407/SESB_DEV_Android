@@ -2,14 +2,12 @@ package com.enstrapp.fieldtekpro.orders;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +27,7 @@ import java.util.HashMap;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-public class Orders_CR_Operation_Fragment extends Fragment
-{
+public class Orders_CR_Operation_Fragment extends Fragment {
 
     TextView add_tv, remove_tv;
     RecyclerView operations_rv;
@@ -48,7 +45,6 @@ public class Orders_CR_Operation_Fragment extends Fragment
     int count = 0;
     OperationsAdapter operationsAdapter;
     ArrayList<HashMap<String, String>> selected_operation_custom_info_arraylist = new ArrayList<>();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,7 +78,6 @@ public class Orders_CR_Operation_Fragment extends Fragment
         if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
             if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                 if (ma.ohp.getOrdrOprtnPrcbls() != null) {
-//                    oop_al.addAll(ma.ohp.getOrdrOprtnPrcbls());
                 } else {
                     ma.ohp.setOrdrOprtnPrcbls(oop_al);
                     if (!(ma.ohp.getOrdrOprtnPrcbls().size() > 0)) {
@@ -108,7 +103,8 @@ public class Orders_CR_Operation_Fragment extends Fragment
                         ma.ohp.setOrdrOprtnPrcbls(oop_al);
                         operationsAdapter = new OperationsAdapter(getActivity(), oop_al);
                         operations_rv.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(getActivity());
                         operations_rv.setLayoutManager(layoutManager);
                         operations_rv.setItemAnimator(new DefaultItemAnimator());
                         operations_rv.setAdapter(operationsAdapter);
@@ -118,45 +114,38 @@ public class Orders_CR_Operation_Fragment extends Fragment
         }
         ma.updateTabDataCount();
         ma.fab.show();
-        if(isSelected){
+        if (isSelected) {
             ma.animateFab(true);
-        } else{
+        } else {
             ma.animateFab(false);
         }
         ma.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isSelected)
-                {
+                if (isSelected) {
                     ArrayList<OrdrOprtnPrcbl> rmoop = new ArrayList<>();
                     rmoop.addAll(oop_al);
-                    for (OrdrOprtnPrcbl oo : rmoop)
-                    {
-                        if (oo.isSelected())
-                        {
+                    for (OrdrOprtnPrcbl oo : rmoop) {
+                        if (oo.isSelected()) {
                             oop_al.remove(oo);
 
                             /*Written By SuryaKiran for Deleting Custom Info Data based on Operation ID*/
                             String Operation_id = oo.getOprtnId();
-                            if(selected_operation_custom_info_arraylist.size() > 0)
-                            {
-                                for (int i = selected_operation_custom_info_arraylist.size() - 1; i >= 0; i--)
-                                {
-                                    String op_id = selected_operation_custom_info_arraylist.get(i).get("Operation_id");
-                                    if(op_id.equalsIgnoreCase(Operation_id))
-                                    {
+                            if (selected_operation_custom_info_arraylist.size() > 0) {
+                                for (int i = selected_operation_custom_info_arraylist.size() - 1;
+                                     i >= 0; i--) {
+                                    String op_id = selected_operation_custom_info_arraylist.get(i)
+                                            .get("Operation_id");
+                                    if (op_id.equalsIgnoreCase(Operation_id)) {
                                         selected_operation_custom_info_arraylist.remove(i);
                                     }
                                 }
                             }
                             /*Written By SuryaKiran for Deleting Custom Info Data based on Operation ID*/
-
-
                         }
                     }
                     if (oop_al.size() > 0)
-                        for (int i = 0; i < oop_al.size(); i++)
-                        {
+                        for (int i = 0; i < oop_al.size(); i++) {
                             oop_al.get(i).setOprtnId(gnrtOprtnId(i));
                         }
                     ma.animateFab(false);
@@ -165,12 +154,11 @@ public class Orders_CR_Operation_Fragment extends Fragment
                     operationsAdapter.notifyDataSetChanged();
                     rmoop = null;
                     ma.updateTabDataCount();
-                }
-                else
-                {
+                } else {
                     if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
                         if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
-                            Intent intent = new Intent(getActivity(), Operations_Add_Update_Activity.class);
+                            Intent intent = new Intent(getActivity(),
+                                    Operations_Add_Update_Activity.class);
                             intent.putExtra("order_id", ma.ohp.getOrdrId());
                             intent.putExtra("type_oprtn", "C");
                             intent.putExtra("ordrPlant", ma.ohp.getPlant());
@@ -179,10 +167,12 @@ public class Orders_CR_Operation_Fragment extends Fragment
                             intent.putExtra("ordrWrkCntr", ma.ohp.getWrkCntrId());
                             startActivityForResult(intent, OPRTN_CRT);
                         } else {
-                            errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.equipFunc_mandate));
+                            errorDialog.show_error_dialog(getActivity(),
+                                    getResources().getString(R.string.equipFunc_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.text_mandate));
+                        errorDialog.show_error_dialog(getActivity(),
+                                getResources().getString(R.string.text_mandate));
                     }
                 }
             }
@@ -194,29 +184,26 @@ public class Orders_CR_Operation_Fragment extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (OPRTN_CRT):
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     OrdrOprtnPrcbl oop = data.getParcelableExtra("oop");
-
 
                     /*Written By SuryaKiran for Adding Custom Info Data based on Operation ID*/
                     String Operation_id = gnrtOprtnId(oop_al.size());
-                    if(selected_operation_custom_info_arraylist.size() > 0)
-                    {
-                        for (int i = selected_operation_custom_info_arraylist.size() - 1; i >= 0; i--)
-                        {
-                            String op_id = selected_operation_custom_info_arraylist.get(i).get("Operation_id");
-                            if(op_id.equalsIgnoreCase(Operation_id))
-                            {
+                    if (selected_operation_custom_info_arraylist.size() > 0) {
+                        for (int i = selected_operation_custom_info_arraylist.size() - 1;
+                             i >= 0; i--) {
+                            String op_id = selected_operation_custom_info_arraylist.get(i)
+                                    .get("Operation_id");
+                            if (op_id.equalsIgnoreCase(Operation_id)) {
                                 selected_operation_custom_info_arraylist.remove(i);
                             }
                         }
                     }
-                    ArrayList<HashMap<String, String>> operation_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_operation_custom_info_arraylist");
-                    if(operation_custom_info_arraylist.size() > 0)
-                    {
-                        for(int i = 0; i < operation_custom_info_arraylist.size(); i++)
-                        {
+                    ArrayList<HashMap<String, String>> operation_custom_info_arraylist =
+                            (ArrayList<HashMap<String, String>>) data
+                                    .getSerializableExtra("selected_operation_custom_info_arraylist");
+                    if (operation_custom_info_arraylist.size() > 0) {
+                        for (int i = 0; i < operation_custom_info_arraylist.size(); i++) {
                             HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                             custom_info_hashMap.put("Operation_id", Operation_id);
                             custom_info_hashMap.put("Fieldname", operation_custom_info_arraylist.get(i).get("Fieldname"));
@@ -233,7 +220,6 @@ public class Orders_CR_Operation_Fragment extends Fragment
                         }
                     }
                     /*Written By SuryaKiran for Adding Custom Info Data based on Operation ID*/
-
 
                     oop.setSelected(false);
                     oop.setOprtnId(gnrtOprtnId(oop_al.size()));
@@ -246,29 +232,22 @@ public class Orders_CR_Operation_Fragment extends Fragment
                 break;
 
             case (OPRTN_UPDATE):
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     OrdrOprtnPrcbl oop = data.getParcelableExtra("oop");
-
 
                     /*Written By SuryaKiran for Updating Custom Info Data based on Operation ID*/
                     String Operation_id = oop.getOprtnId();
-                    if(selected_operation_custom_info_arraylist.size() > 0)
-                    {
-                        for (int i = selected_operation_custom_info_arraylist.size() - 1; i >= 0; i--)
-                        {
+                    if (selected_operation_custom_info_arraylist.size() > 0) {
+                        for (int i = selected_operation_custom_info_arraylist.size() - 1; i >= 0; i--) {
                             String op_id = selected_operation_custom_info_arraylist.get(i).get("Operation_id");
-                            if(op_id.equalsIgnoreCase(Operation_id))
-                            {
+                            if (op_id.equalsIgnoreCase(Operation_id)) {
                                 selected_operation_custom_info_arraylist.remove(i);
                             }
                         }
                     }
                     ArrayList<HashMap<String, String>> operation_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_operation_custom_info_arraylist");
-                    if(operation_custom_info_arraylist.size() > 0)
-                    {
-                        for(int i = 0; i < operation_custom_info_arraylist.size(); i++)
-                        {
+                    if (operation_custom_info_arraylist.size() > 0) {
+                        for (int i = 0; i < operation_custom_info_arraylist.size(); i++) {
                             HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                             custom_info_hashMap.put("Operation_id", Operation_id);
                             custom_info_hashMap.put("Fieldname", operation_custom_info_arraylist.get(i).get("Fieldname"));
@@ -285,7 +264,6 @@ public class Orders_CR_Operation_Fragment extends Fragment
                         }
                     }
                     /*Written By SuryaKiran for Updating Custom Info Data based on Operation ID*/
-
 
                     oop.setSelected(false);
                     ArrayList<OrdrOprtnPrcbl> rmoop = new ArrayList<>();
@@ -341,7 +319,8 @@ public class Orders_CR_Operation_Fragment extends Fragment
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_operation_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.orders_operation_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -405,20 +384,15 @@ public class Orders_CR_Operation_Fragment extends Fragment
                 }
             });
 
-            holder.oprtnList_ll.setOnClickListener(new View.OnClickListener()
-            {
+            holder.oprtnList_ll.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     ArrayList<HashMap<String, String>> selected_custom_info_arraylist = new ArrayList<HashMap<String, String>>();
-                    if(selected_operation_custom_info_arraylist.size() > 0)
-                    {
+                    if (selected_operation_custom_info_arraylist.size() > 0) {
                         String selected_Operation_id = holder.oprtnId_tv.getText().toString();
-                        for(int i = 0; i < selected_operation_custom_info_arraylist.size(); i++)
-                        {
+                        for (int i = 0; i < selected_operation_custom_info_arraylist.size(); i++) {
                             String op_id = selected_operation_custom_info_arraylist.get(i).get("Operation_id");
-                            if(op_id.equalsIgnoreCase(selected_Operation_id))
-                            {
+                            if (op_id.equalsIgnoreCase(selected_Operation_id)) {
                                 HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                                 custom_info_hashMap.put("Fieldname", selected_operation_custom_info_arraylist.get(i).get("Fieldname"));
                                 custom_info_hashMap.put("ZdoctypeItem", selected_operation_custom_info_arraylist.get(i).get("ZdoctypeItem"));
@@ -451,7 +425,6 @@ public class Orders_CR_Operation_Fragment extends Fragment
         }
     }
 
-
     private String gnrtOprtnId(int size) {
         if (size < 9) {
             return "00" + String.valueOf(size + 1) + "0";
@@ -460,28 +433,17 @@ public class Orders_CR_Operation_Fragment extends Fragment
         }
     }
 
-
     /*Written By SuryaKiran to Return Custom Info Data*/
-    public ArrayList<HashMap<String, String>> getOperationCustominfoData()
-    {
+    public ArrayList<HashMap<String, String>> getOperationCustominfoData() {
         return selected_operation_custom_info_arraylist;
     }
     /*Written By SuryaKiran to Return Custom Info Data*/
 
-
-
-
-    public int OperationsSize()
-    {
-        if (oop_al.size() > 0)
-        {
-            return  oop_al.size();
-        }
-        else
-        {
-            return  0;
+    public int OperationsSize() {
+        if (oop_al.size() > 0) {
+            return oop_al.size();
+        } else {
+            return 0;
         }
     }
-
-
 }

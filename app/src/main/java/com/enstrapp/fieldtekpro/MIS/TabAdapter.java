@@ -5,11 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.enstrapp.fieldtekpro.R;
+
 public class TabAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
-    private String tabTitles[] = new String[]{"Analysis", "Compliance"};
+    private String tabTitles[] = new String[]{mContext.getString(R.string.analysis),
+            mContext.getString(R.string.compliance)};
 
     public TabAdapter(Context context, FragmentManager fm) {
         super(fm);

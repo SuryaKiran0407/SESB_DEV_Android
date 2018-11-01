@@ -83,7 +83,8 @@ public class StatusWithFragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_with_rb_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.status_with_rb_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -104,11 +105,6 @@ public class StatusWithFragment extends Fragment {
                                 osp.setAct("X");
                                 osp.setAction("I");
                                 osp.setSelected(true);
-                                /*for (NotifOrdrStatusPrcbl chk : wthStsList) {
-                                    if(chk.getTxt04().equals(holder.txt04_tv.getText().toString()))
-                                    else
-                                        osp.setSelected(false);
-                                }*/
                             } else {
                                 osp.setAct("");
                                 osp.setAction("I");
@@ -116,16 +112,7 @@ public class StatusWithFragment extends Fragment {
                             }
                         }
                         notifyDataSetChanged();
-                    }/* else {
-                        for (NotifOrdrStatusPrcbl osp : ma.wthSts_al) {
-                            if (holder.txt04_tv.getText().toString().equals(osp.getTxt04())) {
-                                osp.setAct("");
-                                osp.setAction("I");
-                                osp.setSelected(false);
-                            }
-                        }
-                        notifyDataSetChanged();
-                    }*/
+                    }
                 }
             });
         }
@@ -135,5 +122,4 @@ public class StatusWithFragment extends Fragment {
             return wthStsList.size();
         }
     }
-
 }

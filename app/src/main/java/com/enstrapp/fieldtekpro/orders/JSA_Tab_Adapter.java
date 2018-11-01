@@ -8,17 +8,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JSA_Tab_Adapter extends FragmentPagerAdapter
-{
+public class JSA_Tab_Adapter extends FragmentPagerAdapter {
 
     private Context mContext;
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    private String tabTitles[] = new String[]{"Basic Info", "Assessment Team", "Job Location", "Job Steps", "Hazards", "Impacts & Controls"};
-
-    public JSA_Tab_Adapter(Context context, FragmentManager fm)
-    {
+    public JSA_Tab_Adapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -28,8 +24,7 @@ public class JSA_Tab_Adapter extends FragmentPagerAdapter
         return mFragmentList.get(position);
     }
 
-    public void addFragment(Fragment fragment, String title)
-    {
+    public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }

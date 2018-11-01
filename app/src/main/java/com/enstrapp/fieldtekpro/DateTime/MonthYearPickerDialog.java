@@ -14,8 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MonthYearPickerDialog extends Activity implements View.OnClickListener
-{
+public class MonthYearPickerDialog extends Activity implements View.OnClickListener {
 
     DatePicker datePicker;
     Button cancel_button, add_button;
@@ -23,33 +22,28 @@ public class MonthYearPickerDialog extends Activity implements View.OnClickListe
     int request_id = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.datedialog);
         this.setFinishOnTouchOutside(false);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             request_type = extras.getString("request_type");
             String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals(""))
-            {
+            if (request_ids != null && !request_ids.equals("")) {
                 request_id = Integer.parseInt(request_ids);
             }
         }
 
-        datePicker = (DatePicker)findViewById(R.id.datePicker);
-        cancel_button = (Button)findViewById(R.id.cancel_button);
-        add_button = (Button)findViewById(R.id.add_button);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        cancel_button = (Button) findViewById(R.id.cancel_button);
+        add_button = (Button) findViewById(R.id.add_button);
 
         int daySpinnerId = Resources.getSystem().getIdentifier("day", "id", "android");
-        if (daySpinnerId != 0)
-        {
+        if (daySpinnerId != 0) {
             View daySpinner = datePicker.findViewById(daySpinnerId);
-            if (daySpinner != null)
-            {
+            if (daySpinner != null) {
                 daySpinner.setVisibility(View.GONE);
             }
         }
@@ -60,14 +54,10 @@ public class MonthYearPickerDialog extends Activity implements View.OnClickListe
 
 
     @Override
-    public void onClick(View v)
-    {
-        if(v == cancel_button)
-        {
+    public void onClick(View v) {
+        if (v == cancel_button) {
             MonthYearPickerDialog.this.finish();
-        }
-        else if(v == add_button)
-        {
+        } else if (v == add_button) {
             String selected_month = "", selected_year = "", selected_month_formatted = "";
             int day = datePicker.getDayOfMonth();
             int month = datePicker.getMonth() + 1;
@@ -80,21 +70,18 @@ public class MonthYearPickerDialog extends Activity implements View.OnClickListe
             SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
             SimpleDateFormat outputFormat1 = new SimpleDateFormat(outputPattern1);
             SimpleDateFormat outputFormat2 = new SimpleDateFormat(outputPattern2);
-            try
-            {
-                Date date = inputFormat.parse(year+"-"+month+"-"+day);
-                selected_month =  outputFormat.format(date);
+            try {
+                Date date = inputFormat.parse(year + "-" + month + "-" + day);
+                selected_month = outputFormat.format(date);
                 selected_year = outputFormat1.format(date);
                 selected_month_formatted = outputFormat2.format(date);
+            } catch (ParseException e) {
             }
-            catch (ParseException e)
-            {
-            }
-            Intent intent=new Intent();
-            intent.putExtra("selected_month_formatted",selected_month_formatted);
-            intent.putExtra("selected_month",selected_month);
-            intent.putExtra("selected_year",selected_year);
-            setResult(request_id,intent);
+            Intent intent = new Intent();
+            intent.putExtra("selected_month_formatted", selected_month_formatted);
+            intent.putExtra("selected_month", selected_month);
+            intent.putExtra("selected_year", selected_year);
+            setResult(request_id, intent);
             MonthYearPickerDialog.this.finish();
         }
     }

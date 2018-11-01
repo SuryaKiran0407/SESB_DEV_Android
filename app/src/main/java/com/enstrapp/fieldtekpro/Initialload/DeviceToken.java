@@ -26,8 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class DeviceToken
-{
+public class DeviceToken {
 
     private static String device_token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
@@ -35,37 +34,32 @@ public class DeviceToken
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
 
-    public static String set_devicetoken_data(Activity activity)
-    {
-        try
-        {
+    public static String set_devicetoken_data(Activity activity) {
+        try {
             DATABASE_NAME = activity.getString(R.string.database_name);
-            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             SharedPreferences pref = activity.getSharedPreferences(Config.SHARED_PREF, 0);
             device_token = pref.getString("regId", null);
             /* Initializing Shared Preferences */
             FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
-            username = FieldTekPro_SharedPref.getString("Username",null);
-            password = FieldTekPro_SharedPref.getString("Password",null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type",null);
-		    /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"DT", "U", webservice_type});
-            if (cursor != null && cursor.getCount() > 0)
-            {
+            username = FieldTekPro_SharedPref.getString("Username", null);
+            password = FieldTekPro_SharedPref.getString("Password", null);
+            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            /* Initializing Shared Preferences */
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"DT", "U", webservice_type});
+            if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
+            } else {
             }
-            else
-            {
-            }
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = ""+ Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(),((long) device_id.hashCode() << 32)| device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
             Map<String, String> map = new HashMap<>();
             map.put("IvUser", username);
@@ -84,24 +78,16 @@ public class DeviceToken
             Call<BOM_SER> call = service.setDeviceToken(url_link, basic, map);
             Response<BOM_SER> response = call.execute();
             int response_status_code = response.code();
-            Log.v("kiran_DeviceToken_code",response_status_code+"...");
-            if(response_status_code == 200)
-            {
-                if (response.isSuccessful() && response.body() != null)
-                {
+            Log.v("kiran_DeviceToken_code", response_status_code + "...");
+            if (response_status_code == 200) {
+                if (response.isSuccessful() && response.body() != null) {
                     Get_Response = "success";
                 }
+            } else {
             }
-            else
-            {
-            }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Get_Response = "exception";
-        }
-        finally
-        {
+        } finally {
         }
         return Get_Response;
     }

@@ -12,12 +12,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,11 +33,11 @@ import android.widget.TextView;
 import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
-import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
-import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 
 import org.json.JSONArray;
 
@@ -82,7 +81,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
         setContentView(R.layout.orders_create_change_activity);
 
         DATABASE_NAME = Orders_Create_Activity.this.getString(R.string.database_name);
-        App_db = Orders_Create_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        App_db = Orders_Create_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,
+                null);
 
         UUID uniqueKey_uuid = UUID.randomUUID();
         uniqeId = uniqueKey_uuid.toString();
@@ -111,7 +111,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
             String floc_name = "", costcenter_id = "";
             if (floc_id != null && !floc_id.equals("")) {
                 try {
-                    Cursor cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{floc_id});
+                    Cursor cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                            new String[]{floc_id});
                     if (cursor != null && cursor.getCount() > 0) {
                         if (cursor.moveToFirst()) {
                             do {
@@ -130,7 +131,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
             String equip_name = "";
             if (equip_id != null && !equip_id.equals("")) {
                 try {
-                    Cursor cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?", new String[]{equip_id});
+                    Cursor cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?",
+                            new String[]{equip_id});
                     if (cursor != null && cursor.getCount() > 0) {
                         if (cursor.moveToFirst()) {
                             do {
@@ -212,7 +214,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     else
                         WBS = false;
                     if (ohp.getOrdrShrtTxt() != null && !ohp.getOrdrShrtTxt().equals("")) {
-                        if ((ohp.getEquipNum() != null && !ohp.getEquipNum().equals("")) || (ohp.getFuncLocId() != null && !ohp.getFuncLocId().equals(""))) {
+                        if ((ohp.getEquipNum() != null && !ohp.getEquipNum().equals("")) ||
+                                (ohp.getFuncLocId() != null && !ohp.getFuncLocId().equals(""))) {
                             if (ohp.getPriorityId() != null && !ohp.getPriorityId().equals("")) {
                                 if (ohp.getWrkCntrId() != null && !ohp.getWrkCntrId().equals("")) {
                                     if (ohp.getPlnrGrpId() != null && !ohp.getPlnrGrpId().equals("")) {
@@ -260,10 +263,12 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                         }
                                                     }
                                                 } else {
-                                                    error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.revision_mandate));
+                                                    error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                                                            getResources().getString(R.string.revision_mandate));
                                                 }
                                             } else {
-                                                error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.wbs_mandate));
+                                                error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                                                        getResources().getString(R.string.wbs_mandate));
                                             }
                                         } else {
                                             cd = new ConnectionDetector(Orders_Create_Activity.this);
@@ -306,30 +311,29 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                 }
                                             }
                                         }
-//                                        if (ohp.getRespCostCntrId() != null && !ohp.getRespCostCntrId().equals("")) {
-                                            /*ohp.setBasicStart(dateFormat(ohp.getBasicStart()));
-                                            ohp.setBasicEnd(dateFormat(ohp.getBasicEnd()));*/
-
-//                                        } else {
-//                                            error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.respCstCntr_mandate));
-//                                        }
                                     } else {
-                                        error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.plndGrp_mandate));
+                                        error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                                                getResources().getString(R.string.plndGrp_mandate));
                                     }
                                 } else {
-                                    error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.wrkCntr_mandate));
+                                    error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                                            getResources().getString(R.string.wrkCntr_mandate));
                                 }
                             } else {
-                                error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.priority_mandate));
+                                error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                                        getResources().getString(R.string.priority_mandate));
                             }
                         } else {
-                            error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.equipFunc_mandate));
+                            error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                                    getResources().getString(R.string.equipFunc_mandate));
                         }
                     } else {
-                        error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.text_mandate));
+                        error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                                getResources().getString(R.string.text_mandate));
                     }
                 } else {
-                    error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.ordTyp_mandate));
+                    error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                            getResources().getString(R.string.ordTyp_mandate));
                 }
             }
         });
@@ -367,13 +371,13 @@ public class Orders_Create_Activity extends AppCompatActivity {
         decision_dialog.setCancelable(false);
         decision_dialog.setCanceledOnTouchOutside(false);
         decision_dialog.setContentView(R.layout.offline_decision_dialog);
-        TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
+        TextView description_textview = decision_dialog.findViewById(R.id.description_textview);
         Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
         Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
         Button connect_button = (Button) decision_dialog.findViewById(R.id.connect_button);
-        description_textview.setText("No Internet Connectivity. Do you want to proceed Order Create with offline ?");
-        confirm.setText("Yes");
-        cancel.setText("No");
+        description_textview.setText(getString(R.string.ordcrt_offline));
+        confirm.setText(getString(R.string.yes));
+        cancel.setText(getString(R.string.no));
         decision_dialog.show();
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,14 +390,16 @@ public class Orders_Create_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 decision_dialog.dismiss();
                 Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+                intent.setClassName("com.android.settings",
+                        "com.android.settings.wifi.WifiSettings");
                 startActivity(intent);
             }
         });
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customProgressDialog.show_progress_dialog(Orders_Create_Activity.this, getResources().getString(R.string.loading));
+                customProgressDialog.show_progress_dialog(Orders_Create_Activity.this,
+                        getResources().getString(R.string.loading));
                 String timeStamp = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + "";
                 UUID uniqueKey = UUID.randomUUID();
                 try {
@@ -628,12 +634,12 @@ public class Orders_Create_Activity extends AppCompatActivity {
             for (int i = 0; i < tabChildsCount; i++) {
                 View tabViewChild = vgTab.getChildAt(i);
                 if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/metropolis_medium.ttf"));
+                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(),
+                            "fonts/metropolis_medium.ttf"));
                 }
             }
         }
     }
-
 
     public class GetToken extends AsyncTask<Void, Integer, Void> {
         String Response = "";
@@ -641,7 +647,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Orders_Create_Activity.this, getResources().getString(R.string.creating_order));
+            customProgressDialog.show_progress_dialog(Orders_Create_Activity.this,
+                    getResources().getString(R.string.creating_order));
         }
 
         @Override
@@ -658,16 +665,15 @@ public class Orders_Create_Activity extends AppCompatActivity {
                 new Create_Order().execute("");
             } else {
                 customProgressDialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Orders_Create_Activity.this, getResources().getString(R.string.unable_create));
+                error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                        getResources().getString(R.string.unable_create));
             }
         }
     }
 
-
     private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
-
 
     public class Create_Order extends AsyncTask<String, Integer, Void> {
         String[] Response = new String[2];
@@ -677,14 +683,18 @@ public class Orders_Create_Activity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Orders_Create_Activity.this, getResources().getString(R.string.creating_order));
+            customProgressDialog.show_progress_dialog(Orders_Create_Activity.this,
+                    getResources().getString(R.string.creating_order));
         }
 
         @Override
         protected Void doInBackground(String... transmit) {
             /*Fetching Header Custom Info Data*/
-            Orders_CR_General_Fragment header_tab = (Orders_CR_General_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 0));
-            ArrayList<HashMap<String, String>> header_custom_info_arraylist = header_tab.getHeaderCustominfoData();
+            Orders_CR_General_Fragment header_tab =
+                    (Orders_CR_General_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.order_vp, 0));
+            ArrayList<HashMap<String, String>> header_custom_info_arraylist =
+                    header_tab.getHeaderCustominfoData();
             if (header_custom_info_arraylist.size() > 0) {
                 for (int i = 0; i < header_custom_info_arraylist.size(); i++) {
                     Model_CustomInfo mnc = new Model_CustomInfo();
@@ -731,21 +741,27 @@ public class Orders_Create_Activity extends AppCompatActivity {
             }
             /*Fetching Header Custom Info Data*/
 
-
             /*Fetching Operation Custom Info Data*/
-            Orders_CR_Operation_Fragment operation_tab = (Orders_CR_Operation_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
-            ArrayList<HashMap<String, String>> operation_custom_info_arraylist = operation_tab.getOperationCustominfoData();
+            Orders_CR_Operation_Fragment operation_tab =
+                    (Orders_CR_Operation_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
+            ArrayList<HashMap<String, String>> operation_custom_info_arraylist = operation_tab
+                    .getOperationCustominfoData();
             /*Fetching Operation Custom Info Data*/
-
 
             /*Fetching Material Custom Info Data*/
-            Orders_CR_Material_Fragment material_tab = (Orders_CR_Material_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
-            ArrayList<HashMap<String, String>> material_custom_info_arraylist = material_tab.getMaterialCustominfoData();
+            Orders_CR_Material_Fragment material_tab =
+                    (Orders_CR_Material_Fragment) getSupportFragmentManager()
+                            .findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+            ArrayList<HashMap<String, String>> material_custom_info_arraylist = material_tab
+                    .getMaterialCustominfoData();
             /*Fetching Material Custom Info Data*/
-
 
             String transmit_type = transmit[0];
-            Response = new Order_Create_Change().Post_Create_Order(Orders_Create_Activity.this, ohp, transmit_type, "CRORD", "", "", header_custominfo, operation_custom_info_arraylist, material_custom_info_arraylist, uniqeId);
+            Response = new Order_Create_Change()
+                    .Post_Create_Order(Orders_Create_Activity.this, ohp, transmit_type,
+                            "CRORD", "", "", header_custominfo,
+                            operation_custom_info_arraylist, material_custom_info_arraylist, uniqeId);
             return null;
         }
 
@@ -763,7 +779,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         if (aufnr != null && !aufnr.equals("")) {
                             ContentValues values = new ContentValues();
                             values.put("Aufnr", aufnr);
-                            App_db.update("DUE_NOTIFICATION_NotifHeader", values, "Qmnum" + "=?", new String[]{qmnum});
+                            App_db.update("DUE_NOTIFICATION_NotifHeader", values,
+                                    "Qmnum" + "=?", new String[]{qmnum});
                         }
                     }
                 } catch (Exception e) {
@@ -775,7 +792,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         response.append("\n");
                     response.append(sp[0].substring(2));
                 }
-                successDialog.dismissActivity(Orders_Create_Activity.this, response.toString());
+                successDialog.dismissActivity(Orders_Create_Activity.this,
+                        response.toString());
             } else if (Response[0].startsWith("E")) {
                 StringBuilder response = new StringBuilder();
                 String[] sp = Response[0].split("\n");
@@ -784,13 +802,15 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         response.append("\n");
                     response.append(sp[0].substring(2));
                 }
-                error_dialog.show_error_dialog(Orders_Create_Activity.this, response.toString());
+                error_dialog.show_error_dialog(Orders_Create_Activity.this,
+                        response.toString());
             } else if (Response[0].startsWith("W")) {
                 try {
                     JSONArray wcd_Json = new JSONArray(Response[1]);
                     if (wcd_Json.length() > 0) {
                         for (int i = 0; i < wcd_Json.length(); i++) {
-                            WcdDup_Object wdo = new WcdDup_Object(wcd_Json.getJSONObject(i).getString("Aufnr"),
+                            WcdDup_Object wdo = new WcdDup_Object(wcd_Json.getJSONObject(i)
+                                    .getString("Aufnr"),
                                     wcd_Json.getJSONObject(i).getString("Stxt"),
                                     wcd_Json.getJSONObject(i).getString("Sysst"),
                                     wcd_Json.getJSONObject(i).getString("Wcnr"));
@@ -798,7 +818,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         }
                         if (wcdDup_al.size() > 0) {
                             final Dialog aa = new Dialog(Orders_Create_Activity.this);
-                            aa.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                            aa.getWindow()
+                                    .setBackgroundDrawableResource(android.R.color.transparent);
                             aa.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             aa.setCancelable(false);
                             aa.setCanceledOnTouchOutside(false);
@@ -806,11 +827,11 @@ public class Orders_Create_Activity extends AppCompatActivity {
                             aa.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                             Button yes_button = (Button) aa.findViewById(R.id.yes_button);
                             Button no_button = (Button) aa.findViewById(R.id.no_button);
-                            TextView title_textView = (TextView) aa.findViewById(R.id.title_textview);
+                            TextView title_textView = aa.findViewById(R.id.title_textview);
                             TextView text_msg = (TextView) aa.findViewById(R.id.text_msg);
-                            RecyclerView list_recycleview = (RecyclerView) aa.findViewById(R.id.recyclerview);
+                            RecyclerView list_recycleview = aa.findViewById(R.id.recyclerview);
                             title_textView.setText(getString(R.string.open_iso));
-                            text_msg.setText("Do you want to continue?");
+                            text_msg.setText(getString(R.string.do_continue));
                             yes_button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -825,9 +846,12 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                 }
                             });
                             if (wcdDup_al.size() > 0) {
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Orders_Create_Activity.this);
+                                RecyclerView.LayoutManager layoutManager =
+                                        new LinearLayoutManager(Orders_Create_Activity.this);
                                 list_recycleview.setLayoutManager(layoutManager);
-                                WcdDupAdapter adapter = new WcdDupAdapter(Orders_Create_Activity.this, wcdDup_al);
+                                WcdDupAdapter adapter =
+                                        new WcdDupAdapter(Orders_Create_Activity.this,
+                                                wcdDup_al);
                                 list_recycleview.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                                 list_recycleview.setVisibility(View.VISIBLE);
@@ -835,7 +859,6 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                 list_recycleview.setVisibility(GONE);
                             }
                             aa.show();
-
                         }
                     }
                 } catch (Exception e) {
@@ -869,7 +892,8 @@ public class Orders_Create_Activity extends AppCompatActivity {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.wcd_dup_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.wcd_dup_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -890,7 +914,9 @@ public class Orders_Create_Activity extends AppCompatActivity {
 
     protected void animateFab(final boolean selected) {
         fab.clearAnimation();
-        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
         shrink.setDuration(150);     // animation duration in milliseconds
         shrink.setInterpolator(new DecelerateInterpolator());
         shrink.setAnimationListener(new Animation.AnimationListener() {
@@ -911,7 +937,9 @@ public class Orders_Create_Activity extends AppCompatActivity {
                 }
 
                 // Scale up animation
-                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                        0.5f);
                 expand.setDuration(100);     // animation duration in milliseconds
                 expand.setInterpolator(new AccelerateInterpolator());
                 fab.startAnimation(expand);
@@ -926,13 +954,14 @@ public class Orders_Create_Activity extends AppCompatActivity {
     }
 
     private void confirmationDialog(String message) {
-        final Dialog cancel_dialog = new Dialog(Orders_Create_Activity.this, R.style.PauseDialog);
+        final Dialog cancel_dialog = new Dialog(Orders_Create_Activity.this,
+                R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.network_error_dialog);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.ok_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.cancel_button);
@@ -1002,7 +1031,9 @@ public class Orders_Create_Activity extends AppCompatActivity {
     }
 
     public void updateTabDataCount() {
-        Orders_CR_Operation_Fragment operation_fragment = (Orders_CR_Operation_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
+        Orders_CR_Operation_Fragment operation_fragment =
+                (Orders_CR_Operation_Fragment) getSupportFragmentManager()
+                        .findFragmentByTag(makeFragmentName(R.id.order_vp, 1));
         if (operation_fragment.OperationsSize() > 0) {
             order_tl.getTabAt(1).setText(getString(R.string.operation_p, operation_fragment.OperationsSize()));
         } else {

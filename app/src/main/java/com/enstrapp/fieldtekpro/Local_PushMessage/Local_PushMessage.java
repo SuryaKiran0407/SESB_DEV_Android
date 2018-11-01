@@ -17,10 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Local_PushMessage
-{
-    public String send_local_pushmessage(Context context, String message)
-    {
+public class Local_PushMessage {
+    public String send_local_pushmessage(Context context, String message) {
         NotificationManager notificationManager;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder notificationBuilder;
@@ -41,7 +39,7 @@ public class Local_PushMessage
         notification.defaults |= Notification.DEFAULT_SOUND;
 
         Date now = new Date();
-        int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(now));
+        int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss", Locale.US).format(now));
 
         notificationManager.notify(id, notification);
         //For Local Notification Written by SUryaKiran

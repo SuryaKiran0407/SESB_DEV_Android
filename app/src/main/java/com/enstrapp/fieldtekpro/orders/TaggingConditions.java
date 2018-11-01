@@ -63,9 +63,11 @@ public class TaggingConditions extends AppCompatActivity implements View.OnClick
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -152,7 +154,7 @@ public class TaggingConditions extends AppCompatActivity implements View.OnClick
                 String tgproc = type_list.get(i).getTgproc().toLowerCase();
                 String unproc = type_list.get(i).getUnproc().toLowerCase();
                 String tgprocx = type_list.get(i).getTgprocx().toLowerCase();
-                if (tggrp.contains(query) || tgproc.contains(query)|| unproc.contains(query)|| tgprocx.contains(query)) {
+                if (tggrp.contains(query) || tgproc.contains(query) || unproc.contains(query) || tgprocx.contains(query)) {
                     Type_Object nto = new Type_Object(type_list.get(i).getIwerk().toString(), type_list.get(i).getTggrp().toString(),
                             type_list.get(i).getTgproc().toString(), type_list.get(i).getTgtyp().toString(),
                             type_list.get(i).getUnproc().toString(), type_list.get(i).getUntyp().toString(),
@@ -229,10 +231,10 @@ public class TaggingConditions extends AppCompatActivity implements View.OnClick
                     intent.putExtra("tgproc", holder.tagCond_tv.getText().toString());
                     intent.putExtra("unproc", holder.unTagCond_tv.getText().toString());
                     intent.putExtra("tgprox", holder.desc_tv.getText().toString());
-                    intent.putExtra("tgtyp", type_details_list.get((Integer)v.getTag()).getTgtyp());
-                    intent.putExtra("untyp", type_details_list.get((Integer)v.getTag()).getUntyp());
-                    intent.putExtra("phblflg", type_details_list.get((Integer)v.getTag()).getPhblflg());
-                    intent.putExtra("tgflg", type_details_list.get((Integer)v.getTag()).getTgflg());
+                    intent.putExtra("tgtyp", type_details_list.get((Integer) v.getTag()).getTgtyp());
+                    intent.putExtra("untyp", type_details_list.get((Integer) v.getTag()).getUntyp());
+                    intent.putExtra("phblflg", type_details_list.get((Integer) v.getTag()).getPhblflg());
+                    intent.putExtra("tgflg", type_details_list.get((Integer) v.getTag()).getTgflg());
                     setResult(RESULT_OK, intent);
                     TaggingConditions.this.finish();
                 }

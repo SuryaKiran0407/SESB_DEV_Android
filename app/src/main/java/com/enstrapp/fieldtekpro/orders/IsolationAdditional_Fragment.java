@@ -33,27 +33,27 @@ public class IsolationAdditional_Fragment extends Fragment {
         unTag_et = rootView.findViewById(R.id.unTag_et);
         tag_et = rootView.findViewById(R.id.tag_et);
 
-        if(ma.iso != null)
-            if(ma.iso.getTagText_al() != null){
-                if(ma.iso.getTagText_al().size() > 0){
+        if (ma.iso != null)
+            if (ma.iso.getTagText_al() != null) {
+                if (ma.iso.getTagText_al().size() > 0) {
                     tagTxt = new StringBuilder();
-                    for (OrdrTagUnTagTextPrcbl tut:ma.iso.getTagText_al()){
+                    for (OrdrTagUnTagTextPrcbl tut : ma.iso.getTagText_al()) {
                         tagTxt.append(tut.getTextLine());
                         tagTxt.append("\n");
                     }
-                    if(tagTxt != null)
+                    if (tagTxt != null)
                         tag_et.setText(tagTxt);
                 }
             }
-        if(ma.iso != null)
-            if(ma.iso.getUnTagText_al() != null){
-                if(ma.iso.getUnTagText_al().size() > 0){
+        if (ma.iso != null)
+            if (ma.iso.getUnTagText_al() != null) {
+                if (ma.iso.getUnTagText_al().size() > 0) {
                     unTagTxt = new StringBuilder();
-                    for (OrdrTagUnTagTextPrcbl tut:ma.iso.getUnTagText_al()){
+                    for (OrdrTagUnTagTextPrcbl tut : ma.iso.getUnTagText_al()) {
                         unTagTxt.append(tut.getTextLine());
                         unTagTxt.append("\n");
                     }
-                    if(unTagTxt != null)
+                    if (unTagTxt != null)
                         unTag_et.setText(unTagTxt);
                 }
             }
@@ -67,7 +67,7 @@ public class IsolationAdditional_Fragment extends Fragment {
                         String[] streets;
                         streets = tag_et.getText().toString().split("\n");
                         tag_al = new ArrayList<>();
-                        for(int i = 0;i < streets.length;i++){
+                        for (int i = 0; i < streets.length; i++) {
                             OrdrTagUnTagTextPrcbl tago = new OrdrTagUnTagTextPrcbl();
                             tago.setWcnr(ma.wcnr);
                             tago.setTextLine(streets[i]);
@@ -104,7 +104,7 @@ public class IsolationAdditional_Fragment extends Fragment {
                         String[] streets;
                         streets = unTag_et.getText().toString().split("\n");
                         unTag_al = new ArrayList<>();
-                        for(int i = 0;i < streets.length;i++){
+                        for (int i = 0; i < streets.length; i++) {
                             OrdrTagUnTagTextPrcbl tago = new OrdrTagUnTagTextPrcbl();
                             tago.setWcnr(ma.wcnr);
                             tago.setTextLine(streets[i]);
@@ -154,28 +154,28 @@ public class IsolationAdditional_Fragment extends Fragment {
         ma.fab.hide();
     }
 
-    public void refreshData(){
-        if(ma.iso != null)
-            if(ma.iso.getTagText_al() != null){
-                if(ma.iso.getTagText_al().size() > 0){
+    public void refreshData() {
+        if (ma.iso != null)
+            if (ma.iso.getTagText_al() != null) {
+                if (ma.iso.getTagText_al().size() > 0) {
                     tagTxt = new StringBuilder();
-                    for (OrdrTagUnTagTextPrcbl tut:ma.iso.getUnTagText_al()){
+                    for (OrdrTagUnTagTextPrcbl tut : ma.iso.getUnTagText_al()) {
                         tagTxt.append(tut.getTextLine());
                         tagTxt.append("\n");
                     }
-                    if(tagTxt != null)
+                    if (tagTxt != null)
                         tag_et.setText(tagTxt);
                 }
             }
-        if(ma.iso != null)
-            if(ma.iso.getUnTagText_al() != null){
-                if(ma.iso.getUnTagText_al().size() > 0){
+        if (ma.iso != null)
+            if (ma.iso.getUnTagText_al() != null) {
+                if (ma.iso.getUnTagText_al().size() > 0) {
                     unTagTxt = new StringBuilder();
-                    for (OrdrTagUnTagTextPrcbl tut:ma.iso.getUnTagText_al()){
+                    for (OrdrTagUnTagTextPrcbl tut : ma.iso.getUnTagText_al()) {
                         unTagTxt.append(tut.getTextLine());
                         unTagTxt.append("\n");
                     }
-                    if(unTagTxt != null)
+                    if (unTagTxt != null)
                         unTag_et.setText(unTagTxt);
                 }
             }

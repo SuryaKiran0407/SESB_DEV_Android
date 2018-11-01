@@ -47,7 +47,9 @@ public class Permit_Create_Change {
     private static String DATABASE_NAME = "";
     private static SharedPreferences app_sharedpreferences;
     private static SharedPreferences.Editor app_editor;
-    private static String cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "", Get_Data = "";
+    private static String cookie = "", token = "", password = "", url_link = "", username = "",
+            device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "",
+            Get_Data = "";
     private static Map<String, String> response = new HashMap<String, String>();
     private static Check_Empty checkempty = new Check_Empty();
     private static ArrayList<HashMap<String, String>> orders_uuid_list = new ArrayList<HashMap<String, String>>();
@@ -55,36 +57,50 @@ public class Permit_Create_Change {
     private static boolean success = false;
     private static String created_aufnr = "";
 
-    public static String[] Change_Permit(Activity activity, OrdrHeaderPrcbl ohp, String transmitType, String operation, String orderId, String type) {
+    public static String[] Change_Permit(Activity activity, OrdrHeaderPrcbl ohp, String transmitType,
+                                         String operation, String orderId, String type) {
         try {
             Get_Response = "";
             Get_Data = "";
             DATABASE_NAME = activity.getString(R.string.database_name);
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             /* Initializing Shared Preferences */
-            app_sharedpreferences = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            app_sharedpreferences = activity
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             app_editor = app_sharedpreferences.edit();
             username = app_sharedpreferences.getString("Username", null);
             password = app_sharedpreferences.getString("Password", null);
             token = app_sharedpreferences.getString("token", null);
             cookie = app_sharedpreferences.getString("cookie", null);
-            String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+            String webservice_type = app_sharedpreferences.getString("webservice_type",
+                    null);
             /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D8", "U", webservice_type});
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype =" +
+                            " ? and Zactivity = ? and Endpoint = ?",
+                    new String[]{"D8", "U", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure.getString(activity.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) |
+                            device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(120000, TimeUnit.SECONDS)
+                    .writeTimeout(120000, TimeUnit.SECONDS)
+                    .readTimeout(120000, TimeUnit.SECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
 
             /*For Send Data in POST Header*/
@@ -94,7 +110,6 @@ public class Permit_Create_Change {
             map.put("Accept", "application/json;odata=verbose");
             map.put("Content-Type", "application/json");
             /*For Send Data in POST Header*/
-
 
             ArrayList<IvMchkSer> IvMchk_Al = new ArrayList<>();
             ArrayList<OrdrHdrSer> ItOrderHeader_Al = new ArrayList<>();
@@ -114,179 +129,7 @@ public class Permit_Create_Change {
             ArrayList<OrdrWcmWagnsSer> ItWcmWcagns_Al = new ArrayList<>();
             ArrayList<OrdrDocSer> ItDocs_Al = new ArrayList<>();
 
-
             Cursor cursor1 = null;
-            /*OrdrHdrSer ordrHdrSer = new OrdrHdrSer();
-            ordrHdrSer.setAufnr(ohp.getOrdrId());
-            ordrHdrSer.setAuart(ohp.getOrdrTypId());
-            ordrHdrSer.setKtext(ohp.getOrdrShrtTxt());
-            ordrHdrSer.setIlart("");
-            ordrHdrSer.setErnam(username.toUpperCase().toString());
-            ordrHdrSer.setErdat(dateFormat(ohp.getBasicStart()));
-            ordrHdrSer.setPriok(ohp.getPriorityId());
-            ordrHdrSer.setEqunr(ohp.getEquipNum());
-            ordrHdrSer.setStrno(ohp.getFuncLocId());
-            ordrHdrSer.setTplnrInt(ohp.getFuncLocId());
-            ordrHdrSer.setBautl("");
-            ordrHdrSer.setGltrp(dateFormat(ohp.getBasicEnd()));
-            ordrHdrSer.setGstrp(dateFormat(ohp.getBasicStart()));
-            ordrHdrSer.setMsaus("");
-            ordrHdrSer.setAnlzu(ohp.getSysCondId());
-            ordrHdrSer.setAusvn("");
-            ordrHdrSer.setAusbs("");
-            ordrHdrSer.setQmnam("");
-            ordrHdrSer.setAuswk("");
-            ordrHdrSer.setParnrVw(ohp.getPerRespId());
-            ordrHdrSer.setNameVw(ohp.getPerRespName());
-            ordrHdrSer.setDocs("");
-            ordrHdrSer.setPermits("");
-            ordrHdrSer.setAltitude("");
-            ordrHdrSer.setLatitude("");
-            ordrHdrSer.setLongitude("");
-            ordrHdrSer.setQmnum(ohp.getNotifId());
-            ordrHdrSer.setQcreate("");
-            ordrHdrSer.setClosed("");
-            ordrHdrSer.setCompleted("");
-            ordrHdrSer.setWcm("");
-            ordrHdrSer.setWsm("");
-            ordrHdrSer.setIngrp(ohp.getPlnrGrpId());
-            ordrHdrSer.setArbpl(ohp.getWrkCntrId());
-            ordrHdrSer.setWerks(ohp.getPlant());
-            ordrHdrSer.setBemot("");
-            ordrHdrSer.setAueru("");
-            ordrHdrSer.setAuarttext(ohp.getOrdrTypName());
-            ordrHdrSer.setQmartx("");
-            ordrHdrSer.setQmtxt("");
-            ordrHdrSer.setPltxt(ohp.getFuncLocName());
-            ordrHdrSer.setEqktx(ohp.getEquipName());
-            ordrHdrSer.setPriokx(ohp.getPriorityTxt());
-            ordrHdrSer.setIlatx("");
-            ordrHdrSer.setPlantname(ohp.getPlantName());
-            ordrHdrSer.setWkctrname(ohp.getWrkCntrName());
-            ordrHdrSer.setIngrpname(ohp.getPlnrGrpName());
-            ordrHdrSer.setMaktx("");
-            ordrHdrSer.setAnlzux("");
-            ordrHdrSer.setXstatus("");
-            ordrHdrSer.setKokrs("");
-            ordrHdrSer.setKostl(ohp.getRespCostCntrId());
-            ordrHdrSer.setPosid(ohp.getPosid());
-            ordrHdrSer.setRevnr(ohp.getRevnr());
-            ordrHdrSer.setUsr01("");
-            ordrHdrSer.setUsr02("");
-            ordrHdrSer.setUsr03("");
-            ordrHdrSer.setUsr04("");
-            ordrHdrSer.setUsr05("");
-            ItOrderHeader_Al.add(ordrHdrSer);
-
-            if (ohp.getOrdrOprtnPrcbls() != null)
-                for (int i = 0; i < ohp.getOrdrOprtnPrcbls().size(); i++) {
-                    OrdrOprtnSer oprtnSer = new OrdrOprtnSer();
-                    oprtnSer.setAufnr(ohp.getOrdrOprtnPrcbls().get(i).getOrdrId());
-                    oprtnSer.setVornr(ohp.getOrdrOprtnPrcbls().get(i).getOprtnId());
-                    oprtnSer.setUvorn("");
-                    oprtnSer.setLtxa1(ohp.getOrdrOprtnPrcbls().get(i).getOprtnShrtTxt());
-                    oprtnSer.setArbpl(ohp.getOrdrOprtnPrcbls().get(i).getWrkCntrId());
-                    oprtnSer.setWerks(ohp.getOrdrOprtnPrcbls().get(i).getPlantId());
-                    oprtnSer.setSteus(ohp.getOrdrOprtnPrcbls().get(i).getCntrlKeyId());
-                    oprtnSer.setLarnt(ohp.getOrdrOprtnPrcbls().get(i).getLarnt());
-                    oprtnSer.setDauno(ohp.getOrdrOprtnPrcbls().get(i).getDuration());
-                    oprtnSer.setDaune(ohp.getOrdrOprtnPrcbls().get(i).getDurationUnit());
-                    oprtnSer.setFsavd(ohp.getOrdrOprtnPrcbls().get(i).getFsavd());
-                    oprtnSer.setSsedd(ohp.getOrdrOprtnPrcbls().get(i).getSsedd());
-                    oprtnSer.setPernr("");
-                    oprtnSer.setAsnum("");
-                    oprtnSer.setPlnty("");
-                    oprtnSer.setPlnal("");
-                    oprtnSer.setPlnnr("");
-                    oprtnSer.setRueck(ohp.getOrdrOprtnPrcbls().get(i).getRueck());
-                    oprtnSer.setAueru(ohp.getOrdrOprtnPrcbls().get(i).getAueru());
-                    oprtnSer.setArbplText(ohp.getOrdrOprtnPrcbls().get(i).getWrkCntrTxt());
-                    oprtnSer.setWerksText(ohp.getOrdrOprtnPrcbls().get(i).getPlantTxt());
-                    oprtnSer.setSteusText(ohp.getOrdrOprtnPrcbls().get(i).getCntrlKeyTxt());
-                    oprtnSer.setLarntText("");
-                    oprtnSer.setUsr01("");
-                    oprtnSer.setUsr02("");
-                    oprtnSer.setUsr03("");
-                    oprtnSer.setUsr04("");
-                    oprtnSer.setUsr05("");
-                    oprtnSer.setAction(ohp.getOrdrOprtnPrcbls().get(i).getStatus());
-                    ItOrderOperations_Al.add(oprtnSer);
-                }
-
-            if (ohp.getOrdrMatrlPrcbls() != null)
-                for (int i = 0; i < ohp.getOrdrMatrlPrcbls().size(); i++) {
-                    OrdrMatrlSer matrlSer = new OrdrMatrlSer();
-                    matrlSer.setAufnr(ohp.getOrdrMatrlPrcbls().get(i).getAufnr());
-                    matrlSer.setVornr(ohp.getOrdrMatrlPrcbls().get(i).getOprtnId());
-                    matrlSer.setUvorn("");
-                    matrlSer.setRsnum(ohp.getOrdrMatrlPrcbls().get(i).getRsnum());
-                    matrlSer.setRspos(ohp.getOrdrMatrlPrcbls().get(i).getRspos());
-                    matrlSer.setMatnr(ohp.getOrdrMatrlPrcbls().get(i).getMatrlId());
-                    matrlSer.setWerks(ohp.getOrdrMatrlPrcbls().get(i).getPlantId());
-                    matrlSer.setLgort(ohp.getOrdrMatrlPrcbls().get(i).getLocation());
-                    matrlSer.setPosnr(ohp.getOrdrMatrlPrcbls().get(i).getPartId());
-                    matrlSer.setBdmng(ohp.getOrdrMatrlPrcbls().get(i).getQuantity());
-                    matrlSer.setMeins(ohp.getOrdrMatrlPrcbls().get(i).getMeins());
-                    matrlSer.setPostp(ohp.getOrdrMatrlPrcbls().get(i).getPostp());
-                    matrlSer.setWempf(ohp.getOrdrMatrlPrcbls().get(i).getReceipt());
-                    matrlSer.setAblad(ohp.getOrdrMatrlPrcbls().get(i).getUnloading());
-                    matrlSer.setMatnrText(ohp.getOrdrMatrlPrcbls().get(i).getMatrlTxt());
-                    matrlSer.setWerksText(ohp.getOrdrMatrlPrcbls().get(i).getPlantTxt());
-                    matrlSer.setLgortText(ohp.getOrdrMatrlPrcbls().get(i).getLocationTxt());
-                    matrlSer.setPostpText(ohp.getOrdrMatrlPrcbls().get(i).getPostpTxt());
-                    matrlSer.setUsr01("");
-                    matrlSer.setUsr02("");
-                    matrlSer.setUsr03("");
-                    matrlSer.setUsr04("");
-                    matrlSer.setUsr05("");
-                    matrlSer.setAction(ohp.getOrdrMatrlPrcbls().get(i).getStatus());
-                    ItOrderComponents_Al.add(matrlSer);
-                }
-
-            if (ohp.getOrdrLngTxt() != null)
-                for (String lngTxt : ohp.getOrdrLngTxt().split("\n")) {
-                    OrdrLngTxtSer lngTxtSer = new OrdrLngTxtSer();
-                    lngTxtSer.setAufnr("");
-                    lngTxtSer.setActivity("");
-                    lngTxtSer.setTextLine(lngTxt);
-                    ItOrderLongtext_Al.add(lngTxtSer);
-                }
-
-            OrdrPermitSer permitSer = new OrdrPermitSer();
-            permitSer.setAufnr("");
-            permitSer.setVornr("");
-            permitSer.setPermit("");
-            permitSer.setGntxt("");
-            permitSer.setGntyp("");
-            permitSer.setRelease("");
-            permitSer.setComplete("");
-            permitSer.setNotRelevant("");
-            permitSer.setIssuedBy("");
-            permitSer.setUsr01("");
-            permitSer.setUsr02("");
-            permitSer.setUsr03("");
-            permitSer.setAction("");
-            ItOrderPermits_Al.add(permitSer);
-
-            if (ohp.getOrdrObjectPrcbls() != null)
-                for (int i = 0; i < ohp.getOrdrObjectPrcbls().size(); i++) {
-                    OrdrOlistSer olistSer = new OrdrOlistSer();
-                    olistSer.setAufnr(ohp.getOrdrObjectPrcbls().get(i).getAufnr());
-                    olistSer.setObknr(ohp.getOrdrObjectPrcbls().get(i).getObknr());
-                    olistSer.setObzae(ohp.getOrdrObjectPrcbls().get(i).getObzae());
-                    olistSer.setQmnum(ohp.getOrdrObjectPrcbls().get(i).getNotifNo());
-                    olistSer.setEqunr(ohp.getOrdrObjectPrcbls().get(i).getEquipId());
-                    olistSer.setStrno(ohp.getOrdrObjectPrcbls().get(i).getStrno());
-                    olistSer.setTplnr(ohp.getOrdrObjectPrcbls().get(i).getTplnr());
-                    olistSer.setBautl(ohp.getOrdrObjectPrcbls().get(i).getBautl());
-                    olistSer.setQmtxt(ohp.getOrdrObjectPrcbls().get(i).getQmtxt());
-                    olistSer.setPltxt(ohp.getOrdrObjectPrcbls().get(i).getPltxt());
-                    olistSer.setEqktx(ohp.getOrdrObjectPrcbls().get(i).getEquipTxt());
-                    olistSer.setMaktx(ohp.getOrdrObjectPrcbls().get(i).getMaktx());
-                    olistSer.setAction(ohp.getOrdrObjectPrcbls().get(i).getAction());
-                    ItOrderOlist_Al.add(olistSer);
-                }
-*/
             if (ohp.getOrdrStatusPrcbls() != null)
                 for (int i = 0; i < ohp.getOrdrStatusPrcbls().size(); i++) {
                     OrdrStatusSer statusSer = new OrdrStatusSer();
@@ -706,28 +549,6 @@ public class Permit_Create_Change {
                     ItWcmWwData_Al.add(wcmWwSer);
                 }
 
-
-                /*if (ohp.getOrdrDocsPrcbls() != null)
-                    for (int i = 0; i < ohp.getOrdrDocsPrcbls().size(); i++) {
-                        OrdrDocSer docSer = new OrdrDocSer();
-                        docSer.setObjtype(ohp.getOrdrDocsPrcbls().get(i).getObjtype());
-                        docSer.setZobjid(ohp.getOrdrDocsPrcbls().get(i).getZobjid());
-                        docSer.setZdoctype(ohp.getOrdrDocsPrcbls().get(i).getZdoctype());
-                        docSer.setZdoctypeItem(ohp.getOrdrDocsPrcbls().get(i).getZdoctypeItem());
-                        docSer.setFilename(ohp.getOrdrDocsPrcbls().get(i).getFilename());
-                        docSer.setFiletype(ohp.getOrdrDocsPrcbls().get(i).getFiletype());
-                        docSer.setFsize(ohp.getOrdrDocsPrcbls().get(i).getFsize());
-                        docSer.setContent(ohp.getOrdrDocsPrcbls().get(i).getContent());
-                        docSer.setDocId(ohp.getOrdrDocsPrcbls().get(i).getDocId());
-                        docSer.setDocType(ohp.getOrdrDocsPrcbls().get(i).getDocType());
-                        ItDocs_Al.add(docSer);
-                    }*/
-
-            /*OrdrGeoSer geoSer = new OrdrGeoSer();
-            geoSer.setLatitude("");
-            geoSer.setLongitude("");
-            geoSer.setAltitude("");*/
-
             /*Adding Empty_Al to Arraylist*/
             ArrayList Empty_Al = new ArrayList<>();
             ArrayList<EtWcmWdDataSer> etWcmWdDataSers = new ArrayList<>();
@@ -759,13 +580,6 @@ public class Permit_Create_Change {
             prmtSr.setItWcmWdItemData(ItWcmWdItemData_Al);
             prmtSr.setItWcmWcagns(ItWcmWcagns_Al);
             prmtSr.setItDocs(ItDocs_Al);
-//            ordrSer.setIsGeo(IsGeo_Al);
-           /* prmtSr.setEsAufnr(Empty_Al);
-            prmtSr.setEtOrderHeader(Empty_Al);
-            prmtSr.setEtOrderOperations(Empty_Al);
-            prmtSr.setEtOrderLongtext(Empty_Al);
-            prmtSr.setItOrderPermits(Empty_Al);
-            prmtSr.setEtOrderOlist(Empty_Al);*/
             prmtSr.setEtOrderStatus(Empty_Al);
             prmtSr.setEtDocs(Empty_Al);
             prmtSr.setEtWcmWwData(Empty_Al);
@@ -798,14 +612,6 @@ public class Permit_Create_Change {
                     /*Converting Response JSON Data to JSONArray for Reading*/
                     try {
                         JSONObject jsonObject = new JSONObject(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-
-                    /*Reading Data by using FOR Loop*/
-                    /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                        *//*Reading Data by using FOR Loop*//*
-                        JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
-*/
-
                         success = false;
                         message = new StringBuffer();
                         if (operation.equals("CRORD")) {
@@ -828,10 +634,9 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                     success = false;
                                 }
+                                /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
-
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                                /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             }
                         } else {
                             if (jsonObject.has("EtMessages")) {
@@ -900,22 +705,16 @@ public class Permit_Create_Change {
                                     }
                                 } catch (Exception e) {
                                     success = false;
-                                    Log.v("message_e",""+e.getMessage());
+                                    Log.v("message_e", "" + e.getMessage());
                                 }
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                                /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                                /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             }
                         }
 
                         if (success) {
-                            /*if (jsonObject.has("EtOrderHeader")) {
-                                try {
-                                    String EtOrderHeader_response_data = new Gson().toJson(rs.getD().getEtOrderHeader().getResults());
-                                    JSONArray jsonArray = new JSONArray(EtOrderHeader_response_data);*/
-                                   /* for (int j = 0; j < jsonArray.length(); j++) {
-                                        String Aufnr = jsonArray.getJSONObject(j).optString("Aufnr");*/
                             HashMap<String, String> uuid_hashmap = new HashMap<String, String>();
                             Cursor cursor2 = null;
                             try {
@@ -935,15 +734,11 @@ public class Permit_Create_Change {
                                     cursor2.close();
                             }
                             orders_uuid_list.add(uuid_hashmap);
-                                   /* }
-                                } catch (Exception e) {
-                                }
-                            }*/
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
                             App_db.beginTransaction();
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
                             if (jsonObject.has("EtOrderHeader")) {
 
                                 try {
@@ -1027,10 +822,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
                             if (jsonObject.has("EtOrderOperations")) {
                                 try {
                                     String EtOrderOperations_response_data = new Gson().toJson(rs.getD().getEtOrderOperations().getResults());
@@ -1086,10 +881,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
                             if (jsonObject.has("EtOrderLongtext")) {
                                 try {
                                     String EtOrderLongtext_response_data = new Gson().toJson(rs.getD().getEtOrderLongtext().getResults());
@@ -1119,10 +914,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
                             if (jsonObject.has("EtOrderOlist")) {
                                 try {
                                     String EtOrderOlist_response_data = new Gson().toJson(rs.getD().getEtOrderOlist().getResults());
@@ -1162,10 +957,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
                             if (jsonObject.has("EtOrderStatus")) {
                                 try {
                                     String EtOrderStatus_response_data = new Gson().toJson(rs.getD().getEtOrderStatus().getResults());
@@ -1205,10 +1000,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
                             if (jsonObject.has("EtDocs")) {
                                 try {
                                     String EtDocs_response_data = new Gson().toJson(rs.getD().getEtDocs().getResults());
@@ -1236,10 +1031,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
                             if (jsonObject.has("EtWcmWwData")) {
                                 try {
                                     String EtWcmWwData_response_data = new Gson().toJson(rs.getD().getEtWcmWwData().getResults());
@@ -1296,10 +1091,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
 
 
-                         /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
                             if (jsonObject.has("EtWcmWaData")) {
                                 try {
                                     String EtWcmWaData_response_data = new Gson().toJson(rs.getD().getEtWcmWaData().getResults());
@@ -1358,10 +1153,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
                             if (jsonObject.has("EtWcmWaChkReq")) {
                                 try {
                                     String EtWcmWaChkReq_response_data = new Gson().toJson(rs.getD().getEtWcmWaChkReq().getResults());
@@ -1390,10 +1185,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                             if (jsonObject.has("EtWcmWdData")) {
                                 try {
                                     String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getEtWcmWdData().getResults());
@@ -1482,10 +1277,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                             if (jsonObject.has("EtWcmWdItemData")) {
                                 try {
                                     String EtWcmWdItemData_response_data = new Gson().toJson(rs.getD().getEtWcmWdItemData().getResults());
@@ -1538,10 +1333,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
                             if (jsonObject.has("EtWcmWcagns")) {
                                 try {
                                     String EtWcmWcagns_response_data = new Gson().toJson(rs.getD().getEtWcmWcagns().getResults());
@@ -1594,10 +1389,10 @@ public class Permit_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                            /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             if (jsonObject.has("EtOrderComponents")) {
                                 try {
                                     String EtOrderComponents_response_data = new Gson().toJson(rs.getD().getEtOrderComponents().getResults());
@@ -1677,11 +1472,11 @@ public class Permit_Create_Change {
                     /*Reading Data by using FOR Loop*/
                 }
             } else {
-                Get_Response = "Unable to Process your request. Please try again.";
+                Get_Response = activity.getString(R.string.unble_to_process);
             }
         } catch (Exception e) {
             Log.v("kiran_ee", e.getMessage() + "...");
-            Get_Response = "Unable to Process your request. Please try again.";
+            Get_Response = activity.getString(R.string.unble_to_process);
         }
         String[] response = new String[2];
         response[0] = Get_Response;

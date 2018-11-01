@@ -66,13 +66,11 @@ public class Orders_CH_Object_Fragment extends Fragment {
         if (!getUserVisibleHint())
             return;
 
-        String auth_status = Authorizations.Get_Authorizations_Data(getActivity(),"W","U");
-        if (auth_status.equalsIgnoreCase("true"))
-        {
+        String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "W",
+                "U");
+        if (auth_status.equalsIgnoreCase("true")) {
             ma.fab.show();
-        }
-        else
-        {
+        } else {
             ma.fab.hide();
         }
 
@@ -128,7 +126,8 @@ public class Orders_CH_Object_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_object_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.orders_object_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -146,5 +145,4 @@ public class Orders_CH_Object_Fragment extends Fragment {
             return objectList.size();
         }
     }
-
 }

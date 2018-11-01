@@ -51,15 +51,15 @@ public class Material_Components_Activity extends AppCompatActivity {
             iwerk = bundle.getString("iwerk");
         }
 
-
         DATABASE_NAME = getString(R.string.database_name);
-        FieldTekPro_db = Material_Components_Activity.this.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-
+        FieldTekPro_db = Material_Components_Activity.this.openOrCreateDatabase(DATABASE_NAME,
+                Context.MODE_PRIVATE, null);
 
         bom_list = new ArrayList<>();
         general_list = new ArrayList<>();
         try {
-            Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?", new String[]{equip});
+            Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?",
+                    new String[]{equip});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -74,9 +74,9 @@ public class Material_Components_Activity extends AppCompatActivity {
         }
         unreadCount[0] = bom_list.size();
 
-
         try {
-            Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks = ?", new String[]{iwerk});
+            Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks" +
+                    " = ?", new String[]{iwerk});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -87,7 +87,8 @@ public class Material_Components_Activity extends AppCompatActivity {
             } else {
                 cursor.close();
                 try {
-                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA", null);
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA",
+                            null);
                     if (cursor1 != null && cursor1.getCount() > 0) {
                         if (cursor1.moveToFirst()) {
                             do {
@@ -113,12 +114,9 @@ public class Material_Components_Activity extends AppCompatActivity {
 
         setupViewPager(matrl_vp);
 
-        try
-        {
+        try {
             setupTabIcons();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
 
         matrl_vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -139,7 +137,6 @@ public class Material_Components_Activity extends AppCompatActivity {
             }
         });
 
-
         setCustomFont(matrl_tl);
 
         back_iv.setOnClickListener(new View.OnClickListener() {
@@ -159,12 +156,12 @@ public class Material_Components_Activity extends AppCompatActivity {
             for (int i = 0; i < tabChildsCount; i++) {
                 View tabViewChild = vgTab.getChildAt(i);
                 if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/metropolis_medium.ttf"));
+                    ((TextView) tabViewChild).setTypeface(Typeface.createFromAsset(getAssets(),
+                            "fonts/metropolis_medium.ttf"));
                 }
             }
         }
     }
-
 
     private void setupViewPager(final ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -196,25 +193,17 @@ public class Material_Components_Activity extends AppCompatActivity {
         }
     }
 
-
-
-    public void refreshMyData(int size)
-    {
+    public void refreshMyData(int size) {
         View view1 = LayoutInflater.from(Material_Components_Activity.this).inflate(R.layout.custom_tab, null);
         TextView tv_title1 = (TextView) view1.findViewById(R.id.tv_title);
         TextView badgeTv1 = (TextView) view1.findViewById(R.id.tv_count);
         tv_title1.setText("General");
-        badgeTv1.setText("("+size+")");
+        badgeTv1.setText("(" + size + ")");
         matrl_tl.getTabAt(1).setCustomView(null);
         matrl_tl.getTabAt(1).setCustomView(view1);
     }
 
-
-    private static String makeFragmentName(int viewPagerId, int index)
-    {
+    private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
-
-
-
 }

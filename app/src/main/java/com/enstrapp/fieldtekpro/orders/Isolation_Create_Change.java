@@ -933,11 +933,11 @@ public class Isolation_Create_Change {
                     /*Converting Response JSON Data to JSONArray for Reading*/
                     try {
                         JSONObject jsonObject = new JSONObject(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
+                        /*Converting Response JSON Data to JSONArray for Reading*/
 
-                    /*Reading Data by using FOR Loop*/
-                    /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                        *//*Reading Data by using FOR Loop*//*
+                        /*Reading Data by using FOR Loop*/
+                        /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
+                         *//*Reading Data by using FOR Loop*//*
                         JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
 */
 
@@ -964,9 +964,9 @@ public class Isolation_Create_Change {
                                     success = false;
                                 }
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                                /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                                /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             }
                         } else {
                             if (jsonObject.has("EtMessages")) {
@@ -1022,9 +1022,9 @@ public class Isolation_Create_Change {
                                     success = false;
                                 }
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                                /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                                /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             }
                         }
 
@@ -1058,11 +1058,11 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }*/
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
                             App_db.beginTransaction();
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
                             if (jsonObject.has("EtOrderHeader")) {
 
                                 try {
@@ -1146,10 +1146,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
                             if (jsonObject.has("EtOrderOperations")) {
                                 try {
                                     String EtOrderOperations_response_data = new Gson().toJson(rs.getD().getEtOrderOperations().getResults());
@@ -1205,10 +1205,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
                             if (jsonObject.has("EtOrderLongtext")) {
                                 try {
                                     String EtOrderLongtext_response_data = new Gson().toJson(rs.getD().getEtOrderLongtext().getResults());
@@ -1238,9 +1238,9 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
                             if (jsonObject.has("EtOrderOlist")) {
                                 try {
                                     String EtOrderOlist_response_data = new Gson().toJson(rs.getD().getEtOrderOlist().getResults());
@@ -1280,10 +1280,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
                             if (jsonObject.has("EtOrderStatus")) {
                                 try {
                                     String EtOrderStatus_response_data = new Gson().toJson(rs.getD().getEtOrderStatus().getResults());
@@ -1323,10 +1323,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
                             if (jsonObject.has("EtDocs")) {
                                 try {
                                     String EtDocs_response_data = new Gson().toJson(rs.getD().getEtDocs().getResults());
@@ -1354,10 +1354,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
                             if (jsonObject.has("EtWcmWwData")) {
                                 try {
                                     String EtWcmWwData_response_data = new Gson().toJson(rs.getD().getEtWcmWwData().getResults());
@@ -1414,10 +1414,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
 
 
-                         /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
                             if (jsonObject.has("EtWcmWaData")) {
                                 try {
                                     String EtWcmWaData_response_data = new Gson().toJson(rs.getD().getEtWcmWaData().getResults());
@@ -1476,10 +1476,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
                             if (jsonObject.has("EtWcmWaChkReq")) {
                                 try {
                                     String EtWcmWaChkReq_response_data = new Gson().toJson(rs.getD().getEtWcmWaChkReq().getResults());
@@ -1508,10 +1508,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                             if (jsonObject.has("EtWcmWdData")) {
                                 try {
                                     String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getEtWcmWdData().getResults());
@@ -1600,10 +1600,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                             if (jsonObject.has("EtWcmWdItemData")) {
                                 try {
                                     String EtWcmWdItemData_response_data = new Gson().toJson(rs.getD().getEtWcmWdItemData().getResults());
@@ -1656,10 +1656,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
                             if (jsonObject.has("EtWcmWcagns")) {
                                 try {
                                     String EtWcmWcagns_response_data = new Gson().toJson(rs.getD().getEtWcmWcagns().getResults());
@@ -1712,10 +1712,10 @@ public class Isolation_Create_Change {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                            /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             if (jsonObject.has("EtOrderComponents")) {
                                 try {
                                     String EtOrderComponents_response_data = new Gson().toJson(rs.getD().getEtOrderComponents().getResults());
@@ -1795,14 +1795,13 @@ public class Isolation_Create_Change {
                     /*Reading Data by using FOR Loop*/
                 }
             } else {
-                Get_Response = "Unable to Process your request. Please try again.";
+                Get_Response = activity.getString(R.string.unble_to_process);
             }
-        } catch (
-                Exception e)
+        } catch (Exception e)
 
         {
             Log.v("kiran_ee", e.getMessage() + "...");
-            Get_Response = "Unable to Process your request. Please try again.";
+            Get_Response = activity.getString(R.string.unble_to_process);
         }
 
         String[] response = new String[2];

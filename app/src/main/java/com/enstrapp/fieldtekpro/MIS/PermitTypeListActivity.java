@@ -1,7 +1,5 @@
 package com.enstrapp.fieldtekpro.MIS;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +11,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +25,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.R;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -189,10 +188,10 @@ public class PermitTypeListActivity extends AppCompatActivity {
 
         if (wapinr_list_c.size() > 0) {
             int c = 1;
-            for (int i = 0; i < wapinr_list_c.size(); i++){
-                if(EtPermitWd.size() > 0){
-                    for (int j = 0; j < EtPermitWd.size(); j++){
-                        if(EtPermitWd.get(j).getWapinr().equals(wapinr_list_c.get(i))){
+            for (int i = 0; i < wapinr_list_c.size(); i++) {
+                if (EtPermitWd.size() > 0) {
+                    for (int j = 0; j < EtPermitWd.size(); j++) {
+                        if (EtPermitWd.get(j).getWapinr().equals(wapinr_list_c.get(i))) {
                             Mis_EtPermitWd_Object wd = new Mis_EtPermitWd_Object();
                             wd.setSNo(String.valueOf(c) + ") ");
                             wd.setAufnr(EtPermitWd.get(j).getAufnr());
@@ -215,29 +214,27 @@ public class PermitTypeListActivity extends AppCompatActivity {
 
         }
 
-if(EtPermitWd_f.size()>0)
-        {
+        if (EtPermitWd_f.size() > 0) {
 
-        permit_wd_adapter = new PERMIT_WD_ADAPTER(PermitTypeListActivity.this, EtPermitWd_f);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        listView.setLayoutManager(mLayoutManager);
-        listView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.setItemAnimator(null);
-        listView.setAdapter(permit_wd_adapter);
+            permit_wd_adapter = new PERMIT_WD_ADAPTER(PermitTypeListActivity.this, EtPermitWd_f);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            listView.setLayoutManager(mLayoutManager);
+            listView.setItemAnimator(new DefaultItemAnimator());
+            //recyclerView.setItemAnimator(null);
+            listView.setAdapter(permit_wd_adapter);
             search.setVisibility(View.VISIBLE);
             progressdialog.dismiss();
        /* listView.setVisibility(View.VISIBLE);
         no_data.setVisibility(View.GONE);*/
 
+        } else {
+            listView.setVisibility(View.GONE);
+            no_data.setVisibility(View.VISIBLE);
+            search.setVisibility(View.GONE);
+            progressdialog.dismiss();
+        }
     }
-    else
-{
-    listView.setVisibility(View.GONE);
-    no_data.setVisibility(View.VISIBLE);
-    search.setVisibility(View.GONE);
-    progressdialog.dismiss();
-}
-}
+
     public class PERMIT_WD_ADAPTER extends RecyclerView.Adapter<PERMIT_WD_ADAPTER.ViewHolder> {
 
         Context mContext;

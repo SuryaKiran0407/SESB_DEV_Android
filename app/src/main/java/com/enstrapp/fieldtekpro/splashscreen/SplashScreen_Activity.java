@@ -12,8 +12,7 @@ import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.login.Login_Activity;
 
 
-public class SplashScreen_Activity extends AppCompatActivity
-{
+public class SplashScreen_Activity extends AppCompatActivity {
 
     /*Splash screen timer*/
     private static int SPLASH_TIME_OUT = 3000;
@@ -25,8 +24,7 @@ public class SplashScreen_Activity extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen_activity);
 
@@ -34,7 +32,7 @@ public class SplashScreen_Activity extends AppCompatActivity
         /* Initializing Shared Preferences */
         FieldTekPro_SharedPref = getApplicationContext().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
-		/* Initializing Shared Preferences */
+        /* Initializing Shared Preferences */
 
 
         DATABASE_NAME = getString(R.string.database_name);
@@ -42,8 +40,7 @@ public class SplashScreen_Activity extends AppCompatActivity
 
 
         String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
-        if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals(""))
-        {
+        if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
             startService(new Intent(this, Auto_Sync_BackgroundService.class));
             /*ArrayList<String> alertlog_list = new ArrayList<String>();
             try
@@ -79,13 +76,11 @@ public class SplashScreen_Activity extends AppCompatActivity
             }*/
         }
 
-         /*Handler to execute timer and navigate to login activity*/
-        new Handler().postDelayed(new Runnable()
-        {
+        /*Handler to execute timer and navigate to login activity*/
+        new Handler().postDelayed(new Runnable() {
             /*Showing splash screen with a timer. This will be useful when you want to show case your app logo / company */
             @Override
-            public void run()
-            {
+            public void run() {
                 /*This method will be executed once the timer is over.*/
                 /*Navigating to Login Activity*/
                 Intent splash_login_intent = new Intent(SplashScreen_Activity.this, Login_Activity.class);

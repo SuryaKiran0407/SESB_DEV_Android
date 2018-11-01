@@ -5,11 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.enstrapp.fieldtekpro.R;
+
 public class PermitTabAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
-    private String tabTitles[] = new String[]{"Permit Status", "Approval Status"};
+    private String tabTitles[] = new String[]{mContext.getString(R.string.perm_stats),
+            mContext.getString(R.string.appr_stats)};
 
     public PermitTabAdapter(Context context, FragmentManager fm) {
         super(fm);

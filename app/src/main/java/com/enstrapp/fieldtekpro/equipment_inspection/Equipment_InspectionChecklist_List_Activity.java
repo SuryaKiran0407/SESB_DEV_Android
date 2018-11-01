@@ -55,8 +55,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivity implements View.OnClickListener
-{
+public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivity implements View.OnClickListener {
 
     String equipment_id = "";
     TextView title_textview, searchview_textview, no_data_textview;
@@ -85,90 +84,79 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.equipment_inspectionchecklist_list_activity);
 
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             equipment_id = extras.getString("equipment_id");
         }
 
 
-        title_textview = (TextView)findViewById(R.id.title_textview);
-        back_imageview = (ImageView)findViewById(R.id.back_imageview);
-        search = (SearchView)findViewById( R.id.search);
-        swiperefreshlayout = (SwipeRefreshLayout)findViewById(R.id.swiperefreshlayout);
-        list_recycleview = (RecyclerView)findViewById(R.id.history_list_recycleview);
-        no_data_textview = (TextView)findViewById(R.id.no_data_textview);
-        refresh_fab_button = (FloatingActionButton)findViewById(R.id.refresh_fab_button);
-        start_insp_button = (FloatingActionButton)findViewById(R.id.start_insp_button);
+        title_textview = (TextView) findViewById(R.id.title_textview);
+        back_imageview = (ImageView) findViewById(R.id.back_imageview);
+        search = (SearchView) findViewById(R.id.search);
+        swiperefreshlayout = (SwipeRefreshLayout) findViewById(R.id.swiperefreshlayout);
+        list_recycleview = (RecyclerView) findViewById(R.id.history_list_recycleview);
+        no_data_textview = (TextView) findViewById(R.id.no_data_textview);
+        refresh_fab_button = (FloatingActionButton) findViewById(R.id.refresh_fab_button);
+        start_insp_button = (FloatingActionButton) findViewById(R.id.start_insp_button);
         no_data_layout = (LinearLayout) findViewById(R.id.no_data_layout);
-        floatingActionMenu = (FloatingActionMenu)findViewById(R.id.floatingActionMenu);
+        floatingActionMenu = (FloatingActionMenu) findViewById(R.id.floatingActionMenu);
 
 
-        int id = search.getContext() .getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(Equipment_InspectionChecklist_List_Activity.this.getAssets(),"fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(Equipment_InspectionChecklist_List_Activity.this.getAssets(), "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.white));
         search.setBaselineAligned(false);
         searchview_textview.setTypeface(myCustomFont);
         searchview_textview.setTextSize(16);
-        EditText searchEditText = (EditText)search.findViewById(id);
+        EditText searchEditText = (EditText) search.findViewById(id);
         searchEditText.setTextColor(getResources().getColor(R.color.black));
         searchEditText.setHintTextColor(getResources().getColor(R.color.dark_grey2));
 
 
         DATABASE_NAME = Equipment_InspectionChecklist_List_Activity.this.getString(R.string.database_name);
-        FieldTekPro_db = Equipment_InspectionChecklist_List_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+        FieldTekPro_db = Equipment_InspectionChecklist_List_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
 
-        swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
+        swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh()
-            {
+            public void onRefresh() {
                 Refresh_Data();
             }
         });
 
 
-        swiperefreshlayout.setColorSchemeResources(R.color.red,R.color.lime,R.color.colorAccent,R.color.red,R.color.blue,R.color.black,R.color.orange);
+        swiperefreshlayout.setColorSchemeResources(R.color.red, R.color.lime, R.color.colorAccent, R.color.red, R.color.blue, R.color.black, R.color.orange);
 
 
-        refresh_fab_button.setOnClickListener(new View.OnClickListener()
-        {
+        refresh_fab_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 floatingActionMenu.close(true);
                 Refresh_Data();
             }
         });
 
 
-        String auth_status = Authorizations.Get_Authorizations_Data(Equipment_InspectionChecklist_List_Activity.this,"I","PS");
-        if (auth_status.equalsIgnoreCase("true"))
-        {
+        String auth_status = Authorizations.Get_Authorizations_Data(Equipment_InspectionChecklist_List_Activity.this, "I", "PS");
+        if (auth_status.equalsIgnoreCase("true")) {
             start_insp_button.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             start_insp_button.setVisibility(View.GONE);
         }
 
-        start_insp_button.setOnClickListener(new View.OnClickListener()
-        {
+        start_insp_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 floatingActionMenu.close(true);
                 Intent intent = new Intent(Equipment_InspectionChecklist_List_Activity.this, Equipment_StartInspection_Activity.class);
-                intent.putExtra("equipment_id",equipment_id);
+                intent.putExtra("equipment_id", equipment_id);
                 startActivity(intent);
             }
         });
@@ -180,28 +168,22 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
 
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         cd = new ConnectionDetector(getApplicationContext());
         isInternetPresent = cd.isConnectingToInternet();
-        if (isInternetPresent)
-        {
+        if (isInternetPresent) {
             new Get_History_Data().execute();
-        }
-        else
-        {
+        } else {
             network_connection_dialog.show_network_connection_dialog(Equipment_InspectionChecklist_List_Activity.this);
         }
     }
 
 
-    public void Refresh_Data()
-    {
+    public void Refresh_Data() {
         cd = new ConnectionDetector(Equipment_InspectionChecklist_List_Activity.this);
         isInternetPresent = cd.isConnectingToInternet();
-        if (isInternetPresent)
-        {
+        if (isInternetPresent) {
             decision_dialog = new Dialog(Equipment_InspectionChecklist_List_Activity.this);
             decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -209,65 +191,56 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
             decision_dialog.setCanceledOnTouchOutside(false);
             decision_dialog.setContentView(R.layout.decision_dialog);
             ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
-            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
+            TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
             Glide.with(Equipment_InspectionChecklist_List_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
-            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-            description_textview.setText("All Relavent Data will be loaded from server. Do you want to continue?");
+            Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+            Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+            description_textview.setText(getString(R.string.refresh_text));
             decision_dialog.show();
-            cancel.setOnClickListener(new View.OnClickListener()
-            {
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     decision_dialog.dismiss();
                     swiperefreshlayout.setRefreshing(false);
                 }
             });
-            confirm.setOnClickListener(new View.OnClickListener()
-            {
+            confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     decision_dialog.dismiss();
                     swiperefreshlayout.setRefreshing(false);
                     new Get_History_Data().execute();
                 }
             });
-        }
-        else
-        {
+        } else {
             swiperefreshlayout.setRefreshing(false);
             network_connection_dialog.show_network_connection_dialog(Equipment_InspectionChecklist_List_Activity.this);
         }
     }
 
 
-    public class Get_History_Data extends AsyncTask<Void, Integer, Void>
-    {
+    public class Get_History_Data extends AsyncTask<Void, Integer, Void> {
         String url_link = "";
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Equipment_InspectionChecklist_List_Activity.this,getResources().getString(R.string.loading_insp_checklist));
+            custom_progress_dialog.show_progress_dialog(Equipment_InspectionChecklist_List_Activity.this, getResources().getString(R.string.loading_insp_checklist));
             history_list.clear();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 /* Initializing Shared Preferences */
                 app_sharedpreferences = Equipment_InspectionChecklist_List_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
                 app_editor = app_sharedpreferences.edit();
-                username = app_sharedpreferences.getString("Username",null);
-                password = app_sharedpreferences.getString("Password",null);
-                String webservice_type = app_sharedpreferences.getString("webservice_type",null);
+                username = app_sharedpreferences.getString("Username", null);
+                password = app_sharedpreferences.getString("Password", null);
+                String webservice_type = app_sharedpreferences.getString("webservice_type", null);
                 /* Initializing Shared Preferences */
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"EI", "RD", webservice_type});
-                if (cursor != null && cursor.getCount() > 0)
-                {
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"EI", "RD", webservice_type});
+                if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
                 }
@@ -288,26 +261,21 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
                 Call<Equipment_InspChk_SER> call = service.getINSPListData(url_link, basic, map);
                 response = call.execute();
                 response_status_code = response.code();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(response_status_code == 200)
-            {
-                if (response.isSuccessful() && response.body() != null)
-                {
-                    try
-                    {
+            if (response_status_code == 200) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
                         /*Reading Response Data and Parsing to Serializable*/
                         Equipment_InspChk_SER rs = response.body();
                         /*Reading Response Data and Parsing to Serializable*/
@@ -320,46 +288,34 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
                         JSONArray response_data_jsonArray = new JSONArray(response_data);
                         /*Converting Response JSON Data to JSONArray for Reading*/
 
-                         /*Reading Data by using FOR Loop*/
-                        if(response_data_jsonArray.length() > 0)
-                        {
-                            for(int i = 0; i < response_data_jsonArray.length(); i++)
-                            {
+                        /*Reading Data by using FOR Loop*/
+                        if (response_data_jsonArray.length() > 0) {
+                            for (int i = 0; i < response_data_jsonArray.length(); i++) {
                                 JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
                                 String date = jsonObject.optString("Idate");
                                 String date_formateed = "";
-                                if (date != null && !date.equals(""))
-                                {
-                                    if (date.equals("00000000"))
-                                    {
+                                if (date != null && !date.equals("")) {
+                                    if (date.equals("00000000")) {
                                         date_formateed = "";
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
                                         DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
                                         Date date1;
-                                        try
-                                        {
+                                        try {
                                             date1 = inputFormat.parse(date);
                                             String outputDateStr = outputFormat.format(date1);
                                             date_formateed = outputDateStr;
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                             date_formateed = "";
                                         }
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                     date_formateed = "";
                                 }
                                 History_List_Object olo = new History_List_Object(jsonObject.optString("Mdocm"), jsonObject.optString("Point"), jsonObject.optString("Pttxt"), date_formateed, jsonObject.optString("Readc"), jsonObject.optString("Desic"), jsonObject.optString("Msehl"), jsonObject.optString("Readr"), jsonObject.optString("Vlcod"), jsonObject.optString("Mdtxt"));
                                 history_list.add(olo);
                             }
-                            if(history_list.size() > 0)
-                            {
+                            if (history_list.size() > 0) {
                                 history_adapter = new History_Adapter(Equipment_InspectionChecklist_List_Activity.this, history_list);
                                 list_recycleview.setHasFixedSize(true);
                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Equipment_InspectionChecklist_List_Activity.this);
@@ -370,23 +326,19 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
                                 no_data_textview.setVisibility(View.GONE);
                                 search.setVisibility(View.VISIBLE);
                                 swiperefreshlayout.setVisibility(View.VISIBLE);
-                                title_textview.setText(getString(R.string.insp_clist)+" : "+equipment_id+" ("+history_list.size()+")");
+                                title_textview.setText(getString(R.string.insp_clist) + " : " + equipment_id + " (" + history_list.size() + ")");
                                 custom_progress_dialog.dismiss_progress_dialog();
                                 no_data_layout.setVisibility(View.GONE);
-                            }
-                            else
-                            {
-                                title_textview.setText(getString(R.string.insp_clist)+" : "+equipment_id+" (0)");
+                            } else {
+                                title_textview.setText(getString(R.string.insp_clist) + " : " + equipment_id + " (0)");
                                 no_data_textview.setVisibility(View.VISIBLE);
                                 search.setVisibility(View.GONE);
                                 swiperefreshlayout.setVisibility(View.GONE);
                                 custom_progress_dialog.dismiss_progress_dialog();
                                 no_data_layout.setVisibility(View.VISIBLE);
                             }
-                        }
-                        else
-                        {
-                            title_textview.setText(getString(R.string.insp_clist)+" (0)");
+                        } else {
+                            title_textview.setText(getString(R.string.insp_clist) + " (0)");
                             no_data_textview.setVisibility(View.VISIBLE);
                             search.setVisibility(View.GONE);
                             swiperefreshlayout.setVisibility(View.GONE);
@@ -394,15 +346,11 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
                             custom_progress_dialog.dismiss_progress_dialog();
                         }
                         /*Reading Data by using FOR Loop*/
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
-            }
-            else
-            {
-                title_textview.setText(getString(R.string.insp_clist)+" : "+equipment_id+" (0)");
+            } else {
+                title_textview.setText(getString(R.string.insp_clist) + " : " + equipment_id + " (0)");
                 no_data_textview.setVisibility(View.VISIBLE);
                 search.setVisibility(View.GONE);
                 swiperefreshlayout.setVisibility(View.GONE);
@@ -413,15 +361,14 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
     }
 
 
-    public class History_Adapter extends RecyclerView.Adapter<History_Adapter.MyViewHolder>
-    {
+    public class History_Adapter extends RecyclerView.Adapter<History_Adapter.MyViewHolder> {
         private Context mContext;
         private List<History_List_Object> orders_list_data;
-        public class MyViewHolder extends RecyclerView.ViewHolder
-        {
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView notes_textview, result_textview, person_textview, unit_textview, target_value_textview, reading_textview, date_textview, measdoc_textview, point_textview, desc_textview;
-            public MyViewHolder(View view)
-            {
+
+            public MyViewHolder(View view) {
                 super(view);
                 measdoc_textview = (TextView) view.findViewById(R.id.measdoc_textview);
                 point_textview = (TextView) view.findViewById(R.id.point_textview);
@@ -435,20 +382,20 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
                 notes_textview = (TextView) view.findViewById(R.id.notes_textview);
             }
         }
-        public History_Adapter(Context mContext, List<History_List_Object> list)
-        {
+
+        public History_Adapter(Context mContext, List<History_List_Object> list) {
             this.mContext = mContext;
             this.orders_list_data = list;
         }
+
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.equipments_inspectionchecklist_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
+
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position)
-        {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
             final History_List_Object olo = orders_list_data.get(position);
             holder.measdoc_textview.setText(olo.getMdocm());
             holder.point_textview.setText(olo.getPoint());
@@ -461,34 +408,29 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
             holder.result_textview.setText(olo.getVlcod());
             holder.notes_textview.setText(olo.getNotes());
         }
+
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return orders_list_data.size();
         }
     }
 
 
-    SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener()
-    {
+    SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
         @Override
-        public boolean onQueryTextChange(String query)
-        {
+        public boolean onQueryTextChange(String query) {
             query = query.toLowerCase();
             final List<History_List_Object> filteredList = new ArrayList<>();
-            for (int i = 0; i < history_list.size(); i++)
-            {
+            for (int i = 0; i < history_list.size(); i++) {
                 String Notif_type = history_list.get(i).getMdocm().toLowerCase();
                 String notif_no = history_list.get(i).getPoint().toLowerCase();
                 String Aufnr = history_list.get(i).getPttxt().toLowerCase();
-                if (Notif_type.contains(query) || notif_no.contains(query) || Aufnr.contains(query))
-                {
-                    History_List_Object nto = new History_List_Object(history_list.get(i).getMdocm().toString(),history_list.get(i).getPoint().toString(),history_list.get(i).getPttxt().toString(),history_list.get(i).getDate_formateed().toString(),history_list.get(i).getReadc().toString(),history_list.get(i).getDesic().toString(),history_list.get(i).getMsehl().toString(),history_list.get(i).getReadr().toString(),history_list.get(i).getVlcod().toString(),history_list.get(i).getNotes().toString());
+                if (Notif_type.contains(query) || notif_no.contains(query) || Aufnr.contains(query)) {
+                    History_List_Object nto = new History_List_Object(history_list.get(i).getMdocm().toString(), history_list.get(i).getPoint().toString(), history_list.get(i).getPttxt().toString(), history_list.get(i).getDate_formateed().toString(), history_list.get(i).getReadc().toString(), history_list.get(i).getDesic().toString(), history_list.get(i).getMsehl().toString(), history_list.get(i).getReadr().toString(), history_list.get(i).getVlcod().toString(), history_list.get(i).getNotes().toString());
                     filteredList.add(nto);
                 }
             }
-            if(filteredList.size() > 0)
-            {
+            if (filteredList.size() > 0) {
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Equipment_InspectionChecklist_List_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 history_adapter = new History_Adapter(Equipment_InspectionChecklist_List_Activity.this, filteredList);
@@ -498,9 +440,7 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
                 list_recycleview.setVisibility(View.VISIBLE);
                 no_data_textview.setVisibility(View.GONE);
                 no_data_layout.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 no_data_textview.setVisibility(View.VISIBLE);
                 list_recycleview.setVisibility(View.GONE);
                 no_data_textview.setVisibility(View.VISIBLE);
@@ -508,15 +448,14 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
             }
             return true;
         }
-        public boolean onQueryTextSubmit(String query)
-        {
+
+        public boolean onQueryTextSubmit(String query) {
             return false;
         }
     };
 
 
-    public class History_List_Object
-    {
+    public class History_List_Object {
         private String Mdocm;
         private String Point;
         private String Pttxt;
@@ -527,68 +466,88 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
         private String Readr;
         private String Vlcod;
         private String Notes;
+
         public String getVlcod() {
             return Vlcod;
         }
+
         public void setVlcod(String vlcod) {
             Vlcod = vlcod;
         }
+
         public String getNotes() {
             return Notes;
         }
+
         public void setNotes(String notes) {
             Notes = notes;
         }
+
         public String getReadr() {
             return Readr;
         }
+
         public void setReadr(String readr) {
             Readr = readr;
         }
+
         public String getMsehl() {
             return Msehl;
         }
+
         public void setMsehl(String msehl) {
             Msehl = msehl;
         }
+
         public String getDesic() {
             return Desic;
         }
+
         public void setDesic(String desic) {
             Desic = desic;
         }
+
         public String getReadc() {
             return Readc;
         }
+
         public void setReadc(String readc) {
             Readc = readc;
         }
+
         public String getDate_formateed() {
             return date_formateed;
         }
+
         public void setDate_formateed(String date_formateed) {
             this.date_formateed = date_formateed;
         }
+
         public String getPttxt() {
             return Pttxt;
         }
+
         public void setPttxt(String pttxt) {
             Pttxt = pttxt;
         }
+
         public String getPoint() {
             return Point;
         }
+
         public void setPoint(String point) {
             Point = point;
         }
+
         public String getMdocm() {
             return Mdocm;
         }
+
         public void setMdocm(String mdocm) {
             Mdocm = mdocm;
         }
-        public History_List_Object(String Mdocm, String Point, String Pttxt, String date_formateed, String Readc, String Desic, String Msehl, String Readr, String Vlcod, String Notes)
-        {
+
+        public History_List_Object(String Mdocm, String Point, String Pttxt, String date_formateed, String Readc, String Desic, String Msehl, String Readr, String Vlcod, String Notes) {
             this.Mdocm = Mdocm;
             this.Point = Point;
             this.Pttxt = Pttxt;
@@ -604,10 +563,8 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
 
 
     @Override
-    public void onClick(View v)
-    {
-        if(v == back_imageview)
-        {
+    public void onClick(View v) {
+        if (v == back_imageview) {
             Equipment_InspectionChecklist_List_Activity.this.finish();
         }
     }

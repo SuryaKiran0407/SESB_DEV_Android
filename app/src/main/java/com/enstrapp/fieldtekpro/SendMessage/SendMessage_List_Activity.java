@@ -214,7 +214,7 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
                 Glide.with(SendMessage_List_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
                 Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
                 Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
-                description_textview.setText("All Relavent Data will be loaded from server. Do you want to continue?");
+                description_textview.setText(getString(R.string.refresh_text));
                 decision_dialog.show();
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -271,7 +271,8 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
                             public void onTextChanged(CharSequence s, int start, int before, int count) {
                                 int text_count = s.length();
                                 int remain_text = 300 - text_count;
-                                count_textview.setText("You have " + Integer.toString(remain_text) + " characters left");
+                                count_textview.setText(getString(R.string.characters_left,
+                                        Integer.toString(remain_text)));
                             }
 
                             @Override
@@ -288,15 +289,18 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
                                 if (message_edittext.getText().toString() != null && !message_edittext.getText().toString().equals("")) {
                                     new POST_MESSAGE().execute(message_edittext.getText().toString());
                                 } else {
-                                    error_dialog.show_error_dialog(SendMessage_List_Activity.this, "Please enter message");
+                                    error_dialog.show_error_dialog(SendMessage_List_Activity.this,
+                                            getString(R.string.message_please));
                                 }
                             }
                         });
                     } else {
-                        error_dialog.show_error_dialog(SendMessage_List_Activity.this, "User token not found. Please try again");
+                        error_dialog.show_error_dialog(SendMessage_List_Activity.this,
+                                getString(R.string.usertkn_no));
                     }
                 } else {
-                    error_dialog.show_error_dialog(SendMessage_List_Activity.this, "Please select atleast one user");
+                    error_dialog.show_error_dialog(SendMessage_List_Activity.this,
+                            getString(R.string.select_usr));
                 }
             } else {
                 network_connection_dialog.show_network_connection_dialog(SendMessage_List_Activity.this);
@@ -475,13 +479,13 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(SendMessage_List_Activity.this, "Sending Message...");
+            custom_progress_dialog.show_progress_dialog(SendMessage_List_Activity.this,
+                    getString(R.string.msg_send));
         }
 
         @Override
         protected Void doInBackground(String... params) {
-            try
-            {
+            try {
                 String message = params[0];
                 String url = "https://fcm.googleapis.com/fcm/send";
                 JSONObject jobj = new JSONObject();
@@ -502,9 +506,7 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
                 httppost1.addHeader("Authorization", "key=AIzaSyDacTg9jDCoIlUjKpc_roM3y_ndyYyixJs");
                 HttpResponse login_response = httpclient1.execute(httppost1);
                 response_status_code = login_response.getStatusLine().getStatusCode();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
@@ -520,10 +522,12 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
             if (response_status_code == 200) {
                 sendmessage_dialog.dismiss();
                 custom_progress_dialog.dismiss_progress_dialog();
-                success_dialog.show_success_dialog(SendMessage_List_Activity.this, "Message sent successfully");
+                success_dialog.show_success_dialog(SendMessage_List_Activity.this,
+                        getString(R.string.msg_success));
             } else {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(SendMessage_List_Activity.this, "Sending message failed. Please try again");
+                error_dialog.show_error_dialog(SendMessage_List_Activity.this,
+                        getString(R.string.msg_fail));
             }
         }
     }
@@ -535,7 +539,8 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(SendMessage_List_Activity.this, "Refreshing...");
+            custom_progress_dialog.show_progress_dialog(SendMessage_List_Activity.this,
+                    getString(R.string.refreshing));
         }
 
         @Override

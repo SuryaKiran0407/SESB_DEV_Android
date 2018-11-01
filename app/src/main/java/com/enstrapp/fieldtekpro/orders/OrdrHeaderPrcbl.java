@@ -3,7 +3,6 @@ package com.enstrapp.fieldtekpro.orders;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.enstrapp.fieldtekpro.Parcelable_Objects.EtDocsPrcbl;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
 import com.enstrapp.fieldtekpro.notifications.Notif_EtDocs_Parcelable;
 

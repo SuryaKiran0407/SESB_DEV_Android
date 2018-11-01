@@ -14,8 +14,7 @@ import android.widget.TextView;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
-public class Notifications_LongText_Activity extends Activity implements View.OnClickListener
-{
+public class Notifications_LongText_Activity extends Activity implements View.OnClickListener {
 
     Button send_button;
     EditText message_edittext;
@@ -27,49 +26,40 @@ public class Notifications_LongText_Activity extends Activity implements View.On
     private static String DATABASE_NAME = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications_longtext_activity);
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        send_button = (Button)findViewById(R.id.send_button);
-        message_edittext = (EditText)findViewById(R.id.message_edittext);
-        textView = (TextView)findViewById(R.id.textView);
-        back_imageview = (ImageView)findViewById(R.id.back_imageview);
+        send_button = (Button) findViewById(R.id.send_button);
+        message_edittext = (EditText) findViewById(R.id.message_edittext);
+        textView = (TextView) findViewById(R.id.textView);
+        back_imageview = (ImageView) findViewById(R.id.back_imageview);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             longtext_new = extras.getString("longtext_new");
             qmnum = extras.getString("qmnum");
-            if (qmnum != null && !qmnum.equals(""))
-            {
+            if (qmnum != null && !qmnum.equals("")) {
                 StringBuilder longtext_sBuilder = new StringBuilder();
-                try
-                {
-                    Cursor cursor = FieldTekPro_db.rawQuery("select * from DUE_NOTIFICATIONS_EtNotifLongtext where Qmnum = ?", new String[]{qmnum});
-                    if (cursor != null && cursor.getCount() > 0)
-                    {
-                        if (cursor.moveToFirst())
-                        {
-                            do
-                            {
+                try {
+                    Cursor cursor = FieldTekPro_db.rawQuery("select * from " +
+                                    "DUE_NOTIFICATIONS_EtNotifLongtext where Qmnum = ?",
+                            new String[]{qmnum});
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
                                 longtext_sBuilder.append(cursor.getString(4));
                                 longtext_sBuilder.append("\n");
                             }
                             while (cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor.close();
                     }
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
                 textView.setText(longtext_sBuilder.toString());
             }
@@ -82,26 +72,19 @@ public class Notifications_LongText_Activity extends Activity implements View.On
     }
 
     @Override
-    public void onClick(View v)
-    {
-        if(v == send_button)
-        {
-            if (message_edittext.getText().toString().length() > 0)
-            {
+    public void onClick(View v) {
+        if (v == send_button) {
+            if (message_edittext.getText().toString().length() > 0) {
                 Intent intent = new Intent();
-                intent.putExtra("longtext_new",message_edittext.getText().toString());
-                setResult(13,intent);
+                intent.putExtra("longtext_new", message_edittext.getText().toString());
+                setResult(13, intent);
                 Notifications_LongText_Activity.this.finish();
+            } else {
+                error_dialog.show_error_dialog(Notifications_LongText_Activity.this,
+                        getString(R.string.notiflongtxt_add));
             }
-            else
-            {
-                error_dialog.show_error_dialog(Notifications_LongText_Activity.this,"Please Enter Text");
-            }
-        }
-        else if(v == back_imageview)
-        {
+        } else if (v == back_imageview) {
             Notifications_LongText_Activity.this.finish();
         }
     }
-
 }

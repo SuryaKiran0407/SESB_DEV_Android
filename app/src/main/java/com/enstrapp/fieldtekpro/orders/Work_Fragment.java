@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.R;
+
 import java.util.List;
 
 public class Work_Fragment extends Fragment {
@@ -125,10 +126,10 @@ public class Work_Fragment extends Fragment {
             holder.yes_cb.setChecked((owrp.isYes_checked() == true ? true : false));
             holder.no_cb.setTag(position);
             holder.no_cb.setChecked((owrp.isNo_checked() == true ? true : false));
-            if(ma.prep.equals("X")){
+            if (ma.prep.equals("X")) {
                 holder.yes_cb.setEnabled(false);
                 holder.no_cb.setEnabled(false);
-            } else{
+            } else {
                 holder.yes_cb.setEnabled(true);
                 holder.no_cb.setEnabled(true);
             }

@@ -102,7 +102,7 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_permits);
-//        attachments_ib = findViewById(R.id.attachments_ib);
+
         back_ib = findViewById(R.id.back_iv);
         menu_imageview = findViewById(R.id.menu_imageview);
         status_view = findViewById(R.id.status_view);
@@ -128,7 +128,6 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         priority_iv = findViewById(R.id.priority_iv);
         auth_tiet = findViewById(R.id.auth_tiet);
         auth_iv = findViewById(R.id.auth_iv);
-//        usage_iv = findViewById(R.id.usage_iv);
         setPrep_cb = findViewById(R.id.setPrep_cb);
         completed_cb = findViewById(R.id.completed_cb);
         issuePermit_ll = findViewById(R.id.issuePermit_ll);
@@ -195,13 +194,6 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                         status_bt.setVisibility(VISIBLE);
                         status_view.setVisibility(VISIBLE);
                     }
-                   /* if (woco != null)
-                        if (woco.equals("X")) {
-                            save_bt.setVisibility(GONE);
-                            status_view.setVisibility(GONE);
-                        } else {
-                            save_bt.setVisibility(VISIBLE);
-                        }*/
                     if (opp.getPriokx() != null)
                         priority_tiet.setText(getString(R.string.hypen_text, opp.getPriok(),
                                 opp.getPriokx()));
@@ -318,7 +310,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 opp.setStxt("");
-                if (shortTxt_tiet.getText().toString() != null && !shortTxt_tiet.getText().toString().equals("")) {
+                if (shortTxt_tiet.getText().toString() != null &&
+                        !shortTxt_tiet.getText().toString().equals("")) {
                     opp.setStxt(shortTxt_tiet.getText().toString());
                 } else {
                     opp.setStxt("");
@@ -343,12 +336,10 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         cancel_bt.setOnClickListener(this);
         issuePermit_ll.setOnClickListener(this);
         status_bt.setOnClickListener(this);
-//        attachments_ib.setOnClickListener(this);
         setPrep_cb.setOnClickListener(this);
         completed_cb.setOnClickListener(this);
         menu_imageview.setOnClickListener(this);
         back_ib.setOnClickListener(this);
-//        usage_iv.setOnClickListener(this);
     }
 
     @Override
@@ -361,29 +352,35 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
 
             case (R.id.auth_iv):
                 if (!setPrep_cb.isChecked()) {
-                    final Intent authIntent = new Intent(Permits_Add_Update_Activity.this, Authorization_Activity.class);
+                    final Intent authIntent =
+                            new Intent(Permits_Add_Update_Activity.this,
+                                    Authorization_Activity.class);
                     startActivityForResult(authIntent, AUTH);
                 }
                 break;
 
             case (R.id.priority_iv):
                 if (!setPrep_cb.isChecked()) {
-                    Intent priorityIntent = new Intent(Permits_Add_Update_Activity.this, Priority_Activity.class);
+                    Intent priorityIntent =
+                            new Intent(Permits_Add_Update_Activity.this,
+                                    Priority_Activity.class);
                     startActivityForResult(priorityIntent, PRIORITY);
                 }
                 break;
 
             case (R.id.frmDt_iv):
                 if (!setPrep_cb.isChecked()) {
-                    Intent frmDtIntent = new Intent(Permits_Add_Update_Activity.this, DatePickerDialog1.class);
+                    Intent frmDtIntent = new Intent(Permits_Add_Update_Activity.this,
+                            DatePickerDialog1.class);
                     frmDtIntent.putExtra("givenDate", frmDt_tiet.getText().toString());
                     startActivityForResult(frmDtIntent, FRMDT);
                 }
                 break;
 
             case (R.id.toDt_iv):
-                if(!completed_cb.isChecked()) {
-                    Intent toDtIntent = new Intent(Permits_Add_Update_Activity.this, DatePickerDialog1.class);
+                if (!completed_cb.isChecked()) {
+                    Intent toDtIntent = new Intent(Permits_Add_Update_Activity.this,
+                            DatePickerDialog1.class);
                     toDtIntent.putExtra("givenDate", toDt_tiet.getText().toString());
                     toDtIntent.putExtra("startDate", frmDt_tiet.getText().toString());
                     startActivityForResult(toDtIntent, TODT);
@@ -392,14 +389,16 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
 
             case (R.id.frmTm_iv):
                 if (!setPrep_cb.isChecked()) {
-                    Intent frmTmIntent = new Intent(Permits_Add_Update_Activity.this, TimePickerDialog.class);
+                    Intent frmTmIntent = new Intent(Permits_Add_Update_Activity.this,
+                            TimePickerDialog.class);
                     startActivityForResult(frmTmIntent, FRMTM);
                 }
                 break;
 
             case (R.id.toTm_iv):
-                if(!completed_cb.isChecked()) {
-                    Intent toTmIntent = new Intent(Permits_Add_Update_Activity.this, TimePickerDialog.class);
+                if (!completed_cb.isChecked()) {
+                    Intent toTmIntent = new Intent(Permits_Add_Update_Activity.this,
+                            TimePickerDialog.class);
                     startActivityForResult(toTmIntent, TOTM);
                 }
                 break;
@@ -411,7 +410,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                         prep = "X";
                     else
                         prep = "";
-                    Intent wrkReqIntent = new Intent(Permits_Add_Update_Activity.this, WorkRequirements_Activity.class);
+                    Intent wrkReqIntent = new Intent(Permits_Add_Update_Activity.this,
+                            WorkRequirements_Activity.class);
                     wrkReqIntent.putExtra("iwerk", iwerk);
                     wrkReqIntent.putExtra("usage_id", opp.getUsage());
                     wrkReqIntent.putExtra("owrp_al", owrp_al);
@@ -419,7 +419,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                     wrkReqIntent.putExtra("woco", woco);
                     startActivityForResult(wrkReqIntent, WrkReq);
                 } else {
-                    errorDialog.show_error_dialog(Permits_Add_Update_Activity.this, getString(R.string.auth_mandate));
+                    errorDialog.show_error_dialog(Permits_Add_Update_Activity.this,
+                            getString(R.string.auth_mandate));
                 }
                 break;
 
@@ -429,7 +430,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                     prep = "X";
                 else
                     prep = "";
-                Intent issueIntent = new Intent(Permits_Add_Update_Activity.this, PermitIssue_Activity.class);
+                Intent issueIntent = new Intent(Permits_Add_Update_Activity.this,
+                        PermitIssue_Activity.class);
                 issueIntent.putExtra("wcg_al", opp.getWcagnsPrcbl_Al());
                 issueIntent.putExtra("prep", prep);
                 issueIntent.putExtra("woco", woco);
@@ -437,7 +439,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                 break;
 
             case (R.id.status_bt):
-                Intent statusIntent = new Intent(Permits_Add_Update_Activity.this, Order_Status_Activity.class);
+                Intent statusIntent = new Intent(Permits_Add_Update_Activity.this,
+                        Order_Status_Activity.class);
                 statusIntent.putExtra("statusObject", opp.getStatusPrcbl_Al());
                 statusIntent.putExtra("woco", woco);
                 statusIntent.putExtra("type", "WA");
@@ -446,22 +449,27 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                 break;
 
             case (R.id.attachments_ib):
-                Intent attachIntent = new Intent(Permits_Add_Update_Activity.this, OrdersConfirmAttachment_Activity.class);
+                Intent attachIntent = new Intent(Permits_Add_Update_Activity.this,
+                        OrdersConfirmAttachment_Activity.class);
                 attachIntent.putExtra("ordrId", wapinr);
                 startActivity(attachIntent);
                 break;
 
             case (R.id.extntn_iv):
-                if(!completed_cb.isChecked()) {
+                if (!completed_cb.isChecked()) {
                     if (isExtension(String.valueOf(opp.getExtperiod()), applId))
-                        confirmationDialog(getString(R.string.permit_ext), applId);
+                        confirmationDialog(getString(R.string.permit_ext),
+                                applId);
                 }
                 break;
 
             case (R.id.menu_imageview):
-                LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View popupView = layoutInflater.inflate(R.layout.orders_permit_isolation_menu, null);
-                final PopupWindow popupWindow = new PopupWindow(popupView, 600, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LayoutInflater layoutInflater =
+                        (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View popupView = layoutInflater.inflate(R.layout.orders_permit_isolation_menu,
+                        null);
+                final PopupWindow popupWindow = new PopupWindow(popupView, 600,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
                 popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 popupWindow.setOutsideTouchable(true);
                 LinearLayout isolation_ll = popupView.findViewById(R.id.isolation_ll);
@@ -469,16 +477,21 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                 LinearLayout jsa_ll = popupView.findViewById(R.id.jsa_ll);
                 if (opp.getWaWdPrcbl_Al() != null && !opp.getWaWdPrcbl_Al().equals("")) {
                     if (opp.getWaWdPrcbl_Al().size() > 0) {
-                        if (opp.getWaWdPrcbl_Al().get(0).getWcnr() != null && !opp.getWaWdPrcbl_Al().get(0).getWcnr().equals("")) {
+                        if (opp.getWaWdPrcbl_Al().get(0).getWcnr() != null &&
+                                !opp.getWaWdPrcbl_Al().get(0).getWcnr().equals("")) {
                             if (!opp.getWaWdPrcbl_Al().get(0).getWcnr().startsWith("WD")) {
-                                String auth_status = Authorizations.Get_Authorizations_Data(Permits_Add_Update_Activity.this, "D", "U");
+                                String auth_status = Authorizations
+                                        .Get_Authorizations_Data(Permits_Add_Update_Activity.this,
+                                                "D", "U");
                                 if (auth_status.equalsIgnoreCase("true")) {
                                     isolation_ll.setVisibility(View.VISIBLE);
                                 } else {
                                     isolation_ll.setVisibility(View.GONE);
                                 }
                             } else {
-                                String auth_status = Authorizations.Get_Authorizations_Data(Permits_Add_Update_Activity.this, "D", "I");
+                                String auth_status = Authorizations
+                                        .Get_Authorizations_Data(Permits_Add_Update_Activity.this,
+                                                "D", "I");
                                 if (auth_status.equalsIgnoreCase("true")) {
                                     isolation_ll.setVisibility(View.VISIBLE);
                                 } else {
@@ -486,7 +499,9 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                                 }
                             }
                         } else {
-                            String auth_status = Authorizations.Get_Authorizations_Data(Permits_Add_Update_Activity.this, "D", "I");
+                            String auth_status = Authorizations
+                                    .Get_Authorizations_Data(Permits_Add_Update_Activity.this,
+                                            "D", "I");
                             if (auth_status.equalsIgnoreCase("true")) {
                                 isolation_ll.setVisibility(View.VISIBLE);
                             } else {
@@ -494,7 +509,9 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                             }
                         }
                     } else {
-                        String auth_status = Authorizations.Get_Authorizations_Data(Permits_Add_Update_Activity.this, "D", "I");
+                        String auth_status = Authorizations
+                                .Get_Authorizations_Data(Permits_Add_Update_Activity.this,
+                                        "D", "I");
                         if (auth_status.equalsIgnoreCase("true")) {
                             isolation_ll.setVisibility(View.VISIBLE);
                         } else {
@@ -502,7 +519,9 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                         }
                     }
                 } else {
-                    String auth_status = Authorizations.Get_Authorizations_Data(Permits_Add_Update_Activity.this, "D", "I");
+                    String auth_status = Authorizations
+                            .Get_Authorizations_Data(Permits_Add_Update_Activity.this,
+                                    "D", "I");
                     if (auth_status.equalsIgnoreCase("true")) {
                         isolation_ll.setVisibility(View.VISIBLE);
                     } else {
@@ -523,9 +542,12 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                 isolation_ll.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (auth_tiet.getText().toString() != null && !auth_tiet.getText().toString().equals("")) {
+                        if (auth_tiet.getText().toString() != null &&
+                                !auth_tiet.getText().toString().equals("")) {
                             popupWindow.dismiss();
-                            Intent isoIntent = new Intent(Permits_Add_Update_Activity.this, Isolation_Add_Update_Activity.class);
+                            Intent isoIntent =
+                                    new Intent(Permits_Add_Update_Activity.this,
+                                            Isolation_Add_Update_Activity.class);
                             isoIntent.putExtra("ww_al", ww_al);
                             isoIntent.putExtra("iso", opp.getWaWdPrcbl_Al());
                             isoIntent.putExtra("func_loc", funcLoc_tiet.getText().toString());
@@ -545,7 +567,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                                 isoIntent.putExtra("objnr", opp.getObjnr());
                             startActivityForResult(isoIntent, ISO);
                         } else {
-                            errorDialog.show_error_dialog(Permits_Add_Update_Activity.this, getString(R.string.auth_mandate));
+                            errorDialog.show_error_dialog(Permits_Add_Update_Activity.this,
+                                    getString(R.string.auth_mandate));
                         }
                     }
                 });
@@ -554,7 +577,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        Intent intent = new Intent(Permits_Add_Update_Activity.this, JSA_List_Activity.class);
+                        Intent intent = new Intent(Permits_Add_Update_Activity.this,
+                                JSA_List_Activity.class);
                         intent.putExtra("aufnr", orderId);
                         intent.putExtra("wapinr", wapinr);
                         intent.putExtra("iwerk", iwerk);
@@ -567,7 +591,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                     @Override
                     public void onClick(View v) {
                         popupWindow.dismiss();
-                        Intent attachIntent = new Intent(Permits_Add_Update_Activity.this, OrdersConfirmAttachment_Activity.class);
+                        Intent attachIntent = new Intent(Permits_Add_Update_Activity.this,
+                                OrdersConfirmAttachment_Activity.class);
                         attachIntent.putExtra("wapinr", wapinr);
                         startActivity(attachIntent);
                     }
@@ -604,7 +629,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                         opp.setComp("X");
                         setPrep_cb.setEnabled(false);
                     } else {
-                        errorDialog.show_error_dialog(Permits_Add_Update_Activity.this, "Please Check SetPrepared");
+                        errorDialog.show_error_dialog(Permits_Add_Update_Activity.this,
+                                getString(R.string.check_setprep));
                         opp.setComp("");
                         completed_cb.setChecked(false);
                     }
@@ -700,11 +726,6 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                                     ArrayList<OrdrPermitPrcbl> ww_A = new ArrayList<>();
                                     ArrayList<OrdrPermitPrcbl> wa_A = new ArrayList<>();
                                     wa_A.add(opp);
-                                    /*String Wa_Objnr = "";
-                                    if (opp.getObjnr() != null)
-                                        Wa_Objnr = opp.getObjnr();*/
-                                    /*OrdrPermitPrcbl ww = new OrdrPermitPrcbl();
-                                    ww.setWaWdPrcbl_Al(wa_A);*/
                                     for (int i = 0; i < ww_al.get(0).getWaWdPrcbl_Al().size(); i++) {
                                         OrdrPermitPrcbl wcg = new OrdrPermitPrcbl();
                                         ArrayList<OrdrWcagnsPrcbl> wcg_al = new ArrayList<>();
@@ -725,27 +746,19 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                                         wcg.setWcagnsPrcbl_Al(wcg_al);
                                         wa_A.add(wcg);
                                     }
-                                    /*for (int k = 0; k < wa_A.size(); k++) {
-                                        if (wa_A.get(k).getWcagnsPrcbl_Al() != null) {
-                                            ArrayList<OrdrWcagnsPrcbl> rm_wcg = new ArrayList<>();
-                                            rm_wcg.addAll(wa_A.get(k).getWcagnsPrcbl_Al());
-                                            for (int l = 0; l < rm_wcg.size(); l++) {
 
-                                            }
-                                        }
-                                    }*/
                                     ww_A.addAll(ww_al);
                                     ww_A.get(0).setWaWdPrcbl_Al(wa_A);
-                                    ohp.setOrdrPermitPrcbls(ww_A);/*
-                                    wa_al.add(opp);
-                                    ww_al.get(0).setWaWdPrcbl_Al(wa_al);*/
+                                    ohp.setOrdrPermitPrcbls(ww_A);
 
                                     if (permitExist)
                                         confirmationDialog(getString(R.string.permit_chan_submit));
                                     else
                                         confirmationDialog(getString(R.string.permit_crea_submit));
                                 } else {
-                                    network_connection_dialog.show_network_connection_dialog(Permits_Add_Update_Activity.this);
+                                    network_connection_dialog
+                                            .show_network_connection_dialog(
+                                                    Permits_Add_Update_Activity.this);
                                 }
                             } else {
                                 wa_al.add(opp);
@@ -757,10 +770,12 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                             }
 
                         } else {
-                            errorDialog.show_error_dialog(Permits_Add_Update_Activity.this, getString(R.string.wrk_req_mandate));
+                            errorDialog.show_error_dialog(Permits_Add_Update_Activity.this,
+                                    getString(R.string.wrk_req_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(Permits_Add_Update_Activity.this, getString(R.string.wrk_req_mandate));
+                        errorDialog.show_error_dialog(Permits_Add_Update_Activity.this,
+                                getString(R.string.wrk_req_mandate));
                     }
                 else {
                     if (auth_tiet.getText().toString() != null && !auth_tiet.getText().toString().equals("")) {
@@ -841,8 +856,6 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                                 ArrayList<OrdrPermitPrcbl> ww_A = new ArrayList<>();
                                 ArrayList<OrdrPermitPrcbl> wa_A = new ArrayList<>();
                                 wa_A.add(opp);
-                                /*OrdrPermitPrcbl wa = new OrdrPermitPrcbl();
-                                wa.setWaWdPrcbl_Al(wa_A);*/
                                 for (int i = 0; i < ww_al.get(0).getWaWdPrcbl_Al().size(); i++) {
                                     OrdrPermitPrcbl wcg = new OrdrPermitPrcbl();
                                     ArrayList<OrdrWcagnsPrcbl> wcg_al = new ArrayList<>();
@@ -995,9 +1008,11 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         protected void onPreExecute() {
             super.onPreExecute();
             if (permitExist)
-                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this, getResources().getString(R.string.permit_chan_progress));
+                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this,
+                        getResources().getString(R.string.permit_chan_progress));
             else
-                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this, getResources().getString(R.string.permit_crea_progress));
+                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this,
+                        getResources().getString(R.string.permit_crea_progress));
         }
 
         @Override
@@ -1013,7 +1028,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
             if (Response.equals("success"))
                 new PostPermit().execute("");
             else
-                errorDialog.show_error_dialog(Permits_Add_Update_Activity.this, getResources().getString(R.string.unble_to_process));
+                errorDialog.show_error_dialog(Permits_Add_Update_Activity.this,
+                        getResources().getString(R.string.unble_to_process));
         }
     }
 
@@ -1025,15 +1041,19 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         protected void onPreExecute() {
             super.onPreExecute();
             if (permitExist)
-                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this, getResources().getString(R.string.permit_chan_progress));
+                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this,
+                        getResources().getString(R.string.permit_chan_progress));
             else
-                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this, getResources().getString(R.string.permit_crea_progress));
+                customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this,
+                        getResources().getString(R.string.permit_crea_progress));
         }
 
         @Override
         protected Void doInBackground(String... transmit) {
             String transmit_type = transmit[0];
-            Response = new Permit_Create_Change().Change_Permit(Permits_Add_Update_Activity.this, ohp, transmit_type, "WCMMP", orderId, "");
+            Response = new Permit_Create_Change()
+                    .Change_Permit(Permits_Add_Update_Activity.this, ohp, transmit_type,
+                            "WCMMP", orderId, "");
             return null;
         }
 
@@ -1044,13 +1064,15 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
             if (Response[0].startsWith("S")) {
                 dismissActivity(Permits_Add_Update_Activity.this, Response[0].substring(2));
             } else if (Response[0].startsWith("E")) {
-                errorDialog.show_error_dialog(Permits_Add_Update_Activity.this, Response[0].substring(2));
+                errorDialog.show_error_dialog(Permits_Add_Update_Activity.this,
+                        Response[0].substring(2));
             } else if (Response[0].startsWith("W")) {
                 try {
                     JSONArray wcd_Json = new JSONArray(Response[1]);
                     if (wcd_Json.length() > 0) {
                         for (int i = 0; i < wcd_Json.length(); i++) {
-                            WcdDup_Object wdo = new WcdDup_Object(wcd_Json.getJSONObject(i).getString("Aufnr"),
+                            WcdDup_Object wdo = new WcdDup_Object(wcd_Json.getJSONObject(i)
+                                    .getString("Aufnr"),
                                     wcd_Json.getJSONObject(i).getString("Stxt"),
                                     wcd_Json.getJSONObject(i).getString("Sysst"),
                                     wcd_Json.getJSONObject(i).getString("Wcnr"));
@@ -1066,9 +1088,9 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                             aa.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                             Button yes_button = (Button) aa.findViewById(R.id.yes_button);
                             Button no_button = (Button) aa.findViewById(R.id.no_button);
-                            TextView title_textView = (TextView) aa.findViewById(R.id.title_textview);
+                            TextView title_textView = aa.findViewById(R.id.title_textview);
                             TextView text_msg = (TextView) aa.findViewById(R.id.text_msg);
-                            RecyclerView list_recycleview = (RecyclerView) aa.findViewById(R.id.recyclerview);
+                            RecyclerView list_recycleview = aa.findViewById(R.id.recyclerview);
                             title_textView.setText(getString(R.string.open_iso));
                             text_msg.setText("Do you want to continue?");
                             yes_button.setOnClickListener(new View.OnClickListener() {
@@ -1085,9 +1107,12 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                                 }
                             });
                             if (wcdDup_al.size() > 0) {
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Permits_Add_Update_Activity.this);
+                                RecyclerView.LayoutManager layoutManager =
+                                        new LinearLayoutManager(Permits_Add_Update_Activity.this);
                                 list_recycleview.setLayoutManager(layoutManager);
-                                WcdDupAdapter adapter = new WcdDupAdapter(Permits_Add_Update_Activity.this, wcdDup_al);
+                                WcdDupAdapter adapter =
+                                        new WcdDupAdapter(Permits_Add_Update_Activity.this,
+                                                wcdDup_al);
                                 list_recycleview.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                                 list_recycleview.setVisibility(View.VISIBLE);
@@ -1095,7 +1120,6 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                                 list_recycleview.setVisibility(GONE);
                             }
                             aa.show();
-
                         }
                     }
                 } catch (Exception e) {
@@ -1129,7 +1153,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.wcd_dup_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.wcd_dup_list,
+                    parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -1178,7 +1203,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         usage[0] = "";
         usage[1] = "";
         try {
-            cursor = FieldTekPro_db.rawQuery("select * from EtWcmWcco where Iwerk = ? and Objart = ? and Objtyp = ?", new String[]{iwerk, objart, appl_type});
+            cursor = FieldTekPro_db.rawQuery("select * from EtWcmWcco where Iwerk = ? and" +
+                    " Objart = ? and Objtyp = ?", new String[]{iwerk, objart, appl_type});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -1188,7 +1214,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                 }
             }
             if (!usage[0].equals("")) {
-                cursor = FieldTekPro_db.rawQuery("select * from EtWcmUsages where Iwerk = ? and Objart = ? and Use = ?", new String[]{iwerk, objart, usage[0]});
+                cursor = FieldTekPro_db.rawQuery("select * from EtWcmUsages where Iwerk = ?" +
+                        " and Objart = ? and Use = ?", new String[]{iwerk, objart, usage[0]});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -1207,13 +1234,15 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
     }
 
     private void confirmationDialog(String message, final String type) {
-        final Dialog cancel_dialog = new Dialog(Permits_Add_Update_Activity.this, R.style.PauseDialog);
+        final Dialog cancel_dialog =
+                new Dialog(Permits_Add_Update_Activity.this, R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.network_error_dialog);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview =
+                cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.ok_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.cancel_button);
@@ -1270,7 +1299,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
 
         Cursor cursor1 = null;
         try {
-            cursor1 = FieldTekPro_db.rawQuery("select * from Orders_Attachments where Object_id = ?", new String[]{wapinr});
+            cursor1 = FieldTekPro_db.rawQuery("select * from Orders_Attachments where " +
+                    "Object_id = ?", new String[]{wapinr});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
@@ -1283,34 +1313,22 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                     }
                     while (cursor1.moveToNext());
                 }
-            } /*else {
-                    cursor1.close();
-                    act = "";
-                }*/ else {
-//                    Cursor cursor1 = null;
+            } else {
                 cursor1.close();
                 try {
-                    cursor1 = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{wapinr});
+                    cursor1 = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtDocs where" +
+                            " Zobjid = ?", new String[]{wapinr});
                     if (cursor1 != null && cursor1.getCount() > 0) {
                         if (cursor1.moveToFirst()) {
                             do {
                                 attach = true;
-//                            act = cursor1.getString(4);
                             }
                             while (cursor1.moveToNext());
                         }
                     } else {
                         cursor1.close();
-//                    act = "";
                         attach = false;
                     }
-
-               /* if (act != null && !act.equalsIgnoreCase("")) {
-                    attach = true;
-                } else {
-                    attach = false;
-                }*/
-
                 } catch (Exception e) {
                     attach = false;
                 } finally {
@@ -1327,7 +1345,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         if (!attach)
             if (opp.getStatusPrcbl_Al() != null) {
                 for (NotifOrdrStatusPrcbl osp : opp.getStatusPrcbl_Al()) {
-                    if (osp.getTxt04().equals("JSAA") && osp.getAct().equalsIgnoreCase("X"))
+                    if (osp.getTxt04().equals("JSAA") && osp.getAct()
+                            .equalsIgnoreCase("X"))
                         attach = true;
                 }
             }
@@ -1335,13 +1354,14 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
     }
 
     private void confirmationDialog(String message) {
-        final Dialog cancel_dialog = new Dialog(Permits_Add_Update_Activity.this, R.style.PauseDialog);
+        final Dialog cancel_dialog =
+                new Dialog(Permits_Add_Update_Activity.this, R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.network_error_dialog);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.ok_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.cancel_button);
@@ -1369,7 +1389,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         success_dialog.setCanceledOnTouchOutside(false);
         success_dialog.setContentView(R.layout.error_dialog);
         ImageView imageview = (ImageView) success_dialog.findViewById(R.id.imageView1);
-        TextView description_textview = (TextView) success_dialog.findViewById(R.id.description_textview);
+        TextView description_textview =
+                success_dialog.findViewById(R.id.description_textview);
         Button ok_button = (Button) success_dialog.findViewById(R.id.ok_button);
         description_textview.setText(message);
         Glide.with(activity).load(R.drawable.success_checkmark).into(imageview);
@@ -1379,7 +1400,6 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
             public void onClick(View v) {
                 success_dialog.dismiss();
                 new Get_Permit_Data().execute();
-
             }
         });
         return null;
@@ -1391,7 +1411,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this, getResources().getString(R.string.get_order_data));
+            customProgressDialog.show_progress_dialog(Permits_Add_Update_Activity.this,
+                    getResources().getString(R.string.get_order_data));
         }
 
         @Override
@@ -1411,19 +1432,8 @@ public class Permits_Add_Update_Activity extends AppCompatActivity implements Vi
                 saveIntent.putExtra("opp", ww_al);
                 setResult(RESULT_OK, saveIntent);
                 Permits_Add_Update_Activity.this.finish();
-                /*Intent ordrIntent = new Intent(PermitList_Activity.this, Permits_Add_Update_Activity.class);
-                ordrIntent.putExtra("order", selected_orderID);
-                ordrIntent.putExtra("opp", ww_al);
-                ordrIntent.putExtra("woco", woco);
-                ordrIntent.putExtra("func_loc", funcId(selected_orderID));
-                ordrIntent.putExtra("equip", equipId(selected_orderID));
-                ordrIntent.putExtra("equip_txt", equipName(selected_orderID));
-                ordrIntent.putExtra("iwerk", selected_Iwerk);
-                ordrIntent.putExtra("wapinr", permit_no);
-                ordrIntent.putExtra("flag", "CH");
-                startActivity(ordrIntent);*/
+
             }
         }
     }
-
 }

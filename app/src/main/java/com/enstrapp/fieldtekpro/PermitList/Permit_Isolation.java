@@ -32,42 +32,38 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Permit_Isolation
-{
+public class Permit_Isolation {
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     private static SharedPreferences app_sharedpreferences;
     private static SharedPreferences.Editor app_editor;
-    private static String  cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
+    private static String cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
 
-    public static String Post_Data(Activity activity, ArrayList<Model_Permit_Isolation_ItWcmWcagn> permit_list, Set<HashMap<String, String>>  list_uuid)
-    {
-        try
-        {
+    public static String Post_Data(Activity activity, ArrayList<Model_Permit_Isolation_ItWcmWcagn> permit_list, Set<HashMap<String, String>> list_uuid) {
+        try {
             DATABASE_NAME = activity.getString(R.string.database_name);
-            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             /* Initializing Shared Preferences */
             app_sharedpreferences = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             app_editor = app_sharedpreferences.edit();
-            username = app_sharedpreferences.getString("Username",null);
-            password = app_sharedpreferences.getString("Password",null);
-            token = app_sharedpreferences.getString("token",null);
-            cookie = app_sharedpreferences.getString("cookie",null);
-            String webservice_type = app_sharedpreferences.getString("webservice_type",null);
-		    /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"D5","PS", webservice_type});
-            if (cursor != null && cursor.getCount() > 0)
-            {
+            username = app_sharedpreferences.getString("Username", null);
+            password = app_sharedpreferences.getString("Password", null);
+            token = app_sharedpreferences.getString("token", null);
+            cookie = app_sharedpreferences.getString("cookie", null);
+            String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+            /* Initializing Shared Preferences */
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D5", "PS", webservice_type});
+            if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = ""+ Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(),((long) device_id.hashCode() << 32)| device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
             Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
@@ -101,55 +97,42 @@ public class Permit_Isolation
             Call<Orders_SER> call = service.postpermitisolationData(url_link, model_permit_isolation, basic, map);
             Response<Orders_SER> response = call.execute();
             int response_status_code = response.code();
-            if(response_status_code == 201)
-            {
-                if (response.isSuccessful() && response.body() != null)
-                {
+            if (response_status_code == 201) {
+                if (response.isSuccessful() && response.body() != null) {
                     Orders_SER rs = response.body();
                     String response_data = new Gson().toJson(rs.getD());
-                    try
-                    {
+                    try {
                         StringBuffer message = new StringBuffer();
                         JSONObject jsonObject = new JSONObject(response_data);
-                        if (jsonObject.has("EtMessages"))
-                        {
+                        if (jsonObject.has("EtMessages")) {
                             String EtMessages_response = new Gson().toJson(rs.getD().getEtMessages().getResults());
                             JSONArray jsonArray = new JSONArray(EtMessages_response);
-                            for (int j = 0; j < jsonArray.length(); j++)
-                            {
+                            for (int j = 0; j < jsonArray.length(); j++) {
                                 message.append(jsonArray.getJSONObject(j).optString("Message"));
                             }
                         }
 
 
-                        if (jsonObject.has("EtWcmWcagns"))
-                        {
-                            try
-                            {
+                        if (jsonObject.has("EtWcmWcagns")) {
+                            try {
                                 String EtWcmWcagns_response_data = new Gson().toJson(rs.getD().getEtWcmWcagns().getResults());
                                 JSONArray jsonArray = new JSONArray(EtWcmWcagns_response_data);
-                                if (jsonArray.length() > 0)
-                                {
-                                    for (HashMap<String, String> each : list_uuid)
-                                    {
+                                if (jsonArray.length() > 0) {
+                                    for (HashMap<String, String> each : list_uuid) {
                                         String aufnr = each.get("Aufnr");
-                                        App_db.execSQL("delete from EtWcmWcagns where Aufnr = ?",new String[]{aufnr});
+                                        App_db.execSQL("delete from EtWcmWcagns where Aufnr = ?", new String[]{aufnr});
                                     }
                                     App_db.beginTransaction();
-                                    for(int j = 0; j < jsonArray.length(); j++)
-                                    {
+                                    for (int j = 0; j < jsonArray.length(); j++) {
                                         String uuid = "";
                                         String aufnr = jsonArray.getJSONObject(j).optString("Aufnr");
-                                        for (HashMap<String, String> each : list_uuid)
-                                        {
+                                        for (HashMap<String, String> each : list_uuid) {
                                             String old_aufnr = each.get("Aufnr");
-                                            if(aufnr.equals(old_aufnr))
-                                            {
+                                            if (aufnr.equals(old_aufnr)) {
                                                 uuid = each.get("uuid");
                                             }
                                         }
-                                        if (uuid != null && !uuid.equals(""))
-                                        {
+                                        if (uuid != null && !uuid.equals("")) {
                                             String EtWcmWcagns_sql = "Insert into EtWcmWcagns (UUID, Aufnr, Objnr, Counter, Objart, Objtyp, Pmsog, Gntxt, Geniakt, Genvname, Action, Werks, Crname, Hilvl, Procflg, Direction, Copyflg, Mandflg, Deacflg, Status, Asgnflg, Autoflg, Agent, Valflg, Wcmuse, Gendatum, Gentime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                             SQLiteStatement EtWcmWcagns_statement = App_db.compileStatement(EtWcmWcagns_sql);
                                             EtWcmWcagns_statement.clearBindings();
@@ -186,28 +169,18 @@ public class Permit_Isolation
                                     App_db.setTransactionSuccessful();
                                     App_db.endTransaction();
                                 }
-                            }
-                            catch (Exception e)
-                            {
+                            } catch (Exception e) {
                             }
                         }
                         Get_Response = message.toString();
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
+            } else {
             }
-            else
-            {
-            }
-        }
-        catch(Exception e)
-        {
-            Get_Response = "Unable to process permit submission. Please try again.";
-        }
-        finally
-        {
+        } catch (Exception e) {
+            Get_Response = activity.getString(R.string.permit_unable);
+        } finally {
         }
         return Get_Response;
     }

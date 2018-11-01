@@ -47,14 +47,12 @@ import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
-
-
-
-public class WorkApprovalStatusPieFragment extends Fragment{
-String  plantName_s = "", wrkcntrName_s = "",
+public class WorkApprovalStatusPieFragment extends Fragment {
+    String plantName_s = "", wrkcntrName_s = "",
             swerk_s = "", wrkcntr_s = "", swerkT_s = "", wrkcntrNameW_s = "", wrkcntrW_s = "",
             plantNameT_s = "", swerkTp_s = "", plantNameTp_s = "", wrkcntrT_s = "",
-            wrkcntrNameT_s = "", monthYear_s = "",selected_month = "", selected_year = "";;
+            wrkcntrNameT_s = "", monthYear_s = "", selected_month = "", selected_year = "";
+    ;
     int req_monthyear = 8;
 
     String total_ppr = "", red = "", yellow = "", green = "", total_permit = "", crea = "", prep = "", clsd = "", reje = "",
@@ -86,7 +84,7 @@ String  plantName_s = "", wrkcntrName_s = "",
     TextView plant_tv, wrkcntr_tv;
     Dialog filter_dialog, plant_dialog, wrkcntr_dialog, error_dialog;
     ProgressDialog progressdialog;
-    ListView  listview;
+    ListView listview;
     //PieChart pieChart;
     PieDataSet DataSet1;
     PieDataSet pieDataSet;
@@ -105,9 +103,8 @@ String  plantName_s = "", wrkcntrName_s = "",
     FILTER_PLANT_TYPE_Adapter filter_plant_type_adapter;
     WKCENTER_TYPE_ADAPTER wkcenter_type_adapter;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.mis_permitrep_analysis_fragment, container,false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.mis_permitrep_analysis_fragment, container, false);
 
         monthYear_bt = rootView.findViewById(R.id.monthYear_bt);
         pieChart1 = rootView.findViewById(R.id.pieChart);
@@ -117,11 +114,11 @@ String  plantName_s = "", wrkcntrName_s = "",
         //total_record=rootView.findViewById(R.id.total_record);
 
         DATABASE_NAME = getString(R.string.database_name);
-        App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+        App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         Calendar c = Calendar.getInstance();
         int day = c.get(Calendar.DATE);
-        int month = c.get(Calendar.MONTH)+1;
+        int month = c.get(Calendar.MONTH) + 1;
         int year = c.get(Calendar.YEAR);
 
         inputFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -129,40 +126,37 @@ String  plantName_s = "", wrkcntrName_s = "",
         SimpleDateFormat month_format = new SimpleDateFormat("MM", Locale.getDefault());
         SimpleDateFormat year_format = new SimpleDateFormat("yyyy", Locale.getDefault());
 
-        try
-        {
+        try {
             Date date = inputFormat.parse(day + "-" + month + "-" + year);
             String datee = outputFormat.format(date);
             monthYear_bt.setText(datee);
             monthYear_s = datee;
             selected_month = month_format.format(date);
             selected_year = year_format.format(date);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
 
         monthYear_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MonthYearPickerDialog.class);
-                startActivityForResult(intent,req_monthyear);
+                startActivityForResult(intent, req_monthyear);
             }
         });
-   getData() ;
+        getData();
         return rootView;
     }
 
     public void getData() {
 
         Log.v("WorkApproval", "- getData");
-            progressdialog = new ProgressDialog(getContext(), ProgressDialog.THEME_HOLO_LIGHT);
-            progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressdialog.setMessage(getResources().getString(
-                    R.string.loading));
-            progressdialog.setCancelable(false);
-            progressdialog.setCanceledOnTouchOutside(false);
-            progressdialog.show();
+        progressdialog = new ProgressDialog(getContext(), ProgressDialog.THEME_HOLO_LIGHT);
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressdialog.setMessage(getResources().getString(
+                R.string.loading));
+        progressdialog.setCancelable(false);
+        progressdialog.setCanceledOnTouchOutside(false);
+        progressdialog.show();
         EtPermitApprArbpl.clear();
         EtPermitApprWerks.clear();
         EtPermitTotalArbpl.clear();
@@ -232,16 +226,16 @@ String  plantName_s = "", wrkcntrName_s = "",
             Cursor cursor1 = App_db.rawQuery("select * from EtPermitWa", null);
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
-                    red1=0;
-                    yellow1=0;
-                    green1=0;
+                    red1 = 0;
+                    yellow1 = 0;
+                    green1 = 0;
                     do {
                         if (cursor1.getString(6).equals("X")) {
                             red1 = red1 + 1;
                         } else if (cursor1.getString(7).equals("X")) {
                             yellow1 = yellow1 + 1;
                         } else if (cursor1.getString(8).equals("X")) {
-                            green1 = green1+ 1;
+                            green1 = green1 + 1;
                         }
 
                     }
@@ -290,11 +284,11 @@ String  plantName_s = "", wrkcntrName_s = "",
         re = "";
         llo.clear();
         if (red1 != 0) {
-            entries.add(new PieEntry(red1, "Not Issued"));
+            entries.add(new PieEntry(red1, getString(R.string.noissue)));
             my_colors.add(Color.rgb(255, 0, 0));
             re = "R";
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Not Issued");
+            llo_o.setLabel(getString(R.string.noissue));
             llo_o.setColor(Color.rgb(255, 0, 0));
             llo.add(llo_o);
         } else {
@@ -302,11 +296,11 @@ String  plantName_s = "", wrkcntrName_s = "",
             re = "";
         }
         if (yellow1 != 0) {
-            entries.add(new PieEntry(yellow1, "Partially Issued"));
+            entries.add(new PieEntry(yellow1, getString(R.string.partissue)));
             my_colors.add(Color.rgb(255, 255, 0));
             yel = "Y";
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Partially Issued");
+            llo_o.setLabel(getString(R.string.partissue));
             llo_o.setColor(Color.rgb(255, 255, 0));
             llo.add(llo_o);
         } else {
@@ -314,11 +308,11 @@ String  plantName_s = "", wrkcntrName_s = "",
             yel = "";
         }
         if (green1 != 0) {
-            entries.add(new PieEntry(green1, "Issued"));
+            entries.add(new PieEntry(green1, getString(R.string.issue)));
             my_colors.add(Color.rgb(0, 128, 0));
             gre = "G";
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Issued");
+            llo_o.setLabel(getString(R.string.issue));
             llo_o.setColor(Color.rgb(0, 128, 0));
             llo.add(llo_o);
         } else {
@@ -349,34 +343,34 @@ String  plantName_s = "", wrkcntrName_s = "",
                 cd = new ConnectionDetector(getContext());
                 isInternetPresent = cd.isConnectingToInternet();
                 if (isInternetPresent) {
-                    if (label.equals("Not Issued")) {
+                    if (label.equals(getString(R.string.noissue))) {
                         String value = "Red";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Not Issued");
+                        intent.putExtra("application", getString(R.string.noissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label.equals("Partially Issued")) {
+                    } else if (label.equals(getString(R.string.partissue))) {
                         String value = "Yellow";
-                        Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
+                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Partially Issued");
+                        intent.putExtra("application", getString(R.string.partissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label.equals("Issued")) {
+                    } else if (label.equals(getString(R.string.issue))) {
                         String value = "Green";
-                        Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
+                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Issued");
+                        intent.putExtra("application", getString(R.string.issue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
                     }
@@ -418,13 +412,13 @@ String  plantName_s = "", wrkcntrName_s = "",
         pieChart1.setDragDecelerationFrictionCoef(0.95f);
         if (!iwerk.equals("") && wrkcnt.equals("")) {
             pieChart1.setCenterText(plant_name);
-         //   total_record.setText("Total Count : " + total_ppr_f);
+            //   total_record.setText("Total Count : " + total_ppr_f);
         } else if (!iwerk.equals("") && !wrkcnt.equals("")) {
             pieChart1.setCenterText(plant_name + " " + wrkcnt_name);
 //            total_record.setText("Total Count : " + total_ppr_f);
         } else {
             pieChart1.setCenterText("Work Approval Status");
-      //  total_record.setText("Total Count : " + total_ppr);
+            //  total_record.setText("Total Count : " + total_ppr);
         }
         pieChart1.setHoleColor(Color.LTGRAY);
         pieChart1.setTransparentCircleColor(Color.LTGRAY);
@@ -434,19 +428,18 @@ String  plantName_s = "", wrkcntrName_s = "",
         progressdialog.dismiss();
         pieChart1.setData(pieData1);
     }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !data.equals(""))
-        {
-            if(requestCode == req_monthyear)
-            {
+        if (data != null && !data.equals("")) {
+            if (requestCode == req_monthyear) {
                 selected_month = data.getStringExtra("selected_month");
                 selected_year = data.getStringExtra("selected_year");
                 String selected_month_formatted = data.getStringExtra("selected_month_formatted");
-                monthYear_bt.setText(selected_month_formatted+","+" "+selected_year);
-                 getData() ;           }
+                monthYear_bt.setText(selected_month_formatted + "," + " " + selected_year);
+                getData();
+            }
         }
     }
 
@@ -492,7 +485,7 @@ String  plantName_s = "", wrkcntrName_s = "",
                         startActivity(intent);
                     } else if (label_name.getText().toString().equals("Prepared")) {
                         String value = "Prep";
-                        Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
+                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
@@ -502,7 +495,7 @@ String  plantName_s = "", wrkcntrName_s = "",
                         startActivity(intent);
                     } else if (label_name.getText().toString().equals("Closed")) {
                         String value = "Clsd";
-                        Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
+                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
@@ -520,34 +513,34 @@ String  plantName_s = "", wrkcntrName_s = "",
                         intent.putExtra("application", "Rejected");
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Not Issued")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.noissue))) {
                         String value = "Red";
-                        Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
+                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Not Issued");
+                        intent.putExtra("application", getString(R.string.noissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Partially Issued")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.partissue))) {
                         String value = "Yellow";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Partially Issued");
+                        intent.putExtra("application", getString(R.string.partissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Issued")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.issue))) {
                         String value = "Green";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Issued");
+                        intent.putExtra("application", getString(R.string.issue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
                     }
@@ -605,7 +598,7 @@ String  plantName_s = "", wrkcntrName_s = "",
         public View getView(final int position, View view, ViewGroup parent) {
             final ViewHolder holder;
             if (view == null) {
-                holder = new  ViewHolder();
+                holder = new ViewHolder();
                 view = inflater.inflate(R.layout.plant_mis_data, null);
                 holder.radiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);
                 holder.radio_status = (RadioButton) view.findViewById(R.id.radio_status);
@@ -675,7 +668,7 @@ String  plantName_s = "", wrkcntrName_s = "",
                                     }
                                 }
                             }
-                            filter_plant_type_adapter = new FILTER_PLANT_TYPE_Adapter(getActivity(),pt_o);
+                            filter_plant_type_adapter = new FILTER_PLANT_TYPE_Adapter(getActivity(), pt_o);
                             listview.setAdapter(filter_plant_type_adapter);
                         } else {
 
@@ -695,7 +688,6 @@ String  plantName_s = "", wrkcntrName_s = "",
             return view;
         }
     }
-
 
 
     protected void show_error_dialog(String string) {
@@ -764,7 +756,7 @@ String  plantName_s = "", wrkcntrName_s = "",
         public View getView(final int position, View view, ViewGroup parent) {
             final ViewHolder holder;
             if (view == null) {
-                holder =new ViewHolder();
+                holder = new ViewHolder();
                 view = inflater.inflate(R.layout.plant_mis_data, null);
                 holder.radiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);
                 holder.radio_status = (RadioButton) view.findViewById(R.id.radio_status);
@@ -834,7 +826,7 @@ String  plantName_s = "", wrkcntrName_s = "",
                                     }
                                 }
                             }
-                            wkcenter_type_adapter = new WKCENTER_TYPE_ADAPTER(getActivity(),art_fo);
+                            wkcenter_type_adapter = new WKCENTER_TYPE_ADAPTER(getActivity(), art_fo);
                             listview.setAdapter(wkcenter_type_adapter);
                         } else {
 
@@ -855,40 +847,40 @@ String  plantName_s = "", wrkcntrName_s = "",
         }
     }
 
-public void plantWrkcntSelector(String plant, final String wrkcnt) {
+    public void plantWrkcntSelector(String plant, final String wrkcnt) {
 
-    Cursor cursor1 = null;
-    red1 = 0;
-    yellow1 = 0;
-    green1 = 0;
+        Cursor cursor1 = null;
+        red1 = 0;
+        yellow1 = 0;
+        green1 = 0;
 
-    try {
-        if (wrkcnt != null && !wrkcnt.equals("")) {
+        try {
+            if (wrkcnt != null && !wrkcnt.equals("")) {
 
-            cursor1 = App_db.rawQuery("select * from EtPermitWa where Iwerk = ? and Arbpl = ?", new String[]{plant, wrkcnt});
-        } else {
-            cursor1 = App_db.rawQuery("select * from EtPermitWa where Iwerk=?", new String[]{plant});
+                cursor1 = App_db.rawQuery("select * from EtPermitWa where Iwerk = ? and Arbpl = ?", new String[]{plant, wrkcnt});
+            } else {
+                cursor1 = App_db.rawQuery("select * from EtPermitWa where Iwerk=?", new String[]{plant});
 
-        }
-
-        if (cursor1 != null && cursor1.getCount() > 0) {
-            if (cursor1.moveToFirst()) {
-                do {
-                    if (cursor1.getString(6).equals("X")) {
-                        red1 = red1 + 1;
-                    } else if (cursor1.getString(7).equals("X")) {
-                        yellow1 = yellow1 + 1;
-                    } else if (cursor1.getString(8).equals("X")) {
-                        green1 = green1 + 1;
-                    }
-                } while (cursor1.moveToNext());
             }
 
+            if (cursor1 != null && cursor1.getCount() > 0) {
+                if (cursor1.moveToFirst()) {
+                    do {
+                        if (cursor1.getString(6).equals("X")) {
+                            red1 = red1 + 1;
+                        } else if (cursor1.getString(7).equals("X")) {
+                            yellow1 = yellow1 + 1;
+                        } else if (cursor1.getString(8).equals("X")) {
+                            green1 = green1 + 1;
+                        }
+                    } while (cursor1.moveToNext());
+                }
+
+            }
+
+
+        } catch (Exception e) {
         }
-
-
-    } catch (Exception e) {
-    }
 
 
     /*if (total_permits.getVisibility() == View.VISIBLE) {
@@ -1155,166 +1147,165 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
         } catch (NumberFormatException nfe) {
         }*/
 
-    if (red1 <= 0 && yellow1 <= 0 && green1 <= 0) {
-        pieChart1.setVisibility(View.GONE);
-        noData_tv.setVisibility(View.VISIBLE);
-        llo.clear();
-        label_list1.setAdapter(null);
-        progressdialog.dismiss();
-    } else {
-        final List<PieEntry> entries = new ArrayList<>();
-        my_colors.clear();
-        yel = "";
-        gre = "";
-        re = "";
-        llo.clear();
-        if (red1 != 0) {
-            entries.add(new PieEntry(red1, "Not Issued"));
-            my_colors.add(Color.rgb(255, 0, 0));
-            re = "R";
-            Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Not Issued");
-            llo_o.setColor(Color.rgb(255, 0, 0));
-            llo.add(llo_o);
+        if (red1 <= 0 && yellow1 <= 0 && green1 <= 0) {
+            pieChart1.setVisibility(View.GONE);
+            noData_tv.setVisibility(View.VISIBLE);
+            llo.clear();
+            label_list1.setAdapter(null);
+            progressdialog.dismiss();
         } else {
-            red_color = 0;
-            re = "";
-        }
-        if (yellow1 != 0) {
-            entries.add(new PieEntry(yellow1, "Partially Issued"));
-            my_colors.add(Color.rgb(255, 255, 0));
-            yel = "Y";
-            Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Partially Issued");
-            llo_o.setColor(Color.rgb(255, 255, 0));
-            llo.add(llo_o);
-        } else {
-            yellow_color = 0;
+            final List<PieEntry> entries = new ArrayList<>();
+            my_colors.clear();
             yel = "";
-        }
-        if (green1 != 0) {
-            entries.add(new PieEntry(green1, "Issued"));
-            my_colors.add(Color.rgb(0, 128, 0));
-            gre = "G";
-            Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Issued");
-            llo_o.setColor(Color.rgb(0, 128, 0));
-            llo.add(llo_o);
-        } else {
-            green_color = 0;
             gre = "";
-        }
-        DataSet1 = new PieDataSet(entries, "");
+            re = "";
+            llo.clear();
+            if (red1 != 0) {
+                entries.add(new PieEntry(red1, getString(R.string.noissue)));
+                my_colors.add(Color.rgb(255, 0, 0));
+                re = "R";
+                Label_List_Object llo_o = new Label_List_Object();
+                llo_o.setLabel(getString(R.string.noissue));
+                llo_o.setColor(Color.rgb(255, 0, 0));
+                llo.add(llo_o);
+            } else {
+                red_color = 0;
+                re = "";
+            }
+            if (yellow1 != 0) {
+                entries.add(new PieEntry(yellow1, getString(R.string.partissue)));
+                my_colors.add(Color.rgb(255, 255, 0));
+                yel = "Y";
+                Label_List_Object llo_o = new Label_List_Object();
+                llo_o.setLabel(getString(R.string.partissue));
+                llo_o.setColor(Color.rgb(255, 255, 0));
+                llo.add(llo_o);
+            } else {
+                yellow_color = 0;
+                yel = "";
+            }
+            if (green1 != 0) {
+                entries.add(new PieEntry(green1, getString(R.string.issue)));
+                my_colors.add(Color.rgb(0, 128, 0));
+                gre = "G";
+                Label_List_Object llo_o = new Label_List_Object();
+                llo_o.setLabel(getString(R.string.issue));
+                llo_o.setColor(Color.rgb(0, 128, 0));
+                llo.add(llo_o);
+            } else {
+                green_color = 0;
+                gre = "";
+            }
+            DataSet1 = new PieDataSet(entries, "");
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int c : my_colors) colors.add(c);
+            ArrayList<Integer> colors = new ArrayList<Integer>();
+            for (int c : my_colors) colors.add(c);
 
-        DataSet1.setColors(colors);
-        DataSet1.setSliceSpace(2f);
-        DataSet1.setValueLinePart1OffsetPercentage(80.f);
-        DataSet1.setSelectionShift(5f);
-        DataSet1.setValueLinePart1Length(0.2f);
-        DataSet1.setValueLinePart2Length(0.4f);
-        DataSet1.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        DataSet1.setValueFormatter(new MyValueFormatter());
+            DataSet1.setColors(colors);
+            DataSet1.setSliceSpace(2f);
+            DataSet1.setValueLinePart1OffsetPercentage(80.f);
+            DataSet1.setSelectionShift(5f);
+            DataSet1.setValueLinePart1Length(0.2f);
+            DataSet1.setValueLinePart2Length(0.4f);
+            DataSet1.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+            DataSet1.setValueFormatter(new MyValueFormatter());
 
-        pieChart1.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
+            pieChart1.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry e, Highlight h) {
 
-                int index = (int) h.getX();
-                String label = entries.get(index).getLabel();
+                    int index = (int) h.getX();
+                    String label = entries.get(index).getLabel();
 
-                cd = new ConnectionDetector(getActivity());
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    if (label.equals("Not Issued")) {
-                        String value = "Red";
-                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
-                        intent.putExtra("value", value);
-                        intent.putExtra("Iwerk_plant", iwerk);
-                        intent.putExtra("Name_plant", plant_name);
-                        intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Not Issued");
-                        intent.putExtra("wrk_name", wrkcnt_name);
-                        startActivity(intent);
-                    } else if (label.equals("Partially Issued")) {
-                        String value = "Yellow";
-                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
-                        intent.putExtra("value", value);
-                        intent.putExtra("Iwerk_plant", iwerk);
-                        intent.putExtra("Name_plant", plant_name);
-                        intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Partially Issued");
-                        intent.putExtra("wrk_name", wrkcnt_name);
-                        startActivity(intent);
-                    } else if (label.equals("Issued")) {
-                        String value = "Green";
-                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
-                        intent.putExtra("value", value);
-                        intent.putExtra("Iwerk_plant", iwerk);
-                        intent.putExtra("Name_plant", plant_name);
-                        intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Issued");
-                        intent.putExtra("wrk_name", wrkcnt_name);
-                        startActivity(intent);
+                    cd = new ConnectionDetector(getActivity());
+                    isInternetPresent = cd.isConnectingToInternet();
+                    if (isInternetPresent) {
+                        if (label.equals(getString(R.string.noissue))) {
+                            String value = "Red";
+                            Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
+                            intent.putExtra("value", value);
+                            intent.putExtra("Iwerk_plant", iwerk);
+                            intent.putExtra("Name_plant", plant_name);
+                            intent.putExtra("workcenter", wrkcnt);
+                            intent.putExtra("application", getString(R.string.noissue));
+                            intent.putExtra("wrk_name", wrkcnt_name);
+                            startActivity(intent);
+                        } else if (label.equals(getString(R.string.partissue))) {
+                            String value = "Yellow";
+                            Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
+                            intent.putExtra("value", value);
+                            intent.putExtra("Iwerk_plant", iwerk);
+                            intent.putExtra("Name_plant", plant_name);
+                            intent.putExtra("workcenter", wrkcnt);
+                            intent.putExtra("application", getString(R.string.partissue));
+                            intent.putExtra("wrk_name", wrkcnt_name);
+                            startActivity(intent);
+                        } else if (label.equals(getString(R.string.issue))) {
+                            String value = "Green";
+                            Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
+                            intent.putExtra("value", value);
+                            intent.putExtra("Iwerk_plant", iwerk);
+                            intent.putExtra("Name_plant", plant_name);
+                            intent.putExtra("workcenter", wrkcnt);
+                            intent.putExtra("application", getString(R.string.issue));
+                            intent.putExtra("wrk_name", wrkcnt_name);
+                            startActivity(intent);
+                        }
+                    } else {
+                        noInternet();
                     }
-                } else {
-                    noInternet();
                 }
-            }
 
-            @Override
-            public void onNothingSelected() {
+                @Override
+                public void onNothingSelected() {
 
-            }
-        });
+                }
+            });
 
-        Legend legend = pieChart1.getLegend();
-        legend.setTextSize(14);
-        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        legend.setWordWrapEnabled(true);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setEnabled(false);
+            Legend legend = pieChart1.getLegend();
+            legend.setTextSize(14);
+            legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+            legend.setWordWrapEnabled(true);
+            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+            legend.setEnabled(false);
 
-        pieData1 = new PieData(DataSet1);
-        pieData1.setValueTextSize(14);
-        pieChart1.setUsePercentValues(false);
+            pieData1 = new PieData(DataSet1);
+            pieData1.setValueTextSize(14);
+            pieChart1.setUsePercentValues(false);
 
 
-        Label_Adapter ll_a = new Label_Adapter(getActivity(), llo);
-        label_list1.setAdapter(ll_a);
+            Label_Adapter ll_a = new Label_Adapter(getActivity(), llo);
+            label_list1.setAdapter(ll_a);
 
-        pieChart1.setExtraOffsets(5, 5, 5, 5);
-        pieChart1.highlightValues(null);
-        pieChart1.animateY(1000);
-        pieChart1.setScrollContainer(true);
-        pieChart1.setVerticalScrollBarEnabled(true);
-        pieChart1.getDescription().setEnabled(false);
-        pieChart1.setDrawHoleEnabled(true);
-        pieChart1.setRotationEnabled(true);
-        pieChart1.setDrawEntryLabels(false);
-        pieChart1.setDragDecelerationFrictionCoef(0.95f);
-        if (wrkcnt != null && !wrkcnt.equals("")) {
-            pieChart1.setCenterText(plant_name);
-            //total_record.setText("Total Count : " + total_ppr_f);
-        } else {
-            pieChart1.setCenterText(plant_name + " " + wrkcnt_name);
-            //total_record.setText("Total Count : " + total_ppr_f);
-        } //total_record.setText("Total Count : " + total_ppr);
+            pieChart1.setExtraOffsets(5, 5, 5, 5);
+            pieChart1.highlightValues(null);
+            pieChart1.animateY(1000);
+            pieChart1.setScrollContainer(true);
+            pieChart1.setVerticalScrollBarEnabled(true);
+            pieChart1.getDescription().setEnabled(false);
+            pieChart1.setDrawHoleEnabled(true);
+            pieChart1.setRotationEnabled(true);
+            pieChart1.setDrawEntryLabels(false);
+            pieChart1.setDragDecelerationFrictionCoef(0.95f);
+            if (wrkcnt != null && !wrkcnt.equals("")) {
+                pieChart1.setCenterText(plant_name);
+                //total_record.setText("Total Count : " + total_ppr_f);
+            } else {
+                pieChart1.setCenterText(plant_name + " " + wrkcnt_name);
+                //total_record.setText("Total Count : " + total_ppr_f);
+            } //total_record.setText("Total Count : " + total_ppr);
 
-        pieChart1.setHoleColor(Color.LTGRAY);
-        pieChart1.setTransparentCircleColor(Color.LTGRAY);
-        pieChart1.setCenterTextSize(14);
-        pieChart1.notifyDataSetChanged();//Required if changes are made to pie value
-        pieChart1.invalidate();// for refreshing the chart
-        progressdialog.dismiss();
-        pieChart1.setData(pieData1);
-        noData_tv.setVisibility(View.GONE);
-        pieChart1.setVisibility(View.VISIBLE);
+            pieChart1.setHoleColor(Color.LTGRAY);
+            pieChart1.setTransparentCircleColor(Color.LTGRAY);
+            pieChart1.setCenterTextSize(14);
+            pieChart1.notifyDataSetChanged();//Required if changes are made to pie value
+            pieChart1.invalidate();// for refreshing the chart
+            progressdialog.dismiss();
+            pieChart1.setData(pieData1);
+            noData_tv.setVisibility(View.GONE);
+            pieChart1.setVisibility(View.VISIBLE);
+        }
     }
-}
-
 
 
     public void noInternet() {
@@ -1402,11 +1393,11 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
                 re = "";*//*
 
                 if (red1 != 0) {
-                    entries.add(new PieEntry(red1, "Not Issued"));
+                    entries.add(new PieEntry(red1, getString(R.string.noissue)));
                     my_colors.add(Color.rgb(255, 0, 0));
                     re = "R";
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Not Issued");
+                    llo_o.setLabel(getString(R.string.noissue));
                     llo_o.setColor(Color.rgb(255, 0, 0));
                     llo.add(llo_o);
                 } else {
@@ -1414,11 +1405,11 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
                     re = "";
                 }
                 if (yellow1 != 0) {
-                    entries.add(new PieEntry(yellow1, "Partially Issued"));
+                    entries.add(new PieEntry(yellow1, getString(R.string.partissue)));
                     my_colors.add(Color.rgb(255, 255, 0));
                     yel = "Y";
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Partially Issued");
+                    llo_o.setLabel(getString(R.string.partissue));
                     llo_o.setColor(Color.rgb(255, 255, 0));
                     llo.add(llo_o);
                 } else {
@@ -1426,11 +1417,11 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
                     yel = "";
                 }
                 if (green1 != 0) {
-                    entries.add(new PieEntry(green1, "Issued"));
+                    entries.add(new PieEntry(green1, getString(R.string.issue)));
                     my_colors.add(Color.rgb(0, 128, 0));
                     gre = "G";
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Issued");
+                    llo_o.setLabel(getString(R.string.issue));
                     llo_o.setColor(Color.rgb(0, 128, 0));
                     llo.add(llo_o);
                 } else {
@@ -1476,34 +1467,34 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
                         cd = new ConnectionDetector(getContext());
                         isInternetPresent = cd.isConnectingToInternet();
                         if (isInternetPresent) {
-                            if (label.equals("Not Issued")) {
+                            if (label.equals(getString(R.string.noissue))) {
                                 String value = "Red";
                                 Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Not Issued");
+                                intent.putExtra("application", getString(R.string.noissue));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Partially Issued")) {
+                            } else if (label.equals(getString(R.string.partissue))) {
                                 String value = "Yellow";
                                 Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Partially Issued");
+                                intent.putExtra("application", getString(R.string.partissue));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Issued")) {
+                            } else if (label.equals(getString(R.string.issue))) {
                                 String value = "Green";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Issued");
+                                intent.putExtra("application", getString(R.string.issue));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
                             }
@@ -1557,16 +1548,16 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
             Cursor cursor1 = App_db.rawQuery("select * from EtPermitWa", null);
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
-                    red1=0;
-                    yellow1=0;
-                    green1=0;
+                    red1 = 0;
+                    yellow1 = 0;
+                    green1 = 0;
                     do {
                         if (cursor1.getString(6).equals("X")) {
                             red1 = red1 + 1;
                         } else if (cursor1.getString(7).equals("X")) {
                             yellow1 = yellow1 + 1;
                         } else if (cursor1.getString(8).equals("X")) {
-                            green1 = green1+ 1;
+                            green1 = green1 + 1;
                         }
 
                     }
@@ -1615,11 +1606,11 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
         re = "";
         llo.clear();
         if (red1 != 0) {
-            entries.add(new PieEntry(red1, "Not Issued"));
+            entries.add(new PieEntry(red1, getString(R.string.noissue)));
             my_colors.add(Color.rgb(255, 0, 0));
             re = "R";
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Not Issued");
+            llo_o.setLabel(getString(R.string.noissue));
             llo_o.setColor(Color.rgb(255, 0, 0));
             llo.add(llo_o);
         } else {
@@ -1627,11 +1618,11 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
             re = "";
         }
         if (yellow1 != 0) {
-            entries.add(new PieEntry(yellow1, "Partially Issued"));
+            entries.add(new PieEntry(yellow1, getString(R.string.partissue)));
             my_colors.add(Color.rgb(255, 255, 0));
             yel = "Y";
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Partially Issued");
+            llo_o.setLabel(getString(R.string.partissue));
             llo_o.setColor(Color.rgb(255, 255, 0));
             llo.add(llo_o);
         } else {
@@ -1639,11 +1630,11 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
             yel = "";
         }
         if (green1 != 0) {
-            entries.add(new PieEntry(green1, "Issued"));
+            entries.add(new PieEntry(green1, getString(R.string.issue)));
             my_colors.add(Color.rgb(0, 128, 0));
             gre = "G";
             Label_List_Object llo_o = new Label_List_Object();
-            llo_o.setLabel("Issued");
+            llo_o.setLabel(getString(R.string.issue));
             llo_o.setColor(Color.rgb(0, 128, 0));
             llo.add(llo_o);
         } else {
@@ -1674,34 +1665,34 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
                 cd = new ConnectionDetector(getContext());
                 isInternetPresent = cd.isConnectingToInternet();
                 if (isInternetPresent) {
-                    if (label.equals("Not Issued")) {
+                    if (label.equals(getString(R.string.noissue))) {
                         String value = "Red";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Not Issued");
+                        intent.putExtra("application", getString(R.string.noissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label.equals("Partially Issued")) {
+                    } else if (label.equals(getString(R.string.partissue))) {
                         String value = "Yellow";
-                        Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
+                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Partially Issued");
+                        intent.putExtra("application", getString(R.string.partissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label.equals("Issued")) {
+                    } else if (label.equals(getString(R.string.issue))) {
                         String value = "Green";
-                        Intent intent = new Intent(getActivity(),PermitStatusPieActivity.class);
+                        Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Issued");
+                        intent.putExtra("application", getString(R.string.issue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
                     }
@@ -1761,8 +1752,6 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
     }
 
 
-
-
     public String getMonth_year() {
         return monthYear_s;
     }
@@ -1782,7 +1771,7 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
             return;
 
 
-        else  ma.iv_filter.setOnClickListener(new View.OnClickListener() {
+        else ma.iv_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 plant_wrkcnt_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
@@ -2251,7 +2240,7 @@ public void plantWrkcntSelector(String plant, final String wrkcnt) {
                                     }
                                 }
 
-                                wrkcnt_dialog = new Dialog(getActivity(),R.style.AppThemeDialog_Dark);
+                                wrkcnt_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
                                 wrkcnt_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                 wrkcnt_dialog.setCancelable(true);
                                 wrkcnt_dialog.setCanceledOnTouchOutside(false);

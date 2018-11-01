@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,10 +27,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Interface.Interface;
-import com.enstrapp.fieldtekpro.Passcode.Passcode_Fragment;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
-import com.enstrapp.fieldtekpro.login.Login_Activity;
 import com.enstrapp.fieldtekpro.login.SER_Login;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -51,9 +48,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,15 +94,13 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
     private static SharedPreferences.Editor app_editor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.equipment_geo_tag_activity);
 
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             function_location_id = extras.getString("functionlocation_id");
             equip_id = extras.getString("equipment_id");
             equip_name = extras.getString("equipment_text");
@@ -132,35 +124,29 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
         String androidId = "" + Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
         device_uuid = deviceUuid.toString();
-		/* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+        /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
 
         capture_location_button = (Button) findViewById(R.id.capture_location_button);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
         heading_textview = (TextView) findViewById(R.id.heading_textview);
 
-        heading_textview.setText("Geo Tag" + " (" + equip_id + ")");
+        heading_textview.setText(getString(R.string.geo_tag) + " (" + equip_id + ")");
 
         capture_location_button.setOnClickListener(this);
         back_imageview.setOnClickListener(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            if (checkPermissions())
-            {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkPermissions()) {
                 initViews();
             }
-        }
-        else
-        {
+        } else {
             initViews();
         }
     }
 
     @Override
-    public void onClick(View v)
-    {
-        if (v == capture_location_button)
-        {
+    public void onClick(View v) {
+        if (v == capture_location_button) {
             decision_dialog = new Dialog(Equipment_GEO_Tag_Activity.this);
             decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -168,13 +154,13 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
             decision_dialog.setCanceledOnTouchOutside(false);
             decision_dialog.setContentView(R.layout.decision_dialog);
             ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
-            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
+            TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
             Glide.with(Equipment_GEO_Tag_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
-            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-            confirm.setText("Yes");
-            cancel.setText("No");
-            description_textview.setText("These are the coordinates for this equipment (" + equip_id + "). Latitude: " + current_lat + " & Longitude: " + current_lng + ". Do you want to capture these coordinates?");
+            Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+            Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+            confirm.setText(R.string.yes);
+            cancel.setText(R.string.no);
+            description_textview.setText(getString(R.string.cordnts, equip_id, current_lat, current_lng));
             decision_dialog.show();
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -182,18 +168,14 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
                     decision_dialog.dismiss();
                 }
             });
-            confirm.setOnClickListener(new View.OnClickListener()
-            {
+            confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     decision_dialog.dismiss();
                     new Get_Token().execute();
                 }
             });
-        }
-        else if (v == back_imageview)
-        {
+        } else if (v == back_imageview) {
             Equipment_GEO_Tag_Activity.this.finish();
         }
     }
@@ -237,13 +219,9 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
                 }
                 return;
             }
-            case 0:
-            {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                }
-                else
-                {
+            case 0: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
                 }
                 return;
             }
@@ -280,31 +258,30 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
             public void onMapClick(LatLng latLng) {
                 current_lat = latLng.latitude;
                 current_lng = latLng.longitude;
-                Toast.makeText(Equipment_GEO_Tag_Activity.this,"New Coordinates:\nLatitude: "+current_lat+" ,\nLongitude: "+current_lng, Toast.LENGTH_LONG).show();
+                Toast.makeText(Equipment_GEO_Tag_Activity.this,
+                        getString(R.string.curnt_cordnts, current_lat, current_lng),
+                        Toast.LENGTH_LONG).show();
                 addCustomMarker();
             }
         });
 
     }
 
-    private void addCustomMarker()
-    {
-        if (mGoogleMap == null)
-        {
+    private void addCustomMarker() {
+        if (mGoogleMap == null) {
             return;
         }
         mGoogleMap.clear();
         MarkerOptions mp = new MarkerOptions();
-        mp.position(new LatLng(current_lat,current_lng));
-        mp.title("Your Location\n"+"Latitude: "+current_lat+"\nLongitude: "+current_lng);
+        mp.position(new LatLng(current_lat, current_lng));
+        mp.title(getString(R.string.your_cordnts, current_lat, current_lng));
         mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         mGoogleMap.addMarker(mp);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(current_lat,current_lng), 20));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(current_lat, current_lng), 20));
     }
 
     @Override
-    public void onLocationChanged(Location location)
-    {
+    public void onLocationChanged(Location location) {
         mLastLocation = location;
         current_lat = location.getLatitude();
         current_lng = location.getLongitude();
@@ -312,22 +289,19 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
         addCustomMarker();
     }
 
-    protected synchronized void buildGoogleApiClient()
-    {
-        mGoogleApiClient = new GoogleApiClient.Builder(Equipment_GEO_Tag_Activity.this).addConnectionCallbacks(this) .addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(Equipment_GEO_Tag_Activity.this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         mGoogleApiClient.connect();
     }
 
     @Override
-    public void onConnected(Bundle bundle)
-    {
+    public void onConnected(Bundle bundle) {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setNumUpdates(1);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ContextCompat.checkSelfPermission(Equipment_GEO_Tag_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(Equipment_GEO_Tag_Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -338,89 +312,77 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
     }
 
     @Override
-    public void onConnectionSuspended(int i)
-    {
+    public void onConnectionSuspended(int i) {
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-    {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
     @Override
-    public void onMapLongClick(LatLng latLng)
-    {
+    public void onMapLongClick(LatLng latLng) {
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker)
-    {
+    public boolean onMarkerClick(final Marker marker) {
         return false;
     }
 
 
-    private class Get_Token extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Token extends AsyncTask<Void, Integer, Void> {
         String token_status = "";
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Equipment_GEO_Tag_Activity.this,"Geo Tagging in progress...");
+            custom_progress_dialog.show_progress_dialog(Equipment_GEO_Tag_Activity.this,
+                    getString(R.string.geo_tagprgs));
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 token_status = Token.Get_Token(Equipment_GEO_Tag_Activity.this);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(token_status.equalsIgnoreCase("success"))
-            {
+            if (token_status.equalsIgnoreCase("success")) {
                 new Post_GEO_Tag().execute();
-            }
-            else
-            {
+            } else {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Equipment_GEO_Tag_Activity.this,"Unable to process Geo Tagging. Please try again");
+                error_dialog.show_error_dialog(Equipment_GEO_Tag_Activity.this,
+                        getString(R.string.goe_unable));
             }
         }
     }
 
 
-    private class Post_GEO_Tag extends AsyncTask<Void, Integer, Void>
-    {
+    private class Post_GEO_Tag extends AsyncTask<Void, Integer, Void> {
         String url_link = "";
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
-                token = app_sharedpreferences.getString("token",null);
-                cookie = app_sharedpreferences.getString("cookie",null);
-                String webservice_type = app_sharedpreferences.getString("webservice_type",null);
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"G","U", webservice_type});
-                if (cursor != null && cursor.getCount() > 0)
-                {
+        protected Void doInBackground(Void... params) {
+            try {
+                token = app_sharedpreferences.getString("token", null);
+                cookie = app_sharedpreferences.getString("cookie", null);
+                String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"G", "U", webservice_type});
+                if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
                 }
@@ -441,9 +403,9 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
                 ItGeoData itGeoData = new ItGeoData();
                 itGeoData.setTplnr(function_location_id);
                 itGeoData.setEqupNum(equip_id);
-                itGeoData.setLatitude(current_lat+"");
-                itGeoData.setLongitude(current_lng+"");
-                itGeoData.setAltitude(current_alt+"");
+                itGeoData.setLatitude(current_lat + "");
+                itGeoData.setLongitude(current_lng + "");
+                itGeoData.setAltitude(current_alt + "");
 
                 ArrayList<ItGeoData> itGeoDataArrayList = new ArrayList<>();
                 itGeoDataArrayList.add(itGeoData);
@@ -463,13 +425,11 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
                 final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 
                 Call<SER_Login> call = service.PostGeoTagData(url_link, geo_tag_model, basic, map);
-                call.enqueue(new Callback<SER_Login>()
-                {
+                call.enqueue(new Callback<SER_Login>() {
                     @Override
-                    public void onResponse(Call<SER_Login> call, Response<SER_Login> response)
-                    {
+                    public void onResponse(Call<SER_Login> call, Response<SER_Login> response) {
                         int login_response_status_code = response.code();
-                        Log.v("kiran_sss",login_response_status_code+"....");
+                        Log.v("kiran_sss", login_response_status_code + "....");
                         /*int login_response_status_code = response.code();
                         if(login_response_status_code == 201)
                         {
@@ -488,30 +448,29 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
                         }*/
                         custom_progress_dialog.dismiss_progress_dialog();
                         Success_Dialog success_dialog = new Success_Dialog();
-                        success_dialog.show_success_dialog(Equipment_GEO_Tag_Activity.this,"Location updated successfully for Equipment "+equip_id);
+                        success_dialog.show_success_dialog(Equipment_GEO_Tag_Activity.this,
+                                getString(R.string.geotag_success, equip_id));
                     }
+
                     @Override
-                    public void onFailure(Call<SER_Login> call, Throwable t)
-                    {
+                    public void onFailure(Call<SER_Login> call, Throwable t) {
                         custom_progress_dialog.dismiss_progress_dialog();
                     }
                 });
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 custom_progress_dialog.dismiss_progress_dialog();
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
     }

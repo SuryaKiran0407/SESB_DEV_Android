@@ -30,8 +30,7 @@ import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Material_BOM_Fragment extends Fragment
-{
+public class Material_BOM_Fragment extends Fragment {
 
     TextView title_textview, searchview_textview;
     Boolean isInternetPresent = false;
@@ -54,21 +53,24 @@ public class Material_BOM_Fragment extends Fragment
         View rootView = inflater.inflate(R.layout.f4_list_fragment, container,
                 false);
 
-        ma = (Material_Components_Activity)this.getActivity();
+        ma = (Material_Components_Activity) this.getActivity();
 
         DATABASE_NAME = getString(R.string.database_name);
-        FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
+        FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME,
+                Context.MODE_PRIVATE, null);
         no_data_layout = rootView.findViewById(R.id.no_data_layout);
         search = (SearchView) rootView.findViewById(R.id.search);
-        bottom_panel = (LinearLayout)rootView.findViewById(R.id.bottom_panel);
+        bottom_panel = (LinearLayout) rootView.findViewById(R.id.bottom_panel);
 
         bottom_panel.setVisibility(View.GONE);
 
         bom_id = ma.equip;
         bom_list_recycleview = rootView.findViewById(R.id.list_recycleview);
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -93,8 +95,16 @@ public class Material_BOM_Fragment extends Fragment
                 String Component_test = bom_details_list.get(i).getComponent_test().toLowerCase();
                 String Quantity = bom_details_list.get(i).getQuantity().toLowerCase();
                 String Unit = bom_details_list.get(i).getUnit().toLowerCase();
-                if (bom.contains(query) || Component.contains(query) || Component_test.contains(query) || Quantity.contains(query) || Unit.contains(query)) {
-                    Bom_List_Detailview_Object blo = new Bom_List_Detailview_Object(bom_details_list.get(i).getBom().toString(), bom_details_list.get(i).getComponent().toString(), bom_details_list.get(i).getComponent_test().toString(), bom_details_list.get(i).getQuantity().toString(), bom_details_list.get(i).getUnit().toString(), bom_details_list.get(i).gethierarchy().toString());
+                if (bom.contains(query) || Component.contains(query) ||
+                        Component_test.contains(query) || Quantity.contains(query) ||
+                        Unit.contains(query)) {
+                    Bom_List_Detailview_Object blo =
+                            new Bom_List_Detailview_Object(bom_details_list.get(i).getBom(),
+                                    bom_details_list.get(i).getComponent(),
+                                    bom_details_list.get(i).getComponent_test(),
+                                    bom_details_list.get(i).getQuantity(),
+                                    bom_details_list.get(i).getUnit(),
+                                    bom_details_list.get(i).gethierarchy());
                     filteredList.add(blo);
                 }
             }
@@ -129,11 +139,18 @@ public class Material_BOM_Fragment extends Fragment
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?", new String[]{bom_id});
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?",
+                        new String[]{bom_id});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Bom_List_Detailview_Object blo = new Bom_List_Detailview_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+                            Bom_List_Detailview_Object blo =
+                                    new Bom_List_Detailview_Object(cursor.getString(1),
+                                            cursor.getString(2),
+                                            cursor.getString(3),
+                                            cursor.getString(4),
+                                            cursor.getString(5),
+                                            cursor.getString(6));
                             bom_details_list.add(blo);
                         }
                         while (cursor.moveToNext());
@@ -144,11 +161,6 @@ public class Material_BOM_Fragment extends Fragment
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -179,7 +191,6 @@ public class Material_BOM_Fragment extends Fragment
                     network_connection_dialog.show_network_connection_dialog(getActivity());
                 }
             }
-
         }
     }
 
@@ -194,11 +205,18 @@ public class Material_BOM_Fragment extends Fragment
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?", new String[]{bom_id});
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?",
+                        new String[]{bom_id});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Bom_List_Detailview_Object blo = new Bom_List_Detailview_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+                            Bom_List_Detailview_Object blo =
+                                    new Bom_List_Detailview_Object(cursor.getString(1),
+                                            cursor.getString(2),
+                                            cursor.getString(3),
+                                            cursor.getString(4),
+                                            cursor.getString(5),
+                                            cursor.getString(6));
                             bom_details_list.add(blo);
                         }
                         while (cursor.moveToNext());
@@ -209,11 +227,6 @@ public class Material_BOM_Fragment extends Fragment
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -244,13 +257,14 @@ public class Material_BOM_Fragment extends Fragment
         private List<Bom_List_Detailview_Object> bom_details_list;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView components_textview, components_text_textview, quantity_textview, unit_textview, bom_textview, hierarchy_textview;
+            public TextView components_textview, components_text_textview, quantity_textview,
+                    unit_textview, bom_textview, hierarchy_textview;
             LinearLayout bom_list_data_layout;
 
             public MyViewHolder(View view) {
                 super(view);
                 components_textview = (TextView) view.findViewById(R.id.components_textview);
-                components_text_textview = (TextView) view.findViewById(R.id.components_text_textview);
+                components_text_textview = view.findViewById(R.id.components_text_textview);
                 quantity_textview = (TextView) view.findViewById(R.id.quantity_textview);
                 unit_textview = (TextView) view.findViewById(R.id.unit_textview);
                 bom_textview = (TextView) view.findViewById(R.id.bom_textview);
@@ -266,7 +280,9 @@ public class Material_BOM_Fragment extends Fragment
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.utilities_bom_list_detailedview_cardview_activity, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.utilities_bom_list_detailedview_cardview_activity, parent,
+                            false);
             return new MyViewHolder(itemView);
         }
 
@@ -280,55 +296,21 @@ public class Material_BOM_Fragment extends Fragment
             holder.bom_textview.setText(blo.getBom());
             holder.hierarchy_textview.setText(blo.gethierarchy());
 
-            /*if(holder.hierarchy_textview.getText().toString().equalsIgnoreCase("X"))
-            {
-                holder.bom_list_data_layout.setBackgroundResource(R.drawable.border_fail);
-                holder.components_textview.setTextColor(getResources().getColor(R.color.red));
-            }
-            else
-            {
-                holder.components_textview.setTextColor(getResources().getColor(R.color.black));
-            }*/
-
             holder.bom_list_data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   /* if(holder.hierarchy_textview.getText().toString().equalsIgnoreCase("X"))
-                    {
-                        *//*Intent intent = new Intent(BOM_List_DetailedView_Activity.this, BOM_List_DetailedView_Hirarchy_Activity.class);
-                        intent.putExtra("component_id",holder.components_textview.getText().toString());
-                        intent.putExtra("bom_plant",bom_plant);
-                        startActivity(intent);*//*
-                    }
-                    else
-                    {
-                        *//*Intent bom_reservation_intent = new Intent(BOM_List_DetailedView_Activity.this, BOM_Reservation_Activity.class);
-                        bom_reservation_intent.putExtra("BOM", holder.bom.getText().toString());
-                        bom_reservation_intent.putExtra("Components", holder.components.getText().toString());
-                        bom_reservation_intent.putExtra("Components_text", holder.components_text.getText().toString());
-                        bom_reservation_intent.putExtra("Quantity", holder.quantity.getText().toString());
-                        bom_reservation_intent.putExtra("Unit", holder.unit.getText().toString());
-                        bom_reservation_intent.putExtra("Plant", bom_plant);
-                        startActivity(bom_reservation_intent);*//*
-                    }*/
                     Intent intent = new Intent();
-                    intent.putExtra("component", holder.components_textview.getText().toString());
-                    intent.putExtra("component_txt", holder.components_text_textview.getText().toString());
+                    intent.putExtra("component",
+                            holder.components_textview.getText().toString());
+                    intent.putExtra("component_txt",
+                            holder.components_text_textview.getText().toString());
                     intent.putExtra("plant", ma.iwerk);
-                    intent.putExtra("location", getLocation(holder.components_textview.getText().toString()));
+                    intent.putExtra("location",
+                            getLocation(holder.components_textview.getText().toString()));
                     getActivity().setResult(Activity.RESULT_OK, intent);
                     getActivity().finish();
-                    /*Intent bom_reservation_intent = new Intent(getActivity(), BOM_Reservation_Activity.class);
-                    bom_reservation_intent.putExtra("BOM", bom_id);
-                    bom_reservation_intent.putExtra("Components", holder.components_textview.getText().toString());
-                    bom_reservation_intent.putExtra("Components_text", holder.components_text_textview.getText().toString());
-                    bom_reservation_intent.putExtra("Quantity", holder.quantity_textview.getText().toString());
-                    bom_reservation_intent.putExtra("Unit", holder.unit_textview.getText().toString());
-                    bom_reservation_intent.putExtra("Plant", bom_plant);
-                    startActivity(bom_reservation_intent);*/
                 }
             });
-
         }
 
         @Override
@@ -379,7 +361,8 @@ public class Material_BOM_Fragment extends Fragment
         public Bom_List_Detailview_Object() {
         }
 
-        public Bom_List_Detailview_Object(String Bom, String Component, String Component_test, String Quantity, String Unit, String hierarchy) {
+        public Bom_List_Detailview_Object(String Bom, String Component, String Component_test,
+                                          String Quantity, String Unit, String hierarchy) {
             this.Bom = Bom;
             this.Component = Component;
             this.Component_test = Component_test;
@@ -442,7 +425,8 @@ public class Material_BOM_Fragment extends Fragment
         String loc = "";
         Cursor cursor = null;
         try {
-            cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Matnr = ?", new String[]{component});
+            cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Matnr = ?",
+                    new String[]{component});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -452,10 +436,10 @@ public class Material_BOM_Fragment extends Fragment
                 }
             }
         } catch (Exception e) {
-            if(cursor != null)
+            if (cursor != null)
                 cursor.close();
         } finally {
-            if(cursor != null)
+            if (cursor != null)
                 cursor.close();
         }
         return loc;

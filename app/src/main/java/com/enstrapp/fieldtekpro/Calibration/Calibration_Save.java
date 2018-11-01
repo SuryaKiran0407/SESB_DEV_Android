@@ -8,19 +8,10 @@ import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
-import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Initialload.Calibration_SER;
-import com.enstrapp.fieldtekpro.Initialload.Notifications_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Activity;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Attachments;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Causecode;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Create;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Header;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Longtext;
-import com.enstrapp.fieldtekpro.notifications.Model_Notif_Task;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -41,45 +32,41 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Calibration_Save
-{
+public class Calibration_Save {
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     private static SharedPreferences app_sharedpreferences;
     private static SharedPreferences.Editor app_editor;
-    private static String  cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "", Get_Data = "";
+    private static String cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "", Get_Data = "";
     private static Map<String, String> response = new HashMap<String, String>();
 
-    public static Map<String, String> Post_Calibration_Data(Context activity, ArrayList<Model_Notif_Calibration_Operations> calib_operations_ArrayList, ArrayList<Model_Notif_Calibration_UsageDecision> calib_usagedecision_ArrayList, ArrayList<Model_Notif_Calibration_Defects> calib_defects_ArrayList, String order_id)
-    {
-        try
-        {
+    public static Map<String, String> Post_Calibration_Data(Context activity, ArrayList<Model_Notif_Calibration_Operations> calib_operations_ArrayList, ArrayList<Model_Notif_Calibration_UsageDecision> calib_usagedecision_ArrayList, ArrayList<Model_Notif_Calibration_Defects> calib_defects_ArrayList, String order_id) {
+        try {
             Get_Response = "";
             Get_Data = "";
             DATABASE_NAME = activity.getString(R.string.database_name);
-            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             /* Initializing Shared Preferences */
             app_sharedpreferences = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             app_editor = app_sharedpreferences.edit();
-            username = app_sharedpreferences.getString("Username",null);
-            password = app_sharedpreferences.getString("Password",null);
-            token = app_sharedpreferences.getString("token",null);
-            cookie = app_sharedpreferences.getString("cookie",null);
-            String webservice_type = app_sharedpreferences.getString("webservice_type",null);
-		    /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"D3","PS", webservice_type});
-            if (cursor != null && cursor.getCount() > 0)
-            {
+            username = app_sharedpreferences.getString("Username", null);
+            password = app_sharedpreferences.getString("Password", null);
+            token = app_sharedpreferences.getString("token", null);
+            cookie = app_sharedpreferences.getString("cookie", null);
+            String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+            /* Initializing Shared Preferences */
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D3", "PS", webservice_type});
+            if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = ""+ Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(),((long) device_id.hashCode() << 32)| device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
             Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
@@ -93,11 +80,9 @@ public class Calibration_Save
             map.put("Content-Type", "application/json");
             /*For Send Data in POST Header*/
 
-
             /*Adding Arraylist*/
             ArrayList ArrayList = new ArrayList<>();
             /*Adding Arraylist*/
-
 
             /*Calling Calibration Model with Data*/
             Model_Notif_Calibration model_notif_calibration = new Model_Notif_Calibration();
@@ -122,35 +107,26 @@ public class Calibration_Save
             Call<Calibration_SER> call = service.PostCalibrationData(url_link, model_notif_calibration, basic, map);
             Response<Calibration_SER> response = call.execute();
             int response_status_code = response.code();
-            if(response_status_code == 201)
-            {
-                if (response.isSuccessful() && response.body() != null)
-                {
+            if (response_status_code == 201) {
+                if (response.isSuccessful() && response.body() != null) {
                     /*Reading Response Data and Parsing to Serializable*/
                     Calibration_SER rs = response.body();
                     /*Reading Response Data and Parsing to Serializable*/
 
                     /*Converting GSON Response to JSON Data for Parsing*/
                     String EtMessage = new Gson().toJson(rs.getD().getEtMessage().getResults());
-                    if (EtMessage != null && !EtMessage.equals(""))
-                    {
+                    if (EtMessage != null && !EtMessage.equals("")) {
                         StringBuilder Message_stringbuilder = new StringBuilder();
                         JSONArray jsonObject = new JSONArray(EtMessage);
-                        for(int i = 0; i < jsonObject.length(); i++)
-                        {
+                        for (int i = 0; i < jsonObject.length(); i++) {
                             String Message = jsonObject.getJSONObject(i).optString("Message");
                             Message_stringbuilder.append(Message);
                         }
                         String message = Message_stringbuilder.toString();
-                        if(message.startsWith("S"))
-                        {
+                        if (message.startsWith("S")) {
+                        } else {
                         }
-                        else
-                        {
-                        }
-                    }
-                    else
-                    {
+                    } else {
                         Get_Response = "Unable to process Calibration Data. Please try again.";
                         Get_Data = "";
                     }
@@ -163,19 +139,15 @@ public class Calibration_Save
 
                     String response_data = new Gson().toJson(rs.getD());
                     JSONObject response_jsonObject = new JSONObject(response_data);
-                    if(response_jsonObject.has("EtQinspData"))
-                    {
-                        try
-                        {
+                    if (response_jsonObject.has("EtQinspData")) {
+                        try {
                             String EtQinspData_response_data = new Gson().toJson(rs.getD().getEtQinspData().getResults());
                             JSONArray response_data_jsonArray = new JSONArray(EtQinspData_response_data);
-                            if(response_data_jsonArray.length() > 0)
-                            {
+                            if (response_data_jsonArray.length() > 0) {
                                 String EtQinspData_sql = "Insert into EtQinspData (Aufnr, Prueflos, Vornr, Plnty, Plnnr, Plnkn, Merknr, Quantitat, Qualitat, QpmkZaehl, Msehi, Msehl, Verwmerkm, Kurztext, Result, Sollwert, Toleranzob, Toleranzub, Rueckmelnr, Satzstatus, Equnr, Pruefbemkt, Mbewertg, Pruefer, Pruefdatuv, Pruefdatub, Pruefzeitv, Pruefzeitb, Iststpumf, Anzfehleh, Anzwertg, Ktextmat, Katab1, Katalgart1, Auswmenge1, Codetext, Xstatus, Action, UUID, Udid, Werks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement = App_db.compileStatement(EtQinspData_sql);
                                 statement.clearBindings();
-                                for(int j = 0; j < response_data_jsonArray.length(); j++)
-                                {
+                                for (int j = 0; j < response_data_jsonArray.length(); j++) {
                                     statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Aufnr"));
                                     statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Prueflos"));
                                     statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Vornr"));
@@ -200,24 +172,18 @@ public class Calibration_Save
                                     statement.bindString(22, response_data_jsonArray.getJSONObject(j).optString("Pruefbemkt"));
 
                                     String QUANTITAT = response_data_jsonArray.getJSONObject(j).optString("Quantitat");
-                                    if(QUANTITAT.equalsIgnoreCase("X"))
-                                    {
+                                    if (QUANTITAT.equalsIgnoreCase("X")) {
                                         String result = response_data_jsonArray.getJSONObject(j).optString("Result");
-                                        if (result != null && !result.equals(""))
-                                        {
+                                        if (result != null && !result.equals("")) {
                                             String fromm = "", too = "";
                                             String from = response_data_jsonArray.getJSONObject(j).optString("Toleranzub");
-                                            if (from != null && !from.equals(""))
-                                            {
-                                                if(from.contains(","))
-                                                {
-                                                    String result1 = from.replace(",",".");
+                                            if (from != null && !from.equals("")) {
+                                                if (from.contains(",")) {
+                                                    String result1 = from.replace(",", ".");
                                                     Float dvd = Float.parseFloat(result1);
                                                     DecimalFormat df = new DecimalFormat("###.##");
                                                     too = df.format(dvd);
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     Float dvd = Float.parseFloat(from);
                                                     DecimalFormat df = new DecimalFormat("###.##");
                                                     too = df.format(dvd);
@@ -225,70 +191,50 @@ public class Calibration_Save
                                             }
 
                                             String to = response_data_jsonArray.getJSONObject(j).optString("Toleranzob");
-                                            if (to != null && !to.equals(""))
-                                            {
-                                                if(to.contains(","))
-                                                {
-                                                    String result1 = to.replace(",",".");
+                                            if (to != null && !to.equals("")) {
+                                                if (to.contains(",")) {
+                                                    String result1 = to.replace(",", ".");
                                                     Float dvd = Float.parseFloat(result1);
                                                     DecimalFormat df = new DecimalFormat("###.##");
                                                     fromm = df.format(dvd);
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     Float dvd = Float.parseFloat(to);
                                                     DecimalFormat df = new DecimalFormat("###.##");
                                                     fromm = df.format(dvd);
                                                 }
                                             }
 
-                                            if(result.contains(","))
-                                            {
-                                                String result1 = result.replace(",",".");
+                                            if (result.contains(",")) {
+                                                String result1 = result.replace(",", ".");
                                                 Float dvd = Float.parseFloat(result1);
                                                 DecimalFormat df = new DecimalFormat("###.##");
                                                 String res = df.format(dvd);
                                                 Float floatt = Float.parseFloat(res);
                                                 Float floatt1 = Float.parseFloat(too);
                                                 Float floatt2 = Float.parseFloat(fromm);
-                                                if(floatt >= floatt1 && floatt <= floatt2)
-                                                {
+                                                if (floatt >= floatt1 && floatt <= floatt2) {
                                                     statement.bindString(23, "A");
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     statement.bindString(23, "R");
                                                 }
-                                            }
-                                            else
-                                            {
-                                                if (too != null && !too.equals("") && fromm != null && !fromm.equals(""))
-                                                {
+                                            } else {
+                                                if (too != null && !too.equals("") && fromm != null && !fromm.equals("")) {
                                                     Float floatt = Float.parseFloat(result);
                                                     Float floatt1 = Float.parseFloat(too);
                                                     Float floatt2 = Float.parseFloat(fromm);
-                                                    if(floatt >= floatt1 && floatt <= floatt2)
-                                                    {
+                                                    if (floatt >= floatt1 && floatt <= floatt2) {
                                                         statement.bindString(23, "A");
-                                                    }
-                                                    else
-                                                    {
+                                                    } else {
                                                         statement.bindString(23, "R");
                                                     }
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     statement.bindString(23, "R");
                                                 }
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             statement.bindString(23, "R");
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         statement.bindString(23, response_data_jsonArray.getJSONObject(j).optString("Mbewertg"));
                                     }
 
@@ -314,26 +260,20 @@ public class Calibration_Save
                                     statement.execute();
                                 }
                             }
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                         }
                     }
 
 
-                    if(response_jsonObject.has("EtQudData"))
-                    {
-                        try
-                        {
+                    if (response_jsonObject.has("EtQudData")) {
+                        try {
                             String EtQudData_response_data = new Gson().toJson(rs.getD().getEtQudData().getResults());
                             JSONArray response_data_jsonArray = new JSONArray(EtQudData_response_data);
-                            if(response_data_jsonArray.length() > 0)
-                            {
+                            if (response_data_jsonArray.length() > 0) {
                                 String EtQudData_sql = "Insert into EtQudData (Prueflos,Aufnr,Werks, Equnr, Vkatart, Vcodegrp, Vauswahlmg, Vcode, Qkennzahl, Vname, Vdatum, Vaedatum, Vezeitaen, Udtext, Udforce, Rcode, Xstatus, Action, Udid, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement EtQudData_statement = App_db.compileStatement(EtQudData_sql);
                                 EtQudData_statement.clearBindings();
-                                for(int j = 0; j < response_data_jsonArray.length(); j++)
-                                {
+                                for (int j = 0; j < response_data_jsonArray.length(); j++) {
                                     EtQudData_statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Prueflos"));
                                     EtQudData_statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Aufnr"));
                                     EtQudData_statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Werks"));
@@ -355,20 +295,15 @@ public class Calibration_Save
                                     EtQudData_statement.bindString(19, response_data_jsonArray.getJSONObject(j).optString("Udid"));
                                     String Vcode = response_data_jsonArray.getJSONObject(j).optString("Vcode");
                                     String notes = response_data_jsonArray.getJSONObject(j).optString("Udtext");
-                                    if (Vcode != null&& !Vcode.equals("") || notes != null&& !notes.equals(""))
-                                    {
+                                    if (Vcode != null && !Vcode.equals("") || notes != null && !notes.equals("")) {
                                         EtQudData_statement.bindString(20, "hide");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         EtQudData_statement.bindString(20, "visible");
                                     }
                                     EtQudData_statement.execute();
                                 }
                             }
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                         }
                     }
 
@@ -376,18 +311,12 @@ public class Calibration_Save
                     App_db.endTransaction();
 
                 }
+            } else {
             }
-            else
-            {
-            }
-        }
-        catch(Exception e)
-        {
-            Get_Response = "Unable to process Calibration Data. Please try again.";
+        } catch (Exception e) {
+            Get_Response = activity.getString(R.string.unable_prcscalb);
             Get_Data = "";
-        }
-        finally
-        {
+        } finally {
         }
         response.put("response_status", Get_Response);
         response.put("response_data", Get_Data);

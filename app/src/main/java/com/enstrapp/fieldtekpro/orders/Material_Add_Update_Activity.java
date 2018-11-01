@@ -21,10 +21,10 @@ import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.R;
-import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
-import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
+import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,16 +81,14 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         component_iv = findViewById(R.id.component_iv);
         quantity_iv = findViewById(R.id.quantity_iv);
 
-
         DATABASE_NAME = getString(R.string.database_name);
-        FieldTekPro_db = Material_Add_Update_Activity.this.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-
+        FieldTekPro_db = Material_Add_Update_Activity.this.openOrCreateDatabase(DATABASE_NAME,
+                Context.MODE_PRIVATE, null);
 
         /*Written By SuryaKiran for Custom Info*/
-        material_custominfo_button = (Button)findViewById(R.id.material_custominfo_button);
+        material_custominfo_button = (Button) findViewById(R.id.material_custominfo_button);
         selected_material_custom_info_arraylist.clear();
         /*Written By SuryaKiran for Custom Info*/
-
 
         omp_al.clear();
         toolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
@@ -123,71 +121,55 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 quantity_tiet.setText(omp.getQuantity());
 
                 String plant_text = "";
-                try
-                {
+                try {
                     String plant_id = omp.getPlantId();
-                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
-                    if (cursor1 != null && cursor1.getCount() > 0)
-                    {
-                        if (cursor1.moveToFirst())
-                        {
-                            do
-                            {
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where " +
+                            "Werks = ?", new String[]{plant_id});
+                    if (cursor1 != null && cursor1.getCount() > 0) {
+                        if (cursor1.moveToFirst()) {
+                            do {
                                 plant_text = cursor1.getString(2);
                             }
                             while (cursor1.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor1.close();
                     }
+                } catch (Exception e) {
                 }
-                catch (Exception e)
-                {
-                }
-                plant_tiet.setText(omp.getPlantId()+" - "+plant_text);
+                plant_tiet.setText(omp.getPlantId() + " - " + plant_text);
                 plant_id = omp.getPlantId();
 
-
                 String loc_text = "";
-                try
-                {
+                try {
                     String loc_id = omp.getLocation();
-                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_SLOC where Lgort = ?", new String[]{loc_id});
-                    if (cursor1 != null && cursor1.getCount() > 0)
-                    {
-                        if (cursor1.moveToFirst())
-                        {
-                            do
-                            {
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_SLOC where " +
+                            "Lgort = ?", new String[]{loc_id});
+                    if (cursor1 != null && cursor1.getCount() > 0) {
+                        if (cursor1.moveToFirst()) {
+                            do {
                                 loc_text = cursor1.getString(4);
                             }
                             while (cursor1.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor1.close();
                     }
+                } catch (Exception e) {
                 }
-                catch (Exception e)
-                {
-                }
-                location_tiet.setText(omp.getLocation()+" - "+loc_text);
+                location_tiet.setText(omp.getLocation() + " - " + loc_text);
                 loc_id = omp.getLocation();
-
 
                 reservation_tiet.setText(getResources().getString(R.string.hypen_text, omp.getRsnum(), omp.getRspos()));
                 receipt_tiet.setText(omp.getReceipt());
                 unloading_tiet.setText(omp.getUnloading());
                 submit_bt.setText(getResources().getString(R.string.update));
 
-
                 /*Written By SuryaKiran for Custom Info*/
-                selected_material_custom_info_arraylist = (ArrayList<HashMap<String, String>>)getIntent().getSerializableExtra("selected_material_custom_info_arraylist");
+                selected_material_custom_info_arraylist =
+                        (ArrayList<HashMap<String, String>>) getIntent()
+                                .getSerializableExtra("selected_material_custom_info_arraylist");
                 /*Written By SuryaKiran for Custom Info*/
-
             }
         }
 
@@ -214,83 +196,99 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         switch (v.getId()) {
 
             case (R.id.material_custominfo_button):
-                Intent custominfo_intent = new Intent(Material_Add_Update_Activity.this, CustomInfo_Activity.class);
-                custominfo_intent.putExtra("Zdoctype","W");
-                custominfo_intent.putExtra("ZdoctypeItem","WC");
-                custominfo_intent.putExtra("custom_info_arraylist",selected_material_custom_info_arraylist);
-                custominfo_intent.putExtra("request_id", Integer.toString(MATERIAL_CUSTOMINFO));
-                startActivityForResult(custominfo_intent,MATERIAL_CUSTOMINFO);
+                Intent custominfo_intent = new Intent(Material_Add_Update_Activity.this,
+                        CustomInfo_Activity.class);
+                custominfo_intent.putExtra("Zdoctype", "W");
+                custominfo_intent.putExtra("ZdoctypeItem", "WC");
+                custominfo_intent.putExtra("custom_info_arraylist",
+                        selected_material_custom_info_arraylist);
+                custominfo_intent.putExtra("request_id",
+                        Integer.toString(MATERIAL_CUSTOMINFO));
+                startActivityForResult(custominfo_intent, MATERIAL_CUSTOMINFO);
                 break;
 
             case (R.id.oprtnId_iv):
-                Intent oprtnIntent = new Intent(Material_Add_Update_Activity.this, Operations_List.class);
+                Intent oprtnIntent = new Intent(Material_Add_Update_Activity.this,
+                        Operations_List.class);
                 oprtnIntent.putExtra("oprtn_list", oop_al);
                 startActivityForResult(oprtnIntent, OPRTN_LIST);
                 break;
 
             case (R.id.component_iv):
-                Intent compIntent = new Intent(Material_Add_Update_Activity.this, Material_Components_Activity.class);
+                Intent compIntent = new Intent(Material_Add_Update_Activity.this,
+                        Material_Components_Activity.class);
                 compIntent.putExtra("equipment", equip);
                 compIntent.putExtra("iwerk", iwerk);
                 startActivityForResult(compIntent, COMPNT_LIST);
                 break;
 
             case (R.id.quantity_iv):
-                if (oprtnId_tiet.getText().toString() != null && !oprtnId_tiet.getText().toString().equals("")) {
-                    if (component_tiet.getText().toString() != null && !component_tiet.getText().toString().equals("")) {
-                        if (quantity_tiet.getText().toString() != null && !quantity_tiet.getText().toString().equals("")) {
+                if (oprtnId_tiet.getText().toString() != null &&
+                        !oprtnId_tiet.getText().toString().equals("")) {
+                    if (component_tiet.getText().toString() != null &&
+                            !component_tiet.getText().toString().equals("")) {
+                        if (quantity_tiet.getText().toString() != null &&
+                                !quantity_tiet.getText().toString().equals("")) {
                             if (!quantity_tiet.getText().toString().equals("0")) {
                                 availSubmit = false;
                                 new GetToken().execute();
                             } else {
-                                errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.zero_checker));
+                                errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                                        getResources().getString(R.string.zero_checker));
                             }
                         } else {
-                            errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.quantity_mandate));
+                            errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                                    getResources().getString(R.string.quantity_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.component_mandate));
+                        errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                                getResources().getString(R.string.component_mandate));
                     }
                 } else {
-                    errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.operation_mandate));
+                    errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                            getResources().getString(R.string.operation_mandate));
                 }
 
                 break;
 
             case (R.id.submit_bt):
-                if (oprtnId_tiet.getText().toString() != null && !oprtnId_tiet.getText().toString().equals("")) {
-                    if (component_tiet.getText().toString() != null && !component_tiet.getText().toString().equals("")) {
-                        if (quantity_tiet.getText().toString() != null && !quantity_tiet.getText().toString().equals("")) {
+                if (oprtnId_tiet.getText().toString() != null &&
+                        !oprtnId_tiet.getText().toString().equals("")) {
+                    if (component_tiet.getText().toString() != null &&
+                            !component_tiet.getText().toString().equals("")) {
+                        if (quantity_tiet.getText().toString() != null &&
+                                !quantity_tiet.getText().toString().equals("")) {
                             if (!quantity_tiet.getText().toString().equals("0")) {
                                 availSubmit = true;
                                 cd = new ConnectionDetector(Material_Add_Update_Activity.this);
                                 isInternetPresent = cd.isConnectingToInternet();
-                                if (isInternetPresent)
-                                {
+                                if (isInternetPresent) {
                                     //new GetToken().execute();
                                     if (submit_bt.getText().toString().startsWith("U")) {
                                         addMatrlObject(true, true);
                                     } else
                                         addMatrl();
-                                }
-                                else
-                                {
+                                } else {
                                     if (submit_bt.getText().toString().startsWith("U")) {
                                         addMatrlObject(true, true);
                                     } else
                                         addMatrl();
                                 }
                             } else {
-                                errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.zero_checker));
+                                errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                                        getResources().getString(R.string.zero_checker));
                             }
                         } else {
-                            errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.quantity_mandate));
+                            errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                                    getResources().getString(R.string.quantity_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.component_mandate));
+                        errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                                getResources().getString(R.string.component_mandate));
                     }
                 } else {
-                    errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.operation_mandate));
+                    errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                            getResources().getString(R.string.operation_mandate));
                 }
                 break;
 
@@ -320,73 +318,58 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                     component_tiet.setText(data.getStringExtra("component_txt"));
 
                     String plant_text = "";
-                    try
-                    {
+                    try {
                         String plant_id = data.getStringExtra("plant");
-                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plant_id});
-                        if (cursor1 != null && cursor1.getCount() > 0)
-                        {
-                            if (cursor1.moveToFirst())
-                            {
-                                do
-                                {
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_PLANTS " +
+                                "where Werks = ?", new String[]{plant_id});
+                        if (cursor1 != null && cursor1.getCount() > 0) {
+                            if (cursor1.moveToFirst()) {
+                                do {
                                     plant_text = cursor1.getString(2);
                                 }
                                 while (cursor1.moveToNext());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             cursor1.close();
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-                    plant_tiet.setText(data.getStringExtra("plant")+" - "+plant_text);
+                    plant_tiet.setText(data.getStringExtra("plant") + " - " + plant_text);
                     plant_id = data.getStringExtra("plant");
 
 
                     String loc_text = "";
-                    try
-                    {
+                    try {
                         String loc_id = data.getStringExtra("location");
-                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_SLOC where Lgort = ?", new String[]{loc_id});
-                        if (cursor1 != null && cursor1.getCount() > 0)
-                        {
-                            if (cursor1.moveToFirst())
-                            {
-                                do
-                                {
+                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_SLOC " +
+                                "where Lgort = ?", new String[]{loc_id});
+                        if (cursor1 != null && cursor1.getCount() > 0) {
+                            if (cursor1.moveToFirst()) {
+                                do {
                                     loc_text = cursor1.getString(4);
                                 }
                                 while (cursor1.moveToNext());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             cursor1.close();
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-                    location_tiet.setText(data.getStringExtra("location")+" - "+loc_text);
+                    location_tiet.setText(data.getStringExtra("location") + " - " + loc_text);
                     loc_id = data.getStringExtra("location");
 
                 }
                 break;
 
-
             /*Written By SuryaKiran for Custom Info Added onActivityResult*/
             case (MATERIAL_CUSTOMINFO):
-                if (resultCode == RESULT_OK)
-                {
-                    selected_material_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
+                if (resultCode == RESULT_OK) {
+                    selected_material_custom_info_arraylist =
+                            (ArrayList<HashMap<String, String>>) data
+                                    .getSerializableExtra("selected_custom_info_arraylist");
                 }
                 break;
             /*Written By SuryaKiran for Custom Info Added onActivityResult*/
-
         }
     }
 
@@ -396,7 +379,8 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.availabilty));
+            customProgressDialog.show_progress_dialog(Material_Add_Update_Activity.this,
+                    getResources().getString(R.string.availabilty));
         }
 
         @Override
@@ -412,7 +396,8 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 new AvailabilityCheck().execute();
             else {
                 customProgressDialog.dismiss_progress_dialog();
-                errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.unable_avail));
+                errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                        getResources().getString(R.string.unable_avail));
             }
         }
     }
@@ -430,17 +415,14 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
             try {
                 Date cDate = new Date();
                 Date = new SimpleDateFormat("yyyyMMdd").format(cDate);
-                AVAIL_STATUS = Material_Availability_Check.material_availability_check(Material_Add_Update_Activity.this,
+                AVAIL_STATUS = Material_Availability_Check
+                        .material_availability_check(Material_Add_Update_Activity.this,
                         "", MatrlId, component_tiet.getText().toString()
                         , quantity_tiet.getText().toString(), Date, plant_id
                         , loc_id);
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
         }
 
         @Override
@@ -454,26 +436,32 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                     } else
                         addMatrl();
                 else
-                    successDialog.show_success_dialog(Material_Add_Update_Activity.this, AVAIL_STATUS.substring(2));
+                    successDialog.show_success_dialog(Material_Add_Update_Activity.this,
+                            AVAIL_STATUS.substring(2));
 
             } else if (AVAIL_STATUS.substring(1).startsWith("E")) {
-                errorDialog.show_error_dialog(Material_Add_Update_Activity.this, AVAIL_STATUS.substring(2));
+                errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                        AVAIL_STATUS.substring(2));
             } else {
-                errorDialog.show_error_dialog(Material_Add_Update_Activity.this, getResources().getString(R.string.unable_avail));
+                errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                        getResources().getString(R.string.unable_avail));
             }
         }
     }
 
     public void addMatrl() {
         final Dialog submit_decision_dialog = new Dialog(Material_Add_Update_Activity.this);
-        submit_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        submit_decision_dialog.getWindow()
+                .setBackgroundDrawableResource(android.R.color.transparent);
         submit_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         submit_decision_dialog.setCancelable(false);
         submit_decision_dialog.setCanceledOnTouchOutside(false);
         submit_decision_dialog.setContentView(R.layout.decision_dialog);
         ImageView imageView1 = (ImageView) submit_decision_dialog.findViewById(R.id.imageView1);
-        Glide.with(Material_Add_Update_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
-        TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
+        Glide.with(Material_Add_Update_Activity.this)
+                .load(R.drawable.error_dialog_gif).into(imageView1);
+        TextView description_textview = submit_decision_dialog
+                .findViewById(R.id.description_textview);
         description_textview.setText(getResources().getString(R.string.add_another_comp));
         Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
         Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
@@ -500,8 +488,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         });
     }
 
-    private void addMatrlObject(boolean submit, boolean update)
-    {
+    private void addMatrlObject(boolean submit, boolean update) {
         OrdrMatrlPrcbl omp_d = new OrdrMatrlPrcbl();
         omp_d.setOprtnId(OprtnId);
         omp_d.setOprtnShrtTxt(OprtnShrtTxt);
@@ -528,24 +515,25 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 if (!omp_d.getStatus().equals("I"))
                     omp_d.setStatus("U");
                 intent.putExtra("omp_prcbl", omp_d);
-                intent.putExtra("selected_material_custom_info_arraylist", selected_material_custom_info_arraylist);
+                intent.putExtra("selected_material_custom_info_arraylist",
+                        selected_material_custom_info_arraylist);
                 setResult(RESULT_OK, intent);
                 Material_Add_Update_Activity.this.finish();
                 omp_d = null;
                 omp_al = null;
             } else {
-                for (OrdrMatrlPrcbl omp:omp_al)
+                for (OrdrMatrlPrcbl omp : omp_al)
                     omp.setStatus("I");
 
                 Intent intent = new Intent();
                 intent.putExtra("omp_prcbl_al", omp_al);
-                intent.putExtra("selected_material_custom_info_arraylist", selected_material_custom_info_arraylist);
+                intent.putExtra("selected_material_custom_info_arraylist",
+                        selected_material_custom_info_arraylist);
                 setResult(RESULT_OK, intent);
                 Material_Add_Update_Activity.this.finish();
                 omp_d = null;
                 omp_al = null;
             }
         }
-
     }
 }

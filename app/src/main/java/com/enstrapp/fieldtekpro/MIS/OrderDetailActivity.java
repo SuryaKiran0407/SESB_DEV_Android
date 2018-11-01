@@ -23,11 +23,10 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-
 public class OrderDetailActivity extends AppCompatActivity {
 
-    TextView phase, swerk, arbpl, aufnr,qmart, qmnum, qmtxt, ernam, equnr, eqktx, priok, strmn, ltrmn, auswk, tplnr, ausvn, ausbs;
-    String phase_ = "", swerk_ = "", arbpl_ = "", qmart_ = "", qmnum_ = "", qmtxt_ = "", ernam_ = "", equnr_ = "", eqktx_ = "",aufnr_="",
+    TextView phase, swerk, arbpl, aufnr, qmart, qmnum, qmtxt, ernam, equnr, eqktx, priok, strmn, ltrmn, auswk, tplnr, ausvn, ausbs;
+    String phase_ = "", swerk_ = "", arbpl_ = "", qmart_ = "", qmnum_ = "", qmtxt_ = "", ernam_ = "", equnr_ = "", eqktx_ = "", aufnr_ = "",
             priok_ = "", strmn_ = "", ltrmn_ = "", auswk_ = "", tplnr_ = "", ausvn_ = "", ausbs_ = "", msaus_ = "", wrkcnt = "",
             heading = "";
     CheckBox msaus;
@@ -113,11 +112,11 @@ public class OrderDetailActivity extends AppCompatActivity {
         Log.v("priok", "" + priok_);
         if (!phase_.equals("") || phase_ != null || !phase_.equals("null")) {
             if (phase_.equals("0")) {
-                phase.setText("Outstanding");
+                phase.setText(getString(R.string.outstanding));
             } else if (phase_.equals("2")) {
-                phase.setText("Inprogress");
+                phase.setText(getString(R.string.inprgs));
             } else if (phase_.equals("3")) {
-                phase.setText("Completed");
+                phase.setText(getString(R.string.compltd));
             } else {
                 phase.setText("");
             }
@@ -131,8 +130,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         ernam.setText(ernam_);
         equnr.setText(equnr_);
         eqktx.setText(eqktx_);
-
-
 
 
         for (int i = 0; i < priority_dropdown_list.size(); i++) {

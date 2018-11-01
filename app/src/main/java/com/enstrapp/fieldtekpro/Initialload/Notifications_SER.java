@@ -6,33 +6,31 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Notifications_SER
-{
+public class Notifications_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
 
@@ -41,9 +39,11 @@ public class Notifications_SER
         @SerializedName("NotiComplete")
         @Expose
         private NotiComplete NotiComplete;
+
         public Notifications_SER.NotiComplete getNotiComplete() {
             return NotiComplete;
         }
+
         public void setNotiComplete(Notifications_SER.NotiComplete notiComplete) {
             NotiComplete = notiComplete;
         }
@@ -54,81 +54,107 @@ public class Notifications_SER
         @SerializedName("EvMessage")
         @Expose
         private EvMessage EvMessage;
+
         public Notifications_SER.EvMessage getEvMessage() {
             return EvMessage;
         }
+
         public void setEvMessage(Notifications_SER.EvMessage evMessage) {
             EvMessage = evMessage;
         }
+
         @SerializedName("EtNotifHeader")
         @Expose
         private EtNotifHeader EtNotifHeader;
+
         public Notifications_SER.EtNotifHeader getEtNotifHeader() {
             return EtNotifHeader;
         }
+
         public void setEtNotifHeader(Notifications_SER.EtNotifHeader etNotifHeader) {
             EtNotifHeader = etNotifHeader;
         }
+
         @SerializedName("EtNotifItems")
         @Expose
         private EtNotifItems EtNotifItems;
+
         public Notifications_SER.EtNotifItems getEtNotifItems() {
             return EtNotifItems;
         }
+
         public void setEtNotifItems(Notifications_SER.EtNotifItems etNotifItems) {
             EtNotifItems = etNotifItems;
         }
+
         @SerializedName("EtNotifActvs")
         @Expose
         private EtNotifActvs EtNotifActvs;
+
         public Notifications_SER.EtNotifActvs getEtNotifActvs() {
             return EtNotifActvs;
         }
+
         public void setEtNotifActvs(Notifications_SER.EtNotifActvs etNotifActvs) {
             EtNotifActvs = etNotifActvs;
         }
+
         @SerializedName("EtDocs")
         @Expose
         private EtDocs EtDocs;
+
         public Notifications_SER.EtDocs getEtDocs() {
             return EtDocs;
         }
+
         public void setEtDocs(Notifications_SER.EtDocs etDocs) {
             EtDocs = etDocs;
         }
+
         @SerializedName("EtNotifStatus")
         @Expose
         private EtNotifStatus EtNotifStatus;
+
         public Notifications_SER.EtNotifStatus getEtNotifStatus() {
             return EtNotifStatus;
         }
+
         public void setEtNotifStatus(Notifications_SER.EtNotifStatus etNotifStatus) {
             EtNotifStatus = etNotifStatus;
         }
+
         @SerializedName("EtNotifDup")
         @Expose
         private EtNotifDup EtNotifDup;
+
         public Notifications_SER.EtNotifDup getEtNotifDup() {
             return EtNotifDup;
         }
+
         public void setEtNotifDup(Notifications_SER.EtNotifDup etNotifDup) {
             EtNotifDup = etNotifDup;
         }
+
         @SerializedName("EtNotifLongtext")
         @Expose
         private EtNotifLongtext EtNotifLongtext;
+
         public Notifications_SER.EtNotifLongtext getEtNotifLongtext() {
             return EtNotifLongtext;
         }
+
         public void setEtNotifLongtext(Notifications_SER.EtNotifLongtext etNotifLongtext) {
             EtNotifLongtext = etNotifLongtext;
         }
+
         @SerializedName("EtNotifTasks")
         @Expose
         private EtNotifTasks EtNotifTasks;
+
         public Notifications_SER.EtNotifTasks getEtNotifTasks() {
             return EtNotifTasks;
         }
+
         public void setEtNotifTasks(Notifications_SER.EtNotifTasks etNotifTasks) {
             EtNotifTasks = etNotifTasks;
         }
@@ -137,22 +163,21 @@ public class Notifications_SER
 
 
     /*For Parsing EtNotifDup*/
-    public class EtNotifDup
-    {
+    public class EtNotifDup {
         @SerializedName("results")
         @Expose
         private List<EtNotifDup_Result> results = null;
-        public List<EtNotifDup_Result> getResults()
-        {
+
+        public List<EtNotifDup_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtNotifDup_Result> results)
-        {
+
+        public void setResults(List<EtNotifDup_Result> results) {
             this.results = results;
         }
     }
-    public class EtNotifDup_Result
-    {
+
+    public class EtNotifDup_Result {
         @SerializedName("Qmart")
         @Expose
         private String qmart;
@@ -224,9 +249,7 @@ public class Notifications_SER
     /*For Parsing EtNotifDup_Result*/
 
 
-
-    public class NotiComplete
-    {
+    public class NotiComplete {
         @SerializedName("Message")
         @Expose
         private String Message;
@@ -241,8 +264,7 @@ public class Notifications_SER
     }
 
 
-    public class Result
-    {
+    public class Result {
         @SerializedName("EvMessage")
         @Expose
         private EvMessage EvMessage;
@@ -267,75 +289,89 @@ public class Notifications_SER
         @SerializedName("EtNotifTasks")
         @Expose
         private EtNotifTasks EtNotifTasks;
+
         public Notifications_SER.EtNotifTasks getEtNotifTasks() {
             return EtNotifTasks;
         }
+
         public void setEtNotifTasks(Notifications_SER.EtNotifTasks etNotifTasks) {
             EtNotifTasks = etNotifTasks;
         }
+
         public Notifications_SER.EtNotifActvs getEtNotifActvs() {
             return EtNotifActvs;
         }
+
         public void setEtNotifActvs(Notifications_SER.EtNotifActvs etNotifActvs) {
             EtNotifActvs = etNotifActvs;
         }
+
         public Notifications_SER.EtNotifHeader getEtNotifHeader() {
             return EtNotifHeader;
         }
+
         public void setEtNotifHeader(Notifications_SER.EtNotifHeader etNotifHeader) {
             EtNotifHeader = etNotifHeader;
         }
+
         public Notifications_SER.EvMessage getEvMessage() {
             return EvMessage;
         }
+
         public void setEvMessage(Notifications_SER.EvMessage evMessage) {
             EvMessage = evMessage;
         }
+
         public Notifications_SER.EtNotifItems getEtNotifItems() {
             return EtNotifItems;
         }
+
         public void setEtNotifItems(Notifications_SER.EtNotifItems etNotifItems) {
             EtNotifItems = etNotifItems;
         }
+
         public Notifications_SER.EtNotifLongtext getEtNotifLongtext() {
             return EtNotifLongtext;
         }
+
         public void setEtNotifLongtext(Notifications_SER.EtNotifLongtext etNotifLongtext) {
             EtNotifLongtext = etNotifLongtext;
         }
+
         public Notifications_SER.EtNotifStatus getEtNotifStatus() {
             return EtNotifStatus;
         }
+
         public void setEtNotifStatus(Notifications_SER.EtNotifStatus etNotifStatus) {
             EtNotifStatus = etNotifStatus;
         }
+
         public Notifications_SER.EtDocs getEtDocs() {
             return EtDocs;
         }
+
         public void setEtDocs(Notifications_SER.EtDocs etDocs) {
             EtDocs = etDocs;
         }
     }
 
 
-
     /*For Parsing EtNotifTasks*/
-    public class EtNotifTasks
-    {
+    public class EtNotifTasks {
         @SerializedName("results")
         @Expose
         private List<EtNotifTasks_Result> results = null;
-        public List<EtNotifTasks_Result> getResults()
-        {
+
+        public List<EtNotifTasks_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtNotifTasks_Result> results)
-        {
+
+        public void setResults(List<EtNotifTasks_Result> results) {
             this.results = results;
         }
     }
-    public class EtNotifTasks_Result
-    {
+
+    public class EtNotifTasks_Result {
         @SerializedName("Qmnum")
         @Expose
         private String qmnum;
@@ -781,37 +817,40 @@ public class Notifications_SER
 
 
     /*For Parsing EvMessage*/
-    public class EvMessage
-    {
+    public class EvMessage {
         @SerializedName("results")
         @Expose
         private List<EvMessage_Result> results = null;
-        public List<EvMessage_Result> getResults()
-        {
+
+        public List<EvMessage_Result> getResults() {
             return results;
         }
-        public void setResults(List<EvMessage_Result> results)
-        {
+
+        public void setResults(List<EvMessage_Result> results) {
             this.results = results;
         }
     }
-    public class EvMessage_Result
-    {
+
+    public class EvMessage_Result {
         @SerializedName("Message")
         @Expose
         private String Message;
         @SerializedName("Qmnum")
         @Expose
         private String qmnum;
+
         public String getMessage() {
             return Message;
         }
+
         public void setMessage(String message) {
             Message = message;
         }
+
         public String getQmnum() {
             return qmnum;
         }
+
         public void setQmnum(String qmnum) {
             this.qmnum = qmnum;
         }
@@ -820,22 +859,21 @@ public class Notifications_SER
 
 
     /*For Parsing EtNotifHeader*/
-    public class EtNotifHeader
-    {
+    public class EtNotifHeader {
         @SerializedName("results")
         @Expose
         private List<EtNotifHeader_Result> results = null;
-        public List<EtNotifHeader_Result> getResults()
-        {
+
+        public List<EtNotifHeader_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtNotifHeader_Result> results)
-        {
+
+        public void setResults(List<EtNotifHeader_Result> results) {
             this.results = results;
         }
     }
-    public class EtNotifHeader_Result
-    {
+
+    public class EtNotifHeader_Result {
         public String getNotifType() {
             return notifType;
         }
@@ -1413,22 +1451,22 @@ public class Notifications_SER
     /*For Parsing EtNotifHeader*/
 
 
-
     /*For Parsing EtCustomFields*/
-    public class CustomFields
-    {
+    public class CustomFields {
         @SerializedName("results")
         @Expose
         private List<CustomFields_Result> results = null;
+
         public List<CustomFields_Result> getResults() {
             return results;
         }
+
         public void setResults(List<CustomFields_Result> results) {
             this.results = results;
         }
     }
-    public class CustomFields_Result
-    {
+
+    public class CustomFields_Result {
         @SerializedName("Zdoctype")
         @Expose
         private String zdoctype;
@@ -1533,22 +1571,21 @@ public class Notifications_SER
 
 
     /*For Parsing EtNotifItems*/
-    public class EtNotifItems
-    {
+    public class EtNotifItems {
         @SerializedName("results")
         @Expose
         private List<EtNotifItems_Result> results = null;
-        public List<EtNotifItems_Result> getResults()
-        {
+
+        public List<EtNotifItems_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtNotifItems_Result> results)
-        {
+
+        public void setResults(List<EtNotifItems_Result> results) {
             this.results = results;
         }
     }
-    public class EtNotifItems_Result
-    {
+
+    public class EtNotifItems_Result {
         @SerializedName("Qmnum")
         @Expose
         private String qmnum;
@@ -1819,22 +1856,21 @@ public class Notifications_SER
 
 
     /*For Parsing EtNotifActvs*/
-    public class EtNotifActvs
-    {
+    public class EtNotifActvs {
         @SerializedName("results")
         @Expose
         private List<EtNotifActvs_Result> results = null;
-        public List<EtNotifActvs_Result> getResults()
-        {
+
+        public List<EtNotifActvs_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtNotifActvs_Result> results)
-        {
+
+        public void setResults(List<EtNotifActvs_Result> results) {
             this.results = results;
         }
     }
-    public class EtNotifActvs_Result
-    {
+
+    public class EtNotifActvs_Result {
         public String getQmnum() {
             return qmnum;
         }
@@ -2151,22 +2187,21 @@ public class Notifications_SER
 
 
     /*For Parsing EtNotifLongtext*/
-    public class EtNotifLongtext
-    {
+    public class EtNotifLongtext {
         @SerializedName("results")
         @Expose
         private List<EtNotifLongtext_Result> results = null;
-        public List<EtNotifLongtext_Result> getResults()
-        {
+
+        public List<EtNotifLongtext_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtNotifLongtext_Result> results)
-        {
+
+        public void setResults(List<EtNotifLongtext_Result> results) {
             this.results = results;
         }
     }
-    public class EtNotifLongtext_Result
-    {
+
+    public class EtNotifLongtext_Result {
         @SerializedName("Qmnum")
         @Expose
         private String qmnum;
@@ -2216,22 +2251,21 @@ public class Notifications_SER
 
 
     /*For Parsing EtNotifStatus*/
-    public class EtNotifStatus
-    {
+    public class EtNotifStatus {
         @SerializedName("results")
         @Expose
         private List<EtNotifStatus_Result> results = null;
-        public List<EtNotifStatus_Result> getResults()
-        {
+
+        public List<EtNotifStatus_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtNotifStatus_Result> results)
-        {
+
+        public void setResults(List<EtNotifStatus_Result> results) {
             this.results = results;
         }
     }
-    public class EtNotifStatus_Result
-    {
+
+    public class EtNotifStatus_Result {
         @SerializedName("Qmnum")
         @Expose
         private String qmnum;
@@ -2391,22 +2425,21 @@ public class Notifications_SER
 
 
     /*For Parsing EtDocs*/
-    public class EtDocs
-    {
+    public class EtDocs {
         @SerializedName("results")
         @Expose
         private List<EtDocs_Result> results = null;
-        public List<EtDocs_Result> getResults()
-        {
+
+        public List<EtDocs_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtDocs_Result> results)
-        {
+
+        public void setResults(List<EtDocs_Result> results) {
             this.results = results;
         }
     }
-    public class EtDocs_Result
-    {
+
+    public class EtDocs_Result {
         @SerializedName("Objtype")
         @Expose
         private String objtype;

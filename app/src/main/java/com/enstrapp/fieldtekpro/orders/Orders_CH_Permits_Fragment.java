@@ -82,7 +82,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                         Refobj = wa_al.get(0).getRefobj();
                         applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
                         recyclerView.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(getActivity());
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(applicationAdapter);
@@ -108,32 +109,24 @@ public class Orders_CH_Permits_Fragment extends Fragment {
         if (!getUserVisibleHint())
             return;
 
-        if (workComplt(ma.ohp.getOrdrId()))
-        {
+        if (workComplt(ma.ohp.getOrdrId())) {
             ma.fab.hide();
-        }
-        else
-        {
+        } else {
             ma.animateFab(false);
-            String auth_status1 = Authorizations.Get_Authorizations_Data(getActivity(),"C","I");
-            if (auth_status1.equalsIgnoreCase("true"))
-            {
-                String auth_status2 = Authorizations.Get_Authorizations_Data(getActivity(),"C","U");
-                if (auth_status2.equalsIgnoreCase("true"))
-                {
+            String auth_status1 = Authorizations.Get_Authorizations_Data(getActivity(), "C",
+                    "I");
+            if (auth_status1.equalsIgnoreCase("true")) {
+                String auth_status2 = Authorizations.Get_Authorizations_Data(getActivity(),
+                        "C", "U");
+                if (auth_status2.equalsIgnoreCase("true")) {
                     ma.fab.show();
-                }
-                else
-                {
+                } else {
                     ma.fab.hide();
                 }
-            }
-            else
-            {
+            } else {
                 ma.fab.hide();
             }
         }
-
 
         ma.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,10 +140,12 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                             errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.priority_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.equipFunc_mandate));
+                        errorDialog.show_error_dialog(getActivity(),
+                                getResources().getString(R.string.equipFunc_mandate));
                     }
                 } else {
-                    errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.text_mandate));
+                    errorDialog.show_error_dialog(getActivity(),
+                            getResources().getString(R.string.text_mandate));
                 }
             }
         });
@@ -168,33 +163,16 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                     if (ww_al != null) {
                         if (ww_al.size() > 0) {
                             wa_al = new ArrayList<>();
-                            /*String wapinr = "";
-                            if (ww_al.get(0).getWaWdPrcbl_Al().size() > 0) {
-                                wapinr = "WA000" + (ww_al.get(0).getWaWdPrcbl_Al().size() + 1);
-                            }*/
-//                            wa.setWapinr(wapinr);
-                            /*wa.setAction("I");
-                            wa.setRefobj(Refobj);
-                            wa_al_d.addAll(ww_al.get(0).getWaWdPrcbl_Al());
-                            wa_al_d.add(wa);
-                            ww_al.get(0).setWaWdPrcbl_Al(wa_al_d);*/
                             wa_al.addAll(ww_al.get(0).getWaWdPrcbl_Al());
                             ma.ohp.setOrdrPermitPrcbls(ww_al);
-                                applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
-                                recyclerView.setHasFixedSize(true);
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                                recyclerView.setLayoutManager(layoutManager);
-                                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                recyclerView.setAdapter(applicationAdapter);
-                                recyclerView.setVisibility(View.VISIBLE);
-                                /*
                             applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
                             recyclerView.setHasFixedSize(true);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                            RecyclerView.LayoutManager layoutManager =
+                                    new LinearLayoutManager(getActivity());
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
                             recyclerView.setAdapter(applicationAdapter);
-                            recyclerView.setVisibility(View.VISIBLE);*/
+                            recyclerView.setVisibility(View.VISIBLE);
                         } else {
                             OrdrPermitPrcbl wwp = new OrdrPermitPrcbl();
                             Calendar c = Calendar.getInstance();
@@ -221,7 +199,6 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                             wwp.setCrea("X");
                             wwp.setAction("I");
 
-//                            wa.setWapinr("WA001");
                             wa.setAction("I");
                             wa_al_d.add(wa);
                             wwp.setWaWdPrcbl_Al(wa_al_d);
@@ -231,7 +208,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
 
                             applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
                             recyclerView.setHasFixedSize(true);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                            RecyclerView.LayoutManager layoutManager =
+                                    new LinearLayoutManager(getActivity());
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
                             recyclerView.setAdapter(applicationAdapter);
@@ -263,7 +241,6 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                         wwp.setCrea("X");
                         wwp.setAction("I");
 
-//                        wa.setWapinr("WA001");
                         wa.setAction("I");
                         wa_al_d.add(wa);
                         wwp.setWaWdPrcbl_Al(wa_al_d);
@@ -273,7 +250,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
 
                         applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
                         recyclerView.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(getActivity());
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(applicationAdapter);
@@ -286,14 +264,6 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                     OrdrPermitPrcbl wa = new OrdrPermitPrcbl();
                     wa_al.clear();
                     ww_al = data.getParcelableArrayListExtra("opp");
-                   /* if (!wa.getWapinr().startsWith("WA"))
-                        wa.setAction("U");
-                    ArrayList<OrdrPermitPrcbl> wa_al_d = new ArrayList<>();
-                    wa_al_d.addAll(wa_al);
-                    for (OrdrPermitPrcbl rmo : wa_al_d) {
-                        if (rmo.getWapinr().equals(wa.getWapinr()))
-                            wa_al.remove(rmo);
-                    }*/
                     wa_al.addAll(ww_al.get(0).getWaWdPrcbl_Al());
                     ma.ohp.setOrdrPermitPrcbls(ww_al);
                     Collections.sort(wa_al, new Comparator<OrdrPermitPrcbl>() {
@@ -344,7 +314,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.permit_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.permit_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -357,11 +328,14 @@ public class Orders_CH_Permits_Fragment extends Fragment {
             holder.validFrm_tv.setText(dateFormat(wapo.getDatefr()));
 
             if (wapo.getComp().equals("X")) {
-                holder.permitStatus_iv.setImageDrawable(getResources().getDrawable(R.drawable.permit_status_comp, null));
+                holder.permitStatus_iv.setImageDrawable(getResources()
+                        .getDrawable(R.drawable.permit_status_comp, null));
             } else if (wapo.getPrep().equals("X")) {
-                holder.permitStatus_iv.setImageDrawable(getResources().getDrawable(R.drawable.permit_status_prep, null));
+                holder.permitStatus_iv.setImageDrawable(getResources()
+                        .getDrawable(R.drawable.permit_status_prep, null));
             } else {
-                holder.permitStatus_iv.setImageDrawable(getResources().getDrawable(R.drawable.permit_status_crea, null));
+                holder.permitStatus_iv.setImageDrawable(getResources()
+                        .getDrawable(R.drawable.permit_status_crea, null));
             }
 
             if (!wapo.getAction().equals("I"))
@@ -386,18 +360,6 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    /*String wapinr = "";
-                    if (ww_al != null) {
-                        if (ww_al.size() > 0) {
-                            if (ww_al.get(0).getWaWdPrcbl_Al().size() > 0) {
-                                wapinr = "WA000" + (ww_al.get(0).getWaWdPrcbl_Al().size() + 1);
-                            }
-                        } else {
-                            wapinr = "WA001";
-                        }
-                    } else {
-                        wapinr = "WA001";
-                    }*/
                     String woco = "";
                     if (workComplt(ma.ohp.getOrdrId()))
                         woco = "X";
@@ -418,7 +380,6 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                     intent.putExtra("Refobj", Refobj);
                     intent.putExtra("order", ma.ohp.getOrdrId());
                     intent.putExtra("UUID", ma.ohp.getOrdrUUId());
-//                    intent.putExtra("wapinr", wapinr);
                     startActivityForResult(intent, UPDATE);
                 }
             });
@@ -436,7 +397,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
         create_wcm_appl_type_dialog.setCancelable(true);
         create_wcm_appl_type_dialog.setCanceledOnTouchOutside(false);
         create_wcm_appl_type_dialog.setContentView(R.layout.f4_list_activity);
-        create_wcm_appl_type_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
+        create_wcm_appl_type_dialog
+                .getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
         title_textview = create_wcm_appl_type_dialog.findViewById(R.id.title_textview);
         no_data_textview = create_wcm_appl_type_dialog.findViewById(R.id.no_data_textview);
         ImageView back_imageview = create_wcm_appl_type_dialog.findViewById(R.id.back_imageview);
@@ -450,9 +412,11 @@ public class Orders_CH_Permits_Fragment extends Fragment {
             }
         });
         new Get_Types_Data().execute();
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -475,11 +439,13 @@ public class Orders_CH_Permits_Fragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtWcmTypes where Iwerk = ?", new String[]{ma.ohp.getIwerk()});
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtWcmTypes where Iwerk" +
+                        " = ?", new String[]{ma.ohp.getIwerk()});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Type_Object nto = new Type_Object(cursor.getString(3), cursor.getString(4));
+                            Type_Object nto = new Type_Object(cursor.getString(3),
+                                    cursor.getString(4));
                             type_list.add(nto);
                         }
                         while (cursor.moveToNext());
@@ -490,11 +456,6 @@ public class Orders_CH_Permits_Fragment extends Fragment {
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -531,7 +492,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId().toString(), type_list.get(i).getText().toString());
+                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
+                            type_list.get(i).getText());
                     filteredList.add(nto);
                 }
             }
@@ -580,7 +542,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.f4_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -756,7 +719,8 @@ public class Orders_CH_Permits_Fragment extends Fragment {
     private boolean workComplt(String OrderNo) {
         Cursor cursor1 = null;
         try {
-            cursor1 = FieldTekPro_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Txt04 = ?", new String[]{OrderNo, "WOCO"});
+            cursor1 = FieldTekPro_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and" +
+                    " Txt04 = ?", new String[]{OrderNo, "WOCO"});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {

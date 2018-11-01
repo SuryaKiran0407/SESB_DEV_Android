@@ -65,7 +65,7 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
     Error_Dialog error_dialog = new Error_Dialog();
     private static final String IMAGE_DIRECTORY_NAME = "FIELDTEKPRO";
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    String path = "", filee_name = "", ordrId = "",wapinr = "";
+    String path = "", filee_name = "", ordrId = "", wapinr = "";
     private List<Notif_EtDocs_Parcelable> attachments_list = new ArrayList<>();
     RecyclerView attachments_rv;
     AttachmentsAdapter adapter;
@@ -91,8 +91,8 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
         Bundle extras = getIntent().getExtras();
 
         DATABASE_NAME = OrdersConfirmAttachment_Activity.this.getString(R.string.database_name);
-        App_db = OrdersConfirmAttachment_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-
+        App_db = OrdersConfirmAttachment_Activity.this
+                .openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         attachments_rv = findViewById(R.id.attachments_rv);
         fab = findViewById(R.id.fab);
@@ -103,41 +103,16 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
         if (extras != null) {
             ordrId = extras.getString("ordrId");
             wapinr = extras.getString("wapinr");
-            if(ordrId != null && !ordrId.equals("")){
-                /*etdocs_parcablearray.clear();
-                if(etdocs_parcablearray.size() > 0)
-                {
-                    for(int i = 0; i < etdocs_parcablearray.size(); i++)
-                    {
-                        Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                        notif_etDocs_parcelable.setZobjid(etdocs_parcablearray.get(i).getZobjid());
-                        notif_etDocs_parcelable.setZdoctype(etdocs_parcablearray.get(i).getZdoctype());
-                        notif_etDocs_parcelable.setZdoctypeitem(etdocs_parcablearray.get(i).getZdoctypeitem());
-                        notif_etDocs_parcelable.setFilename(etdocs_parcablearray.get(i).getFilename());
-                        notif_etDocs_parcelable.setFiletype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
-                        notif_etDocs_parcelable.setFsize(etdocs_parcablearray.get(i).getFsize().trim());
-                        notif_etDocs_parcelable.setFilepath(etdocs_parcablearray.get(i).getFilepath());
-                        notif_etDocs_parcelable.setContent(etdocs_parcablearray.get(i).getContent());
-                        notif_etDocs_parcelable.setDocid(etdocs_parcablearray.get(i).getDocid());
-                        notif_etDocs_parcelable.setDoctype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
-                        notif_etDocs_parcelable.setObjtype(etdocs_parcablearray.get(i).getObjtype());
-                        notif_etDocs_parcelable.setStatus("old");
-                        attachments_list.add(notif_etDocs_parcelable);
-                    }
-                }*/
+            if (ordrId != null && !ordrId.equals("")) {
                 Display_Attachments();
-            } else if(wapinr != null && !wapinr.equals(""))
-            {
+            } else if (wapinr != null && !wapinr.equals("")) {
                 Cursor cursor = null;
-                try
-                {
-                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{wapinr});
-                    if(cursor != null && cursor.getCount() > 0 )
-                    {
-                        if(cursor.moveToFirst())
-                        {
-                            do
-                            {
+                try {
+                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtDocs where Zobjid = ?",
+                            new String[]{wapinr});
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
                                 Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
                                 notif_etDocs_parcelable.setZobjid(cursor.getString(2));
                                 notif_etDocs_parcelable.setZdoctype(cursor.getString(3));
@@ -151,30 +126,22 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
                                 notif_etDocs_parcelable.setObjtype(cursor.getString(11));
                                 notif_etDocs_parcelable.setStatus("old");
                                 attachments_list.add(notif_etDocs_parcelable);
-                            }while (cursor.moveToNext());
+                            } while (cursor.moveToNext());
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                }
-                finally
-                {
-                    if(cursor != null)
+                } catch (Exception e) {
+                } finally {
+                    if (cursor != null)
                         cursor.close();
                 }
-                try
-                {
-                    cursor = App_db.rawQuery("select * from Orders_Attachments where Object_id = ?", new String[]{wapinr});
-                    if(cursor != null && cursor.getCount() > 0 )
-                    {
-                        if(cursor.moveToFirst())
-                        {
-                            do
-                            {
+                try {
+                    cursor = App_db.rawQuery("select * from Orders_Attachments where Object_id" +
+                            " = ?", new String[]{wapinr});
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
 
-                                try
-                                {
+                                try {
                                     String file_path = cursor.getString(4);
                                     File file = new File(file_path);
                                     final String filee_name = file.getName();
@@ -208,36 +175,24 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
                                         notif_etDocs_parcelable.setObjtype("WCA");
                                         notif_etDocs_parcelable.setStatus("NEW");
                                         attachments_list.add(notif_etDocs_parcelable);
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         error_dialog.show_error_dialog(OrdersConfirmAttachment_Activity.this,
                                                 "Please select correct format file. (TXT, PDF, PNG, DOC, DOCX, JPG, XLS, XLSX, DXF, DWF, DWG)");
                                     }
 
+                                } catch (Exception e) {
                                 }
-                                catch (Exception e)
-                                {
-                                }
-
-
-                            }while (cursor.moveToNext());
+                            } while (cursor.moveToNext());
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                }
-                finally
-                {
-                    if(cursor != null)
+                } catch (Exception e) {
+                } finally {
+                    if (cursor != null)
                         cursor.close();
                 }
                 Display_Attachments();
             }
         }
-
-
 
         fab.setOnClickListener(this);
         back_ib.setOnClickListener(this);
@@ -260,11 +215,8 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
                 if (attachments_list.size() > 0) {
                     for (int i = 0; i < attachments_list.size(); i++) {
                         try {
-                            if(ordrId != null && !ordrId.equals(""))
-                            {
-                            }
-                            else
-                            {
+                            if (ordrId != null && !ordrId.equals("")) {
+                            } else {
                                 ordrId = wapinr;
                             }
                             String image_path1 = attachments_list.get(i).getFilepath();
@@ -273,7 +225,8 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
                             if (imgFile.exists()) {
                                 App_db.beginTransaction();
                                 UUID uniqueKey_uuid = UUID.randomUUID();
-                                String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id) values(?,?,?,?,?);";
+                                String sql11 = "Insert into Orders_Attachments (UUID, Object_id," +
+                                        " Object_type, file_path, jsa_id) values(?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 statement11.clearBindings();
                                 statement11.bindString(1, uniqueKey_uuid.toString());
@@ -646,8 +599,7 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
                 }
             } else if (file_type.contains("PDF")) {
                 holder.pic_imageview.setBackground(getResources().getDrawable(R.drawable.ic_pdf_icon));
-            }
-            else if (file_type.contains("pdf")) {
+            } else if (file_type.contains("pdf")) {
                 holder.pic_imageview.setBackground(getResources().getDrawable(R.drawable.ic_pdf_icon));
             } else if (file_type.contains("doc") || file_type.contains("docx")) {
                 holder.pic_imageview.setBackgroundResource(R.drawable.ic_doc_icon);
@@ -662,25 +614,19 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(attachmentsList.get((Integer)v.getTag()).getStatus().equalsIgnoreCase("old"))
-                    {
+                    if (attachmentsList.get((Integer) v.getTag()).getStatus().equalsIgnoreCase("old")) {
                         cd = new ConnectionDetector(OrdersConfirmAttachment_Activity.this);
                         isInternetPresent = cd.isConnectingToInternet();
-                        if (isInternetPresent)
-                        {
-                            Intent viewattachments_intent = new Intent(OrdersConfirmAttachment_Activity.this,Notifications_View_Attachements_Activity.class);
-                            viewattachments_intent.putExtra("url",attachmentsList.get((Integer)v.getTag()).getContent());
-                            viewattachments_intent.putExtra("filename",holder.filename_textview.getText().toString());
-                            viewattachments_intent.putExtra("filetype",file_type.toLowerCase());
+                        if (isInternetPresent) {
+                            Intent viewattachments_intent = new Intent(OrdersConfirmAttachment_Activity.this, Notifications_View_Attachements_Activity.class);
+                            viewattachments_intent.putExtra("url", attachmentsList.get((Integer) v.getTag()).getContent());
+                            viewattachments_intent.putExtra("filename", holder.filename_textview.getText().toString());
+                            viewattachments_intent.putExtra("filetype", file_type.toLowerCase());
                             startActivity(viewattachments_intent);
-                        }
-                        else
-                        {
+                        } else {
                             network_connection_dialog.show_network_connection_dialog(OrdersConfirmAttachment_Activity.this);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         String file_path = holder.file_path_textview.getText().toString();
                         File file = new File(file_path);
                         Display_Image(file, holder.filename_textview.getText().toString());
@@ -697,26 +643,23 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
     }
 
 
-    public void Display_Image(File file, String filename)
-    {
-        custom_progress_dialog.show_progress_dialog(OrdersConfirmAttachment_Activity.this,getString(R.string.loading));
+    public void Display_Image(File file, String filename) {
+        custom_progress_dialog.show_progress_dialog(OrdersConfirmAttachment_Activity.this, getString(R.string.loading));
 
-        final Dialog decision_dialog = new Dialog(OrdersConfirmAttachment_Activity.this,R.style.AppTheme);
+        final Dialog decision_dialog = new Dialog(OrdersConfirmAttachment_Activity.this, R.style.AppTheme);
         decision_dialog.setCancelable(true);
         decision_dialog.setCanceledOnTouchOutside(true);
         decision_dialog.setContentView(R.layout.notifications_view_attachements_activity);
         final WebView webView = (WebView) decision_dialog.findViewById(R.id.webView1);
-        final TextView title_textview = (TextView)decision_dialog.findViewById(R.id.title_textview);
+        final TextView title_textview = (TextView) decision_dialog.findViewById(R.id.title_textview);
         title_textview.setText(filename);
-        ImageView back_imageview = (ImageView)decision_dialog.findViewById(R.id.back_imageview);
+        ImageView back_imageview = (ImageView) decision_dialog.findViewById(R.id.back_imageview);
 
         decision_dialog.show();
 
-        back_imageview.setOnClickListener(new View.OnClickListener()
-        {
+        back_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 decision_dialog.dismiss();
             }
         });
@@ -726,33 +669,31 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
         webSettings.setAllowFileAccessFromFileURLs(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         webSettings.setBuiltInZoomControls(true);
-        webView.setWebViewClient(new WebViewClient()
-        {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onLoadResource(WebView view, String url)
-            {
+            public void onLoadResource(WebView view, String url) {
                 super.onLoadResource(view, url);
             }
+
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon)
-            {
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
             }
+
             @Override
-            public void onPageFinished(WebView view, String url)
-            {
+            public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 custom_progress_dialog.dismiss_progress_dialog();
             }
+
             @TargetApi(Build.VERSION_CODES.M)
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr)
-            {
+            public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
                 onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
             }
+
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url)
-            {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
             }
@@ -788,13 +729,13 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
         return attachments_list;
     }
 
-    private void getAttachment(String Wapinr){
+    private void getAttachment(String Wapinr) {
         attachments_list = new ArrayList<>();
         Cursor cursor = null;
-        try{
-            cursor = App_db.rawQuery("select * from DUE_ORDERS_EtDocs where Zobjid = ?",new String[]{});
-            if(cursor != null && cursor.getCount() > 0){
-                if(cursor.moveToFirst()){
+        try {
+            cursor = App_db.rawQuery("select * from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
                     do {
                         Notif_EtDocs_Parcelable odp = new Notif_EtDocs_Parcelable();
                         odp.setZobjid(cursor.getString(2));
@@ -811,7 +752,7 @@ public class OrdersConfirmAttachment_Activity extends AppCompatActivity implemen
                     } while (cursor.moveToNext());
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
     }

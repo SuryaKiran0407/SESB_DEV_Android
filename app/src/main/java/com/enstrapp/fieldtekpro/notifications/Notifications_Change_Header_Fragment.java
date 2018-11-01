@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.BarcodeScanner.Barcode_Scanner_Activity;
 import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
-import com.enstrapp.fieldtekpro.CustomInfo.Custom_Info_Object;
 import com.enstrapp.fieldtekpro.DateTime.DateTimePickerDialog;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
 import com.enstrapp.fieldtekpro.R;
@@ -48,15 +47,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Notifications_Change_Header_Fragment extends Fragment implements View.OnClickListener
-{
+public class Notifications_Change_Header_Fragment extends Fragment implements View.OnClickListener {
 
     TextInputLayout status_til;
-    LinearLayout notif_Date_layout, ord_num_layout, effect_layout, malFunctnEnDt_layout, malFunctnStDt_layout, reqEnDt_layout, reqStDt_layout, personResp_layout, plannerGroup_layout, notiftype_layout, floc_layout, workCenter_layout, priority_layout;
-    EditText status_tiet, notifshtTxt_edittext, effect_edittext, malFunctnEnDt_edittext, malFunctnStDt_edittext, reqEnDt_edittext, reqStDt_edittext, personResp_edittext, primUsrResp_edittext, reportedby_edittext, plannerGroup_edittext, priority_edittext, workCenter_edittext, notiftyp_edittext, floc_edittext, flocname_edittext, equipid_edittext, equiptext_edittext;
-    int custom_info = 14, longtext = 13, effect = 12, malf_end_date = 11, malf_st_date = 10, req_enddate = 9, req_stdate = 8, personResp = 7, planner_group = 6, notification_type = 0, functionlocation_type = 1, equipment_type = 2, barcode_scan = 3, workcenter_type = 4, notification_priority = 5;
-    String selected_orderstatus = "", selected_Iwerk = "", selected_orderID = "", selected_orderUUID = "", longtext_text = "",effect_id = "", effect_text = "", mal_end_date = "", mal_end_time = "", mal_end_date_formatted = "", mal_end_time_formatted = "", mal_st_date = "", mal_st_time = "", mal_st_date_formatted = "", mal_st_time_formatted = "", req_end_date = "", req_end_date_formatted = "", req_end_time = "", req_end_time_formatted = "", req_stdate_date = "", req_stdate_date_formated = "",  req_stdate_time_formatted = "", req_stdate_time = "",personresponsible_id = "", personresponsible_text = "", priority_type_id = "", priority_type_text = "", workcenter_id = "", workcenter_text = "", plannergroup_text = "", plannergroup_id = "", plant_id = "", notification_type_id = "", notification_type_text = "", functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "";
-    ImageView notiftype_dropdown_iv, equipmentsearch_imageview, equipmentscan_imageview, longtext_imageview;
+    LinearLayout notif_Date_layout, ord_num_layout, effect_layout, malFunctnEnDt_layout,
+            malFunctnStDt_layout, reqEnDt_layout, reqStDt_layout, personResp_layout,
+            plannerGroup_layout, notiftype_layout, floc_layout, workCenter_layout, priority_layout;
+    EditText status_tiet, notifshtTxt_edittext, effect_edittext, malFunctnEnDt_edittext,
+            malFunctnStDt_edittext, reqEnDt_edittext, reqStDt_edittext, personResp_edittext,
+            primUsrResp_edittext, reportedby_edittext, plannerGroup_edittext, priority_edittext,
+            workCenter_edittext, notiftyp_edittext, floc_edittext, flocname_edittext,
+            equipid_edittext, equiptext_edittext;
+    int custom_info = 14, longtext = 13, effect = 12, malf_end_date = 11, malf_st_date = 10,
+            req_enddate = 9, req_stdate = 8, personResp = 7, planner_group = 6,
+            functionlocation_type = 1, equipment_type = 2, barcode_scan = 3, workcenter_type = 4,
+            notification_priority = 5;
+    String selected_orderstatus = "", selected_Iwerk = "", selected_orderID = "",
+            selected_orderUUID = "", longtext_text = "", effect_id = "", effect_text = "",
+            mal_end_date = "", mal_end_time = "", mal_end_date_formatted = "",
+            mal_end_time_formatted = "", mal_st_date = "", mal_st_time = "",
+            mal_st_date_formatted = "", mal_st_time_formatted = "", req_end_date = "",
+            req_end_date_formatted = "", req_end_time = "", req_end_time_formatted = "",
+            req_stdate_date = "", req_stdate_date_formated = "", req_stdate_time_formatted = "",
+            req_stdate_time = "", personresponsible_id = "", personresponsible_text = "",
+            priority_type_id = "", priority_type_text = "", workcenter_id = "",
+            workcenter_text = "", plannergroup_text = "", plannergroup_id = "", plant_id = "",
+            notification_type_id = "", notification_type_text = "", functionlocation_id = "",
+            functionlocation_text = "", equipment_id = "", equipment_text = "";
+    ImageView notiftype_dropdown_iv, equipmentsearch_imageview, equipmentscan_imageview,
+            longtext_imageview;
     private static final int ZXING_CAMERA_PERMISSION = 3;
     Error_Dialog error_dialog = new Error_Dialog();
     NotifHeaderPrcbl nhp = new NotifHeaderPrcbl();
@@ -67,131 +86,110 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
     Button header_custominfo_button;
     ArrayList<HashMap<String, String>> selected_custom_info_arraylist = new ArrayList<>();
 
-    public Notifications_Change_Header_Fragment()
-    {
+    public Notifications_Change_Header_Fragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.notifications_header_fragment, container,
+                false);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.notifications_header_fragment, container, false);
-
-        notiftype_layout = (LinearLayout)rootView.findViewById(R.id.notiftype_layout);
-        notiftyp_edittext = (EditText)rootView.findViewById(R.id.notiftyp_edittext);
-        floc_layout = (LinearLayout)rootView.findViewById(R.id.floc_layout);
-        floc_edittext = (EditText)rootView.findViewById(R.id.floc_edittext);
-        flocname_edittext = (EditText)rootView.findViewById(R.id.flocname_edittext);
-        equipmentsearch_imageview = (ImageView)rootView.findViewById(R.id.equipmentsearch_imageview);
-        equipmentscan_imageview = (ImageView)rootView.findViewById(R.id.equipmentscan_imageview);
-        equipid_edittext = (EditText)rootView.findViewById(R.id.equipid_edittext);
-        equiptext_edittext = (EditText)rootView.findViewById(R.id.equiptext_edittext);
-        workCenter_edittext = (EditText)rootView.findViewById(R.id.workCenter_edittext);
-        workCenter_layout = (LinearLayout)rootView.findViewById(R.id.workCenter_layout);
-        priority_layout = (LinearLayout)rootView.findViewById(R.id.priority_layout);
-        priority_edittext = (EditText)rootView.findViewById(R.id.priority_edittext);
-        plannerGroup_layout = (LinearLayout)rootView.findViewById(R.id.plannerGroup_layout);
-        plannerGroup_edittext = (EditText)rootView.findViewById(R.id.plannerGroup_edittext);
-        reportedby_edittext = (EditText)rootView.findViewById(R.id.reportedby_edittext);
-        primUsrResp_edittext = (EditText)rootView.findViewById(R.id.primUsrResp_edittext);
-        personResp_layout = (LinearLayout)rootView.findViewById(R.id.personResp_layout);
-        personResp_edittext = (EditText)rootView.findViewById(R.id.personResp_edittext);
-        reqStDt_layout = (LinearLayout)rootView.findViewById(R.id.reqStDt_layout);
-        reqStDt_edittext = (EditText)rootView.findViewById(R.id.reqStDt_edittext);
-        reqEnDt_layout = (LinearLayout)rootView.findViewById(R.id.reqEnDt_layout);
-        reqEnDt_edittext = (EditText)rootView.findViewById(R.id.reqEnDt_edittext);
-        malFunctnStDt_layout = (LinearLayout)rootView.findViewById(R.id.malFunctnStDt_layout);
-        malFunctnStDt_edittext = (EditText)rootView.findViewById(R.id.malFunctnStDt_edittext);
-        malFunctnEnDt_layout = (LinearLayout)rootView.findViewById(R.id.malFunctnEnDt_layout);
-        malFunctnEnDt_edittext = (EditText)rootView.findViewById(R.id.malFunctnEnDt_edittext);
-        effect_layout = (LinearLayout)rootView.findViewById(R.id.effect_layout);
-        effect_edittext = (EditText)rootView.findViewById(R.id.effect_edittext);
-        notifshtTxt_edittext = (EditText)rootView.findViewById(R.id.notifshtTxt_edittext);
-        status_til = (TextInputLayout)rootView.findViewById(R.id.status_til);
-        status_tiet = (EditText)rootView.findViewById(R.id.status_tiet);
-        notiftype_dropdown_iv = (ImageView)rootView.findViewById(R.id.notiftype_dropdown_iv);
-        ord_num_layout = (LinearLayout)rootView.findViewById(R.id.ord_num_layout);
-        ord_num_edittext = (TextView)rootView.findViewById(R.id.ord_num_edittext);
-        notif_Date_layout = (LinearLayout)rootView.findViewById(R.id.notif_Date_layout);
-        notif_Date_edittext = (TextView)rootView.findViewById(R.id.notif_Date_edittext);
-        longtext_imageview = (ImageView)rootView.findViewById(R.id.longtext_imageview);
-        header_custominfo_button = (Button)rootView.findViewById(R.id.header_custominfo_button);
+        notiftype_layout = (LinearLayout) rootView.findViewById(R.id.notiftype_layout);
+        notiftyp_edittext = (EditText) rootView.findViewById(R.id.notiftyp_edittext);
+        floc_layout = (LinearLayout) rootView.findViewById(R.id.floc_layout);
+        floc_edittext = (EditText) rootView.findViewById(R.id.floc_edittext);
+        flocname_edittext = (EditText) rootView.findViewById(R.id.flocname_edittext);
+        equipmentsearch_imageview = (ImageView) rootView.findViewById(R.id.equipmentsearch_imageview);
+        equipmentscan_imageview = (ImageView) rootView.findViewById(R.id.equipmentscan_imageview);
+        equipid_edittext = (EditText) rootView.findViewById(R.id.equipid_edittext);
+        equiptext_edittext = (EditText) rootView.findViewById(R.id.equiptext_edittext);
+        workCenter_edittext = (EditText) rootView.findViewById(R.id.workCenter_edittext);
+        workCenter_layout = (LinearLayout) rootView.findViewById(R.id.workCenter_layout);
+        priority_layout = (LinearLayout) rootView.findViewById(R.id.priority_layout);
+        priority_edittext = (EditText) rootView.findViewById(R.id.priority_edittext);
+        plannerGroup_layout = (LinearLayout) rootView.findViewById(R.id.plannerGroup_layout);
+        plannerGroup_edittext = (EditText) rootView.findViewById(R.id.plannerGroup_edittext);
+        reportedby_edittext = (EditText) rootView.findViewById(R.id.reportedby_edittext);
+        primUsrResp_edittext = (EditText) rootView.findViewById(R.id.primUsrResp_edittext);
+        personResp_layout = (LinearLayout) rootView.findViewById(R.id.personResp_layout);
+        personResp_edittext = (EditText) rootView.findViewById(R.id.personResp_edittext);
+        reqStDt_layout = (LinearLayout) rootView.findViewById(R.id.reqStDt_layout);
+        reqStDt_edittext = (EditText) rootView.findViewById(R.id.reqStDt_edittext);
+        reqEnDt_layout = (LinearLayout) rootView.findViewById(R.id.reqEnDt_layout);
+        reqEnDt_edittext = (EditText) rootView.findViewById(R.id.reqEnDt_edittext);
+        malFunctnStDt_layout = (LinearLayout) rootView.findViewById(R.id.malFunctnStDt_layout);
+        malFunctnStDt_edittext = (EditText) rootView.findViewById(R.id.malFunctnStDt_edittext);
+        malFunctnEnDt_layout = (LinearLayout) rootView.findViewById(R.id.malFunctnEnDt_layout);
+        malFunctnEnDt_edittext = (EditText) rootView.findViewById(R.id.malFunctnEnDt_edittext);
+        effect_layout = (LinearLayout) rootView.findViewById(R.id.effect_layout);
+        effect_edittext = (EditText) rootView.findViewById(R.id.effect_edittext);
+        notifshtTxt_edittext = (EditText) rootView.findViewById(R.id.notifshtTxt_edittext);
+        status_til = (TextInputLayout) rootView.findViewById(R.id.status_til);
+        status_tiet = (EditText) rootView.findViewById(R.id.status_tiet);
+        notiftype_dropdown_iv = (ImageView) rootView.findViewById(R.id.notiftype_dropdown_iv);
+        ord_num_layout = (LinearLayout) rootView.findViewById(R.id.ord_num_layout);
+        ord_num_edittext = (TextView) rootView.findViewById(R.id.ord_num_edittext);
+        notif_Date_layout = (LinearLayout) rootView.findViewById(R.id.notif_Date_layout);
+        notif_Date_edittext = (TextView) rootView.findViewById(R.id.notif_Date_edittext);
+        longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
+        header_custominfo_button = (Button) rootView.findViewById(R.id.header_custominfo_button);
 
         status_til.setVisibility(View.GONE);
         notiftype_dropdown_iv.setVisibility(View.GONE);
         notiftype_layout.setBackground(getResources().getDrawable(R.drawable.bluedashborder));
 
         DATABASE_NAME = getActivity().getString(R.string.database_name);
-        App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, getActivity().MODE_PRIVATE, null);
-
+        App_db = getActivity().openOrCreateDatabase(DATABASE_NAME,
+                getActivity().MODE_PRIVATE, null);
 
         selected_custom_info_arraylist.clear();
 
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             nhp = bundle.getParcelable("notif_parcel");
 
             status_tiet.setText(nhp.getNotf_Status());
-
             notification_type_id = nhp.getNotifType();
             notification_type_text = nhp.getQmartx();
-            notiftyp_edittext.setText(nhp.getNotifType()+" - "+nhp.getQmartx());
+            notiftyp_edittext.setText(getString(R.string.hypen_text,
+                    nhp.getNotifType(), nhp.getQmartx()));
             notiftyp_edittext.setTextColor(getResources().getColor(R.color.dark_grey2));
-
             notifshtTxt_edittext.setText(nhp.getNotifShrtTxt());
-
             functionlocation_id = nhp.getFuncLoc();
             functionlocation_text = nhp.getPltxt();
             floc_edittext.setText(nhp.getFuncLoc());
             flocname_edittext.setText(functionlocation_text);
-
             equipment_id = nhp.getEquip();
             equipment_text = nhp.getEquipTxt();
             equipid_edittext.setText(equipment_id);
             equiptext_edittext.setText(equipment_text);
-
             plant_id = nhp.getWerks();
-
             plannergroup_id = nhp.getIngrp();
             plannergroup_text = nhp.getIngrpName();
             plannerGroup_edittext.setText(plannergroup_id);
-
             workcenter_id = nhp.getArbpl();
             workcenter_text = nhp.getWrkCntrTxt();
             workCenter_edittext.setText(workcenter_id);
-
             priority_type_id = nhp.getPriority();
             priority_type_text = nhp.getPriorityTxt();
-            priority_edittext.setText(priority_type_id+" - "+priority_type_text);
-
+            priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
+                    priority_type_text));
             reportedby_edittext.setText(nhp.getReportedBy());
-
             primUsrResp_edittext.setText(nhp.getUsr01());
-
             personresponsible_id = nhp.getParnrVw();
             personresponsible_text = nhp.getNameVw();
-            personResp_edittext.setText(personresponsible_id+" - "+personresponsible_text);
+            personResp_edittext.setText(getString(R.string.hypen_text, personresponsible_id,
+                    personresponsible_text));
 
             String req_stdate = nhp.getStrmn();
-            if (req_stdate != null && !req_stdate.equals(""))
-            {
-                if(req_stdate.equalsIgnoreCase("00000000"))
-                {
+            if (req_stdate != null && !req_stdate.equals("")) {
+                if (req_stdate.equalsIgnoreCase("00000000")) {
                     req_stdate_date = "";
                     req_stdate_date_formated = "";
                     req_stdate_time = "";
                     req_stdate_time_formatted = "";
-                }
-                else
-                {
-                    try
-                    {
+                } else {
+                    try {
                         String inputPattern = "yyyyMMdd";
                         String outputPattern = "MMM dd, yyyy";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
@@ -200,8 +198,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         String selected_date = outputFormat.format(date);
                         String req_sttime = nhp.getStrur();
                         String req_starttime = "";
-                        if (req_sttime != null && !req_sttime.equals(""))
-                        {
+                        if (req_sttime != null && !req_sttime.equals("")) {
                             String inputPattern1 = "HHmmss";
                             String outputPattern1 = "HH:mm:ss";
                             SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
@@ -211,30 +208,24 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         }
                         req_stdate_date = selected_date;
                         req_stdate_date_formated = req_stdate;
-                        req_stdate_time =  req_starttime;
+                        req_stdate_time = req_starttime;
                         req_stdate_time_formatted = req_sttime;
-                        reqStDt_edittext.setText(req_stdate_date+"  -  "+req_stdate_time);
-                    }
-                    catch (ParseException e)
-                    {
+                        reqStDt_edittext.setText(getString(R.string.hypen_text, req_stdate_date,
+                                req_stdate_time));
+                    } catch (ParseException e) {
                     }
                 }
             }
 
             String req_eddate = nhp.getLtrmn();
-            if (req_eddate != null && !req_eddate.equals(""))
-            {
-                if(req_eddate.equalsIgnoreCase("00000000"))
-                {
+            if (req_eddate != null && !req_eddate.equals("")) {
+                if (req_eddate.equalsIgnoreCase("00000000")) {
                     req_end_date = "";
                     req_end_date_formatted = "";
                     req_end_time = "";
                     req_end_time_formatted = "";
-                }
-                else
-                {
-                    try
-                    {
+                } else {
+                    try {
                         String inputPattern = "yyyyMMdd";
                         String outputPattern = "MMM dd, yyyy";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
@@ -243,8 +234,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         String selected_date = outputFormat.format(date);
                         String req_edtime = nhp.getLtrur();
                         String req_endtime = "";
-                        if (req_edtime != null && !req_edtime.equals(""))
-                        {
+                        if (req_edtime != null && !req_edtime.equals("")) {
                             String inputPattern1 = "HHmmss";
                             String outputPattern1 = "HH:mm:ss";
                             SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
@@ -253,31 +243,25 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             req_endtime = outputFormat1.format(date1);
                         }
                         req_end_date = selected_date;
-                        req_end_date_formatted = req_eddate ;
-                        req_end_time =  req_endtime;
+                        req_end_date_formatted = req_eddate;
+                        req_end_time = req_endtime;
                         req_end_time_formatted = req_edtime;
-                        reqEnDt_edittext.setText(req_end_date+"  -  "+req_end_time);
-                    }
-                    catch (ParseException e)
-                    {
+                        reqEnDt_edittext.setText(getString(R.string.hypen_text, req_end_date,
+                                req_end_time));
+                    } catch (ParseException e) {
                     }
                 }
             }
 
             String mal_stdate = nhp.getMalfuncStDt();
-            if (mal_stdate != null && !mal_stdate.equals(""))
-            {
-                if(mal_stdate.equalsIgnoreCase("00000000"))
-                {
+            if (mal_stdate != null && !mal_stdate.equals("")) {
+                if (mal_stdate.equalsIgnoreCase("00000000")) {
                     mal_st_date = "";
                     mal_st_date_formatted = "";
                     mal_st_time = "";
                     mal_st_time_formatted = "";
-                }
-                else
-                {
-                    try
-                    {
+                } else {
+                    try {
                         String inputPattern = "yyyyMMdd";
                         String outputPattern = "MMM dd, yyyy";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
@@ -286,8 +270,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         String selected_date = outputFormat.format(date);
                         String mal_sttime = nhp.getMalfuncSttm();
                         String mal_start_time = "";
-                        if (mal_sttime != null && !mal_sttime.equals(""))
-                        {
+                        if (mal_sttime != null && !mal_sttime.equals("")) {
                             String inputPattern1 = "HHmmss";
                             String outputPattern1 = "HH:mm:ss";
                             SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
@@ -296,31 +279,25 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             mal_start_time = outputFormat1.format(date1);
                         }
                         mal_st_date = selected_date;
-                        mal_st_date_formatted =  mal_stdate;
+                        mal_st_date_formatted = mal_stdate;
                         mal_st_time = mal_start_time;
                         mal_st_time_formatted = mal_sttime;
-                        malFunctnStDt_edittext.setText(mal_st_date+"  -  "+mal_st_time);
-                    }
-                    catch (ParseException e)
-                    {
+                        malFunctnStDt_edittext.setText(getString(R.string.hypen_text, mal_st_date,
+                                mal_st_time));
+                    } catch (ParseException e) {
                     }
                 }
             }
 
             String mal_enddate = nhp.getMalfuncEdDt();
-            if (mal_enddate != null && !mal_enddate.equals(""))
-            {
-                if(mal_enddate.equalsIgnoreCase("00000000"))
-                {
+            if (mal_enddate != null && !mal_enddate.equals("")) {
+                if (mal_enddate.equalsIgnoreCase("00000000")) {
                     mal_end_date = "";
                     mal_end_date_formatted = "";
                     mal_end_time = "";
                     mal_end_time_formatted = "";
-                }
-                else
-                {
-                    try
-                    {
+                } else {
+                    try {
                         String inputPattern = "yyyyMMdd";
                         String outputPattern = "MMM dd, yyyy";
                         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
@@ -329,8 +306,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         String selected_date = outputFormat.format(date);
                         String mal_ed_time = nhp.getMalfuncEdtm();
                         String mal_endtime = "";
-                        if (mal_ed_time != null && !mal_ed_time.equals(""))
-                        {
+                        if (mal_ed_time != null && !mal_ed_time.equals("")) {
                             String inputPattern1 = "HHmmss";
                             String outputPattern1 = "HH:mm:ss";
                             SimpleDateFormat inputFormat1 = new SimpleDateFormat(inputPattern1);
@@ -338,84 +314,69 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             Date date1 = inputFormat1.parse(mal_ed_time);
                             mal_endtime = outputFormat1.format(date1);
                         }
-                        mal_end_date =  selected_date;
+                        mal_end_date = selected_date;
                         mal_end_date_formatted = mal_enddate;
-                        mal_end_time =  mal_endtime;
+                        mal_end_time = mal_endtime;
                         mal_end_time_formatted = mal_ed_time;
-                        malFunctnEnDt_edittext.setText(mal_end_date+"  -  "+mal_end_time);
-                    }
-                    catch (ParseException e)
-                    {
+                        malFunctnEnDt_edittext.setText(getString(R.string.hypen_text, mal_end_date,
+                                mal_end_time));
+                    } catch (ParseException e) {
                     }
                 }
             }
 
             effect_id = nhp.getAuswk();
             effect_text = nhp.getAuswkt();
-            effect_edittext.setText(effect_id +" - "+effect_text);
+            effect_edittext.setText(getString(R.string.hypen_text, effect_id, effect_text));
 
             final String aufnr = nhp.getAufnr();
             selected_orderID = aufnr;
-            if (aufnr != null && !aufnr.equals(""))
-            {
+            if (aufnr != null && !aufnr.equals("")) {
                 ord_num_layout.setVisibility(View.VISIBLE);
                 SpannableString content = new SpannableString(aufnr);
                 content.setSpan(new UnderlineSpan(), 0, aufnr.length(), 0);
                 ord_num_edittext.setText(content);
-                ord_num_edittext.setOnClickListener(new View.OnClickListener()
-                {
+                ord_num_edittext.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        try
-                        {
-                            Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{aufnr});
-                            if (cursor != null && cursor.getCount() > 0)
-                            {
-                                if (cursor.moveToFirst())
-                                {
-                                    do
-                                    {
+                    public void onClick(View v) {
+                        try {
+                            Cursor cursor = App_db.rawQuery("select * from" +
+                                            " DUE_ORDERS_EtOrderHeader where Aufnr = ?",
+                                    new String[]{aufnr});
+                            if (cursor != null && cursor.getCount() > 0) {
+                                if (cursor.moveToFirst()) {
+                                    do {
                                         selected_orderUUID = cursor.getString(1);
                                         String equnr = cursor.getString(9);
-                                        if (equnr != null && !equnr.equals(""))
-                                        {
-                                            selected_Iwerk = getIwerk(cursor.getString(9));
-                                        }
-                                        else
-                                        {
-                                            selected_Iwerk = getfuncIwerk(cursor.getString(10));
+                                        if (equnr != null && !equnr.equals("")) {
+                                            selected_Iwerk =
+                                                    getIwerk(cursor.getString(9));
+                                        } else {
+                                            selected_Iwerk =
+                                                    getfuncIwerk(cursor.getString(10));
                                         }
                                         selected_orderstatus = cursor.getString(39);
                                     }
                                     while (cursor.moveToNext());
                                 }
                             }
+                        } catch (Exception e) {
                         }
-                        catch (Exception e)
-                        {
-                        }
-                        if (selected_orderUUID != null && !selected_orderUUID.equals(""))
-                        {
+                        if (selected_orderUUID != null && !selected_orderUUID.equals("")) {
                             new Get_Order_Data().execute();
-                        }
-                        else
-                        {
-                            error_dialog.show_error_dialog(getActivity(),"No data found for Order "+aufnr);
+                        } else {
+                            error_dialog.show_error_dialog(getActivity(),
+                                    getString(R.string.notification_noorderfound, aufnr));
                         }
                     }
                 });
-            }
-            else
-            {
+            } else {
                 ord_num_layout.setVisibility(View.GONE);
             }
 
             String Qmdat = nhp.getQmdat();
-            if (Qmdat != null && !Qmdat.equals(""))
-            {
-                try
-                {
+            if (Qmdat != null && !Qmdat.equals("")) {
+                try {
                     String inputPattern = "yyyyMMdd";
                     String outputPattern = "MMM dd, yyyy";
                     SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
@@ -424,26 +385,19 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                     String selected_date = outputFormat.format(date);
                     notif_Date_layout.setVisibility(View.VISIBLE);
                     notif_Date_edittext.setText(selected_date);
+                } catch (ParseException e) {
                 }
-                catch (ParseException e)
-                {
-                }
-            }
-            else
-            {
+            } else {
                 notif_Date_layout.setVisibility(View.GONE);
             }
 
-
-            try
-            {
-                Cursor cursor = App_db.rawQuery("select * from EtNotifHeader_CustomInfo where Zdoctype = ? and ZdoctypeItem = ? and Qmnum = ? order by Sequence", new String[]{"Q","QH", nhp.getQmnum()});
-                if (cursor != null && cursor.getCount() > 0)
-                {
-                    if (cursor.moveToFirst())
-                    {
-                        do
-                        {
+            try {
+                Cursor cursor = App_db.rawQuery("select * from EtNotifHeader_CustomInfo where" +
+                                " Zdoctype = ? and ZdoctypeItem = ? and Qmnum = ? order by Sequence",
+                        new String[]{"Q", "QH", nhp.getQmnum()});
+                if (cursor != null && cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
                             HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                             custom_info_hashMap.put("Fieldname", cursor.getString(6));
                             custom_info_hashMap.put("ZdoctypeItem", cursor.getString(4));
@@ -456,77 +410,56 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                             String datatype = cursor.getString(11);
                             String value = cursor.getString(7);
-                            if(datatype.equalsIgnoreCase("DATS"))
-                            {
-                                if(value.equalsIgnoreCase("00000000"))
-                                {
+                            if (datatype.equalsIgnoreCase("DATS")) {
+                                if (value.equalsIgnoreCase("00000000")) {
                                     custom_info_hashMap.put("Value", "");
-                                }
-                                else
-                                {
+                                } else {
                                     String inputPattern = "yyyyMMdd";
-                                    String outputPattern = "MMM dd, yyyy" ;
+                                    String outputPattern = "MMM dd, yyyy";
                                     SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                     SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                    try
-                                    {
+                                    try {
                                         Date date = inputFormat.parse(value);
-                                        String formatted_date =  outputFormat.format(date);
+                                        String formatted_date = outputFormat.format(date);
                                         custom_info_hashMap.put("Value", formatted_date);
-                                    }
-                                    catch (Exception e)
-                                    {
+                                    } catch (Exception e) {
                                         custom_info_hashMap.put("Value", "");
                                     }
                                 }
 
-                            }
-                            else if(datatype.equalsIgnoreCase("TIMS"))
-                            {
-                                if(value.equalsIgnoreCase("000000"))
-                                {
+                            } else if (datatype.equalsIgnoreCase("TIMS")) {
+                                if (value.equalsIgnoreCase("000000")) {
                                     custom_info_hashMap.put("Value", "");
-                                }
-                                else
-                                {
+                                } else {
                                     String inputPattern = "HHmmss";
                                     String outputPattern = "HH:mm:ss";
                                     SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                     SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                    try
-                                    {
+                                    try {
                                         Date date = inputFormat.parse(value);
-                                        String formatted_time =  outputFormat.format(date);
+                                        String formatted_time = outputFormat.format(date);
                                         custom_info_hashMap.put("Value", formatted_time);
-                                    }
-                                    catch (Exception e)
-                                    {
+                                    } catch (Exception e) {
                                         custom_info_hashMap.put("Value", "");
                                     }
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 custom_info_hashMap.put("Value", cursor.getString(7));
                             }
-
                             custom_info_hashMap.put("Spras", "");
                             selected_custom_info_arraylist.add(custom_info_hashMap);
                         }
                         while (cursor.moveToNext());
                     }
-                }
-                else
-                {
+                } else {
                     cursor.close();
 
-                    Cursor cursor1 = App_db.rawQuery("select * from GET_CUSTOM_FIELDS where Zdoctype = ? and ZdoctypeItem = ? order by Sequence", new String[]{"Q","QH"});
-                    if (cursor1 != null && cursor1.getCount() > 0)
-                    {
-                        if (cursor1.moveToFirst())
-                        {
-                            do
-                            {
+                    Cursor cursor1 = App_db.rawQuery("select * from GET_CUSTOM_FIELDS where" +
+                                    " Zdoctype = ? and ZdoctypeItem = ? order by Sequence",
+                            new String[]{"Q", "QH"});
+                    if (cursor1 != null && cursor1.getCount() > 0) {
+                        if (cursor1.moveToFirst()) {
+                            do {
                                 HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                                 custom_info_hashMap.put("Fieldname", cursor1.getString(1));
                                 custom_info_hashMap.put("ZdoctypeItem", cursor1.getString(2));
@@ -542,20 +475,13 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             }
                             while (cursor1.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor1.close();
                     }
-
                 }
+            } catch (Exception e) {
             }
-            catch (Exception e)
-            {
-            }
-
         }
-
         floc_layout.setOnClickListener(this);
         equipmentsearch_imageview.setOnClickListener(this);
         equipmentscan_imageview.setOnClickListener(this);
@@ -571,25 +497,19 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         longtext_imageview.setOnClickListener(this);
         header_custominfo_button.setOnClickListener(this);
 
-
         return rootView;
     }
 
-
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        try
-        {
+        try {
             String qmnum = nhp.getQmnum();
-            Cursor cursor = App_db.rawQuery("select * from DUE_NOTIFICATION_NotifHeader where Qmnum = ?", new String[]{qmnum});
-            if (cursor != null && cursor.getCount() > 0)
-            {
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
+            Cursor cursor = App_db.rawQuery("select * from DUE_NOTIFICATION_NotifHeader" +
+                    " where Qmnum = ?", new String[]{qmnum});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
                         created_aufnr = cursor.getString(20);
                         nhp.setAufnr(created_aufnr);
                         ord_num_layout.setVisibility(View.VISIBLE);
@@ -599,33 +519,23 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                     }
                     while (cursor.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor.close();
             }
-            ord_num_edittext.setOnClickListener(new View.OnClickListener()
-            {
+            ord_num_edittext.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    try
-                    {
-                        Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{created_aufnr});
-                        if (cursor != null && cursor.getCount() > 0)
-                        {
-                            if (cursor.moveToFirst())
-                            {
-                                do
-                                {
+                public void onClick(View v) {
+                    try {
+                        Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader" +
+                                " where Aufnr = ?", new String[]{created_aufnr});
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
                                     selected_orderUUID = cursor.getString(1);
                                     String equnr = cursor.getString(9);
-                                    if (equnr != null && !equnr.equals(""))
-                                    {
+                                    if (equnr != null && !equnr.equals("")) {
                                         selected_Iwerk = getIwerk(cursor.getString(9));
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         selected_Iwerk = getfuncIwerk(cursor.getString(10));
                                     }
                                     selected_orderstatus = cursor.getString(39);
@@ -633,168 +543,137 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                 while (cursor.moveToNext());
                             }
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-                    if (selected_orderUUID != null && !selected_orderUUID.equals(""))
-                    {
+                    if (selected_orderUUID != null && !selected_orderUUID.equals("")) {
                         new Get_Order_Data().execute();
-                    }
-                    else
-                    {
-                        error_dialog.show_error_dialog(getActivity(),"No data found for Order "+created_aufnr);
+                    } else {
+                        error_dialog.show_error_dialog(getActivity(),
+                                getString(R.string.notification_noorderfound, created_aufnr));
                     }
                 }
             });
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
     }
 
-
     @Override
-    public void onClick(View v)
-    {
-        if(v == header_custominfo_button)
-        {
+    public void onClick(View v) {
+        if (v == header_custominfo_button) {
             Intent custominfo_intent = new Intent(getActivity(), CustomInfo_Activity.class);
-            custominfo_intent.putExtra("Zdoctype","Q");
-            custominfo_intent.putExtra("ZdoctypeItem","QH");
-            custominfo_intent.putExtra("custom_info_arraylist",selected_custom_info_arraylist);
+            custominfo_intent.putExtra("Zdoctype", "Q");
+            custominfo_intent.putExtra("ZdoctypeItem", "QH");
+            custominfo_intent.putExtra("custom_info_arraylist",
+                    selected_custom_info_arraylist);
             custominfo_intent.putExtra("request_id", Integer.toString(custom_info));
-            startActivityForResult(custominfo_intent,custom_info);
-        }
-        else if(v == longtext_imageview)
-        {
-            Intent notification_type_intent = new Intent(getActivity(), Notifications_LongText_Activity.class);
+            startActivityForResult(custominfo_intent, custom_info);
+        } else if (v == longtext_imageview) {
+            Intent notification_type_intent = new Intent(getActivity(),
+                    Notifications_LongText_Activity.class);
             notification_type_intent.putExtra("request_id", Integer.toString(longtext));
-            notification_type_intent.putExtra("qmnum", nhp.getQmnum().toString());
+            notification_type_intent.putExtra("qmnum", nhp.getQmnum());
             notification_type_intent.putExtra("longtext_new", longtext_text);
             startActivityForResult(notification_type_intent, longtext);
-        }
-        else if (v == floc_layout)
-        {
-            Intent notification_type_intent = new Intent(getActivity(), FunctionLocation_Activity.class);
-            notification_type_intent.putExtra("request_id", Integer.toString(functionlocation_type));
+        } else if (v == floc_layout) {
+            Intent notification_type_intent = new Intent(getActivity(),
+                    FunctionLocation_Activity.class);
+            notification_type_intent.putExtra("request_id",
+                    Integer.toString(functionlocation_type));
             startActivityForResult(notification_type_intent, functionlocation_type);
-        }
-        else if(v == equipmentsearch_imageview)
-        {
+        } else if (v == equipmentsearch_imageview) {
             Intent equipment_intent = new Intent(getActivity(), Equipment_Activity.class);
             equipment_intent.putExtra("request_id", Integer.toString(equipment_type));
-            equipment_intent.putExtra("functionlocation_id",floc_edittext.getText().toString());
+            equipment_intent.putExtra("functionlocation_id",
+                    floc_edittext.getText().toString());
             startActivityForResult(equipment_intent, equipment_type);
-        }
-        else if(v == equipmentscan_imageview)
-        {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
-            {
-                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
-            }
-            else
-            {
+        } else if (v == equipmentscan_imageview) {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
+            } else {
                 Intent intent = new Intent(getActivity(), Barcode_Scanner_Activity.class);
-                startActivityForResult(intent,barcode_scan);
+                startActivityForResult(intent, barcode_scan);
             }
-        }
-        else if(v == workCenter_layout)
-        {
-            if ((equipment_id != null && !equipment_id.equals("")) || (functionlocation_id != null && !functionlocation_id.equals("")))
-            {
-                Intent notification_type_intent = new Intent(getActivity(), WorkCenter_Type_Activity.class);
-                notification_type_intent.putExtra("request_id", Integer.toString(workcenter_type));
+        } else if (v == workCenter_layout) {
+            if ((equipment_id != null && !equipment_id.equals("")) ||
+                    (functionlocation_id != null && !functionlocation_id.equals(""))) {
+                Intent notification_type_intent = new Intent(getActivity(),
+                        WorkCenter_Type_Activity.class);
+                notification_type_intent.putExtra("request_id",
+                        Integer.toString(workcenter_type));
                 notification_type_intent.putExtra("plant_id", plant_id);
                 startActivityForResult(notification_type_intent, workcenter_type);
+            } else {
+                error_dialog.show_error_dialog(getActivity(),
+                        getString(R.string.equipFunc_mandate));
             }
-            else
-            {
-                error_dialog.show_error_dialog(getActivity(), "Please select Equipment / Function Location");
-            }
-        }
-        else if(v == priority_layout)
-        {
-            Intent notification_type_intent = new Intent(getActivity(), Notifications_Priority_Activity.class);
-            notification_type_intent.putExtra("request_id", Integer.toString(notification_priority));
+        } else if (v == priority_layout) {
+            Intent notification_type_intent = new Intent(getActivity(),
+                    Notifications_Priority_Activity.class);
+            notification_type_intent.putExtra("request_id",
+                    Integer.toString(notification_priority));
             startActivityForResult(notification_type_intent, notification_priority);
-        }
-        else if(v == plannerGroup_layout)
-        {
-            if (equiptext_edittext.getText().toString() != null && !equiptext_edittext.getText().toString().equals(""))
-            {
-                Intent planner_group_intent = new Intent(getActivity(), Notifications_PlannerGroup_Activity.class);
-                planner_group_intent.putExtra("equip_id",equipid_edittext.getText().toString());
-                planner_group_intent.putExtra("request_id", Integer.toString(planner_group));
+        } else if (v == plannerGroup_layout) {
+            if (equiptext_edittext.getText().toString() != null &&
+                    !equiptext_edittext.getText().toString().equals("")) {
+                Intent planner_group_intent = new Intent(getActivity(),
+                        Notifications_PlannerGroup_Activity.class);
+                planner_group_intent.putExtra("equip_id",
+                        equipid_edittext.getText().toString());
+                planner_group_intent.putExtra("request_id",
+                        Integer.toString(planner_group));
                 startActivityForResult(planner_group_intent, planner_group);
+            } else {
+                error_dialog.show_error_dialog(getActivity(),
+                        getString(R.string.equipFunc_mandate));
             }
-            else
-            {
-                error_dialog.show_error_dialog(getActivity(), "Please Select Equipment");
-            }
-        }
-        else if(v == personResp_layout)
-        {
-            if (plant_id != null && !plant_id.equals(""))
-            {
-                Intent planner_group_intent = new Intent(getActivity(), Notifications_Personresponsible_Activity.class);
-                planner_group_intent.putExtra("workcenter_id",workcenter_id);
-                planner_group_intent.putExtra("plant_id",plant_id);
-                planner_group_intent.putExtra("equip_id",equipid_edittext.getText().toString());
+        } else if (v == personResp_layout) {
+            if (plant_id != null && !plant_id.equals("")) {
+                Intent planner_group_intent = new Intent(getActivity(),
+                        Notifications_Personresponsible_Activity.class);
+                planner_group_intent.putExtra("workcenter_id", workcenter_id);
+                planner_group_intent.putExtra("plant_id", plant_id);
+                planner_group_intent.putExtra("equip_id",
+                        equipid_edittext.getText().toString());
                 planner_group_intent.putExtra("request_id", Integer.toString(personResp));
                 startActivityForResult(planner_group_intent, personResp);
+            } else {
+                error_dialog.show_error_dialog(getActivity(),
+                        getString(R.string.equipFunc_mandate));
             }
-            else
-            {
-                error_dialog.show_error_dialog(getActivity(), "Please Select Equipment or Function Location");
-            }
-        }
-        else if(v == reqStDt_layout)
-        {
+        } else if (v == reqStDt_layout) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(req_stdate));
-            startActivityForResult(intent,req_stdate);
-        }
-        else if(v == reqEnDt_layout)
-        {
+            startActivityForResult(intent, req_stdate);
+        } else if (v == reqEnDt_layout) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(req_enddate));
-            startActivityForResult(intent,req_enddate);
-        }
-        else if(v == malFunctnStDt_layout)
-        {
+            startActivityForResult(intent, req_enddate);
+        } else if (v == malFunctnStDt_layout) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(malf_st_date));
-            startActivityForResult(intent,malf_st_date);
-        }
-        else if(v == malFunctnEnDt_layout)
-        {
+            startActivityForResult(intent, malf_st_date);
+        } else if (v == malFunctnEnDt_layout) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(malf_end_date));
-            startActivityForResult(intent,malf_end_date);
-        }
-        else if(v == effect_layout)
-        {
-            Intent notification_type_intent = new Intent(getActivity(), Notifications_Effect_Activity.class);
+            startActivityForResult(intent, malf_end_date);
+        } else if (v == effect_layout) {
+            Intent notification_type_intent = new Intent(getActivity(),
+                    Notifications_Effect_Activity.class);
             notification_type_intent.putExtra("request_id", Integer.toString(effect));
             startActivityForResult(notification_type_intent, effect);
         }
     }
 
-
     // Call Back method  to get the Message form other Activity
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !data.equals(""))
-        {
-            if(requestCode == longtext)
-            {
+        if (data != null && !data.equals("")) {
+            if (requestCode == longtext) {
                 longtext_text = data.getStringExtra("longtext_new");
-            }
-            else if(requestCode == functionlocation_type)
-            {
+            } else if (requestCode == functionlocation_type) {
                 functionlocation_id = data.getStringExtra("functionlocation_id");
                 functionlocation_text = data.getStringExtra("functionlocation_text");
                 plant_id = data.getStringExtra("plant_id");
@@ -805,12 +684,11 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 flocname_edittext.setText(functionlocation_text);
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = data.getStringExtra("ingrp_text");
-                plannerGroup_edittext.setText(plannergroup_id+" - "+plannergroup_text);
+                plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                        plannergroup_text));
                 workcenter_id = data.getStringExtra("work_center");
                 workCenter_edittext.setText(workcenter_id);
-            }
-            else if(requestCode == equipment_type)
-            {
+            } else if (requestCode == equipment_type) {
                 equipment_id = data.getStringExtra("equipment_id");
                 equipment_text = data.getStringExtra("equipment_text");
                 functionlocation_id = data.getStringExtra("functionlocation_id");
@@ -825,22 +703,16 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 workcenter_id = data.getStringExtra("work_center");
                 workCenter_edittext.setText(workcenter_id);
                 plannerGroup_edittext.setText(plannergroup_id);
-            }
-            else if(requestCode == barcode_scan)
-            {
-                String message=data.getStringExtra("MESSAGE");
+            } else if (requestCode == barcode_scan) {
+                String message = data.getStringExtra("MESSAGE");
                 equipid_edittext.setText(message);
-                if (message != null && !message.equals(""))
-                {
-                    try
-                    {
-                        Cursor cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?", new String[]{message});
-                        if (cursor != null && cursor.getCount() > 0)
-                        {
-                            if (cursor.moveToFirst())
-                            {
-                                do
-                                {
+                if (message != null && !message.equals("")) {
+                    try {
+                        Cursor cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?",
+                                new String[]{message});
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
                                     equipment_id = message;
                                     equipment_text = cursor.getString(5);
                                     functionlocation_id = cursor.getString(1);
@@ -856,115 +728,89 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                 }
                                 while (cursor.moveToNext());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             cursor.close();
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-                    try
-                    {
-                        if (functionlocation_id != null && !functionlocation_id.equals(""))
-                        {
-                            Cursor cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{functionlocation_id});
-                            if (cursor != null && cursor.getCount() > 0)
-                            {
-                                if (cursor.moveToFirst())
-                                {
-                                    do
-                                    {
+                    try {
+                        if (functionlocation_id != null && !functionlocation_id.equals("")) {
+                            Cursor cursor = App_db.rawQuery("select * from EtFuncEquip where" +
+                                    " Tplnr = ?", new String[]{functionlocation_id});
+                            if (cursor != null && cursor.getCount() > 0) {
+                                if (cursor.moveToFirst()) {
+                                    do {
                                         functionlocation_text = cursor.getString(2);
                                         flocname_edittext.setText(functionlocation_text);
                                     }
                                     while (cursor.moveToNext());
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 cursor.close();
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
-            }
-            else if(requestCode == workcenter_type)
-            {
+            } else if (requestCode == workcenter_type) {
                 workcenter_id = data.getStringExtra("workcenter_id");
                 workcenter_text = data.getStringExtra("workcenter_text");
                 workCenter_edittext.setText(workcenter_id);
-            }
-            else if(requestCode == notification_priority)
-            {
+            } else if (requestCode == notification_priority) {
                 priority_type_id = data.getStringExtra("priority_type_id");
                 priority_type_text = data.getStringExtra("priority_type_text");
-                priority_edittext.setText(priority_type_id+" - "+priority_type_text);
-            }
-            else if(requestCode == planner_group)
-            {
+                priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
+                        priority_type_text));
+            } else if (requestCode == planner_group) {
                 plannergroup_id = data.getStringExtra("plannergroup_id");
                 plannergroup_text = data.getStringExtra("plannergroup_text");
-                plannerGroup_edittext.setText(plannergroup_id+" - "+plannergroup_text);
-            }
-            else if(requestCode == personResp)
-            {
+                plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                        plannergroup_text));
+            } else if (requestCode == personResp) {
                 personresponsible_id = data.getStringExtra("personresponsible_id");
                 personresponsible_text = data.getStringExtra("personresponsible_text");
-                personResp_edittext.setText(personresponsible_id+" - "+personresponsible_text);
-            }
-            else if(requestCode == req_stdate)
-            {
+                personResp_edittext.setText(getString(R.string.hypen_text, personresponsible_id,
+                        personresponsible_text));
+            } else if (requestCode == req_stdate) {
                 req_stdate_date = data.getStringExtra("date");
                 req_stdate_date_formated = data.getStringExtra("date_formatted");
                 req_stdate_time = data.getStringExtra("time");
                 req_stdate_time_formatted = data.getStringExtra("time_formatted");
-                reqStDt_edittext.setText(req_stdate_date+"  -  "+req_stdate_time);
-            }
-            else if(requestCode == req_enddate)
-            {
+                reqStDt_edittext.setText(getString(R.string.hypen_text, req_stdate_date,
+                        req_stdate_time));
+            } else if (requestCode == req_enddate) {
                 req_end_date = data.getStringExtra("date");
                 req_end_date_formatted = data.getStringExtra("date_formatted");
                 req_end_time = data.getStringExtra("time");
                 req_end_time_formatted = data.getStringExtra("time_formatted");
-                reqEnDt_edittext.setText(req_end_date+"  -  "+req_end_time);
-            }
-            else if(requestCode == malf_st_date)
-            {
+                reqEnDt_edittext.setText(getString(R.string.hypen_text, req_end_date,
+                        req_end_time));
+            } else if (requestCode == malf_st_date) {
                 mal_st_date = data.getStringExtra("date");
                 mal_st_date_formatted = data.getStringExtra("date_formatted");
                 mal_st_time = data.getStringExtra("time");
                 mal_st_time_formatted = data.getStringExtra("time_formatted");
-                malFunctnStDt_edittext.setText(mal_st_date+"  -  "+mal_st_time);
-            }
-            else if(requestCode == malf_end_date)
-            {
+                malFunctnStDt_edittext.setText(getString(R.string.hypen_text, mal_st_date,
+                        mal_st_time));
+            } else if (requestCode == malf_end_date) {
                 mal_end_date = data.getStringExtra("date");
                 mal_end_date_formatted = data.getStringExtra("date_formatted");
                 mal_end_time = data.getStringExtra("time");
                 mal_end_time_formatted = data.getStringExtra("time_formatted");
-                malFunctnEnDt_edittext.setText(mal_end_date+"  -  "+mal_end_time);
-            }
-            else if(requestCode == effect)
-            {
+                malFunctnEnDt_edittext.setText(getString(R.string.hypen_text, mal_end_date,
+                        mal_end_time));
+            } else if (requestCode == effect) {
                 effect_id = data.getStringExtra("effect_id");
                 effect_text = data.getStringExtra("effect_text");
-                effect_edittext.setText(effect_id+" - "+effect_text);
-            }
-            else if(requestCode == custom_info)
-            {
-                selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
+                effect_edittext.setText(getString(R.string.hypen_text, effect_id, effect_text));
+            } else if (requestCode == custom_info) {
+                selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data
+                        .getSerializableExtra("selected_custom_info_arraylist");
             }
         }
     }
 
-
-    private class Get_Order_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Order_Data extends AsyncTask<Void, Integer, Void> {
         OrdrHeaderPrcbl ohp;
         ArrayList<OrdrOprtnPrcbl> oop_al = new ArrayList<OrdrOprtnPrcbl>();
         ArrayList<OrdrObjectPrcbl> oobp_al = new ArrayList<OrdrObjectPrcbl>();
@@ -983,20 +829,23 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         ArrayList<OrdrWcagnsPrcbl> wdissuep_al = new ArrayList<OrdrWcagnsPrcbl>();
         ArrayList<OrdrTagUnTagTextPrcbl> wdTagtxt_al = new ArrayList<OrdrTagUnTagTextPrcbl>();
         ArrayList<OrdrTagUnTagTextPrcbl> wdUnTagtxt_al = new ArrayList<OrdrTagUnTagTextPrcbl>();
-        String ordrLngTxt = "", statusAll = "", WW_Objnr = "", WA_Objnr = "", WD_Objnr = "",WA_Wapinr = "", WA_Objtyp = "", Wcnr = "";
+        String ordrLngTxt = "", statusAll = "", WW_Objnr = "", WA_Objnr = "", WD_Objnr = "",
+                WA_Wapinr = "", WA_Objtyp = "", Wcnr = "";
         int count = 0;
         StringBuilder stringbuilder = new StringBuilder();
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
+
         @Override
-        protected Void doInBackground(Void... voids)
-        {
+        protected Void doInBackground(Void... voids) {
             Cursor cursor = null;
             /*WorkApproval Data*/
             try {
-                cursor = App_db.rawQuery("select * from EtWcmWwData where UUID = ?" + "ORDER BY id DESC", new String[]{selected_orderUUID});
+                cursor = App_db.rawQuery("select * from EtWcmWwData where UUID = ?"
+                        + "ORDER BY id DESC", new String[]{selected_orderUUID});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -1036,7 +885,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             Cursor cursor1 = null;
                             /*WW Status*/
                             try {
-                                cursor1 = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Objnr = ? order by Stonr", new String[]{selected_orderID, WW_Objnr});
+                                cursor1 = App_db.rawQuery("select * from EtOrderStatus where" +
+                                                " Aufnr = ? and Objnr = ? order by Stonr",
+                                        new String[]{selected_orderID, WW_Objnr});
                                 if (cursor1 != null && cursor1.getCount() > 0) {
                                     if (cursor1.moveToFirst()) {
                                         do {
@@ -1068,7 +919,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                             /*WW Issue approvals*/
                             try {
-                                cursor1 = App_db.rawQuery("select * from EtWcmWcagns where Objnr = ? and Objart = ? order by Hilvl", new String[]{WW_Objnr, "WW"});
+                                cursor1 = App_db.rawQuery("select * from EtWcmWcagns where" +
+                                                " Objnr = ? and Objart = ? order by Hilvl",
+                                        new String[]{WW_Objnr, "WW"});
                                 if (cursor1 != null && cursor1.getCount() > 0) {
                                     if (cursor1.moveToFirst()) {
                                         do {
@@ -1114,10 +967,13 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                             /*Permit Applications Data WA*/
                             try {
-                                cursor1 = App_db.rawQuery("select * from EtWcmWaData where Refobj = ?" + "ORDER BY id DESC", new String[]{WW_Objnr});
+                                cursor1 = App_db.rawQuery("select * from EtWcmWaData where" +
+                                        " Refobj = ?" + "ORDER BY id DESC", new String[]{WW_Objnr});
 
                                 if (!(cursor1 != null && cursor1.getCount() > 0))
-                                    cursor1 = App_db.rawQuery("select * from EtWcmWaData where Refobj = ?" + "ORDER BY id DESC", new String[]{generateRefobj(selected_orderID)});
+                                    cursor1 = App_db.rawQuery("select * from EtWcmWaData where" +
+                                                    " Refobj = ?" + "ORDER BY id DESC",
+                                            new String[]{generateRefobj(selected_orderID)});
 
                                 if (cursor1 != null && cursor1.getCount() > 0) {
                                     if (cursor1.moveToFirst()) {
@@ -1169,7 +1025,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                             /*Wa Status Data*/
                                             try {
-                                                cursor2 = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Objnr = ? order by Stonr", new String[]{selected_orderID, WA_Objnr});
+                                                cursor2 = App_db.rawQuery("select * from EtOrderStatus where" +
+                                                                " Aufnr = ? and Objnr = ? order by Stonr",
+                                                        new String[]{selected_orderID, WA_Objnr});
                                                 if (cursor2 != null && cursor2.getCount() > 0) {
                                                     if (cursor2.moveToFirst()) {
                                                         do {
@@ -1201,7 +1059,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                             /*Wa Issue Data*/
                                             try {
-                                                cursor2 = App_db.rawQuery("select * from EtWcmWcagns where Objnr = ? and Objart = ? order by Hilvl", new String[]{WA_Objnr, "WA"});
+                                                cursor2 = App_db.rawQuery("select * from EtWcmWcagns where" +
+                                                                " Objnr = ? and Objart = ? order by Hilvl",
+                                                        new String[]{WA_Objnr, "WA"});
                                                 if (cursor2 != null && cursor2.getCount() > 0) {
                                                     if (cursor2.moveToFirst()) {
                                                         do {
@@ -1247,7 +1107,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                             /*Isolation Data*/
                                             try {
-                                                cursor2 = App_db.rawQuery("select * from EtWcmWdData where Refobj = ?" + "ORDER BY id DESC", new String[]{WA_Objnr});
+                                                cursor2 = App_db.rawQuery("select * from EtWcmWdData where" +
+                                                                " Refobj = ?" + "ORDER BY id DESC",
+                                                        new String[]{WA_Objnr});
                                                 if (cursor2 != null && cursor2.getCount() > 0) {
                                                     if (cursor2.moveToFirst()) {
                                                         do {
@@ -1293,10 +1155,11 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                                             /*Wd Tagging Text*/
                                                             try {
-                                                                cursor3 = App_db.rawQuery("select * from EtWcmWdDataTagtext where Aufnr = ?", new String[]{selected_orderID});
-                                                                if (cursor3 != null && cursor3.getCount() > 0){
-                                                                    if(cursor3.moveToFirst()){
-                                                                        do{
+                                                                cursor3 = App_db.rawQuery("select * from EtWcmWdDataTagtext" +
+                                                                        " where Aufnr = ?", new String[]{selected_orderID});
+                                                                if (cursor3 != null && cursor3.getCount() > 0) {
+                                                                    if (cursor3.moveToFirst()) {
+                                                                        do {
                                                                             OrdrTagUnTagTextPrcbl ttp = new OrdrTagUnTagTextPrcbl();
                                                                             ttp.setAufnr(cursor3.getString(1));
                                                                             ttp.setWcnr(cursor3.getString(2));
@@ -1305,7 +1168,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                                                             ttp.setTextLine(cursor3.getString(5));
                                                                             ttp.setAction(cursor3.getString(6));
                                                                             wdTagtxt_al.add(ttp);
-                                                                        }while(cursor3.moveToNext());
+                                                                        }
+                                                                        while (cursor3.moveToNext());
                                                                     }
                                                                 }
                                                             } catch (Exception e) {
@@ -1318,10 +1182,11 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                                             /*Wd UnTagging Text*/
                                                             try {
-                                                                cursor3 = App_db.rawQuery("select * from EtWcmWdDataUntagtext where Aufnr = ?", new String[]{selected_orderID});
-                                                                if (cursor3 != null && cursor3.getCount() > 0){
-                                                                    if(cursor3.moveToFirst()){
-                                                                        do{
+                                                                cursor3 = App_db.rawQuery("select * from EtWcmWdDataUntagtext" +
+                                                                        " where Aufnr = ?", new String[]{selected_orderID});
+                                                                if (cursor3 != null && cursor3.getCount() > 0) {
+                                                                    if (cursor3.moveToFirst()) {
+                                                                        do {
                                                                             OrdrTagUnTagTextPrcbl uttp = new OrdrTagUnTagTextPrcbl();
                                                                             uttp.setAufnr(cursor3.getString(1));
                                                                             uttp.setWcnr(cursor3.getString(2));
@@ -1330,7 +1195,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                                                             uttp.setTextLine(cursor3.getString(5));
                                                                             uttp.setAction(cursor3.getString(6));
                                                                             wdUnTagtxt_al.add(uttp);
-                                                                        }while(cursor3.moveToNext());
+                                                                        }
+                                                                        while (cursor3.moveToNext());
                                                                     }
                                                                 }
                                                             } catch (Exception e) {
@@ -1343,7 +1209,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                                             /*Wd Status Data*/
                                                             try {
-                                                                cursor3 = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Objnr = ? order by Stonr", new String[]{selected_orderID, WD_Objnr});
+                                                                cursor3 = App_db.rawQuery("select * from EtOrderStatus" +
+                                                                                " where Aufnr = ? and Objnr = ? order by Stonr",
+                                                                        new String[]{selected_orderID, WD_Objnr});
                                                                 if (cursor3 != null && cursor3.getCount() > 0) {
                                                                     if (cursor3.moveToFirst()) {
                                                                         do {
@@ -1376,7 +1244,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                                             /*Wd Issue Data*/
                                                             try {
-                                                                cursor3 = App_db.rawQuery("select * from EtWcmWcagns where Objnr = ? and Objart = ? order by Hilvl", new String[]{WD_Objnr, "WD"});
+                                                                cursor3 = App_db.rawQuery("select * from EtWcmWcagns where" +
+                                                                                " Objnr = ? and Objart = ? order by Hilvl",
+                                                                        new String[]{WD_Objnr, "WD"});
                                                                 if (cursor3 != null && cursor3.getCount() > 0) {
                                                                     if (cursor3.moveToFirst()) {
                                                                         do {
@@ -1423,7 +1293,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                                             /*Wd Item Data*/
                                                             try {
-                                                                cursor3 = App_db.rawQuery("select * from EtWcmWdItemData where Wcnr = ?", new String[]{Wcnr});
+                                                                cursor3 = App_db.rawQuery("select * from EtWcmWdItemData" +
+                                                                        " where Wcnr = ?", new String[]{Wcnr});
                                                                 if (cursor3 != null && cursor3.getCount() > 0) {
                                                                     if (cursor3.moveToFirst()) {
                                                                         do {
@@ -1495,7 +1366,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
                                             /*WaChkRq Data*/
                                             try {
-                                                cursor2 = App_db.rawQuery("select * from EtWcmWaChkReq where Wapinr = ? and Wapityp = ?", new String[]{WA_Wapinr, WA_Objtyp});
+                                                cursor2 = App_db.rawQuery("select * from EtWcmWaChkReq where" +
+                                                                " Wapinr = ? and Wapityp = ?",
+                                                        new String[]{WA_Wapinr, WA_Objtyp});
                                                 if (cursor2 != null && cursor2.getCount() > 0) {
                                                     if (cursor2.moveToFirst()) {
                                                         do {
@@ -1557,7 +1430,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
             /*Order Status Data*/
             try {
-                cursor = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Objnr like ? order by Stonr", new String[]{selected_orderID, "OR%"});
+                cursor = App_db.rawQuery("select * from EtOrderStatus where" +
+                                " Aufnr = ? and Objnr like ? order by Stonr",
+                        new String[]{selected_orderID, "OR%"});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -1589,7 +1464,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
             /*Components Data*/
             try {
-                cursor = App_db.rawQuery("select * from EtOrderComponents where UUID = ?" + "ORDER BY id DESC", new String[]{selected_orderUUID});
+                cursor = App_db.rawQuery("select * from EtOrderComponents where" +
+                                " UUID = ?" + "ORDER BY id DESC",
+                        new String[]{selected_orderUUID});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -1597,7 +1474,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             omp.setOprtnId(cursor.getString(3));
                             Cursor cursor1 = null;
                             try {
-                                cursor1 = App_db.rawQuery("select * from DUE_ORDERS_EtOrderOperations where UUID = ? and Vornr = ?", new String[]{selected_orderUUID, cursor.getString(3)});
+                                cursor1 = App_db.rawQuery("select * from DUE_ORDERS_EtOrderOperations" +
+                                                " where UUID = ? and Vornr = ?",
+                                        new String[]{selected_orderUUID, cursor.getString(3)});
                                 if (cursor1 != null && cursor1.getCount() > 0) {
                                     if (cursor1.moveToFirst()) {
                                         do {
@@ -1643,7 +1522,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
             /*Objects Data*/
             try {
-                cursor = App_db.rawQuery("select * from EtOrderOlist where UUID = ?", new String[]{selected_orderUUID});
+                cursor = App_db.rawQuery("select * from EtOrderOlist" +
+                        " where UUID = ?", new String[]{selected_orderUUID});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -1667,7 +1547,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
             /*Operations Data*/
             try {
-                cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderOperations where UUID = ?" + "ORDER BY id DESC", new String[]{selected_orderUUID});
+                cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderOperations where" +
+                        " UUID = ?" + "ORDER BY id DESC", new String[]{selected_orderUUID});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -1675,7 +1556,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             StringBuilder stringbuilder1 = new StringBuilder();
                             Cursor cursor2 = null;
                             try {
-                                cursor2 = App_db.rawQuery("select * from DUE_ORDERS_Longtext where UUID = ? and Activity = ?", new String[]{selected_orderUUID, op_id});
+                                cursor2 = App_db.rawQuery("select * from DUE_ORDERS_Longtext" +
+                                                " where UUID = ? and Activity = ?",
+                                        new String[]{selected_orderUUID, op_id});
                                 if (cursor2 != null && cursor2.getCount() > 0) {
                                     if (cursor2.moveToFirst()) {
                                         do {
@@ -1733,7 +1616,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
             /*Order Header Data*/
             try {
-                cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where UUID = ? and Aufnr = ?", new String[]{selected_orderUUID, selected_orderID});
+                cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where" +
+                                " UUID = ? and Aufnr = ?",
+                        new String[]{selected_orderUUID, selected_orderID});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -1741,7 +1626,9 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             try {
                                 count = 0;
                                 stringbuilder = new StringBuilder();
-                                cursor2 = App_db.rawQuery("select * from DUE_ORDERS_Longtext where UUID = ? and Aufnr = ? and Activity = ?", new String[]{selected_orderUUID, selected_orderID, ""});
+                                cursor2 = App_db.rawQuery("select * from DUE_ORDERS_Longtext" +
+                                                " where UUID = ? and Aufnr = ? and Activity = ?",
+                                        new String[]{selected_orderUUID, selected_orderID, ""});
                                 if (cursor2 != null && cursor2.getCount() > 0) {
                                     if (cursor2.moveToFirst()) {
                                         do {
@@ -1765,19 +1652,23 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                 boolean added = false;
                                 count = 0;
                                 stringbuilder = new StringBuilder();
-                                cursor2 = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Objnr like ? order by Stonr", new String[]{selected_orderID, "OR%"});
+                                cursor2 = App_db.rawQuery("select * from EtOrderStatus where" +
+                                                " Aufnr = ? and Objnr like ? order by Stonr",
+                                        new String[]{selected_orderID, "OR%"});
                                 if (cursor2 != null && cursor2.getCount() > 0) {
                                     if (cursor2.moveToFirst()) {
                                         do {
                                             count = count + 1;
                                             added = false;
-                                            if (!cursor2.getString(7).equals("00") && cursor2.getString(10).startsWith("E")) {
+                                            if (!cursor2.getString(7).equals("00") &&
+                                                    cursor2.getString(10).startsWith("E")) {
                                                 if (cursor2.getString(11).equalsIgnoreCase("X")) {
                                                     stringbuilder.append(cursor2.getString(12));
                                                     added = true;
                                                 }
 
-                                            } else if (cursor2.getString(7).equals("00") && cursor2.getString(10).startsWith("E")) {
+                                            } else if (cursor2.getString(7).equals("00") &&
+                                                    cursor2.getString(10).startsWith("E")) {
                                                 if (cursor2.getString(11).equalsIgnoreCase("X")) {
                                                     stringbuilder.append(cursor2.getString(12));
                                                     added = true;
@@ -1861,7 +1752,6 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         }
     }
 
-
     private String generateRefobj(String orderId) {
         String ad = "";
         for (int i = 0; i < 12 - orderId.length(); i++) {
@@ -1870,11 +1760,11 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         return "OR" + ad + orderId;
     }
 
-
     private String getApplName(String objtyp, String iwerk) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtWcmTypes where Iwerk = ? and Objtyp = ?", new String[]{iwerk, objtyp});
+            cursor = App_db.rawQuery("select * from EtWcmTypes where Iwerk = ? and" +
+                    " Objtyp = ?", new String[]{iwerk, objtyp});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(4);
@@ -1889,7 +1779,6 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         }
         return "";
     }
-
 
     private String getIwerk(String equip) {
         Cursor cursor = null;
@@ -1910,11 +1799,11 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         return "";
     }
 
-
     private String getfuncIwerk(String func) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{func});
+            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                    new String[]{func});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(14);
@@ -1929,7 +1818,6 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         }
         return "";
     }
-
 
     private String getBukrs(String equip) {
         Cursor cursor = null;
@@ -1950,17 +1838,6 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         return "";
     }
 
-
-    private long getTime(String date) {
-        try {
-            Date d = new SimpleDateFormat("yyyyMMdd").parse(date);
-            return d.getTime();
-        } catch (ParseException e) {
-            return 0;
-        }
-    }
-
-
     private String timeDisplayFormat(String date) {
         String inputPattern = "HHmmss";
         String outputPattern = "HH:mm:ss";
@@ -1973,7 +1850,6 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             return date;
         }
     }
-
 
     private String dateDisplayFormat(String date) {
         String inputPattern = "yyyyMMdd";
@@ -1988,17 +1864,24 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         }
     }
 
-
-    public Notifications_Create_Header_Object getData()
-    {
-        return new Notifications_Create_Header_Object(notification_type_id, notification_type_text, notifshtTxt_edittext.getText().toString(),floc_edittext.getText().toString(),functionlocation_text, equipid_edittext.getText().toString(), equipment_text, workcenter_id, workcenter_text, priority_type_id, priority_type_text, plannergroup_id, plannergroup_text, reportedby_edittext.getText().toString(), primUsrResp_edittext.getText().toString(), personresponsible_id, personresponsible_text, req_stdate_date_formated, req_stdate_time_formatted, req_end_date_formatted, req_end_time_formatted, mal_st_date_formatted, mal_st_time_formatted, mal_end_date_formatted, mal_end_time_formatted, effect_id, effect_text, plant_id,longtext_text, selected_custom_info_arraylist);
+    public Notifications_Create_Header_Object getData() {
+        return new Notifications_Create_Header_Object(notification_type_id, notification_type_text,
+                notifshtTxt_edittext.getText().toString(), floc_edittext.getText().toString(),
+                functionlocation_text, equipid_edittext.getText().toString(), equipment_text,
+                workcenter_id, workcenter_text, priority_type_id, priority_type_text,
+                plannergroup_id, plannergroup_text, reportedby_edittext.getText().toString(),
+                primUsrResp_edittext.getText().toString(), personresponsible_id,
+                personresponsible_text, req_stdate_date_formated, req_stdate_time_formatted,
+                req_end_date_formatted, req_end_time_formatted, mal_st_date_formatted,
+                mal_st_time_formatted, mal_end_date_formatted, mal_end_time_formatted,
+                effect_id, effect_text, plant_id, longtext_text, selected_custom_info_arraylist);
     }
-
 
     private String funcLocName(String funcLocId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{funcLocId});
+            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                    new String[]{funcLocId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
@@ -2013,6 +1896,4 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         }
         return "";
     }
-
-
 }

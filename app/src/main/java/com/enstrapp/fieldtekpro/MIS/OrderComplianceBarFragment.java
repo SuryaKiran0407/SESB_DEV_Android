@@ -22,7 +22,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-
 import com.enstrapp.fieldtekpro.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -43,7 +42,7 @@ public class OrderComplianceBarFragment extends Fragment {
     ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
     BarData barData;
     BarDataSet barDataSet;
-    TextView  compliance_text;
+    TextView compliance_text;
     ImageView filter_iv;
     Order_Analysis_Activity ma;
     FILTER_PLANT_TYPE_Adapter filter_plant_type_adapter;
@@ -83,7 +82,7 @@ public class OrderComplianceBarFragment extends Fragment {
         filter_iv = rootView.findViewById(R.id.filter_imageview);
         noData_tv = rootView.findViewById(R.id.no_data_textview);
         compliance_text = rootView.findViewById(R.id.compliance_text);
-        ma=(Order_Analysis_Activity) this.getActivity();
+        ma = (Order_Analysis_Activity) this.getActivity();
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
@@ -92,12 +91,14 @@ public class OrderComplianceBarFragment extends Fragment {
 
         return rootView;
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed())
             onResume();
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -252,7 +253,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                         plant_dialog.dismiss();
                                     } else {
                                         if (swerk_ct.equals("") && swerk_ctp.equals("") && swerk_c.equals(""))
-                                            show_error_dialog("Please select PLANT");
+                                            show_error_dialog(getString(R.string.slct_palnt));
                                         else
                                             plant_dialog.dismiss();
                                     }
@@ -321,7 +322,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.wrkCntr_mandate));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -401,7 +402,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_ct.equals("") && wrkcnt_ctp.equals("") && wrkcnt_c.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -457,7 +458,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -536,7 +537,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_ct.equals("") && wrkcnt_ctp.equals("") && wrkcnt_c.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -569,7 +570,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                 wrkcnt_dialog.show();
                             } else if (swerk_c.equals("") || swerk_c == null) {
                                 if (swerk_ct.equals("") || swerk_ct == null) {
-                                    show_error_dialog("Please select PLANT");
+                                    show_error_dialog(getString(R.string.slct_palnt));
                                 } else {
                                     art_fo_c.clear();
                                     for (int i = 0; i < art_o_c.size(); i++) {
@@ -597,7 +598,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -676,7 +677,7 @@ public class OrderComplianceBarFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_ct.equals("") && wrkcnt_ctp.equals("") && wrkcnt_c.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -831,8 +832,7 @@ public class OrderComplianceBarFragment extends Fragment {
     }
 
 
-
-    public void setMonthYear(String month_year){
+    public void setMonthYear(String month_year) {
         this.month_year = month_year;
     }
 
@@ -840,7 +840,7 @@ public class OrderComplianceBarFragment extends Fragment {
         Log.v("Compliance", "- getData");
         progressdialog = new ProgressDialog(getActivity(), ProgressDialog.THEME_HOLO_LIGHT);
         progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressdialog.setMessage("Loading...");
+        progressdialog.setMessage(getString(R.string.loading));
         progressdialog.setCancelable(false);
         progressdialog.setCanceledOnTouchOutside(false);
         progressdialog.show();
@@ -1520,7 +1520,7 @@ public class OrderComplianceBarFragment extends Fragment {
                 if (!wrkcnt_c.equals("")) {
                     compliance_text.setText(swerk_name_c + " - " + wrkcnt_name_c + "\n" + month_year);
                 } else {
-                    compliance_text.setText(swerk_name_c + "\n" +month_year);
+                    compliance_text.setText(swerk_name_c + "\n" + month_year);
                 }
             } else {
                 compliance_text.setText(month_year);
@@ -1535,6 +1535,7 @@ public class OrderComplianceBarFragment extends Fragment {
 
 
     }
+
     public class FILTER_PLANT_TYPE_Adapter extends BaseAdapter {
         Context mContext;
         LayoutInflater inflater;
@@ -1732,7 +1733,7 @@ public class OrderComplianceBarFragment extends Fragment {
                 holder.key = (TextView) view.findViewById(R.id.key);
                 view.setTag(holder);
             } else {
-                holder = ( ViewHolder) view.getTag();
+                holder = (ViewHolder) view.getTag();
             }
 
             if (!wrkcnt_ctp.equals("")) {

@@ -55,10 +55,8 @@ public class Orders_CH_Material_Fragment extends Fragment {
 
         material_rv = rootView.findViewById(R.id.recyclerView);
 
-
         DATABASE_NAME = getActivity().getString(R.string.database_name);
         App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-
 
         Bundle bundle = getActivity().getIntent().getExtras();
         ma = (Orders_Change_Activity) this.getActivity();
@@ -96,19 +94,17 @@ public class Orders_CH_Material_Fragment extends Fragment {
         if (!getUserVisibleHint())
             return;
 
-        String auth_status = Authorizations.Get_Authorizations_Data(getActivity(),"W","U");
-        if (auth_status.equalsIgnoreCase("true"))
-        {
+        String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "W",
+                "U");
+        if (auth_status.equalsIgnoreCase("true")) {
             ma.fab.show();
-        }
-        else
-        {
+        } else {
             ma.fab.hide();
         }
 
-        if(isSelected){
+        if (isSelected) {
             ma.animateFab(true);
-        } else{
+        } else {
             ma.animateFab(false);
         }
         ma.fab.setOnClickListener(new View.OnClickListener() {
@@ -123,19 +119,15 @@ public class Orders_CH_Material_Fragment extends Fragment {
                         if (oo.isSelected() && oo.getStatus().equals("I")) {
                             omp_al_rv.remove(oo);
                             omp_al.remove(oo);
-                        } else if(oo.isSelected()){
+                        } else if (oo.isSelected()) {
                             omp_al_rv.remove(oo);
                             partId = oo.getPartId();
-                            for(int i = 0; i < omp_al.size(); i++){
-                                if(omp_al.get(i).getPartId().equals(partId))
+                            for (int i = 0; i < omp_al.size(); i++) {
+                                if (omp_al.get(i).getPartId().equals(partId))
                                     omp_al.get(i).setStatus("D");
                             }
                         }
                     }
-                    /*if (omp_al.size() > 0)
-                        for (int i = 0; i < omp_al.size(); i++) {
-//                            omp_al.get(i).setPartId(gnrtMatrlId(i));
-                        }*/
                     ma.animateFab(false);
                     isSelected = false;
                     ma.ohp.setOrdrMatrlPrcbls(omp_al);
@@ -148,7 +140,8 @@ public class Orders_CH_Material_Fragment extends Fragment {
                             if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
                                 if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
 //                                    ma.addOprtn();
-                                    Intent intent = new Intent(getActivity(), Material_Add_Update_Activity.class);
+                                    Intent intent = new Intent(getActivity(),
+                                            Material_Add_Update_Activity.class);
                                     intent.putExtra("type_matrl", "C");
                                     intent.putExtra("ordrEquip", ma.ohp.getEquipNum());
                                     intent.putExtra("ordrPlant", ma.ohp.getPlant());
@@ -156,16 +149,20 @@ public class Orders_CH_Material_Fragment extends Fragment {
                                     intent.putExtra("oprtn_list", ma.ohp.getOrdrOprtnPrcbls());
                                     startActivityForResult(intent, MATRL_CRT);
                                 } else {
-                                    errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.equipFunc_mandate));
+                                    errorDialog.show_error_dialog(getActivity(),
+                                            getResources().getString(R.string.equipFunc_mandate));
                                 }
                             } else {
-                                errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.text_mandate));
+                                errorDialog.show_error_dialog(getActivity(),
+                                        getResources().getString(R.string.text_mandate));
                             }
                         } else {
-                            errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.material_block));
+                            errorDialog.show_error_dialog(getActivity(),
+                                    getResources().getString(R.string.material_block));
                         }
                     } else {
-                        errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.ordTyp_mandate));
+                        errorDialog.show_error_dialog(getActivity(),
+                                getResources().getString(R.string.ordTyp_mandate));
                     }
                 }
             }
@@ -180,25 +177,18 @@ public class Orders_CH_Material_Fragment extends Fragment {
                 if (resultCode == RESULT_OK) {
                     ArrayList<OrdrMatrlPrcbl> omp_al_d = new ArrayList<OrdrMatrlPrcbl>();
                     omp_al_d = data.getParcelableArrayListExtra("omp_prcbl_al");
-                   /* if (ma.ohp.getOrdrMatrlPrcbls() != null) {
-                        for (int i = 0; i < omp_al_d.size(); i++) {
-                            omp_al_d.get(i).setPartId(gnrtMatrlId(omp_al.size()));
-                        }
-                    } else {*/
                     for (int i = 0; i < omp_al_d.size(); i++) {
                         OrdrMatrlPrcbl omp = new OrdrMatrlPrcbl();
                         omp = omp_al_d.get(i);
                         omp.setPartId(gnrtMatrlId(omp_al.size()));
-//                            omp_al_d.get(i).setPartId(gnrtMatrlId(omp_al.size()));
                         omp_al.add(omp);
                         omp_al_rv.add(omp);
                     }
-//                    }
                     omp_al_d = null;
                     ma.ohp.setOrdrMatrlPrcbls(omp_al);
-                    if(materialAdapter != null)
-                    materialAdapter.notifyDataSetChanged();
-                    else{
+                    if (materialAdapter != null)
+                        materialAdapter.notifyDataSetChanged();
+                    else {
                         materialAdapter = new MaterialAdapter(getActivity(), omp_al_rv);
                         material_rv.setHasFixedSize(true);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -268,7 +258,8 @@ public class Orders_CH_Material_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_material_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.orders_material_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -313,17 +304,18 @@ public class Orders_CH_Material_Fragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-
-                    ArrayList<HashMap<String, String>> selected_material_custom_info_arraylist = new ArrayList<>();
-                    try
-                    {
-                        Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderComponents_FIELDS where Aufnr = ? and OperationID = ? and PartID = ? order by Sequence", new String[]{ma.ohp.getOrdrId(),holder.oprtnId_tv.getText().toString(),holder.partId_tv.getText().toString()});
-                        if (cursor != null && cursor.getCount() > 0)
-                        {
-                            if (cursor.moveToFirst())
-                            {
-                                do
-                                {
+                    ArrayList<HashMap<String, String>> selected_material_custom_info_arraylist
+                            = new ArrayList<>();
+                    try {
+                        Cursor cursor = App_db.rawQuery("select * from " +
+                                        "DUE_ORDERS_EtOrderComponents_FIELDS where Aufnr = ? and " +
+                                        "OperationID = ? and PartID = ? order by Sequence",
+                                new String[]{ma.ohp.getOrdrId(),
+                                        holder.oprtnId_tv.getText().toString(),
+                                        holder.partId_tv.getText().toString()});
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
                                     HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                                     custom_info_hashMap.put("Fieldname", cursor.getString(6));
                                     custom_info_hashMap.put("ZdoctypeItem", cursor.getString(4));
@@ -336,57 +328,40 @@ public class Orders_CH_Material_Fragment extends Fragment {
 
                                     String datatype = cursor.getString(11);
                                     String value = cursor.getString(7);
-                                    if(datatype.equalsIgnoreCase("DATS"))
-                                    {
-                                        if(value.equalsIgnoreCase("00000000"))
-                                        {
+                                    if (datatype.equalsIgnoreCase("DATS")) {
+                                        if (value.equalsIgnoreCase("00000000")) {
                                             custom_info_hashMap.put("Value", "");
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             String inputPattern = "yyyyMMdd";
-                                            String outputPattern = "MMM dd, yyyy" ;
+                                            String outputPattern = "MMM dd, yyyy";
                                             SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                             SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                            try
-                                            {
+                                            try {
                                                 Date date = inputFormat.parse(value);
-                                                String formatted_date =  outputFormat.format(date);
+                                                String formatted_date = outputFormat.format(date);
                                                 custom_info_hashMap.put("Value", formatted_date);
-                                            }
-                                            catch (Exception e)
-                                            {
+                                            } catch (Exception e) {
                                                 custom_info_hashMap.put("Value", "");
                                             }
                                         }
 
-                                    }
-                                    else if(datatype.equalsIgnoreCase("TIMS"))
-                                    {
-                                        if(value.equalsIgnoreCase("000000"))
-                                        {
+                                    } else if (datatype.equalsIgnoreCase("TIMS")) {
+                                        if (value.equalsIgnoreCase("000000")) {
                                             custom_info_hashMap.put("Value", "");
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             String inputPattern = "HHmmss";
                                             String outputPattern = "HH:mm:ss";
                                             SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                             SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                            try
-                                            {
+                                            try {
                                                 Date date = inputFormat.parse(value);
-                                                String formatted_time =  outputFormat.format(date);
+                                                String formatted_time = outputFormat.format(date);
                                                 custom_info_hashMap.put("Value", formatted_time);
-                                            }
-                                            catch (Exception e)
-                                            {
+                                            } catch (Exception e) {
                                                 custom_info_hashMap.put("Value", "");
                                             }
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         custom_info_hashMap.put("Value", cursor.getString(7));
                                     }
 
@@ -395,18 +370,14 @@ public class Orders_CH_Material_Fragment extends Fragment {
                                 }
                                 while (cursor.moveToNext());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             cursor.close();
-
-                            Cursor cursor1 = App_db.rawQuery("select * from GET_CUSTOM_FIELDS where Zdoctype = ? and ZdoctypeItem = ? order by Sequence", new String[]{"W","WC"});
-                            if (cursor1 != null && cursor1.getCount() > 0)
-                            {
-                                if (cursor1.moveToFirst())
-                                {
-                                    do
-                                    {
+                            Cursor cursor1 = App_db.rawQuery("select * from GET_CUSTOM_FIELDS" +
+                                            " where Zdoctype = ? and ZdoctypeItem = ? order by Sequence",
+                                    new String[]{"W", "WC"});
+                            if (cursor1 != null && cursor1.getCount() > 0) {
+                                if (cursor1.moveToFirst()) {
+                                    do {
                                         HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                                         custom_info_hashMap.put("Fieldname", cursor1.getString(1));
                                         custom_info_hashMap.put("ZdoctypeItem", cursor1.getString(2));
@@ -422,18 +393,12 @@ public class Orders_CH_Material_Fragment extends Fragment {
                                     }
                                     while (cursor1.moveToNext());
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 cursor1.close();
                             }
-
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-
 
                     Intent intent = new Intent(getActivity(), Material_Add_Update_Activity.class);
                     intent.putExtra("type_matrl", "U");
@@ -441,7 +406,8 @@ public class Orders_CH_Material_Fragment extends Fragment {
                     intent.putExtra("oprtn_list", ma.ohp.getOrdrOprtnPrcbls());
                     intent.putExtra("ordrEquip", ma.ohp.getEquipNum());
                     intent.putExtra("iwerk", ma.ohp.getIwerk());
-                    intent.putExtra("selected_material_custom_info_arraylist", selected_material_custom_info_arraylist);
+                    intent.putExtra("selected_material_custom_info_arraylist",
+                            selected_material_custom_info_arraylist);
                     startActivityForResult(intent, MATRL_UPDT);
                 }
             });
@@ -461,17 +427,11 @@ public class Orders_CH_Material_Fragment extends Fragment {
         }
     }
 
-
-    public int MaterialSize()
-    {
-        if (omp_al_rv.size() > 0)
-        {
-            return  omp_al_rv.size();
-        }
-        else
-        {
-            return  0;
+    public int MaterialSize() {
+        if (omp_al_rv.size() > 0) {
+            return omp_al_rv.size();
+        } else {
+            return 0;
         }
     }
-
 }

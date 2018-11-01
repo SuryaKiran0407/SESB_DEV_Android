@@ -35,8 +35,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return;
 
         // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null)
-        {
+        if (remoteMessage.getNotification() != null) {
             handleNotification(remoteMessage.getNotification().getBody());
         }
 
@@ -52,14 +51,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNotification(String message) {
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext()))
-        {
+        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
 
             //COmmented by SUrya Kiran
-                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", message);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+            pushNotification.putExtra("message", message);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             //COmmented by SUrya Kiran
 
             //For Local Notification Written by SUryaKiran
@@ -84,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notification.defaults |= Notification.DEFAULT_SOUND;
 
             Date now = new Date();
-            int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(now));
+            int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss", Locale.US).format(now));
 
             notificationManager.notify(id, notification);
             //For Local Notification Written by SUryaKiran
@@ -94,9 +92,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
             notificationUtils.playNotificationSound();
             //COmmented by SUrya Kiran
-        }
-        else
-        {
+        } else {
             // If the app is in background, firebase itself handles the notification
         }
     }

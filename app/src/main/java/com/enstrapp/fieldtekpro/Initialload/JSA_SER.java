@@ -6,40 +6,37 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class JSA_SER
-{
+public class JSA_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
     }
 
 
-    public class Result
-    {
+    public class Result {
         @SerializedName("EtEHSOpstat")
         @Expose
         private EtEHSOpstat EtEHSOpstat;
@@ -73,88 +70,108 @@ public class JSA_SER
         @SerializedName("EtEHSRasstep")
         @Expose
         private EtEHSRasstep EtEHSRasstep;
+
         public EtEHSRasrole getEtEHSRasrole() {
             return EtEHSRasrole;
         }
+
         public void setEtEHSRasrole(EtEHSRasrole etEHSRasrole) {
             EtEHSRasrole = etEHSRasrole;
         }
+
         public EtEHSRasstep getEtEHSRasstep() {
             return EtEHSRasstep;
         }
+
         public void setEtEHSRasstep(EtEHSRasstep etEHSRasstep) {
             EtEHSRasstep = etEHSRasstep;
         }
+
         public EtEHSReason getEtEHSReason() {
             return EtEHSReason;
         }
+
         public void setEtEHSReason(EtEHSReason etEHSReason) {
             EtEHSReason = etEHSReason;
         }
+
         public EtEHSJobTyp getEtEHSJobTyp() {
             return EtEHSJobTyp;
         }
+
         public void setEtEHSJobTyp(EtEHSJobTyp etEHSJobTyp) {
             EtEHSJobTyp = etEHSJobTyp;
         }
+
         public EtEHSLocRev getEtEHSLocRev() {
             return EtEHSLocRev;
         }
+
         public void setEtEHSLocRev(EtEHSLocRev etEHSLocRev) {
             EtEHSLocRev = etEHSLocRev;
         }
+
         public EtEHSLocTyp getEtEHSLocTyp() {
             return EtEHSLocTyp;
         }
+
         public void setEtEHSLocTyp(EtEHSLocTyp etEHSLocTyp) {
             EtEHSLocTyp = etEHSLocTyp;
         }
+
         public JSA_SER.EtEHSHazctrl getEtEHSHazctrl() {
             return EtEHSHazctrl;
         }
+
         public void setEtEHSHazctrl(JSA_SER.EtEHSHazctrl etEHSHazctrl) {
             EtEHSHazctrl = etEHSHazctrl;
         }
+
         public JSA_SER.EtEHSHazimp getEtEHSHazimp() {
             return EtEHSHazimp;
         }
+
         public void setEtEHSHazimp(JSA_SER.EtEHSHazimp etEHSHazimp) {
             EtEHSHazimp = etEHSHazimp;
         }
+
         public EtEHSHazard getEtEHSHazard() {
             return EtEHSHazard;
         }
+
         public void setEtEHSHazard(EtEHSHazard etEHSHazard) {
             EtEHSHazard = etEHSHazard;
         }
+
         public EtEHSHazcat getEtEHSHazcat() {
             return EtEHSHazcat;
         }
+
         public void setEtEHSHazcat(EtEHSHazcat etEHSHazcat) {
             EtEHSHazcat = etEHSHazcat;
         }
+
         public JSA_SER.EtEHSOpstat getEtEHSOpstat() {
             return EtEHSOpstat;
         }
+
         public void setEtEHSOpstat(JSA_SER.EtEHSOpstat etEHSOpstat) {
             EtEHSOpstat = etEHSOpstat;
         }
     }
 
 
-
     /*For EtEHSRasrole*/
-    public class EtEHSRasrole
-    {
+    public class EtEHSRasrole {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
@@ -162,17 +179,16 @@ public class JSA_SER
 
 
     /*For EtEHSRasstep*/
-    public class EtEHSRasstep
-    {
+    public class EtEHSRasstep {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
@@ -180,17 +196,16 @@ public class JSA_SER
 
 
     /*For EtEHSReason*/
-    public class EtEHSReason
-    {
+    public class EtEHSReason {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
@@ -198,17 +213,16 @@ public class JSA_SER
 
 
     /*For EtEHSJobTyp*/
-    public class EtEHSJobTyp
-    {
+    public class EtEHSJobTyp {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
@@ -216,22 +230,21 @@ public class JSA_SER
 
 
     /*For EtEHSLocRev*/
-    public class EtEHSLocRev
-    {
+    public class EtEHSLocRev {
         @SerializedName("results")
         @Expose
         private List<EtEHSLocRev_Result> results = null;
-        public List<EtEHSLocRev_Result> getResults()
-        {
+
+        public List<EtEHSLocRev_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtEHSLocRev_Result> results)
-        {
+
+        public void setResults(List<EtEHSLocRev_Result> results) {
             this.results = results;
         }
     }
-    public class EtEHSLocRev_Result
-    {
+
+    public class EtEHSLocRev_Result {
         @SerializedName("Type")
         @Expose
         private String Type;
@@ -358,17 +371,16 @@ public class JSA_SER
 
 
     /*For EtEHSLocTyp*/
-    public class EtEHSLocTyp
-    {
+    public class EtEHSLocTyp {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
@@ -376,22 +388,21 @@ public class JSA_SER
 
 
     /*For EtEHSHazctrl*/
-    public class EtEHSHazctrl
-    {
+    public class EtEHSHazctrl {
         @SerializedName("results")
         @Expose
         private List<EtEHSHazctrl_Result> results = null;
-        public List<EtEHSHazctrl_Result> getResults()
-        {
+
+        public List<EtEHSHazctrl_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtEHSHazctrl_Result> results)
-        {
+
+        public void setResults(List<EtEHSHazctrl_Result> results) {
             this.results = results;
         }
     }
-    public class EtEHSHazctrl_Result
-    {
+
+    public class EtEHSHazctrl_Result {
         @SerializedName("HazardCode")
         @Expose
         private String HazardCode;
@@ -463,22 +474,21 @@ public class JSA_SER
 
 
     /*For EtEHSHazimp*/
-    public class EtEHSHazimp
-    {
+    public class EtEHSHazimp {
         @SerializedName("results")
         @Expose
         private List<EtEHSHazimp_Result> results = null;
-        public List<EtEHSHazimp_Result> getResults()
-        {
+
+        public List<EtEHSHazimp_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtEHSHazimp_Result> results)
-        {
+
+        public void setResults(List<EtEHSHazimp_Result> results) {
             this.results = results;
         }
     }
-    public class EtEHSHazimp_Result
-    {
+
+    public class EtEHSHazimp_Result {
         @SerializedName("HazardCode")
         @Expose
         private String HazardCode;
@@ -528,17 +538,16 @@ public class JSA_SER
 
 
     /*For EtEHSHazard*/
-    public class EtEHSHazard
-    {
+    public class EtEHSHazard {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
@@ -546,17 +555,16 @@ public class JSA_SER
 
 
     /*For EtEHSHazcat*/
-    public class EtEHSHazcat
-    {
+    public class EtEHSHazcat {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
@@ -564,25 +572,23 @@ public class JSA_SER
 
 
     /*For EtEHSOpstat*/
-    public class EtEHSOpstat
-    {
+    public class EtEHSOpstat {
         @SerializedName("results")
         @Expose
         private List<Result1> results = null;
-        public List<Result1> getResults()
-        {
+
+        public List<Result1> getResults() {
             return results;
         }
-        public void setResults(List<Result1> results)
-        {
+
+        public void setResults(List<Result1> results) {
             this.results = results;
         }
     }
     /*For EtEHSOpstat*/
 
 
-    public class Result1
-    {
+    public class Result1 {
         @SerializedName("Code")
         @Expose
         private String Code;

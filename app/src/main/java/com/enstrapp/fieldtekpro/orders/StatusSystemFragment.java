@@ -20,14 +20,13 @@ import com.enstrapp.fieldtekpro.R;
 
 import java.util.List;
 
-public class StatusSystemFragment extends Fragment{
+public class StatusSystemFragment extends Fragment {
 
     SearchView searchView;
     RecyclerView list_recycleview;
     LinearLayout no_data_layout;
     Order_Status_Activity ma;
     SysStsAdapter sysStsAdapter;
-
 
     @Nullable
     @Override
@@ -38,12 +37,12 @@ public class StatusSystemFragment extends Fragment{
         no_data_layout = rootView.findViewById(R.id.no_data_layout);
         list_recycleview = rootView.findViewById(R.id.list_recycleview);
         searchView = rootView.findViewById(R.id.search);
-        ma = (Order_Status_Activity)this.getActivity();
+        ma = (Order_Status_Activity) this.getActivity();
 
         searchView.setVisibility(View.GONE);
 
-        if(ma.sysSts_al != null) {
-            if(ma.sysSts_al.size() > 0) {
+        if (ma.sysSts_al != null) {
+            if (ma.sysSts_al.size() > 0) {
                 sysStsAdapter = new SysStsAdapter(getActivity(), ma.sysSts_al);
                 list_recycleview.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -57,7 +56,7 @@ public class StatusSystemFragment extends Fragment{
                 list_recycleview.setVisibility(View.GONE);
             }
         }
-        return  rootView;
+        return rootView;
     }
 
     public class SysStsAdapter extends RecyclerView.Adapter<SysStsAdapter.MyViewHolder> {
@@ -83,7 +82,8 @@ public class StatusSystemFragment extends Fragment{
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_with_cb_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.status_with_cb_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -106,7 +106,4 @@ public class StatusSystemFragment extends Fragment{
             return sysStsList.size();
         }
     }
-
-
-
 }

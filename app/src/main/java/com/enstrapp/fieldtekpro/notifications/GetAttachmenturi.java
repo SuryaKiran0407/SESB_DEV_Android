@@ -9,10 +9,7 @@ import android.provider.Settings;
 import android.util.Base64;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
-import com.google.gson.Gson;
 
-import java.net.URI;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

@@ -13,10 +13,8 @@ public class Orders_Tab_Adapter extends FragmentPagerAdapter {
     private Context mContext;
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
-//    private final Bundle bundle;
 
-
-    public Orders_Tab_Adapter(Context context, FragmentManager fm/*, Bundle data*/) {
+    public Orders_Tab_Adapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -26,8 +24,7 @@ public class Orders_Tab_Adapter extends FragmentPagerAdapter {
         return mFragmentList.get(position);
     }
 
-    public void addFragment(Fragment fragment, String title)
-    {
+    public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
@@ -41,6 +38,4 @@ public class Orders_Tab_Adapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
     }
-
-
 }

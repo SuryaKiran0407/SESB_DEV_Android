@@ -115,7 +115,7 @@ public class PermitDetailActivity extends AppCompatActivity {
             equip_text.setText(extras
                     .getString("eq_txt"));*/
         }
-       // back_imageview.setOnClickListener(this);
+        // back_imageview.setOnClickListener(this);
         try {
             Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_NOTIFICATION_PRIORITY", null);
             Log.v("priok_count", "" + cursor.getCount());
@@ -168,6 +168,7 @@ public class PermitDetailActivity extends AppCompatActivity {
             return date;
         }
     }
+
     private String timeDisplayFormat(String date) {
         String inputPattern = "HHmmss";
         String outputPattern = "HH:mm:ss";

@@ -36,7 +36,7 @@ public class PermitReportMainActivity extends AppCompatActivity {
         viewpager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tab);
         back_ib = findViewById(R.id.back_ib);
-        iv_filter= (ImageView)findViewById(R.id.iv_filter);
+        iv_filter = (ImageView) findViewById(R.id.iv_filter);
 
         /*setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

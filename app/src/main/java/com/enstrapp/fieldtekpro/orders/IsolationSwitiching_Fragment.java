@@ -82,10 +82,10 @@ public class IsolationSwitiching_Fragment extends Fragment {
         if (!getUserVisibleHint())
             return;
 
-        if(ma.iso.getComp()!= null && !ma.iso.getComp().equalsIgnoreCase("")) {
+        if (ma.iso.getComp() != null && !ma.iso.getComp().equalsIgnoreCase("")) {
             if (ma.iso.getComp().equalsIgnoreCase("X")) {
                 ma.fab.hide();
-            } else{
+            } else {
                 if (ma.setPrep)
                     ma.fab.hide();
                 else
@@ -225,25 +225,31 @@ public class IsolationSwitiching_Fragment extends Fragment {
                         set = false;
                         if (wdipal.get(position).getAction().equals("I")) {
                             if (wdipal.get(position).getBtg().equalsIgnoreCase("X")) {
-                                confirmationDialog(getString(R.string.perform_tag, "Tagged"), wdipal, position);
+                                confirmationDialog(getString(R.string.perform_tag,
+                                        getString(R.string.tagged)), wdipal, position);
                             } else if (wdipal.get(position).getEtg().equalsIgnoreCase("X")) {
                             } else if (wdipal.get(position).getBug().equalsIgnoreCase("X")) {
                             } else if (wdipal.get(position).getEug().equalsIgnoreCase("X")) {
                             } else {
-                                confirmationDialog(getString(R.string.perform_tag, "Tag"), wdipal, position);
+                                confirmationDialog(getString(R.string.perform_tag,
+                                        getString(R.string.tag)), wdipal, position);
                             }
                         } else {
                             if (wdipal.get(position).getBtg().equalsIgnoreCase("X")) {
-                                confirmationDialog(getString(R.string.perform_tag, "Tagged"), wdipal, position);
+                                confirmationDialog(getString(R.string.perform_tag,
+                                        getString(R.string.tagged)), wdipal, position);
                             } else if (wdipal.get(position).getEtg().equalsIgnoreCase("X")) {
                                 if (wdip_al.get(position).isUntagStatus()) {
-                                    confirmationDialog(getString(R.string.perform_tag, "UnTag"), wdipal, position);
+                                    confirmationDialog(getString(R.string.perform_tag,
+                                            getString(R.string.untag)), wdipal, position);
                                 }
                             } else if (wdipal.get(position).getBug().equalsIgnoreCase("X")) {
-                                confirmationDialog(getString(R.string.perform_tag, "UnTagged"), wdipal, position);
+                                confirmationDialog(getString(R.string.perform_tag,
+                                        getString(R.string.untagged)), wdipal, position);
                             } else if (wdipal.get(position).getEug().equalsIgnoreCase("X")) {
                             } else {
-                                confirmationDialog(getString(R.string.perform_tag, "Tag"), wdipal, position);
+                                confirmationDialog(getString(R.string.perform_tag,
+                                        getString(R.string.tag)), wdipal, position);
                             }
                         }
                         wdipAdapter.notifyDataSetChanged();
@@ -296,27 +302,27 @@ public class IsolationSwitiching_Fragment extends Fragment {
                 holder.tagStatus_ll.setVisibility(VISIBLE);
                 if (wdipal.get(position).getAction().equals("I")) {
                     if (wdipal.get(position).getBtg().equalsIgnoreCase("X")) {
-                        holder.tagStatus_tv.setText("Tagged");
+                        holder.tagStatus_tv.setText(getString(R.string.tagged));
                     } else if (wdipal.get(position).getEtg().equalsIgnoreCase("X")) {
-                        holder.tagStatus_tv.setText("Untag");
+                        holder.tagStatus_tv.setText(getString(R.string.untag));
                         holder.tagStatus_tv.setTextColor(getResources().getColor(R.color.light_grey));
                     } else {
-                        holder.tagStatus_tv.setText("Tag");
+                        holder.tagStatus_tv.setText(getString(R.string.tag));
                     }
                 } else {
                     holder.delTag_iv.setVisibility(GONE);
                     if (wdipal.get(position).getBtg().equalsIgnoreCase("X")) {
-                        holder.tagStatus_tv.setText("Tagged");
+                        holder.tagStatus_tv.setText(getString(R.string.tagged));
                     } else if (wdipal.get(position).getEtg().equalsIgnoreCase("X")) {
-                        holder.tagStatus_tv.setText("Untag");
+                        holder.tagStatus_tv.setText(getString(R.string.untag));
                         if (!wdipal.get(position).isUntagStatus())
                             holder.tagStatus_tv.setTextColor(getResources().getColor(R.color.light_grey));
                     } else if (wdipal.get(position).getBug().equalsIgnoreCase("X")) {
-                        holder.tagStatus_tv.setText("Untagged");
+                        holder.tagStatus_tv.setText(getString(R.string.untagged));
                     } else if (wdipal.get(position).getEug().equalsIgnoreCase("X")) {
                         holder.tagStatus_tv.setText("");
                     } else {
-                        holder.tagStatus_tv.setText("Tag");
+                        holder.tagStatus_tv.setText(getString(R.string.tag));
                     }
                 }
             } else {

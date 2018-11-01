@@ -3,11 +3,7 @@ package com.enstrapp.fieldtekpro.notifications;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class NotifTaskPrcbl implements Parcelable
-{
+public class NotifTaskPrcbl implements Parcelable {
 
     private boolean selected;
     private String qmnum;

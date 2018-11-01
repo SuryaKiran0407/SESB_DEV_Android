@@ -48,16 +48,15 @@ import java.util.HashMap;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-public class Orders_CH_General_Fragment extends Fragment implements View.OnClickListener
-{
+public class Orders_CH_General_Fragment extends Fragment implements View.OnClickListener {
 
-    TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet, funcLocName_tiet, equipId_tiet,
-            equipName_tiet, wrkCntr_tiet, respCostCntr_tiet, priority_tiet, plannerGroup_tiet,
-            personResp_tiet, basicStDt_tiet, basicEnDt_tiet, sysCond_tiet, status_tiet,
-            revision_tiet, wbs_tiet;
-    ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv, wrkCntr_iv, respCstCntr_iv,
-            priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv, basicEdDt_iv, sysCond_iv,
-            wbs_iv, revision_iv, longtext_imageview;
+    TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet,
+            funcLocName_tiet, equipId_tiet, equipName_tiet, wrkCntr_tiet, respCostCntr_tiet,
+            priority_tiet, plannerGroup_tiet, personResp_tiet, basicStDt_tiet, basicEnDt_tiet,
+            sysCond_tiet, status_tiet, revision_tiet, wbs_tiet;
+    ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv,
+            wrkCntr_iv, respCstCntr_iv, priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv,
+            basicEdDt_iv, sysCond_iv, wbs_iv, revision_iv, longtext_imageview;
     TextView notifNum_tv;
     LinearLayout equipId_ll, notifNum_ll, ordrTyp_ll, wbs_ll, revision_ll;
     TextInputLayout equipName_til, status_til;
@@ -138,10 +137,10 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         notifNum_tv = rootView.findViewById(R.id.notifNum_tv);
         equipId_ll = rootView.findViewById(R.id.equipId_ll);
         equipName_til = rootView.findViewById(R.id.equipName_til);
-        header_custominfo_button = (Button)rootView.findViewById(R.id.header_custominfo_button);
-        longtext_imageview = (ImageView)rootView.findViewById(R.id.longtext_imageview);
-        activity_type_imageview = (ImageView)rootView.findViewById(R.id.activity_type_imageview);
-        activity_type_edittext = (TextInputEditText)rootView.findViewById(R.id.activity_type_edittext);
+        header_custominfo_button = (Button) rootView.findViewById(R.id.header_custominfo_button);
+        longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
+        activity_type_imageview = (ImageView) rootView.findViewById(R.id.activity_type_imageview);
+        activity_type_edittext = rootView.findViewById(R.id.activity_type_edittext);
 
         ma = (Orders_Change_Activity) this.getActivity();
         ordrTyp_tiet.setEnabled(false);
@@ -198,41 +197,31 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                 notifNum_tv.setText(content);
                 notifNum_ll.setVisibility(View.VISIBLE);
 
-                notifNum_tv.setOnClickListener(new View.OnClickListener()
-                {
+                notifNum_tv.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         String uuid = "";
-                        try
-                        {
-                            Cursor cursor = App_db.rawQuery("select * from DUE_NOTIFICATION_NotifHeader where Qmnum = ?", new String[]{ma.ohp.getNotifId()});
-                            if (cursor != null && cursor.getCount() > 0)
-                            {
-                                if (cursor.moveToFirst())
-                                {
-                                    do
-                                    {
+                        try {
+                            Cursor cursor = App_db.rawQuery("select * from " +
+                                            "DUE_NOTIFICATION_NotifHeader where Qmnum = ?",
+                                    new String[]{ma.ohp.getNotifId()});
+                            if (cursor != null && cursor.getCount() > 0) {
+                                if (cursor.moveToFirst()) {
+                                    do {
                                         uuid = cursor.getString(1);
                                     }
                                     while (cursor.moveToNext());
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 cursor.close();
                             }
+                        } catch (Exception e) {
                         }
-                        catch (Exception e)
-                        {
-                        }
-                        if (uuid != null && !uuid.equals(""))
-                        {
-                            new Get_Notification_Data().execute(ma.ohp.getNotifId(),uuid);
-                        }
-                        else
-                        {
-                            error_dialog.show_error_dialog(getActivity(),"No data found for Notification "+ma.ohp.getNotifId());
+                        if (uuid != null && !uuid.equals("")) {
+                            new Get_Notification_Data().execute(ma.ohp.getNotifId(), uuid);
+                        } else {
+                            error_dialog.show_error_dialog(getActivity(),
+                                    getString(R.string.nonotif, ma.ohp.getNotifId()));
                         }
                     }
                 });
@@ -254,14 +243,16 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
             basicStDt_tiet.setText(dateDisplayFormat(ma.ohp.getBasicStart()));
             basicEnDt_tiet.setText(dateDisplayFormat(ma.ohp.getBasicEnd()));
             sysCond_tiet.setText(ma.ohp.getSysCondName());
-            activity_type_edittext.setText(ma.ohp.getActivitytype_id()+" - "+ma.ohp.getActivitytype_text());
+            activity_type_edittext
+                    .setText(ma.ohp.getActivitytype_id() + " - " + ma.ohp.getActivitytype_text());
         }
 
         ordrLngTxt_tiet.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 ma.ohp.setOrdrShrtTxt("");
-                if (ordrLngTxt_tiet.getText().toString() != null && !ordrLngTxt_tiet.getText().toString().equals("")) {
+                if (ordrLngTxt_tiet.getText().toString() != null &&
+                        !ordrLngTxt_tiet.getText().toString().equals("")) {
                     if (ordrLngTxt_tiet.getText().toString().contains("\n")) {
                         String[] streets;
                         streets = ordrLngTxt_tiet.getText().toString().split("/n");
@@ -273,24 +264,24 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     ma.ohp.setOrdrShrtTxt("");
                 }
             }
+
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             }
+
             @Override
             public void afterTextChanged(Editable arg0) {
             }
         });
 
 
-        try
-        {
-            Cursor cursor = App_db.rawQuery("select * from EtOrderHeader_CustomInfo where Zdoctype = ? and ZdoctypeItem = ? and Aufnr = ? order by Sequence", new String[]{"W","WH", ma.ohp.getOrdrId()});
-            if (cursor != null && cursor.getCount() > 0)
-            {
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
+        try {
+            Cursor cursor = App_db.rawQuery("select * from EtOrderHeader_CustomInfo where" +
+                            " Zdoctype = ? and ZdoctypeItem = ? and Aufnr = ? order by Sequence",
+                    new String[]{"W", "WH", ma.ohp.getOrdrId()});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
                         HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                         custom_info_hashMap.put("Fieldname", cursor.getString(6));
                         custom_info_hashMap.put("ZdoctypeItem", cursor.getString(4));
@@ -303,57 +294,40 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                         String datatype = cursor.getString(11);
                         String value = cursor.getString(7);
-                        if(datatype.equalsIgnoreCase("DATS"))
-                        {
-                            if(value.equalsIgnoreCase("00000000"))
-                            {
+                        if (datatype.equalsIgnoreCase("DATS")) {
+                            if (value.equalsIgnoreCase("00000000")) {
                                 custom_info_hashMap.put("Value", "");
-                            }
-                            else
-                            {
+                            } else {
                                 String inputPattern = "yyyyMMdd";
-                                String outputPattern = "MMM dd, yyyy" ;
+                                String outputPattern = "MMM dd, yyyy";
                                 SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                 SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                try
-                                {
+                                try {
                                     Date date = inputFormat.parse(value);
-                                    String formatted_date =  outputFormat.format(date);
+                                    String formatted_date = outputFormat.format(date);
                                     custom_info_hashMap.put("Value", formatted_date);
-                                }
-                                catch (Exception e)
-                                {
+                                } catch (Exception e) {
                                     custom_info_hashMap.put("Value", "");
                                 }
                             }
 
-                        }
-                        else if(datatype.equalsIgnoreCase("TIMS"))
-                        {
-                            if(value.equalsIgnoreCase("000000"))
-                            {
+                        } else if (datatype.equalsIgnoreCase("TIMS")) {
+                            if (value.equalsIgnoreCase("000000")) {
                                 custom_info_hashMap.put("Value", "");
-                            }
-                            else
-                            {
+                            } else {
                                 String inputPattern = "HHmmss";
                                 String outputPattern = "HH:mm:ss";
                                 SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
                                 SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                try
-                                {
+                                try {
                                     Date date = inputFormat.parse(value);
-                                    String formatted_time =  outputFormat.format(date);
+                                    String formatted_time = outputFormat.format(date);
                                     custom_info_hashMap.put("Value", formatted_time);
-                                }
-                                catch (Exception e)
-                                {
+                                } catch (Exception e) {
                                     custom_info_hashMap.put("Value", "");
                                 }
                             }
-                        }
-                        else
-                        {
+                        } else {
                             custom_info_hashMap.put("Value", cursor.getString(7));
                         }
 
@@ -362,18 +336,15 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     }
                     while (cursor.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor.close();
 
-                Cursor cursor1 = App_db.rawQuery("select * from GET_CUSTOM_FIELDS where Zdoctype = ? and ZdoctypeItem = ? order by Sequence", new String[]{"W","WH"});
-                if (cursor1 != null && cursor1.getCount() > 0)
-                {
-                    if (cursor1.moveToFirst())
-                    {
-                        do
-                        {
+                Cursor cursor1 = App_db.rawQuery("select * from GET_CUSTOM_FIELDS where " +
+                                "Zdoctype = ? and ZdoctypeItem = ? order by Sequence",
+                        new String[]{"W", "WH"});
+                if (cursor1 != null && cursor1.getCount() > 0) {
+                    if (cursor1.moveToFirst()) {
+                        do {
                             HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
                             custom_info_hashMap.put("Fieldname", cursor1.getString(1));
                             custom_info_hashMap.put("ZdoctypeItem", cursor1.getString(2));
@@ -389,18 +360,12 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                         }
                         while (cursor1.moveToNext());
                     }
-                }
-                else
-                {
+                } else {
                     cursor1.close();
                 }
-
             }
+        } catch (Exception e) {
         }
-        catch (Exception e)
-        {
-        }
-
 
         return rootView;
     }
@@ -410,15 +375,13 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         switch (v.getId()) {
 
             case (R.id.activity_type_imageview):
-                if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals(""))
-                {
+                if (ma.ohp.getOrdrTypId() != null && !ma.ohp.getOrdrTypId().equals("")) {
                     Intent activitytype_intent = new Intent(getActivity(), Activity_Type_Activity.class);
-                    activitytype_intent.putExtra("order_type",ma.ohp.getOrdrTypId());
+                    activitytype_intent.putExtra("order_type", ma.ohp.getOrdrTypId());
                     startActivityForResult(activitytype_intent, activity_type);
-                }
-                else
-                {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Order Type");
+                } else {
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.ordTyp_mandate));
                 }
                 break;
 
@@ -433,11 +396,11 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
             case (R.id.header_custominfo_button):
                 Intent custominfo_intent = new Intent(getActivity(), CustomInfo_Activity.class);
-                custominfo_intent.putExtra("Zdoctype","W");
-                custominfo_intent.putExtra("ZdoctypeItem","WH");
-                custominfo_intent.putExtra("custom_info_arraylist",selected_custom_info_arraylist);
+                custominfo_intent.putExtra("Zdoctype", "W");
+                custominfo_intent.putExtra("ZdoctypeItem", "WH");
+                custominfo_intent.putExtra("custom_info_arraylist", selected_custom_info_arraylist);
                 custominfo_intent.putExtra("request_id", Integer.toString(custom_info));
-                startActivityForResult(custominfo_intent,custom_info);
+                startActivityForResult(custominfo_intent, custom_info);
                 break;
 
             case (R.id.funcLoc_iv):
@@ -463,7 +426,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     wrkCntrIntent.putExtra("plant_id", ma.ohp.getPlant());
                     startActivityForResult(wrkCntrIntent, WRKCNTR_ID);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -475,7 +439,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     respCstCntrIntent.putExtra("bukrs", ma.ohp.getBukrs());
                     startActivityForResult(respCstCntrIntent, RESP_COST_CNTR);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -491,7 +456,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     plnrGrpIntent.putExtra("iwerk", ma.ohp.getIwerk());
                     startActivityForResult(plnrGrpIntent, PLNR_GRP);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
             case (R.id.personResp_iv):
@@ -501,7 +467,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     perRespIntent.putExtra("werks", ma.ohp.getPlant());
                     startActivityForResult(perRespIntent, PER_RESP);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -524,7 +491,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     Intent sysCondIntent = new Intent(getActivity(), SystemCondidtions_Activity.class);
                     startActivityForResult(sysCondIntent, SYS_COND);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -535,7 +503,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     WBSIntent.putExtra("iwerk", ma.ohp.getIwerk());
                     startActivityForResult(WBSIntent, WBS_ELE);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
 
@@ -546,13 +515,12 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     WBSIntent.putExtra("iwerk", ma.ohp.getIwerk());
                     startActivityForResult(WBSIntent, REVISO);
                 } else {
-                    error_dialog.show_error_dialog(getActivity(), "Please select Equipment / \nFunction Location");
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.equipFunc_mandate));
                 }
                 break;
-
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -564,9 +532,10 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                 if (resultCode == RESULT_OK) {
                     ma.ohp.setOrdrTypId(data.getStringExtra("ordrTypId"));
                     ma.ohp.setOrdrTypName(data.getStringExtra("ordrTypTxt"));
-                    ordrTyp_tiet.setText(getResources().getString(R.string.hypen_text,
-                            data.getStringExtra("ordrTypId"),
-                            data.getStringExtra("ordrTypTxt")));
+                    ordrTyp_tiet
+                            .setText(getResources().getString(R.string.hypen_text,
+                                    data.getStringExtra("ordrTypId"),
+                                    data.getStringExtra("ordrTypTxt")));
                     if (data.getStringExtra("ordrTypId").equals("PM08")) {
                         equipId_ll.setVisibility(View.GONE);
                         equipName_til.setVisibility(View.GONE);
@@ -727,27 +696,23 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                 break;
 
             case (custom_info):
-                if (resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_custom_info_arraylist");
                 }
                 break;
 
             case (long_text):
-                if(resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     longtext_text = data.getStringExtra("longtext_new");
                     ma.ohp.setOrdrLngTxt(data.getStringExtra("longtext_new"));
                 }
                 break;
 
-
             case (activity_type):
-                if(resultCode == RESULT_OK)
-                {
+                if (resultCode == RESULT_OK) {
                     ma.ohp.setActivitytype_id(data.getStringExtra("activitytype_id"));
                     ma.ohp.setActivitytype_text(data.getStringExtra("activitytype_text"));
-                    activity_type_edittext.setText(data.getStringExtra("activitytype_id")+" - "+data.getStringExtra("activitytype_text"));
+                    activity_type_edittext.setText(data.getStringExtra("activitytype_id") + " - " + data.getStringExtra("activitytype_text"));
                 }
         }
     }
@@ -755,7 +720,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     private String funcLocName(String funcLocId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{funcLocId});
+            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                    new String[]{funcLocId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
@@ -774,7 +740,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     private String wrkCntrName(String wrkCntrId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_WKCTR where Arbpl = ?", new String[]{wrkCntrId});
+            cursor = App_db.rawQuery("select * from GET_WKCTR where Arbpl = ?",
+                    new String[]{wrkCntrId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(8);
@@ -793,7 +760,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     private String plnrGrpName(String plnrGrpId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ?", new String[]{plnrGrpId});
+            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ?",
+                    new String[]{plnrGrpId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(3);
@@ -812,7 +780,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     private String plantName(String plantId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_PLANTS where Werks = ?", new String[]{plantId});
+            cursor = App_db.rawQuery("select * from GET_PLANTS where Werks = ?",
+                    new String[]{plantId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
@@ -831,7 +800,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     private String respCostCntrName(String respCostCntrId) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from GET_LIST_COST_CENTER where Kostl = ?", new String[]{respCostCntrId});
+            cursor = App_db.rawQuery("select * from GET_LIST_COST_CENTER where Kostl = ?",
+                    new String[]{respCostCntrId});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(3);
@@ -860,8 +830,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         }
     }
 
-    private class Get_Notification_Data extends AsyncTask<String, Integer, Void>
-    {
+    private class Get_Notification_Data extends AsyncTask<String, Integer, Void> {
         String notification_id = "", notification_uuid = "";
         NotifHeaderPrcbl nhp;
         ArrayList<NotifCausCodActvPrcbl> activity_parcablearray = new ArrayList<NotifCausCodActvPrcbl>();
@@ -871,32 +840,27 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         ArrayList<Notif_Status_WithNum_Prcbl> status_withoutnum_array = new ArrayList<Notif_Status_WithNum_Prcbl>();
         ArrayList<Notif_Status_WithNum_Prcbl> status_systemstatus_array = new ArrayList<Notif_Status_WithNum_Prcbl>();
         ArrayList<NotifTaskPrcbl> tasks_parcablearray = new ArrayList<NotifTaskPrcbl>();
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.show_progress_dialog(getActivity(),getResources().getString(R.string.fetching_notifcation));
+            progressDialog.show_progress_dialog(getActivity(), getResources().getString(R.string.fetching_notifcation));
         }
+
         @Override
-        protected Void doInBackground(String... params)
-        {
-            try
-            {
+        protected Void doInBackground(String... params) {
+            try {
                 notification_id = params[0];
                 notification_uuid = params[1];
 
                 /*Fetching Data for Notification Activity*/
                 Cursor cursor = null;
-                try
-                {
+                try {
                     activity_parcablearray.clear();
                     cursor = App_db.rawQuery("select * from DUE_NOTIFICATION_EtNotifActvs where UUID = ?", new String[]{notification_uuid});
-                    if (cursor != null && cursor.getCount() > 0)
-                    {
-                        if (cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
                                 NotifCausCodActvPrcbl nap = new NotifCausCodActvPrcbl();
                                 nap.setQmnum(cursor.getString(2));
                                 nap.setItmKey(cursor.getString(3));
@@ -925,41 +889,29 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                                 /*Fetching Data for ItmPrtGrp, ItmDefectGrp from EtNotifItems*/
                                 Cursor cursor1 = null;
-                                try
-                                {
+                                try {
                                     cursor1 = App_db.rawQuery("select * from DUE_NOTIFICATIONS_EtNotifItems where UUID = ? and ItemKey = ?", new String[]{notification_uuid, cursor.getString(3)});
-                                    if (cursor1 != null && cursor1.getCount() > 0)
-                                    {
-                                        if (cursor1.moveToFirst())
-                                        {
-                                            do
-                                            {
+                                    if (cursor1 != null && cursor1.getCount() > 0) {
+                                        if (cursor1.moveToFirst()) {
+                                            do {
                                                 nap.setItmPrtGrp(cursor1.getString(4));
                                                 nap.setItmDefectGrp(cursor1.getString(8));
                                             }
                                             while (cursor1.moveToNext());
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         cursor.close();
                                         nap.setItmPrtGrp("");
                                         nap.setItmDefectGrp("");
                                     }
-                                }
-                                catch (Exception e)
-                                {
-                                    if (cursor1 != null)
-                                    {
+                                } catch (Exception e) {
+                                    if (cursor1 != null) {
                                         cursor1.close();
                                     }
                                     nap.setItmPrtGrp("");
                                     nap.setItmDefectGrp("");
-                                }
-                                finally
-                                {
-                                    if (cursor1 != null)
-                                    {
+                                } finally {
+                                    if (cursor1 != null) {
                                         cursor1.close();
                                     }
                                 }
@@ -973,23 +925,15 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor.close();
                     }
-                }
-                catch (Exception e)
-                {
-                    if (cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (cursor != null) {
                         cursor.close();
                     }
-                }
-                finally
-                {
-                    if (cursor != null)
-                    {
+                } finally {
+                    if (cursor != null) {
                         cursor.close();
                     }
                 }
@@ -999,31 +943,22 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                 /*Fetching Data for Notification Status for Displaying in Notification Header*/
                 Cursor stats_cursor = null;
                 StringBuilder not_stBuilder = new StringBuilder();
-                try
-                {
+                try {
                     stats_cursor = App_db.rawQuery("select * from EtNotifStatus where UUID = ?", new String[]{notification_uuid});
-                    if (stats_cursor != null && stats_cursor.getCount() > 0)
-                    {
-                        if (stats_cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (stats_cursor != null && stats_cursor.getCount() > 0) {
+                        if (stats_cursor.moveToFirst()) {
+                            do {
                                 String act = stats_cursor.getString(12);
                                 String Stonr = stats_cursor.getString(8);
                                 String Stat = stats_cursor.getString(11);
-                                if (!Stonr.equals("00") && Stat.startsWith("E"))
-                                {
-                                    if(act.equalsIgnoreCase("X"))
-                                    {
+                                if (!Stonr.equals("00") && Stat.startsWith("E")) {
+                                    if (act.equalsIgnoreCase("X")) {
                                         String txt04 = stats_cursor.getString(13);
                                         not_stBuilder.append(txt04);
                                         not_stBuilder.append(" ");
                                     }
-                                }
-                                else if (Stonr.equals("00") && Stat.startsWith("E"))
-                                {
-                                    if(act.equalsIgnoreCase("X"))
-                                    {
+                                } else if (Stonr.equals("00") && Stat.startsWith("E")) {
+                                    if (act.equalsIgnoreCase("X")) {
                                         String txt04 = stats_cursor.getString(13);
                                         not_stBuilder.append(txt04);
                                         not_stBuilder.append(" ");
@@ -1032,26 +967,17 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (stats_cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
-                        if (stats_cursor != null)
-                        {
+                    } else {
+                        if (stats_cursor != null) {
                             stats_cursor.close();
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if (stats_cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (stats_cursor != null) {
                         stats_cursor.close();
                     }
-                }
-                finally
-                {
-                    if (stats_cursor != null)
-                    {
+                } finally {
+                    if (stats_cursor != null) {
                         stats_cursor.close();
                     }
                 }
@@ -1060,15 +986,11 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                 /*Fetching Data for Notification EtDocs*/
                 Cursor EtDocs_cursor = null;
-                try
-                {
+                try {
                     EtDocs_cursor = App_db.rawQuery("select * from DUE_NOTIFICATION_EtDocs where Zobjid = ?", new String[]{notification_id});
-                    if (EtDocs_cursor != null && EtDocs_cursor.getCount() > 0)
-                    {
-                        if (EtDocs_cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (EtDocs_cursor != null && EtDocs_cursor.getCount() > 0) {
+                        if (EtDocs_cursor.moveToFirst()) {
+                            do {
                                 Notif_EtDocs_Parcelable nap = new Notif_EtDocs_Parcelable();
                                 nap.setZobjid(EtDocs_cursor.getString(2));
                                 nap.setZdoctype(EtDocs_cursor.getString(3));
@@ -1085,26 +1007,17 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (EtDocs_cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
-                        if (EtDocs_cursor != null)
-                        {
+                    } else {
+                        if (EtDocs_cursor != null) {
                             EtDocs_cursor.close();
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if (EtDocs_cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (EtDocs_cursor != null) {
                         EtDocs_cursor.close();
                     }
-                }
-                finally
-                {
-                    if (EtDocs_cursor != null)
-                    {
+                } finally {
+                    if (EtDocs_cursor != null) {
                         EtDocs_cursor.close();
                     }
                 }
@@ -1113,16 +1026,12 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                 /*Fetching Data for Notification Causecode*/
                 Cursor Causecode_cursor = null;
-                try
-                {
+                try {
                     causecode_parcablearray.clear();
                     Causecode_cursor = App_db.rawQuery("select * from DUE_NOTIFICATIONS_EtNotifItems where UUID = ?", new String[]{notification_uuid});
-                    if (Causecode_cursor != null && Causecode_cursor.getCount() > 0)
-                    {
-                        if (Causecode_cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (Causecode_cursor != null && Causecode_cursor.getCount() > 0) {
+                        if (Causecode_cursor.moveToFirst()) {
+                            do {
                                 NotifCausCodActvPrcbl nccp = new NotifCausCodActvPrcbl();
                                 nccp.setQmnum(Causecode_cursor.getString(2));
                                 nccp.setItmKey(Causecode_cursor.getString(3));
@@ -1151,26 +1060,17 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (Causecode_cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
-                        if(Causecode_cursor != null)
-                        {
+                    } else {
+                        if (Causecode_cursor != null) {
                             Causecode_cursor.close();
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if(Causecode_cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (Causecode_cursor != null) {
                         Causecode_cursor.close();
                     }
-                }
-                finally
-                {
-                    if(Causecode_cursor != null)
-                    {
+                } finally {
+                    if (Causecode_cursor != null) {
                         Causecode_cursor.close();
                     }
                 }
@@ -1179,20 +1079,15 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                 /*Fetching Data for Notification Status With Number*/
                 Cursor status_withnum_cursor = null;
-                try
-                {
+                try {
                     status_withnum_array.clear();
                     status_withnum_cursor = App_db.rawQuery("select * from EtNotifStatus where Qmnum = ? order by Stonr", new String[]{notification_id});
-                    if (status_withnum_cursor != null && status_withnum_cursor.getCount() > 0)
-                    {
-                        if (status_withnum_cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (status_withnum_cursor != null && status_withnum_cursor.getCount() > 0) {
+                        if (status_withnum_cursor.moveToFirst()) {
+                            do {
                                 String Stonr = status_withnum_cursor.getString(8);
                                 String Stat = status_withnum_cursor.getString(11);
-                                if (!Stonr.equals("00") && Stat.startsWith("E"))
-                                {
+                                if (!Stonr.equals("00") && Stat.startsWith("E")) {
                                     Notif_Status_WithNum_Prcbl nap = new Notif_Status_WithNum_Prcbl();
                                     nap.setQmnum(status_withnum_cursor.getString(2));
                                     nap.setAufnr(status_withnum_cursor.getString(3));
@@ -1208,12 +1103,9 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                                     nap.setTxt04(status_withnum_cursor.getString(13));
                                     nap.setTxt30(status_withnum_cursor.getString(14));
                                     String Act_Status = status_withnum_cursor.getString(12);
-                                    if(Act_Status.equalsIgnoreCase("X"))
-                                    {
+                                    if (Act_Status.equalsIgnoreCase("X")) {
                                         nap.setAct_Status("true");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         nap.setAct_Status("");
                                     }
                                     nap.setChecked_Status("");
@@ -1222,26 +1114,17 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (status_withnum_cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
-                        if (status_withnum_cursor != null)
-                        {
+                    } else {
+                        if (status_withnum_cursor != null) {
                             status_withnum_cursor.close();
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if (status_withnum_cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (status_withnum_cursor != null) {
                         status_withnum_cursor.close();
                     }
-                }
-                finally
-                {
-                    if (status_withnum_cursor != null)
-                    {
+                } finally {
+                    if (status_withnum_cursor != null) {
                         status_withnum_cursor.close();
                     }
                 }
@@ -1250,20 +1133,15 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                 /*Fetching Data for Notification Status Without Number*/
                 Cursor status_withoutnum_cursor = null;
-                try
-                {
+                try {
                     status_withoutnum_array.clear();
                     status_withoutnum_cursor = App_db.rawQuery("select * from EtNotifStatus where Qmnum = ? order by Stonr", new String[]{notification_id});
-                    if (status_withoutnum_cursor != null && status_withoutnum_cursor.getCount() > 0)
-                    {
-                        if (status_withoutnum_cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (status_withoutnum_cursor != null && status_withoutnum_cursor.getCount() > 0) {
+                        if (status_withoutnum_cursor.moveToFirst()) {
+                            do {
                                 String Stonr = status_withoutnum_cursor.getString(8);
                                 String Stat = status_withoutnum_cursor.getString(11);
-                                if (Stonr.equals("00") && Stat.startsWith("E"))
-                                {
+                                if (Stonr.equals("00") && Stat.startsWith("E")) {
                                     Notif_Status_WithNum_Prcbl nap = new Notif_Status_WithNum_Prcbl();
                                     nap.setQmnum(status_withoutnum_cursor.getString(2));
                                     nap.setAufnr(status_withoutnum_cursor.getString(3));
@@ -1279,12 +1157,9 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                                     nap.setTxt04(status_withoutnum_cursor.getString(13));
                                     nap.setTxt30(status_withoutnum_cursor.getString(14));
                                     String Act_Status = status_withoutnum_cursor.getString(12);
-                                    if(Act_Status.equalsIgnoreCase("X"))
-                                    {
+                                    if (Act_Status.equalsIgnoreCase("X")) {
                                         nap.setAct_Status("true");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         nap.setAct_Status("");
                                     }
                                     nap.setChecked_Status("");
@@ -1293,26 +1168,17 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (status_withoutnum_cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
-                        if (status_withoutnum_cursor != null)
-                        {
+                    } else {
+                        if (status_withoutnum_cursor != null) {
                             status_withoutnum_cursor.close();
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if (status_withoutnum_cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (status_withoutnum_cursor != null) {
                         status_withoutnum_cursor.close();
                     }
-                }
-                finally
-                {
-                    if (status_withoutnum_cursor != null)
-                    {
+                } finally {
+                    if (status_withoutnum_cursor != null) {
                         status_withoutnum_cursor.close();
                     }
                 }
@@ -1321,19 +1187,14 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                 /*Fetching Data for Notification Status System_Status Number*/
                 Cursor status_system_cursor = null;
-                try
-                {
+                try {
                     status_systemstatus_array.clear();
                     status_system_cursor = App_db.rawQuery("select * from EtNotifStatus where Qmnum = ? order by Stonr", new String[]{notification_id});
-                    if (status_system_cursor != null && status_system_cursor.getCount() > 0)
-                    {
-                        if (status_system_cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (status_system_cursor != null && status_system_cursor.getCount() > 0) {
+                        if (status_system_cursor.moveToFirst()) {
+                            do {
                                 String Stat = status_system_cursor.getString(11);
-                                if (Stat.startsWith("I"))
-                                {
+                                if (Stat.startsWith("I")) {
                                     Notif_Status_WithNum_Prcbl nap = new Notif_Status_WithNum_Prcbl();
                                     nap.setQmnum(status_system_cursor.getString(2));
                                     nap.setAufnr(status_system_cursor.getString(3));
@@ -1349,12 +1210,9 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                                     nap.setTxt04(status_system_cursor.getString(13));
                                     nap.setTxt30(status_system_cursor.getString(14));
                                     String Act_Status = status_system_cursor.getString(12);
-                                    if(Act_Status.equalsIgnoreCase("X"))
-                                    {
+                                    if (Act_Status.equalsIgnoreCase("X")) {
                                         nap.setAct_Status("true");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         nap.setAct_Status("");
                                     }
                                     nap.setChecked_Status("");
@@ -1363,26 +1221,17 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (status_system_cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
-                        if (status_system_cursor != null)
-                        {
+                    } else {
+                        if (status_system_cursor != null) {
                             status_system_cursor.close();
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if (status_system_cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (status_system_cursor != null) {
                         status_system_cursor.close();
                     }
-                }
-                finally
-                {
-                    if (status_system_cursor != null)
-                    {
+                } finally {
+                    if (status_system_cursor != null) {
                         status_system_cursor.close();
                     }
                 }
@@ -1391,15 +1240,11 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
                 /*Fetching Data for Notification Header*/
                 Cursor headerdata_cursor = null;
-                try
-                {
+                try {
                     headerdata_cursor = App_db.rawQuery("select * from DUE_NOTIFICATION_NotifHeader where UUID = ?", new String[]{notification_uuid});
-                    if (headerdata_cursor != null && headerdata_cursor.getCount() > 0)
-                    {
-                        if (headerdata_cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (headerdata_cursor != null && headerdata_cursor.getCount() > 0) {
+                        if (headerdata_cursor.moveToFirst()) {
+                            do {
                                 nhp = new NotifHeaderPrcbl();
                                 nhp.setUUID(notification_uuid);
                                 nhp.setNotf_Status(not_stBuilder.toString());
@@ -1464,66 +1309,44 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             }
                             while (headerdata_cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
-                        if (headerdata_cursor != null)
-                        {
+                    } else {
+                        if (headerdata_cursor != null) {
                             headerdata_cursor.close();
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if (headerdata_cursor != null)
-                    {
+                } catch (Exception e) {
+                    if (headerdata_cursor != null) {
                         headerdata_cursor.close();
                     }
-                }
-                finally
-                {
-                    if (headerdata_cursor != null)
-                    {
+                } finally {
+                    if (headerdata_cursor != null) {
                         headerdata_cursor.close();
                     }
                 }
                 /*Fetching Data for Notification Header*/
 
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
-            super.onProgressUpdate(values);
-        }
-        @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             progressDialog.dismiss_progress_dialog();
-            if (nhp != null)
-            {
+            if (nhp != null) {
                 Intent ordrIntent = new Intent(getActivity(), Notifications_Change_Activity.class);
-                ordrIntent.putExtra("notif_status","U");
+                ordrIntent.putExtra("notif_status", "U");
                 ordrIntent.putExtra("notif_parcel", nhp);
                 startActivity(ordrIntent);
-            }
-            else
-            {
+            } else {
 
             }
         }
     }
 
-
-    public ArrayList<HashMap<String, String>> getHeaderCustominfoData()
-    {
+    public ArrayList<HashMap<String, String>> getHeaderCustominfoData() {
         return selected_custom_info_arraylist;
     }
-
 }

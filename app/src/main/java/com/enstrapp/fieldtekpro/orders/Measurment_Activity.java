@@ -103,7 +103,8 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
                     measurementsAdapter.notifyDataSetChanged();
                     rmoop = null;
                 } else {
-                    Intent mDocAddIntent = new Intent(Measurment_Activity.this, MeasurmentAdd_Activity.class);
+                    Intent mDocAddIntent = new Intent(Measurment_Activity.this,
+                            MeasurmentAdd_Activity.class);
                     mDocAddIntent.putExtra("equip", equip);
                     startActivityForResult(mDocAddIntent, MEASUADD);
                 }
@@ -115,10 +116,11 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
                 break;
 
             case (R.id.save_bt):
-                if(mpo_al.size() > 0){
+                if (mpo_al.size() > 0) {
                     confirmationDialog(getString(R.string.save_measurment));
                 } else {
-                   errorDialog.show_error_dialog(Measurment_Activity.this, getString(R.string.no_measurment));
+                    errorDialog.show_error_dialog(Measurment_Activity.this,
+                            getString(R.string.no_measurment));
                 }
                 break;
 
@@ -152,10 +154,12 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
                     mpo_al.add(mpo);
                     if (measurementsAdapter != null) {
                         measurementsAdapter.notifyDataSetChanged();
-                    }else{
-                        measurementsAdapter = new MeasurementsAdapter(Measurment_Activity.this, mpo_al);
+                    } else {
+                        measurementsAdapter =
+                                new MeasurementsAdapter(Measurment_Activity.this, mpo_al);
                         list_recycleview.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Measurment_Activity.this);
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(Measurment_Activity.this);
                         list_recycleview.setLayoutManager(layoutManager);
                         list_recycleview.setItemAnimator(new DefaultItemAnimator());
                         list_recycleview.setAdapter(measurementsAdapter);
@@ -171,7 +175,8 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
         mpo_al.clear();
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from Orders_EtImrg where UUID = ?", new String[]{UUID});
+            cursor = App_db.rawQuery("select * from Orders_EtImrg where UUID = ?",
+                    new String[]{UUID});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -215,10 +220,11 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
                 cursor.close();
         }
 
-        if(mpo_al.size() > 0){
+        if (mpo_al.size() > 0) {
             measurementsAdapter = new MeasurementsAdapter(Measurment_Activity.this, mpo_al);
             list_recycleview.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Measurment_Activity.this);
+            RecyclerView.LayoutManager layoutManager =
+                    new LinearLayoutManager(Measurment_Activity.this);
             list_recycleview.setLayoutManager(layoutManager);
             list_recycleview.setItemAnimator(new DefaultItemAnimator());
             list_recycleview.setAdapter(measurementsAdapter);
@@ -263,7 +269,8 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.measurement_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.measurement_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -325,7 +332,9 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
 
     protected void animateFab(final boolean selected) {
         fab.clearAnimation();
-        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
         shrink.setDuration(150);     // animation duration in milliseconds
         shrink.setInterpolator(new DecelerateInterpolator());
         shrink.setAnimationListener(new Animation.AnimationListener() {
@@ -346,7 +355,9 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
                 }
 
                 // Scale up animation
-                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f,
+                        1f, Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f);
                 expand.setDuration(100);     // animation duration in milliseconds
                 expand.setInterpolator(new AccelerateInterpolator());
                 fab.startAnimation(expand);
@@ -369,13 +380,14 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
     }
 
     private void confirmationDialog(String message) {
-        final Dialog cancel_dialog = new Dialog(Measurment_Activity.this, R.style.PauseDialog);
+        final Dialog cancel_dialog =
+                new Dialog(Measurment_Activity.this, R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.network_error_dialog);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.ok_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.cancel_button);
@@ -398,10 +410,10 @@ public class Measurment_Activity extends AppCompatActivity implements View.OnCli
                     intent.putExtra("mpo_al", mpo_al);
                     setResult(RESULT_OK, intent);
                 } else {
-                    new Network_Connection_Dialog().show_network_connection_dialog(Measurment_Activity.this);
+                    new Network_Connection_Dialog()
+                            .show_network_connection_dialog(Measurment_Activity.this);
                 }
             }
         });
     }
-
 }

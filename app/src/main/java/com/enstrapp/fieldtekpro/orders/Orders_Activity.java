@@ -40,13 +40,13 @@ import com.enstrapp.fieldtekpro.Initialload.Orders;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
 import com.enstrapp.fieldtekpro.R;
-import com.enstrapp.fieldtekpro.getOrderDetail.GetOrderDetail;
-import com.enstrapp.fieldtekpro.notifications.Notifications_WorkCenter_Select_Activity;
-import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
+import com.enstrapp.fieldtekpro.getOrderDetail.GetOrderDetail;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
+import com.enstrapp.fieldtekpro.notifications.Notifications_WorkCenter_Select_Activity;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -64,13 +64,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Orders_Activity extends AppCompatActivity implements View.OnClickListener
-{
+public class Orders_Activity extends AppCompatActivity implements View.OnClickListener {
+
     RecyclerView recyclerView;
     CustomAdapter adapter;
     TextView orders_tv;
     ImageButton back_iv;
-    String orderUUID = "", orderId = "", orderStatus = "", DO_STATUS = "", statusId = "",priorityId = "", ordrTypID = "", ordrStDt = "", ordrEdDt = "", Equipment = "",FuncLoc = "";
+    String orderUUID = "", orderId = "", orderStatus = "", DO_STATUS = "", statusId = "",
+            priorityId = "", ordrTypID = "", ordrStDt = "", ordrEdDt = "", Equipment = "",
+            FuncLoc = "";
     public SearchView search;
     TextView searchview_textview, title_tv;
     RecyclerView list_recycleview;
@@ -99,11 +101,18 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
     static final int TODT = 6;
     String TYP = "", Iwerk = "";
     SysStsAdapter sysStsAdapter;
-    FloatingActionButton map_fab_button, create_fab_button, filter_fab_button, refresh_fab_button, sort_fab_button;
+    FloatingActionButton map_fab_button, create_fab_button, filter_fab_button, refresh_fab_button,
+            sort_fab_button;
     FloatingActionMenu floatingActionMenu;
-    String person_responsible_id = "", pers_resp_status = "", sort_selected = "", attachment_clicked_status = "", filt_selected_wckt_ids = "", filt_wckt_text = "", filt_wckt_ids = "", filt_selected_status_ids = "", filt_status_ids = "", filt_selected_prior_ids = "", filt_priority_ids = "", filt_selected_notif_ids = "", filt_notification_ids = "";
-    Button filt_notif_type_button, filt_priority_type_button, filt_status_type_button, filt_workcenter_type_button;
-    static final int fil_notif_type = 7, fil_prior_type = 8, fil_status_type = 9, fil_wckt_type = 10, scan_status = 11;
+    String person_responsible_id = "", pers_resp_status = "", sort_selected = "",
+            attachment_clicked_status = "", filt_selected_wckt_ids = "", filt_wckt_text = "",
+            filt_wckt_ids = "", filt_selected_status_ids = "", filt_status_ids = "",
+            filt_selected_prior_ids = "", filt_priority_ids = "", filt_selected_notif_ids = "",
+            filt_notification_ids = "";
+    Button filt_notif_type_button, filt_priority_type_button, filt_status_type_button,
+            filt_workcenter_type_button;
+    static final int fil_notif_type = 7, fil_prior_type = 8, fil_status_type = 9,
+            fil_wckt_type = 10, scan_status = 11;
     String equipment_id = "", functionlocation_id = "";
 
     @Override
@@ -111,10 +120,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.orders_activity);
 
-
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             equipment_id = extras.getString("equipment_id");
             functionlocation_id = extras.getString("functionlocation_id");
         }
@@ -131,14 +138,16 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         list_recycleview = findViewById(R.id.orders_rv);
         no_data_layout = findViewById(R.id.ordersNoData_ll);
         title_tv = findViewById(R.id.orders_tv);
-        map_fab_button = (FloatingActionButton)findViewById(R.id.map_fab_button);
+        map_fab_button = (FloatingActionButton) findViewById(R.id.map_fab_button);
 
         DATABASE_NAME = Orders_Activity.this.getString(R.string.database_name);
         App_db = Orders_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -157,52 +166,40 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 Refresh_Orders_Data();
             }
         });
-        swiperefreshlayout.setColorSchemeResources(R.color.red, R.color.lime, R.color.colorAccent, R.color.red, R.color.blue, R.color.black, R.color.orange);
+        swiperefreshlayout.setColorSchemeResources(R.color.red, R.color.lime, R.color.colorAccent,
+                R.color.red, R.color.blue, R.color.black, R.color.orange);
 
-        try
-        {
+        try {
             Cursor cursor = App_db.rawQuery("select * from GET_USER_DATA", null);
-            if (cursor != null && cursor.getCount() > 0)
-            {
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
                         person_responsible_id = cursor.getString(9);
                     }
                     while (cursor.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor.close();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
 
         /*Authorization For Order Create*/
-        String auth_create_status = Authorizations.Get_Authorizations_Data(Orders_Activity.this,"W","I");
-        if (auth_create_status.equalsIgnoreCase("true"))
-        {
+        String auth_create_status = Authorizations
+                .Get_Authorizations_Data(Orders_Activity.this, "W", "I");
+        if (auth_create_status.equalsIgnoreCase("true")) {
             create_fab_button.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             create_fab_button.setVisibility(View.GONE);
         }
         /*Authorization For Order Create*/
     }
 
-
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         new Get_Order_List().execute();
     }
-
 
     SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
         @Override
@@ -216,20 +213,23 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                         ordersList.get(i).getPriorityText().toLowerCase().contains(query)) {
                     Orders_Object blo = new Orders_Object(ordersList.get(i).getUUID(),
                             ordersList.get(i).getOrderId(), ordersList.get(i).getPriorityText(),
-                            ordersList.get(i).getBasicStartDate(), ordersList.get(i).getOrderShortText(),
+                            ordersList.get(i).getBasicStartDate(),
+                            ordersList.get(i).getOrderShortText(),
                             ordersList.get(i).getWocoStatus(), ordersList.get(i).getOrderStatus(),
                             ordersList.get(i).getOrderPlant(), ordersList.get(i).getWorkCenter(),
                             ordersList.get(i).getOrderType(), ordersList.get(i).getPriority(),
                             ordersList.get(i).getAttachment(), ordersList.get(i).getWorkCmplt(),
                             ordersList.get(i).getUsr02(), ordersList.get(i).getEndDate(),
                             ordersList.get(i).getEquipment(), ordersList.get(i).getFunctionLocation(),
-                            ordersList.get(i).getPernar(), ordersList.get(i).getRel_status(), ordersList.get(i).getCnf_status(), ordersList.get(i).getTeco_status(), ordersList.get(i).getWoco_status());
+                            ordersList.get(i).getPernar(), ordersList.get(i).getRel_status(),
+                            ordersList.get(i).getCnf_status(), ordersList.get(i).getTeco_status(),
+                            ordersList.get(i).getWoco_status());
                     filteredList.add(blo);
                 }
             }
-            if (filteredList.size() > 0)
-            {
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Orders_Activity.this);
+            if (filteredList.size() > 0) {
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Orders_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 ordersAdapter = new OrdersAdapter(Orders_Activity.this, filteredList);
                 list_recycleview.setAdapter(ordersAdapter);
@@ -237,9 +237,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 no_data_layout.setVisibility(View.GONE);
                 swiperefreshlayout.setVisibility(View.VISIBLE);
                 title_tv.setText(getString(R.string.orders_count, String.valueOf(filteredList.size())));
-            }
-            else
-            {
+            } else {
                 title_tv.setText(getString(R.string.orders));
                 no_data_layout.setVisibility(View.VISIBLE);
                 swiperefreshlayout.setVisibility(View.GONE);
@@ -252,13 +250,13 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     };
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.create_fab_button):
                 floatingActionMenu.close(true);
-                Intent creatIntent = new Intent(Orders_Activity.this, Orders_Create_Activity.class);
+                Intent creatIntent = new Intent(Orders_Activity.this,
+                        Orders_Create_Activity.class);
                 creatIntent.putExtra("order", "C");
                 startActivity(creatIntent);
                 break;
@@ -271,33 +269,34 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
             case (R.id.map_fab_button):
                 floatingActionMenu.close(true);
-                if (ordersList.size() > 0)
-                {
-                    Intent intent = new Intent(Orders_Activity.this, Orders_MapView_Activity.class);
+                if (ordersList.size() > 0) {
+                    Intent intent = new Intent(Orders_Activity.this,
+                            Orders_MapView_Activity.class);
                     startActivity(intent);
-                }
-                else
-                {
-                    error_dialog.show_error_dialog(Orders_Activity.this, "No orders found for showing on map");
+                } else {
+                    error_dialog.show_error_dialog(Orders_Activity.this,
+                            getString(R.string.ordrs_formap));
                 }
                 break;
 
             case (R.id.sort_fab_button):
                 floatingActionMenu.close(true);
                 if (ordersList.size() > 0) {
-                    final Dialog dialog = new Dialog(Orders_Activity.this, R.style.AppThemeDialog_Dark);
-                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                    final Dialog dialog =
+                            new Dialog(Orders_Activity.this, R.style.AppThemeDialog_Dark);
+                    dialog.getWindow()
+                            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                     dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.notifcation_order_sort);
                     dialog.setCancelable(true);
                     dialog.setCanceledOnTouchOutside(false);
                     TextView sort_clear_textview = (TextView) dialog.findViewById(R.id.clearAll);
-                    final RadioGroup sort_radioGroup = (RadioGroup) dialog.findViewById(R.id.sort_rdg);
+                    final RadioGroup sort_radioGroup = dialog.findViewById(R.id.sort_rdg);
                     final RadioButton sortAtoZ = (RadioButton) dialog.findViewById(R.id.sortAtoZ);
                     final RadioButton sortZtoA = (RadioButton) dialog.findViewById(R.id.sortZtoA);
-                    final RadioButton criticaltoLow = (RadioButton) dialog.findViewById(R.id.criticaltoLow);
-                    final RadioButton lowtoCritical = (RadioButton) dialog.findViewById(R.id.lowtoCritical);
+                    final RadioButton criticaltoLow = dialog.findViewById(R.id.criticaltoLow);
+                    final RadioButton lowtoCritical = dialog.findViewById(R.id.lowtoCritical);
                     final RadioButton stDt1to9 = (RadioButton) dialog.findViewById(R.id.stDt1to9);
                     final RadioButton stDt9to1 = (RadioButton) dialog.findViewById(R.id.stDt9to1);
                     final RadioButton No1to9 = (RadioButton) dialog.findViewById(R.id.No1to9);
@@ -348,7 +347,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                             Collections.sort(ordersList, new Comparator<Orders_Object>() {
                                 @Override
                                 public int compare(Orders_Object rhs, Orders_Object lhs) {
-                                    return lhs.getBasicStartDate().compareTo(rhs.getBasicStartDate());
+                                    return lhs.getBasicStartDate()
+                                            .compareTo(rhs.getBasicStartDate());
                                 }
                             });
                             ordersAdapter.notifyDataSetChanged();
@@ -364,7 +364,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 Collections.sort(ordersList, new Comparator<Orders_Object>() {
                                     @Override
                                     public int compare(Orders_Object rhs, Orders_Object lhs) {
-                                        return rhs.getOrderShortText().compareTo(lhs.getOrderShortText());
+                                        return rhs.getOrderShortText()
+                                                .compareTo(lhs.getOrderShortText());
                                     }
                                 });
                                 ordersAdapter.notifyDataSetChanged();
@@ -374,7 +375,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 Collections.sort(ordersList, new Comparator<Orders_Object>() {
                                     @Override
                                     public int compare(Orders_Object rhs, Orders_Object lhs) {
-                                        return lhs.getOrderShortText().compareTo(rhs.getOrderShortText());
+                                        return lhs.getOrderShortText()
+                                                .compareTo(rhs.getOrderShortText());
                                     }
                                 });
                                 ordersAdapter.notifyDataSetChanged();
@@ -384,7 +386,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 Collections.sort(ordersList, new Comparator<Orders_Object>() {
                                     @Override
                                     public int compare(Orders_Object rhs, Orders_Object lhs) {
-                                        return rhs.getPriority().compareTo(lhs.getPriority());
+                                        return rhs.getPriority()
+                                                .compareTo(lhs.getPriority());
                                     }
                                 });
                                 ordersAdapter.notifyDataSetChanged();
@@ -404,7 +407,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 Collections.sort(ordersList, new Comparator<Orders_Object>() {
                                     @Override
                                     public int compare(Orders_Object rhs, Orders_Object lhs) {
-                                        return rhs.getBasicStartDate().compareTo(lhs.getBasicStartDate());
+                                        return rhs.getBasicStartDate()
+                                                .compareTo(lhs.getBasicStartDate());
                                     }
                                 });
                                 ordersAdapter.notifyDataSetChanged();
@@ -414,7 +418,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 Collections.sort(ordersList, new Comparator<Orders_Object>() {
                                     @Override
                                     public int compare(Orders_Object rhs, Orders_Object lhs) {
-                                        return lhs.getBasicStartDate().compareTo(rhs.getBasicStartDate());
+                                        return lhs.getBasicStartDate()
+                                                .compareTo(rhs.getBasicStartDate());
                                     }
                                 });
                                 ordersAdapter.notifyDataSetChanged();
@@ -443,14 +448,17 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                         }
                     });
                 } else {
-                    error_dialog.show_error_dialog(Orders_Activity.this, "No orders found for sorting");
+                    error_dialog.show_error_dialog(Orders_Activity.this,
+                            getString(R.string.ordrs_forsort));
                 }
                 break;
 
             case (R.id.filter_fab_button):
                 floatingActionMenu.close(true);
-                final Dialog dialog = new Dialog(Orders_Activity.this, R.style.AppThemeDialog_Dark);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                final Dialog dialog =
+                        new Dialog(Orders_Activity.this, R.style.AppThemeDialog_Dark);
+                dialog.getWindow()
+                        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.notifications_filter_dialog);
@@ -464,11 +472,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 filt_priority_type_button.setText(filt_priority_ids);
                 filt_status_type_button = (Button) dialog.findViewById(R.id.status_type_button);
                 filt_status_type_button.setText(filt_status_ids);
-                filt_workcenter_type_button = (Button) dialog.findViewById(R.id.workcenter_type_button);
+                filt_workcenter_type_button = dialog.findViewById(R.id.workcenter_type_button);
                 filt_workcenter_type_button.setText(filt_wckt_ids);
                 TextView clearAll_textview = (TextView) dialog.findViewById(R.id.clearAll_textview);
-                final CheckBox attachments_checkbox = (CheckBox) dialog.findViewById(R.id.attachments_checkbox);
-                final CheckBox pers_resp_checkbox = (CheckBox) dialog.findViewById(R.id.pers_resp_checkbox);
+                final CheckBox attachments_checkbox = dialog.findViewById(R.id.attachments_checkbox);
+                final CheckBox pers_resp_checkbox = dialog.findViewById(R.id.pers_resp_checkbox);
                 if (attachment_clicked_status.equalsIgnoreCase("X")) {
                     attachments_checkbox.setChecked(true);
                 } else {
@@ -485,17 +493,24 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 filt_notif_type_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent notification_type_intent = new Intent(Orders_Activity.this, Orders_Type_Select_Activity.class);
-                        notification_type_intent.putExtra("request_id", Integer.toString(fil_notif_type));
-                        notification_type_intent.putExtra("filt_notification_ids", filt_notification_ids);
+                        Intent notification_type_intent =
+                                new Intent(Orders_Activity.this,
+                                        Orders_Type_Select_Activity.class);
+                        notification_type_intent.putExtra("request_id",
+                                Integer.toString(fil_notif_type));
+                        notification_type_intent.putExtra("filt_notification_ids",
+                                filt_notification_ids);
                         startActivityForResult(notification_type_intent, fil_notif_type);
                     }
                 });
                 filt_priority_type_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent notification_type_intent = new Intent(Orders_Activity.this, Orders_Priority_Select_Activity.class);
-                        notification_type_intent.putExtra("request_id", Integer.toString(fil_prior_type));
+                        Intent notification_type_intent =
+                                new Intent(Orders_Activity.this,
+                                        Orders_Priority_Select_Activity.class);
+                        notification_type_intent.putExtra("request_id",
+                                Integer.toString(fil_prior_type));
                         notification_type_intent.putExtra("filt_ids", filt_priority_ids);
                         startActivityForResult(notification_type_intent, fil_prior_type);
                     }
@@ -503,8 +518,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 filt_status_type_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent notification_type_intent = new Intent(Orders_Activity.this, Orders_Status_Select_Activity.class);
-                        notification_type_intent.putExtra("request_id", Integer.toString(fil_status_type));
+                        Intent notification_type_intent =
+                                new Intent(Orders_Activity.this,
+                                        Orders_Status_Select_Activity.class);
+                        notification_type_intent.putExtra("request_id",
+                                Integer.toString(fil_status_type));
                         notification_type_intent.putExtra("filt_ids", filt_status_ids);
                         startActivityForResult(notification_type_intent, fil_status_type);
                     }
@@ -512,8 +530,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 filt_workcenter_type_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent notification_type_intent = new Intent(Orders_Activity.this, Notifications_WorkCenter_Select_Activity.class);
-                        notification_type_intent.putExtra("request_id", Integer.toString(fil_wckt_type));
+                        Intent notification_type_intent =
+                                new Intent(Orders_Activity.this,
+                                        Notifications_WorkCenter_Select_Activity.class);
+                        notification_type_intent.putExtra("request_id",
+                                Integer.toString(fil_wckt_type));
                         notification_type_intent.putExtra("filt_text", filt_wckt_text);
                         notification_type_intent.putExtra("filt_ids", filt_wckt_ids);
                         startActivityForResult(notification_type_intent, fil_wckt_type);
@@ -552,15 +573,24 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                         } else {
                             pers_resp_status = "";
                         }
-                        if ((filt_notification_ids != null && !filt_notification_ids.equals("")) || (filt_priority_ids != null && !filt_priority_ids.equals("")) || (filt_status_ids != null && !filt_status_ids.equals("")) || (filt_wckt_ids != null && !filt_wckt_ids.equals("")) || (attachment_clicked_status != null && !attachment_clicked_status.equals("")|| (pers_resp_status != null && !pers_resp_status.equals("")))) {
+                        if ((filt_notification_ids != null && !filt_notification_ids.equals("")) ||
+                                (filt_priority_ids != null && !filt_priority_ids.equals("")) ||
+                                (filt_status_ids != null && !filt_status_ids.equals("")) ||
+                                (filt_wckt_ids != null && !filt_wckt_ids.equals("")) ||
+                                (attachment_clicked_status != null &&
+                                        !attachment_clicked_status.equals("") ||
+                                        (pers_resp_status != null && !pers_resp_status.equals("")))) {
                             filt_selected_notif_ids = filt_notification_ids.trim();
                             if (filt_selected_notif_ids.contains(",")) {
-                                filt_selected_notif_ids = filt_selected_notif_ids.replace(",", "|");
-                                filt_selected_notif_ids = filt_selected_notif_ids.substring(0, filt_selected_notif_ids.length() - 1);
+                                filt_selected_notif_ids = filt_selected_notif_ids.replace(",",
+                                        "|");
+                                filt_selected_notif_ids = filt_selected_notif_ids.substring(0,
+                                        filt_selected_notif_ids.length() - 1);
                             } else {
                                 StringBuffer filter_sb = new StringBuffer();
                                 try {
-                                    Cursor cursor = App_db.rawQuery("select * from GET_ORDER_TYPES", null);
+                                    Cursor cursor = App_db.rawQuery("select * from " +
+                                            "GET_ORDER_TYPES", null);
                                     if (cursor != null && cursor.getCount() > 0) {
                                         if (cursor.moveToFirst()) {
                                             do {
@@ -581,12 +611,15 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
                             filt_selected_prior_ids = filt_priority_ids.trim();
                             if (filt_selected_prior_ids.contains(",")) {
-                                filt_selected_prior_ids = filt_selected_prior_ids.replace(",", "|");
-                                filt_selected_prior_ids = filt_selected_prior_ids.substring(0, filt_selected_prior_ids.length() - 1);
+                                filt_selected_prior_ids = filt_selected_prior_ids.replace(",",
+                                        "|");
+                                filt_selected_prior_ids = filt_selected_prior_ids.substring(0,
+                                        filt_selected_prior_ids.length() - 1);
                             } else {
                                 StringBuffer filter_sb = new StringBuffer();
                                 try {
-                                    Cursor cursor = App_db.rawQuery("select * from GET_ORDER_PRIORITY", null);
+                                    Cursor cursor = App_db.rawQuery("select * from " +
+                                            "GET_ORDER_PRIORITY", null);
                                     if (cursor != null && cursor.getCount() > 0) {
                                         if (cursor.moveToFirst()) {
                                             do {
@@ -607,8 +640,10 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
                             filt_selected_status_ids = filt_status_ids.trim();
                             if (filt_selected_status_ids.contains(",")) {
-                                filt_selected_status_ids = filt_selected_status_ids.replace(",", "|");
-                                filt_selected_status_ids = filt_selected_status_ids.substring(0, filt_selected_status_ids.length() - 1);
+                                filt_selected_status_ids = filt_selected_status_ids
+                                        .replace(",", "|");
+                                filt_selected_status_ids = filt_selected_status_ids
+                                        .substring(0, filt_selected_status_ids.length() - 1);
                             } else {
                                 StringBuffer filter_sb = new StringBuffer();
                                 filter_sb.append("CRTD");
@@ -624,12 +659,15 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
                             filt_selected_wckt_ids = filt_wckt_ids.trim();
                             if (filt_selected_wckt_ids.contains(",")) {
-                                filt_selected_wckt_ids = filt_selected_wckt_ids.replace(",", "|");
-                                filt_selected_wckt_ids = filt_selected_wckt_ids.substring(0, filt_selected_wckt_ids.length() - 1);
+                                filt_selected_wckt_ids = filt_selected_wckt_ids
+                                        .replace(",", "|");
+                                filt_selected_wckt_ids = filt_selected_wckt_ids
+                                        .substring(0, filt_selected_wckt_ids.length() - 1);
                             } else {
                                 StringBuffer filter_sb = new StringBuffer();
                                 try {
-                                    Cursor cursor = App_db.rawQuery("select * from GET_WKCTR", null);
+                                    Cursor cursor = App_db.rawQuery("select * from GET_WKCTR",
+                                            null);
                                     if (cursor != null && cursor.getCount() > 0) {
                                         if (cursor.moveToFirst()) {
                                             do {
@@ -653,11 +691,13 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 filt_selected_persresp_ids.append(person_responsible_id);
                             } else {
                                 try {
-                                    Cursor cursor = App_db.rawQuery("select * from GET_EtPernr", null);
+                                    Cursor cursor = App_db.rawQuery("select * from GET_EtPernr",
+                                            null);
                                     if (cursor != null && cursor.getCount() > 0) {
                                         if (cursor.moveToFirst()) {
                                             do {
-                                                filt_selected_persresp_ids.append(cursor.getString(3));
+                                                filt_selected_persresp_ids
+                                                        .append(cursor.getString(3));
                                                 filt_selected_persresp_ids.append("|");
                                             }
                                             while (cursor.moveToNext());
@@ -672,7 +712,18 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                             CollectionUtils.filter(ordersList, new Predicate() {
                                 @Override
                                 public boolean evaluate(Object o) {
-                                    return ((Orders_Object) o).getOrderType().matches(filt_selected_notif_ids) && ((Orders_Object) o).getPriority().matches(filt_selected_prior_ids) && ((Orders_Object) o).getOrderStatus().matches(filt_selected_status_ids) && ((Orders_Object) o).getWorkCenter().matches(filt_selected_wckt_ids) && ((Orders_Object) o).getAttachment().matches(attachment_clicked_status)&& ((Orders_Object) o).getPernar().matches(filt_selected_persresp_ids.toString());
+                                    return ((Orders_Object) o).getOrderType()
+                                            .matches(filt_selected_notif_ids) &&
+                                            ((Orders_Object) o).getPriority()
+                                                    .matches(filt_selected_prior_ids) &&
+                                            ((Orders_Object) o).getOrderStatus()
+                                                    .matches(filt_selected_status_ids) &&
+                                            ((Orders_Object) o).getWorkCenter()
+                                                    .matches(filt_selected_wckt_ids) &&
+                                            ((Orders_Object) o).getAttachment()
+                                                    .matches(attachment_clicked_status) &&
+                                            ((Orders_Object) o).getPernar()
+                                                    .matches(filt_selected_persresp_ids.toString());
                                 }
                             });
                             if (ordersList.size() > 0) {
@@ -685,7 +736,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                             }
                             dialog.dismiss();
                         } else {
-                            error_dialog.show_error_dialog(Orders_Activity.this, "Please Select Atleast One Filter");
+                            error_dialog.show_error_dialog(Orders_Activity.this,
+                                    getString(R.string.notif_filter_atleast));
                         }
                     }
                 });
@@ -707,7 +759,6 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private void Refresh_Orders_Data() {
         cd = new ConnectionDetector(Orders_Activity.this);
         isInternetPresent = cd.isConnectingToInternet();
@@ -723,7 +774,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             Glide.with(Orders_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
             Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
             Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
-            description_textview.setText("All Relavent Data will be loaded from server. Do you want to continue?");
+            description_textview.setText(getString(R.string.refresh_text));
             decision_dialog.show();
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -745,7 +796,6 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private class Get_Orders_Refresh_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -756,14 +806,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                DO_STATUS = Orders.Get_DORD_Data(Orders_Activity.this, "REFR", "");
+                DO_STATUS = Orders.Get_DORD_Data(Orders_Activity.this, "REFR",
+                        "");
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
         }
 
         @Override
@@ -774,15 +821,15 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHolder> {
         private Context mContext;
         private List<Orders_Object> orders_list_data;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView uuid_tv, plant_tv, orderId_tv, shortText_tv, basicStart_tv, status_tv,
-                    work_complete_tv, woco_status_tv, priority_tv, attachment_tv, release_tv, usr02_tv,
-                    pernr_status, uuid_textview, edDt_tv, equipment_tv, funcLoc_tv, auth_rel_status, auth_cnf_status, auth_teco_status, auth_woco_status;
+                    work_complete_tv, woco_status_tv, priority_tv, attachment_tv, release_tv,
+                    usr02_tv, pernr_status, uuid_textview, edDt_tv, equipment_tv, funcLoc_tv,
+                    auth_rel_status, auth_cnf_status, auth_teco_status, auth_woco_status;
             ImageView attachment_iv, status_iv, woco_iv, release_iv;
             LinearLayout layout, release_layout, teco_layout, cnf_ll;
             FrameLayout orders_fl;
@@ -814,11 +861,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 edDt_tv = view.findViewById(R.id.edDt_tv);
                 equipment_tv = view.findViewById(R.id.equipment_tv);
                 funcLoc_tv = view.findViewById(R.id.funcLoc_tv);
-                auth_rel_status = (TextView)view.findViewById(R.id.auth_rel_status);
-                auth_cnf_status = (TextView)view.findViewById(R.id.auth_cnf_status);
-                auth_teco_status = (TextView)view.findViewById(R.id.auth_teco_status);
-                auth_woco_status = (TextView)view.findViewById(R.id.auth_woco_status);
-                pernr_status = (TextView)view.findViewById(R.id.pernr_status);
+                auth_rel_status = (TextView) view.findViewById(R.id.auth_rel_status);
+                auth_cnf_status = (TextView) view.findViewById(R.id.auth_cnf_status);
+                auth_teco_status = (TextView) view.findViewById(R.id.auth_teco_status);
+                auth_woco_status = (TextView) view.findViewById(R.id.auth_woco_status);
+                pernr_status = (TextView) view.findViewById(R.id.pernr_status);
             }
         }
 
@@ -829,7 +876,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_listview_const, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.order_listview_const, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -875,85 +923,61 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 holder.priority_tv.setVisibility(View.GONE);
             }
 
-            if (holder.status_tv.getText().toString().equalsIgnoreCase("CRTD"))
-            {
+            if (holder.status_tv.getText().toString().equalsIgnoreCase("CRTD")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
                 holder.teco_layout.setVisibility(View.GONE);
                 holder.cnf_ll.setVisibility(View.GONE);
-                if(holder.auth_rel_status.getText().toString().equalsIgnoreCase("X"))
-                {
+                if (holder.auth_rel_status.getText().toString().equalsIgnoreCase("X")) {
                     holder.release_layout.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     holder.release_layout.setVisibility(View.GONE);
                 }
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("CANC"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("CANC")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.red_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
                 holder.teco_layout.setVisibility(View.GONE);
                 holder.release_layout.setVisibility(View.GONE);
                 holder.cnf_ll.setVisibility(View.GONE);
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("REL"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("REL")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.blue_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
                 holder.teco_layout.setVisibility(View.GONE);
                 holder.release_layout.setVisibility(View.GONE);
-                if(holder.auth_cnf_status.getText().toString().equalsIgnoreCase("X"))
-                {
+                if (holder.auth_cnf_status.getText().toString().equalsIgnoreCase("X")) {
                     holder.cnf_ll.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     holder.cnf_ll.setVisibility(View.GONE);
                 }
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("ISSU"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("ISSU")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.lightgren_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
                 holder.teco_layout.setVisibility(View.GONE);
                 holder.release_layout.setVisibility(View.GONE);
                 holder.cnf_ll.setVisibility(View.GONE);
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("DLFL"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("DLFL")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.red_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
                 holder.teco_layout.setVisibility(View.GONE);
                 holder.release_layout.setVisibility(View.GONE);
                 holder.cnf_ll.setVisibility(View.GONE);
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("CLSD"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("CLSD")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.green_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
                 holder.teco_layout.setVisibility(View.GONE);
                 holder.release_layout.setVisibility(View.GONE);
                 holder.cnf_ll.setVisibility(View.GONE);
-            }
-            else if (holder.status_tv.getText().toString().equalsIgnoreCase("CNF"))
-            {
+            } else if (holder.status_tv.getText().toString().equalsIgnoreCase("CNF")) {
                 holder.status_tv.setBackground(getDrawable(R.drawable.orange_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.white));
                 holder.release_layout.setVisibility(View.GONE);
                 holder.cnf_ll.setVisibility(View.GONE);
-                if(holder.auth_teco_status.getText().toString().equalsIgnoreCase("X"))
-                {
+                if (holder.auth_teco_status.getText().toString().equalsIgnoreCase("X")) {
                     holder.teco_layout.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     holder.teco_layout.setVisibility(View.GONE);
                 }
-            }
-            else
-            {
+            } else {
                 holder.status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
                 holder.teco_layout.setVisibility(View.GONE);
@@ -961,67 +985,29 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 holder.cnf_ll.setVisibility(View.GONE);
             }
 
-            /*if (holder.usr02_tv.getText().toString().equals("REL")) {
-//                if (Authorized(holder.work_complete_tv.getText().toString(), "R"))
-
-                *//*else
-                    holder.release_layout.setVisibility(View.GONE);*//*
-            } else if (holder.usr02_tv.getText().toString().equals("CNF")) {
-//                if (Authorized(holder.work_complete_tv.getText().toString(), "TK")) {
-                holder.release_layout.setVisibility(View.GONE);
-                holder.cnf_ll.setVisibility(View.GONE);
-                *//*holder.release_tv.setText("CNF");
-                holder.release_layout.setBackgroundTintList(getResources().getColorStateList(R.color.tkconfirmtint_list));
-                holder.release_iv.setImageDrawable(getDrawable(R.drawable.ic_cnfrm_icon));*//*
-                *//*} else {
-                    holder.release_layout.setVisibility(View.GONE);
-                }*//*
-            } else if (holder.usr02_tv.getText().toString().equals("TECO")) {
-//                if (Authorized(holder.work_complete_tv.getText().toString(), "Z")) {
-                if(!holder.status_tv.getText().toString().equalsIgnoreCase("CLSD")) {
-                    holder.release_tv.setText("TECO");
-                    holder.release_layout.setBackgroundTintList(getResources().getColorStateList(R.color.tecolist));
-                    holder.release_iv.setImageDrawable(getDrawable(R.drawable.teco));
-                } else {
-                    holder.release_layout.setVisibility(View.GONE);
-                    holder.cnf_ll.setVisibility(View.GONE);
-                }
-                *//*} else {
-                    holder.release_layout.setVisibility(View.GONE);
-                }*//*
-            }*/
-
-
-            if (!(olo.getWorkCmplt().equals("X")))
-            {
+            if (!(olo.getWorkCmplt().equals("X"))) {
                 holder.woco_iv.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 holder.woco_iv.setVisibility(View.GONE);
             }
 
-
-            if (holder.woco_status_tv.getText().toString().equals("X"))
-            {
-                if(holder.auth_woco_status.getText().toString().equalsIgnoreCase("X"))
-                {
+            if (holder.woco_status_tv.getText().toString().equals("X")) {
+                if (holder.auth_woco_status.getText().toString()
+                        .equalsIgnoreCase("X")) {
                     holder.woco_iv.setVisibility(View.VISIBLE);
                     holder.woco_iv.setImageDrawable(getDrawable(R.drawable.ic_success_icon));
                     holder.woco_iv.setEnabled(false);
-                }
-                else
-                {
+                } else {
                     holder.woco_iv.setVisibility(View.GONE);
                 }
             }
-
 
             holder.woco_iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     orderId = holder.orderId_tv.getText().toString();
-                    confirmationDialog(getString(R.string.work_compl), "WOCO", "");
+                    confirmationDialog(getString(R.string.work_compl), "WOCO",
+                            "");
                 }
             });
 
@@ -1054,17 +1040,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     ordrEdDt = holder.edDt_tv.getText().toString();
                     Equipment = holder.equipment_tv.getText().toString();
                     FuncLoc = holder.funcLoc_tv.getText().toString();
-//                    if (holder.usr02_tv.getText().toString().equals("REL"))
-                    confirmationDialog(getString(R.string.release_cnfrm), "REL", holder.pernr_status.getText().toString());
-                    /*else if (holder.usr02_tv.getText().toString().equals("CNF"))
-                        confirmationDialog(getString(R.string.tk_cnfrm), "CNF");
-                    else if (holder.usr02_tv.getText().toString().equals("TECO"))
-                        if (isUmnaUmrt(orderId))
-                            confirmationDialog(getString(R.string.complet_order), "TECO");
-                        else
-                            error_dialog.show_error_dialog(Orders_Activity.this, getString(R.string.teco_valida));*/
+                    confirmationDialog(getString(R.string.release_cnfrm), "REL",
+                            holder.pernr_status.getText().toString());
                 }
             });
+
             holder.cnf_ll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1074,7 +1054,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     ordrEdDt = holder.edDt_tv.getText().toString();
                     Equipment = holder.equipment_tv.getText().toString();
                     FuncLoc = holder.funcLoc_tv.getText().toString();
-                    confirmationDialog(getString(R.string.tk_cnfrm), "CNF", "");
+                    confirmationDialog(getString(R.string.tk_cnfrm), "CNF",
+                            "");
                 }
             });
 
@@ -1087,7 +1068,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     ordrEdDt = holder.edDt_tv.getText().toString();
                     Equipment = holder.equipment_tv.getText().toString();
                     FuncLoc = holder.funcLoc_tv.getText().toString();
-                    confirmationDialog(getString(R.string.complet_order), "TECO", "");
+                    confirmationDialog(getString(R.string.complet_order), "TECO",
+                            "");
                 }
             });
 
@@ -1106,12 +1088,12 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private void getStatus() {
         ArrayList<NotifOrdrStatusPrcbl> sysStatus_al = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Objnr like ? order by Stonr", new String[]{orderId, "OR%"});
+            cursor = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Objnr " +
+                    "like ? order by Stonr", new String[]{orderId, "OR%"});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -1159,7 +1141,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             list_recycleview.setVisibility(View.VISIBLE);
             sysStsAdapter = new SysStsAdapter(Orders_Activity.this, sysStatus_al);
             list_recycleview.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Orders_Activity.this);
+            RecyclerView.LayoutManager layoutManager =
+                    new LinearLayoutManager(Orders_Activity.this);
             list_recycleview.setLayoutManager(layoutManager);
             list_recycleview.setItemAnimator(new DefaultItemAnimator());
             list_recycleview.setAdapter(sysStsAdapter);
@@ -1170,9 +1153,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             list_recycleview.setVisibility(View.GONE);
         }
         aa.show();
-
     }
-
 
     public class SysStsAdapter extends RecyclerView.Adapter<SysStsAdapter.MyViewHolder> {
         private Context mContext;
@@ -1197,7 +1178,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.status_with_cb_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.status_with_cb_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -1220,7 +1202,6 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             return sysStsList.size();
         }
     }
-
 
     private class Orders_Object {
         private String UUID;
@@ -1246,8 +1227,13 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         private String teco_status;
         private String woco_status;
 
-        public Orders_Object(String UUID, String orderId, String priorityText, String basicStartDate, String orderShortText, String wocoStatus, String orderStatus, String orderPlant, String workCenter, String orderType, String priority, String attachment, String workCmplt, String usr02, String endDate, String equipment, String functionLocation, String pernar, String rel_status, String cnf_status, String teco_status, String woco_status)
-        {
+        public Orders_Object(String UUID, String orderId, String priorityText, String basicStartDate,
+                             String orderShortText, String wocoStatus, String orderStatus,
+                             String orderPlant, String workCenter, String orderType, String priority,
+                             String attachment, String workCmplt, String usr02, String endDate,
+                             String equipment, String functionLocation, String pernar,
+                             String rel_status, String cnf_status, String teco_status,
+                             String woco_status) {
             this.UUID = UUID;
             this.orderId = orderId;
             this.priorityText = priorityText;
@@ -1283,21 +1269,27 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         public String getTeco_status() {
             return teco_status;
         }
+
         public void setTeco_status(String teco_status) {
             this.teco_status = teco_status;
         }
+
         public String getCnf_status() {
             return cnf_status;
         }
+
         public void setCnf_status(String cnf_status) {
             this.cnf_status = cnf_status;
         }
+
         public String getRel_status() {
             return rel_status;
         }
+
         public void setRel_status(String rel_status) {
             this.rel_status = rel_status;
         }
+
         public String getPernar() {
             return pernar;
         }
@@ -1443,7 +1435,6 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private String dateFormat(String date) {
         if (!date.equals("00000000")) {
             DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
@@ -1460,70 +1451,60 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
-    private class Get_Order_List extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Order_List extends AsyncTask<Void, Integer, Void> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             ordersList.clear();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
+        protected Void doInBackground(Void... params) {
             String rel_status = "", cnf_status = "", teco_status = "", woco_status = "";
 
             /*Authorization For Order Release (REL)*/
-            String auth_rel_status = Authorizations.Get_Authorizations_Data(Orders_Activity.this,"W","R");
-            if (auth_rel_status.equalsIgnoreCase("true"))
-            {
+            String auth_rel_status = Authorizations
+                    .Get_Authorizations_Data(Orders_Activity.this, "W", "R");
+            if (auth_rel_status.equalsIgnoreCase("true")) {
                 rel_status = "X";
             }
             /*Authorization For Order Release (REL)*/
 
-
             /*Authorization For Order Confirm (CNF)*/
-            String auth_cnf_status = Authorizations.Get_Authorizations_Data(Orders_Activity.this,"W","TK");
-            if (auth_cnf_status.equalsIgnoreCase("true"))
-            {
+            String auth_cnf_status = Authorizations
+                    .Get_Authorizations_Data(Orders_Activity.this, "W", "TK");
+            if (auth_cnf_status.equalsIgnoreCase("true")) {
                 cnf_status = "X";
             }
             /*Authorization For Order Confirm (CNF)*/
 
-
             /*Authorization For Order TECO*/
-            String auth_teco_status = Authorizations.Get_Authorizations_Data(Orders_Activity.this,"W","Z");
-            if (auth_teco_status.equalsIgnoreCase("true"))
-            {
+            String auth_teco_status = Authorizations
+                    .Get_Authorizations_Data(Orders_Activity.this, "W", "Z");
+            if (auth_teco_status.equalsIgnoreCase("true")) {
                 teco_status = "X";
             }
             /*Authorization For Order TECO*/
 
-
             /*Authorization For Order WOCO*/
-            String auth_woco_status = Authorizations.Get_Authorizations_Data(Orders_Activity.this,"W","WC");
-            if (auth_woco_status.equalsIgnoreCase("true"))
-            {
+            String auth_woco_status = Authorizations
+                    .Get_Authorizations_Data(Orders_Activity.this, "W", "WC");
+            if (auth_woco_status.equalsIgnoreCase("true")) {
                 woco_status = "X";
             }
             /*Authorization For Order WOCO*/
 
-
             Cursor cursor = null;
-            try
-            {
-                if (equipment_id != null && !equipment_id.equals(""))
-                {
-                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Equnr = ? Order by Priok", new String[]{equipment_id});
-                }
-                else if (functionlocation_id != null && !functionlocation_id.equals(""))
-                {
-                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Strno = ? Order by Priok", new String[]{functionlocation_id});
-                }
-                else
-                {
-                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader Order by Priok", null);
+            try {
+                if (equipment_id != null && !equipment_id.equals("")) {
+                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where" +
+                            " Equnr = ? Order by Priok", new String[]{equipment_id});
+                } else if (functionlocation_id != null && !functionlocation_id.equals("")) {
+                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where" +
+                            " Strno = ? Order by Priok", new String[]{functionlocation_id});
+                } else {
+                    cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader Order by" +
+                            " Priok", null);
                 }
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
@@ -1532,12 +1513,16 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                             String woco = "";
                             Cursor cursor1 = null;
                             try {
-                                cursor1 = App_db.rawQuery("select * from EtOrderStatus where Aufnr = ? and Txt04 = ?", new String[]{cursor.getString(2), "WOCO"});
+                                cursor1 = App_db.rawQuery("select * from EtOrderStatus where" +
+                                                " Aufnr = ? and Txt04 = ?",
+                                        new String[]{cursor.getString(2), "WOCO"});
                                 if (cursor1 != null && cursor1.getCount() > 0) {
                                     if (cursor1.moveToFirst()) {
                                         do {
-                                            String work_complete_status = cursor1.getString(11);
-                                            if (work_complete_status.equalsIgnoreCase("X")) {
+                                            String work_complete_status = cursor1
+                                                    .getString(11);
+                                            if (work_complete_status
+                                                    .equalsIgnoreCase("X")) {
                                                 workComplt = "X";
                                                 woco = "X";
                                             } else {
@@ -1567,7 +1552,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                     cursor.getString(15), workComplt,
                                     cursor.getString(41), cursor.getString(13),
                                     cursor.getString(9), cursor.getString(10),
-                                    cursor.getString(53), rel_status, cnf_status, teco_status, woco_status);
+                                    cursor.getString(53), rel_status, cnf_status,
+                                    teco_status, woco_status);
                             ordersList.add(olo);
                         }
                         while (cursor.moveToNext());
@@ -1581,11 +1567,6 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     cursor.close();
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -1607,7 +1588,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     });*/
                 ordersAdapter = new OrdersAdapter(Orders_Activity.this, ordersList);
                 list_recycleview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Orders_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Orders_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 list_recycleview.setItemAnimator(new DefaultItemAnimator());
                 list_recycleview.setAdapter(ordersAdapter);
@@ -1628,20 +1610,20 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private class Get_Order_Data extends AsyncTask<Void, Integer, Void> {
         OrdrHeaderPrcbl ohp = new OrdrHeaderPrcbl();
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Orders_Activity.this, getResources().getString(R.string.get_order_data));
+            customProgressDialog.show_progress_dialog(Orders_Activity.this,
+                    getResources().getString(R.string.get_order_data));
         }
 
         @Override
-        protected Void doInBackground(Void... voids)
-        {
-            ohp = GetOrderDetail.GetData(Orders_Activity.this, orderUUID, orderId, orderStatus, Iwerk);
+        protected Void doInBackground(Void... voids) {
+            ohp = GetOrderDetail.GetData(Orders_Activity.this, orderUUID, orderId,
+                    orderStatus, Iwerk);
             return null;
         }
 
@@ -1649,9 +1631,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             customProgressDialog.dismiss_progress_dialog();
-            if (ohp != null)
-            {
-                Intent ordrIntent = new Intent(Orders_Activity.this, Orders_Change_Activity.class);
+            if (ohp != null) {
+                Intent ordrIntent = new Intent(Orders_Activity.this,
+                        Orders_Change_Activity.class);
                 ordrIntent.putExtra("order", "U");
                 ordrIntent.putExtra("ordr_parcel", ohp);
                 startActivity(ordrIntent);
@@ -1659,11 +1641,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private String getIwerk(String equip) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?", new String[]{equip});
+            cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?",
+                    new String[]{equip});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(29);
@@ -1679,11 +1661,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         return "";
     }
 
-
     private String getfuncIwerk(String func) {
         Cursor cursor = null;
         try {
-            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?", new String[]{func});
+            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                    new String[]{func});
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(14);
@@ -1699,18 +1681,16 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         return "";
     }
 
-
-    private void confirmationDialog(String message, final String type, final String pernr)
-    {
+    private void confirmationDialog(String message, final String type, final String pernr) {
         final Dialog cancel_dialog = new Dialog(Orders_Activity.this, R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
         cancel_dialog.setCanceledOnTouchOutside(false);
         cancel_dialog.setContentView(R.layout.decision_dialog);
-        ImageView imageView1 = (ImageView)cancel_dialog.findViewById(R.id.imageView1);
+        ImageView imageView1 = (ImageView) cancel_dialog.findViewById(R.id.imageView1);
         Glide.with(Orders_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
-        final TextView description_textview = (TextView) cancel_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
         description_textview.setText(message);
         Button confirm = (Button) cancel_dialog.findViewById(R.id.yes_button);
         Button cancel = (Button) cancel_dialog.findViewById(R.id.no_button);
@@ -1727,28 +1707,24 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
                 cd = new ConnectionDetector(Orders_Activity.this);
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent)
-                {
+                if (isInternetPresent) {
                     cancel_dialog.dismiss();
-                    if (type.equals("REL"))
-                    {
-                        if (pernr != null && !pernr.equals(""))
-                        {
+                    if (type.equals("REL")) {
+                        if (pernr != null && !pernr.equals("")) {
                             new POST_REL().execute();
+                        } else {
+                            error_dialog.show_error_dialog(Orders_Activity.this,
+                                    getString(R.string.prsnresp_select));
                         }
-                        else
-                        {
-                            error_dialog.show_error_dialog(Orders_Activity.this,"Please Select Person Responsible");
-                        }
-                    }
-                    else if (type.equals("WOCO")) {
+                    } else if (type.equals("WOCO")) {
                         TYP = "WOCO";
                         new GetToken().execute();
                     } else if (type.equals("TECO")) {
                         TYP = "TECO";
                         new GetToken().execute();
                     } else if (type.equals("CNF")) {
-                        Intent intent = new Intent(Orders_Activity.this, OrderTkConfirmActivity.class);
+                        Intent intent = new Intent(Orders_Activity.this,
+                                OrderTkConfirmActivity.class);
                         intent.putExtra("uuid", orderUUID);
                         intent.putExtra("orderId", orderId);
                         intent.putExtra("equip", Equipment);
@@ -1757,57 +1733,52 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                         intent.putExtra("edDt", ordrEdDt);
                         startActivity(intent);
                     }
-                }
-                else
-                {
-                    if (type.equals("REL"))
-                    {
-                        if (pernr != null && !pernr.equals(""))
-                        {
+                } else {
+                    if (type.equals("REL")) {
+                        if (pernr != null && !pernr.equals("")) {
                             cancel_dialog.dismiss();
                             decision_dialog = new Dialog(Orders_Activity.this);
-                            decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                            decision_dialog.getWindow()
+                                    .setBackgroundDrawableResource(android.R.color.transparent);
                             decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             decision_dialog.setCancelable(false);
                             decision_dialog.setCanceledOnTouchOutside(false);
                             decision_dialog.setContentView(R.layout.offline_decision_dialog);
-                            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
-                            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-                            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-                            Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
-                            description_textview.setText("No Internet Connectivity. Do you want to proceed Order Release with offline ?");
-                            confirm.setText("Yes");
-                            cancel.setText("No");
+                            TextView description_textview = decision_dialog
+                                    .findViewById(R.id.description_textview);
+                            Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+                            Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+                            Button connect_button = decision_dialog.findViewById(R.id.connect_button);
+                            description_textview.setText(getString(R.string.ordrrel_offline));
+                            confirm.setText(getString(R.string.yes));
+                            cancel.setText(getString(R.string.no));
                             decision_dialog.show();
-                            cancel.setOnClickListener(new View.OnClickListener()
-                            {
+                            cancel.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v)
-                                {
+                                public void onClick(View v) {
                                     decision_dialog.dismiss();
                                 }
                             });
-                            connect_button.setOnClickListener(new View.OnClickListener()
-                            {
+                            connect_button.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v)
-                                {
+                                public void onClick(View v) {
                                     decision_dialog.dismiss();
                                     Intent intent = new Intent(Intent.ACTION_MAIN);
-                                    intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
+                                    intent.setClassName("com.android.settings",
+                                            "com.android.settings.wifi.WifiSettings");
                                     startActivity(intent);
                                 }
                             });
-                            confirm.setOnClickListener(new View.OnClickListener()
-                            {
+                            confirm.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v)
-                                {
+                                public void onClick(View v) {
                                     decision_dialog.dismiss();
-                                    progressDialog.show_progress_dialog(Orders_Activity.this,getResources().getString(R.string.loading));
+                                    progressDialog.show_progress_dialog(Orders_Activity.this,
+                                            getResources().getString(R.string.loading));
                                     ContentValues cv = new ContentValues();
-                                    cv.put("Xstatus","REL");
-                                    App_db.update("DUE_ORDERS_EtOrderHeader", cv, "Aufnr="+orderId, null);
+                                    cv.put("Xstatus", "REL");
+                                    App_db.update("DUE_ORDERS_EtOrderHeader", cv,
+                                            "Aufnr=" + orderId, null);
 
                                     DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
                                     DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
@@ -1817,7 +1788,10 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
                                     UUID uniqueKey = UUID.randomUUID();
 
-                                    String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                    String sql11 = "Insert into Alert_Log (DATE, TIME, " +
+                                            "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
+                                            " STATUS, UUID, MESSAGE, LOG_UUID)" +
+                                            " values(?,?,?,?,?,?,?,?,?,?);";
                                     SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                     App_db.beginTransaction();
                                     statement11.clearBindings();
@@ -1839,17 +1813,15 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                     new Get_Order_List().execute();
                                 }
                             });
-                        }
-                        else
-                        {
+                        } else {
                             cancel_dialog.dismiss();
-                            error_dialog.show_error_dialog(Orders_Activity.this,"Please Select Person Responsible");
+                            error_dialog.show_error_dialog(Orders_Activity.this,
+                                    getString(R.string.prsnresp_select));
                         }
-                    }
-                    else if (type.equals("CNF"))
-                    {
+                    } else if (type.equals("CNF")) {
                         cancel_dialog.dismiss();
-                        Intent intent = new Intent(Orders_Activity.this, OrderTkConfirmActivity.class);
+                        Intent intent = new Intent(Orders_Activity.this,
+                                OrderTkConfirmActivity.class);
                         intent.putExtra("uuid", orderUUID);
                         intent.putExtra("orderId", orderId);
                         intent.putExtra("equip", Equipment);
@@ -1857,53 +1829,50 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                         intent.putExtra("stDt", ordrStDt);
                         intent.putExtra("edDt", ordrEdDt);
                         startActivity(intent);
-                    }
-                    else if (type.equals("TECO"))
-                    {
+                    } else if (type.equals("TECO")) {
                         cancel_dialog.dismiss();
                         decision_dialog = new Dialog(Orders_Activity.this);
-                        decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        decision_dialog.getWindow()
+                                .setBackgroundDrawableResource(android.R.color.transparent);
                         decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         decision_dialog.setCancelable(false);
                         decision_dialog.setCanceledOnTouchOutside(false);
                         decision_dialog.setContentView(R.layout.offline_decision_dialog);
-                        TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
-                        Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-                        Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-                        Button connect_button =(Button) decision_dialog.findViewById(R.id.connect_button);
-                        description_textview.setText("No Internet Connectivity. Do you want to proceed Order Completion with offline ?");
-                        confirm.setText("Yes");
-                        cancel.setText("No");
+                        TextView description_textview = decision_dialog
+                                .findViewById(R.id.description_textview);
+                        Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+                        Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+                        Button connect_button = decision_dialog.findViewById(R.id.connect_button);
+                        description_textview.setText(getString(R.string.ordrcomp_offline));
+                        confirm.setText(getString(R.string.yes));
+                        cancel.setText(getString(R.string.no));
                         decision_dialog.show();
-                        cancel.setOnClickListener(new View.OnClickListener()
-                        {
+                        cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 decision_dialog.dismiss();
                             }
                         });
-                        connect_button.setOnClickListener(new View.OnClickListener()
-                        {
+                        connect_button.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 decision_dialog.dismiss();
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
-                                intent.setClassName("com.android.settings","com.android.settings.wifi.WifiSettings");
+                                intent.setClassName("com.android.settings",
+                                        "com.android.settings.wifi.WifiSettings");
                                 startActivity(intent);
                             }
                         });
-                        confirm.setOnClickListener(new View.OnClickListener()
-                        {
+                        confirm.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v)
-                            {
+                            public void onClick(View v) {
                                 decision_dialog.dismiss();
-                                progressDialog.show_progress_dialog(Orders_Activity.this,getResources().getString(R.string.loading));
+                                progressDialog.show_progress_dialog(Orders_Activity.this,
+                                        getResources().getString(R.string.loading));
                                 ContentValues cv = new ContentValues();
-                                cv.put("Xstatus","CLSD");
-                                App_db.update("DUE_ORDERS_EtOrderHeader", cv, "Aufnr="+orderId, null);
+                                cv.put("Xstatus", "CLSD");
+                                App_db.update("DUE_ORDERS_EtOrderHeader", cv,
+                                        "Aufnr=" + orderId, null);
 
                                 DateFormat date_format = new SimpleDateFormat("MMM dd, yyyy");
                                 DateFormat time_format = new SimpleDateFormat("HH:mm:ss");
@@ -1913,7 +1882,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
                                 UUID uniqueKey = UUID.randomUUID();
 
-                                String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                String sql11 = "Insert into Alert_Log (DATE, TIME, " +
+                                        "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS," +
+                                        " UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 App_db.beginTransaction();
                                 statement11.clearBindings();
@@ -1941,7 +1912,6 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-
     public class GetToken extends AsyncTask<Void, Integer, Void> {
         String Response = "";
 
@@ -1949,9 +1919,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         protected void onPreExecute() {
             super.onPreExecute();
             if (TYP.equals("WOCO"))
-                customProgressDialog.show_progress_dialog(Orders_Activity.this, getResources().getString(R.string.work_compl_inprg));
+                customProgressDialog.show_progress_dialog(Orders_Activity.this,
+                        getResources().getString(R.string.work_compl_inprg));
             else if (TYP.equals("TECO"))
-                customProgressDialog.show_progress_dialog(Orders_Activity.this, getResources().getString(R.string.compl_inprog));
+                customProgressDialog.show_progress_dialog(Orders_Activity.this,
+                        getResources().getString(R.string.compl_inprog));
         }
 
         @Override
@@ -1970,11 +1942,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     new POST_TECO().execute();
             } else {
                 customProgressDialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Orders_Activity.this, getResources().getString(R.string.unable_change));
+                error_dialog.show_error_dialog(Orders_Activity.this,
+                        getResources().getString(R.string.unable_change));
             }
         }
     }
-
 
     public class POST_WOCO extends AsyncTask<Void, Integer, Void> {
         String[] Response = new String[0];
@@ -1982,6 +1954,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         ArrayList<Model_CustomInfo> header_custominfo = new ArrayList<>();
         ArrayList<HashMap<String, String>> operation_custom_info_arraylist = new ArrayList<>();
         ArrayList<HashMap<String, String>> material_custom_info_arraylist = new ArrayList<>();
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -1989,7 +1962,10 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Order_Create_Change().Post_Create_Order(Orders_Activity.this, null, "", "CHORD", orderId, "WOCO", header_custominfo,operation_custom_info_arraylist,material_custom_info_arraylist,"");
+            Response = new Order_Create_Change().Post_Create_Order(Orders_Activity.this,
+                    null, "", "CHORD", orderId, "WOCO",
+                    header_custominfo, operation_custom_info_arraylist,
+                    material_custom_info_arraylist, "");
             return null;
         }
 
@@ -1999,16 +1975,17 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             customProgressDialog.dismiss_progress_dialog();
 
             if (Response[0].startsWith("S")) {
-                successDialog.show_success_dialog(Orders_Activity.this, Response[0].substring(2));
+                successDialog.show_success_dialog(Orders_Activity.this,
+                        Response[0].substring(2));
                 new Get_Order_List().execute();
             } else if (Response[0].startsWith("E"))
-                error_dialog.show_error_dialog(Orders_Activity.this, Response[0].substring(2));
+                error_dialog.show_error_dialog(Orders_Activity.this,
+                        Response[0].substring(2));
             else
                 error_dialog.show_error_dialog(Orders_Activity.this, Response[0]);
 
         }
     }
-
 
     private class POST_REL extends AsyncTask<Void, Integer, Void> {
         String Response = "";
@@ -2016,12 +1993,14 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            customProgressDialog.show_progress_dialog(Orders_Activity.this, getResources().getString(R.string.release_order));
+            customProgressDialog.show_progress_dialog(Orders_Activity.this,
+                    getResources().getString(R.string.release_order));
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Order_Rel().Get_Data(Orders_Activity.this, "", "X", "RLORD", orderId);
+            Response = new Order_Rel().Get_Data(Orders_Activity.this, "",
+                    "X", "RLORD", orderId);
             return null;
         }
 
@@ -2030,7 +2009,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             super.onPostExecute(aVoid);
             customProgressDialog.dismiss_progress_dialog();
             if (Response.startsWith("S")) {
-                successDialog.show_success_dialog(Orders_Activity.this, Response.substring(2));
+                successDialog.show_success_dialog(Orders_Activity.this,
+                        Response.substring(2));
                 new Get_Order_List().execute();
             } else if (Response.startsWith("E"))
                 error_dialog.show_error_dialog(Orders_Activity.this, Response.substring(2));
@@ -2039,14 +2019,12 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     private class POST_TECO extends AsyncTask<Void, Integer, Void> {
         String Response = "";
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            customProgressDialog.show_progress_dialog(Orders_Activity.this, getResources().getString(R.string.release_order));
         }
 
         @Override
@@ -2057,7 +2035,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             cop.setStatus("TECO");
             cop_al.add(cop);
             if (cop_al.size() > 0)
-                Response = new Order_CConfirmation().Get_Data(Orders_Activity.this, cop_al, null, "", "CCORD", orderId, "TECO", "");
+                Response = new Order_CConfirmation().Get_Data(Orders_Activity.this, cop_al,
+                        null, "", "CCORD", orderId, "TECO",
+                        "");
             return null;
         }
 
@@ -2066,7 +2046,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             super.onPostExecute(aVoid);
             customProgressDialog.dismiss_progress_dialog();
             if (Response.startsWith("S")) {
-                successDialog.show_success_dialog(Orders_Activity.this, Response.substring(2));
+                successDialog.show_success_dialog(Orders_Activity.this,
+                        Response.substring(2));
                 new Get_Order_List().execute();
             } else if (Response.startsWith("E"))
                 error_dialog.show_error_dialog(Orders_Activity.this, Response.substring(2));
@@ -2074,7 +2055,6 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 error_dialog.show_error_dialog(Orders_Activity.this, Response);
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -2107,7 +2087,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     if (priorityId.equals(""))
                         priorityId = priorityId + data.getStringExtra("priority_type_id");
                     else
-                        priorityId = priorityId + "," + data.getStringExtra("priority_type_id");
+                        priorityId = priorityId + "," + data
+                                .getStringExtra("priority_type_id");
 
                     priority_tv.setText(priorityId);
                 }
@@ -2168,6 +2149,4 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
-
-
 }

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,8 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Calibration_Orders_Operations_List_Activity extends AppCompatActivity implements View.OnClickListener
-{
+public class Calibration_Orders_Operations_List_Activity extends AppCompatActivity implements View.OnClickListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -43,7 +41,8 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     Calibration_UsageDecision_Fragment usageDecision_fragment;
     Calibration_Defects_Fragment defects_fragment;
     private Toolbar toolbar;
-    String[] tabTitle={"Operations","Usage Decision","Defects"};
+    String[] tabTitle = {getString(R.string.operations),
+            getString(R.string.usg_decs), getString(R.string.defects)};
     String order_id = "", plant_id = "", equip_id = "";
     Button cancel_button, submit_button;
     Dialog submit_decision_dialog;
@@ -57,40 +56,35 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     private static String DATABASE_NAME = "";
     RelativeLayout footer;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_orders_operations_activity);
 
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             order_id = extras.getString("order_id");
             plant_id = extras.getString("plant_id");
             equip_id = extras.getString("equip_id");
         }
 
 
-        cancel_button = (Button)findViewById(R.id.cancel_button);
-        submit_button = (Button)findViewById(R.id.submit_button);
+        cancel_button = (Button) findViewById(R.id.cancel_button);
+        submit_button = (Button) findViewById(R.id.submit_button);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        title_textview = (TextView)findViewById(R.id.title_textview);
-        footer = (RelativeLayout)findViewById(R.id.footer);
+        title_textview = (TextView) findViewById(R.id.title_textview);
+        footer = (RelativeLayout) findViewById(R.id.footer);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(null);
-        toolbar.setPadding(0,0,0,0);//for tab otherwise give space in tab
-        toolbar.setContentInsetsAbsolute(0,0);
+        toolbar.setPadding(0, 0, 0, 0);//for tab otherwise give space in tab
+        toolbar.setContentInsetsAbsolute(0, 0);
         ImageView home_imageview = (ImageView) toolbar.findViewById(R.id.home_imageview);
-        home_imageview.setOnClickListener(new View.OnClickListener()
-        {
+        home_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Calibration_Orders_Operations_List_Activity.this.finish();
             }
         });
@@ -103,12 +97,9 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
         setupViewPager(viewPager);
 
-        try
-        {
+        try {
             setupTabIcons();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
 
 
@@ -116,83 +107,63 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, getApplicationContext().MODE_PRIVATE, null);
 
         String Prueflos = "";
-        try
-        {
+        try {
             Cursor cursor1 = null;
             cursor1 = App_db.rawQuery("select * from EtQinspData Where Aufnr = ?", new String[]{order_id});
-            if (cursor1 != null && cursor1.getCount() > 0)
-            {
-                if (cursor1.moveToFirst())
-                {
-                    do
-                    {
+            if (cursor1 != null && cursor1.getCount() > 0) {
+                if (cursor1.moveToFirst()) {
+                    do {
                         Prueflos = cursor1.getString(2);
                     }
                     while (cursor1.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor1.close();
                 Prueflos = "";
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Prueflos = "";
         }
-        if (Prueflos != null && !Prueflos.equals(""))
-        {
-            title_textview.setText("Lot No : "+Prueflos);
+        if (Prueflos != null && !Prueflos.equals("")) {
+            title_textview.setText(getString(R.string.lot_no, Prueflos));
         }
 
 
         String vkatart = "";
-        try
-        {
+        try {
             Cursor cursor1 = null;
             cursor1 = App_db.rawQuery("select * from EtQudData Where Aufnr = ?", new String[]{order_id});
-            if (cursor1 != null && cursor1.getCount() > 0)
-            {
-                if (cursor1.moveToFirst())
-                {
-                    do
-                    {
+            if (cursor1 != null && cursor1.getCount() > 0) {
+                if (cursor1.moveToFirst()) {
+                    do {
                         vkatart = cursor1.getString(5);
                     }
                     while (cursor1.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor1.close();
                 vkatart = "";
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             vkatart = "";
         }
-        if (vkatart != null && !vkatart.equals(""))
-        {
+        if (vkatart != null && !vkatart.equals("")) {
             footer.setVisibility(View.GONE);
         }
 
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-            {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
-            public void onPageSelected(int position)
-            {
-                viewPager.setCurrentItem(position,false);
+            public void onPageSelected(int position) {
+                viewPager.setCurrentItem(position, false);
             }
+
             @Override
-            public void onPageScrollStateChanged(int state)
-            {
+            public void onPageScrollStateChanged(int state) {
             }
         });
 
@@ -203,161 +174,135 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     }
 
 
-    private void setupViewPager(final ViewPager viewPager)
-    {
+    private void setupViewPager(final ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         operations_fragment = new Calibration_Operations_Fragment();
         usageDecision_fragment = new Calibration_UsageDecision_Fragment();
         defects_fragment = new Calibration_Defects_Fragment();
-        adapter.addFragment(operations_fragment,"Operations");
-        adapter.addFragment(usageDecision_fragment,"Usage Decision");
-        adapter.addFragment(defects_fragment,"Defects");
+        adapter.addFragment(operations_fragment, getString(R.string.operations));
+        adapter.addFragment(usageDecision_fragment, getString(R.string.usg_decs));
+        adapter.addFragment(defects_fragment, getString(R.string.defects));
         viewPager.setAdapter(adapter);
     }
 
 
-    private View prepareTabView(int pos)
-    {
-        View view = getLayoutInflater().inflate(R.layout.custom_tab,null);
+    private View prepareTabView(int pos) {
+        View view = getLayoutInflater().inflate(R.layout.custom_tab, null);
         TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
         tv_title.setText(tabTitle[pos]);
         return view;
     }
 
 
-    private void setupTabIcons()
-    {
-        for(int i=0;i<tabTitle.length;i++)
-        {
+    private void setupTabIcons() {
+        for (int i = 0; i < tabTitle.length; i++) {
             tabLayout.getTabAt(i).setCustomView(prepareTabView(i));
         }
     }
 
 
-    public String getorder_id()
-    {
+    public String getorder_id() {
         return order_id;
     }
 
 
-    public String getplant_id()
-    {
+    public String getplant_id() {
         return plant_id;
     }
 
 
     @Override
-    public void onClick(View v)
-    {
-        if(v == cancel_button)
-        {
+    public void onClick(View v) {
+        if (v == cancel_button) {
             Calibration_Orders_Operations_List_Activity.this.finish();
-        }
-        else if(v == submit_button)
-        {
+        } else if (v == submit_button) {
             cd = new ConnectionDetector(Calibration_Orders_Operations_List_Activity.this);
             isInternetPresent = cd.isConnectingToInternet();
-            if (isInternetPresent)
-            {
+            if (isInternetPresent) {
                 submit_decision_dialog = new Dialog(Calibration_Orders_Operations_List_Activity.this);
                 submit_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 submit_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 submit_decision_dialog.setCancelable(false);
                 submit_decision_dialog.setCanceledOnTouchOutside(false);
                 submit_decision_dialog.setContentView(R.layout.decision_dialog);
-                ImageView imageView1 = (ImageView)submit_decision_dialog.findViewById(R.id.imageView1);
+                ImageView imageView1 = (ImageView) submit_decision_dialog.findViewById(R.id.imageView1);
                 Glide.with(Calibration_Orders_Operations_List_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
                 TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
-                description_textview.setText("Do you want to submit for calibration data ?");
+                description_textview.setText(getString(R.string.submit_calb));
                 Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
                 Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
                 submit_decision_dialog.show();
-                ok_button.setOnClickListener(new View.OnClickListener()
-                {
+                ok_button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         submit_decision_dialog.dismiss();
                         new Get_Token().execute();
                     }
                 });
-                cancel_button.setOnClickListener(new View.OnClickListener()
-                {
+                cancel_button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         submit_decision_dialog.dismiss();
                     }
                 });
-            }
-            else
-            {
+            } else {
                 network_connection_dialog.show_network_connection_dialog(Calibration_Orders_Operations_List_Activity.this);
             }
         }
     }
 
 
-    private class Get_Token extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Token extends AsyncTask<Void, Integer, Void> {
         String token_status = "";
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Calibration_Orders_Operations_List_Activity.this,getResources().getString(R.string.save_calibration));
+            custom_progress_dialog.show_progress_dialog(Calibration_Orders_Operations_List_Activity.this, getResources().getString(R.string.save_calibration));
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 token_status = Token.Get_Token(Calibration_Orders_Operations_List_Activity.this);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(token_status.equalsIgnoreCase("success"))
-            {
+            if (token_status.equalsIgnoreCase("success")) {
                 new Fetching_Calibration_Data().execute();
-            }
-            else
-            {
+            } else {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Calibration_Orders_Operations_List_Activity.this,"Unable to submit calibration Data. Please try again");
+                error_dialog.show_error_dialog(Calibration_Orders_Operations_List_Activity.this,
+                        getString(R.string.unable_calib));
             }
         }
     }
 
-
-    private class Fetching_Calibration_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Fetching_Calibration_Data extends AsyncTask<Void, Integer, Void> {
         ArrayList<Model_Notif_Calibration_Operations> calib_operations_ArrayList = new ArrayList<>();
         ArrayList<Model_Notif_Calibration_UsageDecision> calib_usagedecision_ArrayList = new ArrayList<>();
         ArrayList<Model_Notif_Calibration_Defects> calib_defects_ArrayList = new ArrayList<>();
         Map<String, String> calibration_submit_status;
         String Prueflos = "";
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 DateFormat date_format = new SimpleDateFormat("yyyyMMdd");
                 DateFormat time_format = new SimpleDateFormat("HHmmss");
                 Date todaysdate = new Date();
@@ -365,15 +310,12 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 String time = time_format.format(todaysdate.getTime());
 
                 /*Fetching Operations Data*/
-                Calibration_Operations_Fragment operations_tab = (Calibration_Operations_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
+                Calibration_Operations_Fragment operations_tab = (Calibration_Operations_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                 List<Orders_Operations_Parcelable> operations_data = operations_tab.getOperationData();
-                for(int i = 0 ; i < operations_data.size(); i++)
-                {
+                for (int i = 0; i < operations_data.size(); i++) {
                     ArrayList<Start_Calibration_Parcelable> Start_calibration_parcelables = operations_data.get(i).getStart_calibration_parcelables();
-                    if(Start_calibration_parcelables.size() > 0)
-                    {
-                        for(int j = 0 ; j < Start_calibration_parcelables.size(); j++)
-                        {
+                    if (Start_calibration_parcelables.size() > 0) {
+                        for (int j = 0; j < Start_calibration_parcelables.size(); j++) {
                             Model_Notif_Calibration_Operations model_notif_calibration_operations = new Model_Notif_Calibration_Operations();
                             model_notif_calibration_operations.setAufnr(order_id);
                             Prueflos = Start_calibration_parcelables.get(j).getPrueflos();
@@ -424,7 +366,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
 
                 /*Fetching Usage Decision Data*/
-                Calibration_UsageDecision_Fragment header_tab = (Calibration_UsageDecision_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,1));
+                Calibration_UsageDecision_Fragment header_tab = (Calibration_UsageDecision_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
                 Calibration_Usage_Decision_Object header_data = header_tab.getUsageDecisionData();
                 String udcode_id = header_data.getUdcode_id();
                 String udcode_text = header_data.getUdcode_text();
@@ -442,12 +384,10 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
 
                 /*Fetching Defects Data*/
-                Calibration_Defects_Fragment defects_fragment = (Calibration_Defects_Fragment)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,2));
+                Calibration_Defects_Fragment defects_fragment = (Calibration_Defects_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
                 List<Calibration_Defects_Fragment.Defects_Object> defects_list = defects_fragment.getDefectsData();
-                if(defects_list.size() > 0)
-                {
-                    for(int i = 0 ; i < defects_list.size(); i++)
-                    {
+                if (defects_list.size() > 0) {
+                    for (int i = 0; i < defects_list.size(); i++) {
                         Model_Notif_Calibration_Defects model_notif_calibration_defects = new Model_Notif_Calibration_Defects();
                         model_notif_calibration_defects.setPrueflos(Prueflos);
                         model_notif_calibration_defects.setAufnr(order_id);
@@ -464,21 +404,19 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 /*Fetching Defects Data*/
 
 
-                calibration_submit_status = Calibration_Save.Post_Calibration_Data(Calibration_Orders_Operations_List_Activity.this,calib_operations_ArrayList, calib_usagedecision_ArrayList, calib_defects_ArrayList, order_id);
-            }
-            catch (Exception e)
-            {
+                calibration_submit_status = Calibration_Save.Post_Calibration_Data(Calibration_Orders_Operations_List_Activity.this, calib_operations_ArrayList, calib_usagedecision_ArrayList, calib_defects_ArrayList, order_id);
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
-        protected void onProgressUpdate(Integer... values)
-        {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             custom_progress_dialog.dismiss_progress_dialog();
             final Dialog success_dialog = new Dialog(Calibration_Orders_Operations_List_Activity.this);
@@ -490,14 +428,12 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             ImageView imageview = (ImageView) success_dialog.findViewById(R.id.imageView1);
             TextView description_textview = (TextView) success_dialog.findViewById(R.id.description_textview);
             Button ok_button = (Button) success_dialog.findViewById(R.id.ok_button);
-            description_textview.setText("Calibration Data is saved successfully");
+            description_textview.setText(getString(R.string.calib_save));
             Glide.with(Calibration_Orders_Operations_List_Activity.this).load(R.drawable.success_checkmark).into(imageview);
             success_dialog.show();
-            ok_button.setOnClickListener(new View.OnClickListener()
-            {
+            ok_button.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     success_dialog.dismiss();
                     Calibration_Orders_Operations_List_Activity.this.finish();
                 }
@@ -506,8 +442,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     }
 
 
-    private static String makeFragmentName(int viewPagerId, int index)
-    {
+    private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 

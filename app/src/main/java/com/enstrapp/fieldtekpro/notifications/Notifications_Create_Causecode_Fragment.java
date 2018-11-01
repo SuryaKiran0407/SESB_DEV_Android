@@ -25,13 +25,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Notifications_Create_Causecode_Fragment extends Fragment
-{
-
+public class Notifications_Create_Causecode_Fragment extends Fragment {
 
     private List<Cause_Code_Object> causecode_list = new ArrayList<>();
     List cc_list = new ArrayList();
-    String selected_pos= "", selected_status = "I", cause_id = "",cause_text = "",causecode_id = "",causecode_text = "",cause_desc = "",item_key = "0001",object_part_id = "",object_part_text = "",objectcode_id = "",object_code_text = "",event_id = "",event_text = "",eventcode_id = "",eventcode_text = "",event_desc = "";
+    String selected_pos = "", selected_status = "I", cause_id = "", cause_text = "",
+            causecode_id = "", causecode_text = "", cause_desc = "", item_key = "0001",
+            object_part_id = "", object_part_text = "", objectcode_id = "", object_code_text = "",
+            event_id = "", event_text = "", eventcode_id = "", eventcode_text = "", event_desc = "";
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     CAUSE_CODE_ADAPTER cause_code_adapter;
@@ -44,105 +45,78 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
     boolean isSelected = false;
     Notifications_Create_Activity nca;
 
-
-    public Notifications_Create_Causecode_Fragment()
-    {
+    public Notifications_Create_Causecode_Fragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.notifications_causecode_fragment, container, false);
 
-        noData_tv = (TextView)rootView.findViewById(R.id.noData_tv);
+        noData_tv = (TextView) rootView.findViewById(R.id.noData_tv);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
         nca = (Notifications_Create_Activity) this.getActivity();
 
-
         recyclerView.setVisibility(View.GONE);
         noData_tv.setVisibility(View.VISIBLE);
-
 
         return rootView;
     }
 
-
-
-   @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
-    {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed())
             onResume();
     }
 
-
-
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         if (!getUserVisibleHint())
             return;
         Notifications_Create_Activity mainActivity = (Notifications_Create_Activity) getActivity();
         mainActivity.fab.show();
-        mainActivity.fab.setOnClickListener(new View.OnClickListener()
-        {
+        mainActivity.fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (isSelected)
-                {
+            public void onClick(View v) {
+                if (isSelected) {
                     final Dialog delete_decision_dialog = new Dialog(getActivity());
                     delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     delete_decision_dialog.setCancelable(false);
                     delete_decision_dialog.setCanceledOnTouchOutside(false);
                     delete_decision_dialog.setContentView(R.layout.decision_dialog);
-                    TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
-                    description_textview.setText("Do you want to delete the selected causecode?");
-                    Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
-                    Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                    TextView description_textview = delete_decision_dialog.findViewById(R.id.description_textview);
+                    description_textview.setText(getString(R.string.causecode_delete));
+                    Button ok_button = delete_decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel_button = delete_decision_dialog.findViewById(R.id.no_button);
                     delete_decision_dialog.show();
-                    ok_button.setOnClickListener(new View.OnClickListener()
-                    {
+                    ok_button.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             ArrayList<Cause_Code_Object> rmoop = new ArrayList<>();
                             rmoop.addAll(causecode_list);
-
-                            for (Cause_Code_Object oo : rmoop)
-                            {
-                                if (oo.isSelected())
-                                {
+                            for (Cause_Code_Object oo : rmoop) {
+                                if (oo.isSelected()) {
                                     causecode_list.remove(oo);
-                                }
-                                else
-                                {
+                                } else {
                                     oo.setSelected(false);
                                 }
                             }
-
                             nca.animateFab(false);
                             isSelected = false;
-
-                            if (causecode_list.size() > 0)
-                            {
-                                cause_code_adapter = new CAUSE_CODE_ADAPTER(getActivity(),causecode_list);
+                            if (causecode_list.size() > 0) {
+                                cause_code_adapter = new CAUSE_CODE_ADAPTER(getActivity(), causecode_list);
                                 recyclerView.setAdapter(cause_code_adapter);
                                 recyclerView.setVisibility(View.VISIBLE);
                                 noData_tv.setVisibility(View.GONE);
-                            }
-                            else
-                            {
+                            } else {
                                 recyclerView.setVisibility(View.GONE);
                                 noData_tv.setVisibility(View.VISIBLE);
                             }
@@ -150,55 +124,45 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
                             delete_decision_dialog.dismiss();
                         }
                     });
-                    cancel_button.setOnClickListener(new View.OnClickListener()
-                    {
+                    cancel_button.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             delete_decision_dialog.dismiss();
                         }
                     });
-                }
-                else
-                {
-                    Notifications_Create_Header_Fragment header_tab = (Notifications_Create_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
+                } else {
+                    Notifications_Create_Header_Fragment header_tab =
+                            (Notifications_Create_Header_Fragment) getFragmentManager()
+                                    .findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                     Notifications_Create_Header_Object header_data = header_tab.getData();
                     String functionlocation_id = header_data.getFunctionlocation_id();
                     String equipment_id = header_data.getEquipment_id();
-                    if ((equipment_id != null && !equipment_id.equals("")) || (functionlocation_id != null && !functionlocation_id.equals("")))
-                    {
-                        Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-                        intent.putExtra("functionlocation_id",functionlocation_id);
-                        intent.putExtra("equipment_id",equipment_id);
+                    if ((equipment_id != null && !equipment_id.equals("")) ||
+                            (functionlocation_id != null && !functionlocation_id.equals(""))) {
+                        Intent intent = new Intent(getActivity(),
+                                Notifications_CauseCode_Add_Activity.class);
+                        intent.putExtra("functionlocation_id", functionlocation_id);
+                        intent.putExtra("equipment_id", equipment_id);
                         intent.putExtra("request_id", Integer.toString(add_causecode_type));
                         startActivityForResult(intent, add_causecode_type);
-                    }
-                    else
-                    {
-                        error_dialog.show_error_dialog(getActivity(), "Please select Equipment / Function Location");
+                    } else {
+                        error_dialog.show_error_dialog(getActivity(),
+                                getString(R.string.equipFunc_mandate));
                     }
                 }
             }
         });
     }
 
-
-
-    private static String makeFragmentName(int viewPagerId, int index)
-    {
+    private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
-
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !data.equals(""))
-        {
-            if(requestCode == 1)
-            {
+        if (data != null && !data.equals("")) {
+            if (requestCode == 1) {
                 object_part_id = data.getStringExtra("objectpart_id");
                 object_part_text = data.getStringExtra("objectpart_text");
                 objectcode_id = data.getStringExtra("objectpartcode_id");
@@ -207,31 +171,31 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
                 event_text = data.getStringExtra("event_text");
                 eventcode_id = data.getStringExtra("eventcode_id");
                 eventcode_text = data.getStringExtra("eventcode_text");
-                event_desc =  data.getStringExtra("event_descritpion");
-                cause_id =  data.getStringExtra("cause_id");
+                event_desc = data.getStringExtra("event_descritpion");
+                cause_id = data.getStringExtra("cause_id");
                 cause_text = data.getStringExtra("cause_text");
                 causecode_id = data.getStringExtra("causecode_id");
                 causecode_text = data.getStringExtra("causecode_text");
                 cause_desc = data.getStringExtra("cause_descritpion");
                 selected_object_custom_info_arraylist.clear();
                 selected_cause_custom_info_arraylist.clear();
-                selected_object_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_object_custom_info_arraylist");
-                selected_cause_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("selected_cause_custom_info_arraylist");
+                selected_object_custom_info_arraylist =
+                        (ArrayList<HashMap<String, String>>) data
+                                .getSerializableExtra("selected_object_custom_info_arraylist");
+                selected_cause_custom_info_arraylist =
+                        (ArrayList<HashMap<String, String>>) data
+                                .getSerializableExtra("selected_cause_custom_info_arraylist");
                 String itemkey = data.getStringExtra("itemkey");
                 String status = data.getStringExtra("status");
-                if (itemkey != null && !itemkey.equals(""))
-                {
-                    if(status.equalsIgnoreCase("U"))
-                    {
+                if (itemkey != null && !itemkey.equals("")) {
+                    if (status.equalsIgnoreCase("U")) {
                         selected_status = "U";
                         item_key = data.getStringExtra("itemkey");
                         String pos = data.getStringExtra("position");
                         selected_position = Integer.parseInt(pos);
                         selected_pos = pos;
                         causecode_list.remove(selected_position);
-                    }
-                    else
-                    {
+                    } else {
                         selected_status = "I";
                         item_key = data.getStringExtra("itemkey");
                         String pos = data.getStringExtra("position");
@@ -239,31 +203,22 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
                         selected_pos = pos;
                         causecode_list.remove(selected_position);
                     }
-                }
-                else
-                {
-                    if (causecode_list.size() > 0)
-                    {
-                        for (Cause_Code_Object bean : causecode_list)
-                        {
+                } else {
+                    if (causecode_list.size() > 0) {
+                        for (Cause_Code_Object bean : causecode_list) {
                             cc_list.add(bean.getitem_key());
                         }
                         String max_id = Collections.max(cc_list).toString();
                         int last_num = Integer.parseInt(max_id);
                         int new_num = last_num + 1;
                         String new_item_number = "";
-                        if(new_num >= 10)
-                        {
-                            new_item_number = "00"+new_num;
-                        }
-                        else
-                        {
-                            new_item_number = "000"+new_num;
+                        if (new_num >= 10) {
+                            new_item_number = "00" + new_num;
+                        } else {
+                            new_item_number = "000" + new_num;
                         }
                         item_key = new_item_number;
-                    }
-                    else
-                    {
+                    } else {
                         item_key = "0001";
                     }
                     selected_status = "I";
@@ -273,33 +228,33 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
         }
     }
 
-
-
-    private class Get_Added_CauseCode_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Added_CauseCode_Data extends AsyncTask<Void, Integer, Void> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
-                if (selected_pos != null && !selected_pos.equals(""))
-                {
-                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_object_custom_info_arraylist, selected_cause_custom_info_arraylist, false, selected_status);
-                    causecode_list.add(selected_position,to);
-                }
-                else
-                {
-                    Cause_Code_Object to = new Cause_Code_Object(item_key,object_part_id,object_part_text,objectcode_id,object_code_text,event_id,event_text,eventcode_id,eventcode_text,event_desc,cause_id,cause_text,causecode_id,causecode_text,cause_desc,item_key,selected_object_custom_info_arraylist, selected_cause_custom_info_arraylist, false, selected_status);
+        protected Void doInBackground(Void... params) {
+            try {
+                if (selected_pos != null && !selected_pos.equals("")) {
+                    Cause_Code_Object to = new Cause_Code_Object(item_key, object_part_id,
+                            object_part_text, objectcode_id, object_code_text, event_id, event_text,
+                            eventcode_id, eventcode_text, event_desc, cause_id, cause_text,
+                            causecode_id, causecode_text, cause_desc, item_key,
+                            selected_object_custom_info_arraylist,
+                            selected_cause_custom_info_arraylist, false, selected_status);
+                    causecode_list.add(selected_position, to);
+                } else {
+                    Cause_Code_Object to = new Cause_Code_Object(item_key, object_part_id,
+                            object_part_text, objectcode_id, object_code_text, event_id, event_text,
+                            eventcode_id, eventcode_text, event_desc, cause_id, cause_text,
+                            causecode_id, causecode_text, cause_desc, item_key,
+                            selected_object_custom_info_arraylist,
+                            selected_cause_custom_info_arraylist, false, selected_status);
                     causecode_list.add(to);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
@@ -312,18 +267,15 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (causecode_list.size() > 0)
-            {
+            if (causecode_list.size() > 0) {
                 recyclerView.setHasFixedSize(true);
                 mLayoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(mLayoutManager);
-                cause_code_adapter = new CAUSE_CODE_ADAPTER(getActivity(),causecode_list);
+                cause_code_adapter = new CAUSE_CODE_ADAPTER(getActivity(), causecode_list);
                 recyclerView.setAdapter(cause_code_adapter);
                 recyclerView.setVisibility(View.VISIBLE);
                 noData_tv.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 recyclerView.setVisibility(View.GONE);
                 noData_tv.setVisibility(View.VISIBLE);
             }
@@ -331,10 +283,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
         }
     }
 
-
-
-    public class Cause_Code_Object
-    {
+    public class Cause_Code_Object {
         private String cause_key;
         private String item_key;
         private String object_part_id;
@@ -355,8 +304,16 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
         public boolean selected;
         ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist;
         ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist;
-        public Cause_Code_Object(String item_key, String object_part_id, String object_part_text, String objectcode_id, String object_code_text, String event_id, String event_text, String eventcode_id, String eventcode_text, String event_desc, String cause_id, String cause_text, String causecode_id, String causecode_text, String cause_desc, String cause_key, ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist, ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist, boolean selected, String status)
-        {
+
+        public Cause_Code_Object(String item_key, String object_part_id, String object_part_text,
+                                 String objectcode_id, String object_code_text, String event_id,
+                                 String event_text, String eventcode_id, String eventcode_text,
+                                 String event_desc, String cause_id, String cause_text,
+                                 String causecode_id, String causecode_text, String cause_desc,
+                                 String cause_key,
+                                 ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist,
+                                 ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist,
+                                 boolean selected, String status) {
             this.item_key = item_key;
             this.object_part_id = object_part_id;
             this.object_part_text = object_part_text;
@@ -398,196 +355,203 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
         public ArrayList<HashMap<String, String>> getSelected_cause_custom_info_arraylist() {
             return selected_cause_custom_info_arraylist;
         }
+
         public void setSelected_cause_custom_info_arraylist(ArrayList<HashMap<String, String>> selected_cause_custom_info_arraylist) {
             this.selected_cause_custom_info_arraylist = selected_cause_custom_info_arraylist;
         }
+
         public ArrayList<HashMap<String, String>> getSelected_object_custom_info_arraylist() {
             return selected_object_custom_info_arraylist;
         }
+
         public void setSelected_object_custom_info_arraylist(ArrayList<HashMap<String, String>> selected_object_custom_info_arraylist) {
             this.selected_object_custom_info_arraylist = selected_object_custom_info_arraylist;
         }
+
         public String getCause_key() {
             return cause_key;
         }
+
         public void setCause_key(String cause_key) {
             this.cause_key = cause_key;
         }
-        public String getitem_key()
-        {
+
+        public String getitem_key() {
             return item_key;
         }
-        public void setitem_key(String item_key)
-        {
+
+        public void setitem_key(String item_key) {
             this.item_key = item_key;
         }
-        public String getobject_part_id()
-        {
+
+        public String getobject_part_id() {
             return object_part_id;
         }
-        public void setobject_part_id(String object_part_id)
-        {
+
+        public void setobject_part_id(String object_part_id) {
             this.object_part_id = object_part_id;
         }
-        public String getobject_part_text()
-        {
+
+        public String getobject_part_text() {
             return object_part_text;
         }
-        public void setobject_part_text(String object_part_text)
-        {
+
+        public void setobject_part_text(String object_part_text) {
             this.object_part_text = object_part_text;
         }
-        public String getobjectcode_id()
-        {
+
+        public String getobjectcode_id() {
             return objectcode_id;
         }
-        public void setobjectcode_id(String objectcode_id)
-        {
+
+        public void setobjectcode_id(String objectcode_id) {
             this.objectcode_id = objectcode_id;
         }
-        public String getobject_code_text()
-        {
+
+        public String getobject_code_text() {
             return object_code_text;
         }
-        public void setobject_code_text(String object_code_text)
-        {
+
+        public void setobject_code_text(String object_code_text) {
             this.object_code_text = object_code_text;
         }
-        public String getevent_id()
-        {
+
+        public String getevent_id() {
             return event_id;
         }
-        public void setevent_id(String event_id)
-        {
+
+        public void setevent_id(String event_id) {
             this.event_id = event_id;
         }
-        public String getevent_text()
-        {
+
+        public String getevent_text() {
             return event_text;
         }
-        public void setevent_text(String event_text)
-        {
+
+        public void setevent_text(String event_text) {
             this.event_text = event_text;
         }
-        public String geteventcode_id()
-        {
+
+        public String geteventcode_id() {
             return eventcode_id;
         }
-        public void seteventcode_id(String eventcode_id)
-        {
+
+        public void seteventcode_id(String eventcode_id) {
             this.eventcode_id = eventcode_id;
         }
-        public String geteventcode_text()
-        {
+
+        public String geteventcode_text() {
             return eventcode_text;
         }
-        public void seteventcode_text(String eventcode_text)
-        {
+
+        public void seteventcode_text(String eventcode_text) {
             this.eventcode_text = eventcode_text;
         }
-        public String getevent_desc()
-        {
+
+        public String getevent_desc() {
             return event_desc;
         }
-        public void setevent_desc(String event_desc)
-        {
+
+        public void setevent_desc(String event_desc) {
             this.event_desc = event_desc;
         }
-        public String getcause_id()
-        {
+
+        public String getcause_id() {
             return cause_id;
         }
-        public void setcause_id(String cause_id)
-        {
+
+        public void setcause_id(String cause_id) {
             this.cause_id = cause_id;
         }
-        public String getcause_text()
-        {
+
+        public String getcause_text() {
             return cause_text;
         }
-        public void setcause_text(String cause_text)
-        {
+
+        public void setcause_text(String cause_text) {
             this.cause_text = cause_text;
         }
-        public String getcausecode_id()
-        {
+
+        public String getcausecode_id() {
             return causecode_id;
         }
-        public void setcausecode_id(String causecode_id)
-        {
+
+        public void setcausecode_id(String causecode_id) {
             this.causecode_id = causecode_id;
         }
-        public String getcausecode_text()
-        {
+
+        public String getcausecode_text() {
             return causecode_text;
         }
-        public void setcausecode_text(String causecode_text)
-        {
+
+        public void setcausecode_text(String causecode_text) {
             this.causecode_text = causecode_text;
         }
-        public String getcause_desc()
-        {
+
+        public String getcause_desc() {
             return cause_desc;
         }
-        public void setcause_desc(String cause_desc)
-        {
+
+        public void setcause_desc(String cause_desc) {
             this.cause_desc = cause_desc;
         }
     }
 
-
-
-    public class CAUSE_CODE_ADAPTER extends RecyclerView.Adapter<CAUSE_CODE_ADAPTER.MyViewHolder>
-    {
+    public class CAUSE_CODE_ADAPTER extends RecyclerView.Adapter<CAUSE_CODE_ADAPTER.MyViewHolder> {
         private Context mContext;
         private List<Cause_Code_Object> type_details_list;
-        public class MyViewHolder extends RecyclerView.ViewHolder
-        {
-            public TextView cause_key, item_key,causecode_text, causecode_desc, causecode_id,cause_text,cause_id, event_desc,event_code_text, event_code_id, event_text, event_id, objpart_code_text_tv, objpart_code_id_tv, objpart_text_tv, objpart_id_tv, cause_code_textview, cause_textview, event_textview, event_code_textview, event_description_textview;
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            public TextView cause_key, item_key, causecode_text, causecode_desc, causecode_id,
+                    cause_text, cause_id, event_desc, event_code_text, event_code_id, event_text,
+                    event_id, objpart_code_text_tv, objpart_code_id_tv, objpart_text_tv,
+                    objpart_id_tv, cause_code_textview, cause_textview, event_textview,
+                    event_code_textview, event_description_textview;
             LinearLayout data_layout;
             CheckBox checkbox;
-            public MyViewHolder(View view)
-            {
+
+            public MyViewHolder(View view) {
                 super(view);
-                event_textview = (TextView) view.findViewById(R.id.event_textview);
-                event_code_textview = (TextView) view.findViewById(R.id.event_code_textview);
-                event_description_textview = (TextView)view.findViewById(R.id.event_description_textview);
-                cause_textview = (TextView)view.findViewById(R.id.cause_textview);
-                cause_code_textview = (TextView)view.findViewById(R.id.cause_code_textview);
-                objpart_id_tv = (TextView)view.findViewById(R.id.objpart_id_tv);
-                objpart_text_tv = (TextView)view.findViewById(R.id.objpart_text_tv);
-                objpart_code_id_tv = (TextView)view.findViewById(R.id.objpart_code_id_tv);
-                objpart_code_text_tv = (TextView)view.findViewById(R.id.objpart_code_text_tv);
-                event_id = (TextView)view.findViewById(R.id.event_id);
-                event_text = (TextView)view.findViewById(R.id.event_text);
-                event_code_id = (TextView)view.findViewById(R.id.event_code_id);
-                event_code_text = (TextView)view.findViewById(R.id.event_code_text);
-                event_desc = (TextView)view.findViewById(R.id.event_desc);
-                cause_id = (TextView)view.findViewById(R.id.cause_id);
-                cause_text = (TextView)view.findViewById(R.id.cause_text);
-                causecode_id = (TextView)view.findViewById(R.id.causecode_id);
-                causecode_text = (TextView)view.findViewById(R.id.causecode_text);
-                causecode_desc = (TextView)view.findViewById(R.id.causecode_desc);
-                item_key = (TextView)view.findViewById(R.id.item_key);
-                cause_key = (TextView)view.findViewById(R.id.cause_key);
-                data_layout = (LinearLayout)view.findViewById(R.id.data_layout);
-                checkbox = (CheckBox)view.findViewById(R.id.checkbox);
+                event_textview = view.findViewById(R.id.event_textview);
+                event_code_textview = view.findViewById(R.id.event_code_textview);
+                event_description_textview = view.findViewById(R.id.event_description_textview);
+                cause_textview = view.findViewById(R.id.cause_textview);
+                cause_code_textview = view.findViewById(R.id.cause_code_textview);
+                objpart_id_tv = view.findViewById(R.id.objpart_id_tv);
+                objpart_text_tv = view.findViewById(R.id.objpart_text_tv);
+                objpart_code_id_tv = view.findViewById(R.id.objpart_code_id_tv);
+                objpart_code_text_tv = view.findViewById(R.id.objpart_code_text_tv);
+                event_id = view.findViewById(R.id.event_id);
+                event_text = view.findViewById(R.id.event_text);
+                event_code_id = view.findViewById(R.id.event_code_id);
+                event_code_text = view.findViewById(R.id.event_code_text);
+                event_desc = view.findViewById(R.id.event_desc);
+                cause_id = view.findViewById(R.id.cause_id);
+                cause_text = view.findViewById(R.id.cause_text);
+                causecode_id = view.findViewById(R.id.causecode_id);
+                causecode_text = view.findViewById(R.id.causecode_text);
+                causecode_desc = view.findViewById(R.id.causecode_desc);
+                item_key = view.findViewById(R.id.item_key);
+                cause_key = view.findViewById(R.id.cause_key);
+                data_layout = view.findViewById(R.id.data_layout);
+                checkbox = view.findViewById(R.id.checkbox);
             }
         }
-        public CAUSE_CODE_ADAPTER(Context mContext, List<Cause_Code_Object> list)
-        {
+
+        public CAUSE_CODE_ADAPTER(Context mContext, List<Cause_Code_Object> list) {
             this.mContext = mContext;
             this.type_details_list = list;
         }
+
         @Override
-        public CAUSE_CODE_ADAPTER.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.notifications_causecode_list_data, parent, false);
+        public CAUSE_CODE_ADAPTER.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.notifications_causecode_list_data, parent, false);
             return new CAUSE_CODE_ADAPTER.MyViewHolder(itemView);
         }
+
         @Override
-        public void onBindViewHolder(final CAUSE_CODE_ADAPTER.MyViewHolder holder, final int position)
-        {
+        public void onBindViewHolder(final CAUSE_CODE_ADAPTER.MyViewHolder holder, final int position) {
             final Cause_Code_Object nto = type_details_list.get(position);
             holder.event_textview.setText(nto.getevent_text());
             holder.event_code_textview.setText(nto.geteventcode_text());
@@ -610,21 +574,19 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
             holder.causecode_desc.setText(nto.getcause_desc());
             holder.item_key.setText(nto.getitem_key());
             holder.cause_key.setText(nto.getCause_key());
-            /*holder.value_textview.setText(nto.getobject_part_id());*/
 
-
-            holder.data_layout.setOnClickListener(new View.OnClickListener()
-            {
+            holder.data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    Notifications_Create_Header_Fragment header_tab = (Notifications_Create_Header_Fragment)getFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
+                public void onClick(View v) {
+                    Notifications_Create_Header_Fragment header_tab =
+                            (Notifications_Create_Header_Fragment) getFragmentManager()
+                                    .findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                     Notifications_Create_Header_Object header_data = header_tab.getData();
                     String functionlocation_id = header_data.getFunctionlocation_id();
                     String equipment_id = header_data.getEquipment_id();//commited
                     Intent intent = new Intent(getActivity(), Notifications_CauseCode_Add_Activity.class);
-                    intent.putExtra("functionlocation_id",functionlocation_id);
-                    intent.putExtra("equipment_id",equipment_id);
+                    intent.putExtra("functionlocation_id", functionlocation_id);
+                    intent.putExtra("equipment_id", equipment_id);
                     intent.putExtra("request_id", Integer.toString(add_causecode_type));
                     intent.putExtra("position", Integer.toString(position));
                     intent.putExtra("itemkey", holder.item_key.getText().toString());
@@ -650,77 +612,52 @@ public class Notifications_Create_Causecode_Fragment extends Fragment
                 }
             });
 
-
-
-            holder.checkbox.setOnClickListener(new View.OnClickListener()
-            {
+            holder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (holder.checkbox.isChecked())
-                    {
+                public void onClick(View v) {
+                    if (holder.checkbox.isChecked()) {
                         count = 0;
                         type_details_list.get(position).setSelected(true);
-                        for (Cause_Code_Object oop : type_details_list)
-                        {
-                            if (oop.isSelected())
-                            {
+                        for (Cause_Code_Object oop : type_details_list) {
+                            if (oop.isSelected()) {
                                 count = count + 1;
                                 isSelected = true;
                             }
                         }
                         if (count == 1)
                             nca.animateFab(true);
-                    }
-                    else
-                    {
+                    } else {
                         count = 0;
                         type_details_list.get(position).setSelected(false);
-                        for (Cause_Code_Object oop : type_details_list)
-                        {
-                            if (oop.isSelected())
-                            {
+                        for (Cause_Code_Object oop : type_details_list) {
+                            if (oop.isSelected()) {
                                 count = count + 1;
                             }
                         }
-                        if (count == 0)
-                        {
+                        if (count == 0) {
                             nca.animateFab(false);
                             isSelected = false;
                         }
                     }
                 }
             });
-
-
         }
+
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return type_details_list.size();
         }
     }
 
-
-
-    public List<Cause_Code_Object> getCauseCodeData()
-    {
+    public List<Cause_Code_Object> getCauseCodeData() {
         return causecode_list;
     }
 
-
-
-    public int causeSize()
-    {
-        if (causecode_list.size() > 0)
-        {
-            return  causecode_list.size();
-        }
-        else
-        {
-            return  0;
+    public int causeSize() {
+        if (causecode_list.size() > 0) {
+            return causecode_list.size();
+        } else {
+            return 0;
         }
     }
-
-
 }

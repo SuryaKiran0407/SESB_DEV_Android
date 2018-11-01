@@ -45,54 +45,71 @@ public class Order_CConfirmation {
     private static String DATABASE_NAME = "";
     private static SharedPreferences app_sharedpreferences;
     private static SharedPreferences.Editor app_editor;
-    private static String cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "", Get_Data = "";
+    private static String cookie = "", token = "", password = "", url_link = "", username = "",
+            device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "",
+            Get_Data = "";
     private static Map<String, String> response = new HashMap<String, String>();
     private static Check_Empty checkempty = new Check_Empty();
     private static ArrayList<HashMap<String, String>> orders_uuid_list = new ArrayList<HashMap<String, String>>();
     private static StringBuffer message = new StringBuffer();
     private static boolean success = false;
 
-    public static String Get_Data(Context activity, ArrayList<ConfirmOrder_Prcbl> cop_al, ArrayList<Measurement_Parceble> mpo_al,
-                                  String transmitType, String operation, String orderId, String type, String longtext_text)
-    {
-        try
-        {
+    public static String Get_Data(Context activity, ArrayList<ConfirmOrder_Prcbl> cop_al,
+                                  ArrayList<Measurement_Parceble> mpo_al,
+                                  String transmitType, String operation, String orderId,
+                                  String type, String longtext_text) {
+        try {
             Get_Response = "";
             Get_Data = "";
             DATABASE_NAME = activity.getString(R.string.database_name);
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             /* Initializing Shared Preferences */
-            app_sharedpreferences = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            app_sharedpreferences = activity
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             app_editor = app_sharedpreferences.edit();
             username = app_sharedpreferences.getString("Username", null);
             password = app_sharedpreferences.getString("Password", null);
             token = app_sharedpreferences.getString("token", null);
             cookie = app_sharedpreferences.getString("cookie", null);
-            String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+            String webservice_type = app_sharedpreferences.getString("webservice_type",
+                    null);
             /* Initializing Shared Preferences */
             if (type.equals("pc")) {
-                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"W", "Z", webservice_type});
+                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where " +
+                                "Zdoctype = ? and Zactivity = ? and Endpoint = ?",
+                        new String[]{"W", "Z", webservice_type});
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
                 }
             } else {
-                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"W", "CC", webservice_type});
+                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where " +
+                                "Zdoctype = ? and Zactivity = ? and Endpoint = ?",
+                        new String[]{"W", "CC", webservice_type});
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
                 }
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure.getString(activity.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) |
+                            device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(120000, TimeUnit.SECONDS)
+                    .writeTimeout(120000, TimeUnit.SECONDS)
+                    .readTimeout(120000, TimeUnit.SECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
 
             /*For Send Data in POST Header*/
@@ -277,13 +294,10 @@ public class Order_CConfirmation {
 
                     /*Adding Order Confirmation Longtext to Arraylist*/
                     String order_confirm_longtext = longtext_text;
-                    if (order_confirm_longtext != null && !order_confirm_longtext.equals(""))
-                    {
-                        if(order_confirm_longtext.contains("\n"))
-                        {
+                    if (order_confirm_longtext != null && !order_confirm_longtext.equals("")) {
+                        if (order_confirm_longtext.contains("\n")) {
                             String[] longtext_array = order_confirm_longtext.split("\n");
-                            for(int i = 0; i < longtext_array.length; i++)
-                            {
+                            for (int i = 0; i < longtext_array.length; i++) {
                                 OrdrLngTxtSer mnc = new OrdrLngTxtSer();
                                 mnc.setAufnr(cop.getAufnr());
                                 mnc.setActivity(cop.getVornr());
@@ -291,9 +305,7 @@ public class Order_CConfirmation {
                                 mnc.setTdid("RMEL");
                                 ItOrderLongtext_Al.add(mnc);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             OrdrLngTxtSer mnc = new OrdrLngTxtSer();
                             mnc.setAufnr(cop.getAufnr());
                             mnc.setActivity(cop.getVornr());
@@ -397,11 +409,11 @@ public class Order_CConfirmation {
                     /*Converting Response JSON Data to JSONArray for Reading*/
                     try {
                         JSONObject jsonObject = new JSONObject(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
+                        /*Converting Response JSON Data to JSONArray for Reading*/
 
-                    /*Reading Data by using FOR Loop*/
-                    /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                        *//*Reading Data by using FOR Loop*//*
+                        /*Reading Data by using FOR Loop*/
+                        /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
+                         *//*Reading Data by using FOR Loop*//*
                         JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
 */
 
@@ -463,9 +475,9 @@ public class Order_CConfirmation {
                                 success = false;
                             }
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                            /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                         }
 
 
@@ -485,11 +497,11 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
                             App_db.beginTransaction();
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
                             if (jsonObject.has("EtOrderHeader")) {
 
                                 try {
@@ -572,10 +584,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
+                            /*Reading and Inserting Data into Database Table for EtOrderHeader*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
                             if (jsonObject.has("EtOrderOperations")) {
                                 try {
                                     String EtOrderOperations_response_data = new Gson().toJson(rs.getD().getEtOrderOperations().getResults());
@@ -631,10 +643,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOperations*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
                             if (jsonObject.has("EtOrderLongtext")) {
                                 try {
                                     String EtOrderLongtext_response_data = new Gson().toJson(rs.getD().getEtOrderLongtext().getResults());
@@ -665,10 +677,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
+                            /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
                             if (jsonObject.has("EtOrderOlist")) {
                                 try {
                                     String EtOrderOlist_response_data = new Gson().toJson(rs.getD().getEtOrderOlist().getResults());
@@ -708,10 +720,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
+                            /*Reading and Inserting Data into Database Table for EtOrderOlist*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
                             if (jsonObject.has("EtOrderStatus")) {
                                 try {
                                     String EtOrderStatus_response_data = new Gson().toJson(rs.getD().getEtOrderStatus().getResults());
@@ -751,10 +763,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
+                            /*Reading and Inserting Data into Database Table for EtOrderStatus*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
                             if (jsonObject.has("EtDocs")) {
                                 try {
                                     String EtDocs_response_data = new Gson().toJson(rs.getD().getEtDocs().getResults());
@@ -782,10 +794,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
                             if (jsonObject.has("EtWcmWwData")) {
                                 try {
                                     String EtWcmWwData_response_data = new Gson().toJson(rs.getD().getEtWcmWwData().getResults());
@@ -842,10 +854,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWwData*/
 
 
-                         /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
                             if (jsonObject.has("EtWcmWaData")) {
                                 try {
                                     String EtWcmWaData_response_data = new Gson().toJson(rs.getD().getEtWcmWaData().getResults());
@@ -904,10 +916,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
                             if (jsonObject.has("EtWcmWaChkReq")) {
                                 try {
                                     String EtWcmWaChkReq_response_data = new Gson().toJson(rs.getD().getEtWcmWaChkReq().getResults());
@@ -936,10 +948,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                             if (jsonObject.has("EtWcmWdData")) {
                                 try {
                                     String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getEtWcmWdData().getResults());
@@ -1029,10 +1041,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                             if (jsonObject.has("EtWcmWdItemData")) {
                                 try {
                                     String EtWcmWdItemData_response_data = new Gson().toJson(rs.getD().getEtWcmWdItemData().getResults());
@@ -1085,10 +1097,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
                             if (jsonObject.has("EtWcmWcagns")) {
                                 try {
                                     String EtWcmWcagns_response_data = new Gson().toJson(rs.getD().getEtWcmWcagns().getResults());
@@ -1141,10 +1153,10 @@ public class Order_CConfirmation {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
 
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                            /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                             if (jsonObject.has("EtOrderComponents")) {
                                 try {
                                     String EtOrderComponents_response_data = new Gson().toJson(rs.getD().getEtOrderComponents().getResults());
@@ -1205,10 +1217,10 @@ public class Order_CConfirmation {
                     /*Reading Data by using FOR Loop*/
                 }
             } else {
-                Get_Response = "Unable to Confirm Order. Please try again.";
+                Get_Response = activity.getString(R.string.cnfrmordr_unable);
             }
         } catch (Exception e) {
-            Get_Response = "Unable to Confirm Order. Please try again.";
+            Get_Response = activity.getString(R.string.cnfrmordr_unable);
         }
         return Get_Response;
     }

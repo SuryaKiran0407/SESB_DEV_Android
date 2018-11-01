@@ -83,7 +83,7 @@ public class Isolation_Template {
     private static final String KEY_GET_EtWcmWdData_Action = "Action";
     private static final String KEY_GET_EtWcmWdData_Begru = "Begru";
     private static final String KEY_GET_EtWcmWdData_Begtx = "Begtx";
-	/* EtWcmWdData Table and Fields Names */
+    /* EtWcmWdData Table and Fields Names */
 
     /* EtWcmWdDataTagtext Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdDataTagtext = "Tmp_EtWcmWdDataTagtext";
@@ -94,7 +94,7 @@ public class Isolation_Template {
     private static final String KEY_EtWcmWdDataTagtext_FormatCol = "FormatCol";
     private static final String KEY_EtWcmWdDataTagtext_TextLine = "TextLine ";
     private static final String KEY_EtWcmWdDataTagtext_Action = "Action";
-	/* EtWcmWdDataTagtext Table and Fields Names */
+    /* EtWcmWdDataTagtext Table and Fields Names */
 
     /* EtWcmWdDataUntagtext Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdDataUntagtext = "Tmp_EtWcmWdDataUntagtext";
@@ -105,7 +105,7 @@ public class Isolation_Template {
     private static final String KEY_EtWcmWdDataUntagtext_FormatCol = "FormatCol";
     private static final String KEY_EtWcmWdDataUntagtext_TextLine = "TextLine ";
     private static final String KEY_EtWcmWdDataUntagtext_Action = "Action";
-	/* EtWcmWdDataUntagtext Table and Fields Names */
+    /* EtWcmWdDataUntagtext Table and Fields Names */
 
     /* EtWcmWdItemData Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdItemData = "Tmp_EtWcmWdItemData";
@@ -194,9 +194,9 @@ public class Isolation_Template {
                     + KEY_GET_EtWcmWdData_Begtx + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_GET_EtWcmWdData);
-		        /* Creating EtWcmWdData Table with Fields */
+            /* Creating EtWcmWdData Table with Fields */
 
-		        /* Creating EtWcmWdItemData Table with Fields */
+            /* Creating EtWcmWdItemData Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdItemData);
             String CREATE_TABLE_GET_EtWcmWdItemData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdItemData + ""
                     + "( "
@@ -240,7 +240,7 @@ public class Isolation_Template {
                     + KEY_GET_EtWcmWdItemData_Eug + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_GET_EtWcmWdItemData);
-		        /* Creating EtWcmWdItemData Table with Fields */
+            /* Creating EtWcmWdItemData Table with Fields */
 
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdDataTagtext);
             String CREATE_TABLE_EtWcmWdDataTagtext = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdDataTagtext + ""
@@ -313,19 +313,19 @@ public class Isolation_Template {
 
                     orders_uuid_list.clear();
 
-                        /*Reading Response Data and Parsing to Serializable*/
+                    /*Reading Response Data and Parsing to Serializable*/
                     Orders_SER rs = response.body();
-                        /*Reading Response Data and Parsing to Serializable*/
+                    /*Reading Response Data and Parsing to Serializable*/
 
-                        /*Converting GSON Response to JSON Data for Parsing*/
+                    /*Converting GSON Response to JSON Data for Parsing*/
                     String response_data = new Gson().toJson(rs.getD().getResults());
-                        /*Converting GSON Response to JSON Data for Parsing*/
+                    /*Converting GSON Response to JSON Data for Parsing*/
 
-                        /*Converting Response JSON Data to JSONArray for Reading*/
+                    /*Converting Response JSON Data to JSONArray for Reading*/
                     JSONArray response_data_jsonArray = new JSONArray(response_data);
-                        /*Converting Response JSON Data to JSONArray for Reading*/
+                    /*Converting Response JSON Data to JSONArray for Reading*/
 
-                        /*Reading Data by using FOR Loop*/
+                    /*Reading Data by using FOR Loop*/
                     try {
                         App_db.beginTransaction();
 
@@ -421,9 +421,9 @@ public class Isolation_Template {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                             if (jsonObject.has("EtWcmWdItemData")) {
                                 try {
                                     String EtWcmWdItemData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWdItemData().getResults());
@@ -476,7 +476,7 @@ public class Isolation_Template {
                                 } catch (Exception e) {
                                 }
                             }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                         }
 
                         App_db.setTransactionSuccessful();
@@ -486,12 +486,12 @@ public class Isolation_Template {
 
                     }
                 } else {
-                    Get_Response = "Unable to Get Template. Please try again.";
+                    Get_Response = activity.getString(R.string.unable_template);
                 }
             }
         } catch (Exception e) {
             Log.v("POAT_REL", "" + e.getMessage());
-            Get_Response = "Unable to Get Template. Please try again.";
+            Get_Response = activity.getString(R.string.unable_template);
         }
         return Get_Response;
     }

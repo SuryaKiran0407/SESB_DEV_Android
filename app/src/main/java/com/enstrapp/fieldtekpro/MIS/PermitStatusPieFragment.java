@@ -5,12 +5,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import android.graphics.Color;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,7 +28,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.DateTime.MonthYearPickerDialog;
-
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.github.mikephil.charting.charts.PieChart;
@@ -43,12 +39,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -106,6 +100,7 @@ public class PermitStatusPieFragment extends Fragment {
     PieData pieData;
     FILTER_PLANT_TYPE_Adapter filter_plant_type_adapter;
     WKCENTER_TYPE_ADAPTER wkcenter_type_adapter;
+
 
     SQLiteDatabase App_db;
     private String DATABASE_NAME = "";
@@ -301,38 +296,38 @@ public class PermitStatusPieFragment extends Fragment {
                     my_colors.clear();
                     llo.clear();
                     if (crea1 != 0) {
-                        entries.add(new PieEntry(crea1, "Created"));
+                        entries.add(new PieEntry(crea1, getString(R.string.crea)));
                         my_colors.add(Color.rgb(255, 255, 0));
                         Label_List_Object llo_o = new Label_List_Object();
-                        llo_o.setLabel("Created");
+                        llo_o.setLabel(getString(R.string.crea));
                         llo_o.setColor(Color.rgb(255, 255, 0)); //Yellow
                         llo.add(llo_o);
 
                     } else {
                     }
                     if (prep1 != 0) {
-                        entries.add(new PieEntry(prep1, "Prepared"));
+                        entries.add(new PieEntry(prep1, getString(R.string.prep)));
                         my_colors.add(Color.rgb(51, 51, 255));
                         Label_List_Object llo_o = new Label_List_Object();
-                        llo_o.setLabel("Prepared");
+                        llo_o.setLabel(getString(R.string.prep));
                         llo_o.setColor(Color.rgb(51, 51, 255)); //Blue
                         llo.add(llo_o);
                     } else {
                     }
                     if (clsd1 != 0) {
-                        entries.add(new PieEntry(clsd1, "Closed"));
+                        entries.add(new PieEntry(clsd1, getString(R.string.clsd)));
                         my_colors.add(Color.rgb(50, 205, 50));
                         Label_List_Object llo_o = new Label_List_Object();
-                        llo_o.setLabel("Closed");
+                        llo_o.setLabel(getString(R.string.clsd));
                         llo_o.setColor(Color.rgb(50, 205, 50)); // Green
                         llo.add(llo_o);
                     } else {
                     }
                     if (reje1 != 0) {
-                        entries.add(new PieEntry(reje1, "Rejected"));
+                        entries.add(new PieEntry(reje1, getString(R.string.reje)));
                         my_colors.add(Color.rgb(239, 51, 64));
                         Label_List_Object llo_o = new Label_List_Object();
-                        llo_o.setLabel("Rejected");
+                        llo_o.setLabel(getString(R.string.reje));
                         llo_o.setColor(Color.rgb(239, 51, 64));// Red
                         llo.add(llo_o);
                     } else {
@@ -361,44 +356,44 @@ public class PermitStatusPieFragment extends Fragment {
                             cd = new ConnectionDetector(getContext());
                             isInternetPresent = cd.isConnectingToInternet();
                             if (isInternetPresent) {
-                                if (label.equals("Created")) {
+                                if (label.equals(getString(R.string.crea))) {
                                     String value = "Crea";
                                     Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                     intent.putExtra("value", value);
                                     intent.putExtra("Iwerk_plant", iwerk);
                                     intent.putExtra("Name_plant", plant_name);
                                     intent.putExtra("workcenter", wrkcnt);
-                                    intent.putExtra("application", "Created");
+                                    intent.putExtra("application", getString(R.string.crea));
                                     intent.putExtra("wrk_name", wrkcnt_name);
                                     startActivity(intent);
-                                } else if (label.equals("Prepared")) {
+                                } else if (label.equals(getString(R.string.prep))) {
                                     String value = "Prep";
                                     Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                     intent.putExtra("value", value);
                                     intent.putExtra("Iwerk_plant", iwerk);
                                     intent.putExtra("Name_plant", plant_name);
                                     intent.putExtra("workcenter", wrkcnt);
-                                    intent.putExtra("application", "Prepared");
+                                    intent.putExtra("application", getString(R.string.prep));
                                     intent.putExtra("wrk_name", wrkcnt_name);
                                     startActivity(intent);
-                                } else if (label.equals("Closed")) {
+                                } else if (label.equals(getString(R.string.clsd))) {
                                     String value = "Clsd";
                                     Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                     intent.putExtra("value", value);
                                     intent.putExtra("Iwerk_plant", iwerk);
                                     intent.putExtra("Name_plant", plant_name);
                                     intent.putExtra("workcenter", wrkcnt);
-                                    intent.putExtra("application", "Closed");
+                                    intent.putExtra("application", getString(R.string.clsd));
                                     intent.putExtra("wrk_name", wrkcnt_name);
                                     startActivity(intent);
-                                } else if (label.equals("Rejected")) {
+                                } else if (label.equals(getString(R.string.reje))) {
                                     String value = "Reje";
                                     Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                     intent.putExtra("value", value);
                                     intent.putExtra("Iwerk_plant", iwerk);
                                     intent.putExtra("Name_plant", plant_name);
                                     intent.putExtra("workcenter", wrkcnt);
-                                    intent.putExtra("application", "Rejected");
+                                    intent.putExtra("application", getString(R.string.reje));
                                     intent.putExtra("wrk_name", wrkcnt_name);
                                     startActivity(intent);
                                 }
@@ -532,74 +527,74 @@ public class PermitStatusPieFragment extends Fragment {
             label_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (label_name.getText().toString().equals("Created")) {
+                    if (label_name.getText().toString().equals(getString(R.string.crea))) {
                         String value = "Crea";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Created");
+                        intent.putExtra("application", getString(R.string.crea));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Prepared")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.prep))) {
                         String value = "Prep";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Prepared");
+                        intent.putExtra("application", getString(R.string.prep));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Closed")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.clsd))) {
                         String value = "Clsd";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Closed");
+                        intent.putExtra("application", getString(R.string.clsd));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Rejected")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.reje))) {
                         String value = "Reje";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Rejected");
+                        intent.putExtra("application", getString(R.string.reje));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Not Issued")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.noissue))) {
                         String value = "Red";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Not Issued");
+                        intent.putExtra("application", getString(R.string.noissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Partially Issued")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.partissue))) {
                         String value = "Yellow";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Partially Issued");
+                        intent.putExtra("application", getString(R.string.partissue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
-                    } else if (label_name.getText().toString().equals("Issued")) {
+                    } else if (label_name.getText().toString().equals(getString(R.string.issue))) {
                         String value = "Green";
                         Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                         intent.putExtra("value", value);
                         intent.putExtra("Iwerk_plant", iwerk);
                         intent.putExtra("Name_plant", plant_name);
                         intent.putExtra("workcenter", wrkcnt);
-                        intent.putExtra("application", "Issued");
+                        intent.putExtra("application", getString(R.string.issue));
                         intent.putExtra("wrk_name", wrkcnt_name);
                         startActivity(intent);
                     }
@@ -1000,38 +995,38 @@ public class PermitStatusPieFragment extends Fragment {
             my_colors.clear();
             llo.clear();
             if (crea1 != 0) {
-                entries.add(new PieEntry(crea1, "Created"));
+                entries.add(new PieEntry(crea1, getString(R.string.crea)));
                 my_colors.add(Color.rgb(255, 255, 0));
                 Label_List_Object llo_o = new Label_List_Object();
-                llo_o.setLabel("Created");
+                llo_o.setLabel(getString(R.string.crea));
                 llo_o.setColor(Color.rgb(255, 255, 0)); //Yellow
                 llo.add(llo_o);
 
             } else {
             }
             if (prep1 != 0) {
-                entries.add(new PieEntry(prep1, "Prepared"));
+                entries.add(new PieEntry(prep1, getString(R.string.prep)));
                 my_colors.add(Color.rgb(51, 51, 255));
                 Label_List_Object llo_o = new Label_List_Object();
-                llo_o.setLabel("Prepared");
+                llo_o.setLabel(getString(R.string.prep));
                 llo_o.setColor(Color.rgb(51, 51, 255)); //Blue
                 llo.add(llo_o);
             } else {
             }
             if (clsd1 != 0) {
-                entries.add(new PieEntry(clsd1, "Closed"));
+                entries.add(new PieEntry(clsd1, getString(R.string.clsd)));
                 my_colors.add(Color.rgb(50, 205, 50));
                 Label_List_Object llo_o = new Label_List_Object();
-                llo_o.setLabel("Closed");
+                llo_o.setLabel(getString(R.string.clsd));
                 llo_o.setColor(Color.rgb(50, 205, 50)); // Green
                 llo.add(llo_o);
             } else {
             }
             if (reje1 != 0) {
-                entries.add(new PieEntry(reje1, "Rejected"));
+                entries.add(new PieEntry(reje1, getString(R.string.reje)));
                 my_colors.add(Color.rgb(239, 51, 64));
                 Label_List_Object llo_o = new Label_List_Object();
-                llo_o.setLabel("Rejected");
+                llo_o.setLabel(getString(R.string.reje));
                 llo_o.setColor(Color.rgb(239, 51, 64));// Red
                 llo.add(llo_o);
             } else {
@@ -1060,44 +1055,44 @@ public class PermitStatusPieFragment extends Fragment {
                     cd = new ConnectionDetector(getContext());
                     isInternetPresent = cd.isConnectingToInternet();
                     if (isInternetPresent) {
-                        if (label.equals("Created")) {
+                        if (label.equals(getString(R.string.crea))) {
                             String value = "Crea";
                             Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                             intent.putExtra("value", value);
                             intent.putExtra("Iwerk_plant", iwerk);
                             intent.putExtra("Name_plant", plant_name);
                             intent.putExtra("workcenter", wrkcnt);
-                            intent.putExtra("application", "Created");
+                            intent.putExtra("application", getString(R.string.crea));
                             intent.putExtra("wrk_name", wrkcnt_name);
                             startActivity(intent);
-                        } else if (label.equals("Prepared")) {
+                        } else if (label.equals(getString(R.string.prep))) {
                             String value = "Prep";
                             Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                             intent.putExtra("value", value);
                             intent.putExtra("Iwerk_plant", iwerk);
                             intent.putExtra("Name_plant", plant_name);
                             intent.putExtra("workcenter", wrkcnt);
-                            intent.putExtra("application", "Prepared");
+                            intent.putExtra("application", getString(R.string.prep));
                             intent.putExtra("wrk_name", wrkcnt_name);
                             startActivity(intent);
-                        } else if (label.equals("Closed")) {
+                        } else if (label.equals(getString(R.string.clsd))) {
                             String value = "Clsd";
                             Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                             intent.putExtra("value", value);
                             intent.putExtra("Iwerk_plant", iwerk);
                             intent.putExtra("Name_plant", plant_name);
                             intent.putExtra("workcenter", wrkcnt);
-                            intent.putExtra("application", "Closed");
+                            intent.putExtra("application", getString(R.string.clsd));
                             intent.putExtra("wrk_name", wrkcnt_name);
                             startActivity(intent);
-                        } else if (label.equals("Rejected")) {
+                        } else if (label.equals(getString(R.string.reje))) {
                             String value = "Reje";
                             Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                             intent.putExtra("value", value);
                             intent.putExtra("Iwerk_plant", iwerk);
                             intent.putExtra("Name_plant", plant_name);
                             intent.putExtra("workcenter", wrkcnt);
-                            intent.putExtra("application", "Rejected");
+                            intent.putExtra("application", getString(R.string.reje));
                             intent.putExtra("wrk_name", wrkcnt_name);
                             startActivity(intent);
                         }
@@ -1217,11 +1212,11 @@ public class PermitStatusPieFragment extends Fragment {
             re = "";
             llo.clear();
             if (red1 != 0) {
-                entries.add(new PieEntry(red1, "Not Issued"));
+                entries.add(new PieEntry(red1, getString(R.string.noissue)));
                 my_colors.add(Color.rgb(255, 0, 0));
                 re = "R";
                 Label_List_Object llo_o = new Label_List_Object();
-                llo_o.setLabel("Not Issued");
+                llo_o.setLabel(getString(R.string.noissue));
                 llo_o.setColor(Color.rgb(255, 0, 0));
                 llo.add(llo_o);
             } else {
@@ -1229,11 +1224,11 @@ public class PermitStatusPieFragment extends Fragment {
                 re = "";
             }
             if (yellow1 != 0) {
-                entries.add(new PieEntry(yellow1, "Partially Issued"));
+                entries.add(new PieEntry(yellow1, getString(R.string.partissue)));
                 my_colors.add(Color.rgb(255, 255, 0));
                 yel = "Y";
                 Label_List_Object llo_o = new Label_List_Object();
-                llo_o.setLabel("Partially Issued");
+                llo_o.setLabel(getString(R.string.partissue));
                 llo_o.setColor(Color.rgb(255, 255, 0));
                 llo.add(llo_o);
             } else {
@@ -1241,11 +1236,11 @@ public class PermitStatusPieFragment extends Fragment {
                 yel = "";
             }
             if (green1 != 0) {
-                entries.add(new PieEntry(green1, "Issued"));
+                entries.add(new PieEntry(green1, getString(R.string.issue)));
                 my_colors.add(Color.rgb(0, 128, 0));
                 gre = "G";
                 Label_List_Object llo_o = new Label_List_Object();
-                llo_o.setLabel("Issued");
+                llo_o.setLabel(getString(R.string.issue));
                 llo_o.setColor(Color.rgb(0, 128, 0));
                 llo.add(llo_o);
             } else {
@@ -1276,34 +1271,34 @@ public class PermitStatusPieFragment extends Fragment {
                     cd = new ConnectionDetector(getActivity());
                     isInternetPresent = cd.isConnectingToInternet();
                     if (isInternetPresent) {
-                        if (label.equals("Not Issued")) {
+                        if (label.equals(getString(R.string.noissue))) {
                             String value = "Red";
                             Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                             intent.putExtra("value", value);
                             intent.putExtra("Iwerk_plant", iwerk);
                             intent.putExtra("Name_plant", plant_name);
                             intent.putExtra("workcenter", wrkcnt);
-                            intent.putExtra("application", "Not Issued");
+                            intent.putExtra("application", getString(R.string.noissue));
                             intent.putExtra("wrk_name", wrkcnt_name);
                             startActivity(intent);
-                        } else if (label.equals("Partially Issued")) {
+                        } else if (label.equals(getString(R.string.partissue))) {
                             String value = "Yellow";
                             Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                             intent.putExtra("value", value);
                             intent.putExtra("Iwerk_plant", iwerk);
                             intent.putExtra("Name_plant", plant_name);
                             intent.putExtra("workcenter", wrkcnt);
-                            intent.putExtra("application", "Partially Issued");
+                            intent.putExtra("application", getString(R.string.partissue));
                             intent.putExtra("wrk_name", wrkcnt_name);
                             startActivity(intent);
-                        } else if (label.equals("Issued")) {
+                        } else if (label.equals(getString(R.string.issue))) {
                             String value = "Green";
                             Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                             intent.putExtra("value", value);
                             intent.putExtra("Iwerk_plant", iwerk);
                             intent.putExtra("Name_plant", plant_name);
                             intent.putExtra("workcenter", wrkcnt);
-                            intent.putExtra("application", "Issued");
+                            intent.putExtra("application", getString(R.string.issue));
                             intent.putExtra("wrk_name", wrkcnt_name);
                             startActivity(intent);
                         }
@@ -1428,38 +1423,38 @@ public class PermitStatusPieFragment extends Fragment {
                 my_colors.clear();
                 llo.clear();
                 if (crea1 != 0) {
-                    entries.add(new PieEntry(crea1, "Created"));
+                    entries.add(new PieEntry(crea1, getString(R.string.crea)));
                     my_colors.add(Color.rgb(255, 255, 0));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Created");
+                    llo_o.setLabel(getString(R.string.crea));
                     llo_o.setColor(Color.rgb(255, 255, 0)); //Yellow
                     llo.add(llo_o);
 
                 } else {
                 }
                 if (prep1 != 0) {
-                    entries.add(new PieEntry(prep1, "Prepared"));
+                    entries.add(new PieEntry(prep1, getString(R.string.prep)));
                     my_colors.add(Color.rgb(51, 51, 255));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Prepared");
+                    llo_o.setLabel(getString(R.string.prep));
                     llo_o.setColor(Color.rgb(51, 51, 255)); //Blue
                     llo.add(llo_o);
                 } else {
                 }
                 if (clsd1 != 0) {
-                    entries.add(new PieEntry(clsd1, "Closed"));
+                    entries.add(new PieEntry(clsd1, getString(R.string.clsd)));
                     my_colors.add(Color.rgb(50, 205, 50));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Closed");
+                    llo_o.setLabel(getString(R.string.clsd));
                     llo_o.setColor(Color.rgb(50, 205, 50)); // Green
                     llo.add(llo_o);
                 } else {
                 }
                 if (reje1 != 0) {
-                    entries.add(new PieEntry(reje1, "Rejected"));
+                    entries.add(new PieEntry(reje1, getString(R.string.reje)));
                     my_colors.add(Color.rgb(239, 51, 64));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Rejected");
+                    llo_o.setLabel(getString(R.string.reje));
                     llo_o.setColor(Color.rgb(239, 51, 64));// Red
                     llo.add(llo_o);
                 } else {
@@ -1488,44 +1483,44 @@ public class PermitStatusPieFragment extends Fragment {
                         cd = new ConnectionDetector(getContext());
                         isInternetPresent = cd.isConnectingToInternet();
                         if (isInternetPresent) {
-                            if (label.equals("Created")) {
+                            if (label.equals(getString(R.string.crea))) {
                                 String value = "Crea";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Created");
+                                intent.putExtra("application", getString(R.string.crea));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Prepared")) {
+                            } else if (label.equals(getString(R.string.prep))) {
                                 String value = "Prep";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Prepared");
+                                intent.putExtra("application", getString(R.string.prep));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Closed")) {
+                            } else if (label.equals(getString(R.string.clsd))) {
                                 String value = "Clsd";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Closed");
+                                intent.putExtra("application", getString(R.string.clsd));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Rejected")) {
+                            } else if (label.equals(getString(R.string.reje))) {
                                 String value = "Reje";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Rejected");
+                                intent.putExtra("application", getString(R.string.reje));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
                             }
@@ -1619,38 +1614,38 @@ public class PermitStatusPieFragment extends Fragment {
 
 
                 if (crea1 != 0) {
-                    entries.add(new PieEntry(crea1, "Created"));
+                    entries.add(new PieEntry(crea1, getString(R.string.crea)));
                     my_colors.add(Color.rgb(255, 255, 0));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Created");
+                    llo_o.setLabel(getString(R.string.crea));
                     llo_o.setColor(Color.rgb(255, 255, 0)); //Yellow
                     llo.add(llo_o);
 
                 } else {
                 }
                 if (prep1 != 0) {
-                    entries.add(new PieEntry(prep1, "Prepared"));
+                    entries.add(new PieEntry(prep1, getString(R.string.prep)));
                     my_colors.add(Color.rgb(51, 51, 255));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Prepared");
+                    llo_o.setLabel(getString(R.string.prep));
                     llo_o.setColor(Color.rgb(51, 51, 255)); //Blue
                     llo.add(llo_o);
                 } else {
                 }
                 if (clsd1 != 0) {
-                    entries.add(new PieEntry(clsd1, "Closed"));
+                    entries.add(new PieEntry(clsd1, getString(R.string.clsd)));
                     my_colors.add(Color.rgb(50, 205, 50));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Closed");
+                    llo_o.setLabel(getString(R.string.clsd));
                     llo_o.setColor(Color.rgb(50, 205, 50)); // Green
                     llo.add(llo_o);
                 } else {
                 }
                 if (reje1 != 0) {
-                    entries.add(new PieEntry(reje1, "Rejected"));
+                    entries.add(new PieEntry(reje1, getString(R.string.reje)));
                     my_colors.add(Color.rgb(239, 51, 64));
                     Label_List_Object llo_o = new Label_List_Object();
-                    llo_o.setLabel("Rejected");
+                    llo_o.setLabel(getString(R.string.reje));
                     llo_o.setColor(Color.rgb(239, 51, 64));// Red
                     llo.add(llo_o);
                 } else {
@@ -1695,44 +1690,44 @@ public class PermitStatusPieFragment extends Fragment {
                         cd = new ConnectionDetector(getContext());
                         isInternetPresent = cd.isConnectingToInternet();
                         if (isInternetPresent) {
-                            if (label.equals("Created")) {
+                            if (label.equals(getString(R.string.crea))) {
                                 String value = "Crea";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Created");
+                                intent.putExtra("application", getString(R.string.crea));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Prepared")) {
+                            } else if (label.equals(getString(R.string.prep))) {
                                 String value = "Prep";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Prepared");
+                                intent.putExtra("application", getString(R.string.prep));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Closed")) {
+                            } else if (label.equals(getString(R.string.clsd))) {
                                 String value = "Clsd";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Closed");
+                                intent.putExtra("application", getString(R.string.clsd));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
-                            } else if (label.equals("Rejected")) {
+                            } else if (label.equals(getString(R.string.reje))) {
                                 String value = "Reje";
                                 Intent intent = new Intent(getActivity(), PermitStatusPieActivity.class);
                                 intent.putExtra("value", value);
                                 intent.putExtra("Iwerk_plant", iwerk);
                                 intent.putExtra("Name_plant", plant_name);
                                 intent.putExtra("workcenter", wrkcnt);
-                                intent.putExtra("application", "Rejected");
+                                intent.putExtra("application", getString(R.string.reje));
                                 intent.putExtra("wrk_name", wrkcnt_name);
                                 startActivity(intent);
                             }
@@ -1946,7 +1941,7 @@ public class PermitStatusPieFragment extends Fragment {
                                         plant_dialog.dismiss();
                                     } else {
                                         if (iwerk_t.equals("") && iwerk_tp.equals("") && iwerk.equals(""))
-                                            show_error_dialog("Please select PLANT");
+                                            show_error_dialog(getString(R.string.slct_palnt));
                                         else
                                             plant_dialog.dismiss();
                                     }
@@ -2011,7 +2006,7 @@ public class PermitStatusPieFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -2091,7 +2086,7 @@ public class PermitStatusPieFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_t.equals("") && wrkcnt_w.equals("") && wrkcnt.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -2140,7 +2135,7 @@ public class PermitStatusPieFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -2219,7 +2214,7 @@ public class PermitStatusPieFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_t.equals("") && wrkcnt_w.equals("") && wrkcnt.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }
@@ -2252,7 +2247,7 @@ public class PermitStatusPieFragment extends Fragment {
                                 wrkcnt_dialog.show();
                             } else if (iwerk.equals("") || iwerk == null) {
                                 if (iwerk_t.equals("") || iwerk_t == null) {
-                                    show_error_dialog("Please select PLANT");
+                                    show_error_dialog(getString(R.string.slct_palnt));
                                 } else {
                                     art_fo.clear();
                                     for (int i = 0; i < art_o.size(); i++) {
@@ -2273,7 +2268,7 @@ public class PermitStatusPieFragment extends Fragment {
                                     wrkcnt_dialog.setContentView(R.layout.permit_plant_dialog);
                                     wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
                                     TextView select_wrkcnt = (TextView) wrkcnt_dialog.findViewById(R.id.select_notif);
-                                    select_wrkcnt.setText("Select WorkCentre");
+                                    select_wrkcnt.setText(getString(R.string.slct_wrkcntr));
                                     TextView clear_all_textview = (TextView) wrkcnt_dialog.findViewById(R.id.clear_all_textview);
                                     Button cancel_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.cancel_filter_button);
                                     Button ok_filter_button = (Button) wrkcnt_dialog.findViewById(R.id.ok_filter_button);
@@ -2352,7 +2347,7 @@ public class PermitStatusPieFragment extends Fragment {
                                                 wrkcnt_dialog.dismiss();
                                             } else {
                                                 if (wrkcnt_t.equals("") && wrkcnt_w.equals("") && wrkcnt.equals(""))
-                                                    show_error_dialog("Please select WORK CENTRE");
+                                                    show_error_dialog(getString(R.string.wrkCntr_mandate));
                                                 else
                                                     wrkcnt_dialog.dismiss();
                                             }

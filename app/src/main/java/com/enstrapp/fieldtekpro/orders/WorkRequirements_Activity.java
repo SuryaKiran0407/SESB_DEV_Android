@@ -89,15 +89,15 @@ public class WorkRequirements_Activity extends AppCompatActivity {
                 requ_al.clear();
                 for (OrdrWaChkReqPrcbl workReq : owrp_al) {
                     if (workReq.getWkid() != null && !workReq.getWkid().equals("")) {
-                        if(workReq.getValue().equals("Y"))
+                        if (workReq.getValue().equals("Y"))
                             workReq.setYes_checked(true);
-                        else if(workReq.getValue().equals("N"))
+                        else if (workReq.getValue().equals("N"))
                             workReq.setNo_checked(true);
                         work_al.add(workReq);
                     } else {
-                        if(workReq.getValue().equals("Y"))
+                        if (workReq.getValue().equals("Y"))
                             workReq.setYes_checked(true);
-                        else if(workReq.getValue().equals("N"))
+                        else if (workReq.getValue().equals("N"))
                             workReq.setNo_checked(true);
                         requ_al.add(workReq);
                     }
@@ -204,9 +204,7 @@ public class WorkRequirements_Activity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             if (owrp_al.size() > 0) {
                 new Get_Requirements().execute();
-            }
-            else
-            {
+            } else {
                 new Get_Requirements().execute();
             }
         }
@@ -252,9 +250,7 @@ public class WorkRequirements_Activity extends AppCompatActivity {
             customProgressDialog.dismiss_progress_dialog();
             if (owrp_al.size() > 0) {
                 SetViewPager();
-            }
-            else
-            {
+            } else {
                 SetViewPager();
             }
         }

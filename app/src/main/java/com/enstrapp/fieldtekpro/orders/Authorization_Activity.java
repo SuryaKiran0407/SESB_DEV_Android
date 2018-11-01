@@ -45,14 +45,6 @@ public class Authorization_Activity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.f4_list_activity);
 
-        /*Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals("")) {
-                request_id = Integer.parseInt(request_ids);
-            }
-        }*/
-
         title_textview = (TextView) findViewById(R.id.title_textview);
         no_data_textview = (TextView) findViewById(R.id.no_data_textview);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
@@ -65,9 +57,11 @@ public class Authorization_Activity extends AppCompatActivity implements View.On
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -84,18 +78,21 @@ public class Authorization_Activity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Authorization_Activity.this, getResources().getString(R.string.loading));
+            custom_progress_dialog.show_progress_dialog(Authorization_Activity.this,
+                    getResources().getString(R.string.loading));
             type_list.clear();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtWcmBegru", null);
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtWcmBegru",
+                        null);
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Type_Object nto = new Type_Object(cursor.getString(1), cursor.getString(2));
+                            Type_Object nto = new Type_Object(cursor.getString(1),
+                                    cursor.getString(2));
                             type_list.add(nto);
                         }
                         while (cursor.moveToNext());
@@ -109,18 +106,14 @@ public class Authorization_Activity extends AppCompatActivity implements View.On
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (type_list.size() > 0) {
                 title_textview.setText(getResources().getString(R.string.auth_grp) + " (" + type_list.size() + ")");
                 adapter = new TYPE_ADAPTER(Authorization_Activity.this, type_list);
                 list_recycleview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Authorization_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Authorization_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 list_recycleview.setItemAnimator(new DefaultItemAnimator());
                 list_recycleview.setAdapter(adapter);
@@ -147,12 +140,14 @@ public class Authorization_Activity extends AppCompatActivity implements View.On
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId().toString(), type_list.get(i).getText().toString());
+                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
+                            type_list.get(i).getText());
                     filteredList.add(nto);
                 }
             }
             if (filteredList.size() > 0) {
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Authorization_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Authorization_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 adapter = new TYPE_ADAPTER(Authorization_Activity.this, filteredList);
                 list_recycleview.setAdapter(adapter);
@@ -196,7 +191,8 @@ public class Authorization_Activity extends AppCompatActivity implements View.On
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data,
+                    parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -256,6 +252,5 @@ public class Authorization_Activity extends AppCompatActivity implements View.On
             onBackPressed();
         }
     }
-
 }
 

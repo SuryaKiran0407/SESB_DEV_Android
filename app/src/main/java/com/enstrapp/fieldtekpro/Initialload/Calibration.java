@@ -30,8 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Calibration
-{
+public class Calibration {
 
     private static String password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
@@ -83,7 +82,7 @@ public class Calibration
     private static final String KEY_EtQinspData_UUID = "UUID";//39
     private static final String KEY_EtQinspData_Udid = "Udid";//40
     private static final String KEY_EtQinspData_Werks = "Werks";//40
-	/* EtQinspData Table and Fields Names */
+    /* EtQinspData Table and Fields Names */
 
 
     /* EtQudData Table and Fields Names */
@@ -111,118 +110,112 @@ public class Calibration
     private static final String KEY_EtQudData_Status = "Status";//19
     /* EtQudData Table and Fields Names */
 
-    public static String Get_Calibration_Data(Activity activity, String transmit_type)
-    {
-        try
-        {
+    public static String Get_Calibration_Data(Activity activity, String transmit_type) {
+        try {
             DATABASE_NAME = activity.getString(R.string.database_name);
-            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
-            if(transmit_type.equalsIgnoreCase("LOAD"))
-            {
+            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+            if (transmit_type.equalsIgnoreCase("LOAD")) {
                 /* EtQinspData Table and Fields Names */
-                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EtQinspData);
-                String CREATE_TABLE_EtQinspData = "CREATE TABLE IF NOT EXISTS "+ TABLE_EtQinspData+ ""
+                App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtQinspData);
+                String CREATE_TABLE_EtQinspData = "CREATE TABLE IF NOT EXISTS " + TABLE_EtQinspData + ""
                         + "( "
-                        + KEY_EtQinspData_ID+ " INTEGER PRIMARY KEY,"//0
-                        + KEY_EtQinspData_Aufnr+ " TEXT,"//1
-                        + KEY_EtQinspData_Prueflos+ " TEXT,"//2
-                        + KEY_EtQinspData_Vornr+ " TEXT,"//3
-                        + KEY_EtQinspData_Plnty+ " TEXT,"//4
-                        + KEY_EtQinspData_Plnnr+ " TEXT,"//5
-                        + KEY_EtQinspData_Plnkn+ " TEXT,"//6
-                        + KEY_EtQinspData_Merknr+ " TEXT,"//7
-                        + KEY_EtQinspData_Quantitat+ " TEXT,"//8
-                        + KEY_EtQinspData_Qualitat+ " TEXT,"//9
-                        + KEY_EtQinspData_QpmkZaehl+ " TEXT,"//10
-                        + KEY_EtQinspData_Msehi+ " TEXT,"//11
-                        + KEY_EtQinspData_Msehl+ " TEXT,"//12
-                        + KEY_EtQinspData_Verwmerkm+ " TEXT,"//13
-                        + KEY_EtQinspData_Kurztext+ " TEXT,"//1
-                        + KEY_EtQinspData_Result+ " TEXT,"//2
-                        + KEY_EtQinspData_Sollwert+ " TEXT,"//3
-                        + KEY_EtQinspData_Toleranzob+ " TEXT,"//4
-                        + KEY_EtQinspData_Toleranzub+ " TEXT,"//5
-                        + KEY_EtQinspData_Rueckmelnr+ " TEXT,"//6
-                        + KEY_EtQinspData_Satzstatus+ " TEXT,"//7
-                        + KEY_EtQinspData_Equnr+ " TEXT,"//8
-                        + KEY_EtQinspData_Pruefbemkt+ " TEXT,"//8
-                        + KEY_EtQinspData_Mbewertg+ " TEXT,"//9
-                        + KEY_EtQinspData_Pruefer+ " TEXT,"//10
-                        + KEY_EtQinspData_Pruefdatuv+ " TEXT,"//11
-                        + KEY_EtQinspData_Pruefdatub+ " TEXT,"//12
-                        + KEY_EtQinspData_Pruefzeitv+ " TEXT,"//13
-                        + KEY_EtQinspData_Pruefzeitb+ " TEXT,"//1
-                        + KEY_EtQinspData_Iststpumf+ " TEXT,"//2
-                        + KEY_EtQinspData_Anzfehleh+ " TEXT,"//3
-                        + KEY_EtQinspData_Anzwertg+ " TEXT,"//4
-                        + KEY_EtQinspData_Ktextmat+ " TEXT,"//1
-                        + KEY_EtQinspData_Katab1+ " TEXT,"//2
-                        + KEY_EtQinspData_Katalgart1+ " TEXT,"//3
-                        + KEY_EtQinspData_Auswmenge1+ " TEXT,"//4
-                        + KEY_EtQinspData_Codetext+ " TEXT,"//4
-                        + KEY_EtQinspData_Xstatus+ " TEXT,"//6
-                        + KEY_EtQinspData_Action+ " TEXT,"//7
-                        + KEY_EtQinspData_UUID+ " TEXT,"//7
-                        + KEY_EtQinspData_Udid+ " TEXT,"//7
-                        + KEY_EtQinspData_Werks+ " TEXT"//7
+                        + KEY_EtQinspData_ID + " INTEGER PRIMARY KEY,"//0
+                        + KEY_EtQinspData_Aufnr + " TEXT,"//1
+                        + KEY_EtQinspData_Prueflos + " TEXT,"//2
+                        + KEY_EtQinspData_Vornr + " TEXT,"//3
+                        + KEY_EtQinspData_Plnty + " TEXT,"//4
+                        + KEY_EtQinspData_Plnnr + " TEXT,"//5
+                        + KEY_EtQinspData_Plnkn + " TEXT,"//6
+                        + KEY_EtQinspData_Merknr + " TEXT,"//7
+                        + KEY_EtQinspData_Quantitat + " TEXT,"//8
+                        + KEY_EtQinspData_Qualitat + " TEXT,"//9
+                        + KEY_EtQinspData_QpmkZaehl + " TEXT,"//10
+                        + KEY_EtQinspData_Msehi + " TEXT,"//11
+                        + KEY_EtQinspData_Msehl + " TEXT,"//12
+                        + KEY_EtQinspData_Verwmerkm + " TEXT,"//13
+                        + KEY_EtQinspData_Kurztext + " TEXT,"//1
+                        + KEY_EtQinspData_Result + " TEXT,"//2
+                        + KEY_EtQinspData_Sollwert + " TEXT,"//3
+                        + KEY_EtQinspData_Toleranzob + " TEXT,"//4
+                        + KEY_EtQinspData_Toleranzub + " TEXT,"//5
+                        + KEY_EtQinspData_Rueckmelnr + " TEXT,"//6
+                        + KEY_EtQinspData_Satzstatus + " TEXT,"//7
+                        + KEY_EtQinspData_Equnr + " TEXT,"//8
+                        + KEY_EtQinspData_Pruefbemkt + " TEXT,"//8
+                        + KEY_EtQinspData_Mbewertg + " TEXT,"//9
+                        + KEY_EtQinspData_Pruefer + " TEXT,"//10
+                        + KEY_EtQinspData_Pruefdatuv + " TEXT,"//11
+                        + KEY_EtQinspData_Pruefdatub + " TEXT,"//12
+                        + KEY_EtQinspData_Pruefzeitv + " TEXT,"//13
+                        + KEY_EtQinspData_Pruefzeitb + " TEXT,"//1
+                        + KEY_EtQinspData_Iststpumf + " TEXT,"//2
+                        + KEY_EtQinspData_Anzfehleh + " TEXT,"//3
+                        + KEY_EtQinspData_Anzwertg + " TEXT,"//4
+                        + KEY_EtQinspData_Ktextmat + " TEXT,"//1
+                        + KEY_EtQinspData_Katab1 + " TEXT,"//2
+                        + KEY_EtQinspData_Katalgart1 + " TEXT,"//3
+                        + KEY_EtQinspData_Auswmenge1 + " TEXT,"//4
+                        + KEY_EtQinspData_Codetext + " TEXT,"//4
+                        + KEY_EtQinspData_Xstatus + " TEXT,"//6
+                        + KEY_EtQinspData_Action + " TEXT,"//7
+                        + KEY_EtQinspData_UUID + " TEXT,"//7
+                        + KEY_EtQinspData_Udid + " TEXT,"//7
+                        + KEY_EtQinspData_Werks + " TEXT"//7
                         + ")";
                 App_db.execSQL(CREATE_TABLE_EtQinspData);
-		        /* EtQinspData Table and Fields Names */
+                /* EtQinspData Table and Fields Names */
 
-		        /* EtQudData Table and Fields Names */
-                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EtQudData);
-                String CREATE_TABLE_EtQudData = "CREATE TABLE IF NOT EXISTS "+ TABLE_EtQudData+ ""
+                /* EtQudData Table and Fields Names */
+                App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtQudData);
+                String CREATE_TABLE_EtQudData = "CREATE TABLE IF NOT EXISTS " + TABLE_EtQudData + ""
                         + "( "
-                        + KEY_EtQudData_ID+ " INTEGER PRIMARY KEY,"//0
-                        + KEY_EtQudData_Prueflos+ " TEXT,"//1
-                        + KEY_EtQudData_Aufnr+ " TEXT,"//2
-                        + KEY_EtQudData_Werks+ " TEXT,"//4
-                        + KEY_EtQudData_Equnr+ " TEXT,"//3
-                        + KEY_EtQudData_Vkatart+ " TEXT,"//5
-                        + KEY_EtQudData_Vcodegrp+ " TEXT,"//6
-                        + KEY_EtQudData_Vauswahlmg+ " TEXT,"//7
-                        + KEY_EtQudData_Vcode+ " TEXT,"//8
-                        + KEY_EtQudData_Qkennzahl+ " TEXT,"//9
-                        + KEY_EtQudData_Vname+ " TEXT,"//10
-                        + KEY_EtQudData_Vdatum+ " TEXT,"//11
-                        + KEY_EtQudData_Vaedatum+ " TEXT,"//12
-                        + KEY_EtQudData_Vezeitaen+ " TEXT,"//13
-                        + KEY_EtQudData_Udtext+ " TEXT,"//14
-                        + KEY_EtQudData_Udforce+ " TEXT,"//15
-                        + KEY_EtQudData_Rcode+ " TEXT,"//16
-                        + KEY_EtQudData_Xstatus+ " TEXT,"//17
-                        + KEY_EtQudData_Action+ " TEXT,"//18
-                        + KEY_EtQudData_Udid+ " TEXT,"//19
-                        + KEY_EtQudData_Status+ " TEXT"//20
+                        + KEY_EtQudData_ID + " INTEGER PRIMARY KEY,"//0
+                        + KEY_EtQudData_Prueflos + " TEXT,"//1
+                        + KEY_EtQudData_Aufnr + " TEXT,"//2
+                        + KEY_EtQudData_Werks + " TEXT,"//4
+                        + KEY_EtQudData_Equnr + " TEXT,"//3
+                        + KEY_EtQudData_Vkatart + " TEXT,"//5
+                        + KEY_EtQudData_Vcodegrp + " TEXT,"//6
+                        + KEY_EtQudData_Vauswahlmg + " TEXT,"//7
+                        + KEY_EtQudData_Vcode + " TEXT,"//8
+                        + KEY_EtQudData_Qkennzahl + " TEXT,"//9
+                        + KEY_EtQudData_Vname + " TEXT,"//10
+                        + KEY_EtQudData_Vdatum + " TEXT,"//11
+                        + KEY_EtQudData_Vaedatum + " TEXT,"//12
+                        + KEY_EtQudData_Vezeitaen + " TEXT,"//13
+                        + KEY_EtQudData_Udtext + " TEXT,"//14
+                        + KEY_EtQudData_Udforce + " TEXT,"//15
+                        + KEY_EtQudData_Rcode + " TEXT,"//16
+                        + KEY_EtQudData_Xstatus + " TEXT,"//17
+                        + KEY_EtQudData_Action + " TEXT,"//18
+                        + KEY_EtQudData_Udid + " TEXT,"//19
+                        + KEY_EtQudData_Status + " TEXT"//20
                         + ")";
                 App_db.execSQL(CREATE_TABLE_EtQudData);
-		        /* EtQudData Table and Fields Names */
-            }
-            else
-            {
+                /* EtQudData Table and Fields Names */
+            } else {
                 App_db.execSQL("delete from EtQinspData");
                 App_db.execSQL("delete from EtQudData");
             }
             /* Initializing Shared Preferences */
             FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
-            username = FieldTekPro_SharedPref.getString("Username",null);
-            password = FieldTekPro_SharedPref.getString("Password",null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type",null);
-		    /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"D3", "RD", webservice_type});
-            if (cursor != null && cursor.getCount() > 0)
-            {
+            username = FieldTekPro_SharedPref.getString("Username", null);
+            password = FieldTekPro_SharedPref.getString("Password", null);
+            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            /* Initializing Shared Preferences */
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D3", "RD", webservice_type});
+            if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = ""+ Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(),((long) device_id.hashCode() << 32)| device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
             Map<String, String> map = new HashMap<>();
             map.put("IvUser", username);
@@ -239,11 +232,9 @@ public class Calibration
             Call<Calibration_SER> call = service.getCalibrationDetails(url_link, basic, map);
             Response<Calibration_SER> response = call.execute();
             int response_status_code = response.code();
-            Log.v("kiran_Calibration_code",response_status_code+"...");
-            if(response_status_code == 200)
-            {
-                if (response.isSuccessful() && response.body() != null)
-                {
+            Log.v("kiran_Calibration_code", response_status_code + "...");
+            if (response_status_code == 200) {
+                if (response.isSuccessful() && response.body() != null) {
                     /*Reading Response Data and Parsing to Serializable*/
                     Calibration_SER rs = response.body();
                     /*Reading Response Data and Parsing to Serializable*/
@@ -252,16 +243,13 @@ public class Calibration
 
                     /*Reading and Inserting Data into Database Table for EtQinspData*/
                     String EtQinspData_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtQinspData().getResults());
-                    if (EtQinspData_response_data != null && !EtQinspData_response_data.equals("") && !EtQinspData_response_data.equals("null"))
-                    {
+                    if (EtQinspData_response_data != null && !EtQinspData_response_data.equals("") && !EtQinspData_response_data.equals("null")) {
                         JSONArray response_data_jsonArray = new JSONArray(EtQinspData_response_data);
-                        if(response_data_jsonArray.length() > 0)
-                        {
+                        if (response_data_jsonArray.length() > 0) {
                             String EtQinspData_sql = "Insert into EtQinspData (Aufnr, Prueflos, Vornr, Plnty, Plnnr, Plnkn, Merknr, Quantitat, Qualitat, QpmkZaehl, Msehi, Msehl, Verwmerkm, Kurztext, Result, Sollwert, Toleranzob, Toleranzub, Rueckmelnr, Satzstatus, Equnr, Pruefbemkt, Mbewertg, Pruefer, Pruefdatuv, Pruefdatub, Pruefzeitv, Pruefzeitb, Iststpumf, Anzfehleh, Anzwertg, Ktextmat, Katab1, Katalgart1, Auswmenge1, Codetext, Xstatus, Action, UUID, Udid, Werks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                             SQLiteStatement statement = App_db.compileStatement(EtQinspData_sql);
                             statement.clearBindings();
-                            for(int j = 0; j < response_data_jsonArray.length(); j++)
-                            {
+                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
                                 statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Aufnr"));
                                 statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Prueflos"));
                                 statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Vornr"));
@@ -286,24 +274,18 @@ public class Calibration
                                 statement.bindString(22, response_data_jsonArray.getJSONObject(j).optString("Pruefbemkt"));
 
                                 String QUANTITAT = response_data_jsonArray.getJSONObject(j).optString("Quantitat");
-                                if(QUANTITAT.equalsIgnoreCase("X"))
-                                {
+                                if (QUANTITAT.equalsIgnoreCase("X")) {
                                     String result = response_data_jsonArray.getJSONObject(j).optString("Result");
-                                    if (result != null && !result.equals(""))
-                                    {
+                                    if (result != null && !result.equals("")) {
                                         String fromm = "", too = "";
                                         String from = response_data_jsonArray.getJSONObject(j).optString("Toleranzub");
-                                        if (from != null && !from.equals(""))
-                                        {
-                                            if(from.contains(","))
-                                            {
-                                                String result1 = from.replace(",",".");
+                                        if (from != null && !from.equals("")) {
+                                            if (from.contains(",")) {
+                                                String result1 = from.replace(",", ".");
                                                 Float dvd = Float.parseFloat(result1);
                                                 DecimalFormat df = new DecimalFormat("###.##");
                                                 too = df.format(dvd);
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 Float dvd = Float.parseFloat(from);
                                                 DecimalFormat df = new DecimalFormat("###.##");
                                                 too = df.format(dvd);
@@ -311,70 +293,50 @@ public class Calibration
                                         }
 
                                         String to = response_data_jsonArray.getJSONObject(j).optString("Toleranzob");
-                                        if (to != null && !to.equals(""))
-                                        {
-                                            if(to.contains(","))
-                                            {
-                                                String result1 = to.replace(",",".");
+                                        if (to != null && !to.equals("")) {
+                                            if (to.contains(",")) {
+                                                String result1 = to.replace(",", ".");
                                                 Float dvd = Float.parseFloat(result1);
                                                 DecimalFormat df = new DecimalFormat("###.##");
                                                 fromm = df.format(dvd);
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 Float dvd = Float.parseFloat(to);
                                                 DecimalFormat df = new DecimalFormat("###.##");
                                                 fromm = df.format(dvd);
                                             }
                                         }
 
-                                        if(result.contains(","))
-                                        {
-                                            String result1 = result.replace(",",".");
+                                        if (result.contains(",")) {
+                                            String result1 = result.replace(",", ".");
                                             Float dvd = Float.parseFloat(result1);
                                             DecimalFormat df = new DecimalFormat("###.##");
                                             String res = df.format(dvd);
                                             Float floatt = Float.parseFloat(res);
                                             Float floatt1 = Float.parseFloat(too);
                                             Float floatt2 = Float.parseFloat(fromm);
-                                            if(floatt >= floatt1 && floatt <= floatt2)
-                                            {
+                                            if (floatt >= floatt1 && floatt <= floatt2) {
                                                 statement.bindString(23, "A");
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 statement.bindString(23, "R");
                                             }
-                                        }
-                                        else
-                                        {
-                                            if (too != null && !too.equals("") && fromm != null && !fromm.equals(""))
-                                            {
+                                        } else {
+                                            if (too != null && !too.equals("") && fromm != null && !fromm.equals("")) {
                                                 Float floatt = Float.parseFloat(result);
                                                 Float floatt1 = Float.parseFloat(too);
                                                 Float floatt2 = Float.parseFloat(fromm);
-                                                if(floatt >= floatt1 && floatt <= floatt2)
-                                                {
+                                                if (floatt >= floatt1 && floatt <= floatt2) {
                                                     statement.bindString(23, "A");
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     statement.bindString(23, "R");
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 statement.bindString(23, "R");
                                             }
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         statement.bindString(23, "R");
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                     statement.bindString(23, response_data_jsonArray.getJSONObject(j).optString("Mbewertg"));
                                 }
 
@@ -407,16 +369,13 @@ public class Calibration
 
                     /*Reading and Inserting Data into Database Table for EtQudData*/
                     String EtQudData_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtQudData().getResults());
-                    if (EtQudData_response_data != null && !EtQudData_response_data.equals("") && !EtQudData_response_data.equals("null"))
-                    {
+                    if (EtQudData_response_data != null && !EtQudData_response_data.equals("") && !EtQudData_response_data.equals("null")) {
                         JSONArray response_data_jsonArray = new JSONArray(EtQudData_response_data);
-                        if(response_data_jsonArray.length() > 0)
-                        {
+                        if (response_data_jsonArray.length() > 0) {
                             String EtQudData_sql = "Insert into EtQudData (Prueflos,Aufnr,Werks, Equnr, Vkatart, Vcodegrp, Vauswahlmg, Vcode, Qkennzahl, Vname, Vdatum, Vaedatum, Vezeitaen, Udtext, Udforce, Rcode, Xstatus, Action, Udid, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                             SQLiteStatement EtQudData_statement = App_db.compileStatement(EtQudData_sql);
                             EtQudData_statement.clearBindings();
-                            for(int j = 0; j < response_data_jsonArray.length(); j++)
-                            {
+                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
                                 EtQudData_statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Prueflos"));
                                 EtQudData_statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Aufnr"));
                                 EtQudData_statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Werks"));
@@ -438,12 +397,9 @@ public class Calibration
                                 EtQudData_statement.bindString(19, response_data_jsonArray.getJSONObject(j).optString("Udid"));
                                 String Vcode = response_data_jsonArray.getJSONObject(j).optString("Vcode");
                                 String notes = response_data_jsonArray.getJSONObject(j).optString("Udtext");
-                                if (Vcode != null&& !Vcode.equals("") || notes != null&& !notes.equals(""))
-                                {
+                                if (Vcode != null && !Vcode.equals("") || notes != null && !notes.equals("")) {
                                     EtQudData_statement.bindString(20, "hide");
-                                }
-                                else
-                                {
+                                } else {
                                     EtQudData_statement.bindString(20, "visible");
                                 }
                                 EtQudData_statement.execute();
@@ -457,17 +413,11 @@ public class Calibration
                     App_db.endTransaction();
                     Get_Response = "success";
                 }
+            } else {
             }
-            else
-            {
-            }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Get_Response = "exception";
-        }
-        finally
-        {
+        } finally {
         }
         return Get_Response;
     }

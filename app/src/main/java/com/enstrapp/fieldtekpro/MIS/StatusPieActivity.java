@@ -87,7 +87,7 @@ public class StatusPieActivity extends AppCompatActivity {
         swerk = intent.getExtras().getString("iwerk");
         value = intent.getExtras().getString("value");
         phase = intent.getExtras().getString("phase");
-        header = value + " Notifications";
+        header = value + " " + getString(R.string.notifications);
         header_tv.setText(header);
         back_ib.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,7 +237,7 @@ public class StatusPieActivity extends AppCompatActivity {
 
             if (swerk.equals("")) {
                 try {
-                    if (value.equals("Outstanding")) {
+                    if (value.equals(getString(R.string.outstanding))) {
                         entries = new ArrayList<PieEntry>();
                         Outs1.clear();
                         swerk_p.clear();
@@ -395,7 +395,7 @@ public class StatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Inprogress")) {
+                    if (value.equals(getString(R.string.inprgs))) {
                         entries = new ArrayList<PieEntry>();
                         Inpr1.clear();
                         swerk_p.clear();
@@ -551,7 +551,7 @@ public class StatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Completed")) {
+                    if (value.equals(getString(R.string.compltd))) {
                         entries = new ArrayList<PieEntry>();
                         Comp1.clear();
                         swerk_p.clear();
@@ -736,7 +736,7 @@ public class StatusPieActivity extends AppCompatActivity {
                             swerk_txt = pt_o.get(k).getmName_pt();
                         }
                     }
-                    if (value.equals("Outstanding")) {
+                    if (value.equals(getString(R.string.outstanding))) {
                         entries = new ArrayList<PieEntry>();
                         Outs1.clear();
                         swerk_p.clear();
@@ -926,7 +926,7 @@ public class StatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Inprogress")) {
+                    if (value.equals(getString(R.string.inprgs))) {
                         entries = new ArrayList<PieEntry>();
                         Inpr1.clear();
                         swerk_p.clear();
@@ -1096,7 +1096,7 @@ public class StatusPieActivity extends AppCompatActivity {
                                 String[] parts = label.split("-");
                                 part1 = parts[0];
 
-                                Intent intent = new Intent( StatusPieActivity.this, NotifTypeListActivity.class);
+                                Intent intent = new Intent(StatusPieActivity.this, NotifTypeListActivity.class);
                                 intent.putExtra("value1", part1);
                                 /*intent.putExtra("month", month);
                                 intent.putExtra("year", year);
@@ -1116,7 +1116,7 @@ public class StatusPieActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    if (value.equals("Completed")) {
+                    if (value.equals(getString(R.string.compltd))) {
                         entries = new ArrayList<PieEntry>();
                         Comp1.clear();
                         swerk_p.clear();

@@ -122,13 +122,13 @@ public class IsoTagUntagCon_Activity extends AppCompatActivity implements View.O
                 }
                 shrtText_tiet.setText(wdip.getStxt());
                 if (wdip.getCctyp().equalsIgnoreCase("E"))
-                    type_tiet.setText("E - Equipment");
+                    type_tiet.setText(getString(R.string.tagcond_equip));
                 else if (wdip.getCctyp().equalsIgnoreCase("F"))
-                    type_tiet.setText("F - Functional Location");
+                    type_tiet.setText(getString(R.string.tagcond_floc));
                 else if (wdip.getCctyp().equalsIgnoreCase("N"))
-                    type_tiet.setText("N - Object");
+                    type_tiet.setText(getString(R.string.tagcond_obj));
                 else
-                    type_tiet.setText("  - Comments");
+                    type_tiet.setText(getString(R.string.tagcond_comm));
 
                 obj_tiet.setText(wdip.getCcobj());
                 tagCondtn_tiet.setText(wdip.getTgproc());
@@ -186,10 +186,12 @@ public class IsoTagUntagCon_Activity extends AppCompatActivity implements View.O
             case (R.id.obj_iv):
                 if (type_tiet.getText().toString() != null && !type_tiet.getText().toString().equals("")) {
                     if (type_tiet.getText().toString().startsWith("E")) {
-                        Intent equipIdIntent = new Intent(IsoTagUntagCon_Activity.this, Equipment_Activity.class);
+                        Intent equipIdIntent = new Intent(IsoTagUntagCon_Activity.this,
+                                Equipment_Activity.class);
                         startActivityForResult(equipIdIntent, EQUIP_ID);
                     } else if (type_tiet.getText().toString().startsWith("F")) {
-                        Intent funcLocIntent = new Intent(IsoTagUntagCon_Activity.this, FunctionLocation_Activity.class);
+                        Intent funcLocIntent = new Intent(IsoTagUntagCon_Activity.this,
+                                FunctionLocation_Activity.class);
                         startActivityForResult(funcLocIntent, FUNC_LOC);
                     }
                 } else {

@@ -67,7 +67,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
                 false);
 
         DATABASE_NAME = getString(R.string.database_name);
-        FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        FieldTekPro_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,
+                null);
 
         recyclerView = rootView.findViewById(R.id.recyclerView);
         ma = (Orders_Create_Activity) this.getActivity();
@@ -89,14 +90,11 @@ public class Orders_CR_Permits_Fragment extends Fragment {
         if (!getUserVisibleHint())
             return;
 
-
-        String auth_status = Authorizations.Get_Authorizations_Data(getActivity(),"C","I");
-        if (auth_status.equalsIgnoreCase("true"))
-        {
+        String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "C",
+                "I");
+        if (auth_status.equalsIgnoreCase("true")) {
             ma.fab.show();
-        }
-        else
-        {
+        } else {
             ma.fab.hide();
         }
 
@@ -114,7 +112,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
                             errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.priority_mandate));
                         }
                     } else {
-                        errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.equipFunc_mandate));
+                        errorDialog.show_error_dialog(getActivity(),
+                                getResources().getString(R.string.equipFunc_mandate));
                     }
                 } else {
                     errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.text_mandate));
@@ -135,21 +134,13 @@ public class Orders_CR_Permits_Fragment extends Fragment {
                     if (ww_al != null) {
                         if (ww_al.size() > 0) {
                             wa_al.clear();
-                            /*String wapinr = "";
-                            if (ww_al.get(0).getWaWdPrcbl_Al().size() > 0) {
-                                wapinr = "WA000" + (ww_al.get(0).getWaWdPrcbl_Al().size() + 1);
-                            }*/
-//                            wa.setWapinr(wapinr);
-                            /*wa.setAction("I");
-                            wa_al_d.addAll(ww_al.get(0).getWaWdPrcbl_Al());
-                            wa_al_d.add(wa);
-                            ww_al.get(0).setWaWdPrcbl_Al(wa_al_d);*/
                             wa_al.addAll(ww_al.get(0).getWaWdPrcbl_Al());
                             ma.ohp.setOrdrPermitPrcbls(ww_al);
                             if (applicationAdapter == null) {
                                 applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
                                 recyclerView.setHasFixedSize(true);
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                                RecyclerView.LayoutManager layoutManager =
+                                        new LinearLayoutManager(getActivity());
                                 recyclerView.setLayoutManager(layoutManager);
                                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                                 recyclerView.setAdapter(applicationAdapter);
@@ -183,7 +174,6 @@ public class Orders_CR_Permits_Fragment extends Fragment {
                             wwp.setCrea("X");
                             wwp.setAction("I");
 
-//                            wa.setWapinr("WA001");
                             wa.setAction("I");
                             wa_al_d.add(wa);
                             wwp.setWaWdPrcbl_Al(wa_al_d);
@@ -193,7 +183,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
 
                             applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
                             recyclerView.setHasFixedSize(true);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                            RecyclerView.LayoutManager layoutManager =
+                                    new LinearLayoutManager(getActivity());
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());
                             recyclerView.setAdapter(applicationAdapter);
@@ -235,7 +226,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
 
                         applicationAdapter = new ApplicationAdapter(getActivity(), wa_al);
                         recyclerView.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(getActivity());
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(applicationAdapter);
@@ -245,15 +237,9 @@ public class Orders_CR_Permits_Fragment extends Fragment {
                 }
             case (UPDATE):
                 if (resultCode == RESULT_OK) {
-                    wa_al  = new ArrayList<>();
+                    wa_al = new ArrayList<>();
                     OrdrPermitPrcbl wa = new OrdrPermitPrcbl();
                     ww_al = data.getParcelableArrayListExtra("opp");
-                   /* ArrayList<OrdrPermitPrcbl> wa_al_d = new ArrayList<>();
-                    wa_al_d.addAll(wa_al);
-                    for (OrdrPermitPrcbl rmo : wa_al_d) {
-                        if (rmo.getWapinr().equals(wa.getWapinr()))
-                            wa_al.remove(rmo);
-                    }*/
 
                     wa_al.addAll(ww_al.get(0).getWaWdPrcbl_Al());
                     ma.ohp.setOrdrPermitPrcbls(ww_al);
@@ -295,7 +281,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.permit_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.permit_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -308,38 +295,18 @@ public class Orders_CR_Permits_Fragment extends Fragment {
             holder.validFrm_tv.setText(dateFormat(wapo.getDatefr()));
 
             if (wapo.getComp().equals("X")) {
-                holder.permitStatus_iv.setImageDrawable(getResources().getDrawable(R.drawable.permit_status_comp, null));
+                holder.permitStatus_iv.setImageDrawable(getResources()
+                        .getDrawable(R.drawable.permit_status_comp, null));
             } else if (wapo.getPrep().equals("X")) {
-                holder.permitStatus_iv.setImageDrawable(getResources().getDrawable(R.drawable.permit_status_prep, null));
+                holder.permitStatus_iv.setImageDrawable(getResources()
+                        .getDrawable(R.drawable.permit_status_prep, null));
             } else {
-                holder.permitStatus_iv.setImageDrawable(getResources().getDrawable(R.drawable.permit_status_crea, null));
+                holder.permitStatus_iv.setImageDrawable(getResources()
+                        .getDrawable(R.drawable.permit_status_crea, null));
             }
             holder.permit_ll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    /*String wapinr = "";
-                    if (ww_al != null) {
-                        if (ww_al.size() > 0) {
-                            if (ww_al.get(0).getWaWdPrcbl_Al().size() > 0) {
-                                wapinr = "WA000" + (ww_al.get(0).getWaWdPrcbl_Al().size() + 1);
-                            }
-                        } else {
-                            wapinr = "WA0001";
-                        }
-                    } else {
-                        wapinr = "WA0001";
-                    }*/
-                   /* Intent intent = new Intent(getActivity(), Permits_Add_Update_Activity.class);
-                    intent.putExtra("permit_id", holder.id_textview.getText().toString());
-                    intent.putExtra("permit_txt", holder.value_textview.getText().toString());
-                    intent.putExtra("shrt_txt", ma.ohp.getOrdrShrtTxt());
-                    intent.putExtra("func_loc", ma.ohp.getFuncLocId());
-                    intent.putExtra("priority_id", ma.ohp.getPriorityId());
-                    intent.putExtra("priority_txt", ma.ohp.getPriorityTxt());
-                    intent.putExtra("equip", ma.ohp.getEquipNum());
-                    intent.putExtra("iwerk", ma.ohp.getIwerk());
-                    intent.putExtra("wapinr", wapinr);*/
 
                     Intent intent = new Intent(getActivity(), Permits_Add_Update_Activity.class);
                     intent.putExtra("shrt_txt", ma.ohp.getOrdrShrtTxt());
@@ -369,7 +336,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
         create_wcm_appl_type_dialog.setCancelable(true);
         create_wcm_appl_type_dialog.setCanceledOnTouchOutside(false);
         create_wcm_appl_type_dialog.setContentView(R.layout.f4_list_activity);
-        create_wcm_appl_type_dialog.getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
+        create_wcm_appl_type_dialog
+                .getWindow().getAttributes().windowAnimations = R.style.ErrorDialog;
         title_textview = create_wcm_appl_type_dialog.findViewById(R.id.title_textview);
         no_data_textview = create_wcm_appl_type_dialog.findViewById(R.id.no_data_textview);
         ImageView back_imageview = create_wcm_appl_type_dialog.findViewById(R.id.back_imageview);
@@ -383,9 +351,11 @@ public class Orders_CR_Permits_Fragment extends Fragment {
             }
         });
         new Get_Types_Data().execute();
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -396,7 +366,6 @@ public class Orders_CR_Permits_Fragment extends Fragment {
         searchEditText.setHintTextColor(getResources().getColor(R.color.white));
         create_wcm_appl_type_dialog.show();
     }
-
 
     private class Get_Types_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -409,11 +378,13 @@ public class Orders_CR_Permits_Fragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtWcmTypes where Iwerk = ?", new String[]{ma.ohp.getIwerk()});
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtWcmTypes where Iwerk = ?",
+                        new String[]{ma.ohp.getIwerk()});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Type_Object nto = new Type_Object(cursor.getString(3), cursor.getString(4));
+                            Type_Object nto = new Type_Object(cursor.getString(3),
+                                    cursor.getString(4));
                             type_list.add(nto);
                         }
                         while (cursor.moveToNext());
@@ -424,11 +395,6 @@ public class Orders_CR_Permits_Fragment extends Fragment {
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -465,7 +431,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId().toString(), type_list.get(i).getText().toString());
+                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
+                            type_list.get(i).getText());
                     filteredList.add(nto);
                 }
             }
@@ -514,7 +481,8 @@ public class Orders_CR_Permits_Fragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.f4_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 

@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-
 public class NotificationDetailActivity extends AppCompatActivity {
 
     TextView phase, swerk, arbpl, qmart, qmnum, qmtxt, ernam, equnr, eqktx, priok, strmn, ltrmn, auswk, tplnr, ausvn, ausbs;
@@ -62,7 +61,6 @@ public class NotificationDetailActivity extends AppCompatActivity {
         msaus = findViewById(R.id.msaus);
         ausvn = findViewById(R.id.ausvn);
         ausbs = findViewById(R.id.ausbs);
-
 
 
         Intent intent = getIntent();
@@ -119,11 +117,11 @@ public class NotificationDetailActivity extends AppCompatActivity {
         Log.v("priok", "" + priok_);
         if (!phase_.equals("") || phase_ != null || !phase_.equals("null")) {
             if (phase_.equals("1")) {
-                phase.setText("Outstanding");
+                phase.setText(getString(R.string.outstanding));
             } else if (phase_.equals("3")) {
-                phase.setText("Inprogress");
+                phase.setText(getString(R.string.inprgs));
             } else if (phase_.equals("4")) {
-                phase.setText("Completed");
+                phase.setText(getString(R.string.compltd));
             } else {
                 phase.setText("");
             }

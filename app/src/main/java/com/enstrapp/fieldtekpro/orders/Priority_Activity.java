@@ -45,14 +45,6 @@ public class Priority_Activity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.f4_list_activity);
 
-        /*Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals("")) {
-                request_id = Integer.parseInt(request_ids);
-            }
-        }*/
-
         title_textview = (TextView) findViewById(R.id.title_textview);
         no_data_textview = (TextView) findViewById(R.id.no_data_textview);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
@@ -65,9 +57,11 @@ public class Priority_Activity extends AppCompatActivity implements View.OnClick
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text",
+                null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getApplicationContext().getAssets(),
+                "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.black));
         search.setBaselineAligned(false);
@@ -91,11 +85,13 @@ public class Priority_Activity extends AppCompatActivity implements View.OnClick
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_ORDER_PRIORITY", null);
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_ORDER_PRIORITY",
+                        null);
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Type_Object nto = new Type_Object(cursor.getString(1), cursor.getString(2));
+                            Type_Object nto = new Type_Object(cursor.getString(1),
+                                    cursor.getString(2));
                             type_list.add(nto);
                         }
                         while (cursor.moveToNext());
@@ -147,12 +143,14 @@ public class Priority_Activity extends AppCompatActivity implements View.OnClick
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId().toString(), type_list.get(i).getText().toString());
+                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
+                            type_list.get(i).getText());
                     filteredList.add(nto);
                 }
             }
             if (filteredList.size() > 0) {
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Priority_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(Priority_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 adapter = new TYPE_ADAPTER(Priority_Activity.this, filteredList);
                 list_recycleview.setAdapter(adapter);
@@ -196,7 +194,8 @@ public class Priority_Activity extends AppCompatActivity implements View.OnClick
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.f4_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -210,8 +209,10 @@ public class Priority_Activity extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
-                    intent.putExtra("priority_type_id", holder.id_textview.getText().toString());
-                    intent.putExtra("priority_type_text", holder.value_textview.getText().toString());
+                    intent.putExtra("priority_type_id",
+                            holder.id_textview.getText().toString());
+                    intent.putExtra("priority_type_text",
+                            holder.value_textview.getText().toString());
                     setResult(RESULT_OK, intent);
                     Priority_Activity.this.finish();
                 }
@@ -256,5 +257,4 @@ public class Priority_Activity extends AppCompatActivity implements View.OnClick
             onBackPressed();
         }
     }
-
 }

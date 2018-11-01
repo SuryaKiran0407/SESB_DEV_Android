@@ -14,8 +14,7 @@ import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.R;
 
-public class Notification_Analysis_Activity extends AppCompatActivity
-{
+public class Notification_Analysis_Activity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewpager;
@@ -25,8 +24,7 @@ public class Notification_Analysis_Activity extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mis_notification_analysis);
 
@@ -34,33 +32,29 @@ public class Notification_Analysis_Activity extends AppCompatActivity
         viewpager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tab);
         back_ib = findViewById(R.id.back_ib);
-        iv_filter=(ImageView)findViewById(R.id.iv_filter);
-
+        iv_filter = (ImageView) findViewById(R.id.iv_filter);
 
 
         tabAdapter = new TabAdapter(this, getSupportFragmentManager());
         viewpager.setAdapter(tabAdapter);
-        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset,int positionOffsetPixels)
-            {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
-            public void onPageSelected(int position)
-            {
+            public void onPageSelected(int position) {
                 PieFragment fag1 = (PieFragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                 String month_year = fag1.getMonth_year();//Month&Year for Compliance Chart
                 ComplianceBarFragment tab1 = (ComplianceBarFragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
-                if (position == 1)
-                {
+                if (position == 1) {
                     tab1.setMonthYear(month_year);
                     tab1.getData(); //when tab swiped to get the data for bar chart
                 }
             }
+
             @Override
-            public void onPageScrollStateChanged(int state)
-            {
+            public void onPageScrollStateChanged(int state) {
             }
         });
 
@@ -88,8 +82,8 @@ public class Notification_Analysis_Activity extends AppCompatActivity
             }
         }
     }
-    private static String makeFragmentName(int viewPagerId, int index)
-    {
+
+    private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
@@ -98,11 +92,10 @@ public class Notification_Analysis_Activity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 onBackPressed();

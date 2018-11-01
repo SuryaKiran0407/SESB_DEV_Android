@@ -12,54 +12,43 @@ import android.widget.LinearLayout;
 
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.equipment.Equipment_Activity;
-import com.enstrapp.fieldtekpro.equipment_inspection.Equipment_History_Activity;
-import com.enstrapp.fieldtekpro.equipment_inspection.Equipment_InspectionChecklist_List_Activity;
-import com.enstrapp.fieldtekpro.equipment_inspection.Equipment_Inspection_Breakdown_Statics_Activity;
-import com.enstrapp.fieldtekpro.notifications.Notifications_Create_Activity;
-import com.enstrapp.fieldtekpro.orders.Orders_Activity;
 
-public class Calibration_Activity extends AppCompatActivity
-{
+public class Calibration_Activity extends AppCompatActivity {
 
     ImageView back_imageview;
     LinearLayout equip_layout;
     EditText equipment_edittext;
     int equip_status = 1;
-    String work_center_id = "", functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "", plant_id = "", plannergroup_id = "", plannergroup_text ="";
+    String work_center_id = "", functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "", plant_id = "", plannergroup_id = "", plannergroup_text = "";
     GridView grid;
     //String[] web1 = {"Create Notification","Statistics","Maintenance History","Calibration History", "Calibration Orders","Maintenance Plan"} ;
     //int[] imageId1 = {R.drawable.ic_create_notif_icon,R.drawable.ic_statistics_icon,R.drawable.ic_maitenancehistory_icon,R.drawable.ic_calibrationhistory_icon, R.drawable.ic_purchaseorder_icon,R.drawable.ic_maintenanceplan_icon,};
-    String[] web1 = {"Calibration Orders"} ;
+    String[] web1 = {getString(R.string.calb_ordrs)};
     int[] imageId1 = {R.drawable.ic_purchaseorder_icon};
     String selected_status = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_activity);
 
-        equip_layout = (LinearLayout)findViewById(R.id.equip_layout);
-        equipment_edittext = (EditText)findViewById(R.id.equipment_edittext);
-        grid = (GridView)findViewById(R.id.gridview);
-        back_imageview = (ImageView)findViewById(R.id.back_imageview);
+        equip_layout = (LinearLayout) findViewById(R.id.equip_layout);
+        equipment_edittext = (EditText) findViewById(R.id.equipment_edittext);
+        grid = (GridView) findViewById(R.id.gridview);
+        back_imageview = (ImageView) findViewById(R.id.back_imageview);
 
-        equip_layout.setOnClickListener(new View.OnClickListener()
-        {
+        equip_layout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent equipment_intent = new Intent(Calibration_Activity.this, Equipment_Activity.class);
                 equipment_intent.putExtra("request_id", Integer.toString(equip_status));
                 startActivityForResult(equipment_intent, equip_status);
             }
         });
 
-        back_imageview.setOnClickListener(new View.OnClickListener()
-        {
+        back_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Calibration_Activity.this.finish();
             }
         });
@@ -69,13 +58,10 @@ public class Calibration_Activity extends AppCompatActivity
 
     // Call Back method  to get the Message form other Activity
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !data.equals(""))
-        {
-            if(requestCode == equip_status)
-            {
+        if (data != null && !data.equals("")) {
+            if (requestCode == equip_status) {
                 equipment_id = data.getStringExtra("equipment_id");
                 equipment_text = data.getStringExtra("equipment_text");
                 functionlocation_id = data.getStringExtra("functionlocation_id");
@@ -96,18 +82,14 @@ public class Calibration_Activity extends AppCompatActivity
     }
 
 
-    public void grid_clicklistener()
-    {
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+    public void grid_clicklistener() {
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
-            {
-                if(web1[+ position].equals("Calibration Orders"))
-                {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (web1[+position].equals(getString(R.string.calb_ordrs))) {
                     Intent create_notif_intent = new Intent(Calibration_Activity.this, Calibration_Orders_List_Activity.class);
-                    create_notif_intent.putExtra("equipment_id",equipment_id);
-                    create_notif_intent.putExtra("plant_id",plant_id);
+                    create_notif_intent.putExtra("equipment_id", equipment_id);
+                    create_notif_intent.putExtra("plant_id", plant_id);
                     startActivity(create_notif_intent);
                 }
             }

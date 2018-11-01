@@ -18,8 +18,7 @@ import com.enstrapp.fieldtekpro.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utilities_Activity extends AppCompatActivity
-{
+public class Utilities_Activity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -29,12 +28,11 @@ public class Utilities_Activity extends AppCompatActivity
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
     private List bom_list, stock_list;
-    String[] tabTitle={"BOM","Stock"};
-    int[] unreadCount = {0,0};
+    String[] tabTitle = {"BOM", "Stock"};
+    int[] unreadCount = {0, 0};
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.utilities_activity);
 
@@ -45,14 +43,12 @@ public class Utilities_Activity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(null);
-        toolbar.setPadding(0,0,0,0);//for tab otherwise give space in tab
-        toolbar.setContentInsetsAbsolute(0,0);
+        toolbar.setPadding(0, 0, 0, 0);//for tab otherwise give space in tab
+        toolbar.setContentInsetsAbsolute(0, 0);
         ImageView home_imageview = (ImageView) toolbar.findViewById(R.id.home_imageview);
-        home_imageview.setOnClickListener(new View.OnClickListener()
-        {
+        home_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Utilities_Activity.this.finish();
             }
         });
@@ -66,138 +62,98 @@ public class Utilities_Activity extends AppCompatActivity
         setupViewPager(viewPager);
 
         bom_list = new ArrayList<>();
-        try
-        {
+        try {
             Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomHeader", null);
-            if (cursor != null && cursor.getCount() > 0)
-            {
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
                         bom_list.add(cursor.getString(1));
                     }
                     while (cursor.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor.close();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
         unreadCount[0] = bom_list.size();
 
         stock_list = new ArrayList<>();
-        try
-        {
+        try {
             Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA", null);
-            if (cursor != null && cursor.getCount() > 0)
-            {
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
                         stock_list.add(cursor.getString(1));
                     }
                     while (cursor.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor.close();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
         unreadCount[1] = stock_list.size();
 
-        try
-        {
+        try {
             setupTabIcons();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-            {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
-            public void onPageSelected(int position)
-            {
-                viewPager.setCurrentItem(position,false);
+            public void onPageSelected(int position) {
+                viewPager.setCurrentItem(position, false);
                 int currentPage = position;
-                if(currentPage == 0)
-                {
-                    BOM_List_Activity tab1 = (BOM_List_Activity)getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager,0));
-                    if(tab1 != null)
-                    {
+                if (currentPage == 0) {
+                    BOM_List_Activity tab1 = (BOM_List_Activity) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
+                    if (tab1 != null) {
                         String data = tab1.getData();
                     }
                 }
             }
+
             @Override
-            public void onPageScrollStateChanged(int state)
-            {
+            public void onPageScrollStateChanged(int state) {
             }
         });
     }
 
-    public void refreshMyData()
-    {
+    public void refreshMyData() {
         bom_list = new ArrayList<>();
-        try
-        {
+        try {
             Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomHeader", null);
-            if (cursor != null && cursor.getCount() > 0)
-            {
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
                         bom_list.add(cursor.getString(1));
                     }
                     while (cursor.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor.close();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
 
         stock_list = new ArrayList<>();
-        try
-        {
+        try {
             Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA", null);
-            if (cursor != null && cursor.getCount() > 0)
-            {
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
                         stock_list.add(cursor.getString(1));
                     }
                     while (cursor.moveToNext());
                 }
-            }
-            else
-            {
+            } else {
                 cursor.close();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
 
         tabLayout.setupWithViewPager(viewPager);
@@ -205,55 +161,47 @@ public class Utilities_Activity extends AppCompatActivity
         TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
         TextView badgeTv = (TextView) view.findViewById(R.id.tv_count);
         tv_title.setText("BOM");
-        badgeTv.setText("("+bom_list.size()+")");
+        badgeTv.setText("(" + bom_list.size() + ")");
         tabLayout.getTabAt(0).setCustomView(view);
 
         View view1 = LayoutInflater.from(Utilities_Activity.this).inflate(R.layout.custom_tab, null);
         TextView tv_title1 = (TextView) view1.findViewById(R.id.tv_title);
         TextView badgeTv1 = (TextView) view1.findViewById(R.id.tv_count);
         tv_title1.setText("Stock");
-        badgeTv1.setText("("+stock_list.size()+")");
+        badgeTv1.setText("(" + stock_list.size() + ")");
         tabLayout.getTabAt(1).setCustomView(view1);
     }
 
-    private static String makeFragmentName(int viewPagerId, int index)
-    {
+    private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
-    private void setupViewPager(final ViewPager viewPager)
-    {
+    private void setupViewPager(final ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        callsFragment=new BOM_List_Activity();
-        chatFragment=new Stock_List_Activity();
-        adapter.addFragment(callsFragment,"BOM");
-        adapter.addFragment(chatFragment,"Stock");
+        callsFragment = new BOM_List_Activity();
+        chatFragment = new Stock_List_Activity();
+        adapter.addFragment(callsFragment, "BOM");
+        adapter.addFragment(chatFragment, "Stock");
         viewPager.setAdapter(adapter);
     }
 
-    private View prepareTabView(int pos)
-    {
-        View view = getLayoutInflater().inflate(R.layout.custom_tab,null);
+    private View prepareTabView(int pos) {
+        View view = getLayoutInflater().inflate(R.layout.custom_tab, null);
         TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
         TextView tv_count = (TextView) view.findViewById(R.id.tv_count);
         tv_title.setText(tabTitle[pos]);
-        if(unreadCount[pos]>0)
-        {
+        if (unreadCount[pos] > 0) {
             tv_count.setVisibility(View.VISIBLE);
-            tv_count.setText("("+unreadCount[pos]+")");
-        }
-        else
-        {
+            tv_count.setText("(" + unreadCount[pos] + ")");
+        } else {
             tv_count.setVisibility(View.VISIBLE);
             tv_count.setText("(0)");
         }
         return view;
     }
 
-    private void setupTabIcons()
-    {
-        for(int i=0;i<tabTitle.length;i++)
-        {
+    private void setupTabIcons() {
+        for (int i = 0; i < tabTitle.length; i++) {
             /*TabLayout.Tab tabitem = tabLayout.newTab();
             tabitem.setCustomView(prepareTabView(i));
             tabLayout.addTab(tabitem);*/

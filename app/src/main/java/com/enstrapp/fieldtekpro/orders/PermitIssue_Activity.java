@@ -64,20 +64,16 @@ public class PermitIssue_Activity extends AppCompatActivity {
             prep = extras.getString("prep");
             woco = extras.getString("woco");
             if (woco != null)
-                if (woco.equals("X"))
-                {
+                if (woco.equals("X")) {
                     footer_ll.setVisibility(GONE);
-                }
-                else
-                {
+                } else {
 
-                    String auth_status2 = Authorizations.Get_Authorizations_Data(PermitIssue_Activity.this,"C","PI");
-                    if (auth_status2.equalsIgnoreCase("true"))
-                    {
+                    String auth_status2 = Authorizations
+                            .Get_Authorizations_Data(PermitIssue_Activity.this, "C",
+                                    "PI");
+                    if (auth_status2.equalsIgnoreCase("true")) {
                         footer_ll.setVisibility(VISIBLE);
-                    }
-                    else
-                    {
+                    } else {
                         footer_ll.setVisibility(GONE);
                     }
                 }
@@ -92,13 +88,16 @@ public class PermitIssue_Activity extends AppCompatActivity {
                             wcg.setGeniakt_status(true);
                     }
                     for (OrdrWcagnsPrcbl wcg : wcg_al) {
-                        if (!wcg.getAction().equals("D") && !wcg.getPmsog().equals("I_TAG") && !wcg.getPmsog().equals("I_TAGGED"))
+                        if (!wcg.getAction().equals("D") && !wcg.getPmsog().equals("I_TAG") &&
+                                !wcg.getPmsog().equals("I_TAGGED"))
                             wcg_al_d.add(wcg);
                     }
                     if (wcg_al_d.size() > 0) {
-                        adapter = new PERMITLIST_ADAPTER(PermitIssue_Activity.this, wcg_al_d);
+                        adapter = new PERMITLIST_ADAPTER(PermitIssue_Activity.this,
+                                wcg_al_d);
                         recyclerView.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PermitIssue_Activity.this);
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(PermitIssue_Activity.this);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(adapter);
@@ -121,7 +120,6 @@ public class PermitIssue_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList<OrdrWcagnsPrcbl> rmo_al = new ArrayList<>();
                 rmo_al.addAll(wcg_al);
-//                for (int i = 0; i < rmo_al.size();i++){
                 for (int j = 0; j < wcg_al_d.size(); j++) {
                     for (OrdrWcagnsPrcbl wcg : rmo_al) {
                         if (wcg.getPmsog().equals(wcg_al_d.get(j).getPmsog()))
@@ -129,7 +127,6 @@ public class PermitIssue_Activity extends AppCompatActivity {
 
                     }
                 }
-//                }
                 wcg_al.addAll(wcg_al_d);
                 boolean appr = false;
                 for (OrdrWcagnsPrcbl wcg : wcg_al_d) {
@@ -174,7 +171,8 @@ public class PermitIssue_Activity extends AppCompatActivity {
         private List<OrdrWcagnsPrcbl> issuelist;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView date_time_textview, Objnr, permit_textview, permit_text_textview, Geniakt, Crname;
+            public TextView date_time_textview, Objnr, permit_textview, permit_text_textview,
+                    Geniakt, Crname;
             public EditText person_name_edittext;
             public CheckBox permit_issued_checkbox;
             public ImageView delIssue_iv;
@@ -252,7 +250,8 @@ public class PermitIssue_Activity extends AppCompatActivity {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.permit_issue_list, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.permit_issue_list, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -260,40 +259,41 @@ public class PermitIssue_Activity extends AppCompatActivity {
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final OrdrWcagnsPrcbl nto = issuelist.get(position);
 
-                holder.permit_textview.setText(nto.getPmsog());
-                holder.permit_text_textview.setText(nto.getGntxt());
-                holder.person_name_edittext.setTag(position);
-                holder.person_name_edittext.setText(nto.getGenvname());
-                holder.Crname.setText(nto.getCrname());
-                holder.Objnr.setText(nto.getObjnr());
-                holder.date_time_textview.setText(nto.getGendatum() + " " + nto.getGentime());
-                holder.permit_issued_checkbox.setTag(position);
-                holder.delIssue_iv.setTag(position);
-                holder.permit_issued_checkbox.setChecked((issuelist.get(position).isGeniakt_status() == true ? true : false));
-                if (holder.permit_textview.getText().toString().equals("HOD") || holder.permit_textview.getText().toString().equals("SAFETY")) {
-                    if (prep.equals("X")) {
-                        if (woco.equals("X")) {
-                            holder.delIssue_iv.setVisibility(View.GONE);
-                        } else {
-                            holder.delIssue_iv.setVisibility(View.GONE);
-                        }
+            holder.permit_textview.setText(nto.getPmsog());
+            holder.permit_text_textview.setText(nto.getGntxt());
+            holder.person_name_edittext.setTag(position);
+            holder.person_name_edittext.setText(nto.getGenvname());
+            holder.Crname.setText(nto.getCrname());
+            holder.Objnr.setText(nto.getObjnr());
+            holder.date_time_textview.setText(nto.getGendatum() + " " + nto.getGentime());
+            holder.permit_issued_checkbox.setTag(position);
+            holder.delIssue_iv.setTag(position);
+            holder.permit_issued_checkbox.setChecked((issuelist.get(position)
+                    .isGeniakt_status() == true ? true : false));
+            if (holder.permit_textview.getText().toString().equals("HOD") ||
+                    holder.permit_textview.getText().toString().equals("SAFETY")) {
+                if (prep.equals("X")) {
+                    if (woco.equals("X")) {
+                        holder.delIssue_iv.setVisibility(View.GONE);
                     } else {
-                        if (woco.equals("X"))
-                            holder.delIssue_iv.setVisibility(View.GONE);
-                        else
-                            holder.delIssue_iv.setVisibility(View.VISIBLE);
+                        holder.delIssue_iv.setVisibility(View.GONE);
                     }
                 } else {
-                    holder.delIssue_iv.setVisibility(GONE);
+                    if (woco.equals("X"))
+                        holder.delIssue_iv.setVisibility(View.GONE);
+                    else
+                        holder.delIssue_iv.setVisibility(View.VISIBLE);
                 }
-                if (prep.equals("X")) {
-                    holder.permit_issued_checkbox.setEnabled(true);
-                    holder.person_name_edittext.setEnabled(true);
-                } else {
-                    holder.permit_issued_checkbox.setEnabled(false);
-                    holder.person_name_edittext.setEnabled(false);
-                }
-
+            } else {
+                holder.delIssue_iv.setVisibility(GONE);
+            }
+            if (prep.equals("X")) {
+                holder.permit_issued_checkbox.setEnabled(true);
+                holder.person_name_edittext.setEnabled(true);
+            } else {
+                holder.permit_issued_checkbox.setEnabled(false);
+                holder.person_name_edittext.setEnabled(false);
+            }
         }
 
         @Override
@@ -342,12 +342,14 @@ public class PermitIssue_Activity extends AppCompatActivity {
                         wcg_al_d.remove(i);
                 }
                 for (OrdrWcagnsPrcbl wcg : wcg_al) {
-                    if (wcg.getPmsog().equals(type) && !wcg.getPmsog().equals("I_TAG") && !wcg.getPmsog().equals("I_TAGGED"))
+                    if (wcg.getPmsog().equals(type) && !wcg.getPmsog().equals("I_TAG") &&
+                            !wcg.getPmsog().equals("I_TAGGED"))
                         wcg.setAction("D");
                 }
                 adapter = new PERMITLIST_ADAPTER(PermitIssue_Activity.this, wcg_al_d);
                 recyclerView.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PermitIssue_Activity.this);
+                RecyclerView.LayoutManager layoutManager =
+                        new LinearLayoutManager(PermitIssue_Activity.this);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);

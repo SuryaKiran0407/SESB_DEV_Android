@@ -29,8 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Settings_Activity extends AppCompatActivity implements OnClickListener
-{
+public class Settings_Activity extends AppCompatActivity implements OnClickListener {
 
     CheckBox initialload_cb, refresh_cb;
     EditText pushIntrvl_et;
@@ -47,8 +46,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
     ImageView back_imageview;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
@@ -57,25 +55,22 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
         pushIntrvl_et = findViewById(R.id.pushIntrvl_et);
         reset_bt = findViewById(R.id.reset_bt);
         submit_bt = findViewById(R.id.submit_bt);
-        reset_passcode_textview = (TextView)findViewById(R.id.reset_passcode_textview);
-        passcode_layout = (LinearLayout)findViewById(R.id.passcode_layout);
-        back_imageview = (ImageView)findViewById(R.id.back_imageview);
+        reset_passcode_textview = (TextView) findViewById(R.id.reset_passcode_textview);
+        passcode_layout = (LinearLayout) findViewById(R.id.passcode_layout);
+        back_imageview = (ImageView) findViewById(R.id.back_imageview);
 
-		/* Initializing Shared Preferences */
+        /* Initializing Shared Preferences */
         FieldTekPro_SharedPref = getApplicationContext().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
-		/* Initializing Shared Preferences */
+        /* Initializing Shared Preferences */
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = Settings_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
-        if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals(""))
-        {
+        if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
             passcode_layout.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             passcode_layout.setVisibility(View.GONE);
         }
 
@@ -127,14 +122,10 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
 
 
     @Override
-    public void onClick(View v)
-    {
-        if(v == back_imageview)
-        {
+    public void onClick(View v) {
+        if (v == back_imageview) {
             Settings_Activity.this.finish();
-        }
-        else if(v == reset_passcode_textview)
-        {
+        } else if (v == reset_passcode_textview) {
             decision_dialog = new Dialog(Settings_Activity.this);
             decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -142,37 +133,31 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
             decision_dialog.setCanceledOnTouchOutside(false);
             decision_dialog.setContentView(R.layout.decision_dialog);
             ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
-            TextView description_textview = (TextView)decision_dialog.findViewById(R.id.description_textview);
+            TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
             Glide.with(Settings_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
-            Button confirm = (Button)decision_dialog.findViewById(R.id.yes_button);
-            Button cancel = (Button)decision_dialog.findViewById(R.id.no_button);
-            description_textview.setText("All the data will be erased. Are you sure you want to reset the passcode?");
+            Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+            Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+            description_textview.setText(getString(R.string.data_erase));
             decision_dialog.show();
-            cancel.setOnClickListener(new View.OnClickListener()
-            {
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     decision_dialog.dismiss();
                 }
             });
-            confirm.setOnClickListener(new View.OnClickListener()
-            {
+            confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     decision_dialog.dismiss();
-                    custom_progress_dialog.show_progress_dialog(Settings_Activity.this,getResources().getString(R.string.loading));
+                    custom_progress_dialog.show_progress_dialog(Settings_Activity.this, getResources().getString(R.string.loading));
                     SharedPreferences settings = Settings_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
                     settings.edit().clear().commit();
                     Cursor c = FieldTekPro_db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
                     List<String> tables = new ArrayList<>();
-                    while (c.moveToNext())
-                    {
+                    while (c.moveToNext()) {
                         tables.add(c.getString(0));
                     }
-                    for (String table : tables)
-                    {
+                    for (String table : tables) {
                         String dropQuery = "DROP TABLE IF EXISTS " + table;
                         FieldTekPro_db.execSQL(dropQuery);
                     }
@@ -182,9 +167,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
                     startActivity(intent);
                 }
             });
-        }
-        else if (v == reset_bt)
-        {
+        } else if (v == reset_bt) {
             final Dialog reset_dialog = new Dialog(Settings_Activity.this);
             reset_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             reset_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -210,13 +193,11 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
                     reset_dialog.dismiss();
                 }
             });
-        }
-        else if (v == submit_bt)
-        {
-            if (pushIntrvl_et.getText().toString() != null && !pushIntrvl_et.getText().toString().equals(""))
-            {
+        } else if (v == submit_bt) {
+            if (pushIntrvl_et.getText().toString() != null && !pushIntrvl_et.getText().toString().equals("")) {
                 if (pushIntrvl_et.getText().toString().equalsIgnoreCase("0") || pushIntrvl_et.getText().toString().equalsIgnoreCase("00") || pushIntrvl_et.getText().toString().equalsIgnoreCase("000")) {
-                    error_dialog.show_error_dialog(Settings_Activity.this,"Please Enter Valid Push Interval");
+                    error_dialog.show_error_dialog(Settings_Activity.this,
+                            getString(R.string.valid_interval));
                 } else {
                     final Dialog decision_dialog = new Dialog(Settings_Activity.this);
                     decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -227,7 +208,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
                     final TextView favoritetextview = (TextView) decision_dialog.findViewById(R.id.description_textview);
                     Button confirm = (Button) decision_dialog.findViewById(R.id.ok_button);
                     Button cancel = (Button) decision_dialog.findViewById(R.id.cancel_button);
-                    favoritetextview.setText("Do you want to submit the changes?");
+                    favoritetextview.setText(getString(R.string.submit_changes));
                     decision_dialog.show();
                     cancel.setOnClickListener(new OnClickListener() {
                         @Override
@@ -252,17 +233,14 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
                             FieldTekPro_SharedPrefeditor.putString("FieldTekPro_PushInterval", pushIntrvl_et.getText().toString());
                             FieldTekPro_SharedPrefeditor.commit();
                             String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
-                            if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals(""))
-                            {
+                            if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
                                 startService(new Intent(Settings_Activity.this, Auto_Sync_BackgroundService.class));
                             }
                             Settings_Activity.this.finish();
                         }
                     });
                 }
-            }
-            else
-            {
+            } else {
                 final Dialog decision_dialog = new Dialog(Settings_Activity.this);
                 decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -272,7 +250,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
                 final TextView favoritetextview = (TextView) decision_dialog.findViewById(R.id.description_textview);
                 Button confirm = (Button) decision_dialog.findViewById(R.id.ok_button);
                 Button cancel = (Button) decision_dialog.findViewById(R.id.cancel_button);
-                favoritetextview.setText("Do you want to submit the changes?");
+                favoritetextview.setText(getString(R.string.submit_changes));
                 decision_dialog.show();
                 cancel.setOnClickListener(new OnClickListener() {
                     @Override

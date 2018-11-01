@@ -158,7 +158,6 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
             }
 
 
-
             if (ma.iso.getComp() != null) {
                 if (ma.iso.getComp().equalsIgnoreCase("X")) {
                     completed_cb.setVisibility(VISIBLE);
@@ -268,14 +267,14 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
         int untagged = 0;
         if (ma.iso.getWdItemPrcbl_Al() != null && ma.iso.getWdItemPrcbl_Al().size() > 0) {
 
-                wdip_al = new ArrayList<>();
-                wdip_al.addAll(ma.iso.getWdItemPrcbl_Al());
-                if (wdip_al.size() > 0) {
-                    for (int i = 0; i < wdip_al.size(); i++){
-                        if(wdip_al.get(i).getEug().equals("X"))
-                            untagged = untagged + 1;
-                    }
+            wdip_al = new ArrayList<>();
+            wdip_al.addAll(ma.iso.getWdItemPrcbl_Al());
+            if (wdip_al.size() > 0) {
+                for (int i = 0; i < wdip_al.size(); i++) {
+                    if (wdip_al.get(i).getEug().equals("X"))
+                        untagged = untagged + 1;
                 }
+            }
 
         } else {
             if (ma.wdip_al != null) {
@@ -283,8 +282,8 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
                     wdip_al = new ArrayList<>();
                     wdip_al.addAll(ma.wdip_al);
                     if (wdip_al.size() > 0) {
-                        for (int i = 0; i < wdip_al.size(); i++){
-                            if(wdip_al.get(i).getEug().equals("X"))
+                        for (int i = 0; i < wdip_al.size(); i++) {
+                            if (wdip_al.get(i).getEug().equals("X"))
                                 untagged = untagged + 1;
                         }
                     }
@@ -293,14 +292,14 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
         }
 
         if (ma.iso.getWdItemPrcbl_Al() != null && ma.iso.getWdItemPrcbl_Al().size() > 0) {
-                wdip_al = new ArrayList<>();
-                wdip_al.addAll(ma.iso.getWdItemPrcbl_Al());
-                if (wdip_al.size() > 0) {
-                    if(untagged == wdip_al.size())
-                        completed_cb.setVisibility(VISIBLE);
-                    else
-                        completed_cb.setVisibility(GONE);
-                }
+            wdip_al = new ArrayList<>();
+            wdip_al.addAll(ma.iso.getWdItemPrcbl_Al());
+            if (wdip_al.size() > 0) {
+                if (untagged == wdip_al.size())
+                    completed_cb.setVisibility(VISIBLE);
+                else
+                    completed_cb.setVisibility(GONE);
+            }
 
         } else {
             if (ma.wdip_al != null) {
@@ -308,7 +307,7 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
                     wdip_al = new ArrayList<>();
                     wdip_al.addAll(ma.wdip_al);
                     if (wdip_al.size() > 0) {
-                        if(untagged == wdip_al.size())
+                        if (untagged == wdip_al.size())
                             completed_cb.setVisibility(VISIBLE);
                         else
                             completed_cb.setVisibility(GONE);
@@ -316,7 +315,6 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
                 }
             }
         }
-
 
 
     }
@@ -356,7 +354,7 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
                 break;
 
             case (R.id.toDt_iv):
-                if(!completed_cb.isChecked()) {
+                if (!completed_cb.isChecked()) {
                     Intent toDtIntent = new Intent(getActivity(), DatePickerDialog1.class);
                     toDtIntent.putExtra("givenDate", toDt_tiet.getText().toString());
                     toDtIntent.putExtra("startDate", frmDt_tiet.getText().toString());
@@ -372,7 +370,7 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
                 break;
 
             case (R.id.toTm_iv):
-                if(!completed_cb.isChecked()) {
+                if (!completed_cb.isChecked()) {
                     Intent toTmIntent = new Intent(getActivity(), TimePickerDialog.class);
                     startActivityForResult(toTmIntent, TOTM);
                 }
@@ -396,7 +394,8 @@ public class IsolationList_Fragment extends Fragment implements View.OnClickList
                         ma.iso.setComp("X");
                         setPrep_cb.setEnabled(false);
                     } else {
-                        errorDialog.show_error_dialog(getActivity(), "Please Check SetPrepared");
+                        errorDialog.show_error_dialog(getActivity(),
+                                getString(R.string.check_setprep));
                         ma.iso.setComp("");
                         completed_cb.setChecked(false);
                     }

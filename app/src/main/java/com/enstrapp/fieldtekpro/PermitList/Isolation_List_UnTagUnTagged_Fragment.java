@@ -51,8 +51,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
-{
+public class Isolation_List_UnTagUnTagged_Fragment extends Fragment {
 
     private Adapter adapter;
     List<Isolation_Object> isoaltion_list = new ArrayList<>();
@@ -72,21 +71,18 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     Error_Dialog error_dialog = new Error_Dialog();
 
 
-    public Isolation_List_UnTagUnTagged_Fragment()
-    {
+    public Isolation_List_UnTagUnTagged_Fragment() {
     }
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.isolation_list_activity, container, false);
 
         DATABASE_NAME = getString(R.string.database_name);
@@ -95,25 +91,25 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
         /* Initializing Shared Preferences */
         FieldTekPro_SharedPref = getActivity().getSharedPreferences("FieldTekPro_SharedPreferences", Context.MODE_PRIVATE);
         FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
-		/* Initializing Shared Preferences */
+        /* Initializing Shared Preferences */
 
-        search = (SearchView)rootView.findViewById(R.id.search);
-        title_textview = (TextView)rootView.findViewById(R.id.title_textview);
-        no_data_textview = (TextView)rootView.findViewById(R.id.no_data_textview);
-        back_imageview = (ImageView)rootView.findViewById(R.id.back_imageview);
-        recyclerview = (RecyclerView)rootView.findViewById(R.id.recyclerview);
-        cancel_button = (Button)rootView.findViewById(R.id.cancel_button);
-        submit_button = (Button)rootView.findViewById(R.id.submit_button);
+        search = (SearchView) rootView.findViewById(R.id.search);
+        title_textview = (TextView) rootView.findViewById(R.id.title_textview);
+        no_data_textview = (TextView) rootView.findViewById(R.id.no_data_textview);
+        back_imageview = (ImageView) rootView.findViewById(R.id.back_imageview);
+        recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+        cancel_button = (Button) rootView.findViewById(R.id.cancel_button);
+        submit_button = (Button) rootView.findViewById(R.id.submit_button);
 
-        int id = search.getContext() .getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         search.setQueryHint("Search...");
-        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(),"fonts/metropolis_medium.ttf");
+        Typeface myCustomFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/metropolis_medium.ttf");
         searchview_textview = (TextView) search.findViewById(id);
         searchview_textview.setTextColor(getResources().getColor(R.color.white));
         search.setBaselineAligned(false);
         searchview_textview.setTypeface(myCustomFont);
         searchview_textview.setTextSize(16);
-        EditText searchEditText = (EditText)search.findViewById(id);
+        EditText searchEditText = (EditText) search.findViewById(id);
         searchEditText.setTextColor(getResources().getColor(R.color.white));
         searchEditText.setHintTextColor(getResources().getColor(R.color.dark_grey2));
 
@@ -123,23 +119,19 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     }
 
 
-    SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener()
-    {
+    SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
         @Override
-        public boolean onQueryTextChange(String query)
-        {
+        public boolean onQueryTextChange(String query) {
             query = query.toLowerCase();
             final List<Isolation_Object> filteredList = new ArrayList<>();
-            for (int i = 0; i < isoaltion_list.size(); i++)
-            {
+            for (int i = 0; i < isoaltion_list.size(); i++) {
                 String ordNo = isoaltion_list.get(i).getOrder_num().toLowerCase();
                 String permitNo = isoaltion_list.get(i).getPermit_number().toLowerCase();
                 String permitTxt = isoaltion_list.get(i).getPermit_text().toLowerCase();
                 String authGrp = isoaltion_list.get(i).getAuth_grp().toLowerCase();
                 String tagged = isoaltion_list.get(i).getTagged().toLowerCase();
                 String untagged = isoaltion_list.get(i).getUntagged().toLowerCase();
-                if (ordNo.contains(query) || permitNo.contains(query) || permitTxt.contains(query) || authGrp.contains(query)|| tagged.contains(query) || untagged.contains(query))
-                {
+                if (ordNo.contains(query) || permitNo.contains(query) || permitTxt.contains(query) || authGrp.contains(query) || tagged.contains(query) || untagged.contains(query)) {
                     Isolation_Object nto = new Isolation_Object(isoaltion_list.get(i).getOrder_num(), isoaltion_list.get(i).getPmsog(),
                             isoaltion_list.get(i).getGntxt(), isoaltion_list.get(i).getGenvname(),
                             isoaltion_list.get(i).getCrname(), isoaltion_list.get(i).getObjnr(),
@@ -153,8 +145,7 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                     filteredList.add(nto);
                 }
             }
-            if (filteredList.size() > 0)
-            {
+            if (filteredList.size() > 0) {
                 adapter = new Adapter(getActivity(), filteredList);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 recyclerview.setLayoutManager(layoutManager);
@@ -163,145 +154,110 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                 adapter.notifyDataSetChanged();
                 no_data_textview.setVisibility(View.GONE);
                 recyclerview.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 no_data_textview.setVisibility(View.VISIBLE);
                 recyclerview.setVisibility(View.GONE);
             }
             return true;
         }
+
         public boolean onQueryTextSubmit(String query) {
             return false;
         }
     };
 
 
-    private class Get_Isolation_List_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Isolation_List_Data extends AsyncTask<Void, Integer, Void> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             custom_progress_dialog.show_progress_dialog(getActivity(), getResources().getString(R.string.loading));
             isoaltion_list.clear();
         }
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 String Usgrp = "";
                 Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_USER_DATA", null);
-                if (cursor1 != null && cursor1.getCount() > 0)
-                {
-                    if (cursor1.moveToFirst())
-                    {
-                        do
-                        {
+                if (cursor1 != null && cursor1.getCount() > 0) {
+                    if (cursor1.moveToFirst()) {
+                        do {
                             Usgrp = cursor1.getString(15);
                         }
                         while (cursor1.moveToNext());
                     }
-                }
-                else
-                {
+                } else {
                     cursor1.close();
                 }
 
-                if (Usgrp != null && !Usgrp.equals(""))
-                {
+                if (Usgrp != null && !Usgrp.equals("")) {
                     ArrayList<String> list = new ArrayList<String>();
                     list.clear();
                     Cursor cursor2 = FieldTekPro_db.rawQuery("select * from EtUsgrpWccp where Usgrp = ?", new String[]{Usgrp});
-                    if (cursor2 != null && cursor2.getCount() > 0)
-                    {
-                        if (cursor2.moveToFirst())
-                        {
-                            do
-                            {
+                    if (cursor2 != null && cursor2.getCount() > 0) {
+                        if (cursor2.moveToFirst()) {
+                            do {
                                 String Pmsog = cursor2.getString(2);
                                 list.add(Pmsog);
                             }
                             while (cursor2.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor2.close();
                     }
 
                     Cursor cursor = FieldTekPro_db.rawQuery("select * from EtWcmWcagns where Objart = ? and Geniakt = ?", new String[]{"WD", "X"});
-                    if (cursor != null && cursor.getCount() > 0)
-                    {
-                        if (cursor.moveToFirst())
-                        {
-                            do
-                            {
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
                                 HashMap<String, String> hashmap = new HashMap<String, String>();
                                 hashmap.put("uuid", cursor.getString(1));
                                 hashmap.put("Aufnr", cursor.getString(2));
                                 abc.add(hashmap);
                                 String EtWcmWcagns_Pmsog = cursor.getString(7);
-                                if (list.contains(EtWcmWcagns_Pmsog))
-                                {
+                                if (list.contains(EtWcmWcagns_Pmsog)) {
                                     String date = cursor.getString(26);
                                     String date_format = "";
-                                    if (date != null && !date.equals(""))
-                                    {
-                                        if (date.equalsIgnoreCase("00000000"))
-                                        {
+                                    if (date != null && !date.equals("")) {
+                                        if (date.equalsIgnoreCase("00000000")) {
                                             date_format = "";
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             String Date_format = "";
                                             DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
                                             DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
                                             Date date1;
-                                            try
-                                            {
+                                            try {
                                                 date1 = inputFormat.parse(date);
                                                 String outputDateStr = outputFormat.format(date1);
                                                 Date_format = outputDateStr;
-                                            }
-                                            catch (Exception e)
-                                            {
+                                            } catch (Exception e) {
                                                 Date_format = "";
                                             }
                                             String time = cursor.getString(27);
                                             String time_formatted = "";
-                                            if (time != null && !time.equals(""))
-                                            {
+                                            if (time != null && !time.equals("")) {
                                                 DateFormat inputFormat1 = new SimpleDateFormat("HHmmss");
                                                 DateFormat outputFormat1 = new SimpleDateFormat("HH:mm:ss");
                                                 Date date2;
-                                                try
-                                                {
+                                                try {
                                                     date2 = inputFormat1.parse(date);
                                                     String outputDateStr = outputFormat1.format(date2);
                                                     time_formatted = outputDateStr;
-                                                }
-                                                catch (Exception e)
-                                                {
+                                                } catch (Exception e) {
                                                     time_formatted = "";
                                                 }
                                             }
                                             date_format = Date_format + "  " + time_formatted;
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         date_format = "";
                                     }
                                     boolean Geniakt_status = false;
                                     String Geniakt = cursor.getString(9);
-                                    if (Geniakt.equalsIgnoreCase("X"))
-                                    {
+                                    if (Geniakt.equalsIgnoreCase("X")) {
                                         Geniakt_status = false;
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         Geniakt_status = true;
                                     }
                                     String permit_number = "";
@@ -311,17 +267,12 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                                     String ref_obj = "";
                                     String objnr = cursor.getString(3);
                                     String wcnr = "";
-                                    if (objnr != null && !objnr.equals(""))
-                                    {
-                                        try
-                                        {
+                                    if (objnr != null && !objnr.equals("")) {
+                                        try {
                                             Cursor cursor3 = FieldTekPro_db.rawQuery("select * from EtWcmWdData where Objnr = ?", new String[]{objnr});
-                                            if (cursor3 != null && cursor3.getCount() > 0)
-                                            {
-                                                if (cursor3.moveToFirst())
-                                                {
-                                                    do
-                                                    {
+                                            if (cursor3 != null && cursor3.getCount() > 0) {
+                                                if (cursor3.moveToFirst()) {
+                                                    do {
                                                         wcnr = cursor3.getString(3);
                                                         permit_text = cursor3.getString(14);
                                                         permit_type = cursor3.getString(6);
@@ -330,129 +281,86 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                                                     }
                                                     while (cursor3.moveToNext());
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 cursor3.close();
                                             }
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                         }
                                     }
                                     String tagged = "";
                                     String untagged = "";
-                                    if (objnr != null && !objnr.equals(""))
-                                    {
-                                        try
-                                        {
-                                            Cursor cursor3 = FieldTekPro_db.rawQuery("select * from EtWcmWdItemData where Wcnr = ? and (Bug = ? or Eug = ?)", new String[]{wcnr, "X","X"});
-                                            if (cursor3 != null && cursor3.getCount() > 0)
-                                            {
-                                                if (cursor3.moveToFirst())
-                                                {
-                                                    do
-                                                    {
-                                                        if (cursor3.getString(36).equals("X"))
-                                                        {
+                                    if (objnr != null && !objnr.equals("")) {
+                                        try {
+                                            Cursor cursor3 = FieldTekPro_db.rawQuery("select * from EtWcmWdItemData where Wcnr = ? and (Bug = ? or Eug = ?)", new String[]{wcnr, "X", "X"});
+                                            if (cursor3 != null && cursor3.getCount() > 0) {
+                                                if (cursor3.moveToFirst()) {
+                                                    do {
+                                                        if (cursor3.getString(36).equals("X")) {
                                                             untagged = "UNTAGGED";
-                                                        }
-                                                        else if (cursor3.getString(37).equals("X"))
-                                                        {
+                                                        } else if (cursor3.getString(37).equals("X")) {
                                                             untagged = "UNTAGGED";
-                                                        }
-                                                        else
-                                                        {
+                                                        } else {
                                                             untagged = "UNTAGGED";
                                                         }
                                                     }
                                                     while (cursor3.moveToNext());
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 cursor3.close();
                                             }
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                         }
                                     }
-                                    if (ref_obj != null && !ref_obj.equals(""))
-                                    {
-                                        try
-                                        {
+                                    if (ref_obj != null && !ref_obj.equals("")) {
+                                        try {
                                             Cursor cursor3 = FieldTekPro_db.rawQuery("select * from EtWcmWaData where Objnr = ?", new String[]{ref_obj});
-                                            if (cursor3 != null && cursor3.getCount() > 0)
-                                            {
-                                                if (cursor3.moveToFirst())
-                                                {
-                                                    do
-                                                    {
+                                            if (cursor3 != null && cursor3.getCount() > 0) {
+                                                if (cursor3.moveToFirst()) {
+                                                    do {
                                                         permit_number = cursor3.getString(4);
                                                     }
                                                     while (cursor3.moveToNext());
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 cursor3.close();
                                             }
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                         }
                                     }
                                     String iwerk = "";
                                     String floc_number = "";
                                     String aufnr = cursor.getString(2);
-                                    if (aufnr != null && !aufnr.equals(""))
-                                    {
-                                        try
-                                        {
+                                    if (aufnr != null && !aufnr.equals("")) {
+                                        try {
                                             Cursor cursor3 = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{aufnr});
-                                            if (cursor3 != null && cursor3.getCount() > 0)
-                                            {
-                                                if (cursor3.moveToFirst())
-                                                {
-                                                    do
-                                                    {
+                                            if (cursor3 != null && cursor3.getCount() > 0) {
+                                                if (cursor3.moveToFirst()) {
+                                                    do {
                                                         floc_number = cursor3.getString(10);
                                                         iwerk = cursor3.getString(25);
                                                     }
                                                     while (cursor3.moveToNext());
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 cursor3.close();
                                             }
-                                        }
-                                        catch (Exception e)
-                                        {
+                                        } catch (Exception e) {
                                         }
                                     }
-                                    if (untagged != null && !untagged.equals(""))
-                                    {
-                                        Isolation_Object nto = new Isolation_Object(cursor.getString(2), cursor.getString(7), cursor.getString(8), cursor.getString(10), cursor.getString(13), cursor.getString(3), date_format, cursor.getString(12), cursor.getString(4), cursor.getString(14), Geniakt_status, permit_number, floc_number, permit_text, auth_grp, permit_type, wcnr, ref_obj,tagged,untagged, iwerk);
+                                    if (untagged != null && !untagged.equals("")) {
+                                        Isolation_Object nto = new Isolation_Object(cursor.getString(2), cursor.getString(7), cursor.getString(8), cursor.getString(10), cursor.getString(13), cursor.getString(3), date_format, cursor.getString(12), cursor.getString(4), cursor.getString(14), Geniakt_status, permit_number, floc_number, permit_text, auth_grp, permit_type, wcnr, ref_obj, tagged, untagged, iwerk);
                                         isoaltion_list.add(nto);
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                 }
                             }
                             while (cursor.moveToNext());
                         }
-                    }
-                    else
-                    {
+                    } else {
                         cursor.close();
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
             }
             return null;
         }
@@ -463,36 +371,26 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
         }
 
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (isoaltion_list.size() > 0)
-            {
-                if (filter_funcloc != null && !filter_funcloc.equals(""))
-                {
-                    CollectionUtils.filter(isoaltion_list, new Predicate()
-                    {
+            if (isoaltion_list.size() > 0) {
+                if (filter_funcloc != null && !filter_funcloc.equals("")) {
+                    CollectionUtils.filter(isoaltion_list, new Predicate() {
                         @Override
-                        public boolean evaluate(Object o)
-                        {
+                        public boolean evaluate(Object o) {
                             return ((Isolation_Object) o).getFloc_number().matches(filter_funcloc);
                         }
                     });
-                }
-                else if (filter_plant != null && !filter_plant.equals(""))
-                {
-                    CollectionUtils.filter(isoaltion_list, new Predicate()
-                    {
+                } else if (filter_plant != null && !filter_plant.equals("")) {
+                    CollectionUtils.filter(isoaltion_list, new Predicate() {
                         @Override
-                        public boolean evaluate(Object o)
-                        {
+                        public boolean evaluate(Object o) {
                             return ((Isolation_Object) o).getIwerk().matches(filter_plant);
                         }
                     });
                 }
             }
-            if (isoaltion_list.size() > 0)
-            {
+            if (isoaltion_list.size() > 0) {
                 adapter = new Adapter(getActivity(), isoaltion_list);
                 recyclerview.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -502,9 +400,7 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                 search.setOnQueryTextListener(listener);
                 no_data_textview.setVisibility(View.GONE);
                 recyclerview.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 no_data_textview.setVisibility(View.VISIBLE);
                 recyclerview.setVisibility(View.GONE);
             }
@@ -513,18 +409,17 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     }
 
 
-    public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder>
-    {
+    public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         private Context mContext;
         private List<Isolation_Object> type_details_list;
-        public class MyViewHolder extends RecyclerView.ViewHolder
-        {
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView auth_grp_textview, floc_id_textview, permit_no_textview, date_time_textview, Objnr, order_num_textview, permit_textview, permit_text_textview, Geniakt, Crname, permit_typ, wcnr_no_textview;
             public EditText person_name_edittext;
             public CheckBox permit_issued_checkbox;
             public LinearLayout datetime_layout, permit_issued_layout, approved_by_layout, wcnr_layout;
-            public MyViewHolder(final View view)
-            {
+
+            public MyViewHolder(final View view) {
                 super(view);
                 permit_typ = (TextView) view.findViewById(R.id.permit_typ);
                 order_num_textview = (TextView) view.findViewById(R.id.order_num_textview);
@@ -547,13 +442,10 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                 permit_issued_layout.setVisibility(View.GONE);
                 approved_by_layout.setVisibility(View.GONE);
                 datetime_layout.setVisibility(View.GONE);
-                permit_issued_checkbox.setOnClickListener(new View.OnClickListener()
-                {
+                permit_issued_checkbox.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        if (permit_issued_checkbox.isChecked())
-                        {
+                    public void onClick(View v) {
+                        if (permit_issued_checkbox.isChecked()) {
                             int position = (Integer) v.getTag();
                             isoaltion_list.get(position).setGenvname(Crname.getText().toString());
                             isoaltion_list.get(position).setGeniakt_status(true);
@@ -564,9 +456,7 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                             String currentDateandTime = sdf.format(new Date());
                             date_time_textview.setText(currentDateandTime);
                             isoaltion_list.get(position).setDate_time(currentDateandTime);
-                        }
-                        else
-                        {
+                        } else {
                             int position = (Integer) v.getTag();
                             isoaltion_list.get(position).setGenvname("");
                             isoaltion_list.get(position).setGeniakt_status(false);
@@ -578,39 +468,37 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                         }
                     }
                 });
-                person_name_edittext.addTextChangedListener(new TextWatcher()
-                {
+                person_name_edittext.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count)
-                    {
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
                         int pos = (int) person_name_edittext.getTag();
                         isoaltion_list.get(pos).setGenvname(person_name_edittext.getText().toString());
                     }
+
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                    {
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     }
+
                     @Override
-                    public void afterTextChanged(Editable s)
-                    {
+                    public void afterTextChanged(Editable s) {
                     }
                 });
             }
         }
-        public Adapter(Context mContext, List<Isolation_Object> list)
-        {
+
+        public Adapter(Context mContext, List<Isolation_Object> list) {
             this.mContext = mContext;
             this.type_details_list = list;
         }
+
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.permitlist_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
+
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position)
-        {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final Isolation_Object nto = type_details_list.get(position);
             SpannableString content = new SpannableString(nto.getOrder_num());
             content.setSpan(new UnderlineSpan(), 0, nto.getOrder_num().length(), 0);
@@ -635,29 +523,20 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
             holder.permit_issued_checkbox.setTag(position);
             holder.permit_typ.setText(nto.getPermit_typ());
             holder.permit_issued_checkbox.setChecked((type_details_list.get(position).isGeniakt_status() == true ? true : false));
-            holder.order_num_textview.setOnClickListener(new View.OnClickListener()
-            {
+            holder.order_num_textview.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    try
-                    {
+                public void onClick(View v) {
+                    try {
                         selected_orderID = holder.order_num_textview.getText().toString();
                         Cursor cursor = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{selected_orderID});
-                        if (cursor != null && cursor.getCount() > 0)
-                        {
-                            if (cursor.moveToFirst())
-                            {
-                                do
-                                {
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
                                     selected_orderUUID = cursor.getString(1);
                                     String equnr = cursor.getString(9);
-                                    if (equnr != null && !equnr.equals(""))
-                                    {
+                                    if (equnr != null && !equnr.equals("")) {
                                         selected_Iwerk = getIwerk(cursor.getString(9));
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         selected_Iwerk = getfuncIwerk(cursor.getString(10));
                                     }
                                     selected_orderstatus = cursor.getString(39);
@@ -665,44 +544,30 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                                 while (cursor.moveToNext());
                             }
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e)
-                    {
-                    }
-                    if (selected_orderUUID != null && !selected_orderUUID.equals(""))
-                    {
+                    if (selected_orderUUID != null && !selected_orderUUID.equals("")) {
                         new Get_Order_Data().execute();
-                    }
-                    else
-                    {
-                        error_dialog.show_error_dialog(getActivity(), "No data found for Order " + selected_orderID);
+                    } else {
+                        error_dialog.show_error_dialog(getActivity(), getString(R.string.no_ordr, selected_orderID));
                     }
                 }
             });
-            holder.permit_no_textview.setOnClickListener(new View.OnClickListener()
-            {
+            holder.permit_no_textview.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    try
-                    {
+                public void onClick(View v) {
+                    try {
                         selected_orderID = holder.order_num_textview.getText().toString();
                         permit_no = holder.permit_no_textview.getText().toString();
                         Cursor cursor = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{selected_orderID});
-                        if (cursor != null && cursor.getCount() > 0)
-                        {
-                            if (cursor.moveToFirst())
-                            {
-                                do
-                                {
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
                                     selected_orderUUID = cursor.getString(1);
                                     String equnr = cursor.getString(9);
-                                    if (equnr != null && !equnr.equals(""))
-                                    {
+                                    if (equnr != null && !equnr.equals("")) {
                                         selected_Iwerk = getIwerk(cursor.getString(9));
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         selected_Iwerk = getfuncIwerk(cursor.getString(10));
                                     }
                                     selected_orderstatus = cursor.getString(39);
@@ -710,9 +575,7 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                                 while (cursor.moveToNext());
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                     if (workComplt(selected_orderID))
                         woco = "X";
@@ -722,32 +585,23 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                     new Get_Permit_Data().execute();
                 }
             });
-            holder.wcnr_no_textview.setOnClickListener(new View.OnClickListener()
-            {
+            holder.wcnr_no_textview.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    try
-                    {
+                public void onClick(View v) {
+                    try {
                         selected_orderID = holder.order_num_textview.getText().toString();
                         permit_no = holder.permit_no_textview.getText().toString();
                         wcnr_no = holder.wcnr_no_textview.getText().toString();
                         refObj = type_details_list.get((Integer) v.getTag()).getRefobj();
                         Cursor cursor = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{selected_orderID});
-                        if (cursor != null && cursor.getCount() > 0)
-                        {
-                            if (cursor.moveToFirst())
-                            {
-                                do
-                                {
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
                                     selected_orderUUID = cursor.getString(1);
                                     String equnr = cursor.getString(9);
-                                    if (equnr != null && !equnr.equals(""))
-                                    {
+                                    if (equnr != null && !equnr.equals("")) {
                                         selected_Iwerk = getIwerk(cursor.getString(9));
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         selected_Iwerk = getfuncIwerk(cursor.getString(10));
                                     }
                                     selected_orderstatus = cursor.getString(39);
@@ -755,9 +609,7 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
                                 while (cursor.moveToNext());
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                     if (workComplt(selected_orderID))
                         woco = "X";
@@ -776,8 +628,7 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     }
 
 
-    public class Isolation_Object
-    {
+    public class Isolation_Object {
         private String Order_num;
         private String Pmsog;
         private String Gntxt;
@@ -994,28 +845,26 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     }
 
 
-    private class Get_Order_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Order_Data extends AsyncTask<Void, Integer, Void> {
         OrdrHeaderPrcbl ohp = new OrdrHeaderPrcbl();
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             custom_progress_dialog.show_progress_dialog(getActivity(), getResources().getString(R.string.get_order_data));
         }
+
         @Override
-        protected Void doInBackground(Void... voids)
-        {
-            ohp = GetOrderDetail.GetData(getActivity(), selected_orderUUID,selected_orderID, selected_orderstatus, selected_Iwerk);
+        protected Void doInBackground(Void... voids) {
+            ohp = GetOrderDetail.GetData(getActivity(), selected_orderUUID, selected_orderID, selected_orderstatus, selected_Iwerk);
             return null;
         }
+
         @Override
-        protected void onPostExecute(Void aVoid)
-        {
+        protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             custom_progress_dialog.dismiss_progress_dialog();
-            if (ohp != null)
-            {
+            if (ohp != null) {
                 Intent ordrIntent = new Intent(getActivity(), Orders_Change_Activity.class);
                 ordrIntent.putExtra("order", "U");
                 ordrIntent.putExtra("ordr_parcel", ohp);
@@ -1025,28 +874,26 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     }
 
 
-    private class Get_Permit_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Permit_Data extends AsyncTask<Void, Integer, Void> {
         ArrayList<OrdrPermitPrcbl> ww_al = new ArrayList<OrdrPermitPrcbl>();
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             custom_progress_dialog.show_progress_dialog(getActivity(), getResources().getString(R.string.get_order_data));
         }
+
         @Override
-        protected Void doInBackground(Void... voids)
-        {
-            ww_al = Get_Permit_Detail.GetData(getActivity(), selected_orderUUID,selected_orderID, selected_orderstatus, selected_Iwerk);
+        protected Void doInBackground(Void... voids) {
+            ww_al = Get_Permit_Detail.GetData(getActivity(), selected_orderUUID, selected_orderID, selected_orderstatus, selected_Iwerk);
             return null;
         }
+
         @Override
-        protected void onPostExecute(Void aVoid)
-        {
+        protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             custom_progress_dialog.dismiss_progress_dialog();
-            if (ww_al != null)
-            {
+            if (ww_al != null) {
                 Intent ordrIntent = new Intent(getActivity(), Permits_Add_Update_Activity.class);
                 ordrIntent.putExtra("order", selected_orderID);
                 ordrIntent.putExtra("opp", ww_al);
@@ -1063,28 +910,26 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     }
 
 
-    private class Get_Isolation_Data extends AsyncTask<Void, Integer, Void>
-    {
+    private class Get_Isolation_Data extends AsyncTask<Void, Integer, Void> {
         ArrayList<OrdrPermitPrcbl> wd_al = new ArrayList<OrdrPermitPrcbl>();
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             custom_progress_dialog.show_progress_dialog(getActivity(), getResources().getString(R.string.get_order_data));
         }
+
         @Override
-        protected Void doInBackground(Void... voids)
-        {
-            wd_al = Get_Isolation_Detail.GetData(getActivity(),selected_orderID, refObj, selected_Iwerk);
+        protected Void doInBackground(Void... voids) {
+            wd_al = Get_Isolation_Detail.GetData(getActivity(), selected_orderID, refObj, selected_Iwerk);
             return null;
         }
+
         @Override
-        protected void onPostExecute(Void aVoid)
-        {
+        protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             custom_progress_dialog.dismiss_progress_dialog();
-            if (wd_al != null)
-            {
+            if (wd_al != null) {
                 Intent ordrIntent = new Intent(getActivity(), Isolation_Add_Update_Activity.class);
                 ordrIntent.putExtra("order", selected_orderID);
                 ordrIntent.putExtra("iso", wd_al);
@@ -1241,8 +1086,7 @@ public class Isolation_List_UnTagUnTagged_Fragment extends Fragment
     }
 
 
-    public void refresh_untag_untagged_data(final String funcloc, final String plant)
-    {
+    public void refresh_untag_untagged_data(final String funcloc, final String plant) {
         filter_funcloc = funcloc;
         filter_plant = plant;
         new Get_Isolation_List_Data().execute();

@@ -30,8 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class BOM_Reservation
-{
+public class BOM_Reservation {
 
     private static String cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
@@ -39,36 +38,33 @@ public class BOM_Reservation
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
 
-    public static String post_bom_reservation(Context activity, String BOM, String Component, String Component_text, String quantity, String Unit, String Plant, String storage_location, String Date, String movement_type_id, String costcenter_id, String order_number)
-    {
-        try
-        {
+    public static String post_bom_reservation(Context activity, String BOM, String Component, String Component_text, String quantity, String Unit, String Plant, String storage_location, String Date, String movement_type_id, String costcenter_id, String order_number) {
+        try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             DATABASE_NAME = activity.getString(R.string.database_name);
-            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+            App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             /* Initializing Shared Preferences */
             FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
-            username = FieldTekPro_SharedPref.getString("Username",null);
-            password = FieldTekPro_SharedPref.getString("Password",null);
-            token = FieldTekPro_SharedPref.getString("token",null);
-            cookie = FieldTekPro_SharedPref.getString("cookie",null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type",null);
-		    /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"R", "R", webservice_type});
-            if (cursor != null && cursor.getCount() > 0)
-            {
+            username = FieldTekPro_SharedPref.getString("Username", null);
+            password = FieldTekPro_SharedPref.getString("Password", null);
+            token = FieldTekPro_SharedPref.getString("token", null);
+            cookie = FieldTekPro_SharedPref.getString("cookie", null);
+            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            /* Initializing Shared Preferences */
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"R", "R", webservice_type});
+            if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = ""+ Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(),((long) device_id.hashCode() << 32)| device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
 
             Map<String, String> map = new HashMap<>();
@@ -120,11 +116,9 @@ public class BOM_Reservation
             Call<SER_BOM_Reservation> call = service.postBOMReservation(url_link, basic, map, bom_reservation);
             Response<SER_BOM_Reservation> response = call.execute();
             int response_status_code = response.code();
-            Log.v("kiran_MAC_code",response_status_code+"...");
-            if(response_status_code == 201)
-            {
-                if (response.isSuccessful() && response.body() != null)
-                {
+            Log.v("kiran_MAC_code", response_status_code + "...");
+            if (response_status_code == 201) {
+                if (response.isSuccessful() && response.body() != null) {
                     /*Reading Response Data and Parsing to Serializable*/
                     SER_BOM_Reservation rs = response.body();
                     /*Reading Response Data and Parsing to Serializable*/
@@ -133,31 +127,23 @@ public class BOM_Reservation
                     String response_data = new Gson().toJson(rs.getD().getEtMessage().getResults());
                     JSONArray response_JsonArray = new JSONArray(response_data);
                     StringBuilder stringBuilder = new StringBuilder();
-                    if(response_JsonArray.length() > 0)
-                    {
-                        for(int i = 0; i < response_JsonArray.length(); i++)
-                        {
+                    if (response_JsonArray.length() > 0) {
+                        for (int i = 0; i < response_JsonArray.length(); i++) {
                             String message = response_JsonArray.getJSONObject(i).optString("Message");
                             String Resnum = response_JsonArray.getJSONObject(i).optString("Resnum");
                             stringBuilder.append(message);
                         }
                         Get_Response = stringBuilder.toString();
-                    }
-                    else
-                    {
+                    } else {
                         Get_Response = "nodata";
                     }
                     /*Converting GSON Response to JSON Data for Parsing*/
                 }
             }
 
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Get_Response = "exception";
-        }
-        finally
-        {
+        } finally {
         }
         return Get_Response;
     }
