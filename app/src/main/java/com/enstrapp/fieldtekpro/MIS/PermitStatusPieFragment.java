@@ -107,7 +107,6 @@ public class PermitStatusPieFragment extends Fragment {
     FILTER_PLANT_TYPE_Adapter filter_plant_type_adapter;
     WKCENTER_TYPE_ADAPTER wkcenter_type_adapter;
 
-
     SQLiteDatabase App_db;
     private String DATABASE_NAME = "";
     private static final int DATE_SELECTED = 200;
@@ -206,13 +205,13 @@ public class PermitStatusPieFragment extends Fragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-           try {
+            try {
                 Cursor cursor = App_db.rawQuery("select * from EtPermitApprWerks", null);
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
                             Mis_EtPermitApprWerks_Object cp = new Mis_EtPermitApprWerks_Object();
-                           cp.setIwerk(cursor.getString(1));
+                            cp.setIwerk(cursor.getString(1));
                             cp.setName(cursor.getString(2));
                             cp.setTotal(cursor.getString(3));
                             cp.setRed(cursor.getString(4));
@@ -1365,9 +1364,6 @@ public class PermitStatusPieFragment extends Fragment {
     }
 
 
-
-
-
     protected void show_error_dialog(String string) {
         error_dialog = new Dialog(getActivity());
         error_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -1782,12 +1778,10 @@ public class PermitStatusPieFragment extends Fragment {
                 pieChart1.invalidate();// for refreshing the chart
                 progressdialog.dismiss();
                 pieChart1.setData(pieData1);*/
-            }
+    }
 
 
-
-
-@Override
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed())
@@ -1806,7 +1800,7 @@ public class PermitStatusPieFragment extends Fragment {
             ma.iv_filter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    plant_wrkcnt_dialog = new Dialog(getActivity(),R.style.AppThemeDialog_Dark);
+                    plant_wrkcnt_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
                     Window window = plant_wrkcnt_dialog.getWindow();
                     plant_wrkcnt_dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                     window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
@@ -1860,7 +1854,7 @@ public class PermitStatusPieFragment extends Fragment {
                     plant_tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            plant_dialog = new Dialog(getActivity(),R.style.AppThemeDialog_Dark);
+                            plant_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
                             plant_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             plant_dialog.setCancelable(true);
                             plant_dialog.setCanceledOnTouchOutside(false);
@@ -2010,7 +2004,7 @@ public class PermitStatusPieFragment extends Fragment {
                                         }
                                     }
 
-                                    wrkcnt_dialog = new Dialog(getActivity(),R.style.AppThemeDialog_Dark);
+                                    wrkcnt_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
                                     wrkcnt_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                     wrkcnt_dialog.setCancelable(true);
                                     wrkcnt_dialog.setCanceledOnTouchOutside(false);
@@ -2139,7 +2133,7 @@ public class PermitStatusPieFragment extends Fragment {
                                         }
                                     }
 
-                                    wrkcnt_dialog = new Dialog(getActivity(),R.style.AppThemeDialog_Dark);
+                                    wrkcnt_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
                                     wrkcnt_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                     wrkcnt_dialog.setCancelable(true);
                                     wrkcnt_dialog.setCanceledOnTouchOutside(false);
@@ -2272,7 +2266,7 @@ public class PermitStatusPieFragment extends Fragment {
                                         }
                                     }
 
-                                    wrkcnt_dialog = new Dialog(getActivity(),R.style.AppThemeDialog_Dark);
+                                    wrkcnt_dialog = new Dialog(getActivity(), R.style.AppThemeDialog_Dark);
                                     wrkcnt_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                     wrkcnt_dialog.setCancelable(true);
                                     wrkcnt_dialog.setCanceledOnTouchOutside(false);
@@ -2512,4 +2506,4 @@ public class PermitStatusPieFragment extends Fragment {
         }
     }
 
-    }
+}

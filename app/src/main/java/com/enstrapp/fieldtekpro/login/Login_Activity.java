@@ -99,7 +99,6 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-
         /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
         device_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         device_serial_number = Build.SERIAL;

@@ -199,7 +199,8 @@ public class InitialLoad_Activity extends AppCompatActivity
         {
             super.onPostExecute(result);
             Log.v("kiran_VHLP_WCM_Status",VHLP_WCM_Status+"...");
-            new Get_DORD_Data().execute();
+//            new Get_DORD_Data().execute();
+            new Get_DNOT_Data().execute();
         }
     }
 
