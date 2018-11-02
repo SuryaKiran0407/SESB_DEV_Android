@@ -41,7 +41,7 @@ public class SplashScreen_Activity extends AppCompatActivity {
 
         String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
         if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
-            startService(new Intent(this, Auto_Sync_BackgroundService.class));
+//            startService(new Intent(this, Auto_Sync_BackgroundService.class));
             /*ArrayList<String> alertlog_list = new ArrayList<String>();
             try
             {

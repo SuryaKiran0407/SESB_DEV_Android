@@ -11,12 +11,13 @@ public class OrderTabAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
-    private String tabTitles[] = new String[]{mContext.getString(R.string.analysis),
-            mContext.getString(R.string.compliance)};
+    private String tabTitles[];
 
     public OrderTabAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
+        tabTitles = new String[]{mContext.getString(R.string.analysis),
+                mContext.getString(R.string.compliance)};
     }
 
     @Override

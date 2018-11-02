@@ -11,12 +11,13 @@ public class PermitTabAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
-    private String tabTitles[] = new String[]{mContext.getString(R.string.perm_stats),
-            mContext.getString(R.string.appr_stats)};
+    private String tabTitles[];
 
     public PermitTabAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
+        tabTitles = new String[]{mContext.getString(R.string.perm_stats),
+                mContext.getString(R.string.appr_stats)};
     }
 
     @Override

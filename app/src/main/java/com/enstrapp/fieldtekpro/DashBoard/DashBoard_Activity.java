@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Alert_Log.Alert_Log_Activity;
+import com.enstrapp.fieldtekpro.Auto_Sync.Auto_Sync_BackgroundService;
 import com.enstrapp.fieldtekpro.Calibration.Calibration_Activity;
 import com.enstrapp.fieldtekpro.Initialload.InitialLoad_Activity;
 import com.enstrapp.fieldtekpro.MIS.Mis_Activity;
@@ -88,6 +89,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dash_board_activity);
 
+        startService(new Intent(this, Auto_Sync_BackgroundService.class));
         logout_imageview = (ImageView) findViewById(R.id.logout_imageview);
         refresh_imageview = (ImageView) findViewById(R.id.refresh_imageview);
 
