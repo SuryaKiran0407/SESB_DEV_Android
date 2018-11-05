@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -33,14 +34,14 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Orders {
 
-    private static String password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
+    private static String password = "", url_link = "", username = "", device_serial_number = "",
+            device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
     private static SharedPreferences.Editor FieldTekPro_SharedPrefeditor;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     private static ArrayList<HashMap<String, String>> orders_uuid_list = new ArrayList<HashMap<String, String>>();
-    private static Check_Empty checkempty = new Check_Empty();
-
+    private static Check_Empty c_e = new Check_Empty();
 
     /* DUE_ORDERS_EtOrderComponents_FIELDS Table and Fields Names */
     private static final String TABLE_DUE_ORDERS_EtOrderComponents_FIELDS = "DUE_ORDERS_EtOrderComponents_FIELDS";
@@ -589,7 +590,8 @@ public class Orders {
             if (transmit_type.equalsIgnoreCase("LOAD")) {
                 /* DUE_ORDERS_EtOrderComponents_FIELDS Table and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents_FIELDS);
-                String CREATE_DUE_ORDERS_EtOrderComponents_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents_FIELDS + ""
+                String CREATE_DUE_ORDERS_EtOrderComponents_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_DUE_ORDERS_EtOrderComponents_FIELDS + ""
                         + "( "
                         + DUE_ORDERS_EtOrderComponents_FIELDS_id + " INTEGER PRIMARY KEY,"//0
                         + DUE_ORDERS_EtOrderComponents_FIELDS_uuid + " TEXT,"//1
@@ -612,7 +614,8 @@ public class Orders {
 
                 /* DUE_ORDERS_EtOrderOperations_FIELDS Table and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations_FIELDS);
-                String CREATE_DUE_ORDERS_EtOrderOperations_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations_FIELDS + ""
+                String CREATE_DUE_ORDERS_EtOrderOperations_FIELDS_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_DUE_ORDERS_EtOrderOperations_FIELDS + ""
                         + "( "
                         + DUE_ORDERS_EtOrderOperations_FIELDS_id + " INTEGER PRIMARY KEY,"
                         + DUE_ORDERS_EtOrderOperations_FIELDS_uuid + " TEXT,"
@@ -633,7 +636,8 @@ public class Orders {
 
                 /* Creating Header Custom_Info Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_Custom_Info_Fields);
-                String Custom_Info_Fields_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_Custom_Info_Fields + ""
+                String Custom_Info_Fields_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_Custom_Info_Fields + ""
                         + "( "
                         + KEY_Custom_Info_id + " INTEGER PRIMARY KEY,"
                         + KEY_Custom_Info_uuid + " TEXT,"
@@ -653,7 +657,8 @@ public class Orders {
 
 
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_Orders_Tkconfirm);
-                String CREATE_TABLE_Orders_Tkconfirm = "CREATE TABLE IF NOT EXISTS " + TABLE_Orders_Tkconfirm + ""
+                String CREATE_TABLE_Orders_Tkconfirm = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_Orders_Tkconfirm + ""
                         + "( "
                         + KEY_Orders_Tkconfirm_ID + " INTEGER PRIMARY KEY,"
                         + KEY_Orders_Tkconfirm_UUID + " TEXT,"
@@ -686,7 +691,8 @@ public class Orders {
 
 
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdDataTagtext);
-                String CREATE_TABLE_EtWcmWdDataTagtext = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdDataTagtext + ""
+                String CREATE_TABLE_EtWcmWdDataTagtext = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWdDataTagtext + ""
                         + "( "
                         + KEY_EtWcmWdDataTagtext_ID + " INTEGER PRIMARY KEY,"
                         + KEY_EtWcmWdDataTagtext_Aufnr + " TEXT,"
@@ -699,7 +705,8 @@ public class Orders {
                 App_db.execSQL(CREATE_TABLE_EtWcmWdDataTagtext);
 
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdDataUntagtext);
-                String CREATE_TABLE_EtWcmWdDataUntagtext = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdDataUntagtext + ""
+                String CREATE_TABLE_EtWcmWdDataUntagtext = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWdDataUntagtext + ""
                         + "( "
                         + KEY_EtWcmWdDataUntagtext_ID + " INTEGER PRIMARY KEY,"
                         + KEY_EtWcmWdDataUntagtext_Aufnr + " TEXT,"
@@ -713,7 +720,8 @@ public class Orders {
 
                 /* Orders TKConfirm Attachments */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_Orders_Attachments);
-                String CREATE_TABLE_Orders_Attachments = "CREATE TABLE IF NOT EXISTS " + TABLE_Orders_Attachments + ""
+                String CREATE_TABLE_Orders_Attachments = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_Orders_Attachments + ""
                         + "( "
                         + KEY_Orders_Attachments_ID + " INTEGER PRIMARY KEY,"
                         + KEY_Orders_Attachments_UUID + " TEXT,"
@@ -761,7 +769,8 @@ public class Orders {
 
                 /* Creating TABLE_DUE_ORDERS_EtOrderHeader Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderHeader);
-                String CREATE_DUE_ORDERS_EtOrderHeader_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderHeader + ""
+                String CREATE_DUE_ORDERS_EtOrderHeader_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_DUE_ORDERS_EtOrderHeader + ""
                         + "( "
                         + KEY_DUE_ORDERS_EtOrderHeader_ID + " INTEGER PRIMARY KEY,"
                         + KEY_DUE_ORDERS_EtOrderHeader_UUID + " TEXT,"
@@ -826,7 +835,8 @@ public class Orders {
 
                 /* DUE_ORDERS_EtOrderOperations and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations);
-                String CREATE_DUE_ORDERS_EtOrderOperations_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderOperations + ""
+                String CREATE_DUE_ORDERS_EtOrderOperations_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_DUE_ORDERS_EtOrderOperations + ""
                         + "( "
                         + KEY_DUE_ORDERS_EtOrderOperations_ID + " INTEGER PRIMARY KEY,"
                         + KEY_DUE_ORDERS_EtOrderOperations_UUID + " TEXT,"
@@ -865,7 +875,8 @@ public class Orders {
 
                 /* GET_DUE_ORDERS_Longtext Table and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_DUE_ORDERS_Longtext);
-                String CREATE_TABLE_GET_DUE_ORDERS_Longtext = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_DUE_ORDERS_Longtext + ""
+                String CREATE_TABLE_GET_DUE_ORDERS_Longtext = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_DUE_ORDERS_Longtext + ""
                         + "( "
                         + KEY_DUE_ORDERS_Longtext_ID + " INTEGER PRIMARY KEY,"
                         + KEY_DUE_ORDERS_Longtext_UUID + " TEXT,"
@@ -879,7 +890,8 @@ public class Orders {
 
                 /* Creating EtOrderOlist Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtOrderOlist);
-                String CREATE_TABLE_GET_EtOrderOlist = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtOrderOlist + ""
+                String CREATE_TABLE_GET_EtOrderOlist = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtOrderOlist + ""
                         + "( "
                         + KEY_GET_EtOrderOlist_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_EtOrderOlist_UUID + " TEXT,"
@@ -902,7 +914,8 @@ public class Orders {
 
                 /* Creating EtOrderStatus Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtOrderStatus);
-                String CREATE_TABLE_EtOrderStatus = "CREATE TABLE IF NOT EXISTS " + TABLE_EtOrderStatus + ""
+                String CREATE_TABLE_EtOrderStatus = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_EtOrderStatus + ""
                         + "( "
                         + KEY_EtOrderStatus_ID + " INTEGER PRIMARY KEY,"
                         + KEY_EtOrderStatus_UUID + " TEXT,"
@@ -925,7 +938,8 @@ public class Orders {
 
                 /* Creating DUE_ORDERS_EtDocs Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_DUE_ORDERS_EtDocs);
-                String CREATE_TABLE_GET_DUE_ORDERS_EtDocs = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_DUE_ORDERS_EtDocs + ""
+                String CREATE_TABLE_GET_DUE_ORDERS_EtDocs = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_DUE_ORDERS_EtDocs + ""
                         + "( "
                         + KEY_DUE_ORDERS_EtDocs_ID + " INTEGER PRIMARY KEY,"
                         + KEY_DUE_ORDERS_EtDocs_UUID + " TEXT,"
@@ -946,7 +960,8 @@ public class Orders {
 
                 /* Creating CREATE_TABLE_GET_EtWcmWwData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWwData);
-                String CREATE_TABLE_GET_EtWcmWwData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWwData + ""
+                String CREATE_TABLE_GET_EtWcmWwData = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWwData + ""
                         + "( "
                         + KEY_GET_EtWcmWwData_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_EtWcmWwData_UUID + " TEXT,"
@@ -986,7 +1001,8 @@ public class Orders {
 
                 /* Creating EtWcmWaData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWaData);
-                String CREATE_TABLE_GET_EtWcmWaDataa = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWaData + ""
+                String CREATE_TABLE_GET_EtWcmWaDataa = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWaData + ""
                         + "( "
                         + KEY_GET_EtWcmWaData_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_EtWcmWaData_UUID + " TEXT,"
@@ -1028,7 +1044,8 @@ public class Orders {
 
                 /* Creating EtWcmWaChkReq Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWaChkReq);
-                String CREATE_TABLE_GET_EtWcmWaChkReq = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWaChkReq + ""
+                String CREATE_TABLE_GET_EtWcmWaChkReq = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWaChkReq + ""
                         + "( "
                         + KEY_GET_EtWcmWaChkReq_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_EtWcmWaChkReq_Wapinr + " TEXT,"
@@ -1047,7 +1064,8 @@ public class Orders {
 
                 /* Creating EtWcmWdData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdData);
-                String CREATE_TABLE_GET_EtWcmWdData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdData + ""
+                String CREATE_TABLE_GET_EtWcmWdData = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWdData + ""
                         + "( "
                         + KEY_GET_EtWcmWdData_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_EtWcmWdData_Aufnr + " TEXT,"
@@ -1087,7 +1105,8 @@ public class Orders {
 
                 /* Creating EtWcmWdItemData Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdItemData);
-                String CREATE_TABLE_GET_EtWcmWdItemData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdItemData + ""
+                String CREATE_TABLE_GET_EtWcmWdItemData = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWdItemData + ""
                         + "( "
                         + KEY_GET_EtWcmWdItemData_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_EtWcmWdItemData_Wcnr + " TEXT,"
@@ -1133,7 +1152,8 @@ public class Orders {
 
                 /* Creating EtWcmWcagns Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWcagns);
-                String CREATE_TABLE_GET_EtWcmWcagns = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWcagns + ""
+                String CREATE_TABLE_GET_EtWcmWcagns = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_EtWcmWcagns + ""
                         + "( "
                         + KEY_GET_EtWcmWcagns_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_EtWcmWcagns_UUID + " TEXT,"
@@ -1169,7 +1189,8 @@ public class Orders {
 
                 /* Creating EtOrderComponents with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents);
-                String CREATE_DUE_ORDERS_EtOrderComponents_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_DUE_ORDERS_EtOrderComponents + ""
+                String CREATE_DUE_ORDERS_EtOrderComponents_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_DUE_ORDERS_EtOrderComponents + ""
                         + "( "
                         + KEY_DUE_ORDERS_EtOrderComponentsp_ID + " INTEGER PRIMARY KEY,"
                         + KEY_DUE_ORDERS_EtOrderComponentsp_UUID + " TEXT,"
@@ -1221,22 +1242,29 @@ public class Orders {
                 App_db.execSQL("delete from DUE_ORDERS_EtOrderComponents_FIELDS");
             }
             /* Initializing Shared Preferences */
-            FieldTekPro_SharedPref = context.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            FieldTekPro_SharedPref = context
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username", null);
             password = FieldTekPro_SharedPref.getString("Password", null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            String webservice_type = FieldTekPro_SharedPref
+                    .getString("webservice_type", null);
             /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"C2", "DO", webservice_type});
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype =" +
+                            " ? and Zactivity = ? and Endpoint = ?",
+                    new String[]{"C2", "DO", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure
+                    .getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure
+                    .getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = context.getString(R.string.ip_address);
@@ -1249,925 +1277,807 @@ public class Orders {
             map.put("Operation", "DUORD");
             map.put("IvAufnr", order_number);
             map.put("IvTransmitType", transmit_type);
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(180000, TimeUnit.MILLISECONDS)
+                    .writeTimeout(180000, TimeUnit.MILLISECONDS)
+                    .readTimeout(180000, TimeUnit.MILLISECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
             String credentials = username + ":" + password;
-            final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            final String basic = "Basic " + Base64
+                    .encodeToString(credentials.getBytes(), Base64.NO_WRAP);
             Call<Orders_SER> call = service.getORDERDetails(url_link, basic, map);
             Response<Orders_SER> response = call.execute();
             int response_status_code = response.code();
             if (response_status_code == 200) {
                 if (response.isSuccessful() && response.body() != null) {
                     orders_uuid_list.clear();
+                    List<Orders_SER.Result> results = response.body().getD().getResults();
+                    App_db.beginTransaction();
 
-                    /*Reading Response Data and Parsing to Serializable*/
-                    Orders_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
+                    if (results != null && results.size() > 0) {
 
-                    /*Converting GSON Response to JSON Data for Parsing*/
-                    String response_data = new Gson().toJson(rs.getD().getResults());
-                    /*Converting GSON Response to JSON Data for Parsing*/
-
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-                    JSONArray response_data_jsonArray = new JSONArray(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-
-                    /*Reading Data by using FOR Loop*/
-                    for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                        /*Reading Data by using FOR Loop*/
-                        JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
-
-
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
-                        if (jsonObject.has("EtOrderHeader")) {
-                            try {
-                                String EtOrderHeader_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtOrderHeader().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderHeader_response_data);
-                                for (int j = 0; j < jsonArray.length(); j++) {
-                                    String Aufnr = jsonArray.getJSONObject(j).optString("Aufnr");
+                        /*EtOrderHeader*/
+                        Orders_SER.EtOrderHeader etOrderHeader = results.get(0).getEtOrderHeader();
+                        if (etOrderHeader != null) {
+                            List<Orders_SER.EtOrderHeader_Result> etOrderHeaderResults = etOrderHeader.getResults();
+                            if (etOrderHeaderResults != null && etOrderHeaderResults.size() > 0) {
+                                for (Orders_SER.EtOrderHeader_Result eO : etOrderHeaderResults) {
                                     HashMap<String, String> uuid_hashmap = new HashMap<String, String>();
                                     UUID uniqueKey = UUID.randomUUID();
                                     uuid_hashmap.put("UUID", uniqueKey.toString());
-                                    uuid_hashmap.put("Aufnr", checkempty.check_empty(Aufnr));
+                                    uuid_hashmap.put("Aufnr", c_e.check_empty(eO.getAufnr()));
                                     orders_uuid_list.add(uuid_hashmap);
                                 }
-                            } catch (Exception e) {
-                            }
-                        }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
-
-                        App_db.beginTransaction();
-
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
-                        if (jsonObject.has("EtOrderHeader")) {
-                            try {
-                                String EtOrderHeader_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtOrderHeader().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderHeader_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtOrderHeader_sql = "Insert into DUE_ORDERS_EtOrderHeader (UUID, Aufnr, Auart, Ktext, Ilart, Ernam, Erdat, Priok, Equnr, Strno, TplnrInt, Bautl, Gltrp, Gstrp, Docs, Permits, Altitude, Latitude, Longitude, Qmnum, Closed, Completed, Ingrp, Arbpl, Werks, Bemot, Aueru, Auarttext, Qmartx, Qmtxt, Pltxt, Eqktx, Priokx , Ilatx, Plantname, Wkctrname, Ingrpname, Maktx, Xstatus, Usr01, Usr02, Usr03, Usr04, Usr05, Kokrs, Kostl, Anlzu, Anlzux, Ausvn, Ausbs, Auswk, Qmnam, ParnrVw, NameVw, Posid, Revnr) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtOrderHeader_statement = App_db.compileStatement(EtOrderHeader_sql);
-                                    EtOrderHeader_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtOrderHeader_statement.bindString(1, uuid);
-                                            EtOrderHeader_statement.bindString(2, Aufnr);
-                                            EtOrderHeader_statement.bindString(3, jsonArray.getJSONObject(j).optString("Auart"));
-                                            EtOrderHeader_statement.bindString(4, jsonArray.getJSONObject(j).optString("Ktext"));
-                                            EtOrderHeader_statement.bindString(5, jsonArray.getJSONObject(j).optString("Ilart"));
-                                            EtOrderHeader_statement.bindString(6, jsonArray.getJSONObject(j).optString("Ernam"));
-                                            EtOrderHeader_statement.bindString(7, jsonArray.getJSONObject(j).optString("Erdat"));
-                                            EtOrderHeader_statement.bindString(8, jsonArray.getJSONObject(j).optString("Priok"));
-                                            EtOrderHeader_statement.bindString(9, jsonArray.getJSONObject(j).optString("Equnr"));
-                                            EtOrderHeader_statement.bindString(10, jsonArray.getJSONObject(j).optString("Strno"));
-                                            EtOrderHeader_statement.bindString(11, jsonArray.getJSONObject(j).optString("TplnrInt"));
-                                            EtOrderHeader_statement.bindString(12, jsonArray.getJSONObject(j).optString("Bautl"));
-                                            EtOrderHeader_statement.bindString(13, jsonArray.getJSONObject(j).optString("Gltrp"));
-                                            EtOrderHeader_statement.bindString(14, jsonArray.getJSONObject(j).optString("Gstrp"));
-                                            EtOrderHeader_statement.bindString(15, jsonArray.getJSONObject(j).optString("Docs"));
-                                            EtOrderHeader_statement.bindString(16, jsonArray.getJSONObject(j).optString("Permits"));
-                                            EtOrderHeader_statement.bindString(17, jsonArray.getJSONObject(j).optString("Altitude"));
-                                            EtOrderHeader_statement.bindString(18, jsonArray.getJSONObject(j).optString("Latitude"));
-                                            EtOrderHeader_statement.bindString(19, jsonArray.getJSONObject(j).optString("Longitude"));
-                                            EtOrderHeader_statement.bindString(20, jsonArray.getJSONObject(j).optString("Qmnum"));
-                                            EtOrderHeader_statement.bindString(21, jsonArray.getJSONObject(j).optString("Closed"));
-                                            EtOrderHeader_statement.bindString(22, jsonArray.getJSONObject(j).optString("Completed"));
-                                            EtOrderHeader_statement.bindString(23, jsonArray.getJSONObject(j).optString("Ingrp"));
-                                            EtOrderHeader_statement.bindString(24, jsonArray.getJSONObject(j).optString("Arbpl"));
-                                            EtOrderHeader_statement.bindString(25, jsonArray.getJSONObject(j).optString("Werks"));
-                                            EtOrderHeader_statement.bindString(26, jsonArray.getJSONObject(j).optString("Bemot"));
-                                            EtOrderHeader_statement.bindString(27, jsonArray.getJSONObject(j).optString("Aueru"));
-                                            EtOrderHeader_statement.bindString(28, jsonArray.getJSONObject(j).optString("Auarttext"));
-                                            EtOrderHeader_statement.bindString(29, jsonArray.getJSONObject(j).optString("Qmartx"));
-                                            EtOrderHeader_statement.bindString(30, jsonArray.getJSONObject(j).optString("Qmtxt"));
-                                            EtOrderHeader_statement.bindString(31, jsonArray.getJSONObject(j).optString("Pltxt"));
-                                            EtOrderHeader_statement.bindString(32, jsonArray.getJSONObject(j).optString("Eqktx"));
-                                            EtOrderHeader_statement.bindString(33, jsonArray.getJSONObject(j).optString("Priokx"));
-                                            EtOrderHeader_statement.bindString(34, jsonArray.getJSONObject(j).optString("Ilatx"));
-                                            EtOrderHeader_statement.bindString(35, jsonArray.getJSONObject(j).optString("Plantname"));
-                                            EtOrderHeader_statement.bindString(36, jsonArray.getJSONObject(j).optString("Wkctrname"));
-                                            EtOrderHeader_statement.bindString(37, jsonArray.getJSONObject(j).optString("Ingrpname"));
-                                            EtOrderHeader_statement.bindString(38, jsonArray.getJSONObject(j).optString("Maktx"));
-                                            EtOrderHeader_statement.bindString(39, jsonArray.getJSONObject(j).optString("Xstatus"));
-                                            EtOrderHeader_statement.bindString(40, jsonArray.getJSONObject(j).optString("Usr01"));
-                                            EtOrderHeader_statement.bindString(41, jsonArray.getJSONObject(j).optString("Usr02"));
-                                            EtOrderHeader_statement.bindString(42, jsonArray.getJSONObject(j).optString("Usr03"));
-                                            EtOrderHeader_statement.bindString(43, jsonArray.getJSONObject(j).optString("Usr04"));
-                                            EtOrderHeader_statement.bindString(44, jsonArray.getJSONObject(j).optString("Usr05"));
-                                            EtOrderHeader_statement.bindString(45, jsonArray.getJSONObject(j).optString("Kokrs"));
-                                            EtOrderHeader_statement.bindString(46, jsonArray.getJSONObject(j).optString("Kostl"));
-                                            EtOrderHeader_statement.bindString(47, jsonArray.getJSONObject(j).optString("Anlzu"));
-                                            EtOrderHeader_statement.bindString(48, jsonArray.getJSONObject(j).optString("Anlzux"));
-                                            EtOrderHeader_statement.bindString(49, jsonArray.getJSONObject(j).optString("Ausvn"));
-                                            EtOrderHeader_statement.bindString(50, jsonArray.getJSONObject(j).optString("Ausbs"));
-                                            EtOrderHeader_statement.bindString(51, jsonArray.getJSONObject(j).optString("Auswk"));
-                                            EtOrderHeader_statement.bindString(52, jsonArray.getJSONObject(j).optString("Qmnam"));
-                                            EtOrderHeader_statement.bindString(53, jsonArray.getJSONObject(j).optString("ParnrVw"));
-                                            EtOrderHeader_statement.bindString(54, jsonArray.getJSONObject(j).optString("NameVw"));
-                                            EtOrderHeader_statement.bindString(55, jsonArray.getJSONObject(j).optString("Posid"));
-                                            EtOrderHeader_statement.bindString(56, jsonArray.getJSONObject(j).optString("Revnr"));
+                                for (Orders_SER.EtOrderHeader_Result eO : etOrderHeaderResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eO.getAufnr())) {
+                                            String EtOrderHeader_sql = "Insert into DUE_ORDERS_EtOrderHeader " +
+                                                    "(UUID, Aufnr, Auart, Ktext, Ilart, Ernam, Erdat, Priok," +
+                                                    " Equnr, Strno, TplnrInt, Bautl, Gltrp, Gstrp, Docs, " +
+                                                    "Permits, Altitude, Latitude, Longitude, Qmnum, Closed, " +
+                                                    "Completed, Ingrp, Arbpl, Werks, Bemot, Aueru, Auarttext," +
+                                                    " Qmartx, Qmtxt, Pltxt, Eqktx, Priokx , Ilatx, Plantname, " +
+                                                    "Wkctrname, Ingrpname, Maktx, Xstatus, Usr01, Usr02, Usr03," +
+                                                    " Usr04, Usr05, Kokrs, Kostl, Anlzu, Anlzux, Ausvn, Ausbs," +
+                                                    " Auswk, Qmnam, ParnrVw, NameVw, Posid, Revnr) values(?,?," +
+                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtOrderHeader_statement = App_db.compileStatement(EtOrderHeader_sql);
+                                            EtOrderHeader_statement.clearBindings();
+                                            EtOrderHeader_statement.bindString(1, uD.get("UUID"));
+                                            EtOrderHeader_statement.bindString(2, c_e.check_empty(eO.getAufnr()));
+                                            EtOrderHeader_statement.bindString(3, c_e.check_empty(eO.getAuart()));
+                                            EtOrderHeader_statement.bindString(4, c_e.check_empty(eO.getKtext()));
+                                            EtOrderHeader_statement.bindString(5, c_e.check_empty(eO.getIlart()));
+                                            EtOrderHeader_statement.bindString(6, c_e.check_empty(eO.getErnam()));
+                                            EtOrderHeader_statement.bindString(7, c_e.check_empty(eO.getErdat()));
+                                            EtOrderHeader_statement.bindString(8, c_e.check_empty(eO.getPriok()));
+                                            EtOrderHeader_statement.bindString(9, c_e.check_empty(eO.getEqunr()));
+                                            EtOrderHeader_statement.bindString(10, c_e.check_empty(eO.getStrno()));
+                                            EtOrderHeader_statement.bindString(11, c_e.check_empty(eO.getTplnrInt()));
+                                            EtOrderHeader_statement.bindString(12, c_e.check_empty(eO.getBautl()));
+                                            EtOrderHeader_statement.bindString(13, c_e.check_empty(eO.getGltrp()));
+                                            EtOrderHeader_statement.bindString(14, c_e.check_empty(eO.getGstrp()));
+                                            EtOrderHeader_statement.bindString(15, c_e.check_empty(eO.getDocs()));
+                                            EtOrderHeader_statement.bindString(16, c_e.check_empty(eO.getPermits()));
+                                            EtOrderHeader_statement.bindString(17, c_e.check_empty(eO.getAltitude()));
+                                            EtOrderHeader_statement.bindString(18, c_e.check_empty(eO.getLatitude()));
+                                            EtOrderHeader_statement.bindString(19, c_e.check_empty(eO.getLongitude()));
+                                            EtOrderHeader_statement.bindString(20, c_e.check_empty(eO.getQmnum()));
+                                            EtOrderHeader_statement.bindString(21, c_e.check_empty(eO.getClosed()));
+                                            EtOrderHeader_statement.bindString(22, c_e.check_empty(eO.getCompleted()));
+                                            EtOrderHeader_statement.bindString(23, c_e.check_empty(eO.getIngrp()));
+                                            EtOrderHeader_statement.bindString(24, c_e.check_empty(eO.getArbpl()));
+                                            EtOrderHeader_statement.bindString(25, c_e.check_empty(eO.getWerks()));
+                                            EtOrderHeader_statement.bindString(26, c_e.check_empty(eO.getBemot()));
+                                            EtOrderHeader_statement.bindString(27, c_e.check_empty(eO.getAueru()));
+                                            EtOrderHeader_statement.bindString(28, c_e.check_empty(eO.getAuarttext()));
+                                            EtOrderHeader_statement.bindString(29, c_e.check_empty(eO.getQmartx()));
+                                            EtOrderHeader_statement.bindString(30, c_e.check_empty(eO.getQmtxt()));
+                                            EtOrderHeader_statement.bindString(31, c_e.check_empty(eO.getPltxt()));
+                                            EtOrderHeader_statement.bindString(32, c_e.check_empty(eO.getEqktx()));
+                                            EtOrderHeader_statement.bindString(33, c_e.check_empty(eO.getPriokx()));
+                                            EtOrderHeader_statement.bindString(34, c_e.check_empty(eO.getIlatx()));
+                                            EtOrderHeader_statement.bindString(35, c_e.check_empty(eO.getPlantname()));
+                                            EtOrderHeader_statement.bindString(36, c_e.check_empty(eO.getWkctrname()));
+                                            EtOrderHeader_statement.bindString(37, c_e.check_empty(eO.getIngrpname()));
+                                            EtOrderHeader_statement.bindString(38, c_e.check_empty(eO.getMaktx()));
+                                            EtOrderHeader_statement.bindString(39, c_e.check_empty(eO.getXstatus()));
+                                            EtOrderHeader_statement.bindString(40, c_e.check_empty(eO.getUsr01()));
+                                            EtOrderHeader_statement.bindString(41, c_e.check_empty(eO.getUsr02()));
+                                            EtOrderHeader_statement.bindString(42, c_e.check_empty(eO.getUsr03()));
+                                            EtOrderHeader_statement.bindString(43, c_e.check_empty(eO.getUsr04()));
+                                            EtOrderHeader_statement.bindString(44, c_e.check_empty(eO.getUsr05()));
+                                            EtOrderHeader_statement.bindString(45, c_e.check_empty(eO.getKokrs()));
+                                            EtOrderHeader_statement.bindString(46, c_e.check_empty(eO.getKostl()));
+                                            EtOrderHeader_statement.bindString(47, c_e.check_empty(eO.getAnlzu()));
+                                            EtOrderHeader_statement.bindString(48, c_e.check_empty(eO.getAnlzux()));
+                                            EtOrderHeader_statement.bindString(49, c_e.check_empty(eO.getAusvn()));
+                                            EtOrderHeader_statement.bindString(50, c_e.check_empty(eO.getAusbs()));
+                                            EtOrderHeader_statement.bindString(51, c_e.check_empty(eO.getAuswk()));
+                                            EtOrderHeader_statement.bindString(52, c_e.check_empty(eO.getQmnam()));
+                                            EtOrderHeader_statement.bindString(53, c_e.check_empty(eO.getParnrVw()));
+                                            EtOrderHeader_statement.bindString(54, c_e.check_empty(eO.getNameVw()));
+                                            EtOrderHeader_statement.bindString(55, c_e.check_empty(eO.getPosid()));
+                                            EtOrderHeader_statement.bindString(56, c_e.check_empty(eO.getRevnr()));
                                             EtOrderHeader_statement.execute();
 
-
-                                            try {
-                                                String Fields = jsonArray.getJSONObject(j).optString("EtOrderHeaderFields");
-                                                JSONObject Fields_jsonObject = new JSONObject(Fields);
-                                                String Fields_jsonObject_results = Fields_jsonObject.optString("results");
-                                                JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                if (EtNotifHeader_Fields_jsonArray.length() > 0) {
-                                                    String sql1 = "Insert into EtOrderHeader_CustomInfo (UUID,Aufnr,Zdoctype,ZdoctypeItem,Tabname,Fieldname,Value,Flabel,Sequence,Length,Datatype) values(?,?,?,?,?,?,?,?,?,?,?);";
+                                            Orders_SER.EtOrderHeaderFields etOrderHeaderFields = eO.getEtOrderHeaderFields();
+                                            if (etOrderHeaderFields != null) {
+                                                List<Orders_SER.EtOrderHeaderFields_Result> etOrderHeaderFieldsResults = etOrderHeaderFields.getResults();
+                                                if (etOrderHeaderFieldsResults != null && etOrderHeaderFieldsResults.size() > 0) {
+                                                    String sql1 = "Insert into EtOrderHeader_CustomInfo (UUID,Aufnr,Zdoctype,ZdoctypeItem,Tabname," +
+                                                            "Fieldname,Value,Flabel,Sequence,Length,Datatype) values(?,?,?,?,?,?,?,?,?,?,?);";
                                                     SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                     statement1.clearBindings();
-                                                    for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
-                                                        statement1.bindString(1, uuid);
-                                                        statement1.bindString(2, Aufnr);
-                                                        statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                        statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                        statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                        statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                        statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                        statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                        statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                        statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                        statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
+                                                    for (Orders_SER.EtOrderHeaderFields_Result eHF : etOrderHeaderFieldsResults) {
+                                                        statement1.bindString(1, uD.get("UUID"));
+                                                        statement1.bindString(2, c_e.check_empty(eO.getAufnr()));
+                                                        statement1.bindString(3, c_e.check_empty(eHF.getZdoctype()));
+                                                        statement1.bindString(4, c_e.check_empty(eHF.getZdoctypeItem()));
+                                                        statement1.bindString(5, c_e.check_empty(eHF.getTabname()));
+                                                        statement1.bindString(6, c_e.check_empty(eHF.getFieldname()));
+                                                        statement1.bindString(7, c_e.check_empty(eHF.getValue()));
+                                                        statement1.bindString(8, c_e.check_empty(eHF.getFlabel()));
+                                                        statement1.bindString(9, c_e.check_empty(eHF.getSequence()));
+                                                        statement1.bindString(10, c_e.check_empty(eHF.getLength()));
+                                                        statement1.bindString(11, c_e.check_empty(eHF.getDatatype()));
                                                         statement1.execute();
                                                     }
                                                 }
-                                            } catch (Exception e) {
                                             }
-
-
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
-                        if (jsonObject.has("EtOrderOperations")) {
-                            try {
-                                String EtOrderOperations_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtOrderOperations().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderOperations_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtOrderOperations_sql = "Insert into DUE_ORDERS_EtOrderOperations (UUID,Aufnr,Vornr,Uvorn,Ltxa1,Arbpl,Werks,Steus,Larnt,Dauno,Daune,Fsavd,Ssedd,Pernr,Asnum,Plnty,Plnal,Plnnr,Rueck,Aueru,ArbplText,WerksText,SteusText,LarntText,Usr01,Usr02,Usr03,Usr04,Usr05,Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtOrderOperations_statement = App_db.compileStatement(EtOrderOperations_sql);
-                                    EtOrderOperations_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtOrderOperations_statement.bindString(1, uuid);
-                                            EtOrderOperations_statement.bindString(2, Aufnr);
-                                            EtOrderOperations_statement.bindString(3, jsonArray.getJSONObject(j).optString("Vornr"));
-                                            EtOrderOperations_statement.bindString(4, jsonArray.getJSONObject(j).optString("Uvorn"));
-                                            EtOrderOperations_statement.bindString(5, jsonArray.getJSONObject(j).optString("Ltxa1"));
-                                            EtOrderOperations_statement.bindString(6, jsonArray.getJSONObject(j).optString("Arbpl"));
-                                            EtOrderOperations_statement.bindString(7, jsonArray.getJSONObject(j).optString("Werks"));
-                                            EtOrderOperations_statement.bindString(8, jsonArray.getJSONObject(j).optString("Steus"));
-                                            EtOrderOperations_statement.bindString(9, jsonArray.getJSONObject(j).optString("Larnt"));
-                                            EtOrderOperations_statement.bindString(10, jsonArray.getJSONObject(j).optString("Dauno"));
-                                            EtOrderOperations_statement.bindString(11, jsonArray.getJSONObject(j).optString("Daune"));
-                                            EtOrderOperations_statement.bindString(12, jsonArray.getJSONObject(j).optString("Fsavd"));
-                                            EtOrderOperations_statement.bindString(13, jsonArray.getJSONObject(j).optString("Ssedd"));
-                                            EtOrderOperations_statement.bindString(14, jsonArray.getJSONObject(j).optString("Pernr"));
-                                            EtOrderOperations_statement.bindString(15, jsonArray.getJSONObject(j).optString("Asnum"));
-                                            EtOrderOperations_statement.bindString(16, jsonArray.getJSONObject(j).optString("Plnty"));
-                                            EtOrderOperations_statement.bindString(17, jsonArray.getJSONObject(j).optString("Plnal"));
-                                            EtOrderOperations_statement.bindString(18, jsonArray.getJSONObject(j).optString("Plnnr"));
-                                            EtOrderOperations_statement.bindString(19, jsonArray.getJSONObject(j).optString("Rueck"));
-                                            EtOrderOperations_statement.bindString(20, jsonArray.getJSONObject(j).optString("Aueru"));
-                                            EtOrderOperations_statement.bindString(21, jsonArray.getJSONObject(j).optString("ArbplText"));
-                                            EtOrderOperations_statement.bindString(22, jsonArray.getJSONObject(j).optString("WerksText"));
-                                            EtOrderOperations_statement.bindString(23, jsonArray.getJSONObject(j).optString("SteusText"));
-                                            EtOrderOperations_statement.bindString(24, jsonArray.getJSONObject(j).optString("LarntText"));
-                                            EtOrderOperations_statement.bindString(25, jsonArray.getJSONObject(j).optString("Usr01"));
-                                            EtOrderOperations_statement.bindString(26, jsonArray.getJSONObject(j).optString("Usr02"));
-                                            EtOrderOperations_statement.bindString(27, jsonArray.getJSONObject(j).optString("Usr03"));
-                                            EtOrderOperations_statement.bindString(28, jsonArray.getJSONObject(j).optString("Usr04"));
-                                            EtOrderOperations_statement.bindString(29, jsonArray.getJSONObject(j).optString("Usr05"));
-                                            EtOrderOperations_statement.bindString(30, jsonArray.getJSONObject(j).optString("Action"));
+                        /*EtOrderOperations*/
+                        Orders_SER.EtOrderOperations etOrderOperations = results.get(0).getEtOrderOperations();
+                        if (etOrderOperations != null) {
+                            List<Orders_SER.EtOrderOperations_Result> etOrderOperationsResults = etOrderOperations.getResults();
+                            if (etOrderOperationsResults != null && etOrderOperationsResults.size() > 0) {
+                                for (Orders_SER.EtOrderOperations_Result eOO : etOrderOperationsResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eOO.getAufnr())) {
+                                            String EtOrderOperations_sql = "Insert into DUE_ORDERS_EtOrderOperations " +
+                                                    "(UUID,Aufnr,Vornr,Uvorn,Ltxa1,Arbpl,Werks,Steus,Larnt,Dauno," +
+                                                    "Daune,Fsavd,Ssedd,Pernr,Asnum,Plnty,Plnal,Plnnr,Rueck,Aueru," +
+                                                    "ArbplText,WerksText,SteusText,LarntText,Usr01,Usr02,Usr03,Usr04," +
+                                                    "Usr05,Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                                    "?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtOrderOperations_statement = App_db.compileStatement(EtOrderOperations_sql);
+                                            EtOrderOperations_statement.clearBindings();
+                                            EtOrderOperations_statement.bindString(1, uD.get("UUID"));
+                                            EtOrderOperations_statement.bindString(2, c_e.check_empty(eOO.getAufnr()));
+                                            EtOrderOperations_statement.bindString(3, c_e.check_empty(eOO.getVornr()));
+                                            EtOrderOperations_statement.bindString(4, c_e.check_empty(eOO.getUvorn()));
+                                            EtOrderOperations_statement.bindString(5, c_e.check_empty(eOO.getLtxa1()));
+                                            EtOrderOperations_statement.bindString(6, c_e.check_empty(eOO.getArbpl()));
+                                            EtOrderOperations_statement.bindString(7, c_e.check_empty(eOO.getWerks()));
+                                            EtOrderOperations_statement.bindString(8, c_e.check_empty(eOO.getSteus()));
+                                            EtOrderOperations_statement.bindString(9, c_e.check_empty(eOO.getLarnt()));
+                                            EtOrderOperations_statement.bindString(10, c_e.check_empty(eOO.getDauno()));
+                                            EtOrderOperations_statement.bindString(11, c_e.check_empty(eOO.getDaune()));
+                                            EtOrderOperations_statement.bindString(12, c_e.check_empty(eOO.getFsavd()));
+                                            EtOrderOperations_statement.bindString(13, c_e.check_empty(eOO.getSsedd()));
+                                            EtOrderOperations_statement.bindString(14, c_e.check_empty(eOO.getPernr()));
+                                            EtOrderOperations_statement.bindString(15, c_e.check_empty(eOO.getAsnum()));
+                                            EtOrderOperations_statement.bindString(16, c_e.check_empty(eOO.getPlnty()));
+                                            EtOrderOperations_statement.bindString(17, c_e.check_empty(eOO.getPlnal()));
+                                            EtOrderOperations_statement.bindString(18, c_e.check_empty(eOO.getPlnnr()));
+                                            EtOrderOperations_statement.bindString(19, c_e.check_empty(eOO.getRueck()));
+                                            EtOrderOperations_statement.bindString(20, c_e.check_empty(eOO.getAueru()));
+                                            EtOrderOperations_statement.bindString(21, c_e.check_empty(eOO.getArbplText()));
+                                            EtOrderOperations_statement.bindString(22, c_e.check_empty(eOO.getWerksText()));
+                                            EtOrderOperations_statement.bindString(23, c_e.check_empty(eOO.getSteusText()));
+                                            EtOrderOperations_statement.bindString(24, c_e.check_empty(eOO.getLarntText()));
+                                            EtOrderOperations_statement.bindString(25, c_e.check_empty(eOO.getUsr01()));
+                                            EtOrderOperations_statement.bindString(26, c_e.check_empty(eOO.getUsr02()));
+                                            EtOrderOperations_statement.bindString(27, c_e.check_empty(eOO.getUsr03()));
+                                            EtOrderOperations_statement.bindString(28, c_e.check_empty(eOO.getUsr04()));
+                                            EtOrderOperations_statement.bindString(29, c_e.check_empty(eOO.getUsr05()));
+                                            EtOrderOperations_statement.bindString(30, c_e.check_empty(eOO.getAction()));
                                             EtOrderOperations_statement.execute();
 
-
-                                            try {
-                                                String Fields = jsonArray.getJSONObject(j).optString("EtOrderOperationsFields");
-                                                JSONObject Fields_jsonObject = new JSONObject(Fields);
-                                                String Fields_jsonObject_results = Fields_jsonObject.optString("results");
-                                                JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                if (EtNotifHeader_Fields_jsonArray.length() > 0) {
-                                                    String sql1 = "Insert into DUE_ORDERS_EtOrderOperations_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            Orders_SER.EtOrderHeaderFields etOrderOperationFields = eOO.getEtOrderOperationsFields();
+                                            if (etOrderOperationFields != null) {
+                                                List<Orders_SER.EtOrderHeaderFields_Result> etOrderOperationFieldsResults = etOrderOperationFields.getResults();
+                                                if (etOrderOperationFieldsResults != null && etOrderOperationFieldsResults.size() > 0) {
+                                                    String sql1 = "Insert into DUE_ORDERS_EtOrderOperations_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, " +
+                                                            "Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID) " +
+                                                            "values(?,?,?,?,?,?,?,?,?,?,?,?);";
                                                     SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                     statement1.clearBindings();
-                                                    for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
-                                                        statement1.bindString(1, uuid);
-                                                        statement1.bindString(2, Aufnr);
-                                                        statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                        statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                        statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                        statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                        statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                        statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                        statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                        statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                        statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
-                                                        statement1.bindString(12, jsonArray.getJSONObject(j).optString("Vornr"));
+                                                    for (Orders_SER.EtOrderHeaderFields_Result eOF : etOrderOperationFieldsResults) {
+                                                        statement1.bindString(1, uD.get("UUID"));
+                                                        statement1.bindString(2, c_e.check_empty(eOO.getAufnr()));
+                                                        statement1.bindString(3, c_e.check_empty(eOF.getZdoctype()));
+                                                        statement1.bindString(4, c_e.check_empty(eOF.getZdoctypeItem()));
+                                                        statement1.bindString(5, c_e.check_empty(eOF.getTabname()));
+                                                        statement1.bindString(6, c_e.check_empty(eOF.getFieldname()));
+                                                        statement1.bindString(7, c_e.check_empty(eOF.getValue()));
+                                                        statement1.bindString(8, c_e.check_empty(eOF.getFlabel()));
+                                                        statement1.bindString(9, c_e.check_empty(eOF.getSequence()));
+                                                        statement1.bindString(10, c_e.check_empty(eOF.getLength()));
+                                                        statement1.bindString(11, c_e.check_empty(eOF.getDatatype()));
+                                                        statement1.bindString(12, c_e.check_empty(eOO.getVornr()));
                                                         statement1.execute();
                                                     }
                                                 }
-                                            } catch (Exception e) {
                                             }
-
-
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
-                        if (jsonObject.has("EtOrderLongtext")) {
-                            try {
-                                String EtOrderLongtext_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtOrderLongtext().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderLongtext_response_data);
-                                if (jsonArray.length() > 0) {
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext (UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
+                        /*EtOrderLongtext*/
+                        Orders_SER.EtOrderLongtext etOrderLongtext = results.get(0).getEtOrderLongtext();
+                        if (etOrderLongtext != null) {
+                            List<Orders_SER.EtOrderLongtext_Result> etOrderLongtextResults = etOrderLongtext.getResults();
+                            if (etOrderLongtextResults != null && etOrderLongtextResults.size() > 0) {
+                                for (Orders_SER.EtOrderLongtext_Result eOL : etOrderLongtextResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eOL.getAufnr())) {
+                                            String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext " +
+                                                    "(UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
                                             SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                                             EtOrderLongtext_statement.clearBindings();
-                                            EtOrderLongtext_statement.bindString(1, uuid);
-                                            EtOrderLongtext_statement.bindString(2, Aufnr);
-                                            EtOrderLongtext_statement.bindString(3, jsonArray.getJSONObject(j).optString("Activity"));
-                                            EtOrderLongtext_statement.bindString(4, jsonArray.getJSONObject(j).optString("TextLine"));
-                                            EtOrderLongtext_statement.bindString(5, jsonArray.getJSONObject(j).optString("Tdid"));
+                                            EtOrderLongtext_statement.bindString(1, uD.get("UUID"));
+                                            EtOrderLongtext_statement.bindString(2, c_e.check_empty(eOL.getAufnr()));
+                                            EtOrderLongtext_statement.bindString(3, c_e.check_empty(eOL.getActivity()));
+                                            EtOrderLongtext_statement.bindString(4, c_e.check_empty(eOL.getTextLine()));
                                             EtOrderLongtext_statement.execute();
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
-                        if (jsonObject.has("EtOrderOlist")) {
-                            try {
-                                String EtOrderOlist_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtOrderOlist().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderOlist_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtOrderOlist_sql = "Insert into EtOrderOlist (UUID, Aufnr, Obknr, Obzae, Qmnum, Equnr, Strno, Tplnr, Bautl, Qmtxt, Pltxt, Eqktx, Maktx, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtOrderOlist_statement = App_db.compileStatement(EtOrderOlist_sql);
-                                    EtOrderOlist_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtOrderOlist_statement.bindString(1, uuid);
-                                            EtOrderOlist_statement.bindString(2, Aufnr);
-                                            EtOrderOlist_statement.bindString(3, jsonArray.getJSONObject(j).optString("Obknr"));
-                                            EtOrderOlist_statement.bindString(4, jsonArray.getJSONObject(j).optString("Obzae"));
-                                            EtOrderOlist_statement.bindString(5, jsonArray.getJSONObject(j).optString("Qmnum"));
-                                            EtOrderOlist_statement.bindString(6, jsonArray.getJSONObject(j).optString("Equnr"));
-                                            EtOrderOlist_statement.bindString(7, jsonArray.getJSONObject(j).optString("Strno"));
-                                            EtOrderOlist_statement.bindString(8, jsonArray.getJSONObject(j).optString("Tplnr"));
-                                            EtOrderOlist_statement.bindString(9, jsonArray.getJSONObject(j).optString("Bautl"));
-                                            EtOrderOlist_statement.bindString(10, jsonArray.getJSONObject(j).optString("Qmtxt"));
-                                            EtOrderOlist_statement.bindString(11, jsonArray.getJSONObject(j).optString("Pltxt"));
-                                            EtOrderOlist_statement.bindString(12, jsonArray.getJSONObject(j).optString("Eqktx"));
-                                            EtOrderOlist_statement.bindString(13, jsonArray.getJSONObject(j).optString("Maktx"));
-                                            EtOrderOlist_statement.bindString(14, jsonArray.getJSONObject(j).optString("Action"));
+                        /*EtOrderOlist*/
+                        Orders_SER.EtOrderOlist etOrderOlist = results.get(0).getEtOrderOlist();
+                        if (etOrderOlist != null) {
+                            List<Orders_SER.EtOrderOlist_Result> etOrderOlistResults = etOrderOlist.getResults();
+                            if (etOrderOlistResults != null && etOrderOlistResults.size() > 0) {
+                                for (Orders_SER.EtOrderOlist_Result eOL : etOrderOlistResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eOL.getAufnr())) {
+                                            String EtOrderOlist_sql = "Insert into EtOrderOlist (UUID, Aufnr," +
+                                                    " Obknr, Obzae, Qmnum, Equnr, Strno, Tplnr, Bautl, Qmtxt," +
+                                                    " Pltxt, Eqktx, Maktx, Action) values(?,?,?,?,?,?,?,?,?," +
+                                                    "?,?,?,?,?);";
+                                            SQLiteStatement EtOrderOlist_statement = App_db.compileStatement(EtOrderOlist_sql);
+                                            EtOrderOlist_statement.clearBindings();
+                                            EtOrderOlist_statement.bindString(1, uD.get("UUID"));
+                                            EtOrderOlist_statement.bindString(2, c_e.check_empty(eOL.getAufnr()));
+                                            EtOrderOlist_statement.bindString(3, c_e.check_empty(eOL.getObknr()));
+                                            EtOrderOlist_statement.bindString(4, c_e.check_empty(eOL.getObzae()));
+                                            EtOrderOlist_statement.bindString(5, c_e.check_empty(eOL.getQmnum()));
+                                            EtOrderOlist_statement.bindString(6, c_e.check_empty(eOL.getEqunr()));
+                                            EtOrderOlist_statement.bindString(7, c_e.check_empty(eOL.getStrno()));
+                                            EtOrderOlist_statement.bindString(8, c_e.check_empty(eOL.getTplnr()));
+                                            EtOrderOlist_statement.bindString(9, c_e.check_empty(eOL.getBautl()));
+                                            EtOrderOlist_statement.bindString(10, c_e.check_empty(eOL.getQmtxt()));
+                                            EtOrderOlist_statement.bindString(11, c_e.check_empty(eOL.getPltxt()));
+                                            EtOrderOlist_statement.bindString(12, c_e.check_empty(eOL.getEqktx()));
+                                            EtOrderOlist_statement.bindString(13, c_e.check_empty(eOL.getMaktx()));
+                                            EtOrderOlist_statement.bindString(14, c_e.check_empty(eOL.getAction()));
                                             EtOrderOlist_statement.execute();
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
-                        if (jsonObject.has("EtOrderStatus")) {
-                            try {
-                                String EtOrderStatus_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtOrderStatus().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderStatus_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtOrderStatus_sql = "Insert into EtOrderStatus (UUID,Aufnr, Vornr, Objnr, Stsma, Inist, Stonr, Hsonr, Nsonr,Stat, Act, Txt04, Txt30, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtOrderStatus_statement = App_db.compileStatement(EtOrderStatus_sql);
-                                    EtOrderStatus_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtOrderStatus_statement.bindString(1, uuid);
-                                            EtOrderStatus_statement.bindString(2, Aufnr);
-                                            EtOrderStatus_statement.bindString(3, jsonArray.getJSONObject(j).optString("Vornr"));
-                                            EtOrderStatus_statement.bindString(4, jsonArray.getJSONObject(j).optString("Objnr"));
-                                            EtOrderStatus_statement.bindString(5, jsonArray.getJSONObject(j).optString("Stsma"));
-                                            EtOrderStatus_statement.bindString(6, jsonArray.getJSONObject(j).optString("Inist"));
-                                            EtOrderStatus_statement.bindString(7, jsonArray.getJSONObject(j).optString("Stonr"));
-                                            EtOrderStatus_statement.bindString(8, jsonArray.getJSONObject(j).optString("Hsonr"));
-                                            EtOrderStatus_statement.bindString(9, jsonArray.getJSONObject(j).optString("Nsonr"));
-                                            EtOrderStatus_statement.bindString(10, jsonArray.getJSONObject(j).optString("Stat"));
-                                            EtOrderStatus_statement.bindString(11, jsonArray.getJSONObject(j).optString("Act"));
-                                            EtOrderStatus_statement.bindString(12, jsonArray.getJSONObject(j).optString("Txt04"));
-                                            EtOrderStatus_statement.bindString(13, jsonArray.getJSONObject(j).optString("Txt30"));
-                                            EtOrderStatus_statement.bindString(14, jsonArray.getJSONObject(j).optString("Action"));
+                        /*EtOrderStatus*/
+                        Orders_SER.EtOrderStatus etOrderStatus = results.get(0).getEtOrderStatus();
+                        if (etOrderStatus != null) {
+                            List<Orders_SER.EtOrderStatus_Result> etOrderStatusResults = etOrderStatus.getResults();
+                            if (etOrderStatusResults != null && etOrderStatusResults.size() > 0) {
+                                for (Orders_SER.EtOrderStatus_Result eOS : etOrderStatusResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eOS.getAufnr())) {
+                                            String EtOrderStatus_sql = "Insert into EtOrderStatus (UUID,Aufnr, " +
+                                                    "Vornr, Objnr, Stsma, Inist, Stonr, Hsonr, Nsonr,Stat, Act," +
+                                                    " Txt04, Txt30, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtOrderStatus_statement = App_db.compileStatement(EtOrderStatus_sql);
+                                            EtOrderStatus_statement.clearBindings();
+                                            EtOrderStatus_statement.bindString(1, uD.get("UUID"));
+                                            EtOrderStatus_statement.bindString(2, c_e.check_empty(eOS.getAufnr()));
+                                            EtOrderStatus_statement.bindString(3, c_e.check_empty(eOS.getVornr()));
+                                            EtOrderStatus_statement.bindString(4, c_e.check_empty(eOS.getObjnr()));
+                                            EtOrderStatus_statement.bindString(5, c_e.check_empty(eOS.getStsma()));
+                                            EtOrderStatus_statement.bindString(6, c_e.check_empty(eOS.getInist()));
+                                            EtOrderStatus_statement.bindString(7, c_e.check_empty(eOS.getStonr()));
+                                            EtOrderStatus_statement.bindString(8, c_e.check_empty(eOS.getHsonr()));
+                                            EtOrderStatus_statement.bindString(9, c_e.check_empty(eOS.getNsonr()));
+                                            EtOrderStatus_statement.bindString(10, c_e.check_empty(eOS.getStat()));
+                                            EtOrderStatus_statement.bindString(11, c_e.check_empty(eOS.getAct()));
+                                            EtOrderStatus_statement.bindString(12, c_e.check_empty(eOS.getTxt04()));
+                                            EtOrderStatus_statement.bindString(13, c_e.check_empty(eOS.getTxt30()));
+                                            EtOrderStatus_statement.bindString(14, c_e.check_empty(eOS.getAction()));
                                             EtOrderStatus_statement.execute();
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
-                        if (jsonObject.has("EtDocs")) {
-                            try {
-                                String EtDocs_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtDocs().getResults());
-                                JSONArray jsonArray = new JSONArray(EtDocs_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs (UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Contentx) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+                        /*EtDocs*/
+                        Orders_SER.EtDocs etDocs = results.get(0).getEtDocs();
+                        if (etDocs != null) {
+                            List<Orders_SER.EtDocs_Result> etDocsResults = etDocs.getResults();
+                            if (etDocsResults != null && etDocsResults.size() > 0) {
+                                for (Orders_SER.EtDocs_Result eD : etDocsResults) {
+                                    String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype," +
+                                            " ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId," +
+                                            " DocType, Objtype) values(?,?,?,?,?,?,?,?,?,?,?);";
                                     SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
                                     EtDocs_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        EtDocs_statement.bindString(1, "");
-                                        EtDocs_statement.bindString(2, jsonArray.getJSONObject(j).optString("Zobjid"));
-                                        EtDocs_statement.bindString(3, jsonArray.getJSONObject(j).optString("Zdoctype"));
-                                        EtDocs_statement.bindString(4, jsonArray.getJSONObject(j).optString("ZdoctypeItem"));
-                                        EtDocs_statement.bindString(5, jsonArray.getJSONObject(j).optString("Filename"));
-                                        EtDocs_statement.bindString(6, jsonArray.getJSONObject(j).optString("Filetype"));
-                                        EtDocs_statement.bindString(7, jsonArray.getJSONObject(j).optString("Fsize"));
-                                        EtDocs_statement.bindString(8, jsonArray.getJSONObject(j).optString("Content"));
-                                        EtDocs_statement.bindString(9, jsonArray.getJSONObject(j).optString("DocId"));
-                                        EtDocs_statement.bindString(10, jsonArray.getJSONObject(j).optString("DocType"));
-                                        EtDocs_statement.bindString(11, jsonArray.getJSONObject(j).optString("Objtype"));
-                                        EtDocs_statement.bindString(12, jsonArray.getJSONObject(j).optString("Contentx"));
-                                        EtDocs_statement.execute();
-                                    }
+                                    EtDocs_statement.bindString(1, "");
+                                    EtDocs_statement.bindString(2, c_e.check_empty(eD.getZobjid()));
+                                    EtDocs_statement.bindString(3, c_e.check_empty(eD.getZdoctype()));
+                                    EtDocs_statement.bindString(4, c_e.check_empty(eD.getZdoctypeItem()));
+                                    EtDocs_statement.bindString(5, c_e.check_empty(eD.getFilename()));
+                                    EtDocs_statement.bindString(6, c_e.check_empty(eD.getFiletype()));
+                                    EtDocs_statement.bindString(7, c_e.check_empty(eD.getFsize()));
+                                    EtDocs_statement.bindString(8, c_e.check_empty(eD.getContent()));
+                                    EtDocs_statement.bindString(9, c_e.check_empty(eD.getDocID()));
+                                    EtDocs_statement.bindString(10, c_e.check_empty(eD.getDocType()));
+                                    EtDocs_statement.bindString(11, c_e.check_empty(eD.getObjtype()));
+                                    EtDocs_statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtDocs*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
-                        if (jsonObject.has("EtWcmWwData")) {
-                            try {
-                                String EtWcmWwData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWwData().getResults());
-                                JSONArray jsonArray = new JSONArray(EtWcmWwData_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtWcmWwData_sql = "Insert into EtWcmWwData (UUID, Aufnr, Objart, Wapnr, Iwerk, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape, Etapex, Rctime, Rcunit, Priok, Priokx, Stxt, Datefr, Timefr, Dateto, Timeto, Objnr, Crea, Prep, Comp, Appr, Pappr, Action, Begru, Begtx) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtWcmWwData_statement = App_db.compileStatement(EtWcmWwData_sql);
-                                    EtWcmWwData_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtWcmWwData_statement.bindString(1, uuid);
-                                            EtWcmWwData_statement.bindString(2, Aufnr);
-                                            EtWcmWwData_statement.bindString(3, jsonArray.getJSONObject(j).optString("Objart"));
-                                            EtWcmWwData_statement.bindString(4, jsonArray.getJSONObject(j).optString("Wapnr"));
-                                            EtWcmWwData_statement.bindString(5, jsonArray.getJSONObject(j).optString("Iwerk"));
-                                            EtWcmWwData_statement.bindString(6, jsonArray.getJSONObject(j).optString("Usage"));
-                                            EtWcmWwData_statement.bindString(7, jsonArray.getJSONObject(j).optString("Usagex"));
-                                            EtWcmWwData_statement.bindString(8, jsonArray.getJSONObject(j).optString("Train"));
-                                            EtWcmWwData_statement.bindString(9, jsonArray.getJSONObject(j).optString("Trainx"));
-                                            EtWcmWwData_statement.bindString(10, jsonArray.getJSONObject(j).optString("Anlzu"));
-                                            EtWcmWwData_statement.bindString(11, jsonArray.getJSONObject(j).optString("Anlzux"));
-                                            EtWcmWwData_statement.bindString(12, jsonArray.getJSONObject(j).optString("Etape"));
-                                            EtWcmWwData_statement.bindString(13, jsonArray.getJSONObject(j).optString("Etapex"));
-                                            EtWcmWwData_statement.bindString(14, jsonArray.getJSONObject(j).optString("Rctime"));
-                                            EtWcmWwData_statement.bindString(15, jsonArray.getJSONObject(j).optString("Rcunit"));
-                                            EtWcmWwData_statement.bindString(16, jsonArray.getJSONObject(j).optString("Priok"));
-                                            EtWcmWwData_statement.bindString(17, jsonArray.getJSONObject(j).optString("Priokx"));
-                                            EtWcmWwData_statement.bindString(18, jsonArray.getJSONObject(j).optString("Stxt"));
-                                            EtWcmWwData_statement.bindString(19, jsonArray.getJSONObject(j).optString("Datefr"));
-                                            EtWcmWwData_statement.bindString(20, jsonArray.getJSONObject(j).optString("Timefr"));
-                                            EtWcmWwData_statement.bindString(21, jsonArray.getJSONObject(j).optString("Dateto"));
-                                            EtWcmWwData_statement.bindString(22, jsonArray.getJSONObject(j).optString("Timeto"));
-                                            EtWcmWwData_statement.bindString(23, jsonArray.getJSONObject(j).optString("Objnr"));
-                                            EtWcmWwData_statement.bindString(24, jsonArray.getJSONObject(j).optString("Crea"));
-                                            EtWcmWwData_statement.bindString(25, jsonArray.getJSONObject(j).optString("Prep"));
-                                            EtWcmWwData_statement.bindString(26, jsonArray.getJSONObject(j).optString("Comp"));
-                                            EtWcmWwData_statement.bindString(27, jsonArray.getJSONObject(j).optString("Appr"));
-                                            EtWcmWwData_statement.bindString(28, jsonArray.getJSONObject(j).optString("Pappr"));
-                                            EtWcmWwData_statement.bindString(29, jsonArray.getJSONObject(j).optString("Action"));
-                                            EtWcmWwData_statement.bindString(30, jsonArray.getJSONObject(j).optString("Begru"));
-                                            EtWcmWwData_statement.bindString(31, jsonArray.getJSONObject(j).optString("Begtx"));
+                        /*EtWcmWwData*/
+                        Orders_SER.EtWcmWwData etWcmWwData = results.get(0).getEtWcmWwData();
+                        if (etWcmWwData != null) {
+                            List<Orders_SER.EtWcmWwData_Result> etWcmWwDataResults = etWcmWwData.getResults();
+                            if (etWcmWwDataResults != null && etWcmWwDataResults.size() > 0) {
+                                for (Orders_SER.EtWcmWwData_Result eWW : etWcmWwDataResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eWW.getAufnr())) {
+                                            String EtWcmWwData_sql = "Insert into EtWcmWwData (UUID, Aufnr, Objart," +
+                                                    " Wapnr, Iwerk, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape," +
+                                                    " Etapex, Rctime, Rcunit, Priok, Priokx, Stxt, Datefr, Timefr, Dateto," +
+                                                    " Timeto, Objnr, Crea, Prep, Comp, Appr, Pappr, Action, Begru, Begtx)" +
+                                                    " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtWcmWwData_statement = App_db.compileStatement(EtWcmWwData_sql);
+                                            EtWcmWwData_statement.clearBindings();
+                                            EtWcmWwData_statement.bindString(1, uD.get("UUID"));
+                                            EtWcmWwData_statement.bindString(2, c_e.check_empty(eWW.getAufnr()));
+                                            EtWcmWwData_statement.bindString(3, c_e.check_empty(eWW.getObjart()));
+                                            EtWcmWwData_statement.bindString(4, c_e.check_empty(eWW.getWapnr()));
+                                            EtWcmWwData_statement.bindString(5, c_e.check_empty(eWW.getIwerk()));
+                                            EtWcmWwData_statement.bindString(6, c_e.check_empty(eWW.getUsage()));
+                                            EtWcmWwData_statement.bindString(7, c_e.check_empty(eWW.getUsagex()));
+                                            EtWcmWwData_statement.bindString(8, c_e.check_empty(eWW.getTrain()));
+                                            EtWcmWwData_statement.bindString(9, c_e.check_empty(eWW.getTrainx()));
+                                            EtWcmWwData_statement.bindString(10, c_e.check_empty(eWW.getAnlzu()));
+                                            EtWcmWwData_statement.bindString(11, c_e.check_empty(eWW.getAnlzux()));
+                                            EtWcmWwData_statement.bindString(12, c_e.check_empty(eWW.getEtape()));
+                                            EtWcmWwData_statement.bindString(13, c_e.check_empty(eWW.getEtapex()));
+                                            EtWcmWwData_statement.bindString(14, c_e.check_empty(eWW.getRctime()));
+                                            EtWcmWwData_statement.bindString(15, c_e.check_empty(eWW.getRcunit()));
+                                            EtWcmWwData_statement.bindString(16, c_e.check_empty(eWW.getPriok()));
+                                            EtWcmWwData_statement.bindString(17, c_e.check_empty(eWW.getPriokx()));
+                                            EtWcmWwData_statement.bindString(18, c_e.check_empty(eWW.getStxt()));
+                                            EtWcmWwData_statement.bindString(19, c_e.check_empty(eWW.getDatefr()));
+                                            EtWcmWwData_statement.bindString(20, c_e.check_empty(eWW.getTimefr()));
+                                            EtWcmWwData_statement.bindString(21, c_e.check_empty(eWW.getDateto()));
+                                            EtWcmWwData_statement.bindString(22, c_e.check_empty(eWW.getTimeto()));
+                                            EtWcmWwData_statement.bindString(23, c_e.check_empty(eWW.getObjnr()));
+                                            EtWcmWwData_statement.bindString(24, c_e.check_empty(eWW.getCrea()));
+                                            EtWcmWwData_statement.bindString(25, c_e.check_empty(eWW.getPrep()));
+                                            EtWcmWwData_statement.bindString(26, c_e.check_empty(eWW.getComp()));
+                                            EtWcmWwData_statement.bindString(27, c_e.check_empty(eWW.getAppr()));
+                                            EtWcmWwData_statement.bindString(28, c_e.check_empty(eWW.getPappr()));
+                                            EtWcmWwData_statement.bindString(29, c_e.check_empty(eWW.getAction()));
+                                            EtWcmWwData_statement.bindString(30, c_e.check_empty(eWW.getBegru()));
+                                            EtWcmWwData_statement.bindString(31, c_e.check_empty(eWW.getBegtx()));
                                             EtWcmWwData_statement.execute();
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
-                        if (jsonObject.has("EtWcmWaData")) {
-                            try {
-                                String EtWcmWaData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWaData().getResults());
-                                JSONArray jsonArray = new JSONArray(EtWcmWaData_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtWcmWaData_sql = "Insert into EtWcmWaData (UUID, Aufnr, Objart, Wapinr, Iwerk, Objtyp, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape, Etapex, Stxt, Datefr, Timefr, Dateto, Timeto, Priok, Priokx, Rctime, Rcunit, Objnr, Refobj, Crea, Prep, Comp, Appr, Action, Begru, Begtx, Extperiod) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtWcmWaData_statement = App_db.compileStatement(EtWcmWaData_sql);
-                                    EtWcmWaData_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtWcmWaData_statement.bindString(1, uuid);
-                                            EtWcmWaData_statement.bindString(2, Aufnr);
-                                            EtWcmWaData_statement.bindString(3, jsonArray.getJSONObject(j).optString("Objart"));
-                                            EtWcmWaData_statement.bindString(4, jsonArray.getJSONObject(j).optString("Wapinr"));
-                                            EtWcmWaData_statement.bindString(5, jsonArray.getJSONObject(j).optString("Iwerk"));
-                                            EtWcmWaData_statement.bindString(6, jsonArray.getJSONObject(j).optString("Objtyp"));
-                                            EtWcmWaData_statement.bindString(7, jsonArray.getJSONObject(j).optString("Usage"));
-                                            EtWcmWaData_statement.bindString(8, jsonArray.getJSONObject(j).optString("Usagex"));
-                                            EtWcmWaData_statement.bindString(9, jsonArray.getJSONObject(j).optString("Train"));
-                                            EtWcmWaData_statement.bindString(10, jsonArray.getJSONObject(j).optString("Trainx"));
-                                            EtWcmWaData_statement.bindString(11, jsonArray.getJSONObject(j).optString("Anlzu"));
-                                            EtWcmWaData_statement.bindString(12, jsonArray.getJSONObject(j).optString("Anlzux"));
-                                            EtWcmWaData_statement.bindString(13, jsonArray.getJSONObject(j).optString("Etape"));
-                                            EtWcmWaData_statement.bindString(14, jsonArray.getJSONObject(j).optString("Etapex"));
-                                            EtWcmWaData_statement.bindString(15, jsonArray.getJSONObject(j).optString("Stxt"));
-                                            EtWcmWaData_statement.bindString(16, jsonArray.getJSONObject(j).optString("Datefr"));
-                                            EtWcmWaData_statement.bindString(17, jsonArray.getJSONObject(j).optString("Timefr"));
-                                            EtWcmWaData_statement.bindString(18, jsonArray.getJSONObject(j).optString("Dateto"));
-                                            EtWcmWaData_statement.bindString(19, jsonArray.getJSONObject(j).optString("Timeto"));
-                                            EtWcmWaData_statement.bindString(20, jsonArray.getJSONObject(j).optString("Priok"));
-                                            EtWcmWaData_statement.bindString(21, jsonArray.getJSONObject(j).optString("Priokx"));
-                                            EtWcmWaData_statement.bindString(22, jsonArray.getJSONObject(j).optString("Rctime"));
-                                            EtWcmWaData_statement.bindString(23, jsonArray.getJSONObject(j).optString("Rcunit"));
-                                            EtWcmWaData_statement.bindString(24, jsonArray.getJSONObject(j).optString("Objnr"));
-                                            EtWcmWaData_statement.bindString(25, jsonArray.getJSONObject(j).optString("Refobj"));
-                                            EtWcmWaData_statement.bindString(26, jsonArray.getJSONObject(j).optString("Crea"));
-                                            EtWcmWaData_statement.bindString(27, jsonArray.getJSONObject(j).optString("Prep"));
-                                            EtWcmWaData_statement.bindString(28, jsonArray.getJSONObject(j).optString("Comp"));
-                                            EtWcmWaData_statement.bindString(29, jsonArray.getJSONObject(j).optString("Appr"));
-                                            EtWcmWaData_statement.bindString(30, jsonArray.getJSONObject(j).optString("Action"));
-                                            EtWcmWaData_statement.bindString(31, jsonArray.getJSONObject(j).optString("Begru"));
-                                            EtWcmWaData_statement.bindString(32, jsonArray.getJSONObject(j).optString("Begtx"));
-                                            EtWcmWaData_statement.bindString(33, jsonArray.getJSONObject(j).optString("Extperiod"));
+                        /*EtWcmWaData*/
+                        Orders_SER.EtWcmWaData etWcmWaData = results.get(0).getEtWcmWaData();
+                        if (etWcmWaData != null) {
+                            List<Orders_SER.EtWcmWaData_Result> etWcmWaDataResults = etWcmWaData.getResults();
+                            if (etWcmWaDataResults != null && etWcmWaDataResults.size() > 0) {
+                                for (Orders_SER.EtWcmWaData_Result eWA : etWcmWaDataResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eWA.getAufnr())) {
+                                            String EtWcmWaData_sql = "Insert into EtWcmWaData (UUID, Aufnr, Objart," +
+                                                    " Wapinr, Iwerk, Objtyp, Usage, Usagex, Train, Trainx, Anlzu, " +
+                                                    "Anlzux, Etape, Etapex, Stxt, Datefr, Timefr, Dateto, Timeto, " +
+                                                    "Priok, Priokx, Rctime, Rcunit, Objnr, Refobj, Crea, Prep, " +
+                                                    "Comp, Appr, Action, Begru, Begtx, Extperiod) values(?,?,?,?," +
+                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtWcmWaData_statement = App_db.compileStatement(EtWcmWaData_sql);
+                                            EtWcmWaData_statement.clearBindings();
+                                            EtWcmWaData_statement.bindString(1, uD.get("UUID"));
+                                            EtWcmWaData_statement.bindString(2, c_e.check_empty(eWA.getAufnr()));
+                                            EtWcmWaData_statement.bindString(3, c_e.check_empty(eWA.getObjart()));
+                                            EtWcmWaData_statement.bindString(4, c_e.check_empty(eWA.getWapinr()));
+                                            EtWcmWaData_statement.bindString(5, c_e.check_empty(eWA.getIwerk()));
+                                            EtWcmWaData_statement.bindString(6, c_e.check_empty(eWA.getObjtyp()));
+                                            EtWcmWaData_statement.bindString(7, c_e.check_empty(eWA.getUsage()));
+                                            EtWcmWaData_statement.bindString(8, c_e.check_empty(eWA.getUsagex()));
+                                            EtWcmWaData_statement.bindString(9, c_e.check_empty(eWA.getTrain()));
+                                            EtWcmWaData_statement.bindString(10, c_e.check_empty(eWA.getTrainx()));
+                                            EtWcmWaData_statement.bindString(11, c_e.check_empty(eWA.getAnlzu()));
+                                            EtWcmWaData_statement.bindString(12, c_e.check_empty(eWA.getAnlzux()));
+                                            EtWcmWaData_statement.bindString(13, c_e.check_empty(eWA.getEtape()));
+                                            EtWcmWaData_statement.bindString(14, c_e.check_empty(eWA.getEtapex()));
+                                            EtWcmWaData_statement.bindString(15, c_e.check_empty(eWA.getStxt()));
+                                            EtWcmWaData_statement.bindString(16, c_e.check_empty(eWA.getDatefr()));
+                                            EtWcmWaData_statement.bindString(17, c_e.check_empty(eWA.getTimefr()));
+                                            EtWcmWaData_statement.bindString(18, c_e.check_empty(eWA.getDateto()));
+                                            EtWcmWaData_statement.bindString(19, c_e.check_empty(eWA.getTimeto()));
+                                            EtWcmWaData_statement.bindString(20, c_e.check_empty(eWA.getPriok()));
+                                            EtWcmWaData_statement.bindString(21, c_e.check_empty(eWA.getPriokx()));
+                                            EtWcmWaData_statement.bindString(22, c_e.check_empty(eWA.getRctime()));
+                                            EtWcmWaData_statement.bindString(23, c_e.check_empty(eWA.getRcunit()));
+                                            EtWcmWaData_statement.bindString(24, c_e.check_empty(eWA.getObjnr()));
+                                            EtWcmWaData_statement.bindString(25, c_e.check_empty(eWA.getRefobj()));
+                                            EtWcmWaData_statement.bindString(26, c_e.check_empty(eWA.getCrea()));
+                                            EtWcmWaData_statement.bindString(27, c_e.check_empty(eWA.getPrep()));
+                                            EtWcmWaData_statement.bindString(28, c_e.check_empty(eWA.getComp()));
+                                            EtWcmWaData_statement.bindString(29, c_e.check_empty(eWA.getAppr()));
+                                            EtWcmWaData_statement.bindString(30, c_e.check_empty(eWA.getAction()));
+                                            EtWcmWaData_statement.bindString(31, c_e.check_empty(eWA.getBegru()));
+                                            EtWcmWaData_statement.bindString(32, c_e.check_empty(eWA.getBegtx()));
+                                            EtWcmWaData_statement.bindString(33, c_e.check_empty(String.valueOf(eWA.getExtperiod())));
                                             EtWcmWaData_statement.execute();
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
-                        if (jsonObject.has("EtWcmWaChkReq")) {
-                            try {
-                                String EtWcmWaChkReq_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWaChkReq().getResults());
-                                JSONArray jsonArray = new JSONArray(EtWcmWaChkReq_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtWcmWaChkReq_sql = "Insert into EtWcmWaChkReq (Wapinr, Wapityp, Needid, Value, ChkPointType, Desctext, Tplnr, Wkgrp, Needgrp, Equnr) values(?,?,?,?,?,?,?,?,?,?);";
+                        /*EtWcmWaChkReq*/
+                        Orders_SER.EtWcmWaChkReq etWcmWaChkReq = results.get(0).getEtWcmWaChkReq();
+                        if (etWcmWaChkReq != null) {
+                            List<Orders_SER.EtWcmWaChkReq_Result> etWcmWaChkReqResults = etWcmWaChkReq.getResults();
+                            if (etWcmWaChkReqResults != null && etWcmWaChkReqResults.size() > 0) {
+                                for (Orders_SER.EtWcmWaChkReq_Result eWR : etWcmWaChkReqResults) {
+                                    String EtWcmWaChkReq_sql = "Insert into EtWcmWaChkReq (Wapinr, Wapityp, Needid, " +
+                                            "Value, ChkPointType, Desctext, Tplnr, Wkgrp, Needgrp, Equnr) " +
+                                            "values(?,?,?,?,?,?,?,?,?,?);";
                                     SQLiteStatement EtWcmWaChkReq_statement = App_db.compileStatement(EtWcmWaChkReq_sql);
                                     EtWcmWaChkReq_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        EtWcmWaChkReq_statement.bindString(1, jsonArray.getJSONObject(j).optString("Wapinr"));
-                                        EtWcmWaChkReq_statement.bindString(2, jsonArray.getJSONObject(j).optString("Wapityp"));
-                                        EtWcmWaChkReq_statement.bindString(5, jsonArray.getJSONObject(j).optString("ChkPointType"));
-                                        if (jsonArray.getJSONObject(j).optString("ChkPointType").equalsIgnoreCase("W"))
-                                            EtWcmWaChkReq_statement.bindString(3, jsonArray.getJSONObject(j).optString("Wkid"));
-                                        else
-                                            EtWcmWaChkReq_statement.bindString(3, jsonArray.getJSONObject(j).optString("Needid"));
-                                        EtWcmWaChkReq_statement.bindString(4, jsonArray.getJSONObject(j).optString("Value"));
-                                        EtWcmWaChkReq_statement.bindString(6, jsonArray.getJSONObject(j).optString("Desctext"));
-                                        EtWcmWaChkReq_statement.bindString(7, jsonArray.getJSONObject(j).optString("Tplnr"));
-                                        EtWcmWaChkReq_statement.bindString(8, jsonArray.getJSONObject(j).optString("Wkgrp"));
-                                        EtWcmWaChkReq_statement.bindString(9, jsonArray.getJSONObject(j).optString("Needgrp"));
-                                        EtWcmWaChkReq_statement.bindString(10, jsonArray.getJSONObject(j).optString("Equnr"));
-                                        EtWcmWaChkReq_statement.execute();
-                                    }
+                                    EtWcmWaChkReq_statement.bindString(1, c_e.check_empty(eWR.getWapinr()));
+                                    EtWcmWaChkReq_statement.bindString(2, c_e.check_empty(eWR.getWapityp()));
+                                    EtWcmWaChkReq_statement.bindString(5, c_e.check_empty(eWR.getChkPointType()));
+                                    if (c_e.check_empty(eWR.getChkPointType()).equalsIgnoreCase("W"))
+                                        EtWcmWaChkReq_statement.bindString(3, c_e.check_empty(eWR.getWkid()));
+                                    else
+                                        EtWcmWaChkReq_statement.bindString(3, c_e.check_empty(eWR.getNeedid()));
+                                    EtWcmWaChkReq_statement.bindString(4, c_e.check_empty(eWR.getValue()));
+                                    EtWcmWaChkReq_statement.bindString(6, c_e.check_empty(eWR.getDesctext()));
+                                    EtWcmWaChkReq_statement.bindString(7, c_e.check_empty(eWR.getTplnr()));
+                                    EtWcmWaChkReq_statement.bindString(8, c_e.check_empty(eWR.getWkgrp()));
+                                    EtWcmWaChkReq_statement.bindString(9, c_e.check_empty(eWR.getNeedgrp()));
+                                    EtWcmWaChkReq_statement.bindString(10, c_e.check_empty(eWR.getEqunr()));
+                                    EtWcmWaChkReq_statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
-                        if (jsonObject.has("EtWcmWdData")) {
-                            try {
-                                String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWdData().getResults());
-                                JSONArray jsonArray = new JSONArray(EtWcmWdData_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtWcmWdData_sql = "Insert into EtWcmWdData (Aufnr, Objart, Wcnr, Iwerk, Objtyp, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape, Etapex, Stxt, Datefr, Timefr, Dateto, Timeto, Priok, Priokx, Rctime, Rcunit, Objnr, Refobj, Crea, Prep, Comp, Appr, Action, Begru, Begtx) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                        /*EtWcmWdData*/
+                        Orders_SER.EtWcmWdData etWcmWdData = results.get(0).getEtWcmWdData();
+                        if (etWcmWdData != null) {
+                            List<Orders_SER.EtWcmWdData_Result> etWcmWdDataResults = etWcmWdData.getResults();
+                            if (etWcmWdDataResults != null && etWcmWdDataResults.size() > 0) {
+                                for (Orders_SER.EtWcmWdData_Result eWD : etWcmWdDataResults) {
+                                    String EtWcmWdData_sql = "Insert into EtWcmWdData (Aufnr, Objart, Wcnr, Iwerk," +
+                                            " Objtyp, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape, Etapex," +
+                                            " Stxt, Datefr, Timefr, Dateto, Timeto, Priok, Priokx, Rctime, Rcunit, " +
+                                            "Objnr, Refobj, Crea, Prep, Comp, Appr, Action, Begru, Begtx) " +
+                                            "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                     SQLiteStatement EtWcmWdData_statement = App_db.compileStatement(EtWcmWdData_sql);
                                     EtWcmWdData_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        EtWcmWdData_statement.bindString(1, jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        EtWcmWdData_statement.bindString(2, jsonArray.getJSONObject(j).optString("Objart"));
-                                        EtWcmWdData_statement.bindString(3, jsonArray.getJSONObject(j).optString("Wcnr"));
-                                        EtWcmWdData_statement.bindString(4, jsonArray.getJSONObject(j).optString("Iwerk"));
-                                        EtWcmWdData_statement.bindString(5, jsonArray.getJSONObject(j).optString("Objtyp"));
-                                        EtWcmWdData_statement.bindString(6, jsonArray.getJSONObject(j).optString("Usage"));
-                                        EtWcmWdData_statement.bindString(7, jsonArray.getJSONObject(j).optString("Usagex"));
-                                        EtWcmWdData_statement.bindString(8, jsonArray.getJSONObject(j).optString("Train"));
-                                        EtWcmWdData_statement.bindString(9, jsonArray.getJSONObject(j).optString("Trainx"));
-                                        EtWcmWdData_statement.bindString(10, jsonArray.getJSONObject(j).optString("Anlzu"));
-                                        EtWcmWdData_statement.bindString(11, jsonArray.getJSONObject(j).optString("Anlzux"));
-                                        EtWcmWdData_statement.bindString(12, jsonArray.getJSONObject(j).optString("Etape"));
-                                        EtWcmWdData_statement.bindString(13, jsonArray.getJSONObject(j).optString("Etapex"));
-                                        EtWcmWdData_statement.bindString(14, jsonArray.getJSONObject(j).optString("Stxt"));
-                                        EtWcmWdData_statement.bindString(15, jsonArray.getJSONObject(j).optString("Datefr"));
-                                        EtWcmWdData_statement.bindString(16, jsonArray.getJSONObject(j).optString("Timefr"));
-                                        EtWcmWdData_statement.bindString(17, jsonArray.getJSONObject(j).optString("Dateto"));
-                                        EtWcmWdData_statement.bindString(18, jsonArray.getJSONObject(j).optString("Timeto"));
-                                        EtWcmWdData_statement.bindString(19, jsonArray.getJSONObject(j).optString("Priok"));
-                                        EtWcmWdData_statement.bindString(20, jsonArray.getJSONObject(j).optString("Priokx"));
-                                        EtWcmWdData_statement.bindString(21, jsonArray.getJSONObject(j).optString("Rctime"));
-                                        EtWcmWdData_statement.bindString(22, jsonArray.getJSONObject(j).optString("Rcunit"));
-                                        EtWcmWdData_statement.bindString(23, jsonArray.getJSONObject(j).optString("Objnr"));
-                                        EtWcmWdData_statement.bindString(24, jsonArray.getJSONObject(j).optString("Refobj"));
-                                        EtWcmWdData_statement.bindString(25, jsonArray.getJSONObject(j).optString("Crea"));
-                                        EtWcmWdData_statement.bindString(26, jsonArray.getJSONObject(j).optString("Prep"));
-                                        EtWcmWdData_statement.bindString(27, jsonArray.getJSONObject(j).optString("Comp"));
-                                        EtWcmWdData_statement.bindString(28, jsonArray.getJSONObject(j).optString("Appr"));
-                                        EtWcmWdData_statement.bindString(29, jsonArray.getJSONObject(j).optString("Action"));
-                                        EtWcmWdData_statement.bindString(30, jsonArray.getJSONObject(j).optString("Begru"));
-                                        EtWcmWdData_statement.bindString(31, jsonArray.getJSONObject(j).optString("Begtx"));
-                                        if (jsonArray.getJSONObject(j).has("EtWcmWdDataTagtext")) {
-                                            try {
-                                                String EtWcmWdDataTagtext_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWdData().getResults().get(j).getEtWcmWdDataTagtext().getResults());
-                                                JSONArray jsonArray1 = new JSONArray(EtWcmWdDataTagtext_response_data);
-                                                if (jsonArray1.length() > 0) {
-                                                    String EtWcmWdDataTagtext_sql = "Insert into EtWcmWdDataTagtext (Aufnr, Wcnr, Objtype, FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
-                                                    SQLiteStatement EtWcmWdDataTagtext_statement = App_db.compileStatement(EtWcmWdDataTagtext_sql);
-                                                    EtWcmWdDataTagtext_statement.clearBindings();
-                                                    for (int k = 0; k < jsonArray1.length(); k++) {
-                                                        EtWcmWdDataTagtext_statement.bindString(1, jsonArray1.getJSONObject(k).optString("Aufnr"));
-                                                        EtWcmWdDataTagtext_statement.bindString(2, jsonArray1.getJSONObject(k).optString("Wcnr"));
-                                                        EtWcmWdDataTagtext_statement.bindString(3, jsonArray1.getJSONObject(k).optString("Objtype"));
-                                                        EtWcmWdDataTagtext_statement.bindString(4, jsonArray1.getJSONObject(k).optString("FormatCol"));
-                                                        EtWcmWdDataTagtext_statement.bindString(5, jsonArray1.getJSONObject(k).optString("TextLine"));
-                                                        EtWcmWdDataTagtext_statement.bindString(6, jsonArray1.getJSONObject(k).optString("Action"));
-                                                        EtWcmWdDataTagtext_statement.execute();
-                                                    }
-                                                }
-                                            } catch (Exception e) {
+                                    EtWcmWdData_statement.bindString(1, c_e.check_empty(eWD.getAufnr()));
+                                    EtWcmWdData_statement.bindString(2, c_e.check_empty(eWD.getObjart()));
+                                    EtWcmWdData_statement.bindString(3, c_e.check_empty(eWD.getWcnr()));
+                                    EtWcmWdData_statement.bindString(4, c_e.check_empty(eWD.getIwerk()));
+                                    EtWcmWdData_statement.bindString(5, c_e.check_empty(eWD.getObjtyp()));
+                                    EtWcmWdData_statement.bindString(6, c_e.check_empty(eWD.getUsage()));
+                                    EtWcmWdData_statement.bindString(7, c_e.check_empty(eWD.getUsagex()));
+                                    EtWcmWdData_statement.bindString(8, c_e.check_empty(eWD.getTrain()));
+                                    EtWcmWdData_statement.bindString(9, c_e.check_empty(eWD.getTrainx()));
+                                    EtWcmWdData_statement.bindString(10, c_e.check_empty(eWD.getAnlzu()));
+                                    EtWcmWdData_statement.bindString(11, c_e.check_empty(eWD.getAnlzux()));
+                                    EtWcmWdData_statement.bindString(12, c_e.check_empty(eWD.getEtape()));
+                                    EtWcmWdData_statement.bindString(13, c_e.check_empty(eWD.getEtapex()));
+                                    EtWcmWdData_statement.bindString(14, c_e.check_empty(eWD.getStxt()));
+                                    EtWcmWdData_statement.bindString(15, c_e.check_empty(eWD.getDatefr()));
+                                    EtWcmWdData_statement.bindString(16, c_e.check_empty(eWD.getTimefr()));
+                                    EtWcmWdData_statement.bindString(17, c_e.check_empty(eWD.getDateto()));
+                                    EtWcmWdData_statement.bindString(18, c_e.check_empty(eWD.getTimeto()));
+                                    EtWcmWdData_statement.bindString(19, c_e.check_empty(eWD.getPriok()));
+                                    EtWcmWdData_statement.bindString(20, c_e.check_empty(eWD.getPriokx()));
+                                    EtWcmWdData_statement.bindString(21, c_e.check_empty(eWD.getRctime()));
+                                    EtWcmWdData_statement.bindString(22, c_e.check_empty(eWD.getRcunit()));
+                                    EtWcmWdData_statement.bindString(23, c_e.check_empty(eWD.getObjnr()));
+                                    EtWcmWdData_statement.bindString(24, c_e.check_empty(eWD.getRefobj()));
+                                    EtWcmWdData_statement.bindString(25, c_e.check_empty(eWD.getCrea()));
+                                    EtWcmWdData_statement.bindString(26, c_e.check_empty(eWD.getPrep()));
+                                    EtWcmWdData_statement.bindString(27, c_e.check_empty(eWD.getComp()));
+                                    EtWcmWdData_statement.bindString(28, c_e.check_empty(eWD.getAppr()));
+                                    EtWcmWdData_statement.bindString(29, c_e.check_empty(eWD.getAction()));
+                                    EtWcmWdData_statement.bindString(30, c_e.check_empty(eWD.getBegru()));
+                                    EtWcmWdData_statement.bindString(31, c_e.check_empty(eWD.getBegtx()));
+
+                                    Orders_SER.EtWcmWdDataTagtext etWcmWdDataTagtext = eWD.getEtWcmWdDataTagtext();
+                                    if (etWcmWdDataTagtext != null) {
+                                        List<Orders_SER.EtWcmWdDataTagtext_Result> etWcmWdDataTagtextResults = etWcmWdDataTagtext.getResults();
+                                        if (etWcmWdDataTagtextResults != null && etWcmWdDataTagtextResults.size() > 0) {
+                                            for (Orders_SER.EtWcmWdDataTagtext_Result eWDT : etWcmWdDataTagtextResults) {
+                                                String EtWcmWdDataTagtext_sql = "Insert into EtWcmWdDataTagtext (Aufnr, Wcnr," +
+                                                        " Objtype, FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
+                                                SQLiteStatement EtWcmWdDataTagtext_statement = App_db.compileStatement(EtWcmWdDataTagtext_sql);
+                                                EtWcmWdDataTagtext_statement.clearBindings();
+                                                EtWcmWdDataTagtext_statement.bindString(1, c_e.check_empty(eWDT.getAufnr()));
+                                                EtWcmWdDataTagtext_statement.bindString(2, c_e.check_empty(eWDT.getWcnr()));
+                                                EtWcmWdDataTagtext_statement.bindString(3, c_e.check_empty(eWDT.getObjtype()));
+                                                EtWcmWdDataTagtext_statement.bindString(4, c_e.check_empty(eWDT.getFormatCol()));
+                                                EtWcmWdDataTagtext_statement.bindString(5, c_e.check_empty(eWDT.getTextLine()));
+                                                EtWcmWdDataTagtext_statement.bindString(6, c_e.check_empty(eWDT.getAction()));
+                                                EtWcmWdDataTagtext_statement.execute();
                                             }
                                         }
-                                        if (jsonArray.getJSONObject(j).has("EtWcmWdDataUntagtext")) {
-                                            try {
-                                                String EtWcmWdDataUntagtext_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWdData().getResults().get(j).getEtWcmWdDataUntagtext().getResults());
-                                                JSONArray jsonArray1 = new JSONArray(EtWcmWdDataUntagtext_response_data);
-                                                if (jsonArray1.length() > 0) {
-                                                    String EtWcmWdDataUntagtext_sql = "Insert into EtWcmWdDataUntagtext (Aufnr, Wcnr, Objtype, FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
-                                                    SQLiteStatement EtWcmWdDataUntagtext_statement = App_db.compileStatement(EtWcmWdDataUntagtext_sql);
-                                                    EtWcmWdDataUntagtext_statement.clearBindings();
-                                                    for (int k = 0; k < jsonArray1.length(); k++) {
-                                                        EtWcmWdDataUntagtext_statement.bindString(1, jsonArray1.getJSONObject(k).optString("Aufnr"));
-                                                        EtWcmWdDataUntagtext_statement.bindString(2, jsonArray1.getJSONObject(k).optString("Wcnr"));
-                                                        EtWcmWdDataUntagtext_statement.bindString(3, jsonArray1.getJSONObject(k).optString("Objtype"));
-                                                        EtWcmWdDataUntagtext_statement.bindString(4, jsonArray1.getJSONObject(k).optString("FormatCol"));
-                                                        EtWcmWdDataUntagtext_statement.bindString(5, jsonArray1.getJSONObject(k).optString("TextLine"));
-                                                        EtWcmWdDataUntagtext_statement.bindString(6, jsonArray1.getJSONObject(k).optString("Action"));
-                                                        EtWcmWdDataUntagtext_statement.execute();
-                                                    }
-                                                }
-                                            } catch (Exception e) {
-                                            }
-                                        }
-                                        EtWcmWdData_statement.execute();
                                     }
+
+                                    Orders_SER.EtWcmWdDataUntagtext etWcmWdDataUntagtext = eWD.getEtWcmWdDataUntagtext();
+                                    if (etWcmWdDataUntagtext != null) {
+                                        List<Orders_SER.EtWcmWdDataTagtext_Result> etWcmWdDataTagtextResults = etWcmWdDataUntagtext.getResults();
+                                        if (etWcmWdDataTagtextResults != null && etWcmWdDataTagtextResults.size() > 0) {
+                                            for (Orders_SER.EtWcmWdDataTagtext_Result eWDT : etWcmWdDataTagtextResults) {
+                                                String EtWcmWdDataUntagtext_sql = "Insert into EtWcmWdDataUntagtext (Aufnr, Wcnr, Objtype, " +
+                                                        "FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
+                                                SQLiteStatement EtWcmWdDataUntagtext_statement = App_db.compileStatement(EtWcmWdDataUntagtext_sql);
+                                                EtWcmWdDataUntagtext_statement.clearBindings();
+                                                EtWcmWdDataUntagtext_statement.bindString(1, c_e.check_empty(eWDT.getAufnr()));
+                                                EtWcmWdDataUntagtext_statement.bindString(2, c_e.check_empty(eWDT.getWcnr()));
+                                                EtWcmWdDataUntagtext_statement.bindString(3, c_e.check_empty(eWDT.getObjtype()));
+                                                EtWcmWdDataUntagtext_statement.bindString(4, c_e.check_empty(eWDT.getFormatCol()));
+                                                EtWcmWdDataUntagtext_statement.bindString(5, c_e.check_empty(eWDT.getTextLine()));
+                                                EtWcmWdDataUntagtext_statement.bindString(6, c_e.check_empty(eWDT.getAction()));
+                                                EtWcmWdDataUntagtext_statement.execute();
+                                            }
+                                        }
+                                    }
+                                    EtWcmWdData_statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
-                        if (jsonObject.has("EtWcmWdItemData")) {
-                            try {
-                                String EtWcmWdItemData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWdItemData().getResults());
-                                JSONArray jsonArray = new JSONArray(EtWcmWdItemData_response_data);
-                                if (jsonArray.length() > 0) {
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String EtWcmWdItemData_sql = "Insert into EtWcmWdItemData (Wcnr, Wcitm, Objnr, Itmtyp, Seq, Pred, Succ, Ccobj, Cctyp, Stxt, Tggrp, Tgstep, Tgproc, Tgtyp, Tgseq, Tgtxt, Unstep, Unproc, Untyp, Unseq, Untxt, Phblflg, Phbltyp, Phblnr, Tgflg, Tgform, Tgnr, Unform, Unnr, Control, Location, Refobj, Action, Btg, Etg, Bug, Eug) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                        SQLiteStatement EtWcmWdItemData_statement = App_db.compileStatement(EtWcmWdItemData_sql);
-                                        EtWcmWdItemData_statement.clearBindings();
-                                        EtWcmWdItemData_statement.bindString(1, jsonArray.getJSONObject(j).optString("Wcnr"));
-                                        EtWcmWdItemData_statement.bindString(2, jsonArray.getJSONObject(j).optString("Wcitm"));
-                                        EtWcmWdItemData_statement.bindString(3, jsonArray.getJSONObject(j).optString("Objnr"));
-                                        EtWcmWdItemData_statement.bindString(4, jsonArray.getJSONObject(j).optString("Itmtyp"));
-                                        EtWcmWdItemData_statement.bindString(5, jsonArray.getJSONObject(j).optString("Seq"));
-                                        EtWcmWdItemData_statement.bindString(6, jsonArray.getJSONObject(j).optString("Pred"));
-                                        EtWcmWdItemData_statement.bindString(7, jsonArray.getJSONObject(j).optString("Succ"));
-                                        EtWcmWdItemData_statement.bindString(8, jsonArray.getJSONObject(j).optString("Ccobj"));
-                                        EtWcmWdItemData_statement.bindString(9, jsonArray.getJSONObject(j).optString("Cctyp"));
-                                        EtWcmWdItemData_statement.bindString(10, jsonArray.getJSONObject(j).optString("Stxt"));
-                                        EtWcmWdItemData_statement.bindString(11, jsonArray.getJSONObject(j).optString("Tggrp"));
-                                        EtWcmWdItemData_statement.bindString(12, jsonArray.getJSONObject(j).optString("Tgstep"));
-                                        EtWcmWdItemData_statement.bindString(13, jsonArray.getJSONObject(j).optString("Tgproc"));
-                                        EtWcmWdItemData_statement.bindString(14, jsonArray.getJSONObject(j).optString("Tgtyp"));
-                                        EtWcmWdItemData_statement.bindString(15, jsonArray.getJSONObject(j).optString("Tgseq"));
-                                        EtWcmWdItemData_statement.bindString(16, jsonArray.getJSONObject(j).optString("Tgtxt"));
-                                        EtWcmWdItemData_statement.bindString(17, jsonArray.getJSONObject(j).optString("Unstep"));
-                                        EtWcmWdItemData_statement.bindString(18, jsonArray.getJSONObject(j).optString("Unproc"));
-                                        EtWcmWdItemData_statement.bindString(19, jsonArray.getJSONObject(j).optString("Untyp"));
-                                        EtWcmWdItemData_statement.bindString(20, jsonArray.getJSONObject(j).optString("Unseq"));
-                                        EtWcmWdItemData_statement.bindString(21, jsonArray.getJSONObject(j).optString("Untxt"));
-                                        EtWcmWdItemData_statement.bindString(22, jsonArray.getJSONObject(j).optString("Phblflg"));
-                                        EtWcmWdItemData_statement.bindString(23, jsonArray.getJSONObject(j).optString("Phbltyp"));
-                                        EtWcmWdItemData_statement.bindString(24, jsonArray.getJSONObject(j).optString("Phblnr"));
-                                        EtWcmWdItemData_statement.bindString(25, jsonArray.getJSONObject(j).optString("Tgflg"));
-                                        EtWcmWdItemData_statement.bindString(26, jsonArray.getJSONObject(j).optString("Tgform"));
-                                        EtWcmWdItemData_statement.bindString(27, jsonArray.getJSONObject(j).optString("Tgnr"));
-                                        EtWcmWdItemData_statement.bindString(28, jsonArray.getJSONObject(j).optString("Unform"));
-                                        EtWcmWdItemData_statement.bindString(29, jsonArray.getJSONObject(j).optString("Unnr"));
-                                        EtWcmWdItemData_statement.bindString(30, jsonArray.getJSONObject(j).optString("Control"));
-                                        EtWcmWdItemData_statement.bindString(31, jsonArray.getJSONObject(j).optString("Location"));
-                                        EtWcmWdItemData_statement.bindString(32, jsonArray.getJSONObject(j).optString("Refobj"));
-                                        EtWcmWdItemData_statement.bindString(33, jsonArray.getJSONObject(j).optString("Action"));
-                                        EtWcmWdItemData_statement.bindString(34, jsonArray.getJSONObject(j).optString("Btg"));
-                                        EtWcmWdItemData_statement.bindString(35, jsonArray.getJSONObject(j).optString("Etg"));
-                                        EtWcmWdItemData_statement.bindString(36, jsonArray.getJSONObject(j).optString("Bug"));
-                                        EtWcmWdItemData_statement.bindString(37, jsonArray.getJSONObject(j).optString("Eug"));
-                                        EtWcmWdItemData_statement.execute();
-                                    }
+                        /*EtWcmWdItemData*/
+                        Orders_SER.EtWcmWdItemData etWcmWdItemData = results.get(0).getEtWcmWdItemData();
+                        if (etWcmWdItemData != null) {
+                            List<Orders_SER.EtWcmWdItemData_Result> etWcmWdItemDataResults = etWcmWdItemData.getResults();
+                            if (etWcmWdItemDataResults != null && etWcmWdItemDataResults.size() > 0) {
+                                for (Orders_SER.EtWcmWdItemData_Result eWDI : etWcmWdItemDataResults) {
+                                    String EtWcmWdItemData_sql = "Insert into EtWcmWdItemData (Wcnr, Wcitm, Objnr, " +
+                                            "Itmtyp, Seq, Pred, Succ, Ccobj, Cctyp, Stxt, Tggrp, Tgstep, Tgproc, " +
+                                            "Tgtyp, Tgseq, Tgtxt, Unstep, Unproc, Untyp, Unseq, Untxt, Phblflg, " +
+                                            "Phbltyp, Phblnr, Tgflg, Tgform, Tgnr, Unform, Unnr, Control, Location, " +
+                                            "Refobj, Action, Btg, Etg, Bug, Eug) values(?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                            "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                    SQLiteStatement EtWcmWdItemData_statement = App_db.compileStatement(EtWcmWdItemData_sql);
+                                    EtWcmWdItemData_statement.clearBindings();
+                                    EtWcmWdItemData_statement.bindString(1, c_e.check_empty(eWDI.getWcnr()));
+                                    EtWcmWdItemData_statement.bindString(2, c_e.check_empty(eWDI.getWcitm()));
+                                    EtWcmWdItemData_statement.bindString(3, c_e.check_empty(eWDI.getObjnr()));
+                                    EtWcmWdItemData_statement.bindString(4, c_e.check_empty(eWDI.getItmtyp()));
+                                    EtWcmWdItemData_statement.bindString(5, c_e.check_empty(eWDI.getSeq()));
+                                    EtWcmWdItemData_statement.bindString(6, c_e.check_empty(eWDI.getPred()));
+                                    EtWcmWdItemData_statement.bindString(7, c_e.check_empty(eWDI.getSucc()));
+                                    EtWcmWdItemData_statement.bindString(8, c_e.check_empty(eWDI.getCcobj()));
+                                    EtWcmWdItemData_statement.bindString(9, c_e.check_empty(eWDI.getCctyp()));
+                                    EtWcmWdItemData_statement.bindString(10, c_e.check_empty(eWDI.getStxt()));
+                                    EtWcmWdItemData_statement.bindString(11, c_e.check_empty(eWDI.getTggrp()));
+                                    EtWcmWdItemData_statement.bindString(12, c_e.check_empty(eWDI.getTgstep()));
+                                    EtWcmWdItemData_statement.bindString(13, c_e.check_empty(eWDI.getTgproc()));
+                                    EtWcmWdItemData_statement.bindString(14, c_e.check_empty(eWDI.getTgtyp()));
+                                    EtWcmWdItemData_statement.bindString(15, c_e.check_empty(eWDI.getTgseq()));
+                                    EtWcmWdItemData_statement.bindString(16, c_e.check_empty(eWDI.getTgtxt()));
+                                    EtWcmWdItemData_statement.bindString(17, c_e.check_empty(eWDI.getUnstep()));
+                                    EtWcmWdItemData_statement.bindString(18, c_e.check_empty(eWDI.getUnproc()));
+                                    EtWcmWdItemData_statement.bindString(19, c_e.check_empty(eWDI.getUntyp()));
+                                    EtWcmWdItemData_statement.bindString(20, c_e.check_empty(eWDI.getUnseq()));
+                                    EtWcmWdItemData_statement.bindString(21, c_e.check_empty(eWDI.getUntxt()));
+                                    EtWcmWdItemData_statement.bindString(22, c_e.check_empty(eWDI.getPhblflg()));
+                                    EtWcmWdItemData_statement.bindString(23, c_e.check_empty(eWDI.getPhbltyp()));
+                                    EtWcmWdItemData_statement.bindString(24, c_e.check_empty(eWDI.getPhblnr()));
+                                    EtWcmWdItemData_statement.bindString(25, c_e.check_empty(eWDI.getTgflg()));
+                                    EtWcmWdItemData_statement.bindString(26, c_e.check_empty(eWDI.getTgform()));
+                                    EtWcmWdItemData_statement.bindString(27, c_e.check_empty(eWDI.getTgnr()));
+                                    EtWcmWdItemData_statement.bindString(28, c_e.check_empty(eWDI.getUnform()));
+                                    EtWcmWdItemData_statement.bindString(29, c_e.check_empty(eWDI.getUnnr()));
+                                    EtWcmWdItemData_statement.bindString(30, c_e.check_empty(eWDI.getControl()));
+                                    EtWcmWdItemData_statement.bindString(31, c_e.check_empty(eWDI.getLocation()));
+                                    EtWcmWdItemData_statement.bindString(32, c_e.check_empty(eWDI.getRefobj()));
+                                    EtWcmWdItemData_statement.bindString(33, c_e.check_empty(eWDI.getAction()));
+                                    EtWcmWdItemData_statement.bindString(34, c_e.check_empty(eWDI.getBtg()));
+                                    EtWcmWdItemData_statement.bindString(35, c_e.check_empty(eWDI.getEtg()));
+                                    EtWcmWdItemData_statement.bindString(36, c_e.check_empty(eWDI.getBug()));
+                                    EtWcmWdItemData_statement.bindString(37, c_e.check_empty(eWDI.getEug()));
+                                    EtWcmWdItemData_statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
-                        if (jsonObject.has("EtWcmWcagns")) {
-                            try {
-                                String EtWcmWcagns_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWcagns().getResults());
-                                JSONArray jsonArray = new JSONArray(EtWcmWcagns_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtWcmWcagns_sql = "Insert into EtWcmWcagns (UUID, Aufnr, Objnr, Counter, Objart, Objtyp, Pmsog, Gntxt, Geniakt, Genvname, Action, Werks, Crname, Hilvl, Procflg, Direction, Copyflg, Mandflg, Deacflg, Status, Asgnflg, Autoflg, Agent, Valflg, Wcmuse, Gendatum, Gentime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtWcmWcagns_statement = App_db.compileStatement(EtWcmWcagns_sql);
-                                    EtWcmWcagns_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtWcmWcagns_statement.bindString(1, uuid);
-                                            EtWcmWcagns_statement.bindString(2, Aufnr);
-                                            EtWcmWcagns_statement.bindString(3, jsonArray.getJSONObject(j).optString("Objnr"));
-                                            EtWcmWcagns_statement.bindString(4, jsonArray.getJSONObject(j).optString("Counter"));
-                                            EtWcmWcagns_statement.bindString(5, jsonArray.getJSONObject(j).optString("Objart"));
-                                            EtWcmWcagns_statement.bindString(6, jsonArray.getJSONObject(j).optString("Objtyp"));
-                                            EtWcmWcagns_statement.bindString(7, jsonArray.getJSONObject(j).optString("Pmsog"));
-                                            EtWcmWcagns_statement.bindString(8, jsonArray.getJSONObject(j).optString("Gntxt"));
-                                            EtWcmWcagns_statement.bindString(9, jsonArray.getJSONObject(j).optString("Geniakt"));
-                                            EtWcmWcagns_statement.bindString(10, jsonArray.getJSONObject(j).optString("Genvname"));
-                                            EtWcmWcagns_statement.bindString(11, jsonArray.getJSONObject(j).optString("Action"));
-                                            EtWcmWcagns_statement.bindString(12, jsonArray.getJSONObject(j).optString("Werks"));
-                                            EtWcmWcagns_statement.bindString(13, jsonArray.getJSONObject(j).optString("Crname"));
-                                            EtWcmWcagns_statement.bindString(14, jsonArray.getJSONObject(j).optString("Hilvl"));
-                                            EtWcmWcagns_statement.bindString(15, jsonArray.getJSONObject(j).optString("Procflg"));
-                                            EtWcmWcagns_statement.bindString(16, jsonArray.getJSONObject(j).optString("Direction"));
-                                            EtWcmWcagns_statement.bindString(17, jsonArray.getJSONObject(j).optString("Copyflg"));
-                                            EtWcmWcagns_statement.bindString(18, jsonArray.getJSONObject(j).optString("Mandflg"));
-                                            EtWcmWcagns_statement.bindString(19, jsonArray.getJSONObject(j).optString("Deacflg"));
-                                            EtWcmWcagns_statement.bindString(20, jsonArray.getJSONObject(j).optString("Status"));
-                                            EtWcmWcagns_statement.bindString(21, jsonArray.getJSONObject(j).optString("Asgnflg"));
-                                            EtWcmWcagns_statement.bindString(22, jsonArray.getJSONObject(j).optString("Autoflg"));
-                                            EtWcmWcagns_statement.bindString(23, jsonArray.getJSONObject(j).optString("Agent"));
-                                            EtWcmWcagns_statement.bindString(24, jsonArray.getJSONObject(j).optString("Valflg"));
-                                            EtWcmWcagns_statement.bindString(25, jsonArray.getJSONObject(j).optString("Wcmuse"));
-                                            EtWcmWcagns_statement.bindString(26, jsonArray.getJSONObject(j).optString("Gendatum"));
-                                            EtWcmWcagns_statement.bindString(27, jsonArray.getJSONObject(j).optString("Gentime"));
+                        /*EtWcmWcagns*/
+                        Orders_SER.EtWcmWcagns etWcmWcagns = results.get(0).getEtWcmWcagns();
+                        if (etWcmWcagns != null) {
+                            List<Orders_SER.EtWcmWcagns_Result> etWcmWcagnsResults = etWcmWcagns.getResults();
+                            if (etWcmWcagnsResults != null && etWcmWcagnsResults.size() > 0) {
+                                for (Orders_SER.EtWcmWcagns_Result eWCG : etWcmWcagnsResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eWCG.getAufnr())) {
+                                            String EtWcmWcagns_sql = "Insert into EtWcmWcagns (UUID, Aufnr, Objnr, " +
+                                                    "Counter, Objart, Objtyp, Pmsog, Gntxt, Geniakt, Genvname, " +
+                                                    "Action, Werks, Crname, Hilvl, Procflg, Direction, Copyflg, " +
+                                                    "Mandflg, Deacflg, Status, Asgnflg, Autoflg, Agent, Valflg," +
+                                                    " Wcmuse, Gendatum, Gentime)" +
+                                                    " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtWcmWcagns_statement = App_db.compileStatement(EtWcmWcagns_sql);
+                                            EtWcmWcagns_statement.clearBindings();
+                                            EtWcmWcagns_statement.bindString(1, uD.get("UUID"));
+                                            EtWcmWcagns_statement.bindString(2, c_e.check_empty(eWCG.getAufnr()));
+                                            EtWcmWcagns_statement.bindString(3, c_e.check_empty(eWCG.getObjnr()));
+                                            EtWcmWcagns_statement.bindString(4, c_e.check_empty(eWCG.getCounter()));
+                                            EtWcmWcagns_statement.bindString(5, c_e.check_empty(eWCG.getObjart()));
+                                            EtWcmWcagns_statement.bindString(6, c_e.check_empty(eWCG.getObjtyp()));
+                                            EtWcmWcagns_statement.bindString(7, c_e.check_empty(eWCG.getPmsog()));
+                                            EtWcmWcagns_statement.bindString(8, c_e.check_empty(eWCG.getGntxt()));
+                                            EtWcmWcagns_statement.bindString(9, c_e.check_empty(eWCG.getGeniakt()));
+                                            EtWcmWcagns_statement.bindString(10, c_e.check_empty(eWCG.getGenvname()));
+                                            EtWcmWcagns_statement.bindString(11, c_e.check_empty(eWCG.getAction()));
+                                            EtWcmWcagns_statement.bindString(12, c_e.check_empty(eWCG.getWerks()));
+                                            EtWcmWcagns_statement.bindString(13, c_e.check_empty(eWCG.getCrname()));
+                                            EtWcmWcagns_statement.bindString(14, c_e.check_empty(String.valueOf(eWCG.getHilvl())));
+                                            EtWcmWcagns_statement.bindString(15, c_e.check_empty(eWCG.getProcflg()));
+                                            EtWcmWcagns_statement.bindString(16, c_e.check_empty(eWCG.getDirection()));
+                                            EtWcmWcagns_statement.bindString(17, c_e.check_empty(eWCG.getCopyflg()));
+                                            EtWcmWcagns_statement.bindString(18, c_e.check_empty(eWCG.getMandflg()));
+                                            EtWcmWcagns_statement.bindString(19, c_e.check_empty(eWCG.getDeacflg()));
+                                            EtWcmWcagns_statement.bindString(20, c_e.check_empty(eWCG.getStatus()));
+                                            EtWcmWcagns_statement.bindString(21, c_e.check_empty(eWCG.getAsgnflg()));
+                                            EtWcmWcagns_statement.bindString(22, c_e.check_empty(eWCG.getAutoflg()));
+                                            EtWcmWcagns_statement.bindString(23, c_e.check_empty(eWCG.getAgent()));
+                                            EtWcmWcagns_statement.bindString(24, c_e.check_empty(eWCG.getValflg()));
+                                            EtWcmWcagns_statement.bindString(25, c_e.check_empty(eWCG.getWcmuse()));
+                                            EtWcmWcagns_statement.bindString(26, c_e.check_empty(eWCG.getGendatum()));
+                                            EtWcmWcagns_statement.bindString(27, c_e.check_empty(eWCG.getGentime()));
                                             EtWcmWcagns_statement.execute();
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
-                        if (jsonObject.has("EtOrderComponents")) {
-                            try {
-                                String EtOrderComponents_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtOrderComponents().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderComponents_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtOrderComponents_sql = "Insert into EtOrderComponents (UUID, Aufnr, Vornr, Uvorn, Rsnum, Rspos, Matnr, Werks, Lgort, Posnr, Bdmng, Meins, Postp, MatnrText, WerksText, LgortText, PostpText, Usr01, Usr02, Usr03, Usr04, Usr05, Action, Wempf, Ablad) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtOrderComponents_statement = App_db.compileStatement(EtOrderComponents_sql);
-                                    EtOrderComponents_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtOrderComponents_statement.bindString(1, uuid);
-                                            EtOrderComponents_statement.bindString(2, Aufnr);
-                                            EtOrderComponents_statement.bindString(3, jsonArray.getJSONObject(j).optString("Vornr"));
-                                            EtOrderComponents_statement.bindString(4, jsonArray.getJSONObject(j).optString("Uvorn"));
-                                            EtOrderComponents_statement.bindString(5, jsonArray.getJSONObject(j).optString("Rsnum"));
-                                            EtOrderComponents_statement.bindString(6, jsonArray.getJSONObject(j).optString("Rspos"));
-                                            EtOrderComponents_statement.bindString(7, jsonArray.getJSONObject(j).optString("Matnr"));
-                                            EtOrderComponents_statement.bindString(8, jsonArray.getJSONObject(j).optString("Werks"));
-                                            EtOrderComponents_statement.bindString(9, jsonArray.getJSONObject(j).optString("Lgort"));
-                                            EtOrderComponents_statement.bindString(10, jsonArray.getJSONObject(j).optString("Posnr"));
-                                            EtOrderComponents_statement.bindString(11, jsonArray.getJSONObject(j).optString("Bdmng"));
-                                            EtOrderComponents_statement.bindString(12, jsonArray.getJSONObject(j).optString("Meins"));
-                                            EtOrderComponents_statement.bindString(13, jsonArray.getJSONObject(j).optString("Postp"));
-                                            EtOrderComponents_statement.bindString(14, jsonArray.getJSONObject(j).optString("MatnrText"));
-                                            EtOrderComponents_statement.bindString(15, jsonArray.getJSONObject(j).optString("WerksText"));
-                                            EtOrderComponents_statement.bindString(16, jsonArray.getJSONObject(j).optString("LgortText"));
-                                            EtOrderComponents_statement.bindString(17, jsonArray.getJSONObject(j).optString("PostpText"));
-                                            EtOrderComponents_statement.bindString(18, jsonArray.getJSONObject(j).optString("Usr01"));
-                                            EtOrderComponents_statement.bindString(19, jsonArray.getJSONObject(j).optString("Usr02"));
-                                            EtOrderComponents_statement.bindString(20, jsonArray.getJSONObject(j).optString("Usr03"));
-                                            EtOrderComponents_statement.bindString(21, jsonArray.getJSONObject(j).optString("Usr04"));
-                                            EtOrderComponents_statement.bindString(22, jsonArray.getJSONObject(j).optString("Usr05"));
-                                            EtOrderComponents_statement.bindString(23, jsonArray.getJSONObject(j).optString("Action"));
-                                            EtOrderComponents_statement.bindString(24, jsonArray.getJSONObject(j).optString("Wempf"));
-                                            EtOrderComponents_statement.bindString(25, jsonArray.getJSONObject(j).optString("Ablad"));
+                        /*EtOrderComponenets*/
+                        Orders_SER.EtOrderComponents etOrderComponents = results.get(0).getEtOrderComponents();
+                        if (etOrderComponents != null) {
+                            List<Orders_SER.EtOrderComponents_Result> etOrderComponentsResults = etOrderComponents.getResults();
+                            if (etOrderComponentsResults != null && etOrderComponentsResults.size() > 0) {
+                                for (Orders_SER.EtOrderComponents_Result eOC : etOrderComponentsResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eOC.getAufnr())) {
+                                            String EtOrderComponents_sql = "Insert into EtOrderComponents (UUID, Aufnr, Vornr," +
+                                                    " Uvorn, Rsnum, Rspos, Matnr, Werks, Lgort, Posnr, Bdmng, Meins, Postp, " +
+                                                    "MatnrText, WerksText, LgortText, PostpText, Usr01, Usr02, Usr03, Usr04, " +
+                                                    "Usr05, Action, Wempf, Ablad) " +
+                                                    "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtOrderComponents_statement = App_db.compileStatement(EtOrderComponents_sql);
+                                            EtOrderComponents_statement.clearBindings();
+                                            EtOrderComponents_statement.bindString(1, uD.get("UUID"));
+                                            EtOrderComponents_statement.bindString(2, c_e.check_empty(eOC.getAufnr()));
+                                            EtOrderComponents_statement.bindString(3, c_e.check_empty(eOC.getVornr()));
+                                            EtOrderComponents_statement.bindString(4, c_e.check_empty(eOC.getUvorn()));
+                                            EtOrderComponents_statement.bindString(5, c_e.check_empty(eOC.getRsnum()));
+                                            EtOrderComponents_statement.bindString(6, c_e.check_empty(eOC.getRspos()));
+                                            EtOrderComponents_statement.bindString(7, c_e.check_empty(eOC.getMatnr()));
+                                            EtOrderComponents_statement.bindString(8, c_e.check_empty(eOC.getWerks()));
+                                            EtOrderComponents_statement.bindString(9, c_e.check_empty(eOC.getLgort()));
+                                            EtOrderComponents_statement.bindString(10, c_e.check_empty(eOC.getPosnr()));
+                                            EtOrderComponents_statement.bindString(11, c_e.check_empty(eOC.getBdmng()));
+                                            EtOrderComponents_statement.bindString(12, c_e.check_empty(eOC.getMeins()));
+                                            EtOrderComponents_statement.bindString(13, c_e.check_empty(eOC.getPostp()));
+                                            EtOrderComponents_statement.bindString(14, c_e.check_empty(eOC.getMatnrText()));
+                                            EtOrderComponents_statement.bindString(15, c_e.check_empty(eOC.getWerksText()));
+                                            EtOrderComponents_statement.bindString(16, c_e.check_empty(eOC.getLgortText()));
+                                            EtOrderComponents_statement.bindString(17, c_e.check_empty(eOC.getPostpText()));
+                                            EtOrderComponents_statement.bindString(18, c_e.check_empty(eOC.getUsr01()));
+                                            EtOrderComponents_statement.bindString(19, c_e.check_empty(eOC.getUsr02()));
+                                            EtOrderComponents_statement.bindString(20, c_e.check_empty(eOC.getUsr03()));
+                                            EtOrderComponents_statement.bindString(21, c_e.check_empty(eOC.getUsr04()));
+                                            EtOrderComponents_statement.bindString(22, c_e.check_empty(eOC.getUsr05()));
+                                            EtOrderComponents_statement.bindString(23, c_e.check_empty(eOC.getAction()));
+                                            EtOrderComponents_statement.bindString(24, c_e.check_empty(eOC.getWempf()));
+                                            EtOrderComponents_statement.bindString(25, c_e.check_empty(eOC.getAblad()));
                                             EtOrderComponents_statement.execute();
 
-
-                                            try {
-                                                String Fields = jsonArray.getJSONObject(j).optString("EtOrderComponentsFields");
-                                                JSONObject Fields_jsonObject = new JSONObject(Fields);
-                                                String Fields_jsonObject_results = Fields_jsonObject.optString("results");
-                                                JSONArray EtNotifHeader_Fields_jsonArray = new JSONArray(Fields_jsonObject_results);
-                                                if (EtNotifHeader_Fields_jsonArray.length() > 0) {
-                                                    String sql1 = "Insert into DUE_ORDERS_EtOrderComponents_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID, PartID) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            Orders_SER.EtOrderHeaderFields etOrderComponentFields = eOC.getEtOrderComponentsFields();
+                                            if (etOrderComponentFields != null) {
+                                                List<Orders_SER.EtOrderHeaderFields_Result> etOrderComponentFieldResults = etOrderComponentFields.getResults();
+                                                if (etOrderComponentFieldResults != null && etOrderComponentFieldResults.size() > 0) {
+                                                    String sql1 = "Insert into DUE_ORDERS_EtOrderComponents_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem," +
+                                                            " Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID, PartID)" +
+                                                            " values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                                     SQLiteStatement statement1 = App_db.compileStatement(sql1);
                                                     statement1.clearBindings();
-                                                    for (int k = 0; k < EtNotifHeader_Fields_jsonArray.length(); k++) {
-                                                        statement1.bindString(1, uuid);
-                                                        statement1.bindString(2, Aufnr);
-                                                        statement1.bindString(3, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Zdoctype"));
-                                                        statement1.bindString(4, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("ZdoctypeItem"));
-                                                        statement1.bindString(5, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Tabname"));
-                                                        statement1.bindString(6, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Fieldname"));
-                                                        statement1.bindString(7, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Value"));
-                                                        statement1.bindString(8, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Flabel"));
-                                                        statement1.bindString(9, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Sequence"));
-                                                        statement1.bindString(10, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Length"));
-                                                        statement1.bindString(11, EtNotifHeader_Fields_jsonArray.getJSONObject(k).optString("Datatype"));
-                                                        statement1.bindString(12, jsonArray.getJSONObject(j).optString("Vornr"));
-                                                        statement1.bindString(13, jsonArray.getJSONObject(j).optString("Posnr"));
+                                                    for (Orders_SER.EtOrderHeaderFields_Result eCF : etOrderComponentFieldResults) {
+                                                        statement1.bindString(1, uD.get("UUID"));
+                                                        statement1.bindString(2, c_e.check_empty(eOC.getAufnr()));
+                                                        statement1.bindString(3, c_e.check_empty(eCF.getZdoctype()));
+                                                        statement1.bindString(4, c_e.check_empty(eCF.getZdoctypeItem()));
+                                                        statement1.bindString(5, c_e.check_empty(eCF.getTabname()));
+                                                        statement1.bindString(6, c_e.check_empty(eCF.getFieldname()));
+                                                        statement1.bindString(7, c_e.check_empty(eCF.getValue()));
+                                                        statement1.bindString(8, c_e.check_empty(eCF.getFlabel()));
+                                                        statement1.bindString(9, c_e.check_empty(eCF.getSequence()));
+                                                        statement1.bindString(10, c_e.check_empty(eCF.getLength()));
+                                                        statement1.bindString(11, c_e.check_empty(eCF.getDatatype()));
+                                                        statement1.bindString(12, c_e.check_empty(eOC.getVornr()));
+                                                        statement1.bindString(13, c_e.check_empty(eOC.getPosnr()));
                                                         statement1.execute();
                                                     }
                                                 }
-                                            } catch (Exception e) {
                                             }
-
-
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
 
-                        /*Reading and Inserting Data into Database Table for EtImrg*/
-                        if (jsonObject.has("EtImrg")) {
-                            try {
-                                String EtOrderComponents_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtImrg().getResults());
-                                JSONArray jsonArray = new JSONArray(EtOrderComponents_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String EtImrg_sql = "Insert into Orders_EtImrg (UUID,Qmnum, Aufnr, Vornr, Mdocm, Point, Mpobj, Mpobt, Psort,Pttxt, Atinn, Idate, Itime, Mdtxt,Readr,Atbez,Msehi,Msehl,Readc,Desic,Prest,Docaf, Codct, Codgr, Vlcod, Action, Equnr) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtImrg_statement = App_db.compileStatement(EtImrg_sql);
-                                    EtImrg_statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String uuid = "";
-                                        String Aufnr = checkempty.check_empty(jsonArray.getJSONObject(j).optString("Aufnr"));
-                                        for (int k = 0; k < orders_uuid_list.size(); k++) {
-                                            String old_aufnr = orders_uuid_list.get(k).get("Aufnr");
-                                            if (Aufnr.equals(old_aufnr)) {
-                                                uuid = orders_uuid_list.get(k).get("UUID");
-                                            }
-                                        }
-                                        if (uuid != null && !uuid.equals("")) {
-                                            EtImrg_statement.bindString(1, uuid);
-                                            EtImrg_statement.bindString(2, jsonArray.getJSONObject(j).optString("Qmnum"));
-                                            EtImrg_statement.bindString(3, jsonArray.getJSONObject(j).optString("Aufnr"));
-                                            EtImrg_statement.bindString(4, jsonArray.getJSONObject(j).optString("Vornr"));
-                                            EtImrg_statement.bindString(5, jsonArray.getJSONObject(j).optString("Mdocm"));
-                                            EtImrg_statement.bindString(6, jsonArray.getJSONObject(j).optString("Point"));
-                                            EtImrg_statement.bindString(7, jsonArray.getJSONObject(j).optString("Mpobj"));
-                                            EtImrg_statement.bindString(8, jsonArray.getJSONObject(j).optString("Mpobt"));
-                                            EtImrg_statement.bindString(9, jsonArray.getJSONObject(j).optString("Psort"));
-                                            EtImrg_statement.bindString(10, jsonArray.getJSONObject(j).optString("Pttxt"));
-                                            EtImrg_statement.bindString(11, jsonArray.getJSONObject(j).optString("Atinn"));
-                                            EtImrg_statement.bindString(12, jsonArray.getJSONObject(j).optString("Idate"));
-                                            EtImrg_statement.bindString(13, jsonArray.getJSONObject(j).optString("Itime"));
-                                            EtImrg_statement.bindString(14, jsonArray.getJSONObject(j).optString("Mdtxt"));
-                                            EtImrg_statement.bindString(15, jsonArray.getJSONObject(j).optString("Readr"));
-                                            EtImrg_statement.bindString(16, jsonArray.getJSONObject(j).optString("Atbez"));
-                                            EtImrg_statement.bindString(17, jsonArray.getJSONObject(j).optString("Msehi"));
-                                            EtImrg_statement.bindString(18, jsonArray.getJSONObject(j).optString("Msehl"));
-                                            EtImrg_statement.bindString(19, jsonArray.getJSONObject(j).optString("Readc"));
-                                            EtImrg_statement.bindString(20, jsonArray.getJSONObject(j).optString("Desic"));
-                                            EtImrg_statement.bindString(21, jsonArray.getJSONObject(j).optString("Prest"));
-                                            EtImrg_statement.bindString(22, jsonArray.getJSONObject(j).optString("Docaf"));
-                                            EtImrg_statement.bindString(23, jsonArray.getJSONObject(j).optString("Codct"));
-                                            EtImrg_statement.bindString(24, jsonArray.getJSONObject(j).optString("Codgr"));
-                                            EtImrg_statement.bindString(25, jsonArray.getJSONObject(j).optString("Vlcod"));
-                                            EtImrg_statement.bindString(26, jsonArray.getJSONObject(j).optString("Action"));
-                                            EtImrg_statement.bindString(27, jsonArray.getJSONObject(j).optString("Equnr"));
+                        /*EtImrg*/
+                        Orders_SER.EtImrg etImrg = results.get(0).getEtImrg();
+                        if (etImrg != null) {
+                            List<Orders_SER.EtImrg_Result> etImrgResults = etImrg.getResults();
+                            if (etImrgResults != null && etImrgResults.size() > 0) {
+                                for (Orders_SER.EtImrg_Result eIM : etImrgResults) {
+                                    for (HashMap<String, String> uD : orders_uuid_list) {
+                                        if (uD.get("Aufnr").equals(eIM.getAufnr())) {
+                                            String EtImrg_sql = "Insert into Orders_EtImrg (UUID,Qmnum, Aufnr, Vornr, " +
+                                                    "Mdocm, Point, Mpobj, Mpobt, Psort,Pttxt, Atinn, Idate, Itime, " +
+                                                    "Mdtxt,Readr,Atbez,Msehi,Msehl,Readc,Desic,Prest,Docaf, Codct, " +
+                                                    "Codgr, Vlcod, Action, Equnr) " +
+                                                    "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtImrg_statement = App_db.compileStatement(EtImrg_sql);
+                                            EtImrg_statement.bindString(1, uD.get("UUID"));
+                                            EtImrg_statement.bindString(2, c_e.check_empty(eIM.getQmnum()));
+                                            EtImrg_statement.bindString(3, c_e.check_empty(eIM.getAufnr()));
+                                            EtImrg_statement.bindString(4, c_e.check_empty(eIM.getVornr()));
+                                            EtImrg_statement.bindString(5, c_e.check_empty(eIM.getMdocm()));
+                                            EtImrg_statement.bindString(6, c_e.check_empty(eIM.getPoint()));
+                                            EtImrg_statement.bindString(7, c_e.check_empty(eIM.getMpobj()));
+                                            EtImrg_statement.bindString(8, c_e.check_empty(eIM.getMpobt()));
+                                            EtImrg_statement.bindString(9, c_e.check_empty(eIM.getPsort()));
+                                            EtImrg_statement.bindString(10, c_e.check_empty(eIM.getPttxt()));
+                                            EtImrg_statement.bindString(11, c_e.check_empty(eIM.getAtinn()));
+                                            EtImrg_statement.bindString(12, c_e.check_empty(eIM.getIdate()));
+                                            EtImrg_statement.bindString(13, c_e.check_empty(eIM.getItime()));
+                                            EtImrg_statement.bindString(14, c_e.check_empty(eIM.getMdtxt()));
+                                            EtImrg_statement.bindString(15, c_e.check_empty(eIM.getReadr()));
+                                            EtImrg_statement.bindString(16, c_e.check_empty(eIM.getAtbez()));
+                                            EtImrg_statement.bindString(17, c_e.check_empty(eIM.getMsehi()));
+                                            EtImrg_statement.bindString(18, c_e.check_empty(eIM.getMsehl()));
+                                            EtImrg_statement.bindString(19, c_e.check_empty(eIM.getReadc()));
+                                            EtImrg_statement.bindString(20, c_e.check_empty(eIM.getDesic()));
+                                            EtImrg_statement.bindString(21, c_e.check_empty(eIM.getPrest()));
+                                            EtImrg_statement.bindString(22, c_e.check_empty(eIM.getDocaf()));
+                                            EtImrg_statement.bindString(23, c_e.check_empty(eIM.getCodct()));
+                                            EtImrg_statement.bindString(24, c_e.check_empty(eIM.getCodgr()));
+                                            EtImrg_statement.bindString(25, c_e.check_empty(eIM.getVlcod()));
+                                            EtImrg_statement.bindString(26, c_e.check_empty(eIM.getAction()));
+                                            EtImrg_statement.bindString(27, c_e.check_empty(eIM.getEqunr()));
                                             EtImrg_statement.execute();
                                         }
                                     }
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtImrg*/
-
-
                     }
-                    /*Reading Data by using FOR Loop*/
-
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
                     Get_Response = "success";
                 }
-            } else {
             }
         } catch (Exception ex) {
             Get_Response = "exception";
-        } finally {
         }
         return Get_Response;
     }
-
 }

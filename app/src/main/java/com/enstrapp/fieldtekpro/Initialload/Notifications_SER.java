@@ -2095,6 +2095,14 @@ public class Notifications_SER {
             EndTime = endTime;
         }
 
+        public CustomFields getEtCustomFields() {
+            return etCustomFields;
+        }
+
+        public void setEtCustomFields(CustomFields etCustomFields) {
+            this.etCustomFields = etCustomFields;
+        }
+
         @SerializedName("Qmnum")
         @Expose
         private String qmnum;

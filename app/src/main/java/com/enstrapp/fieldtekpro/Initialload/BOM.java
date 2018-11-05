@@ -12,12 +12,10 @@ import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -32,11 +30,13 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class BOM {
 
-    private static String password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
+    private static String password = "", url_link = "", username = "", device_serial_number = "",
+            device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
     private static SharedPreferences.Editor FieldTekPro_SharedPrefeditor;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
+    private static Check_Empty c_e = new Check_Empty();
 
     /* BOM_RESERVE_HEADER Table and Fields Names */
     private static final String TABLE_BOM_RESERVE_HEADER = "BOM_RESERVE_HEADER";
@@ -94,7 +94,8 @@ public class BOM {
             if (transmit_type.equals("LOAD")) {
                 /* Creating GET_LIST_OF_EQBOMS_EtBomHeader Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_LIST_OF_EQBOMS_EtBomHeader);
-                String CREATE_GET_LIST_OF_EQBOMS_EtBomHeader_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LIST_OF_EQBOMS_EtBomHeader + ""
+                String CREATE_GET_LIST_OF_EQBOMS_EtBomHeader_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_LIST_OF_EQBOMS_EtBomHeader + ""
                         + "( "
                         + KEY_GET_LIST_OF_EQBOMS_EtBomHeader_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_LIST_OF_EQBOMS_EtBomHeader_Bom + " TEXT,"
@@ -106,7 +107,8 @@ public class BOM {
 
                 /* Creating GET_LIST_OF_EQBOMS_EtBomItem Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_LIST_OF_EQBOMS_EtBomItem);
-                String CREATE_GET_LIST_OF_EQBOMS_EtBomItem_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LIST_OF_EQBOMS_EtBomItem + ""
+                String CREATE_GET_LIST_OF_EQBOMS_EtBomItem_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_LIST_OF_EQBOMS_EtBomItem + ""
                         + "( "
                         + KEY_GET_LIST_OF_EQBOMS_EtBomItem_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_LIST_OF_EQBOMS_EtBomItem_Bom + " TEXT,"
@@ -121,7 +123,8 @@ public class BOM {
 
                 /* Creating GET_STOCK_DATA Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_STOCK_DATA);
-                String CREATE_GET_STOCK_DATA_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_STOCK_DATA + ""
+                String CREATE_GET_STOCK_DATA_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_GET_STOCK_DATA + ""
                         + "( "
                         + KEY_GET_STOCK_DATA_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_STOCK_DATA_Matnr + " TEXT,"
@@ -138,7 +141,8 @@ public class BOM {
 
                 /* BOM_RESERVE_HEADER Table and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOM_RESERVE_HEADER);
-                String CREATE_TABLE_BOM_RESERVE_HEADER = "CREATE TABLE IF NOT EXISTS " + TABLE_BOM_RESERVE_HEADER + ""
+                String CREATE_TABLE_BOM_RESERVE_HEADER = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_BOM_RESERVE_HEADER + ""
                         + "( "
                         + KEY_BOM_RESERVE_HEADER_ID + " INTEGER PRIMARY KEY,"
                         + KEY_BOM_RESERVE_HEADER_UUID + " TEXT,"
@@ -168,23 +172,30 @@ public class BOM {
                 }
             }
             /* Initializing Shared Preferences */
-            FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            FieldTekPro_SharedPref = activity
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username", null);
             password = FieldTekPro_SharedPref.getString("Password", null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            String webservice_type = FieldTekPro_SharedPref
+                    .getString("webservice_type", null);
             /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"C5", "EQ", webservice_type});
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype" +
+                            " = ? and Zactivity = ? and Endpoint = ?",
+                    new String[]{"C5", "EQ", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             } else {
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
@@ -196,125 +207,100 @@ public class BOM {
             map.put("Udid", device_uuid);
             map.put("IvTransmitType", transmit_type);
             map.put("IvEqNo", bom_id);
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(180000, TimeUnit.MILLISECONDS)
+                    .writeTimeout(180000, TimeUnit.MILLISECONDS)
+                    .readTimeout(180000, TimeUnit.MILLISECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
             String credentials = username + ":" + password;
-            final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            final String basic = "Basic " +
+                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
             Call<BOM_SER> call = service.getBOMDetails(url_link, basic, map);
             Response<BOM_SER> response = call.execute();
             int response_status_code = response.code();
             Log.v("kiran_BOM_code", response_status_code + "...");
             if (response_status_code == 200) {
                 if (response.isSuccessful() && response.body() != null) {
-                    /*Reading Response Data and Parsing to Serializable*/
-                    BOM_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
+                    List<BOM_SER.Result> results = response.body().getD().getResults();
+                    App_db.beginTransaction();
 
-                    /*Converting GSON Response to JSON Data for Parsing*/
-                    String response_data = new Gson().toJson(rs.getD().getResults());
-                    /*Converting GSON Response to JSON Data for Parsing*/
+                    if (results != null && results.size() > 0) {
 
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-                    JSONArray response_data_jsonArray = new JSONArray(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-
-                    /*Reading Data by using FOR Loop*/
-                    for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                        /*Reading Data by using FOR Loop*/
-                        JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
-
-                        App_db.beginTransaction();
-
-                        /*Reading and Inserting Data into Database Table for EtBomHeader*/
-                        if (jsonObject.has("EtBomHeader")) {
-                            try {
-                                String EtBomHeader_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtBomHeader().getResults());
-                                JSONArray jsonArray = new JSONArray(EtBomHeader_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String sql = "Insert into EtBomHeader (Bom,BomDesc,Plant) values (?,?,?);";
-                                    SQLiteStatement statement = App_db.compileStatement(sql);
-                                    statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        statement.bindString(1, jsonArray.getJSONObject(j).optString("Bom"));
-                                        statement.bindString(2, jsonArray.getJSONObject(j).optString("BomDesc"));
-                                        statement.bindString(3, jsonArray.getJSONObject(j).optString("Plant"));
-                                        statement.execute();
-                                    }
+                        /*EtBomHeader*/
+                        BOM_SER.EtBomHeader etBomHeader = results.get(0).getEtBomHeader();
+                        if (etBomHeader != null) {
+                            List<BOM_SER.EtBomHeader_Result> etBomHeaderResults = etBomHeader.getResults();
+                            if (etBomHeaderResults != null && etBomHeaderResults.size() > 0) {
+                                String sql = "Insert into EtBomHeader (Bom,BomDesc,Plant) " +
+                                        "values (?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (BOM_SER.EtBomHeader_Result eBH : etBomHeaderResults) {
+                                    statement.bindString(1, c_e.check_empty(eBH.getBom()));
+                                    statement.bindString(2, c_e.check_empty(eBH.getBomDesc()));
+                                    statement.bindString(3, c_e.check_empty(eBH.getPlant()));
+                                    statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtBomHeader*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtBomItem*/
-                        if (jsonObject.has("EtBomItem")) {
-                            try {
-                                String EtBomItem_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtBomItem().getResults());
-                                JSONArray jsonArray = new JSONArray(EtBomItem_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String sql = "Insert into EtBomItem (Bom, BomComponent, CompText, Quantity, Unit, Stlkz) values(?,?,?,?,?,?);";
-                                    SQLiteStatement statement = App_db.compileStatement(sql);
-                                    statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        statement.bindString(1, jsonArray.getJSONObject(j).optString("Bom"));
-                                        statement.bindString(2, jsonArray.getJSONObject(j).optString("BomComponent"));
-                                        statement.bindString(3, jsonArray.getJSONObject(j).optString("CompText"));
-                                        statement.bindString(4, jsonArray.getJSONObject(j).optString("Quantity"));
-                                        statement.bindString(5, jsonArray.getJSONObject(j).optString("Unit"));
-                                        statement.bindString(6, jsonArray.getJSONObject(j).optString("Stlkz"));
-                                        statement.execute();
-                                    }
+                        /*EtBomItem*/
+                        BOM_SER.EtBomItem etBomItem = results.get(0).getEtBomItem();
+                        if (etBomItem != null) {
+                            List<BOM_SER.EtBomItem_Result> etBomItemResults = etBomItem.getResults();
+                            if (etBomItemResults != null && etBomItemResults.size() > 0) {
+                                String sql = "Insert into EtBomItem (Bom, BomComponent, CompText," +
+                                        " Quantity, Unit, Stlkz) values(?,?,?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (BOM_SER.EtBomItem_Result eBI : etBomItemResults) {
+                                    statement.bindString(1, c_e.check_empty(eBI.getBom()));
+                                    statement.bindString(2, c_e.check_empty(eBI.getBomComponent()));
+                                    statement.bindString(3, c_e.check_empty(eBI.getCompText()));
+                                    statement.bindString(4, c_e.check_empty(eBI.getQuantity()));
+                                    statement.bindString(5, c_e.check_empty(eBI.getUnit()));
+                                    statement.bindString(6, c_e.check_empty(eBI.getStlkz()));
+                                    statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtBomItem*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtStock*/
-                        if (jsonObject.has("EtStock")) {
-                            try {
-                                String EtStock_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtStock().getResults());
-                                JSONArray jsonArray = new JSONArray(EtStock_response_data);
-                                if (jsonArray.length() > 0) {
-                                    String sql = "Insert into GET_STOCK_DATA (Matnr,Werks,Maktx,Lgort,Labst,Speme,Bwtar,Lgpbe) values (?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement statement = App_db.compileStatement(sql);
-                                    statement.clearBindings();
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String matnr = jsonArray.getJSONObject(j).optString("Matnr");
-                                        App_db.execSQL("delete from GET_STOCK_DATA where Matnr = ?", new String[]{matnr});
-                                        statement.bindString(1, jsonArray.getJSONObject(j).optString("Matnr"));
-                                        statement.bindString(2, jsonArray.getJSONObject(j).optString("Werks"));
-                                        statement.bindString(3, jsonArray.getJSONObject(j).optString("Maktx"));
-                                        statement.bindString(4, jsonArray.getJSONObject(j).optString("Lgort"));
-                                        statement.bindString(5, jsonArray.getJSONObject(j).optString("Labst"));
-                                        statement.bindString(6, jsonArray.getJSONObject(j).optString("Speme"));
-                                        statement.bindString(7, jsonArray.getJSONObject(j).optString("Bwtar"));
-                                        statement.bindString(8, jsonArray.getJSONObject(j).optString("Lgpbe"));
-                                        statement.execute();
-                                    }
+                        /*EtStock*/
+                        BOM_SER.EtStock etStock = results.get(0).getEtStock();
+                        if (etStock != null) {
+                            List<BOM_SER.EtStock_Result> etStockResults = etStock.getResults();
+                            if (etStockResults != null && etStockResults.size() > 0) {
+                                String sql = "Insert into GET_STOCK_DATA (Matnr,Werks,Maktx,Lgort," +
+                                        "Labst,Speme,Bwtar,Lgpbe) values (?,?,?,?,?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (BOM_SER.EtStock_Result eS : etStockResults) {
+                                    App_db.execSQL("delete from GET_STOCK_DATA where Matnr = ?",
+                                            new String[]{c_e.check_empty(eS.getMatnr())});
+                                    statement.bindString(1, c_e.check_empty(eS.getMatnr()));
+                                    statement.bindString(2, c_e.check_empty(eS.getWerks()));
+                                    statement.bindString(3, c_e.check_empty(eS.getMaktx()));
+                                    statement.bindString(4, c_e.check_empty(eS.getLgort()));
+                                    statement.bindString(5, c_e.check_empty(eS.getLabst()));
+                                    statement.bindString(6, c_e.check_empty(eS.getSpeme()));
+                                    statement.bindString(7, c_e.check_empty(eS.getBwtar()));
+                                    statement.bindString(8, c_e.check_empty(eS.getLgpbe()));
+                                    statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtStock*/
-
                     }
-                    /*Reading Data by using FOR Loop*/
-
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
                     Get_Response = "success";
                 }
-            } else {
             }
         } catch (Exception ex) {
             Get_Response = "exception";
-        } finally {
         }
         return Get_Response;
     }
-
 }

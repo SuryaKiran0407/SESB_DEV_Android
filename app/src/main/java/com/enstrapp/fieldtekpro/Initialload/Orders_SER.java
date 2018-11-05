@@ -1251,11 +1251,11 @@ public class Orders_SER {
             this.genvname = genvname;
         }
 
-        public Object getGendatum() {
+        public String getGendatum() {
             return gendatum;
         }
 
-        public void setGendatum(Object gendatum) {
+        public void setGendatum(String gendatum) {
             this.gendatum = gendatum;
         }
 
@@ -1406,7 +1406,7 @@ public class Orders_SER {
         private String genvname;
         @SerializedName("Gendatum")
         @Expose
-        private Object gendatum;
+        private String gendatum;
         @SerializedName("Gentime")
         @Expose
         private String gentime;
@@ -4233,10 +4233,10 @@ public class Orders_SER {
         public String anlzu;
         @SerializedName("Ausvn")
         @Expose
-        public Object ausvn;
+        public String ausvn;
         @SerializedName("Ausbs")
         @Expose
-        public Object ausbs;
+        public String ausbs;
         @SerializedName("Qmnam")
         @Expose
         public String qmnam;
@@ -4511,19 +4511,19 @@ public class Orders_SER {
             this.anlzu = anlzu;
         }
 
-        public Object getAusvn() {
+        public String getAusvn() {
             return ausvn;
         }
 
-        public void setAusvn(Object ausvn) {
+        public void setAusvn(String ausvn) {
             this.ausvn = ausvn;
         }
 
-        public Object getAusbs() {
+        public String getAusbs() {
             return ausbs;
         }
 
-        public void setAusbs(Object ausbs) {
+        public void setAusbs(String ausbs) {
             this.ausbs = ausbs;
         }
 
