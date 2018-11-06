@@ -12,11 +12,13 @@ import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -31,11 +33,13 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class JSA {
 
-    private static String password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
+    private static String password = "", url_link = "", username = "", device_serial_number = "",
+            device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
     private static SharedPreferences.Editor FieldTekPro_SharedPrefeditor;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
+    private static Check_Empty c_e = new Check_Empty();
 
     /* EtEHSOpstat Table and Fields Names */
     private static final String TABLE_EtEHSOpstat = "EtEHSOpstat";
@@ -526,22 +530,29 @@ public class JSA {
 
 
             /* Initializing Shared Preferences */
-            FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            FieldTekPro_SharedPref = activity
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username", null);
             password = FieldTekPro_SharedPref.getString("Password", null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            String webservice_type = FieldTekPro_SharedPref
+                    .getString("webservice_type", null);
             /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"Z2", "F4", webservice_type});
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype =" +
+                            " ? and Zactivity = ? and Endpoint = ?",
+                    new String[]{"Z2", "F4", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
@@ -552,248 +563,232 @@ public class JSA {
             map.put("Devicesno", device_serial_number);
             map.put("Udid", device_uuid);
             map.put("IvTransmitType", "LOAD");
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(180000, TimeUnit.MILLISECONDS)
+                    .writeTimeout(180000, TimeUnit.MILLISECONDS)
+                    .readTimeout(180000, TimeUnit.MILLISECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
             String credentials = username + ":" + password;
-            final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            final String basic = "Basic " +
+                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
             Call<JSA_SER> call = service.getJRADetails(url_link, basic, map);
             Response<JSA_SER> response = call.execute();
             int response_status_code = response.code();
             Log.v("kiran_JRA_code", response_status_code + "...");
             if (response_status_code == 200) {
                 if (response.isSuccessful() && response.body() != null) {
-                    /*Reading Response Data and Parsing to Serializable*/
-                    JSA_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
-
+                    List<JSA_SER.Result> results = response.body().getD().getResults();
                     App_db.beginTransaction();
 
-                    /*Reading and Inserting Data into Database Table for EtEHSOpstat*/
-                    String EtEHSOpstat_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSOpstat().getResults());
-                    if (EtEHSOpstat_response_data != null && !EtEHSOpstat_response_data.equals("") && !EtEHSOpstat_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSOpstat_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSOpstat (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
+                    if (results != null && results.size() > 0) {
+
+                        /*EtEHSOpstat*/
+                        JSA_SER.EtEHSOpstat etEHSOpstat = results.get(0).getEtEHSOpstat();
+                        if (etEHSOpstat != null) {
+                            List<JSA_SER.Result1> result1s = etEHSOpstat.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSOpstat (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
+                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSHazcat*/
+                        JSA_SER.EtEHSHazcat etEHSHazcat = results.get(0).getEtEHSHazcat();
+                        if (etEHSHazcat != null) {
+                            List<JSA_SER.Result1> result1s = etEHSHazcat.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSHazcat (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
+                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSHazard*/
+                        JSA_SER.EtEHSHazard etEHSHazard = results.get(0).getEtEHSHazard();
+                        if (etEHSHazard != null) {
+                            List<JSA_SER.Result1> result1s = etEHSHazard.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSHazard (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, r1.getCode());
+                                    statement.bindString(2, r1.getDescription());
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSHazimp*/
+                        JSA_SER.EtEHSHazimp etEHSHazimp = results.get(0).getEtEHSHazimp();
+                        if (etEHSHazimp != null) {
+                            List<JSA_SER.EtEHSHazimp_Result> etEHSHazimpResults = etEHSHazimp.getResults();
+                            if (etEHSHazimpResults != null && etEHSHazimpResults.size() > 0) {
+                                String sql = "Insert into EtEHSHazimp (HazardCode,ImpactCode," +
+                                        "Description,Type) values (?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.EtEHSHazimp_Result eHH : etEHSHazimpResults) {
+                                    statement.bindString(1, c_e.check_empty(eHH.getHazardCode()));
+                                    statement.bindString(3, c_e.check_empty(eHH.getImpactCode()));
+                                    statement.bindString(2, c_e.check_empty(eHH.getDescription()));
+                                    statement.bindString(4, c_e.check_empty(eHH.getType()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSHazctrl*/
+                        JSA_SER.EtEHSHazctrl etEHSHazctrl = results.get(0).getEtEHSHazctrl();
+                        if (etEHSHazctrl != null) {
+                            List<JSA_SER.EtEHSHazctrl_Result> etEHSHazctrlResults = etEHSHazctrl.getResults();
+                            if (etEHSHazctrlResults != null && etEHSHazctrlResults.size() > 0) {
+                                String sql = "Insert into EtEHSHazctrl (HazardCode,ControlCode,Type," +
+                                        "Subject,Description,CtrlID) values (?,?,?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.EtEHSHazctrl_Result eC : etEHSHazctrlResults) {
+                                    statement.bindString(1, c_e.check_empty(eC.getHazardCode()));
+                                    statement.bindString(2, c_e.check_empty(eC.getControlCode()));
+                                    statement.bindString(3, c_e.check_empty(eC.getType()));
+                                    statement.bindString(4, c_e.check_empty(eC.getSubject()));
+                                    statement.bindString(5, c_e.check_empty(eC.getDescription()));
+                                    statement.bindString(6, c_e.check_empty(eC.getCtrlid()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSLocTyp*/
+                        JSA_SER.EtEHSLocTyp etEHSLocTyp = results.get(0).getEtEHSLocTyp();
+                        if (etEHSLocTyp != null) {
+                            List<JSA_SER.Result1> result1s = etEHSLocTyp.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSLocTyp (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
+                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSLocRev*/
+                        JSA_SER.EtEHSLocRev ehsLocRev = results.get(0).getEtEHSLocRev();
+                        if (ehsLocRev != null) {
+                            List<JSA_SER.EtEHSLocRev_Result> etEHSLocRevResults = ehsLocRev.getResults();
+                            if (etEHSLocRevResults != null && etEHSLocRevResults.size() > 0) {
+                                String sql = "Insert into EtEHSLocRev (Type,Status,FunctLocID," +
+                                        "EquipmentID,PlantID,DbKey,ParentKey,Text, LocRootRefKey," +
+                                        " ParRootRefKey, RefID) values (?,?,?,?,?,?,?,?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.EtEHSLocRev_Result eL : etEHSLocRevResults) {
+                                    statement.bindString(1, c_e.check_empty(eL.getType()));
+                                    statement.bindString(2, c_e.check_empty(eL.getStatus()));
+                                    statement.bindString(3, c_e.check_empty(eL.getFunctLocID()));
+                                    statement.bindString(4, c_e.check_empty(eL.getEquipmentID()));
+                                    statement.bindString(5, c_e.check_empty(eL.getPlantID()));
+                                    statement.bindString(6, c_e.check_empty(eL.getDbKey()));
+                                    statement.bindString(7, c_e.check_empty(eL.getParentKey()));
+                                    statement.bindString(8, c_e.check_empty(eL.getText()));
+                                    statement.bindString(9, c_e.check_empty(eL.getLocRootRefKey()));
+                                    statement.bindString(10, c_e.check_empty(eL.getParRootRefKey()));
+                                    statement.bindString(11, c_e.check_empty(eL.getRefID()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSJobTyp*/
+                        JSA_SER.EtEHSJobTyp etEHSJobTyp = results.get(0).getEtEHSJobTyp();
+                        if (etEHSJobTyp != null) {
+                            List<JSA_SER.Result1> result1s = etEHSJobTyp.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSJobTyp (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
+                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSReason*/
+                        JSA_SER.EtEHSReason etEHSReason = results.get(0).getEtEHSReason();
+                        if (etEHSReason != null) {
+                            List<JSA_SER.Result1> result1s = etEHSReason.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSReason (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
+                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSRasrole*/
+                        JSA_SER.EtEHSRasrole etEHSRasrole = results.get(0).getEtEHSRasrole();
+                        if (etEHSRasrole != null) {
+                            List<JSA_SER.Result1> result1s = etEHSRasrole.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSRasrole (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
+                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtEHSRasstep*/
+                        JSA_SER.EtEHSRasstep etEHSRasstep = results.get(0).getEtEHSRasstep();
+                        if (etEHSRasstep != null) {
+                            List<JSA_SER.Result1> result1s = etEHSRasstep.getResults();
+                            if (result1s != null && result1s.size() > 0) {
+                                String sql = "Insert into EtEHSRasstep (Code,Description) values (?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (JSA_SER.Result1 r1 : result1s) {
+                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
+                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
+                                    statement.execute();
+                                }
                             }
                         }
                     }
-                    /*Reading and Inserting Data into Database Table for EtEHSOpstat*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSHazcat*/
-                    String EtEHSHazcat_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSHazcat().getResults());
-                    if (EtEHSHazcat_response_data != null && !EtEHSHazcat_response_data.equals("") && !EtEHSHazcat_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSHazcat_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSHazcat (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSHazcat*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSHazard*/
-                    String EtEHSHazard_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSHazard().getResults());
-                    if (EtEHSHazard_response_data != null && !EtEHSHazard_response_data.equals("") && !EtEHSHazard_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSHazard_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSHazard (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSHazard*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSHazimp*/
-                    String EtEHSHazimp_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSHazimp().getResults());
-                    if (EtEHSHazimp_response_data != null && !EtEHSHazimp_response_data.equals("") && !EtEHSHazimp_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSHazimp_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSHazimp (HazardCode,ImpactCode,Description,Type) values (?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("HazardCode"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("ImpactCode"));
-                                statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.bindString(4, response_data_jsonArray.getJSONObject(j).optString("Type"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSHazimp*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSHazctrl*/
-                    String EtEHSHazctrl_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSHazctrl().getResults());
-                    if (EtEHSHazctrl_response_data != null && !EtEHSHazctrl_response_data.equals("") && !EtEHSHazctrl_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSHazctrl_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSHazctrl (HazardCode,ControlCode,Type,Subject,Description,CtrlID) values (?,?,?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("HazardCode"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("ControlCode"));
-                                statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Type"));
-                                statement.bindString(4, response_data_jsonArray.getJSONObject(j).optString("Subject"));
-                                statement.bindString(5, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.bindString(6, response_data_jsonArray.getJSONObject(j).optString("Ctrlid"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSHazctrl*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSLocTyp*/
-                    String EtEHSLocTyp_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSLocTyp().getResults());
-                    if (EtEHSLocTyp_response_data != null && !EtEHSLocTyp_response_data.equals("") && !EtEHSLocTyp_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSLocTyp_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSLocTyp (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSLocTyp*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSLocRev*/
-                    String EtEHSLocRev_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSLocRev().getResults());
-                    if (EtEHSLocRev_response_data != null && !EtEHSLocRev_response_data.equals("") && !EtEHSLocRev_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSLocRev_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSLocRev (Type,Status,FunctLocID,EquipmentID,PlantID,DbKey,ParentKey,Text, LocRootRefKey, ParRootRefKey, RefID) values (?,?,?,?,?,?,?,?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Type"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Status"));
-                                statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("FunctLocID"));
-                                statement.bindString(4, response_data_jsonArray.getJSONObject(j).optString("EquipmentID"));
-                                statement.bindString(5, response_data_jsonArray.getJSONObject(j).optString("PlantID"));
-                                statement.bindString(6, response_data_jsonArray.getJSONObject(j).optString("DbKey"));
-                                statement.bindString(7, response_data_jsonArray.getJSONObject(j).optString("ParentKey"));
-                                statement.bindString(8, response_data_jsonArray.getJSONObject(j).optString("Text"));
-                                statement.bindString(9, response_data_jsonArray.getJSONObject(j).optString("LocRootRefKey"));
-                                statement.bindString(10, response_data_jsonArray.getJSONObject(j).optString("ParRootRefKey"));
-                                statement.bindString(11, response_data_jsonArray.getJSONObject(j).optString("RefID"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSLocRev*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSJobTyp*/
-                    String EtEHSJobTyp_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSJobTyp().getResults());
-                    if (EtEHSJobTyp_response_data != null && !EtEHSJobTyp_response_data.equals("") && !EtEHSJobTyp_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSJobTyp_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSJobTyp (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSLocTyp*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSReason*/
-                    String EtEHSReason_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSReason().getResults());
-                    if (EtEHSReason_response_data != null && !EtEHSReason_response_data.equals("") && !EtEHSReason_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSReason_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSReason (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSReason*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSRasrole*/
-                    String EtEHSRasrole_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSRasrole().getResults());
-                    if (EtEHSRasrole_response_data != null && !EtEHSRasrole_response_data.equals("") && !EtEHSRasrole_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSRasrole_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSRasrole (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSRasrole*/
-
-
-                    /*Reading and Inserting Data into Database Table for EtEHSRasstep*/
-                    String EtEHSRasstep_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtEHSRasstep().getResults());
-                    if (EtEHSRasstep_response_data != null && !EtEHSRasstep_response_data.equals("") && !EtEHSRasstep_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtEHSRasstep_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String sql = "Insert into EtEHSRasstep (Code,Description) values (?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Code"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Description"));
-                                statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtEHSRasstep*/
-
-
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
                     Get_Response = "success";
                 }
-            } else {
             }
         } catch (Exception ex) {
             Log.v("kiran_ee", ex.getMessage() + "....");
             Get_Response = "exception";
-        } finally {
         }
         return Get_Response;
     }
-
 }

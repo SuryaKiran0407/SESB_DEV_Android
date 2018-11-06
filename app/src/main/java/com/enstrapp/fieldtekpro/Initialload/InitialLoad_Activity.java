@@ -16,7 +16,10 @@ public class InitialLoad_Activity extends AppCompatActivity {
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     SharedPreferences FieldTekPro_SharedPref;
     SharedPreferences.Editor FieldTekPro_SharedPrefeditor;
-    String Calibration_Status = "", JRA_status = "", DeviceToken_status = "", Measurementpoint_status = "", Auth_status = "", BOM_status = "", FLOC_Status = "", DORD_Status = "", DNOT_Status = "", VHLP_WCM_Status = "", VHLP_Status = "", From = "", transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "";
+    String Calibration_Status = "", JRA_status = "", DeviceToken_status = "",
+            Measurementpoint_status = "", Auth_status = "", BOM_status = "", FLOC_Status = "",
+            DORD_Status = "", DNOT_Status = "", VHLP_WCM_Status = "", VHLP_Status = "", From = "",
+            transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +27,8 @@ public class InitialLoad_Activity extends AppCompatActivity {
         setContentView(R.layout.initial_load_activity);
 
         /* Initializing Shared Preferences */
-        FieldTekPro_SharedPref = getApplicationContext().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+        FieldTekPro_SharedPref = getApplicationContext()
+                .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
         /* Initializing Shared Preferences */
 

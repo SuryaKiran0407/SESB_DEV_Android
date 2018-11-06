@@ -40,7 +40,7 @@ public class Isolation_List_Activity extends AppCompatActivity implements View.O
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
     private List bom_list, stock_list;
-    String[] tabTitle = {getString(R.string.tag_tagged), getString(R.string.untag_untagged)};
+    String[] tabTitle;
     int[] unreadCount = {0, 0};
     TextView title_textview;
     Custom_Progress_Dialog custom_progress_dialog = new Custom_Progress_Dialog();
@@ -60,6 +60,7 @@ public class Isolation_List_Activity extends AppCompatActivity implements View.O
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = Isolation_List_Activity.this.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
 
+        tabTitle = new String[]{getString(R.string.tag_tagged), getString(R.string.untag_untagged)};
         title_textview = (TextView) findViewById(R.id.title_textview);
         title_textview.setText(getResources().getString(R.string.isolation_list));
         filter_imageview = (ImageView) findViewById(R.id.filter_imageview);

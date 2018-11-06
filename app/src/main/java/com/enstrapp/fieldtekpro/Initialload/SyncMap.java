@@ -209,7 +209,7 @@ public class SyncMap {
                         statement.clearBindings();
                         for (SyncMap_SER.Result rs : results) {
                             statement.bindString(1, c_e.check_empty(rs.getSysid()));
-                            statement.bindString(2, c_e.check_empty(rs.getEndpoint()));
+                            statement.bindString(2, c_e.check_empty(rs.getWsname()));
                             statement.bindString(3, c_e.check_empty(rs.getZdoctype()));
                             statement.bindString(4, c_e.check_empty(rs.getZactivity()));
                             statement.bindString(5, c_e.check_empty(rs.getZwsrv()));

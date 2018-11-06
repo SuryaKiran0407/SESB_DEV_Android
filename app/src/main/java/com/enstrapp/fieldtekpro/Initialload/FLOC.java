@@ -12,12 +12,10 @@ import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -32,11 +30,13 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FLOC {
 
-    private static String password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
+    private static String password = "", url_link = "", username = "", device_serial_number = "",
+            device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
     private static SharedPreferences.Editor FieldTekPro_SharedPrefeditor;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
+    private static Check_Empty c_e = new Check_Empty();
 
     /* EtFuncEquip and Fields Names */
     private static final String TABLE_SEARCH_FLOC_EQUIP = "EtFuncEquip";
@@ -99,7 +99,8 @@ public class FLOC {
             if (transmit_type.equals("LOAD")) {
                 /* Creating GET_SEARCH_FLOC_EQUIP Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_SEARCH_FLOC_EQUIP);
-                String CREATE_SEARCH_FLOC_EQUIP_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SEARCH_FLOC_EQUIP + ""
+                String CREATE_SEARCH_FLOC_EQUIP_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_SEARCH_FLOC_EQUIP + ""
                         + "( "
                         + KEY_SEARCH_FLOC_EQUIP_ID + " INTEGER PRIMARY KEY,"
                         + KEY_SEARCH_FLOC_EQUIP_Tplnr + " TEXT,"
@@ -122,7 +123,8 @@ public class FLOC {
 
                 /* Creating EtEqui Table with Fields */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtEqui);
-                String CREATE_SEARCH_FLOC_EQUIP_Equip_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_EtEqui + ""
+                String CREATE_SEARCH_FLOC_EQUIP_Equip_TABLE = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_EtEqui + ""
                         + "( "
                         + KEY_SEARCH_FLOC_EQUIP_Equip_ID + " INTEGER PRIMARY KEY,"
                         + KEY_SEARCH_FLOC_EQUIP_Equip_Tplnr + " TEXT,"
@@ -163,23 +165,29 @@ public class FLOC {
                 App_db.execSQL("delete from EtEqui");
             }
             /* Initializing Shared Preferences */
-            FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            FieldTekPro_SharedPref = activity
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username", null);
             password = FieldTekPro_SharedPref.getString("Password", null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            String webservice_type = FieldTekPro_SharedPref
+                    .getString("webservice_type", null);
             /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"C7", "FE", webservice_type});
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype =" +
+                            " ? and Zactivity = ? and Endpoint = ?",
+                    new String[]{"C7", "FE", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
-            } else {
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
@@ -191,128 +199,117 @@ public class FLOC {
             map.put("Udid", device_uuid);
             map.put("IvTransmitType", transmit_type);
             map.put("IvTplnr", "");
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(180000, TimeUnit.MILLISECONDS)
+                    .writeTimeout(180000, TimeUnit.MILLISECONDS)
+                    .readTimeout(180000, TimeUnit.MILLISECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
             String credentials = username + ":" + password;
-            final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            final String basic = "Basic " +
+                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
             Call<FLOC_SER> call = service.getFLOCDetails(url_link, basic, map);
             Response<FLOC_SER> response = call.execute();
             int response_status_code = response.code();
             Log.v("kiran_FLOC_code", response_status_code + "...");
             if (response_status_code == 200) {
                 if (response.isSuccessful() && response.body() != null) {
-                    /*Reading Response Data and Parsing to Serializable*/
-                    FLOC_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
+                    List<FLOC_SER.Result> results = response.body().getD().getResults();
+                    App_db.beginTransaction();
 
-                    /*Converting GSON Response to JSON Data for Parsing*/
-                    String response_data = new Gson().toJson(rs.getD().getResults());
-                    /*Converting GSON Response to JSON Data for Parsing*/
+                    if (results != null && results.size() > 0) {
 
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-                    JSONArray response_data_jsonArray = new JSONArray(response_data);
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-
-                    /*Reading Data by using FOR Loop*/
-                    for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                        /*Reading Data by using FOR Loop*/
-                        JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
-
-                        App_db.beginTransaction();
-
-                        /*Reading and Inserting Data into Database Table for EtFuncEquip*/
-                        if (jsonObject.has("EtFuncEquip")) {
-                            try {
-                                String EtFuncEquip_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtFuncEquip().getResults());
-                                JSONArray jsonArray = new JSONArray(EtFuncEquip_response_data);
-                                String EtFuncEquip_sql = "Insert into EtFuncEquip (Tplnr, Pltxt, Werks, Arbpl, Kostl, Fltyp, Ingrp, Tplma, Eqart, Rbnr, Inactive, Level, Stplnr, Iwerk) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                        /*EtFuncEquip*/
+                        FLOC_SER.EtFuncEquip fLoc = results.get(0).getEtFuncEquip();
+                        if (fLoc != null) {
+                            List<FLOC_SER.EtFuncEquip_Result> fLocResults = fLoc.getResults();
+                            if (fLocResults != null && fLocResults.size() > 0) {
+                                String EtFuncEquip_sql = "Insert into EtFuncEquip (Tplnr, Pltxt, " +
+                                        "Werks, Arbpl, Kostl, Fltyp, Ingrp, Tplma, Eqart, Rbnr, " +
+                                        "Inactive, Level, Stplnr, Iwerk)" +
+                                        " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement EtFuncEquip_statement = App_db.compileStatement(EtFuncEquip_sql);
                                 EtFuncEquip_statement.clearBindings();
-                                for (int j = 0; j < jsonArray.length(); j++) {
-                                    EtFuncEquip_statement.bindString(1, jsonArray.getJSONObject(j).optString("Tplnr"));
-                                    EtFuncEquip_statement.bindString(2, jsonArray.getJSONObject(j).optString("Pltxt"));
-                                    EtFuncEquip_statement.bindString(3, jsonArray.getJSONObject(j).optString("Werks"));
-                                    EtFuncEquip_statement.bindString(4, jsonArray.getJSONObject(j).optString("Arbpl"));
-                                    EtFuncEquip_statement.bindString(5, jsonArray.getJSONObject(j).optString("Kostl"));
-                                    EtFuncEquip_statement.bindString(6, jsonArray.getJSONObject(j).optString("Fltyp"));
-                                    EtFuncEquip_statement.bindString(7, jsonArray.getJSONObject(j).optString("Ingrp"));
-                                    EtFuncEquip_statement.bindString(8, jsonArray.getJSONObject(j).optString("Tplma"));
-                                    EtFuncEquip_statement.bindString(9, jsonArray.getJSONObject(j).optString("Eqart"));
-                                    EtFuncEquip_statement.bindString(10, jsonArray.getJSONObject(j).optString("Rbnr"));
-                                    EtFuncEquip_statement.bindString(11, jsonArray.getJSONObject(j).optString("Inactive"));
-                                    EtFuncEquip_statement.bindString(12, jsonArray.getJSONObject(j).optString("Level"));
-                                    EtFuncEquip_statement.bindString(13, jsonArray.getJSONObject(j).optString("Stplnr"));
-                                    EtFuncEquip_statement.bindString(14, jsonArray.getJSONObject(j).optString("Iwerk"));
+                                for (FLOC_SER.EtFuncEquip_Result fL : fLocResults) {
+                                    EtFuncEquip_statement.bindString(1, c_e.check_empty(fL.getTplnr()));
+                                    EtFuncEquip_statement.bindString(2, c_e.check_empty(fL.getPltxt()));
+                                    EtFuncEquip_statement.bindString(3, c_e.check_empty(fL.getWerks()));
+                                    EtFuncEquip_statement.bindString(4, c_e.check_empty(fL.getArbpl()));
+                                    EtFuncEquip_statement.bindString(5, c_e.check_empty(fL.getKostl()));
+                                    EtFuncEquip_statement.bindString(6, c_e.check_empty(fL.getFltyp()));
+                                    EtFuncEquip_statement.bindString(7, c_e.check_empty(fL.getIngrp()));
+                                    EtFuncEquip_statement.bindString(8, c_e.check_empty(fL.getTplma()));
+                                    EtFuncEquip_statement.bindString(9, c_e.check_empty(fL.getEqart()));
+                                    EtFuncEquip_statement.bindString(10, c_e.check_empty(fL.getRbnr()));
+                                    EtFuncEquip_statement.bindString(11, c_e.check_empty(fL.getInactive()));
+                                    EtFuncEquip_statement.bindString(12, c_e.check_empty(fL.getLevel()));
+                                    EtFuncEquip_statement.bindString(13, c_e.check_empty(fL.getStplnr()));
+                                    EtFuncEquip_statement.bindString(14, c_e.check_empty(fL.getIwerk()));
                                     EtFuncEquip_statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtFuncEquip*/
 
-
-                        /*Reading and Inserting Data into Database Table for EtEqui*/
-                        if (jsonObject.has("EtEqui")) {
-                            try {
-                                String EtEqui_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtEqui().getResults());
-                                JSONArray jsonArray = new JSONArray(EtEqui_response_data);
-                                String Equip_sql = "Insert into EtEqui (Tplnr, Pltxt, Equnr, Spras, Eqktx, Rbnr, Eqtyp, Herst, Eqart, Werks, Arbpl, Kostl, Ingrp, Serge, Typbz, Mapar, Inactive, Permit, Hequi, Stlkz, Level, Sequi, Stort, Beber, Anlnr, Anlun, Ivdat, Invzu, Iwerk, Bukrs) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                        /*EtEqui*/
+                        FLOC_SER.EtEqui equip = results.get(0).getEtEqui();
+                        if (equip != null) {
+                            List<FLOC_SER.EtEqui_Result> equipResult = equip.getResults();
+                            if (equipResult != null && equipResult.size() > 0) {
+                                String Equip_sql = "Insert into EtEqui (Tplnr, Pltxt, Equnr, Spras," +
+                                        " Eqktx, Rbnr, Eqtyp, Herst, Eqart, Werks, Arbpl, Kostl," +
+                                        " Ingrp, Serge, Typbz, Mapar, Inactive, Permit, Hequi," +
+                                        " Stlkz, Level, Sequi, Stort, Beber, Anlnr, Anlun, Ivdat," +
+                                        " Invzu, Iwerk, Bukrs)" +
+                                        " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement Equip_statement = App_db.compileStatement(Equip_sql);
                                 Equip_statement.clearBindings();
-                                for (int j = 0; j < jsonArray.length(); j++) {
-                                    Equip_statement.bindString(1, jsonArray.getJSONObject(j).optString("Tplnr"));
+                                for (FLOC_SER.EtEqui_Result eq : equipResult) {
+                                    Equip_statement.bindString(1, c_e.check_empty(eq.getTplnr()));
                                     Equip_statement.bindString(2, "");
-                                    Equip_statement.bindString(3, jsonArray.getJSONObject(j).optString("Equnr"));
-                                    Equip_statement.bindString(4, jsonArray.getJSONObject(j).optString("Spras"));
-                                    Equip_statement.bindString(5, jsonArray.getJSONObject(j).optString("Eqktx"));
-                                    Equip_statement.bindString(6, jsonArray.getJSONObject(j).optString("Rbnr"));
-                                    Equip_statement.bindString(7, jsonArray.getJSONObject(j).optString("Eqtyp"));
-                                    Equip_statement.bindString(8, jsonArray.getJSONObject(j).optString("Herst"));
-                                    Equip_statement.bindString(9, jsonArray.getJSONObject(j).optString("Eqart"));
-                                    Equip_statement.bindString(10, jsonArray.getJSONObject(j).optString("Werks"));
-                                    Equip_statement.bindString(11, jsonArray.getJSONObject(j).optString("Arbpl"));
-                                    Equip_statement.bindString(12, jsonArray.getJSONObject(j).optString("Kostl"));
-                                    Equip_statement.bindString(13, jsonArray.getJSONObject(j).optString("Ingrp"));
-                                    Equip_statement.bindString(14, jsonArray.getJSONObject(j).optString("Serge"));
-                                    Equip_statement.bindString(15, jsonArray.getJSONObject(j).optString("Typbz"));
-                                    Equip_statement.bindString(16, jsonArray.getJSONObject(j).optString("Mapar"));
+                                    Equip_statement.bindString(3, c_e.check_empty(eq.getEqunr()));
+                                    Equip_statement.bindString(4, "");
+                                    Equip_statement.bindString(5, c_e.check_empty(eq.getEqktx()));
+                                    Equip_statement.bindString(6, c_e.check_empty(eq.getRbnr()));
+                                    Equip_statement.bindString(7, c_e.check_empty(eq.getEqtyp()));
+                                    Equip_statement.bindString(8, c_e.check_empty(eq.getHerst()));
+                                    Equip_statement.bindString(9, c_e.check_empty(eq.getEqart()));
+                                    Equip_statement.bindString(10, c_e.check_empty(eq.getWerks()));
+                                    Equip_statement.bindString(11, c_e.check_empty(eq.getArbpl()));
+                                    Equip_statement.bindString(12, c_e.check_empty(eq.getKostl()));
+                                    Equip_statement.bindString(13, c_e.check_empty(eq.getIngrp()));
+                                    Equip_statement.bindString(14, c_e.check_empty(eq.getSerge()));
+                                    Equip_statement.bindString(15, c_e.check_empty(eq.getTypbz()));
+                                    Equip_statement.bindString(16, c_e.check_empty(eq.getMapar()));
                                     Equip_statement.bindString(17, "");
                                     Equip_statement.bindString(18, "");
-                                    Equip_statement.bindString(19, jsonArray.getJSONObject(j).optString("Hequi"));
-                                    Equip_statement.bindString(20, jsonArray.getJSONObject(j).optString("Stlkz"));
-                                    Equip_statement.bindString(21, jsonArray.getJSONObject(j).optString("Level"));
-                                    Equip_statement.bindString(22, jsonArray.getJSONObject(j).optString("Sequi"));
-                                    Equip_statement.bindString(23, jsonArray.getJSONObject(j).optString("Stort"));
-                                    Equip_statement.bindString(24, jsonArray.getJSONObject(j).optString("Beber"));
-                                    Equip_statement.bindString(25, jsonArray.getJSONObject(j).optString("Anlnr"));
-                                    Equip_statement.bindString(26, jsonArray.getJSONObject(j).optString("Anlun"));
-                                    Equip_statement.bindString(27, jsonArray.getJSONObject(j).optString("Ivdat"));
-                                    Equip_statement.bindString(28, jsonArray.getJSONObject(j).optString("Invzu"));
-                                    Equip_statement.bindString(29, jsonArray.getJSONObject(j).optString("Iwerk"));
-                                    Equip_statement.bindString(30, jsonArray.getJSONObject(j).optString("Bukrs"));
+                                    Equip_statement.bindString(19, c_e.check_empty(eq.getHequi()));
+                                    Equip_statement.bindString(20, c_e.check_empty(eq.getStlkz()));
+                                    Equip_statement.bindString(21, c_e.check_empty(eq.getLevel()));
+                                    Equip_statement.bindString(22, c_e.check_empty(eq.getSequi()));
+                                    Equip_statement.bindString(23, c_e.check_empty(eq.getStort()));
+                                    Equip_statement.bindString(24, c_e.check_empty(eq.getBeber()));
+                                    Equip_statement.bindString(25, c_e.check_empty(eq.getAnlnr()));
+                                    Equip_statement.bindString(26, c_e.check_empty(eq.getAnlun()));
+                                    Equip_statement.bindString(27, c_e.check_empty(eq.getIvdat()));
+                                    Equip_statement.bindString(28, c_e.check_empty(eq.getInvzu()));
+                                    Equip_statement.bindString(29, c_e.check_empty(eq.getIwerk()));
+                                    Equip_statement.bindString(30, c_e.check_empty(eq.getBukrs()));
                                     Equip_statement.execute();
                                 }
-                            } catch (Exception e) {
                             }
                         }
-                        /*Reading and Inserting Data into Database Table for EtEqui*/
-
                     }
-                    /*Reading Data by using FOR Loop*/
-
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
                     Get_Response = "success";
                 }
-            } else {
             }
         } catch (Exception ex) {
             Log.v("kiran_floc_ex", ex.getMessage() + "...");
             Get_Response = "exception";
-        } finally {
         }
         return Get_Response;
     }
-
 }

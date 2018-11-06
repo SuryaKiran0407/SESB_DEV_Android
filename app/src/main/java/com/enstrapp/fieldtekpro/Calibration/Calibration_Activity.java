@@ -23,7 +23,7 @@ public class Calibration_Activity extends AppCompatActivity {
     GridView grid;
     //String[] web1 = {"Create Notification","Statistics","Maintenance History","Calibration History", "Calibration Orders","Maintenance Plan"} ;
     //int[] imageId1 = {R.drawable.ic_create_notif_icon,R.drawable.ic_statistics_icon,R.drawable.ic_maitenancehistory_icon,R.drawable.ic_calibrationhistory_icon, R.drawable.ic_purchaseorder_icon,R.drawable.ic_maintenanceplan_icon,};
-    String[] web1 = {getString(R.string.calb_ordrs)};
+    String[] web1;
     int[] imageId1 = {R.drawable.ic_purchaseorder_icon};
     String selected_status = "";
 
@@ -31,7 +31,7 @@ public class Calibration_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_activity);
-
+        web1 = new String[]{getString(R.string.calb_ordrs)};
         equip_layout = (LinearLayout) findViewById(R.id.equip_layout);
         equipment_edittext = (EditText) findViewById(R.id.equipment_edittext);
         grid = (GridView) findViewById(R.id.gridview);

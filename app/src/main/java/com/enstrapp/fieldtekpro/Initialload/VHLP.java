@@ -13,10 +13,6 @@ import android.util.Log;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -1253,6 +1249,33 @@ public class VHLP {
                                             }
                                         }
                                     }
+
+                                    /*TaskCodes*/
+                                    VHLP_SER.TaskCodes taskCodes = eNC.getTaskCodes();
+                                    if (taskCodes != null) {
+                                        List<VHLP_SER.TaskCodes_Result> taskCodesResults = taskCodes.getResults();
+                                        if (taskCodesResults != null && taskCodesResults.size() > 0) {
+                                            for (VHLP_SER.TaskCodes_Result tR : taskCodesResults) {
+                                                VHLP_SER.Codes codes = tR.getACall();
+                                                if (codes != null) {
+                                                    List<VHLP_SER.Codes_Result> codesResults = codes.getResults();
+                                                    if (codesResults != null && codesResults.size() > 0) {
+                                                        String TaskCodes_sql = "Insert into Get_NOTIFCODES_TaskCodes (Codegruppe, " +
+                                                                "Kurztext, Code, Kurztext1) values(?,?,?,?);";
+                                                        SQLiteStatement TasktCodes_statement = App_db.compileStatement(TaskCodes_sql);
+                                                        TasktCodes_statement.clearBindings();
+                                                        for (VHLP_SER.Codes_Result cR : codesResults) {
+                                                            TasktCodes_statement.bindString(1, c_e.check_empty(tR.getCodegruppe()));
+                                                            TasktCodes_statement.bindString(2, c_e.check_empty(tR.getKurztext()));
+                                                            TasktCodes_statement.bindString(3, c_e.check_empty(cR.getCode()));
+                                                            TasktCodes_statement.bindString(4, c_e.check_empty(cR.getKurztext1()));
+                                                            TasktCodes_statement.execute();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1439,229 +1462,6 @@ public class VHLP {
                             }
                         }
                     }
-
-
-                    /*Reading and Inserting Data into Database Table for EtNotifCodes*//*
-
-                    try {
-                        String ItemCodes_sql = "Insert into Get_NOTIFCODES_ItemCodes (NotifType, Rbnr, Codegruppe, Kurztext, Code, Kurztext1) values(?,?,?,?,?,?);";
-                        SQLiteStatement ItemCodes_statement = App_db.compileStatement(ItemCodes_sql);
-                        ItemCodes_statement.clearBindings();
-
-                        String CauseCodes_sql = "Insert into Get_NOTIFCODES_CauseCodes (NotifType, Rbnr, Codegruppe, Kurztext, Code, Kurztext1) values(?,?,?,?,?,?);";
-                        SQLiteStatement CauseCodes_statement = App_db.compileStatement(CauseCodes_sql);
-                        CauseCodes_statement.clearBindings();
-
-                        String ObjectCodes_sql = "Insert into Get_NOTIFCODES_ObjectCodes (NotifType, Rbnr, Codegruppe, Kurztext, Code, Kurztext1) values(?,?,?,?,?,?);";
-                        SQLiteStatement ObjectCodes_statement = App_db.compileStatement(ObjectCodes_sql);
-                        ObjectCodes_statement.clearBindings();
-
-                        String ActCodes_sql = "Insert into Get_NOTIFCODES_ActCodes (NotifType, Rbnr, Codegruppe, Kurztext, Code, Kurztext1) values(?,?,?,?,?,?);";
-                        SQLiteStatement ActCodes_statement = App_db.compileStatement(ActCodes_sql);
-                        ActCodes_statement.clearBindings();
-
-                        String TaskCodes_sql = "Insert into Get_NOTIFCODES_TaskCodes (Codegruppe, Kurztext, Code, Kurztext1) values(?,?,?,?);";
-                        SQLiteStatement TasktCodes_statement = App_db.compileStatement(TaskCodes_sql);
-                        TasktCodes_statement.clearBindings();
-
-                        String EtNotifCodes_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtNotifCodes().getResults());
-                        if (EtNotifCodes_response_data != null && !EtNotifCodes_response_data.equals("") && !EtNotifCodes_response_data.equals("null")) {
-                            JSONArray jsonArray = new JSONArray(EtNotifCodes_response_data);
-                            if (jsonArray.length() > 0) {
-                                for (int j = 0; j < jsonArray.length(); j++) {
-                                    String NotifType = jsonArray.getJSONObject(j).optString("NotifType");
-                                    String Rbnr = jsonArray.getJSONObject(j).optString("Rbnr");
-
-                                    */
-                    /*Reading and Inserting Data into Database Table for ItemCodes*//*
-
-                                    String ItemCodes = jsonArray.getJSONObject(j).optString("ItemCodes");
-                                    JSONObject ItemCodes_jsonobject = new JSONObject(ItemCodes);
-                                    String ItemCodes_Result = ItemCodes_jsonobject.getString("results");
-                                    if (ItemCodes_Result != null && !ItemCodes_Result.equals("") && !ItemCodes_Result.equals("null")) {
-                                        JSONArray ItemCodes_jsonArray = new JSONArray(ItemCodes_Result);
-                                        if (ItemCodes_jsonArray.length() > 0) {
-                                            for (int k = 0; k < ItemCodes_jsonArray.length(); k++) {
-                                                String Codegruppe = ItemCodes_jsonArray.getJSONObject(k).optString("Codegruppe");
-                                                String Kurztext = ItemCodes_jsonArray.getJSONObject(k).optString("Kurztext");
-                                                String ICodes = ItemCodes_jsonArray.getJSONObject(k).optString("ICodes");
-                                                JSONObject ICodes_jsonobject = new JSONObject(ICodes);
-                                                String ICodes_Result = ICodes_jsonobject.getString("results");
-                                                JSONArray ICodes_jsonArray = new JSONArray(ICodes_Result);
-                                                if (ICodes_jsonArray.length() > 0) {
-                                                    for (int m = 0; m < ICodes_jsonArray.length(); m++) {
-                                                        String Code = ICodes_jsonArray.getJSONObject(m).optString("Code");
-                                                        String Kurztext1 = ICodes_jsonArray.getJSONObject(m).optString("Kurztext1");
-                                                        ItemCodes_statement.bindString(1, NotifType);
-                                                        ItemCodes_statement.bindString(2, Rbnr);
-                                                        ItemCodes_statement.bindString(3, Codegruppe);
-                                                        ItemCodes_statement.bindString(4, Kurztext);
-                                                        ItemCodes_statement.bindString(5, Code);
-                                                        ItemCodes_statement.bindString(6, Kurztext1);
-                                                        ItemCodes_statement.execute();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    */
-                    /*Reading and Inserting Data into Database Table for ItemCodes*//*
-
-
-
-                     */
-                    /*Reading and Inserting Data into Database Table for CauseCodes*//*
-
-                                    String CauseCodes = jsonArray.getJSONObject(j).optString("CauseCodes");
-                                    JSONObject CauseCodes_jsonobject = new JSONObject(CauseCodes);
-                                    String CauseCodes_Result = CauseCodes_jsonobject.getString("results");
-                                    if (CauseCodes_Result != null && !CauseCodes_Result.equals("") && !CauseCodes_Result.equals("null")) {
-                                        JSONArray CauseCodes_jsonArray = new JSONArray(CauseCodes_Result);
-                                        if (CauseCodes_jsonArray.length() > 0) {
-                                            for (int k = 0; k < CauseCodes_jsonArray.length(); k++) {
-                                                String Codegruppe = CauseCodes_jsonArray.getJSONObject(k).optString("Codegruppe");
-                                                String Kurztext = CauseCodes_jsonArray.getJSONObject(k).optString("Kurztext");
-                                                String CCall = CauseCodes_jsonArray.getJSONObject(k).optString("CCall");
-                                                JSONObject CCall_jsonobject = new JSONObject(CCall);
-                                                String CCall_Result = CCall_jsonobject.getString("results");
-                                                JSONArray CCall_jsonArray = new JSONArray(CCall_Result);
-                                                if (CCall_jsonArray.length() > 0) {
-                                                    for (int m = 0; m < CCall_jsonArray.length(); m++) {
-                                                        String Code = CCall_jsonArray.getJSONObject(m).optString("Code");
-                                                        String Kurztext1 = CCall_jsonArray.getJSONObject(m).optString("Kurztext1");
-                                                        CauseCodes_statement.bindString(1, NotifType);
-                                                        CauseCodes_statement.bindString(2, Rbnr);
-                                                        CauseCodes_statement.bindString(3, Codegruppe);
-                                                        CauseCodes_statement.bindString(4, Kurztext);
-                                                        CauseCodes_statement.bindString(5, Code);
-                                                        CauseCodes_statement.bindString(6, Kurztext1);
-                                                        CauseCodes_statement.execute();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    */
-                    /*Reading and Inserting Data into Database Table for CauseCodes*//*
-
-
-
-                     */
-                    /*Reading and Inserting Data into Database Table for ObjectCodes*//*
-
-                                    String ObjectCodes = jsonArray.getJSONObject(j).optString("ObjectCodes");
-                                    JSONObject ObjectCodes_jsonobject = new JSONObject(ObjectCodes);
-                                    String ObjectCodes_Result = ObjectCodes_jsonobject.getString("results");
-                                    if (ObjectCodes_Result != null && !ObjectCodes_Result.equals("") && !ObjectCodes_Result.equals("null")) {
-                                        JSONArray ObjectCodes_jsonArray = new JSONArray(ObjectCodes_Result);
-                                        if (ObjectCodes_jsonArray.length() > 0) {
-                                            for (int k = 0; k < ObjectCodes_jsonArray.length(); k++) {
-                                                String Codegruppe = ObjectCodes_jsonArray.getJSONObject(k).optString("Codegruppe");
-                                                String Kurztext = ObjectCodes_jsonArray.getJSONObject(k).optString("Kurztext");
-                                                String OCall = ObjectCodes_jsonArray.getJSONObject(k).optString("OCall");
-                                                JSONObject OCall_jsonobject = new JSONObject(OCall);
-                                                String OCall_Result = OCall_jsonobject.getString("results");
-                                                JSONArray OCall_jsonArray = new JSONArray(OCall_Result);
-                                                if (OCall_jsonArray.length() > 0) {
-                                                    for (int m = 0; m < OCall_jsonArray.length(); m++) {
-                                                        String Code = OCall_jsonArray.getJSONObject(m).optString("Code");
-                                                        String Kurztext1 = OCall_jsonArray.getJSONObject(m).optString("Kurztext1");
-                                                        ObjectCodes_statement.bindString(1, NotifType);
-                                                        ObjectCodes_statement.bindString(2, Rbnr);
-                                                        ObjectCodes_statement.bindString(3, Codegruppe);
-                                                        ObjectCodes_statement.bindString(4, Kurztext);
-                                                        ObjectCodes_statement.bindString(5, Code);
-                                                        ObjectCodes_statement.bindString(6, Kurztext1);
-                                                        ObjectCodes_statement.execute();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    */
-                    /*Reading and Inserting Data into Database Table for ObjectCodes*//*
-
-
-
-                     */
-                    /*Reading and Inserting Data into Database Table for ActCodes*//*
-
-                                    String ActCodes = jsonArray.getJSONObject(j).optString("ActCodes");
-                                    JSONObject ActCodes_jsonobject = new JSONObject(ActCodes);
-                                    String ActCodes_Result = ActCodes_jsonobject.getString("results");
-                                    if (ActCodes_Result != null && !ActCodes_Result.equals("") && !ActCodes_Result.equals("null")) {
-                                        JSONArray ActCodes_jsonArray = new JSONArray(ActCodes_Result);
-                                        if (ActCodes_jsonArray.length() > 0) {
-                                            for (int k = 0; k < ActCodes_jsonArray.length(); k++) {
-                                                String Codegruppe = ActCodes_jsonArray.getJSONObject(k).optString("Codegruppe");
-                                                String Kurztext = ActCodes_jsonArray.getJSONObject(k).optString("Kurztext");
-                                                String ACall = ActCodes_jsonArray.getJSONObject(k).optString("ACall");
-                                                JSONObject ACall_jsonobject = new JSONObject(ACall);
-                                                String ACall_Result = ACall_jsonobject.getString("results");
-                                                JSONArray ACall_jsonArray = new JSONArray(ACall_Result);
-                                                if (ACall_jsonArray.length() > 0) {
-                                                    for (int m = 0; m < ACall_jsonArray.length(); m++) {
-                                                        String Code = ACall_jsonArray.getJSONObject(m).optString("Code");
-                                                        String Kurztext1 = ACall_jsonArray.getJSONObject(m).optString("Kurztext1");
-                                                        ActCodes_statement.bindString(1, NotifType);
-                                                        ActCodes_statement.bindString(2, Rbnr);
-                                                        ActCodes_statement.bindString(3, Codegruppe);
-                                                        ActCodes_statement.bindString(4, Kurztext);
-                                                        ActCodes_statement.bindString(5, Code);
-                                                        ActCodes_statement.bindString(6, Kurztext1);
-                                                        ActCodes_statement.execute();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    */
-                    /*Reading and Inserting Data into Database Table for ActCodes*//*
-
-
-
-                     */
-                    /*Reading and Inserting Data into Database Table for Task Codes*//*
-
-                                    String TaskCodes = jsonArray.getJSONObject(j).optString("TaskCodes");
-                                    JSONObject TaskCodes_jsonobject = new JSONObject(TaskCodes);
-                                    String TaskCodes_Result = TaskCodes_jsonobject.getString("results");
-                                    if (TaskCodes_Result != null && !TaskCodes_Result.equals("") && !TaskCodes_Result.equals("null")) {
-                                        JSONArray TaskCodes_jsonArray = new JSONArray(TaskCodes_Result);
-                                        if (TaskCodes_jsonArray.length() > 0) {
-                                            for (int k = 0; k < TaskCodes_jsonArray.length(); k++) {
-                                                String Codegruppe = TaskCodes_jsonArray.getJSONObject(k).optString("Codegruppe");
-                                                String Kurztext = TaskCodes_jsonArray.getJSONObject(k).optString("Kurztext");
-                                                String TCall = TaskCodes_jsonArray.getJSONObject(k).optString("TCall");
-                                                JSONObject TCall_jsonobject = new JSONObject(TCall);
-                                                String TCall_Result = TCall_jsonobject.getString("results");
-                                                JSONArray TCall_jsonArray = new JSONArray(TCall_Result);
-                                                if (TCall_jsonArray.length() > 0) {
-                                                    for (int m = 0; m < TCall_jsonArray.length(); m++) {
-                                                        String Code = TCall_jsonArray.getJSONObject(m).optString("Code");
-                                                        String Kurztext1 = TCall_jsonArray.getJSONObject(m).optString("Kurztext1");
-                                                        TasktCodes_statement.bindString(1, Codegruppe);
-                                                        TasktCodes_statement.bindString(2, Kurztext);
-                                                        TasktCodes_statement.bindString(3, Code);
-                                                        TasktCodes_statement.bindString(4, Kurztext1);
-                                                        TasktCodes_statement.execute();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    */
-                    /*Reading and Inserting Data into Database Table for Task Codes*//*
-
-
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                    }
-                    */
-                    /*Reading and Inserting Data into Database Table for EtNotifCodes*//*
-*/
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
                     Get_Response = "success";

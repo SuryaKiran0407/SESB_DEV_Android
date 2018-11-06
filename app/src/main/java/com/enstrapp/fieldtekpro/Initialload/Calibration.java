@@ -12,12 +12,11 @@ import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -32,11 +31,13 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Calibration {
 
-    private static String password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "";
+    private static String password = "", url_link = "", username = "", device_serial_number = "",
+            device_id = "", device_uuid = "", Get_Response = "";
     private static SharedPreferences FieldTekPro_SharedPref;
     private static SharedPreferences.Editor FieldTekPro_SharedPrefeditor;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
+    private static Check_Empty c_e = new Check_Empty();
 
     /* EtQinspData Table and Fields Names */
     private static final String TABLE_EtQinspData = "EtQinspData";
@@ -84,7 +85,6 @@ public class Calibration {
     private static final String KEY_EtQinspData_Werks = "Werks";//40
     /* EtQinspData Table and Fields Names */
 
-
     /* EtQudData Table and Fields Names */
     private static final String TABLE_EtQudData = "EtQudData";
     private static final String KEY_EtQudData_ID = "id";//0
@@ -117,7 +117,8 @@ public class Calibration {
             if (transmit_type.equalsIgnoreCase("LOAD")) {
                 /* EtQinspData Table and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtQinspData);
-                String CREATE_TABLE_EtQinspData = "CREATE TABLE IF NOT EXISTS " + TABLE_EtQinspData + ""
+                String CREATE_TABLE_EtQinspData = "CREATE TABLE IF NOT EXISTS "
+                        + TABLE_EtQinspData + ""
                         + "( "
                         + KEY_EtQinspData_ID + " INTEGER PRIMARY KEY,"//0
                         + KEY_EtQinspData_Aufnr + " TEXT,"//1
@@ -198,22 +199,29 @@ public class Calibration {
                 App_db.execSQL("delete from EtQudData");
             }
             /* Initializing Shared Preferences */
-            FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+            FieldTekPro_SharedPref = activity
+                    .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username", null);
             password = FieldTekPro_SharedPref.getString("Password", null);
-            String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+            String webservice_type = FieldTekPro_SharedPref
+                    .getString("webservice_type", null);
             /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D3", "RD", webservice_type});
+            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype =" +
+                            " ? and Zactivity = ? and Endpoint = ?",
+                    new String[]{"D3", "RD", webservice_type});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
-            device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            device_id = Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
-            String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+            String androidId = "" + Settings.Secure
+                    .getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(),
+                    ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
@@ -224,202 +232,201 @@ public class Calibration {
             map.put("Devicesno", device_serial_number);
             map.put("Udid", device_uuid);
             map.put("IvTransmitType", transmit_type);
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(180000, TimeUnit.MILLISECONDS)
+                    .writeTimeout(180000, TimeUnit.MILLISECONDS)
+                    .readTimeout(180000, TimeUnit.MILLISECONDS).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(URL).client(client).build();
             Interface service = retrofit.create(Interface.class);
             String credentials = username + ":" + password;
-            final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            final String basic = "Basic " +
+                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
             Call<Calibration_SER> call = service.getCalibrationDetails(url_link, basic, map);
             Response<Calibration_SER> response = call.execute();
             int response_status_code = response.code();
             Log.v("kiran_Calibration_code", response_status_code + "...");
             if (response_status_code == 200) {
                 if (response.isSuccessful() && response.body() != null) {
-                    /*Reading Response Data and Parsing to Serializable*/
-                    Calibration_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
-
+                    List<Calibration_SER.Result> results = response.body().getD().getResults();
                     App_db.beginTransaction();
 
-                    /*Reading and Inserting Data into Database Table for EtQinspData*/
-                    String EtQinspData_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtQinspData().getResults());
-                    if (EtQinspData_response_data != null && !EtQinspData_response_data.equals("") && !EtQinspData_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtQinspData_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String EtQinspData_sql = "Insert into EtQinspData (Aufnr, Prueflos, Vornr, Plnty, Plnnr, Plnkn, Merknr, Quantitat, Qualitat, QpmkZaehl, Msehi, Msehl, Verwmerkm, Kurztext, Result, Sollwert, Toleranzob, Toleranzub, Rueckmelnr, Satzstatus, Equnr, Pruefbemkt, Mbewertg, Pruefer, Pruefdatuv, Pruefdatub, Pruefzeitv, Pruefzeitb, Iststpumf, Anzfehleh, Anzwertg, Ktextmat, Katab1, Katalgart1, Auswmenge1, Codetext, Xstatus, Action, UUID, Udid, Werks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(EtQinspData_sql);
-                            statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Aufnr"));
-                                statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Prueflos"));
-                                statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Vornr"));
-                                statement.bindString(4, response_data_jsonArray.getJSONObject(j).optString("Plnty"));
-                                statement.bindString(5, response_data_jsonArray.getJSONObject(j).optString("Plnnr"));
-                                statement.bindString(6, response_data_jsonArray.getJSONObject(j).optString("Plnkn"));
-                                statement.bindString(7, response_data_jsonArray.getJSONObject(j).optString("Merknr"));
-                                statement.bindString(8, response_data_jsonArray.getJSONObject(j).optString("Quantitat"));
-                                statement.bindString(9, response_data_jsonArray.getJSONObject(j).optString("Qualitat"));
-                                statement.bindString(10, response_data_jsonArray.getJSONObject(j).optString("QpmkZaehl"));
-                                statement.bindString(11, response_data_jsonArray.getJSONObject(j).optString("Msehi"));
-                                statement.bindString(12, response_data_jsonArray.getJSONObject(j).optString("Msehl"));
-                                statement.bindString(13, response_data_jsonArray.getJSONObject(j).optString("Verwmerkm"));
-                                statement.bindString(14, response_data_jsonArray.getJSONObject(j).optString("Kurztext"));
-                                statement.bindString(15, response_data_jsonArray.getJSONObject(j).optString("Result"));
-                                statement.bindString(16, response_data_jsonArray.getJSONObject(j).optString("Sollwert"));
-                                statement.bindString(17, response_data_jsonArray.getJSONObject(j).optString("Toleranzob"));
-                                statement.bindString(18, response_data_jsonArray.getJSONObject(j).optString("Toleranzub"));
-                                statement.bindString(19, response_data_jsonArray.getJSONObject(j).optString("Rueckmelnr"));
-                                statement.bindString(20, response_data_jsonArray.getJSONObject(j).optString("Satzstatus"));
-                                statement.bindString(21, response_data_jsonArray.getJSONObject(j).optString("Equnr"));
-                                statement.bindString(22, response_data_jsonArray.getJSONObject(j).optString("Pruefbemkt"));
+                    if (results != null && results.size() > 0) {
 
-                                String QUANTITAT = response_data_jsonArray.getJSONObject(j).optString("Quantitat");
-                                if (QUANTITAT.equalsIgnoreCase("X")) {
-                                    String result = response_data_jsonArray.getJSONObject(j).optString("Result");
-                                    if (result != null && !result.equals("")) {
-                                        String fromm = "", too = "";
-                                        String from = response_data_jsonArray.getJSONObject(j).optString("Toleranzub");
-                                        if (from != null && !from.equals("")) {
-                                            if (from.contains(",")) {
-                                                String result1 = from.replace(",", ".");
-                                                Float dvd = Float.parseFloat(result1);
-                                                DecimalFormat df = new DecimalFormat("###.##");
-                                                too = df.format(dvd);
-                                            } else {
-                                                Float dvd = Float.parseFloat(from);
-                                                DecimalFormat df = new DecimalFormat("###.##");
-                                                too = df.format(dvd);
-                                            }
-                                        }
-
-                                        String to = response_data_jsonArray.getJSONObject(j).optString("Toleranzob");
-                                        if (to != null && !to.equals("")) {
-                                            if (to.contains(",")) {
-                                                String result1 = to.replace(",", ".");
-                                                Float dvd = Float.parseFloat(result1);
-                                                DecimalFormat df = new DecimalFormat("###.##");
-                                                fromm = df.format(dvd);
-                                            } else {
-                                                Float dvd = Float.parseFloat(to);
-                                                DecimalFormat df = new DecimalFormat("###.##");
-                                                fromm = df.format(dvd);
-                                            }
-                                        }
-
-                                        if (result.contains(",")) {
-                                            String result1 = result.replace(",", ".");
-                                            Float dvd = Float.parseFloat(result1);
-                                            DecimalFormat df = new DecimalFormat("###.##");
-                                            String res = df.format(dvd);
-                                            Float floatt = Float.parseFloat(res);
-                                            Float floatt1 = Float.parseFloat(too);
-                                            Float floatt2 = Float.parseFloat(fromm);
-                                            if (floatt >= floatt1 && floatt <= floatt2) {
-                                                statement.bindString(23, "A");
-                                            } else {
-                                                statement.bindString(23, "R");
-                                            }
-                                        } else {
-                                            if (too != null && !too.equals("") && fromm != null && !fromm.equals("")) {
-                                                Float floatt = Float.parseFloat(result);
-                                                Float floatt1 = Float.parseFloat(too);
-                                                Float floatt2 = Float.parseFloat(fromm);
-                                                if (floatt >= floatt1 && floatt <= floatt2) {
-                                                    statement.bindString(23, "A");
-                                                } else {
-                                                    statement.bindString(23, "R");
-                                                }
-                                            } else {
-                                                statement.bindString(23, "R");
-                                            }
-                                        }
-                                    } else {
-                                        statement.bindString(23, "R");
-                                    }
-                                } else {
-                                    statement.bindString(23, response_data_jsonArray.getJSONObject(j).optString("Mbewertg"));
+                        /*EtQinspData*/
+                        Calibration_SER.EtQinspData etQinspData = results.get(0).getEtQinspData();
+                        if (etQinspData != null) {
+                            List<Calibration_SER.EtQinspData_Result> etQinspDataResults = etQinspData.getResults();
+                            if (etQinspDataResults != null && etQinspDataResults.size() > 0) {
+                                String EtQinspData_sql = "Insert into EtQinspData (Aufnr, Prueflos, Vornr, " +
+                                        "Plnty, Plnnr, Plnkn, Merknr, Quantitat, Qualitat, QpmkZaehl, Msehi," +
+                                        " Msehl, Verwmerkm, Kurztext, Result, Sollwert, Toleranzob, Toleranzub," +
+                                        " Rueckmelnr, Satzstatus, Equnr, Pruefbemkt, Mbewertg, Pruefer, " +
+                                        "Pruefdatuv, Pruefdatub, Pruefzeitv, Pruefzeitb, Iststpumf, Anzfehleh," +
+                                        " Anzwertg, Ktextmat, Katab1, Katalgart1, Auswmenge1, Codetext, Xstatus," +
+                                        " Action, UUID, Udid, Werks)" +
+                                        "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                        "?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(EtQinspData_sql);
+                                statement.clearBindings();
+                                for (Calibration_SER.EtQinspData_Result eQ : etQinspDataResults) {
+                                    statement.bindString(1, c_e.check_empty(eQ.getAufnr()));
+                                    statement.bindString(2, c_e.check_empty(eQ.getPrueflos()));
+                                    statement.bindString(3, c_e.check_empty(eQ.getVornr()));
+                                    statement.bindString(4, c_e.check_empty(eQ.getPlnty()));
+                                    statement.bindString(5, c_e.check_empty(eQ.getPlnnr()));
+                                    statement.bindString(6, c_e.check_empty(eQ.getPlnkn()));
+                                    statement.bindString(7, c_e.check_empty(eQ.getMerknr()));
+                                    statement.bindString(8, c_e.check_empty(eQ.getQuantitat()));
+                                    statement.bindString(9, c_e.check_empty(eQ.getQualitat()));
+                                    statement.bindString(10, c_e.check_empty(eQ.getQpmkZaehl()));
+                                    statement.bindString(11, c_e.check_empty(eQ.getMsehi()));
+                                    statement.bindString(12, c_e.check_empty(eQ.getMsehl()));
+                                    statement.bindString(13, c_e.check_empty(eQ.getVerwmerkm()));
+                                    statement.bindString(14, c_e.check_empty(eQ.getKurztext()));
+                                    statement.bindString(15, c_e.check_empty(eQ.getResult()));
+                                    statement.bindString(16, c_e.check_empty(eQ.getSollwert()));
+                                    statement.bindString(17, c_e.check_empty(eQ.getToleranzob()));
+                                    statement.bindString(18, c_e.check_empty(eQ.getToleranzub()));
+                                    statement.bindString(19, c_e.check_empty(eQ.getRueckmelnr()));
+                                    statement.bindString(20, c_e.check_empty(eQ.getSatzstatus()));
+                                    statement.bindString(21, c_e.check_empty(eQ.getEqunr()));
+                                    statement.bindString(22, c_e.check_empty(eQ.getPruefbemkt()));
+                                    statement.bindString(23, getMbewertg(c_e.check_empty(eQ.getQuantitat()),
+                                            c_e.check_empty(eQ.getResult()), c_e.check_empty(eQ.getToleranzub()),
+                                            c_e.check_empty(eQ.getToleranzob()), c_e.check_empty(eQ.getMbewertg())));
+                                    statement.bindString(24, c_e.check_empty(eQ.getPruefer()));
+                                    statement.bindString(25, c_e.check_empty(eQ.getPruefdatuv()));
+                                    statement.bindString(26, c_e.check_empty(eQ.getPruefdatub()));
+                                    statement.bindString(27, c_e.check_empty(eQ.getPruefzeitv()));
+                                    statement.bindString(28, c_e.check_empty(eQ.getPruefzeitb()));
+                                    statement.bindString(29, c_e.check_empty(String.valueOf(eQ.getIststpumf())));
+                                    statement.bindString(30, c_e.check_empty(String.valueOf(eQ.getAnzfehleh())));
+                                    statement.bindString(31, c_e.check_empty(String.valueOf(eQ.getAnzwertg())));
+                                    statement.bindString(32, c_e.check_empty(eQ.getKtextmat()));
+                                    statement.bindString(33, c_e.check_empty(eQ.getKatab1()));
+                                    statement.bindString(34, c_e.check_empty(eQ.getKatalgart1()));
+                                    statement.bindString(35, c_e.check_empty(eQ.getAuswmenge1()));
+                                    statement.bindString(36, c_e.check_empty(eQ.getCodetext()));
+                                    statement.bindString(37, c_e.check_empty(eQ.getXstatus()));
+                                    statement.bindString(38, c_e.check_empty(eQ.getAction()));
+                                    statement.bindString(39, UUID.randomUUID().toString());
+                                    statement.bindString(40, c_e.check_empty(eQ.getUdid()));
+                                    statement.bindString(41, c_e.check_empty(eQ.getWerks()));
+                                    statement.execute();
                                 }
+                            }
+                        }
 
-                                statement.bindString(24, response_data_jsonArray.getJSONObject(j).optString("Pruefer"));
-                                statement.bindString(25, response_data_jsonArray.getJSONObject(j).optString("Pruefdatuv"));
-                                statement.bindString(26, response_data_jsonArray.getJSONObject(j).optString("Pruefdatub"));
-                                statement.bindString(27, response_data_jsonArray.getJSONObject(j).optString("Pruefzeitv"));
-                                statement.bindString(28, response_data_jsonArray.getJSONObject(j).optString("Pruefzeitb"));
-                                statement.bindString(29, response_data_jsonArray.getJSONObject(j).optString("Iststpumf"));
-                                statement.bindString(30, response_data_jsonArray.getJSONObject(j).optString("Anzfehleh"));
-                                statement.bindString(31, response_data_jsonArray.getJSONObject(j).optString("Anzwertg"));
-                                statement.bindString(32, response_data_jsonArray.getJSONObject(j).optString("Ktextmat"));
-                                statement.bindString(33, response_data_jsonArray.getJSONObject(j).optString("Katab1"));
-                                statement.bindString(34, response_data_jsonArray.getJSONObject(j).optString("Katalgart1"));
-                                statement.bindString(35, response_data_jsonArray.getJSONObject(j).optString("Auswmenge1"));
-                                statement.bindString(36, response_data_jsonArray.getJSONObject(j).optString("Codetext"));
-                                statement.bindString(37, response_data_jsonArray.getJSONObject(j).optString("Xstatus"));
-                                statement.bindString(38, response_data_jsonArray.getJSONObject(j).optString("Action"));
-                                UUID uniqueKey_uuid = UUID.randomUUID();
-                                statement.bindString(39, uniqueKey_uuid.toString());
-                                statement.bindString(40, response_data_jsonArray.getJSONObject(j).optString("Udid"));
-                                statement.bindString(41, response_data_jsonArray.getJSONObject(j).optString("Werks"));
-                                statement.execute();
+                        /*EtQudData*/
+                        Calibration_SER.EtQudData etQudData = results.get(0).getEtQudData();
+                        if (etQudData != null) {
+                            List<Calibration_SER.EtQudData_Result> etQudDataResults = etQudData.getResults();
+                            if (etQudDataResults != null && etQudDataResults.size() > 0) {
+                                String EtQudData_sql = "Insert into EtQudData (Prueflos,Aufnr,Werks, Equnr," +
+                                        " Vkatart, Vcodegrp, Vauswahlmg, Vcode, Qkennzahl, Vname, Vdatum," +
+                                        " Vaedatum, Vezeitaen, Udtext, Udforce, Rcode, Xstatus, Action, " +
+                                        "Udid, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                SQLiteStatement EtQudData_statement = App_db.compileStatement(EtQudData_sql);
+                                EtQudData_statement.clearBindings();
+                                for (Calibration_SER.EtQudData_Result eQU : etQudDataResults) {
+                                    EtQudData_statement.bindString(1, c_e.check_empty(eQU.getPrueflos()));
+                                    EtQudData_statement.bindString(2, c_e.check_empty(eQU.getAufnr()));
+                                    EtQudData_statement.bindString(3, c_e.check_empty(eQU.getWerks()));
+                                    EtQudData_statement.bindString(4, c_e.check_empty(eQU.getEqunr()));
+                                    EtQudData_statement.bindString(5, c_e.check_empty(eQU.getVkatart()));
+                                    EtQudData_statement.bindString(6, c_e.check_empty(eQU.getVcodegrp()));
+                                    EtQudData_statement.bindString(7, c_e.check_empty(eQU.getVauswahlmg()));
+                                    EtQudData_statement.bindString(8, c_e.check_empty(eQU.getVcode()));
+                                    EtQudData_statement.bindString(9, c_e.check_empty(eQU.getQkennzahl()));
+                                    EtQudData_statement.bindString(10, c_e.check_empty(eQU.getVname()));
+                                    EtQudData_statement.bindString(11, c_e.check_empty(eQU.getVdatum()));
+                                    EtQudData_statement.bindString(12, c_e.check_empty(eQU.getVaedatum()));
+                                    EtQudData_statement.bindString(13, c_e.check_empty(eQU.getVezeitaen()));
+                                    EtQudData_statement.bindString(14, c_e.check_empty(eQU.getUdtext()));
+                                    EtQudData_statement.bindString(15, c_e.check_empty(eQU.getUdforce()));
+                                    EtQudData_statement.bindString(16, c_e.check_empty(eQU.getRcode()));
+                                    EtQudData_statement.bindString(17, c_e.check_empty(eQU.getXstatus()));
+                                    EtQudData_statement.bindString(18, c_e.check_empty(eQU.getAction()));
+                                    EtQudData_statement.bindString(19, c_e.check_empty(eQU.getUdid()));
+                                    if (!c_e.check_empty(eQU.getVcode()).equals("") || !c_e.check_empty(eQU.getUdtext()).equals(""))
+                                        EtQudData_statement.bindString(20, "hide");
+                                    else
+                                        EtQudData_statement.bindString(20, "visible");
+                                    EtQudData_statement.execute();
+                                }
                             }
                         }
                     }
-                    /*Reading and Inserting Data into Database Table for EtQinspData*/
-
-
-
-                    /*Reading and Inserting Data into Database Table for EtQudData*/
-                    String EtQudData_response_data = new Gson().toJson(rs.getD().getResults().get(0).getEtQudData().getResults());
-                    if (EtQudData_response_data != null && !EtQudData_response_data.equals("") && !EtQudData_response_data.equals("null")) {
-                        JSONArray response_data_jsonArray = new JSONArray(EtQudData_response_data);
-                        if (response_data_jsonArray.length() > 0) {
-                            String EtQudData_sql = "Insert into EtQudData (Prueflos,Aufnr,Werks, Equnr, Vkatart, Vcodegrp, Vauswahlmg, Vcode, Qkennzahl, Vname, Vdatum, Vaedatum, Vezeitaen, Udtext, Udforce, Rcode, Xstatus, Action, Udid, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                            SQLiteStatement EtQudData_statement = App_db.compileStatement(EtQudData_sql);
-                            EtQudData_statement.clearBindings();
-                            for (int j = 0; j < response_data_jsonArray.length(); j++) {
-                                EtQudData_statement.bindString(1, response_data_jsonArray.getJSONObject(j).optString("Prueflos"));
-                                EtQudData_statement.bindString(2, response_data_jsonArray.getJSONObject(j).optString("Aufnr"));
-                                EtQudData_statement.bindString(3, response_data_jsonArray.getJSONObject(j).optString("Werks"));
-                                EtQudData_statement.bindString(4, response_data_jsonArray.getJSONObject(j).optString("Equnr"));
-                                EtQudData_statement.bindString(5, response_data_jsonArray.getJSONObject(j).optString("Vkatart"));
-                                EtQudData_statement.bindString(6, response_data_jsonArray.getJSONObject(j).optString("Vcodegrp"));
-                                EtQudData_statement.bindString(7, response_data_jsonArray.getJSONObject(j).optString("Vauswahlmg"));
-                                EtQudData_statement.bindString(8, response_data_jsonArray.getJSONObject(j).optString("Vcode"));
-                                EtQudData_statement.bindString(9, response_data_jsonArray.getJSONObject(j).optString("Qkennzahl"));
-                                EtQudData_statement.bindString(10, response_data_jsonArray.getJSONObject(j).optString("Vname"));
-                                EtQudData_statement.bindString(11, response_data_jsonArray.getJSONObject(j).optString("Vdatum"));
-                                EtQudData_statement.bindString(12, response_data_jsonArray.getJSONObject(j).optString("Vaedatum"));
-                                EtQudData_statement.bindString(13, response_data_jsonArray.getJSONObject(j).optString("Vezeitaen"));
-                                EtQudData_statement.bindString(14, response_data_jsonArray.getJSONObject(j).optString("Udtext"));
-                                EtQudData_statement.bindString(15, response_data_jsonArray.getJSONObject(j).optString("Udforce"));
-                                EtQudData_statement.bindString(16, response_data_jsonArray.getJSONObject(j).optString("Rcode"));
-                                EtQudData_statement.bindString(17, response_data_jsonArray.getJSONObject(j).optString("Xstatus"));
-                                EtQudData_statement.bindString(18, response_data_jsonArray.getJSONObject(j).optString("Action"));
-                                EtQudData_statement.bindString(19, response_data_jsonArray.getJSONObject(j).optString("Udid"));
-                                String Vcode = response_data_jsonArray.getJSONObject(j).optString("Vcode");
-                                String notes = response_data_jsonArray.getJSONObject(j).optString("Udtext");
-                                if (Vcode != null && !Vcode.equals("") || notes != null && !notes.equals("")) {
-                                    EtQudData_statement.bindString(20, "hide");
-                                } else {
-                                    EtQudData_statement.bindString(20, "visible");
-                                }
-                                EtQudData_statement.execute();
-                            }
-                        }
-                    }
-                    /*Reading and Inserting Data into Database Table for EtQudData*/
-
-
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
                     Get_Response = "success";
                 }
-            } else {
             }
         } catch (Exception ex) {
             Get_Response = "exception";
-        } finally {
         }
         return Get_Response;
+    }
+
+    private static String getMbewertg(String quantitat, String result, String toleranzub,
+                                      String toleranzob, String mbewertg) {
+        if (quantitat.equalsIgnoreCase("X")) {
+            if (!result.equals("")) {
+                String from = "", to = "";
+                if (!toleranzub.equals("")) {
+                    if (toleranzub.contains(","))
+                        to = decimalFormatterComma(toleranzub);
+                    else
+                        to = decimalFormatter(toleranzub);
+                }
+
+                if (!toleranzob.equals("")) {
+                    if (toleranzob.contains(","))
+                        from = decimalFormatterComma(toleranzob);
+                    else
+                        from = decimalFormatter(toleranzob);
+                }
+
+                if (result.contains(",")) {
+                    Float floatResult = Float.parseFloat(
+                            decimalFormatterComma(
+                                    result));
+                    Float floatTo = Float.parseFloat(to);
+                    Float floatFrom = Float.parseFloat(from);
+                    if (floatResult >= floatTo && floatResult <= floatFrom)
+                        return "A";
+                    else
+                        return "R";
+                } else {
+                    if (to != null && !to.equals("") && from != null && !from.equals("")) {
+                        Float floatResult = Float.parseFloat(result);
+                        Float floatTo = Float.parseFloat(to);
+                        Float floatFrom = Float.parseFloat(from);
+                        if (floatResult >= floatTo && floatResult <= floatFrom)
+                            return "A";
+                        else
+                            return "R";
+                    } else {
+                        return "R";
+                    }
+                }
+            } else {
+                return "R";
+            }
+        } else {
+            return mbewertg;
+        }
+    }
+
+    private static String decimalFormatterComma(String result) {
+        return new DecimalFormat("###.##")
+                .format(Float.parseFloat(result.replace(",", ".")));
+    }
+
+    private static String decimalFormatter(String result) {
+        return new DecimalFormat("###.##").format(Float.parseFloat(result));
     }
 
 }

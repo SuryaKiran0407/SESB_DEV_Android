@@ -33,11 +33,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
     int floc_status = 0, equip_status = 1;
     String work_center_id = "", functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "", plant_id = "", plannergroup_id = "", plannergroup_text = "";
     GridView grid;
-    String[] web = {getString(R.string.create_notification), getString(R.string.orders),};
+    String[] web, web1;
     int[] imageId = {R.drawable.ic_create_notif_icon, R.drawable.ic_purchaseorder_icon,};
-    String[] web1 = {getString(R.string.create_notification), getString(R.string.stats),
-            getString(R.string.history), getString(R.string.orders),
-            getString(R.string.inspc_chklist), getString(R.string.geo_tag), getString(R.string.maintenanceplan)};
     int[] imageId1 = {R.drawable.ic_create_notif_icon, R.drawable.ic_statistics_icon, R.drawable.ic_history_icon1, R.drawable.ic_purchaseorder_icon, R.drawable.ic_checklist_icon1, R.drawable.ic_geotag_icon, R.drawable.ic_maintenanceplan_icon,};
     String selected_status = "";
     private static final int ZXING_CAMERA_PERMISSION = 3;
@@ -51,11 +48,14 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.equipment_inspection_activity);
 
-
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = Equipment_Inspection_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-
+        web = new String[]{getString(R.string.create_notification), getString(R.string.orders)};
+        web1 = new String[]{getString(R.string.create_notification), getString(R.string.stats),
+                getString(R.string.history), getString(R.string.orders),
+                getString(R.string.inspc_chklist), getString(R.string.geo_tag),
+                getString(R.string.maintenanceplan)};
         floc_layout = (LinearLayout) findViewById(R.id.floc_layout);
         equip_layout = (LinearLayout) findViewById(R.id.equip_layout);
         floc_edittext = (EditText) findViewById(R.id.floc_edittext);
