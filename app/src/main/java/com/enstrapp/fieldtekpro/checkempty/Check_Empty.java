@@ -9,13 +9,14 @@ public class Check_Empty {
                 return "";
             } else {
                 boolean digitsOnly = TextUtils.isDigitsOnly(message);
-                if (digitsOnly) {
+                /*if (digitsOnly) {
                     long a = Long.parseLong(message);
                     String msg = Long.valueOf(a).toString();
                     return msg;
                 } else {
                     return message;
-                }
+                }*/
+                return message;
             }
         } else {
             return "";
