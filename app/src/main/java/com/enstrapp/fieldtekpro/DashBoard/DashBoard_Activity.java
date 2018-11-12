@@ -115,7 +115,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                 cursor1.close();
         }
         if (username != null && !username.equals(""))
-            userName_tv.setText(getString(R.string.dashboard_name,username));
+            userName_tv.setText(username);
 
 
         /*For Checking Authorizations for each tile*/

@@ -38,26 +38,6 @@ public class Auth {
     private static String DATABASE_NAME = "";
     private static Check_Empty c_e = new Check_Empty();
 
-    /* Get_User_Data Table and Fields Names */
-    /*private static final String TABLE_GET_USER_DATA = "GET_USER_DATA";
-    private static final String KEY_GET_USER_DATA_ID = "id";
-    private static final String KEY_SAPUSER = "Sapuser";
-    private static final String KEY_MUSER = "Muser";
-    private static final String KEY_FNAME = "Fname";
-    private static final String KEY_LNAME = "Lname";
-    private static final String KEY_KOSTL = "Kostl";
-    private static final String KEY_ARBPL = "Arbpl";
-    private static final String KEY_IWERK = "Iwerk";
-    private static final String KEY_OUNIT = "Ounit";
-    private static final String KEY_PERNR = "Pernr";
-    private static final String KEY_INGRP = "Ingrp";
-    private static final String KEY_PARVW = "Parvw";
-    private static final String KEY_PARNR = "Parnr";
-    private static final String KEY_SUSER = "Suser";
-    private static final String KEY_USTYP = "Ustyp";
-    private static final String KEY_USGRP = "Usgrp";*/
-    /* Get_User_Data Table and Fields Names */
-
     /* Authorization EtBusf */
     private static final String TABLE_Authorization_EtBusf = "Authorization_EtBusf";
     private static final String KEY_Authorization_EtBusf_ID = "ID";
@@ -92,30 +72,6 @@ public class Auth {
             DATABASE_NAME = activity.getString(R.string.database_name);
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             if (transmit_type.equalsIgnoreCase("LOAD")) {
-                /* Creating GET_USER_DATA Table with Fields */
-                /*App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_USER_DATA);
-                String CREATE_GET_USER_DATA_TABLE = "CREATE TABLE IF NOT EXISTS "
-                        + TABLE_GET_USER_DATA + ""
-                        + "( "
-                        + KEY_GET_USER_DATA_ID + " INTEGER PRIMARY KEY,"
-                        + KEY_SAPUSER + " TEXT,"
-                        + KEY_MUSER + " TEXT,"
-                        + KEY_FNAME + " TEXT,"
-                        + KEY_LNAME + " TEXT,"
-                        + KEY_KOSTL + " TEXT,"
-                        + KEY_ARBPL + " TEXT,"
-                        + KEY_IWERK + " TEXT,"
-                        + KEY_OUNIT + " TEXT,"
-                        + KEY_PERNR + " TEXT,"
-                        + KEY_INGRP + " TEXT,"
-                        + KEY_PARVW + " TEXT,"
-                        + KEY_PARNR + " TEXT,"
-                        + KEY_SUSER + " TEXT,"
-                        + KEY_USTYP + " TEXT,"
-                        + KEY_USGRP + " TEXT"
-                        + ")";
-                App_db.execSQL(CREATE_GET_USER_DATA_TABLE);*/
-                /* Creating GET_USER_DATA Table with Fields */
 
                 /* Authorization EtBusf */
                 App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_Authorization_EtBusf);
@@ -240,38 +196,6 @@ public class Auth {
                                 }
                             }
                         }
-
-                        /*EsUser*/
-                        /*Using now in Login service*/
-                    /*Auth_SER.EsUser esUser = results.get(0).getEsUser();
-                    if (esUser != null) {
-                        List<Auth_SER.EsUser_Result> esUserResults = esUser.getResults();
-                        if (esUserResults != null && esUserResults.size() > 0) {
-                            String sql = "Insert into GET_USER_DATA (Sapuser,Muser,Fname,Lname," +
-                                    "Kostl,Arbpl,Iwerk,Ounit,Pernr,Ingrp,Parvw,Parnr,Suser," +
-                                    "Ustyp,Usgrp) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (Auth_SER.EsUser_Result eU : esUserResults) {
-                                statement.bindString(1, c_e.check_empty(eU.getSapuser()));
-                                statement.bindString(2, c_e.check_empty(eU.getMuser()));
-                                statement.bindString(3, c_e.check_empty(eU.getFname()));
-                                statement.bindString(4, c_e.check_empty(eU.getLname()));
-                                statement.bindString(5, c_e.check_empty(eU.getKostl()));
-                                statement.bindString(6, c_e.check_empty(eU.getArbpl()));
-                                statement.bindString(7, c_e.check_empty(eU.getIwerk()));
-                                statement.bindString(8, c_e.check_empty(eU.getOunit()));
-                                statement.bindString(9, c_e.check_empty(eU.getPernr()));
-                                statement.bindString(10, c_e.check_empty(eU.getIngrp()));
-                                statement.bindString(11, c_e.check_empty(eU.getParvw()));
-                                statement.bindString(12, c_e.check_empty(eU.getParnr()));
-                                statement.bindString(13, c_e.check_empty(eU.getSuser()));
-                                statement.bindString(14, c_e.check_empty(eU.getUstyp()));
-                                statement.bindString(15, c_e.check_empty(eU.getUsgrp()));
-                                statement.execute();
-                            }
-                        }
-                    }*/
 
                         /*EtMusrf*/
                         Auth_SER.EtMusrf etMusrf = results.get(0).getEtMusrf();

@@ -593,7 +593,6 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call<SER_Login> call, Response<SER_Login> response) {
                         int login_response_status_code = response.code();
                         Log.v("kiran_login_response_code", login_response_status_code + "...");
-                        String login_response_message = response.message();
                         if (login_response_status_code == 200) {
                             if (response.isSuccessful() && response.body() != null) {
                                 try {

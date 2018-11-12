@@ -27,7 +27,6 @@
     <string name="connect">Connect</string>
     <string name="fetching_data">Greetings! %1s \nInitial data load in progress. Please wait&#8230;</string>
     <string name="refreshing_data">Greetings! %1s \nRefresh in progress. Please wait&#8230;</string>
-    <string name="dashboard_name">Hi, %1s</string>
     <string name="no_bom_found">No BOM Found</string>
     <string name="loading_history">Loading History...</string>
     <string name="maintenanceplan">Maintenance Plan</string>

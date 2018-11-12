@@ -59,13 +59,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
                 cursor.close();
         }
 
-       /* if (From != null && !From.equals("")) {
-            progressDialog.show_progress_dialog(InitialLoad_Activity.this, getResources().getString(R.string.fetching_data));
-            transmit_type = "LOAD";
-        } else {
-            progressDialog.show_progress_dialog(InitialLoad_Activity.this, getResources().getString(R.string.refreshing_data));
-            transmit_type = "REFR";
-        }*/
         if (From != null && !From.equals("")) {
             progressDialog.show_progress_dialog(InitialLoad_Activity.this,
                     getString(R.string.fetching_data, username));
