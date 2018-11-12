@@ -628,7 +628,7 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                                     List<SER_Login.Result> results = response.body().getD().getResults();
                                     App_db.beginTransaction();
 
-                                    if (results != null && results.size() > 0){
+                                    if (results != null && results.size() > 0) {
                                         Auth_SER.EsUser esUser = results.get(0).getEsuser();
                                         if (esUser != null) {
                                             List<Auth_SER.EsUser_Result> esUserResults = esUser.getResults();
@@ -662,65 +662,25 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                                     App_db.setTransactionSuccessful();
                                     App_db.endTransaction();
 
-                                    String response_data = new Gson().toJson(response.body(), SER_Login.class);
-                                    JSONObject jsonObject = new JSONObject(response_data);
-                                    if (jsonObject.has("d")) {
-                                        String EvFailed = jsonObject.getJSONObject("d").getJSONArray("results").getJSONObject(0).optString("EvFailed");
-                                        if (EvFailed.equalsIgnoreCase("false")) {
+                                    if (results != null && results.size() > 0) {
+                                        if (!results.get(0).getEvFailed()) {
                                             String token = response.headers().get("x-csrf-token");
                                             progressDialog.dismiss_progress_dialog();
-                                            FieldTekPro_SharedPrefeditor.putString("Username", username_edittext.getText().toString());
-                                            FieldTekPro_SharedPrefeditor.putString("Password", password_edittext.getText().toString());
-                                            FieldTekPro_SharedPrefeditor.putString("header_credentials", username_edittext.getText().toString() + ":" + password_edittext.getText().toString());
+                                            FieldTekPro_SharedPrefeditor.putString("Username",
+                                                    username_edittext.getText().toString());
+                                            FieldTekPro_SharedPrefeditor.putString("Password",
+                                                    password_edittext.getText().toString());
+                                            FieldTekPro_SharedPrefeditor.putString("header_credentials",
+                                                    username_edittext.getText().toString() + ":" +
+                                                            password_edittext.getText().toString());
                                             FieldTekPro_SharedPrefeditor.putString("token", token);
                                             FieldTekPro_SharedPrefeditor.putString("webservice_type", "ODATA");
                                             FieldTekPro_SharedPrefeditor.commit();
                                             progressDialog.dismiss_progress_dialog();
-                                            String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
-                                            String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
-                                            if (InitialLoad != null && !InitialLoad.equals("")) {
-                                            /*Intent intialload_intent = new Intent(Login_Activity.this, InitialLoad_Activity.class);
-                                            intialload_intent.putExtra("From","LOAD");
-                                            startActivity(intialload_intent);
-                                            Login_Activity.this.finish();*/
+                                            getSupportFragmentManager().beginTransaction()
+                                                    .add(R.id.main_frag, new Passcode_Fragment())
+                                                    .commit();
 
-                                            /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                            startActivity(notification_intent);
-                                            Login_Activity.this.finish();*/
-
-                                                getSupportFragmentManager().beginTransaction()
-                                                        .add(R.id.main_frag, new Passcode_Fragment())
-                                                        .commit();
-                                            } else if (Refresh != null && !Refresh.equals("")) {
-
-                                            /*Intent intialload_intent = new Intent(Login_Activity.this, InitialLoad_Activity.class);
-                                            intialload_intent.putExtra("From","");
-                                            startActivity(intialload_intent);
-                                            Login_Activity.this.finish();*/
-
-
-                                            /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                            startActivity(notification_intent);
-                                            Login_Activity.this.finish();*/
-
-                                                getSupportFragmentManager().beginTransaction()
-                                                        .add(R.id.main_frag, new Passcode_Fragment())
-                                                        .commit();
-                                            } else {
-
-                                            /*Intent intialload_intent = new Intent(Login_Activity.this, InitialLoad_Activity.class);
-                                            intialload_intent.putExtra("From","LOAD");
-                                            startActivity(intialload_intent);
-                                            Login_Activity.this.finish();*/
-
-                                            /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                            startActivity(notification_intent);
-                                            Login_Activity.this.finish();*/
-
-                                                getSupportFragmentManager().beginTransaction()
-                                                        .add(R.id.main_frag, new Passcode_Fragment())
-                                                        .commit();
-                                            }
                                         } else {
                                             progressDialog.dismiss_progress_dialog();
                                             error_dialog.show_error_dialog(Login_Activity.this,
