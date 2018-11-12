@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,13 +32,16 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enstrapp.fieldtekpro.GPS.GPSTracker;
 import com.enstrapp.fieldtekpro.GPS.Location_Checker;
+import com.enstrapp.fieldtekpro.Initialload.Auth_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Passcode.Passcode_Fragment;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.Settings.Settings_Activity;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.fcm.Config;
 import com.enstrapp.fieldtekpro.fcm.NotificationUtils;
@@ -57,6 +62,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,6 +94,9 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     Error_Dialog error_dialog = new Error_Dialog();
     GPSTracker gps;
+    private SQLiteDatabase App_db;
+    private String DATABASE_NAME = "";
+    private Check_Empty c_e = new Check_Empty();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -300,7 +309,6 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                     // checking earlier login is done or not. If done, directly navigating to Dashboard Activity, or else performing login and sending username and password to backend server.
                     String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
                     if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
-
                         if (fieldtekpro_login_password.equals(password_edittext.getText().toString()) && fieldtekpro_login_username.equals(username_edittext.getText().toString())) {
                             cd = new ConnectionDetector(getApplicationContext());
                             isInternetPresent = cd.isConnectingToInternet();
@@ -526,6 +534,26 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
 
     /*Performing Login Asynctask*/
     private class Login extends AsyncTask<Void, Integer, Void> {
+        /* Get_User_Data Table and Fields Names */
+        private static final String TABLE_GET_USER_DATA = "GET_USER_DATA";
+        private static final String KEY_GET_USER_DATA_ID = "id";
+        private static final String KEY_SAPUSER = "Sapuser";
+        private static final String KEY_MUSER = "Muser";
+        private static final String KEY_FNAME = "Fname";
+        private static final String KEY_LNAME = "Lname";
+        private static final String KEY_KOSTL = "Kostl";
+        private static final String KEY_ARBPL = "Arbpl";
+        private static final String KEY_IWERK = "Iwerk";
+        private static final String KEY_OUNIT = "Ounit";
+        private static final String KEY_PERNR = "Pernr";
+        private static final String KEY_INGRP = "Ingrp";
+        private static final String KEY_PARVW = "Parvw";
+        private static final String KEY_PARNR = "Parnr";
+        private static final String KEY_SUSER = "Suser";
+        private static final String KEY_USTYP = "Ustyp";
+        private static final String KEY_USGRP = "Usgrp";
+        /* Get_User_Data Table and Fields Names */
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -567,77 +595,153 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                         Log.v("kiran_login_response_code", login_response_status_code + "...");
                         String login_response_message = response.message();
                         if (login_response_status_code == 200) {
-                            try {
-                                String response_data = new Gson().toJson(response.body(), SER_Login.class);
-                                JSONObject jsonObject = new JSONObject(response_data);
-                                if (jsonObject.has("d")) {
-                                    String EvFailed = jsonObject.getJSONObject("d").getJSONArray("results").getJSONObject(0).optString("EvFailed");
-                                    if (EvFailed.equalsIgnoreCase("false")) {
-                                        String token = response.headers().get("x-csrf-token");
-                                        progressDialog.dismiss_progress_dialog();
-                                        FieldTekPro_SharedPrefeditor.putString("Username", username_edittext.getText().toString());
-                                        FieldTekPro_SharedPrefeditor.putString("Password", password_edittext.getText().toString());
-                                        FieldTekPro_SharedPrefeditor.putString("header_credentials", username_edittext.getText().toString() + ":" + password_edittext.getText().toString());
-                                        FieldTekPro_SharedPrefeditor.putString("token", token);
-                                        FieldTekPro_SharedPrefeditor.putString("webservice_type", "ODATA");
-                                        FieldTekPro_SharedPrefeditor.commit();
-                                        progressDialog.dismiss_progress_dialog();
-                                        String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
-                                        String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
-                                        if (InitialLoad != null && !InitialLoad.equals("")) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                try {
+                                    DATABASE_NAME = getString(R.string.database_name);
+                                    App_db = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+
+                                    /* Creating GET_USER_DATA Table with Fields */
+                                    App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_USER_DATA);
+                                    String CREATE_GET_USER_DATA_TABLE = "CREATE TABLE IF NOT EXISTS "
+                                            + TABLE_GET_USER_DATA + ""
+                                            + "( "
+                                            + KEY_GET_USER_DATA_ID + " INTEGER PRIMARY KEY,"
+                                            + KEY_SAPUSER + " TEXT,"
+                                            + KEY_MUSER + " TEXT,"
+                                            + KEY_FNAME + " TEXT,"
+                                            + KEY_LNAME + " TEXT,"
+                                            + KEY_KOSTL + " TEXT,"
+                                            + KEY_ARBPL + " TEXT,"
+                                            + KEY_IWERK + " TEXT,"
+                                            + KEY_OUNIT + " TEXT,"
+                                            + KEY_PERNR + " TEXT,"
+                                            + KEY_INGRP + " TEXT,"
+                                            + KEY_PARVW + " TEXT,"
+                                            + KEY_PARNR + " TEXT,"
+                                            + KEY_SUSER + " TEXT,"
+                                            + KEY_USTYP + " TEXT,"
+                                            + KEY_USGRP + " TEXT"
+                                            + ")";
+                                    App_db.execSQL(CREATE_GET_USER_DATA_TABLE);
+                                    /* Creating GET_USER_DATA Table with Fields */
+
+                                    List<SER_Login.Result> results = response.body().getD().getResults();
+                                    App_db.beginTransaction();
+
+                                    if (results != null && results.size() > 0){
+                                        Auth_SER.EsUser esUser = results.get(0).getEsuser();
+                                        if (esUser != null) {
+                                            List<Auth_SER.EsUser_Result> esUserResults = esUser.getResults();
+                                            if (esUserResults != null && esUserResults.size() > 0) {
+                                                String sql = "Insert into GET_USER_DATA (Sapuser,Muser,Fname,Lname," +
+                                                        "Kostl,Arbpl,Iwerk,Ounit,Pernr,Ingrp,Parvw,Parnr,Suser," +
+                                                        "Ustyp,Usgrp) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                                statement.clearBindings();
+                                                for (Auth_SER.EsUser_Result eU : esUserResults) {
+                                                    statement.bindString(1, c_e.check_empty(eU.getSapuser()));
+                                                    statement.bindString(2, c_e.check_empty(eU.getMuser()));
+                                                    statement.bindString(3, c_e.check_empty(eU.getFname()));
+                                                    statement.bindString(4, c_e.check_empty(eU.getLname()));
+                                                    statement.bindString(5, c_e.check_empty(eU.getKostl()));
+                                                    statement.bindString(6, c_e.check_empty(eU.getArbpl()));
+                                                    statement.bindString(7, c_e.check_empty(eU.getIwerk()));
+                                                    statement.bindString(8, c_e.check_empty(eU.getOunit()));
+                                                    statement.bindString(9, c_e.check_empty(eU.getPernr()));
+                                                    statement.bindString(10, c_e.check_empty(eU.getIngrp()));
+                                                    statement.bindString(11, c_e.check_empty(eU.getParvw()));
+                                                    statement.bindString(12, c_e.check_empty(eU.getParnr()));
+                                                    statement.bindString(13, c_e.check_empty(eU.getSuser()));
+                                                    statement.bindString(14, c_e.check_empty(eU.getUstyp()));
+                                                    statement.bindString(15, c_e.check_empty(eU.getUsgrp()));
+                                                    statement.execute();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    App_db.setTransactionSuccessful();
+                                    App_db.endTransaction();
+
+                                    String response_data = new Gson().toJson(response.body(), SER_Login.class);
+                                    JSONObject jsonObject = new JSONObject(response_data);
+                                    if (jsonObject.has("d")) {
+                                        String EvFailed = jsonObject.getJSONObject("d").getJSONArray("results").getJSONObject(0).optString("EvFailed");
+                                        if (EvFailed.equalsIgnoreCase("false")) {
+                                            String token = response.headers().get("x-csrf-token");
+                                            progressDialog.dismiss_progress_dialog();
+                                            FieldTekPro_SharedPrefeditor.putString("Username", username_edittext.getText().toString());
+                                            FieldTekPro_SharedPrefeditor.putString("Password", password_edittext.getText().toString());
+                                            FieldTekPro_SharedPrefeditor.putString("header_credentials", username_edittext.getText().toString() + ":" + password_edittext.getText().toString());
+                                            FieldTekPro_SharedPrefeditor.putString("token", token);
+                                            FieldTekPro_SharedPrefeditor.putString("webservice_type", "ODATA");
+                                            FieldTekPro_SharedPrefeditor.commit();
+                                            progressDialog.dismiss_progress_dialog();
+                                            String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
+                                            String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
+                                            if (InitialLoad != null && !InitialLoad.equals("")) {
                                             /*Intent intialload_intent = new Intent(Login_Activity.this, InitialLoad_Activity.class);
                                             intialload_intent.putExtra("From","LOAD");
                                             startActivity(intialload_intent);
                                             Login_Activity.this.finish();*/
+
                                             /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
                                             startActivity(notification_intent);
                                             Login_Activity.this.finish();*/
-                                            getSupportFragmentManager().beginTransaction()
-                                                    .add(R.id.main_frag, new Passcode_Fragment())
-                                                    .commit();
-                                        } else if (Refresh != null && !Refresh.equals("")) {
+
+                                                getSupportFragmentManager().beginTransaction()
+                                                        .add(R.id.main_frag, new Passcode_Fragment())
+                                                        .commit();
+                                            } else if (Refresh != null && !Refresh.equals("")) {
+
                                             /*Intent intialload_intent = new Intent(Login_Activity.this, InitialLoad_Activity.class);
                                             intialload_intent.putExtra("From","");
                                             startActivity(intialload_intent);
                                             Login_Activity.this.finish();*/
+
+
                                             /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
                                             startActivity(notification_intent);
                                             Login_Activity.this.finish();*/
-                                            getSupportFragmentManager().beginTransaction()
-                                                    .add(R.id.main_frag, new Passcode_Fragment())
-                                                    .commit();
-                                        } else {
+
+                                                getSupportFragmentManager().beginTransaction()
+                                                        .add(R.id.main_frag, new Passcode_Fragment())
+                                                        .commit();
+                                            } else {
+
                                             /*Intent intialload_intent = new Intent(Login_Activity.this, InitialLoad_Activity.class);
                                             intialload_intent.putExtra("From","LOAD");
                                             startActivity(intialload_intent);
                                             Login_Activity.this.finish();*/
+
                                             /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
                                             startActivity(notification_intent);
                                             Login_Activity.this.finish();*/
-                                            getSupportFragmentManager().beginTransaction()
-                                                    .add(R.id.main_frag, new Passcode_Fragment())
-                                                    .commit();
+
+                                                getSupportFragmentManager().beginTransaction()
+                                                        .add(R.id.main_frag, new Passcode_Fragment())
+                                                        .commit();
+                                            }
+                                        } else {
+                                            progressDialog.dismiss_progress_dialog();
+                                            error_dialog.show_error_dialog(Login_Activity.this,
+                                                    getString(R.string.lgn_fail));
                                         }
-                                    } else {
-                                        progressDialog.dismiss_progress_dialog();
-                                        error_dialog.show_error_dialog(Login_Activity.this,
-                                                getString(R.string.lgn_fail));
                                     }
+                                } catch (Exception e) {
                                 }
-                            } catch (Exception e) {
+                            } else if (login_response_status_code == 400) {
+                                progressDialog.dismiss_progress_dialog();
+                                error_dialog.show_error_dialog(Login_Activity.this,
+                                        getString(R.string.usr_notrgstrd));
+                            } else if (login_response_status_code == 401) {
+                                progressDialog.dismiss_progress_dialog();
+                                error_dialog.show_error_dialog(Login_Activity.this,
+                                        getString(R.string.auth_fail));
+                            } else {
+                                progressDialog.dismiss_progress_dialog();
+                                error_dialog.show_error_dialog(Login_Activity.this,
+                                        getString(R.string.lgn_fail));
                             }
-                        } else if (login_response_status_code == 400) {
-                            progressDialog.dismiss_progress_dialog();
-                            error_dialog.show_error_dialog(Login_Activity.this,
-                                    getString(R.string.usr_notrgstrd));
-                        } else if (login_response_status_code == 401) {
-                            progressDialog.dismiss_progress_dialog();
-                            error_dialog.show_error_dialog(Login_Activity.this,
-                                    getString(R.string.auth_fail));
-                        } else {
-                            progressDialog.dismiss_progress_dialog();
-                            error_dialog.show_error_dialog(Login_Activity.this,
-                                    getString(R.string.lgn_fail));
                         }
                     }
 
@@ -648,6 +752,7 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                                 getString(R.string.lgn_fail));
                     }
                 });
+
             } catch (Exception e) {
                 progressDialog.dismiss_progress_dialog();
                 error_dialog.show_error_dialog(Login_Activity.this,

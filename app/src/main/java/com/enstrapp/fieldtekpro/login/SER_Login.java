@@ -1,6 +1,7 @@
 
 package com.enstrapp.fieldtekpro.login;
 
+import com.enstrapp.fieldtekpro.Initialload.Auth_SER;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -45,6 +46,17 @@ public class SER_Login {
         @SerializedName("Message")
         @Expose
         private String message;
+        @SerializedName("EsUser")
+        @Expose
+        private Auth_SER.EsUser esuser;
+
+        public Auth_SER.EsUser getEsuser() {
+            return esuser;
+        }
+
+        public void setEsuser(Auth_SER.EsUser esuser) {
+            this.esuser = esuser;
+        }
 
         public Boolean getEvFailed() {
             return evFailed;

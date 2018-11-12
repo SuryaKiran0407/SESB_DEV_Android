@@ -75,6 +75,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     R.drawable.ic_settings_icon,
             };
     ImageView logout_imageview, refresh_imageview;
+    TextView userName_tv;
     Dialog logout_dialog, refresh_message_dialog;
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
@@ -83,6 +84,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
     private static String DATABASE_NAME = "";
     ArrayList<String> authorization_list = new ArrayList<String>();
     Error_Dialog error_dialog = new Error_Dialog();
+    private String username = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +94,29 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
         startService(new Intent(this, Auto_Sync_BackgroundService.class));
         logout_imageview = (ImageView) findViewById(R.id.logout_imageview);
         refresh_imageview = (ImageView) findViewById(R.id.refresh_imageview);
-
+        userName_tv = (TextView) findViewById(R.id.userName_tv);
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+
+        Cursor cursor1 = null;
+        try {
+            cursor1 = FieldTekPro_db.rawQuery("select * from GET_USER_DATA", null);
+            if (cursor1 != null && cursor1.getCount() > 0) {
+                if (cursor1.moveToFirst()) {
+                    username = cursor1.getString(3);
+                    username = username + " " + cursor1.getString(4);
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor1 != null)
+                cursor1.close();
+        }
+        if (username != null && !username.equals(""))
+            userName_tv.setText(getString(R.string.dashboard_name,username));
+
 
         /*For Checking Authorizations for each tile*/
         try {

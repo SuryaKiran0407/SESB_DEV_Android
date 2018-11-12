@@ -39,7 +39,7 @@ public class Auth {
     private static Check_Empty c_e = new Check_Empty();
 
     /* Get_User_Data Table and Fields Names */
-    private static final String TABLE_GET_USER_DATA = "GET_USER_DATA";
+    /*private static final String TABLE_GET_USER_DATA = "GET_USER_DATA";
     private static final String KEY_GET_USER_DATA_ID = "id";
     private static final String KEY_SAPUSER = "Sapuser";
     private static final String KEY_MUSER = "Muser";
@@ -55,7 +55,7 @@ public class Auth {
     private static final String KEY_PARNR = "Parnr";
     private static final String KEY_SUSER = "Suser";
     private static final String KEY_USTYP = "Ustyp";
-    private static final String KEY_USGRP = "Usgrp";
+    private static final String KEY_USGRP = "Usgrp";*/
     /* Get_User_Data Table and Fields Names */
 
     /* Authorization EtBusf */
@@ -93,7 +93,7 @@ public class Auth {
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             if (transmit_type.equalsIgnoreCase("LOAD")) {
                 /* Creating GET_USER_DATA Table with Fields */
-                App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_USER_DATA);
+                /*App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_USER_DATA);
                 String CREATE_GET_USER_DATA_TABLE = "CREATE TABLE IF NOT EXISTS "
                         + TABLE_GET_USER_DATA + ""
                         + "( "
@@ -114,7 +114,7 @@ public class Auth {
                         + KEY_USTYP + " TEXT,"
                         + KEY_USGRP + " TEXT"
                         + ")";
-                App_db.execSQL(CREATE_GET_USER_DATA_TABLE);
+                App_db.execSQL(CREATE_GET_USER_DATA_TABLE);*/
                 /* Creating GET_USER_DATA Table with Fields */
 
                 /* Authorization EtBusf */
@@ -161,7 +161,7 @@ public class Auth {
                 App_db.execSQL(CREATE_Get_User_FUNCTION_EtUsrf_TABLE);
                 /* Creating Get_User_FUNCTION_EtUsrf Table with Fields */
             } else {
-                App_db.execSQL("delete from GET_USER_DATA");
+//                App_db.execSQL("delete from GET_USER_DATA");
                 App_db.execSQL("delete from Authorization_EtBusf");
                 App_db.execSQL("delete from Authorization_EtMusrf");
                 App_db.execSQL("delete from GET_USER_FUNCTIONS_EtUsrf");
@@ -216,32 +216,34 @@ public class Auth {
             int response_status_code = response.code();
             Log.v("kiran_Auth_code", response_status_code + "...");
             if (response_status_code == 200) {
-                List<Auth_SER.Result> results = response.body().getD().getResults();
-                App_db.beginTransaction();
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Auth_SER.Result> results = response.body().getD().getResults();
+                    App_db.beginTransaction();
 
-                if (results != null && results.size() > 0) {
+                    if (results != null && results.size() > 0) {
 
-                    /*EtBusf*/
-                    Auth_SER.EtBusf etBusf = results.get(0).getEtBusf();
-                    if (etBusf != null) {
-                        List<Auth_SER.EtBusf_Result> etBusfResults = etBusf.getResults();
-                        if (etBusfResults != null && etBusfResults.size() > 0) {
-                            String sql = "Insert into Authorization_EtBusf (Mandt,Usgrp," +
-                                    "Busftype,Active) values (?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (Auth_SER.EtBusf_Result eB : etBusfResults) {
-                                statement.bindString(1, c_e.check_empty(eB.getMandt()));
-                                statement.bindString(2, c_e.check_empty(eB.getUsgrp()));
-                                statement.bindString(3, c_e.check_empty(eB.getBusftype()));
-                                statement.bindString(4, c_e.check_empty(eB.getActive()));
-                                statement.execute();
+                        /*EtBusf*/
+                        Auth_SER.EtBusf etBusf = results.get(0).getEtBusf();
+                        if (etBusf != null) {
+                            List<Auth_SER.EtBusf_Result> etBusfResults = etBusf.getResults();
+                            if (etBusfResults != null && etBusfResults.size() > 0) {
+                                String sql = "Insert into Authorization_EtBusf (Mandt,Usgrp," +
+                                        "Busftype,Active) values (?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (Auth_SER.EtBusf_Result eB : etBusfResults) {
+                                    statement.bindString(1, c_e.check_empty(eB.getMandt()));
+                                    statement.bindString(2, c_e.check_empty(eB.getUsgrp()));
+                                    statement.bindString(3, c_e.check_empty(eB.getBusftype()));
+                                    statement.bindString(4, c_e.check_empty(eB.getActive()));
+                                    statement.execute();
+                                }
                             }
                         }
-                    }
 
-                    /*EsUser*/
-                    Auth_SER.EsUser esUser = results.get(0).getEsUser();
+                        /*EsUser*/
+                        /*Using now in Login service*/
+                    /*Auth_SER.EsUser esUser = results.get(0).getEsUser();
                     if (esUser != null) {
                         List<Auth_SER.EsUser_Result> esUserResults = esUser.getResults();
                         if (esUserResults != null && esUserResults.size() > 0) {
@@ -269,51 +271,52 @@ public class Auth {
                                 statement.execute();
                             }
                         }
-                    }
+                    }*/
 
-                    /*EtMusrf*/
-                    Auth_SER.EtMusrf etMusrf = results.get(0).getEtMusrf();
-                    if (etMusrf != null) {
-                        List<Auth_SER.EtMusrf_Result> etMusrfResults = etMusrf.getResults();
-                        if (etMusrfResults != null && etMusrfResults.size() > 0) {
-                            String sql = "Insert into Authorization_EtMusrf (Mandt, Muser," +
-                                    " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (Auth_SER.EtMusrf_Result eM : etMusrfResults) {
-                                statement.bindString(1, c_e.check_empty(eM.getMandt()));
-                                statement.bindString(2, c_e.check_empty(eM.getMuser()));
-                                statement.bindString(3, c_e.check_empty(eM.getZdoctype()));
-                                statement.bindString(4, c_e.check_empty(eM.getZactivity()));
-                                statement.bindString(5, c_e.check_empty(eM.getInactive()));
-                                statement.execute();
+                        /*EtMusrf*/
+                        Auth_SER.EtMusrf etMusrf = results.get(0).getEtMusrf();
+                        if (etMusrf != null) {
+                            List<Auth_SER.EtMusrf_Result> etMusrfResults = etMusrf.getResults();
+                            if (etMusrfResults != null && etMusrfResults.size() > 0) {
+                                String sql = "Insert into Authorization_EtMusrf (Mandt, Muser," +
+                                        " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (Auth_SER.EtMusrf_Result eM : etMusrfResults) {
+                                    statement.bindString(1, c_e.check_empty(eM.getMandt()));
+                                    statement.bindString(2, c_e.check_empty(eM.getMuser()));
+                                    statement.bindString(3, c_e.check_empty(eM.getZdoctype()));
+                                    statement.bindString(4, c_e.check_empty(eM.getZactivity()));
+                                    statement.bindString(5, c_e.check_empty(eM.getInactive()));
+                                    statement.execute();
+                                }
+                            }
+                        }
+
+                        /*EtUsrf*/
+                        Auth_SER.EtUsrf etUsrf = results.get(0).getEtUsrf();
+                        if (etUsrf != null) {
+                            List<Auth_SER.EtUsrf_Result> etUsrfResults = etUsrf.getResults();
+                            if (etUsrfResults != null && etUsrfResults.size() > 0) {
+                                String sql = "Insert into GET_USER_FUNCTIONS_EtUsrf (Mandt, Usgrp," +
+                                        " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
+                                SQLiteStatement statement = App_db.compileStatement(sql);
+                                statement.clearBindings();
+                                for (Auth_SER.EtUsrf_Result eUs : etUsrfResults) {
+                                    statement.bindString(1, c_e.check_empty(eUs.getMandt()));
+                                    statement.bindString(2, c_e.check_empty(eUs.getUsgrp()));
+                                    statement.bindString(3, c_e.check_empty(eUs.getZdoctype()));
+                                    statement.bindString(4, c_e.check_empty(eUs.getZactivity()));
+                                    statement.bindString(5, c_e.check_empty(eUs.getInactive()));
+                                    statement.execute();
+                                }
                             }
                         }
                     }
-
-                    /*EtUsrf*/
-                    Auth_SER.EtUsrf etUsrf = results.get(0).getEtUsrf();
-                    if (etUsrf != null) {
-                        List<Auth_SER.EtUsrf_Result> etUsrfResults = etUsrf.getResults();
-                        if (etUsrfResults != null && etUsrfResults.size() > 0) {
-                            String sql = "Insert into GET_USER_FUNCTIONS_EtUsrf (Mandt, Usgrp," +
-                                    " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
-                            SQLiteStatement statement = App_db.compileStatement(sql);
-                            statement.clearBindings();
-                            for (Auth_SER.EtUsrf_Result eUs : etUsrfResults) {
-                                statement.bindString(1, c_e.check_empty(eUs.getMandt()));
-                                statement.bindString(2, c_e.check_empty(eUs.getUsgrp()));
-                                statement.bindString(3, c_e.check_empty(eUs.getZdoctype()));
-                                statement.bindString(4, c_e.check_empty(eUs.getZactivity()));
-                                statement.bindString(5, c_e.check_empty(eUs.getInactive()));
-                                statement.execute();
-                            }
-                        }
-                    }
+                    App_db.setTransactionSuccessful();
+                    App_db.endTransaction();
+                    Get_Response = "success";
                 }
-                App_db.setTransactionSuccessful();
-                App_db.endTransaction();
-                Get_Response = "success";
             }
         } catch (Exception ex) {
             Get_Response = "exception";

@@ -2,6 +2,8 @@ package com.enstrapp.fieldtekpro.Initialload;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +21,9 @@ public class InitialLoad_Activity extends AppCompatActivity {
     String Calibration_Status = "", JRA_status = "", DeviceToken_status = "",
             Measurementpoint_status = "", Auth_status = "", BOM_status = "", FLOC_Status = "",
             DORD_Status = "", DNOT_Status = "", VHLP_WCM_Status = "", VHLP_Status = "", From = "",
-            transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "";
+            transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "",  username = "";
+    private SQLiteDatabase App_db;
+    private String DATABASE_NAME = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +41,38 @@ public class InitialLoad_Activity extends AppCompatActivity {
             From = extras.getString("From");
         }
 
-        if (From != null && !From.equals("")) {
+        DATABASE_NAME = getString(R.string.database_name);
+        App_db = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from GET_USER_DATA", null);
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    username = cursor.getString(3);
+                    username = username + " " + cursor.getString(4);
+                }
+            }
+        } catch (Exception e) {
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+       /* if (From != null && !From.equals("")) {
             progressDialog.show_progress_dialog(InitialLoad_Activity.this, getResources().getString(R.string.fetching_data));
             transmit_type = "LOAD";
         } else {
             progressDialog.show_progress_dialog(InitialLoad_Activity.this, getResources().getString(R.string.refreshing_data));
+            transmit_type = "REFR";
+        }*/
+        if (From != null && !From.equals("")) {
+            progressDialog.show_progress_dialog(InitialLoad_Activity.this,
+                    getString(R.string.fetching_data, username));
+            transmit_type = "LOAD";
+        } else {
+            progressDialog.show_progress_dialog(InitialLoad_Activity.this,
+                    getString(R.string.refreshing_data, username));
             transmit_type = "REFR";
         }
 

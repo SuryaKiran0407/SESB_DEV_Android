@@ -8,7 +8,7 @@
     <string name="ip_address_port_attach">http://103.6.157.25:8200%1s</string>
 
 
-    <string name="login_url">AuthLoginDataSet?$filter=&amp;$format=json</string>
+    <string name="login_url">AuthLoginSet?$filter=&amp;$expand=EsUser&amp;$format=json</string>
     <string name="syncmap_url">ServiceEndPointSet?$filter=&amp;$format=json</string>
 
     <string name="database_name">FIELDTEKPRO</string>
@@ -25,8 +25,9 @@
     <string name="network_connection_dialog_text">No Network Available. Please Check your Internet Connection</string>
     <string name="signing_in">Signing In...</string>
     <string name="connect">Connect</string>
-    <string name="fetching_data">Initial data load in progress. Please wait...</string>
-    <string name="refreshing_data">Refresh in progress. Please wait...</string>
+    <string name="fetching_data">Greetings! %1s \nInitial data load in progress. Please wait&#8230;</string>
+    <string name="refreshing_data">Greetings! %1s \nRefresh in progress. Please wait&#8230;</string>
+    <string name="dashboard_name">Hi, %1s</string>
     <string name="no_bom_found">No BOM Found</string>
     <string name="loading_history">Loading History...</string>
     <string name="maintenanceplan">Maintenance Plan</string>
