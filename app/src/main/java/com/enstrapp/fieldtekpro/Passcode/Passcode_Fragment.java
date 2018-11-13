@@ -141,11 +141,21 @@ public class Passcode_Fragment extends Fragment {
         return mRootView;
     }
 
-
     private void bindEvents(String text) {
         click_status = "clicked";
         String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
         if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
+            String passcode_text = FieldTekPro_SharedPref.getString("passcode_text", null);
+            if (text.equals(passcode_text)) {
+                getActivity().finish();
+                Intent notification_intent = new Intent(getActivity(), DashBoard_Activity.class);
+                startActivity(notification_intent);
+            } else {
+                click_status = "";
+                passCodeView.setError(true);
+                Toast.makeText(getActivity(), getString(R.string.wrong_passcode), Toast.LENGTH_LONG).show();
+            }
+        } else {
             String passcode_text = FieldTekPro_SharedPref.getString("passcode_text", null);
             if (text.equals(passcode_text)) {
                 String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
@@ -166,19 +176,13 @@ public class Passcode_Fragment extends Fragment {
                     startActivity(notification_intent);
                 }
             } else {
-                click_status = "";
-                passCodeView.setError(true);
-                Toast.makeText(getActivity(), getString(R.string.wrong_passcode), Toast.LENGTH_LONG).show();
+                FieldTekPro_SharedPrefeditor.putString("passcode_text", text);
+                FieldTekPro_SharedPrefeditor.commit();
+                getActivity().finish();
+                Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
+                intialload_intent.putExtra("From", "LOAD");
+                startActivity(intialload_intent);
             }
-        } else {
-            FieldTekPro_SharedPrefeditor.putString("passcode_text", text);
-            FieldTekPro_SharedPrefeditor.commit();
-            getActivity().finish();
-            Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-            intialload_intent.putExtra("From", "LOAD");
-            startActivity(intialload_intent);
         }
     }
-
-
 }
