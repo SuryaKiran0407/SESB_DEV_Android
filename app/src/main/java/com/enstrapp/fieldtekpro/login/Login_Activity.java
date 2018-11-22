@@ -690,19 +690,23 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                                     }
                                 } catch (Exception e) {
                                 }
-                            } else if (login_response_status_code == 400) {
-                                progressDialog.dismiss_progress_dialog();
-                                error_dialog.show_error_dialog(Login_Activity.this,
-                                        getString(R.string.usr_notrgstrd));
-                            } else if (login_response_status_code == 401) {
-                                progressDialog.dismiss_progress_dialog();
-                                error_dialog.show_error_dialog(Login_Activity.this,
-                                        getString(R.string.auth_fail));
                             } else {
                                 progressDialog.dismiss_progress_dialog();
                                 error_dialog.show_error_dialog(Login_Activity.this,
                                         getString(R.string.lgn_fail));
                             }
+                        } else if (login_response_status_code == 400) {
+                            progressDialog.dismiss_progress_dialog();
+                            error_dialog.show_error_dialog(Login_Activity.this,
+                                    getString(R.string.usr_notrgstrd));
+                        } else if (login_response_status_code == 401) {
+                            progressDialog.dismiss_progress_dialog();
+                            error_dialog.show_error_dialog(Login_Activity.this,
+                                    getString(R.string.auth_fail));
+                        } else {
+                            progressDialog.dismiss_progress_dialog();
+                            error_dialog.show_error_dialog(Login_Activity.this,
+                                    getString(R.string.lgn_fail));
                         }
                     }
 

@@ -3,9 +3,12 @@
 
     <!--<string name="ip_address">https://ed9.enstrapp.com:443/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string>-->
 
-    <string name="ip_address">http://103.6.157.25:8200/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string>
-    <string name="ip_address_port">103.6.157.25:8200</string>
-    <string name="ip_address_port_attach">http://103.6.157.25:8200%1s</string>
+    <!--<string name="ip_address">http://103.6.157.25:8200/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string>-->
+    <string name="ip_address">http://10.19.4.85:8000/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string><!--JSW-->
+    <!--<string name="ip_address_port">103.6.157.25:8200</string>-->
+    <string name="ip_address_port">10.19.4.85:8000</string><!--JSW-->
+    <string name="ip_address_port_attach">http://10.19.4.85:8000%1s</string><!--JSW-->
+    <!--<string name="ip_address_port_attach">http://103.6.157.25:8200%1s</string>-->
 
 
     <string name="login_url">AuthLoginSet?$filter=&amp;$expand=EsUser&amp;$format=json</string>
