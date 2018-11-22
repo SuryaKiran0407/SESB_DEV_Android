@@ -41,8 +41,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     Calibration_UsageDecision_Fragment usageDecision_fragment;
     Calibration_Defects_Fragment defects_fragment;
     private Toolbar toolbar;
-    String[] tabTitle = {getString(R.string.operations),
-            getString(R.string.usg_decs), getString(R.string.defects)};
+    String[] tabTitle;
     String order_id = "", plant_id = "", equip_id = "";
     Button cancel_button, submit_button;
     Dialog submit_decision_dialog;
@@ -69,6 +68,8 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             equip_id = extras.getString("equip_id");
         }
 
+        tabTitle = new String[]{getString(R.string.operations),
+                getString(R.string.usg_decs), getString(R.string.defects)};
 
         cancel_button = (Button) findViewById(R.id.cancel_button);
         submit_button = (Button) findViewById(R.id.submit_button);
