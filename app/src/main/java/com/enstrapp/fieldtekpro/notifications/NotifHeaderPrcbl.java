@@ -62,6 +62,7 @@ public class NotifHeaderPrcbl implements Parcelable {
     private String Strur;
     private String Ltrur;
     private String Qmdat;
+    private String Iwerk;
     private ArrayList<NotifCausCodActvPrcbl> causCodPrcblAl;
     private ArrayList<NotifCausCodActvPrcbl> actvPrcblAl;
     private ArrayList<Notif_EtDocs_Parcelable> etDocsParcelables;
@@ -69,6 +70,14 @@ public class NotifHeaderPrcbl implements Parcelable {
     private ArrayList<Notif_Status_WithNum_Prcbl> status_withoutNum_prcbls;
     private ArrayList<Notif_Status_WithNum_Prcbl> status_systemstatus_prcbls;
     private ArrayList<NotifTaskPrcbl> notifTaskPrcbls;
+
+    public String getIwerk() {
+        return Iwerk;
+    }
+
+    public void setIwerk(String iwerk) {
+        Iwerk = iwerk;
+    }
 
     public ArrayList<NotifTaskPrcbl> getNotifTaskPrcbls() {
         return notifTaskPrcbls;
@@ -622,6 +631,7 @@ public class NotifHeaderPrcbl implements Parcelable {
         dest.writeString(this.Strur);
         dest.writeString(this.Ltrur);
         dest.writeString(this.Qmdat);
+        dest.writeString(this.Iwerk);
         dest.writeTypedList(this.causCodPrcblAl);
         dest.writeTypedList(this.actvPrcblAl);
         dest.writeTypedList(this.etDocsParcelables);
@@ -687,6 +697,7 @@ public class NotifHeaderPrcbl implements Parcelable {
         this.Strur = in.readString();
         this.Ltrur = in.readString();
         this.Qmdat = in.readString();
+        this.Iwerk = in.readString();
         this.causCodPrcblAl = in.createTypedArrayList(NotifCausCodActvPrcbl.CREATOR);
         this.actvPrcblAl = in.createTypedArrayList(NotifCausCodActvPrcbl.CREATOR);
         this.etDocsParcelables = in.createTypedArrayList(Notif_EtDocs_Parcelable.CREATOR);

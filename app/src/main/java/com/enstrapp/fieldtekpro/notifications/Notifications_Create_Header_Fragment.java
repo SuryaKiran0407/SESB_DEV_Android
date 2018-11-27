@@ -286,14 +286,19 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
             }
         } else if (v == personResp_layout) {
             if (plant_id != null && !plant_id.equals("")) {
-                Intent planner_group_intent = new Intent(getActivity(),
-                        Notifications_Personresponsible_Activity.class);
-                planner_group_intent.putExtra("workcenter_id", workcenter_id);
-                planner_group_intent.putExtra("plant_id", plant_id);
-                planner_group_intent.putExtra("equip_id",
-                        equipid_edittext.getText().toString());
-                planner_group_intent.putExtra("request_id", Integer.toString(personResp));
-                startActivityForResult(planner_group_intent, personResp);
+                if (workcenter_id != null && !workcenter_id.equals("")) {
+                    Intent planner_group_intent = new Intent(getActivity(),
+                            Notifications_Personresponsible_Activity.class);
+                    planner_group_intent.putExtra("workcenter_id", workcenter_id);
+                    planner_group_intent.putExtra("plant_id", plant_id);
+                    planner_group_intent.putExtra("equip_id",
+                            equipid_edittext.getText().toString());
+                    planner_group_intent.putExtra("request_id", Integer.toString(personResp));
+                    startActivityForResult(planner_group_intent, personResp);
+                } else {
+                    error_dialog.show_error_dialog(getActivity(),
+                            getString(R.string.wrkCntr_mandate));
+                }
             } else {
                 error_dialog.show_error_dialog(getActivity(),
                         getString(R.string.equipFunc_mandate));

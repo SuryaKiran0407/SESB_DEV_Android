@@ -168,7 +168,7 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                 } catch (Exception e) {
                 }
             }
-            String equip_id = bundle.getString("functionlocation_id");
+            String equip_id = bundle.getString("equipment_id");
             String equip_name = "";
             if (equip_id != null && !equip_id.equals("")) {
                 try {
@@ -500,9 +500,7 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
 
             case (EQUIP_SCAN):
                 if (resultCode == RESULT_OK) {
-                    Intent equipScan = new Intent(getActivity(), Equipment_Activity.class);
-                    equipScan.putExtra("equip", data.getStringExtra("MESSAGE"));
-                    startActivityForResult(equipScan, EQUIP_ID);
+                    getEquipmentData(data.getStringExtra("MESSAGE"));
                 }
                 break;
 
@@ -729,4 +727,48 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     public ArrayList<HashMap<String, String>> getHeaderCustominfoData() {
         return selected_custom_info_arraylist;
     }
+
+    private void getEquipmentData(String equip) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?",
+                    new String[]{equip});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        ma.ohp.setFuncLocId(cursor.getString(1));
+                        ma.ohp.setFuncLocName(funcLocName(cursor.getString(1)));
+                        ma.ohp.setWrkCntrId(cursor.getString(11));
+                        ma.ohp.setWrkCntrName(wrkCntrName(cursor.getString(11)));
+                        ma.ohp.setEquipNum(cursor.getString(3));
+                        ma.ohp.setEquipName(cursor.getString(5));
+                        ma.ohp.setPlant(cursor.getString(10));
+                        ma.ohp.setPlantName(plantName(cursor.getString(10)));
+                        ma.ohp.setPlnrGrpId(cursor.getString(13));
+                        ma.ohp.setPlnrGrpName(plnrGrpName(cursor.getString(13)));
+                        ma.ohp.setRespCostCntrId(cursor.getString(12));
+                        ma.ohp.setRespCostCntrName(respCostCntrName(cursor.getString(12)));
+                        ma.ohp.setIwerk(cursor.getString(29));
+                        ma.ohp.setBukrs(cursor.getString(30));
+                        funcLocId_tiet.setText(cursor.getString(1));
+                        funcLocName_tiet.setText(funcLocName(cursor.getString(1)));
+                        equipId_tiet.setText(cursor.getString(3));
+                        equipName_tiet.setText(cursor.getString(5));
+                        plannerGroup_tiet.setText(getResources().getString(R.string.hypen_text,
+                                cursor.getString(13), plnrGrpName(cursor.getString(13))));
+                        wrkCntr_tiet.setText(getResources().getString(R.string.hypen_text,
+                                cursor.getString(11), wrkCntrName(cursor.getString(11))));
+                        respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,
+                                cursor.getString(12), respCostCntrName(cursor.getString(12))));
+                    } while (cursor.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+    }
+
 }

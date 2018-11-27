@@ -204,8 +204,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent"
-                    android:cursorVisible="false"
-                    android:focusable="false"
                     android:hint="@string/func_loc"
                     android:inputType="text"
                     android:maxLines="1"

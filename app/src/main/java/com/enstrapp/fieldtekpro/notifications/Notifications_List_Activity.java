@@ -2586,6 +2586,14 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                                 nhp.setStrur(headerdata_cursor.getString(51));
                                 nhp.setLtrur(headerdata_cursor.getString(52));
                                 nhp.setQmdat(headerdata_cursor.getString(54));
+                                if (headerdata_cursor.getString(6) != null &&
+                                        !headerdata_cursor.getString(6).equals(""))
+                                    nhp.setIwerk(getIwerk(headerdata_cursor.getString(6)));
+                                else if (headerdata_cursor.getString(5) != null &&
+                                        !headerdata_cursor.getString(5).equals(""))
+                                    nhp.setIwerk(getfuncIwerk(headerdata_cursor.getString(5)));
+                                else
+                                    nhp.setIwerk("");
                                 nhp.setActvPrcblAl(activity_parcablearray);
                                 nhp.setCausCodPrcblAl(causecode_parcablearray);
                                 nhp.setEtDocsParcelables(etdocs_parcablearray);
@@ -2628,5 +2636,45 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                 startActivity(ordrIntent);
             }
         }
+    }
+
+    private String getIwerk(String equip) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from EtEqui where Equnr = ?",
+                    new String[]{equip});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(29);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+
+    private String getfuncIwerk(String func) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from EtFuncEquip where Tplnr = ?",
+                    new String[]{func});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(14);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
     }
 }

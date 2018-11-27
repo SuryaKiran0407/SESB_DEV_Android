@@ -97,7 +97,7 @@ public class Notifications_PlannerGroup_Activity extends AppCompatActivity imple
 
         @Override
         protected Void doInBackground(Void... params) {
-            try {
+            /*try {
                 Cursor cursor1 = FieldTekPro_db.rawQuery("select * from EtEqui where Equnr = ?",
                         new String[]{equip_id});
                 if (cursor1 != null && cursor1.getCount() > 0) {
@@ -109,7 +109,7 @@ public class Notifications_PlannerGroup_Activity extends AppCompatActivity imple
                     }
                 }
             } catch (Exception e) {
-            }
+            }*/
             try {
                 Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_EtIngrp where " +
                         "Iwerk = ?", new String[]{plant_iwerk});

@@ -50,14 +50,16 @@ public class Notifications_Personresponsible_Activity extends AppCompatActivity 
         if (extras != null) {
             equip_id = extras.getString("equip_id");
             String request_ids = extras.getString("request_id");
+            plant_iwerk = extras.getString("plant_id");
+            workcenter_id = extras.getString("workcenter_id");
             if (request_ids != null && !request_ids.equals("")) {
                 request_id = Integer.parseInt(request_ids);
             }
-            if (equip_id != null && !equip_id.equals("")) {
+            /*if (equip_id != null && !equip_id.equals("")) {
             } else {
                 plant_iwerk = extras.getString("plant_id");
                 workcenter_id = extras.getString("workcenter_id");
-            }
+            }*/
         }
 
         title_textview = (TextView) findViewById(R.id.title_textview);
@@ -101,7 +103,7 @@ public class Notifications_Personresponsible_Activity extends AppCompatActivity 
 
         @Override
         protected Void doInBackground(Void... params) {
-            if (equip_id != null && !equip_id.equals("")) {
+            /*if (equip_id != null && !equip_id.equals("")) {
                 try {
                     Cursor cursor1 = FieldTekPro_db.rawQuery("select * from EtEqui where " +
                             "Equnr = ?", new String[]{equip_id});
@@ -116,7 +118,7 @@ public class Notifications_Personresponsible_Activity extends AppCompatActivity 
                     }
                 } catch (Exception e) {
                 }
-            }
+            }*/
             try {
                 Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_EtPernr where " +
                         "Werks = ? and Arbpl = ?", new String[]{plant_iwerk, workcenter_id});

@@ -182,7 +182,7 @@ public class Barcode_Scanner_Activity extends AppCompatActivity implements Messa
         fragment.show(getSupportFragmentManager(), "scan_results");
         Intent intent = new Intent();
         intent.putExtra("MESSAGE", message);
-        setResult(0, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
     public void closeMessageDialog()
