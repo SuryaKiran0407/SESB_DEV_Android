@@ -98,7 +98,7 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             etdocs_parcablearray = ma.ohp.getOrdrDocsPrcbls();
-            if (etdocs_parcablearray.size() > 0) {
+            if (etdocs_parcablearray != null && etdocs_parcablearray.size() > 0) {
                 for (int i = 0; i < etdocs_parcablearray.size(); i++) {
                     Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
                     notif_etDocs_parcelable.setZobjid(etdocs_parcablearray.get(i).getZobjid());
