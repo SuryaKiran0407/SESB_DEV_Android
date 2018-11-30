@@ -1042,72 +1042,70 @@ public class Notifications {
                                                     "?,?,?,?,?,?,?,?,?,?,?);";
                                             SQLiteStatement EtNotifTasks_statement = App_db.compileStatement(EtNotifTasks_sql);
                                             EtNotifTasks_statement.clearBindings();
-                                            for (Notifications_SER.EtNotifTasks_Result eNTR : etNotifTasksResults) {
-                                                EtNotifTasks_statement.bindString(1, uD.get("UUID"));
-                                                EtNotifTasks_statement.bindString(2, c_e.check_empty(eNTR.getQmnum()));
-                                                EtNotifTasks_statement.bindString(3, c_e.check_empty(eNTR.getItemKey()));
-                                                EtNotifTasks_statement.bindString(4, c_e.check_empty(eNTR.getItempartGrp()));
-                                                EtNotifTasks_statement.bindString(5, c_e.check_empty(eNTR.getPartgrptext()));
-                                                EtNotifTasks_statement.bindString(6, c_e.check_empty(eNTR.getItempartCod()));
-                                                EtNotifTasks_statement.bindString(7, c_e.check_empty(eNTR.getPartcodetext()));
-                                                EtNotifTasks_statement.bindString(8, c_e.check_empty(eNTR.getItemdefectGrp()));
-                                                EtNotifTasks_statement.bindString(9, c_e.check_empty(eNTR.getDefectgrptext()));
-                                                EtNotifTasks_statement.bindString(10, c_e.check_empty(eNTR.getItemdefectCod()));
-                                                EtNotifTasks_statement.bindString(11, c_e.check_empty(eNTR.getDefectcodetext()));
-                                                EtNotifTasks_statement.bindString(12, c_e.check_empty(eNTR.getItemdefectShtxt()));
-                                                EtNotifTasks_statement.bindString(13, c_e.check_empty(eNTR.getTaskKey()));
-                                                EtNotifTasks_statement.bindString(14, c_e.check_empty(eNTR.getTaskGrp()));
-                                                EtNotifTasks_statement.bindString(15, c_e.check_empty(eNTR.getTaskgrptext()));
-                                                EtNotifTasks_statement.bindString(16, c_e.check_empty(eNTR.getTaskCod()));
-                                                EtNotifTasks_statement.bindString(17, c_e.check_empty(eNTR.getTaskcodetext()));
-                                                EtNotifTasks_statement.bindString(18, c_e.check_empty(eNTR.getTaskShtxt()));
-                                                EtNotifTasks_statement.bindString(19, c_e.check_empty(eNTR.getPster()));
-                                                EtNotifTasks_statement.bindString(20, c_e.check_empty(eNTR.getPeter()));
-                                                EtNotifTasks_statement.bindString(21, c_e.check_empty(eNTR.getPstur()));
-                                                EtNotifTasks_statement.bindString(22, c_e.check_empty(eNTR.getPetur()));
-                                                EtNotifTasks_statement.bindString(23, c_e.check_empty(eNTR.getParvw()));
-                                                EtNotifTasks_statement.bindString(24, c_e.check_empty(eNTR.getParnr()));
-                                                EtNotifTasks_statement.bindString(25, c_e.check_empty(eNTR.getErlnam()));
-                                                EtNotifTasks_statement.bindString(26, c_e.check_empty(eNTR.getErldat()));
-                                                EtNotifTasks_statement.bindString(27, c_e.check_empty(eNTR.getErlzeit()));
-                                                EtNotifTasks_statement.bindString(28, c_e.check_empty(eNTR.getRelease()));
-                                                EtNotifTasks_statement.bindString(29, c_e.check_empty(eNTR.getComplete()));
-                                                EtNotifTasks_statement.bindString(30, c_e.check_empty(eNTR.getSuccess()));
-                                                EtNotifTasks_statement.bindString(31, c_e.check_empty(eNTR.getUserStatus()));
-                                                EtNotifTasks_statement.bindString(32, c_e.check_empty(eNTR.getSysStatus()));
-                                                EtNotifTasks_statement.bindString(33, c_e.check_empty(eNTR.getSmsttxt()));
-                                                EtNotifTasks_statement.bindString(34, c_e.check_empty(eNTR.getSmastxt()));
-                                                EtNotifTasks_statement.bindString(35, c_e.check_empty(eNTR.getUsr01()));
-                                                EtNotifTasks_statement.bindString(36, c_e.check_empty(eNTR.getUsr02()));
-                                                EtNotifTasks_statement.bindString(37, c_e.check_empty(eNTR.getUsr03()));
-                                                EtNotifTasks_statement.bindString(38, c_e.check_empty(eNTR.getUsr04()));
-                                                EtNotifTasks_statement.bindString(39, c_e.check_empty(eNTR.getUsr05()));
-                                                EtNotifTasks_statement.bindString(40, "U");
-                                                EtNotifTasks_statement.execute();
+                                            EtNotifTasks_statement.bindString(1, uD.get("UUID"));
+                                            EtNotifTasks_statement.bindString(2, c_e.check_empty(eNT.getQmnum()));
+                                            EtNotifTasks_statement.bindString(3, c_e.check_empty(eNT.getItemKey()));
+                                            EtNotifTasks_statement.bindString(4, c_e.check_empty(eNT.getItempartGrp()));
+                                            EtNotifTasks_statement.bindString(5, c_e.check_empty(eNT.getPartgrptext()));
+                                            EtNotifTasks_statement.bindString(6, c_e.check_empty(eNT.getItempartCod()));
+                                            EtNotifTasks_statement.bindString(7, c_e.check_empty(eNT.getPartcodetext()));
+                                            EtNotifTasks_statement.bindString(8, c_e.check_empty(eNT.getItemdefectGrp()));
+                                            EtNotifTasks_statement.bindString(9, c_e.check_empty(eNT.getDefectgrptext()));
+                                            EtNotifTasks_statement.bindString(10, c_e.check_empty(eNT.getItemdefectCod()));
+                                            EtNotifTasks_statement.bindString(11, c_e.check_empty(eNT.getDefectcodetext()));
+                                            EtNotifTasks_statement.bindString(12, c_e.check_empty(eNT.getItemdefectShtxt()));
+                                            EtNotifTasks_statement.bindString(13, c_e.check_empty(eNT.getTaskKey()));
+                                            EtNotifTasks_statement.bindString(14, c_e.check_empty(eNT.getTaskGrp()));
+                                            EtNotifTasks_statement.bindString(15, c_e.check_empty(eNT.getTaskgrptext()));
+                                            EtNotifTasks_statement.bindString(16, c_e.check_empty(eNT.getTaskCod()));
+                                            EtNotifTasks_statement.bindString(17, c_e.check_empty(eNT.getTaskcodetext()));
+                                            EtNotifTasks_statement.bindString(18, c_e.check_empty(eNT.getTaskShtxt()));
+                                            EtNotifTasks_statement.bindString(19, c_e.check_empty(eNT.getPster()));
+                                            EtNotifTasks_statement.bindString(20, c_e.check_empty(eNT.getPeter()));
+                                            EtNotifTasks_statement.bindString(21, c_e.check_empty(eNT.getPstur()));
+                                            EtNotifTasks_statement.bindString(22, c_e.check_empty(eNT.getPetur()));
+                                            EtNotifTasks_statement.bindString(23, c_e.check_empty(eNT.getParvw()));
+                                            EtNotifTasks_statement.bindString(24, c_e.check_empty(eNT.getParnr()));
+                                            EtNotifTasks_statement.bindString(25, c_e.check_empty(eNT.getErlnam()));
+                                            EtNotifTasks_statement.bindString(26, c_e.check_empty(eNT.getErldat()));
+                                            EtNotifTasks_statement.bindString(27, c_e.check_empty(eNT.getErlzeit()));
+                                            EtNotifTasks_statement.bindString(28, c_e.check_empty(eNT.getRelease()));
+                                            EtNotifTasks_statement.bindString(29, c_e.check_empty(eNT.getComplete()));
+                                            EtNotifTasks_statement.bindString(30, c_e.check_empty(eNT.getSuccess()));
+                                            EtNotifTasks_statement.bindString(31, c_e.check_empty(eNT.getUserStatus()));
+                                            EtNotifTasks_statement.bindString(32, c_e.check_empty(eNT.getSysStatus()));
+                                            EtNotifTasks_statement.bindString(33, c_e.check_empty(eNT.getSmsttxt()));
+                                            EtNotifTasks_statement.bindString(34, c_e.check_empty(eNT.getSmastxt()));
+                                            EtNotifTasks_statement.bindString(35, c_e.check_empty(eNT.getUsr01()));
+                                            EtNotifTasks_statement.bindString(36, c_e.check_empty(eNT.getUsr02()));
+                                            EtNotifTasks_statement.bindString(37, c_e.check_empty(eNT.getUsr03()));
+                                            EtNotifTasks_statement.bindString(38, c_e.check_empty(eNT.getUsr04()));
+                                            EtNotifTasks_statement.bindString(39, c_e.check_empty(eNT.getUsr05()));
+                                            EtNotifTasks_statement.bindString(40, "U");
+                                            EtNotifTasks_statement.execute();
 
-                                                Notifications_SER.CustomFields customFields = eNTR.getEtCustomFields();
-                                                if (customFields != null) {
-                                                    List<Notifications_SER.CustomFields_Result> customFieldsResults = customFields.getResults();
-                                                    if (customFieldsResults != null && customFieldsResults.size() > 0) {
-                                                        String sql1 = "Insert into EtNotifTask_CustomInfo (UUID,Qmnum,Zdoctype,ZdoctypeItem," +
-                                                                "Tabname,Fieldname,Value,Flabel,Sequence,Length,Datatype)" +
-                                                                " values(?,?,?,?,?,?,?,?,?,?,?);";
-                                                        SQLiteStatement statement1 = App_db.compileStatement(sql1);
-                                                        statement1.clearBindings();
-                                                        for (Notifications_SER.CustomFields_Result cFR : customFieldsResults) {
-                                                            statement1.bindString(1, uD.get("UUID"));
-                                                            statement1.bindString(2, c_e.check_empty(eNTR.getQmnum()));
-                                                            statement1.bindString(3, c_e.check_empty(cFR.getZdoctype()));
-                                                            statement1.bindString(4, c_e.check_empty(cFR.getZdoctypeItem()));
-                                                            statement1.bindString(5, c_e.check_empty(cFR.getTabname()));
-                                                            statement1.bindString(6, c_e.check_empty(cFR.getFieldname()));
-                                                            statement1.bindString(7, c_e.check_empty(cFR.getValue()));
-                                                            statement1.bindString(8, c_e.check_empty(cFR.getFlabel()));
-                                                            statement1.bindString(9, c_e.check_empty(cFR.getSequence()));
-                                                            statement1.bindString(10, c_e.check_empty(cFR.getLength()));
-                                                            statement1.bindString(11, c_e.check_empty(cFR.getDatatype()));
-                                                            statement1.execute();
-                                                        }
+                                            Notifications_SER.CustomFields customFields = eNT.getEtCustomFields();
+                                            if (customFields != null) {
+                                                List<Notifications_SER.CustomFields_Result> customFieldsResults = customFields.getResults();
+                                                if (customFieldsResults != null && customFieldsResults.size() > 0) {
+                                                    String sql1 = "Insert into EtNotifTask_CustomInfo (UUID,Qmnum,Zdoctype,ZdoctypeItem," +
+                                                            "Tabname,Fieldname,Value,Flabel,Sequence,Length,Datatype)" +
+                                                            " values(?,?,?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement statement1 = App_db.compileStatement(sql1);
+                                                    statement1.clearBindings();
+                                                    for (Notifications_SER.CustomFields_Result cFR : customFieldsResults) {
+                                                        statement1.bindString(1, uD.get("UUID"));
+                                                        statement1.bindString(2, c_e.check_empty(eNT.getQmnum()));
+                                                        statement1.bindString(3, c_e.check_empty(cFR.getZdoctype()));
+                                                        statement1.bindString(4, c_e.check_empty(cFR.getZdoctypeItem()));
+                                                        statement1.bindString(5, c_e.check_empty(cFR.getTabname()));
+                                                        statement1.bindString(6, c_e.check_empty(cFR.getFieldname()));
+                                                        statement1.bindString(7, c_e.check_empty(cFR.getValue()));
+                                                        statement1.bindString(8, c_e.check_empty(cFR.getFlabel()));
+                                                        statement1.bindString(9, c_e.check_empty(cFR.getSequence()));
+                                                        statement1.bindString(10, c_e.check_empty(cFR.getLength()));
+                                                        statement1.bindString(11, c_e.check_empty(cFR.getDatatype()));
+                                                        statement1.execute();
                                                     }
                                                 }
                                             }
