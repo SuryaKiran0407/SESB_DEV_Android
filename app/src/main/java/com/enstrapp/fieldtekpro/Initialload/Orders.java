@@ -1504,13 +1504,14 @@ public class Orders {
                                     for (HashMap<String, String> uD : orders_uuid_list) {
                                         if (uD.get("Aufnr").equals(eOL.getAufnr())) {
                                             String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext " +
-                                                    "(UUID, Aufnr, Activity, TextLine) values(?,?,?,?);";
+                                                    "(UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
                                             SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
                                             EtOrderLongtext_statement.clearBindings();
                                             EtOrderLongtext_statement.bindString(1, uD.get("UUID"));
                                             EtOrderLongtext_statement.bindString(2, c_e.check_empty(eOL.getAufnr()));
                                             EtOrderLongtext_statement.bindString(3, c_e.check_empty(eOL.getActivity()));
                                             EtOrderLongtext_statement.bindString(4, c_e.check_empty(eOL.getTextLine()));
+                                            EtOrderLongtext_statement.bindString(5, c_e.check_empty(eOL.getTdid()));
                                             EtOrderLongtext_statement.execute();
                                         }
                                     }
