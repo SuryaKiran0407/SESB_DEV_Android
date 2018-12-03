@@ -59,7 +59,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
                 cursor.close();
         }
 
-        if (From != null && !From.equals("")) {
+        if (From != null && From.equals("LOAD")) {
             progressDialog.show_progress_dialog(InitialLoad_Activity.this,
                     getString(R.string.fetching_data, username));
             transmit_type = "LOAD";

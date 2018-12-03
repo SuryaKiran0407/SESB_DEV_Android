@@ -168,7 +168,7 @@ public class Passcode_Fragment extends Fragment {
                 } else if (Refresh != null && !Refresh.equals("")) {
                     getActivity().finish();
                     Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-                    intialload_intent.putExtra("From", "");
+                    intialload_intent.putExtra("From", "REFR");
                     startActivity(intialload_intent);
                 } else {
                     getActivity().finish();

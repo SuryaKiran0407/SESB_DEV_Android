@@ -1007,7 +1007,8 @@ public class Order_Create_Change {
             ordrSer.setDeviceid(device_id);
             ordrSer.setDevicesno(device_serial_number);
             ordrSer.setUdid(device_uuid);
-            ordrSer.setIvTransmitType(transmitType);
+//            ordrSer.setIvTransmitType(transmitType);
+            ordrSer.setIvTransmitType("FUNC");
             ordrSer.setIvCommit(true);
             ordrSer.setOperation(operation);
             ordrSer.setItOrderHeader(ItOrderHeader_Al);

@@ -595,7 +595,9 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                         Log.v("kiran_login_response_code", login_response_status_code + "...");
                         if (login_response_status_code == 200) {
                             FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "");
-                            FieldTekPro_SharedPrefeditor.putString("passcode_text", "");
+                            if (FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null) != null
+                                    && FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null).equals(""))
+                                FieldTekPro_SharedPrefeditor.putString("passcode_text", "");
                             FieldTekPro_SharedPrefeditor.commit();
                             if (response.isSuccessful() && response.body() != null) {
                                 try {
