@@ -42,22 +42,7 @@ import java.util.ArrayList;
 public class DashBoard_Activity extends AppCompatActivity implements View.OnClickListener {
 
     GridView grid;
-    String[] web =
-            {
-                    "Notifications",
-                    "Orders",
-                    "Permit List",
-                    "Isolation List",
-                    "Equipment Inspection",
-                    "Calibration",
-                    "MIS",
-                    "Utilities",
-                    "Maintenance Plan",
-                    "Alert Log",
-                    "User Log",
-                    "Send Message",
-                    "Settings",
-            };
+    String[] web;
     int[] imageId =
             {
                     R.drawable.ic_notification_icon,
@@ -98,6 +83,23 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+
+        web = new String[]
+                {
+                        getString(R.string.notifications),
+                        getString(R.string.orders),
+                        getString(R.string.permit_list),
+                        getString(R.string.isolation_list),
+                        getString(R.string.equipment_inspection),
+                        getString(R.string.calibration),
+                        getString(R.string.mis),
+                        getString(R.string.utilities),
+                        getString(R.string.maintenanceplan),
+                        getString(R.string.alert_log),
+                        getString(R.string.user_log),
+                        getString(R.string.send_message),
+                        getString(R.string.settings),
+                };
 
         Cursor cursor1 = null;
         try {

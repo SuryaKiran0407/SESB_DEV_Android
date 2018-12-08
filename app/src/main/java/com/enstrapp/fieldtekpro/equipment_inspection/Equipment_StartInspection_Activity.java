@@ -59,7 +59,7 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
     LinearLayout footer_layout;
     Adapter adapter;
     int valuation_type_status = 0, valuation_position = 0, datetime = 1;
-    Button valuation_button, cancel_button, submit_button;
+    Button cancel_button, submit_button;
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
     Network_Connection_Dialog network_connection_dialog = new Network_Connection_Dialog();
@@ -278,7 +278,7 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView Codgr_textview, description_textview, inspection_textview;
-            Button unit_type_button;
+            Button valuation_button, unit_type_button;
             CheckBox created_after_checkbox, normal_checkbox, alarm_checkbox, critical_checkbox;
             EditText reading_edittext, notes_edittext;
 
@@ -413,8 +413,8 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
             holder.reading_edittext.setText(olo.getReading());
             holder.notes_edittext.setTag(position);
             holder.notes_edittext.setText(olo.getNotes());
-            valuation_button.setText(olo.getValuation_type_id() + " - " + olo.getValuation_type_text());
-            valuation_button.setOnClickListener(new View.OnClickListener() {
+            holder.valuation_button.setText(olo.getValuation_type_id() + " - " + olo.getValuation_type_text());
+            holder.valuation_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     valuation_position = position;
@@ -451,8 +451,9 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
                 valuation_type_text = data.getStringExtra("valuation_type_text");
                 inspdata_list.get(valuation_position).setValuation_type_id(valuation_type_id);
                 inspdata_list.get(valuation_position).setValuation_type_text(valuation_type_text);
-                adapter = new Adapter(Equipment_StartInspection_Activity.this, inspdata_list);
-                list_recycleview.setAdapter(adapter);
+                /*adapter = new Adapter(Equipment_StartInspection_Activity.this, inspdata_list);
+                list_recycleview.setAdapter(adapter);*/
+                adapter.notifyDataSetChanged();
             } else if (requestCode == datetime) {
                 String date = data.getStringExtra("date");
                 date_formatted = data.getStringExtra("date_formatted");
@@ -462,7 +463,6 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
             }
         }
     }
-
 
     public class INSP_Object {
         private String Point;

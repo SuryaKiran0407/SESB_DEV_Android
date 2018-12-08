@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="8dp"
     android:orientation="vertical"
-    android:background="@drawable/round_borders"
+    android:background="@drawable/blueborder"
     android:gravity="center">
 
     <ImageView
@@ -20,7 +20,6 @@
         android:layout_height="40dp"
         android:textSize="15sp"
         android:gravity="center"
-        android:textColor="@color/black">
-    </com.enstrapp.fieldtekpro.customfont.Font_TextView>
+        android:textColor="@color/black"/>
 
 </LinearLayout>

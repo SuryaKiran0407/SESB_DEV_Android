@@ -789,7 +789,7 @@ public class Notifications {
                                             EtNotifHeader_statement.bindString(7, c_e.check_empty(eN.getBautl()));
                                             EtNotifHeader_statement.bindString(8, c_e.check_empty(eN.getReportedBy()));
                                             EtNotifHeader_statement.bindString(9, c_e.check_empty(eN.getMalfuncStdate()));
-                                            EtNotifHeader_statement.bindString(10, c_e.check_empty(eN.getMalfuncEdtime()));
+                                            EtNotifHeader_statement.bindString(10, c_e.check_empty(eN.getMalfuncEddate()));
                                             EtNotifHeader_statement.bindString(11, c_e.check_empty(eN.getMalfuncSttime()));
                                             EtNotifHeader_statement.bindString(12, c_e.check_empty(eN.getMalfuncEdtime()));
                                             EtNotifHeader_statement.bindString(13, c_e.check_empty(eN.getBreakdownInd()));

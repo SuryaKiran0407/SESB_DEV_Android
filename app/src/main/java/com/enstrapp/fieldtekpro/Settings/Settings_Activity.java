@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,7 +44,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
     private static String DATABASE_NAME = "";
     private SQLiteDatabase FieldTekPro_db;
     Custom_Progress_Dialog custom_progress_dialog = new Custom_Progress_Dialog();
-    ImageView back_imageview;
+    ImageButton back_iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
         submit_bt = findViewById(R.id.submit_bt);
         reset_passcode_textview = (TextView) findViewById(R.id.reset_passcode_textview);
         passcode_layout = (LinearLayout) findViewById(R.id.passcode_layout);
-        back_imageview = (ImageView) findViewById(R.id.back_imageview);
+        back_iv = findViewById(R.id.back_iv);
 
         /* Initializing Shared Preferences */
         FieldTekPro_SharedPref = getApplicationContext().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
@@ -77,7 +78,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
         reset_bt.setOnClickListener(this);
         submit_bt.setOnClickListener(this);
         reset_passcode_textview.setOnClickListener(this);
-        back_imageview.setOnClickListener(this);
+        back_iv.setOnClickListener(this);
 
     }
 
@@ -123,7 +124,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v == back_imageview) {
+        if (v == back_iv) {
             Settings_Activity.this.finish();
         } else if (v == reset_passcode_textview) {
             decision_dialog = new Dialog(Settings_Activity.this);

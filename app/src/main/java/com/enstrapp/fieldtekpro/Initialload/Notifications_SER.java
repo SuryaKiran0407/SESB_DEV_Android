@@ -938,11 +938,11 @@ public class Notifications_SER {
             this.malfuncStdate = malfuncStdate;
         }
 
-        public Object getMalfuncEddate() {
+        public String getMalfuncEddate() {
             return malfuncEddate;
         }
 
-        public void setMalfuncEddate(Object malfuncEddate) {
+        public void setMalfuncEddate(String malfuncEddate) {
             this.malfuncEddate = malfuncEddate;
         }
 
@@ -1309,7 +1309,7 @@ public class Notifications_SER {
         private String malfuncStdate;
         @SerializedName("MalfuncEddate")
         @Expose
-        private Object malfuncEddate;
+        private String malfuncEddate;
         @SerializedName("MalfuncSttime")
         @Expose
         private String malfuncSttime;
