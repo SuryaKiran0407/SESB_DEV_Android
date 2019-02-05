@@ -740,6 +740,4 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         }
     }
     /*Performing Login Asynctask*/
-
-
 }
