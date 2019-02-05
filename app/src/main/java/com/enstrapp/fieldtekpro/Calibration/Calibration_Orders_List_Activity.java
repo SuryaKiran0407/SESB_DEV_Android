@@ -475,7 +475,7 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog.show_progress_dialog(Calibration_Orders_List_Activity.this, getResources().getString(R.string.refreshing_data));
+            custom_progress_dialog.show_progress_dialog(Calibration_Orders_List_Activity.this, getResources().getString(R.string.refresh_calibration));
         }
 
         @Override

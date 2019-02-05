@@ -824,5 +824,6 @@
     <string name="chng_slctordr">Do you want to change the selected order %1s?</string>
     <string name="cnf_slctordr">Do you want to perform time confirmation for the selected order %1s?</string>
     <string name="teco_slctordr">Do you want to perform TECO for the selected order %1s?</string>
+    <string name="refresh_calibration">Refresh In Progress&#8230;</string>
 
 </resources>
