@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -144,14 +145,40 @@ public class MeasurementPoint {
             int response_status_code = response.code();
             Log.v("kiran_mpoint_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<MeasurementPoint_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
+                    try {
 
                         /*EquiMPs*/
-                        MeasurementPoint_SER.EquiMPs equiMPs = results.get(0).getEquiMPs();
+                        if (response.body().getD().getResults().get(0).getEquiMPs() != null) {
+                            if (response.body().getD().getResults().get(0).getEquiMPs().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEquiMPs().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (MeasurementPoint_SER.EquiMPs_Result eMP : response.body().getD().getResults().get(0).getEquiMPs().getResults()) {
+                                    values.put("Tplnr, ", eMP.getTplnr());
+                                    values.put("Strno", eMP.getStrno());
+                                    values.put("Equnr", eMP.getEqunr());
+                                    values.put("Point", eMP.getPoint());
+                                    values.put("Mpobj", eMP.getMpobj());
+                                    values.put("Mpobt", eMP.getMpobt());
+                                    values.put("Psort", eMP.getPsort());
+                                    values.put("Pttxt", eMP.getPttxt());
+                                    values.put("Mptyp", eMP.getMptyp());
+                                    values.put("Atinn", eMP.getAtinn());
+                                    values.put("Atbez", eMP.getAtbez());
+                                    values.put("Mrngu", eMP.getMrngu());
+                                    values.put("Msehl", eMP.getMsehl());
+                                    values.put("Desir", eMP.getDesir());
+                                    values.put("Mrmin", eMP.getMrmin());
+                                    values.put("Mrmax", eMP.getMrmax());
+                                    values.put("Cdsuf", eMP.getCdsuf());
+                                    values.put("Codct", eMP.getCodct());
+                                    values.put("Codgr", eMP.getCodgr());
+                                    App_db.insert("EtEquiMptt", null, values);
+                                }
+                            }
+                        }
+                        /*MeasurementPoint_SER.EquiMPs equiMPs = results.get(0).getEquiMPs();
                         if (equiMPs != null) {
                             List<MeasurementPoint_SER.EquiMPs_Result> equiMPsResults = equiMPs.getResults();
                             if (equiMPsResults != null && equiMPsResults.size() > 0) {
@@ -185,11 +212,14 @@ public class MeasurementPoint {
                                 }
                             }
                         }
-                    }
+                    }*/
                     App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
+
                     Get_Response = "success";
-                }
+                }finally {
+                        App_db.endTransaction();
+                    }
+                    }
             }
         } catch (Exception ex) {
             Get_Response = "exception";

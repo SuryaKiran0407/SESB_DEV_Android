@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -248,14 +249,62 @@ public class Calibration {
             int response_status_code = response.code();
             Log.v("kiran_Calibration_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Calibration_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
+                    try {
 
                         /*EtQinspData*/
-                        Calibration_SER.EtQinspData etQinspData = results.get(0).getEtQinspData();
+                        if (response.body().getD().getResults().get(0).getEtQinspData() != null) {
+                            if (response.body().getD().getResults().get(0).getEtQinspData().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtQinspData().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (Calibration_SER.EtQinspData_Result eQD : response.body().getD().getResults().get(0).getEtQinspData().getResults()) {
+                                    values.put("Aufnr, ", eQD.getAufnr());
+                                    values.put("Prueflos", eQD.getPrueflos());
+                                    values.put("Vornr", eQD.getVornr());
+                                    values.put("Plnty", eQD.getPlnty());
+                                    values.put("Plnnr", eQD.getPlnnr());
+                                    values.put("Plnkn", eQD.getPlnkn());
+                                    values.put("Merknr", eQD.getMerknr());
+                                    values.put("Quantitat", eQD.getQuantitat());
+                                    values.put("Qualitat", eQD.getQualitat());
+                                    values.put("QpmkZaehl", eQD.getQpmkZaehl());
+                                    values.put("Msehi", eQD.getMsehi());
+                                    values.put("Msehl", eQD.getMsehl());
+                                    values.put("Verwmerkm", eQD.getVerwmerkm());
+                                    values.put("Kurztext", eQD.getKurztext());
+                                    values.put("Result", eQD.getResult());
+                                    values.put("Sollwert", eQD.getSollwert());
+                                    values.put("Toleranzob", eQD.getToleranzob());
+                                    values.put("Toleranzub", eQD.getToleranzub());
+                                    values.put("Rueckmelnr", eQD.getRueckmelnr());
+                                    values.put("Satzstatus", eQD.getSatzstatus());
+                                    values.put("Equnr", eQD.getEqunr());
+                                    values.put("Pruefbemkt", eQD.getPruefbemkt());
+                                    values.put("Mbewertg", eQD.getMbewertg());
+                                    values.put("Pruefer", eQD.getPruefer());
+                                    values.put("Pruefdatuv", eQD.getPruefdatuv());
+                                    values.put("Pruefdatub", eQD.getPruefdatub());
+                                    values.put("Pruefzeitv", eQD.getPruefzeitv());
+                                    values.put("Pruefzeitb", eQD.getPruefzeitb());
+                                    values.put("Iststpumf", eQD.getIststpumf());
+                                    values.put("Anzfehleh", eQD.getAnzfehleh());
+                                    values.put("Anzwertg", eQD.getAnzwertg());
+                                    values.put("Ktextmat", eQD.getKtextmat());
+                                    values.put("Katab1", eQD.getKatab1());
+                                    values.put("Katalgart1", eQD.getKatalgart1());
+                                    values.put("Auswmenge1", eQD.getAuswmenge1());
+                                    values.put("Codetext", eQD.getCodetext());
+                                    values.put("Xstatus", eQD.getXstatus());
+                                    values.put("Action", eQD.getAction());
+                                    values.put("UUID", " ");
+                                    values.put("Udid", eQD.getUdid());
+                                    values.put("Werks", eQD.getWerks());
+                                    App_db.insert("EtQinspData", null, values);
+                                }
+                            }
+                        }
+                        /*Calibration_SER.EtQinspData etQinspData = results.get(0).getEtQinspData();
                         if (etQinspData != null) {
                             List<Calibration_SER.EtQinspData_Result> etQinspDataResults = etQinspData.getResults();
                             if (etQinspDataResults != null && etQinspDataResults.size() > 0) {
@@ -317,10 +366,42 @@ public class Calibration {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtQudData*/
-                        Calibration_SER.EtQudData etQudData = results.get(0).getEtQudData();
+                        if (response.body().getD().getResults().get(0).getEtQudData() != null) {
+                            if (response.body().getD().getResults().get(0).getEtQudData().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtQudData().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (Calibration_SER.EtQudData_Result eQD : response.body().getD().getResults().get(0).getEtQudData().getResults()) {
+                                    values.put("Aufnr, ", eQD.getAufnr());
+                                    values.put("Prueflos", eQD.getPrueflos());
+                                    values.put("Werks", eQD.getWerks());
+                                    values.put("Equnr", eQD.getEqunr());
+                                    values.put("Vkatart", eQD.getVkatart());
+                                    values.put("Vcodegrp", eQD.getVcodegrp());
+                                    values.put("Vauswahlmg", eQD.getVauswahlmg());
+                                    values.put("Vcode", eQD.getVcode());
+                                    values.put("Qkennzahl", eQD.getQkennzahl());
+                                    values.put("Vname", eQD.getVname());
+                                    values.put("Vdatum", eQD.getVdatum());
+                                    values.put("Vaedatum", eQD.getVaedatum());
+                                    values.put("Vezeitaen", eQD.getVezeitaen());
+                                    values.put("Udtext", eQD.getUdtext());
+                                    values.put("Udforce", eQD.getUdforce());
+                                    values.put("Rcode", eQD.getRcode());
+                                    values.put("Xstatus", eQD.getXstatus());
+                                    values.put("Action", eQD.getAction());
+                                    values.put("Udid", eQD.getUdid());
+                                    if(!eQD.getVcode().equals("")||!eQD.getUdtext().equals(""))
+                                    values.put("Status", "hide");
+                                    else
+                                        values.put("Status", "Visible");
+                                    App_db.insert("EtQudData", null, values);
+                                }
+                            }
+                        }
+                       /* Calibration_SER.EtQudData etQudData = results.get(0).getEtQudData();
                         if (etQudData != null) {
                             List<Calibration_SER.EtQudData_Result> etQudDataResults = etQudData.getResults();
                             if (etQudDataResults != null && etQudDataResults.size() > 0) {
@@ -358,11 +439,14 @@ public class Calibration {
                                 }
                             }
                         }
-                    }
+                    }*/
                     App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
+
                     Get_Response = "success";
-                }
+                }finally {
+                        App_db.endTransaction();
+                    }
+                    }
             }
         } catch (Exception ex) {
             Get_Response = "exception";

@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -223,14 +224,24 @@ public class BOM {
             int response_status_code = response.code();
             Log.v("kiran_BOM_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<BOM_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
+                    try {
 
                         /*EtBomHeader*/
-                        BOM_SER.EtBomHeader etBomHeader = results.get(0).getEtBomHeader();
+                        if (response.body().getD().getResults().get(0).getEtBomHeader() != null) {
+                            if (response.body().getD().getResults().get(0).getEtBomHeader().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtBomHeader().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (BOM_SER.EtBomHeader_Result eBH : response.body().getD().getResults().get(0).getEtBomHeader().getResults()) {
+                                    values.put("Bom, ", eBH.getBom());
+                                    values.put("BomDesc", eBH.getBomDesc());
+                                    values.put("Plant", eBH.getPlant());
+                                    App_db.insert("EtBomHeader", null, values);
+                                }
+                            }
+                        }
+                       /* BOM_SER.EtBomHeader etBomHeader = results.get(0).getEtBomHeader();
                         if (etBomHeader != null) {
                             List<BOM_SER.EtBomHeader_Result> etBomHeaderResults = etBomHeader.getResults();
                             if (etBomHeaderResults != null && etBomHeaderResults.size() > 0) {
@@ -245,10 +256,25 @@ public class BOM {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtBomItem*/
-                        BOM_SER.EtBomItem etBomItem = results.get(0).getEtBomItem();
+                        if (response.body().getD().getResults().get(0).getEtBomItem() != null) {
+                            if (response.body().getD().getResults().get(0).getEtBomItem().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtBomItem().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (BOM_SER.EtBomItem_Result eBI : response.body().getD().getResults().get(0).getEtBomItem().getResults()) {
+                                    values.put("Bom, ", eBI.getBom());
+                                    values.put("BomComponent", eBI.getBomComponent());
+                                    values.put("CompText", eBI.getCompText());
+                                    values.put("Quantity", eBI.getQuantity());
+                                    values.put("Unit", eBI.getUnit());
+                                    values.put("Stlkz", eBI.getStlkz());
+                                    App_db.insert("EtBomItem", null, values);
+                                }
+                            }
+                        }
+                        /*BOM_SER.EtBomItem etBomItem = results.get(0).getEtBomItem();
                         if (etBomItem != null) {
                             List<BOM_SER.EtBomItem_Result> etBomItemResults = etBomItem.getResults();
                             if (etBomItemResults != null && etBomItemResults.size() > 0) {
@@ -266,10 +292,27 @@ public class BOM {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtStock*/
-                        BOM_SER.EtStock etStock = results.get(0).getEtStock();
+                        if (response.body().getD().getResults().get(0).getEtStock() != null) {
+                            if (response.body().getD().getResults().get(0).getEtStock().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtStock().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (BOM_SER.EtStock_Result eBI : response.body().getD().getResults().get(0).getEtStock().getResults()) {
+                                    values.put("Matnr", eBI.getMatnr());
+                                    values.put("Werks", eBI.getWerks());
+                                    values.put("Maktx", eBI.getMaktx());
+                                    values.put("Lgort", eBI.getLgort());
+                                    values.put("Labst", eBI.getLabst());
+                                    values.put("Speme", eBI.getSpeme());
+                                    values.put("Bwtar", eBI.getBwtar());
+                                    values.put("Lgpbe", eBI.getLgpbe());
+                                    App_db.insert("GET_STOCK_DATA", null, values);
+                                }
+                            }
+                        }
+                        /*BOM_SER.EtStock etStock = results.get(0).getEtStock();
                         if (etStock != null) {
                             List<BOM_SER.EtStock_Result> etStockResults = etStock.getResults();
                             if (etStockResults != null && etStockResults.size() > 0) {
@@ -292,10 +335,13 @@ public class BOM {
                                 }
                             }
                         }
+                    }*/
+                        App_db.setTransactionSuccessful();
+                        Get_Response = "success";
+
+                    } finally {
+                        App_db.endTransaction();
                     }
-                    App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
-                    Get_Response = "success";
                 }
             }
         } catch (Exception ex) {

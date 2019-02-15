@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -579,14 +580,23 @@ public class JSA {
             int response_status_code = response.code();
             Log.v("kiran_JRA_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<JSA_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
+                    try {
 
                         /*EtEHSOpstat*/
-                        JSA_SER.EtEHSOpstat etEHSOpstat = results.get(0).getEtEHSOpstat();
+                        if (response.body().getD().getResults().get(0).getEtEHSOpstat() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSOpstat().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSOpstat().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eR : response.body().getD().getResults().get(0).getEtEHSOpstat().getResults()) {
+                                    values.put("Code, ", eR.getCode());
+                                    values.put("Description", eR.getDescription());
+                                    App_db.insert("EtEHSOpstat", null, values);
+                                }
+                            }
+                        }
+                       /* JSA_SER.EtEHSOpstat etEHSOpstat = results.get(0).getEtEHSOpstat();
                         if (etEHSOpstat != null) {
                             List<JSA_SER.Result1> result1s = etEHSOpstat.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -599,10 +609,21 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSHazcat*/
-                        JSA_SER.EtEHSHazcat etEHSHazcat = results.get(0).getEtEHSHazcat();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazcat() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazcat().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazcat().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eR : response.body().getD().getResults().get(0).getEtEHSHazcat().getResults()) {
+                                    values.put("Code, ", eR.getCode());
+                                    values.put("Description", eR.getDescription());
+                                    App_db.insert("EtEHSHazcat", null, values);
+                                }
+                            }
+                        }
+                        /*JSA_SER.EtEHSHazcat etEHSHazcat = results.get(0).getEtEHSHazcat();
                         if (etEHSHazcat != null) {
                             List<JSA_SER.Result1> result1s = etEHSHazcat.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -615,10 +636,21 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSHazard*/
-                        JSA_SER.EtEHSHazard etEHSHazard = results.get(0).getEtEHSHazard();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazard() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazard().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazard().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eR : response.body().getD().getResults().get(0).getEtEHSHazard().getResults()) {
+                                    values.put("Code, ", eR.getCode());
+                                    values.put("Description", eR.getDescription());
+                                    App_db.insert("EtEHSHazard", null, values);
+                                }
+                            }
+                        }
+                        /*JSA_SER.EtEHSHazard etEHSHazard = results.get(0).getEtEHSHazard();
                         if (etEHSHazard != null) {
                             List<JSA_SER.Result1> result1s = etEHSHazard.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -631,10 +663,23 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSHazimp*/
-                        JSA_SER.EtEHSHazimp etEHSHazimp = results.get(0).getEtEHSHazimp();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazimp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazimp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazimp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.EtEHSHazimp_Result eRIMP : response.body().getD().getResults().get(0).getEtEHSHazimp().getResults()) {
+                                    values.put("HazardCode, ", eRIMP.getHazardCode());
+                                    values.put("ImpactCode", eRIMP.getImpactCode());
+                                    values.put("Description", eRIMP.getDescription());
+                                    values.put("Type", eRIMP.getType());
+                                    App_db.insert("EtEHSHazimp", null, values);
+                                }
+                            }
+                        }
+                        /*JSA_SER.EtEHSHazimp etEHSHazimp = results.get(0).getEtEHSHazimp();
                         if (etEHSHazimp != null) {
                             List<JSA_SER.EtEHSHazimp_Result> etEHSHazimpResults = etEHSHazimp.getResults();
                             if (etEHSHazimpResults != null && etEHSHazimpResults.size() > 0) {
@@ -650,10 +695,25 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSHazctrl*/
-                        JSA_SER.EtEHSHazctrl etEHSHazctrl = results.get(0).getEtEHSHazctrl();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazctrl() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazctrl().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazctrl().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.EtEHSHazctrl_Result eTCTRL : response.body().getD().getResults().get(0).getEtEHSHazctrl().getResults()) {
+                                    values.put("HazardCode, ", eTCTRL.getHazardCode());
+                                    values.put("ControlCode", eTCTRL.getControlCode());
+                                    values.put("Type", eTCTRL.getType());
+                                    values.put("Subject", eTCTRL.getSubject());
+                                    values.put("Description", eTCTRL.getDescription());
+                                    values.put("CtrlID", eTCTRL.getCtrlid());
+                                    App_db.insert("EtEHSHazctrl", null, values);
+                                }
+                            }
+                        }
+                       /* JSA_SER.EtEHSHazctrl etEHSHazctrl = results.get(0).getEtEHSHazctrl();
                         if (etEHSHazctrl != null) {
                             List<JSA_SER.EtEHSHazctrl_Result> etEHSHazctrlResults = etEHSHazctrl.getResults();
                             if (etEHSHazctrlResults != null && etEHSHazctrlResults.size() > 0) {
@@ -671,10 +731,21 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSLocTyp*/
-                        JSA_SER.EtEHSLocTyp etEHSLocTyp = results.get(0).getEtEHSLocTyp();
+                        if (response.body().getD().getResults().get(0).getEtEHSLocTyp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSLocTyp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSLocTyp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTLT : response.body().getD().getResults().get(0).getEtEHSLocTyp().getResults()) {
+                                    values.put("Code, ", eTLT.getCode());
+                                    values.put("Description", eTLT.getDescription());
+                                    App_db.insert("EtEHSLocTyp", null, values);
+                                }
+                            }
+                        }
+                        /*JSA_SER.EtEHSLocTyp etEHSLocTyp = results.get(0).getEtEHSLocTyp();
                         if (etEHSLocTyp != null) {
                             List<JSA_SER.Result1> result1s = etEHSLocTyp.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -687,10 +758,30 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSLocRev*/
-                        JSA_SER.EtEHSLocRev ehsLocRev = results.get(0).getEtEHSLocRev();
+                        if (response.body().getD().getResults().get(0).getEtEHSLocRev() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSLocRev().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSLocRev().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.EtEHSLocRev_Result eTLR : response.body().getD().getResults().get(0).getEtEHSLocRev().getResults()) {
+                                    values.put("Type, ", eTLR.getType());
+                                    values.put("Status", eTLR.getStatus());
+                                    values.put("FunctLocID", eTLR.getFunctLocID());
+                                    values.put("EquipmentID", eTLR.getEquipmentID());
+                                    values.put("PlantID", eTLR.getPlantID());
+                                    values.put("DbKey", eTLR.getDbKey());
+                                    values.put("ParentKey", eTLR.getParentKey());
+                                    values.put("Text", eTLR.getText());
+                                    values.put("LocRootRefKey", eTLR.getLocRootRefKey());
+                                    values.put("ParRootRefKey", eTLR.getParRootRefKey());
+                                    values.put("RefID", eTLR.getRefID());
+                                    App_db.insert("EtEHSLocRev", null, values);
+                                }
+                            }
+                        }
+                        /*JSA_SER.EtEHSLocRev ehsLocRev = results.get(0).getEtEHSLocRev();
                         if (ehsLocRev != null) {
                             List<JSA_SER.EtEHSLocRev_Result> etEHSLocRevResults = ehsLocRev.getResults();
                             if (etEHSLocRevResults != null && etEHSLocRevResults.size() > 0) {
@@ -714,10 +805,21 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSJobTyp*/
-                        JSA_SER.EtEHSJobTyp etEHSJobTyp = results.get(0).getEtEHSJobTyp();
+                        if (response.body().getD().getResults().get(0).getEtEHSJobTyp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSJobTyp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSJobTyp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTJT : response.body().getD().getResults().get(0).getEtEHSJobTyp().getResults()) {
+                                    values.put("Code, ", eTJT.getCode());
+                                    values.put("Description", eTJT.getDescription());
+                                    App_db.insert("EtEHSJobTyp", null, values);
+                                }
+                            }
+                        }
+                       /* JSA_SER.EtEHSJobTyp etEHSJobTyp = results.get(0).getEtEHSJobTyp();
                         if (etEHSJobTyp != null) {
                             List<JSA_SER.Result1> result1s = etEHSJobTyp.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -730,10 +832,21 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSReason*/
-                        JSA_SER.EtEHSReason etEHSReason = results.get(0).getEtEHSReason();
+                        if (response.body().getD().getResults().get(0).getEtEHSReason() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSReason().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSReason().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTER : response.body().getD().getResults().get(0).getEtEHSReason().getResults()) {
+                                    values.put("Code, ", eTER.getCode());
+                                    values.put("Description", eTER.getDescription());
+                                    App_db.insert("EtEHSReason", null, values);
+                                }
+                            }
+                        }
+                       /* JSA_SER.EtEHSReason etEHSReason = results.get(0).getEtEHSReason();
                         if (etEHSReason != null) {
                             List<JSA_SER.Result1> result1s = etEHSReason.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -746,10 +859,21 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSRasrole*/
-                        JSA_SER.EtEHSRasrole etEHSRasrole = results.get(0).getEtEHSRasrole();
+                        if (response.body().getD().getResults().get(0).getEtEHSRasrole() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSRasrole().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSRasrole().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTER : response.body().getD().getResults().get(0).getEtEHSRasrole().getResults()) {
+                                    values.put("Code, ", eTER.getCode());
+                                    values.put("Description", eTER.getDescription());
+                                    App_db.insert("EtEHSRasrole", null, values);
+                                }
+                            }
+                        }
+                       /* JSA_SER.EtEHSRasrole etEHSRasrole = results.get(0).getEtEHSRasrole();
                         if (etEHSRasrole != null) {
                             List<JSA_SER.Result1> result1s = etEHSRasrole.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -762,10 +886,22 @@ public class JSA {
                                     statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtEHSRasstep*/
-                        JSA_SER.EtEHSRasstep etEHSRasstep = results.get(0).getEtEHSRasstep();
+                        if (response.body().getD().getResults().get(0).getEtEHSRasstep() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSRasstep().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSRasstep().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTER : response.body().getD().getResults().get(0).getEtEHSRasstep().getResults()) {
+                                    values.put("Code, ", eTER.getCode());
+                                    values.put("Description", eTER.getDescription());
+                                    App_db.insert("EtEHSRasstep", null, values);
+                                }
+                            }
+                        }
+
+                       /* JSA_SER.EtEHSRasstep etEHSRasstep = results.get(0).getEtEHSRasstep();
                         if (etEHSRasstep != null) {
                             List<JSA_SER.Result1> result1s = etEHSRasstep.getResults();
                             if (result1s != null && result1s.size() > 0) {
@@ -779,11 +915,14 @@ public class JSA {
                                 }
                             }
                         }
-                    }
+                    }*/
                     App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
+
                     Get_Response = "success";
-                }
+                }finally {
+                        App_db.endTransaction();
+                    }
+                    }
             }
         } catch (Exception ex) {
             Log.v("kiran_ee", ex.getMessage() + "....");

@@ -12,6 +12,8 @@ import android.util.Log;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +81,7 @@ public class LoadSettings {
                     .connectTimeout(180000, TimeUnit.MILLISECONDS)
                     .writeTimeout(180000, TimeUnit.MILLISECONDS)
                     .readTimeout(180000, TimeUnit.MILLISECONDS).build();
+
             Retrofit retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(URL).client(client).build();

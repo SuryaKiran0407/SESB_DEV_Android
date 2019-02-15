@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -1293,25 +1294,98 @@ public class Orders {
             int response_status_code = response.code();
             if (response_status_code == 200) {
                 if (response.isSuccessful() && response.body() != null) {
-                    orders_uuid_list.clear();
-                    List<Orders_SER.Result> results = response.body().getD().getResults();
-                    App_db.beginTransaction();
+                    if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
+                        App_db.beginTransaction();
+                        try {
+                            /*EtOrderHeader*/
+                            if (response.body().getD().getResults().get(0).getEtOrderHeader() != null)
+                                if (response.body().getD().getResults().get(0).getEtOrderHeader().getResults() != null
+                                        && response.body().getD().getResults().get(0).getEtOrderHeader().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtOrderHeader_Result orderHeader_result : response.body().getD().getResults()
+                                            .get(0).getEtOrderHeader().getResults()) {
+                                        values.put("UUID", orderHeader_result.getAufnr());
+                                        values.put("Aufnr", orderHeader_result.getAufnr());
+                                        String Aufnr_id = orderHeader_result.getAufnr();
+                                        values.put("Auart", orderHeader_result.getAuart());
+                                        values.put("Ktext", orderHeader_result.getKtext());
+                                        values.put("Ilart", orderHeader_result.getIlart());
+                                        values.put("Ernam", orderHeader_result.getErnam());
+                                        values.put("Erdat", orderHeader_result.getErdat());
+                                        values.put("Priok", orderHeader_result.getPriok());
+                                        values.put("Equnr", orderHeader_result.getEqunr());
+                                        values.put("Strno", orderHeader_result.getStrno());
+                                        values.put("TplnrInt", orderHeader_result.getTplnrInt());
+                                        values.put("Bautl", orderHeader_result.getBautl());
+                                        values.put("Gltrp", orderHeader_result.getGltrp());
+                                        values.put("Gstrp", orderHeader_result.getGstrp());
+                                        values.put("Docs", orderHeader_result.getDocs());
+                                        values.put("Permits", orderHeader_result.getPermits());
+                                        values.put("Altitude", orderHeader_result.getAltitude());
+                                        values.put("Latitude", orderHeader_result.getLatitude());
+                                        values.put("Longitude", orderHeader_result.getLongitude());
+                                        values.put("Qmnum", orderHeader_result.getQmnum());
+                                        values.put("Closed", orderHeader_result.getClosed());
+                                        values.put("Completed", orderHeader_result.getCompleted());
+                                        values.put("Ingrp", orderHeader_result.getIngrp());
+                                        values.put("Arbpl", orderHeader_result.getArbpl());
+                                        values.put("Werks", orderHeader_result.getWerks());
+                                        values.put("Bemot", orderHeader_result.getBemot());
+                                        values.put("Aueru", orderHeader_result.getAueru());
+                                        values.put("Auarttext", orderHeader_result.getAuarttext());
+                                        values.put("Qmartx", orderHeader_result.getQmartx());
+                                        values.put("Qmtxt", orderHeader_result.getQmtxt());
+                                        values.put("Pltxt", orderHeader_result.getPltxt());
+                                        values.put("Eqktx", orderHeader_result.getEqktx());
+                                        values.put("Priokx", orderHeader_result.getPriokx());
+                                        values.put("Ilatx", orderHeader_result.getIlatx());
+                                        values.put("Plantname", orderHeader_result.getPlantname());
+                                        values.put("Wkctrname", orderHeader_result.getWkctrname());
+                                        values.put("Ingrpname", orderHeader_result.getIngrpname());
+                                        values.put("Maktx", orderHeader_result.getMaktx());
+                                        values.put("Xstatus", orderHeader_result.getXstatus());
+                                        values.put("Usr01", orderHeader_result.getUsr01());
+                                        values.put("Usr02", orderHeader_result.getUsr02());
+                                        values.put("Usr03", orderHeader_result.getUsr03());
+                                        values.put("Usr04", orderHeader_result.getUsr04());
+                                        values.put("Usr05", orderHeader_result.getUsr05());
+                                        values.put("Kokrs", orderHeader_result.getKokrs());
+                                        values.put("Kostl", orderHeader_result.getKostl());
+                                        values.put("Anlzu", orderHeader_result.getAnlzu());
+                                        values.put("Anlzux", orderHeader_result.getAnlzux());
+                                        values.put("Ausvn", (String) orderHeader_result.getAusvn());
+                                        values.put("Ausbs", (String) orderHeader_result.getAusbs());
+                                        values.put("Auswk", orderHeader_result.getAuswk());
+                                        values.put("Qmnam", orderHeader_result.getQmnam());
+                                        values.put("ParnrVw", orderHeader_result.getParnrVw());
+                                        values.put("NameVw", orderHeader_result.getNameVw());
+                                        values.put("Posid", orderHeader_result.getPosid());
+                                        values.put("Revnr", orderHeader_result.getRevnr());
 
-                    if (results != null && results.size() > 0) {
-
-                        /*EtOrderHeader*/
-                        Orders_SER.EtOrderHeader etOrderHeader = results.get(0).getEtOrderHeader();
-                        if (etOrderHeader != null) {
-                            List<Orders_SER.EtOrderHeader_Result> etOrderHeaderResults = etOrderHeader.getResults();
-                            if (etOrderHeaderResults != null && etOrderHeaderResults.size() > 0) {
-                                for (Orders_SER.EtOrderHeader_Result eO : etOrderHeaderResults) {
-                                    HashMap<String, String> uuid_hashmap = new HashMap<String, String>();
-                                    UUID uniqueKey = UUID.randomUUID();
-                                    uuid_hashmap.put("UUID", uniqueKey.toString());
-                                    uuid_hashmap.put("Aufnr", c_e.check_empty(eO.getAufnr()));
-                                    orders_uuid_list.add(uuid_hashmap);
+                                        if (orderHeader_result.getEtOrderHeaderFields() != null)
+                                            if (orderHeader_result.getEtOrderHeaderFields().getResults() != null
+                                                    && orderHeader_result.getEtOrderHeaderFields().getResults().size() > 0) {
+                                                ContentValues ValuesHCf = new ContentValues();
+                                                for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields_result : orderHeader_result.getEtOrderHeaderFields().getResults()) {
+                                                    ValuesHCf.put("UUID", Aufnr_id);
+                                                    ValuesHCf.put("Aufnr", Aufnr_id);
+                                                    ValuesHCf.put("Zdoctype", etOrderHeaderFields_result.getZdoctype());
+                                                    ValuesHCf.put("ZdoctypeItem", etOrderHeaderFields_result.getZdoctypeItem());
+                                                    ValuesHCf.put("Tabname", etOrderHeaderFields_result.getTabname());
+                                                    ValuesHCf.put("Fieldname", etOrderHeaderFields_result.getFieldname());
+                                                    ValuesHCf.put("Value", etOrderHeaderFields_result.getValue());
+                                                    ValuesHCf.put("Flabel", etOrderHeaderFields_result.getFlabel());
+                                                    ValuesHCf.put("Sequence", etOrderHeaderFields_result.getSequence());
+                                                    ValuesHCf.put("Length", etOrderHeaderFields_result.getLength());
+                                                    ValuesHCf.put("Datatype", etOrderHeaderFields_result.getDatatype());
+                                                    App_db.insert("EtOrderHeader_CustomInfo", null, ValuesHCf);
+                                                }
+                                            }
+                                        App_db.insert("DUE_ORDERS_EtOrderHeader", null, values);
+                                    }
                                 }
-                                for (Orders_SER.EtOrderHeader_Result eO : etOrderHeaderResults) {
+
+                                /*for (Orders_SER.EtOrderHeader_Result eO : etOrderHeaderResults) {
                                     for (HashMap<String, String> uD : orders_uuid_list) {
                                         if (uD.get("Aufnr").equals(eO.getAufnr())) {
                                             String EtOrderHeader_sql = "Insert into DUE_ORDERS_EtOrderHeader " +
@@ -1413,667 +1487,1149 @@ public class Orders {
                                     }
                                 }
                             }
-                        }
+                        }*/
 
-                        /*EtOrderOperations*/
-                        Orders_SER.EtOrderOperations etOrderOperations = results.get(0).getEtOrderOperations();
-                        if (etOrderOperations != null) {
-                            List<Orders_SER.EtOrderOperations_Result> etOrderOperationsResults = etOrderOperations.getResults();
-                            if (etOrderOperationsResults != null && etOrderOperationsResults.size() > 0) {
-                                for (Orders_SER.EtOrderOperations_Result eOO : etOrderOperationsResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eOO.getAufnr())) {
-                                            String EtOrderOperations_sql = "Insert into DUE_ORDERS_EtOrderOperations " +
-                                                    "(UUID,Aufnr,Vornr,Uvorn,Ltxa1,Arbpl,Werks,Steus,Larnt,Dauno," +
-                                                    "Daune,Fsavd,Ssedd,Pernr,Asnum,Plnty,Plnal,Plnnr,Rueck,Aueru," +
-                                                    "ArbplText,WerksText,SteusText,LarntText,Usr01,Usr02,Usr03,Usr04," +
-                                                    "Usr05,Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
-                                                    "?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement EtOrderOperations_statement = App_db.compileStatement(EtOrderOperations_sql);
-                                            EtOrderOperations_statement.clearBindings();
-                                            EtOrderOperations_statement.bindString(1, uD.get("UUID"));
-                                            EtOrderOperations_statement.bindString(2, c_e.check_empty(eOO.getAufnr()));
-                                            EtOrderOperations_statement.bindString(3, c_e.check_empty(eOO.getVornr()));
-                                            EtOrderOperations_statement.bindString(4, c_e.check_empty(eOO.getUvorn()));
-                                            EtOrderOperations_statement.bindString(5, c_e.check_empty(eOO.getLtxa1()));
-                                            EtOrderOperations_statement.bindString(6, c_e.check_empty(eOO.getArbpl()));
-                                            EtOrderOperations_statement.bindString(7, c_e.check_empty(eOO.getWerks()));
-                                            EtOrderOperations_statement.bindString(8, c_e.check_empty(eOO.getSteus()));
-                                            EtOrderOperations_statement.bindString(9, c_e.check_empty(eOO.getLarnt()));
-                                            EtOrderOperations_statement.bindString(10, c_e.check_empty(eOO.getDauno()));
-                                            EtOrderOperations_statement.bindString(11, c_e.check_empty(eOO.getDaune()));
-                                            EtOrderOperations_statement.bindString(12, c_e.check_empty(eOO.getFsavd()));
-                                            EtOrderOperations_statement.bindString(13, c_e.check_empty(eOO.getSsedd()));
-                                            EtOrderOperations_statement.bindString(14, c_e.check_empty(eOO.getPernr()));
-                                            EtOrderOperations_statement.bindString(15, c_e.check_empty(eOO.getAsnum()));
-                                            EtOrderOperations_statement.bindString(16, c_e.check_empty(eOO.getPlnty()));
-                                            EtOrderOperations_statement.bindString(17, c_e.check_empty(eOO.getPlnal()));
-                                            EtOrderOperations_statement.bindString(18, c_e.check_empty(eOO.getPlnnr()));
-                                            EtOrderOperations_statement.bindString(19, c_e.check_empty(eOO.getRueck()));
-                                            EtOrderOperations_statement.bindString(20, c_e.check_empty(eOO.getAueru()));
-                                            EtOrderOperations_statement.bindString(21, c_e.check_empty(eOO.getArbplText()));
-                                            EtOrderOperations_statement.bindString(22, c_e.check_empty(eOO.getWerksText()));
-                                            EtOrderOperations_statement.bindString(23, c_e.check_empty(eOO.getSteusText()));
-                                            EtOrderOperations_statement.bindString(24, c_e.check_empty(eOO.getLarntText()));
-                                            EtOrderOperations_statement.bindString(25, c_e.check_empty(eOO.getUsr01()));
-                                            EtOrderOperations_statement.bindString(26, c_e.check_empty(eOO.getUsr02()));
-                                            EtOrderOperations_statement.bindString(27, c_e.check_empty(eOO.getUsr03()));
-                                            EtOrderOperations_statement.bindString(28, c_e.check_empty(eOO.getUsr04()));
-                                            EtOrderOperations_statement.bindString(29, c_e.check_empty(eOO.getUsr05()));
-                                            EtOrderOperations_statement.bindString(30, c_e.check_empty(eOO.getAction()));
-                                            EtOrderOperations_statement.execute();
+                            /*EtOrderOperations*/
+                            if (response.body().getD().getResults().get(0).getEtOrderOperations() != null)
+                                if (response.body().getD().getResults().get(0).getEtOrderOperations().getResults() != null
+                                        && response.body().getD().getResults().get(0).getEtOrderOperations().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtOrderOperations_Result orderOperations : response.body().getD().getResults()
+                                            .get(0).getEtOrderOperations().getResults()) {
+                                        values.put("UUID", orderOperations.getAufnr());
+                                        values.put("Aufnr", orderOperations.getAufnr());
+                                        String Aufnr_id = orderOperations.getAufnr();
+                                        values.put("Vornr", orderOperations.getVornr());
+                                        values.put("Uvorn", orderOperations.getUvorn());
+                                        values.put("Ltxa1", orderOperations.getLtxa1());
+                                        values.put("Arbpl", orderOperations.getArbpl());
+                                        values.put("Werks", orderOperations.getWerks());
+                                        values.put("Steus", orderOperations.getSteus());
+                                        values.put("Larnt", orderOperations.getLarnt());
+                                        values.put("Dauno", orderOperations.getDauno());
+                                        values.put("Daune", orderOperations.getDaune());
+                                        values.put("Fsavd", orderOperations.getFsavd());
+                                        values.put("Ssedd", orderOperations.getSsedd());
+                                        values.put("Pernr", orderOperations.getPernr());
+                                        values.put("Asnum", orderOperations.getAsnum());
+                                        values.put("Plnty", orderOperations.getPlnty());
+                                        values.put("Plnal", orderOperations.getPlnal());
+                                        values.put("Plnnr", orderOperations.getPlnnr());
+                                        values.put("Rueck", orderOperations.getRueck());
+                                        values.put("Aueru", orderOperations.getAueru());
+                                        values.put("ArbplText", orderOperations.getArbplText());
+                                        values.put("WerksText", orderOperations.getWerksText());
+                                        values.put("SteusText", orderOperations.getSteusText());
+                                        values.put("LarntText", orderOperations.getLarntText());
+                                        values.put("Usr01", orderOperations.getUsr01());
+                                        values.put("Usr02", orderOperations.getUsr02());
+                                        values.put("Usr03", orderOperations.getUsr03());
+                                        values.put("Usr04", orderOperations.getUsr04());
+                                        values.put("Usr05", orderOperations.getUsr05());
+                                        values.put("Action", orderOperations.getAction());
 
-                                            Orders_SER.EtOrderHeaderFields etOrderOperationFields = eOO.getEtOrderOperationsFields();
-                                            if (etOrderOperationFields != null) {
-                                                List<Orders_SER.EtOrderHeaderFields_Result> etOrderOperationFieldsResults = etOrderOperationFields.getResults();
-                                                if (etOrderOperationFieldsResults != null && etOrderOperationFieldsResults.size() > 0) {
-                                                    String sql1 = "Insert into DUE_ORDERS_EtOrderOperations_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, " +
-                                                            "Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID) " +
-                                                            "values(?,?,?,?,?,?,?,?,?,?,?,?);";
-                                                    SQLiteStatement statement1 = App_db.compileStatement(sql1);
-                                                    statement1.clearBindings();
-                                                    for (Orders_SER.EtOrderHeaderFields_Result eOF : etOrderOperationFieldsResults) {
-                                                        statement1.bindString(1, uD.get("UUID"));
-                                                        statement1.bindString(2, c_e.check_empty(eOO.getAufnr()));
-                                                        statement1.bindString(3, c_e.check_empty(eOF.getZdoctype()));
-                                                        statement1.bindString(4, c_e.check_empty(eOF.getZdoctypeItem()));
-                                                        statement1.bindString(5, c_e.check_empty(eOF.getTabname()));
-                                                        statement1.bindString(6, c_e.check_empty(eOF.getFieldname()));
-                                                        statement1.bindString(7, c_e.check_empty(eOF.getValue()));
-                                                        statement1.bindString(8, c_e.check_empty(eOF.getFlabel()));
-                                                        statement1.bindString(9, c_e.check_empty(eOF.getSequence()));
-                                                        statement1.bindString(10, c_e.check_empty(eOF.getLength()));
-                                                        statement1.bindString(11, c_e.check_empty(eOF.getDatatype()));
-                                                        statement1.bindString(12, c_e.check_empty(eOO.getVornr()));
-                                                        statement1.execute();
+                                        if (orderOperations.getEtOrderOperationsFields() != null)
+                                            if (orderOperations.getEtOrderOperationsFields().getResults() != null
+                                                    && orderOperations.getEtOrderOperationsFields().getResults().size() > 0) {
+                                                ContentValues ValuesOCf = new ContentValues();
+                                                for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields : orderOperations.getEtOrderOperationsFields().getResults()) {
+                                                    ValuesOCf.put("UUID", Aufnr_id);
+                                                    ValuesOCf.put("Aufnr", Aufnr_id);
+                                                    ValuesOCf.put("Zdoctype", etOrderHeaderFields.getZdoctype());
+                                                    ValuesOCf.put("ZdoctypeItem", etOrderHeaderFields.getZdoctypeItem());
+                                                    ValuesOCf.put("Tabname", etOrderHeaderFields.getTabname());
+                                                    ValuesOCf.put("Fieldname", etOrderHeaderFields.getFieldname());
+                                                    ValuesOCf.put("Value", etOrderHeaderFields.getValue());
+                                                    ValuesOCf.put("Flabel", etOrderHeaderFields.getFlabel());
+                                                    ValuesOCf.put("Sequence", etOrderHeaderFields.getSequence());
+                                                    ValuesOCf.put("Length", etOrderHeaderFields.getLength());
+                                                    ValuesOCf.put("Datatype", etOrderHeaderFields.getDatatype());
+                                                    ValuesOCf.put("OperationID", orderOperations.getVornr());
+                                                    App_db.insert("DUE_ORDERS_EtOrderOperations_FIELDS", null, ValuesOCf);
+                                                }
+                                            }
+                                        App_db.insert("DUE_ORDERS_EtOrderOperations", null, values);
+                                    }
+                                }
+                                /*Orders_SER.EtOrderOperations etOrderOperations = results.get(0).getEtOrderOperations();
+                                if (etOrderOperations != null) {
+                                    List<Orders_SER.EtOrderOperations_Result> etOrderOperationsResults = etOrderOperations.getResults();
+                                    if (etOrderOperationsResults != null && etOrderOperationsResults.size() > 0) {
+                                        for (Orders_SER.EtOrderOperations_Result eOO : etOrderOperationsResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eOO.getAufnr())) {
+                                                    String EtOrderOperations_sql = "Insert into DUE_ORDERS_EtOrderOperations " +
+                                                            "(UUID,Aufnr,Vornr,Uvorn,Ltxa1,Arbpl,Werks,Steus,Larnt,Dauno," +
+                                                            "Daune,Fsavd,Ssedd,Pernr,Asnum,Plnty,Plnal,Plnnr,Rueck,Aueru," +
+                                                            "ArbplText,WerksText,SteusText,LarntText,Usr01,Usr02,Usr03,Usr04," +
+                                                            "Usr05,Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                                            "?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement EtOrderOperations_statement = App_db.compileStatement(EtOrderOperations_sql);
+                                                    EtOrderOperations_statement.clearBindings();
+                                                    EtOrderOperations_statement.bindString(1, uD.get("UUID"));
+                                                    EtOrderOperations_statement.bindString(2, c_e.check_empty(eOO.getAufnr()));
+                                                    EtOrderOperations_statement.bindString(3, c_e.check_empty(eOO.getVornr()));
+                                                    EtOrderOperations_statement.bindString(4, c_e.check_empty(eOO.getUvorn()));
+                                                    EtOrderOperations_statement.bindString(5, c_e.check_empty(eOO.getLtxa1()));
+                                                    EtOrderOperations_statement.bindString(6, c_e.check_empty(eOO.getArbpl()));
+                                                    EtOrderOperations_statement.bindString(7, c_e.check_empty(eOO.getWerks()));
+                                                    EtOrderOperations_statement.bindString(8, c_e.check_empty(eOO.getSteus()));
+                                                    EtOrderOperations_statement.bindString(9, c_e.check_empty(eOO.getLarnt()));
+                                                    EtOrderOperations_statement.bindString(10, c_e.check_empty(eOO.getDauno()));
+                                                    EtOrderOperations_statement.bindString(11, c_e.check_empty(eOO.getDaune()));
+                                                    EtOrderOperations_statement.bindString(12, c_e.check_empty(eOO.getFsavd()));
+                                                    EtOrderOperations_statement.bindString(13, c_e.check_empty(eOO.getSsedd()));
+                                                    EtOrderOperations_statement.bindString(14, c_e.check_empty(eOO.getPernr()));
+                                                    EtOrderOperations_statement.bindString(15, c_e.check_empty(eOO.getAsnum()));
+                                                    EtOrderOperations_statement.bindString(16, c_e.check_empty(eOO.getPlnty()));
+                                                    EtOrderOperations_statement.bindString(17, c_e.check_empty(eOO.getPlnal()));
+                                                    EtOrderOperations_statement.bindString(18, c_e.check_empty(eOO.getPlnnr()));
+                                                    EtOrderOperations_statement.bindString(19, c_e.check_empty(eOO.getRueck()));
+                                                    EtOrderOperations_statement.bindString(20, c_e.check_empty(eOO.getAueru()));
+                                                    EtOrderOperations_statement.bindString(21, c_e.check_empty(eOO.getArbplText()));
+                                                    EtOrderOperations_statement.bindString(22, c_e.check_empty(eOO.getWerksText()));
+                                                    EtOrderOperations_statement.bindString(23, c_e.check_empty(eOO.getSteusText()));
+                                                    EtOrderOperations_statement.bindString(24, c_e.check_empty(eOO.getLarntText()));
+                                                    EtOrderOperations_statement.bindString(25, c_e.check_empty(eOO.getUsr01()));
+                                                    EtOrderOperations_statement.bindString(26, c_e.check_empty(eOO.getUsr02()));
+                                                    EtOrderOperations_statement.bindString(27, c_e.check_empty(eOO.getUsr03()));
+                                                    EtOrderOperations_statement.bindString(28, c_e.check_empty(eOO.getUsr04()));
+                                                    EtOrderOperations_statement.bindString(29, c_e.check_empty(eOO.getUsr05()));
+                                                    EtOrderOperations_statement.bindString(30, c_e.check_empty(eOO.getAction()));
+                                                    EtOrderOperations_statement.execute();
+
+                                                    Orders_SER.EtOrderHeaderFields etOrderOperationFields = eOO.getEtOrderOperationsFields();
+                                                    if (etOrderOperationFields != null) {
+                                                        List<Orders_SER.EtOrderHeaderFields_Result> etOrderOperationFieldsResults = etOrderOperationFields.getResults();
+                                                        if (etOrderOperationFieldsResults != null && etOrderOperationFieldsResults.size() > 0) {
+                                                            String sql1 = "Insert into DUE_ORDERS_EtOrderOperations_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem, " +
+                                                                    "Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID) " +
+                                                                    "values(?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                            SQLiteStatement statement1 = App_db.compileStatement(sql1);
+                                                            statement1.clearBindings();
+                                                            for (Orders_SER.EtOrderHeaderFields_Result eOF : etOrderOperationFieldsResults) {
+                                                                statement1.bindString(1, uD.get("UUID"));
+                                                                statement1.bindString(2, c_e.check_empty(eOO.getAufnr()));
+                                                                statement1.bindString(3, c_e.check_empty(eOF.getZdoctype()));
+                                                                statement1.bindString(4, c_e.check_empty(eOF.getZdoctypeItem()));
+                                                                statement1.bindString(5, c_e.check_empty(eOF.getTabname()));
+                                                                statement1.bindString(6, c_e.check_empty(eOF.getFieldname()));
+                                                                statement1.bindString(7, c_e.check_empty(eOF.getValue()));
+                                                                statement1.bindString(8, c_e.check_empty(eOF.getFlabel()));
+                                                                statement1.bindString(9, c_e.check_empty(eOF.getSequence()));
+                                                                statement1.bindString(10, c_e.check_empty(eOF.getLength()));
+                                                                statement1.bindString(11, c_e.check_empty(eOF.getDatatype()));
+                                                                statement1.bindString(12, c_e.check_empty(eOO.getVornr()));
+                                                                statement1.execute();
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            }
-                        }
+                                }*/
 
-                        /*EtOrderLongtext*/
-                        Orders_SER.EtOrderLongtext etOrderLongtext = results.get(0).getEtOrderLongtext();
-                        if (etOrderLongtext != null) {
-                            List<Orders_SER.EtOrderLongtext_Result> etOrderLongtextResults = etOrderLongtext.getResults();
-                            if (etOrderLongtextResults != null && etOrderLongtextResults.size() > 0) {
-                                for (Orders_SER.EtOrderLongtext_Result eOL : etOrderLongtextResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eOL.getAufnr())) {
-                                            String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext " +
-                                                    "(UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
-                                            SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
-                                            EtOrderLongtext_statement.clearBindings();
-                                            EtOrderLongtext_statement.bindString(1, uD.get("UUID"));
-                                            EtOrderLongtext_statement.bindString(2, c_e.check_empty(eOL.getAufnr()));
-                                            EtOrderLongtext_statement.bindString(3, c_e.check_empty(eOL.getActivity()));
-                                            EtOrderLongtext_statement.bindString(4, c_e.check_empty(eOL.getTextLine()));
-                                            EtOrderLongtext_statement.bindString(5, c_e.check_empty(eOL.getTdid()));
-                                            EtOrderLongtext_statement.execute();
-                                        }
+                            /*EtOrderLongtext*/
+                            if (response.body().getD().getResults().get(0).getEtOrderLongtext() != null)
+                                if (response.body().getD().getResults().get(0).getEtOrderLongtext().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtOrderLongtext().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtOrderLongtext_Result orderLongtext_result : response.body().getD().getResults()
+                                            .get(0).getEtOrderLongtext().getResults()) {
+                                        values.put("UUID", orderLongtext_result.getAufnr());
+                                        values.put("Aufnr", orderLongtext_result.getAufnr());
+                                        values.put("Activity", orderLongtext_result.getActivity());
+                                        values.put("TextLine", orderLongtext_result.getTextLine());
+                                        values.put("Tdid", orderLongtext_result.getTdid());
+                                        App_db.insert("DUE_ORDERS_Longtext", null, values);
                                     }
                                 }
-                            }
-                        }
 
-                        /*EtOrderOlist*/
-                        Orders_SER.EtOrderOlist etOrderOlist = results.get(0).getEtOrderOlist();
-                        if (etOrderOlist != null) {
-                            List<Orders_SER.EtOrderOlist_Result> etOrderOlistResults = etOrderOlist.getResults();
-                            if (etOrderOlistResults != null && etOrderOlistResults.size() > 0) {
-                                for (Orders_SER.EtOrderOlist_Result eOL : etOrderOlistResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eOL.getAufnr())) {
-                                            String EtOrderOlist_sql = "Insert into EtOrderOlist (UUID, Aufnr," +
-                                                    " Obknr, Obzae, Qmnum, Equnr, Strno, Tplnr, Bautl, Qmtxt," +
-                                                    " Pltxt, Eqktx, Maktx, Action) values(?,?,?,?,?,?,?,?,?," +
-                                                    "?,?,?,?,?);";
-                                            SQLiteStatement EtOrderOlist_statement = App_db.compileStatement(EtOrderOlist_sql);
-                                            EtOrderOlist_statement.clearBindings();
-                                            EtOrderOlist_statement.bindString(1, uD.get("UUID"));
-                                            EtOrderOlist_statement.bindString(2, c_e.check_empty(eOL.getAufnr()));
-                                            EtOrderOlist_statement.bindString(3, c_e.check_empty(eOL.getObknr()));
-                                            EtOrderOlist_statement.bindString(4, c_e.check_empty(eOL.getObzae()));
-                                            EtOrderOlist_statement.bindString(5, c_e.check_empty(eOL.getQmnum()));
-                                            EtOrderOlist_statement.bindString(6, c_e.check_empty(eOL.getEqunr()));
-                                            EtOrderOlist_statement.bindString(7, c_e.check_empty(eOL.getStrno()));
-                                            EtOrderOlist_statement.bindString(8, c_e.check_empty(eOL.getTplnr()));
-                                            EtOrderOlist_statement.bindString(9, c_e.check_empty(eOL.getBautl()));
-                                            EtOrderOlist_statement.bindString(10, c_e.check_empty(eOL.getQmtxt()));
-                                            EtOrderOlist_statement.bindString(11, c_e.check_empty(eOL.getPltxt()));
-                                            EtOrderOlist_statement.bindString(12, c_e.check_empty(eOL.getEqktx()));
-                                            EtOrderOlist_statement.bindString(13, c_e.check_empty(eOL.getMaktx()));
-                                            EtOrderOlist_statement.bindString(14, c_e.check_empty(eOL.getAction()));
-                                            EtOrderOlist_statement.execute();
-                                        }
-                                    }
-                                }
-                            }
-                        }
 
-                        /*EtOrderStatus*/
-                        Orders_SER.EtOrderStatus etOrderStatus = results.get(0).getEtOrderStatus();
-                        if (etOrderStatus != null) {
-                            List<Orders_SER.EtOrderStatus_Result> etOrderStatusResults = etOrderStatus.getResults();
-                            if (etOrderStatusResults != null && etOrderStatusResults.size() > 0) {
-                                for (Orders_SER.EtOrderStatus_Result eOS : etOrderStatusResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eOS.getAufnr())) {
-                                            String EtOrderStatus_sql = "Insert into EtOrderStatus (UUID,Aufnr, " +
-                                                    "Vornr, Objnr, Stsma, Inist, Stonr, Hsonr, Nsonr,Stat, Act," +
-                                                    " Txt04, Txt30, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement EtOrderStatus_statement = App_db.compileStatement(EtOrderStatus_sql);
-                                            EtOrderStatus_statement.clearBindings();
-                                            EtOrderStatus_statement.bindString(1, uD.get("UUID"));
-                                            EtOrderStatus_statement.bindString(2, c_e.check_empty(eOS.getAufnr()));
-                                            EtOrderStatus_statement.bindString(3, c_e.check_empty(eOS.getVornr()));
-                                            EtOrderStatus_statement.bindString(4, c_e.check_empty(eOS.getObjnr()));
-                                            EtOrderStatus_statement.bindString(5, c_e.check_empty(eOS.getStsma()));
-                                            EtOrderStatus_statement.bindString(6, c_e.check_empty(eOS.getInist()));
-                                            EtOrderStatus_statement.bindString(7, c_e.check_empty(eOS.getStonr()));
-                                            EtOrderStatus_statement.bindString(8, c_e.check_empty(eOS.getHsonr()));
-                                            EtOrderStatus_statement.bindString(9, c_e.check_empty(eOS.getNsonr()));
-                                            EtOrderStatus_statement.bindString(10, c_e.check_empty(eOS.getStat()));
-                                            EtOrderStatus_statement.bindString(11, c_e.check_empty(eOS.getAct()));
-                                            EtOrderStatus_statement.bindString(12, c_e.check_empty(eOS.getTxt04()));
-                                            EtOrderStatus_statement.bindString(13, c_e.check_empty(eOS.getTxt30()));
-                                            EtOrderStatus_statement.bindString(14, c_e.check_empty(eOS.getAction()));
-                                            EtOrderStatus_statement.execute();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        /*EtDocs*/
-                        Orders_SER.EtDocs etDocs = results.get(0).getEtDocs();
-                        if (etDocs != null) {
-                            List<Orders_SER.EtDocs_Result> etDocsResults = etDocs.getResults();
-                            if (etDocsResults != null && etDocsResults.size() > 0) {
-                                for (Orders_SER.EtDocs_Result eD : etDocsResults) {
-                                    String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype," +
-                                            " ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId," +
-                                            " DocType, Objtype) values(?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
-                                    EtDocs_statement.clearBindings();
-                                    EtDocs_statement.bindString(1, "");
-                                    EtDocs_statement.bindString(2, c_e.check_empty(eD.getZobjid()));
-                                    EtDocs_statement.bindString(3, c_e.check_empty(eD.getZdoctype()));
-                                    EtDocs_statement.bindString(4, c_e.check_empty(eD.getZdoctypeItem()));
-                                    EtDocs_statement.bindString(5, c_e.check_empty(eD.getFilename()));
-                                    EtDocs_statement.bindString(6, c_e.check_empty(eD.getFiletype()));
-                                    EtDocs_statement.bindString(7, c_e.check_empty(eD.getFsize()));
-                                    EtDocs_statement.bindString(8, c_e.check_empty(eD.getContent()));
-                                    EtDocs_statement.bindString(9, c_e.check_empty(eD.getDocID()));
-                                    EtDocs_statement.bindString(10, c_e.check_empty(eD.getDocType()));
-                                    EtDocs_statement.bindString(11, c_e.check_empty(eD.getObjtype()));
-                                    EtDocs_statement.execute();
-                                }
-                            }
-                        }
-
-                        /*EtWcmWwData*/
-                        Orders_SER.EtWcmWwData etWcmWwData = results.get(0).getEtWcmWwData();
-                        if (etWcmWwData != null) {
-                            List<Orders_SER.EtWcmWwData_Result> etWcmWwDataResults = etWcmWwData.getResults();
-                            if (etWcmWwDataResults != null && etWcmWwDataResults.size() > 0) {
-                                for (Orders_SER.EtWcmWwData_Result eWW : etWcmWwDataResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eWW.getAufnr())) {
-                                            String EtWcmWwData_sql = "Insert into EtWcmWwData (UUID, Aufnr, Objart," +
-                                                    " Wapnr, Iwerk, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape," +
-                                                    " Etapex, Rctime, Rcunit, Priok, Priokx, Stxt, Datefr, Timefr, Dateto," +
-                                                    " Timeto, Objnr, Crea, Prep, Comp, Appr, Pappr, Action, Begru, Begtx)" +
-                                                    " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement EtWcmWwData_statement = App_db.compileStatement(EtWcmWwData_sql);
-                                            EtWcmWwData_statement.clearBindings();
-                                            EtWcmWwData_statement.bindString(1, uD.get("UUID"));
-                                            EtWcmWwData_statement.bindString(2, c_e.check_empty(eWW.getAufnr()));
-                                            EtWcmWwData_statement.bindString(3, c_e.check_empty(eWW.getObjart()));
-                                            EtWcmWwData_statement.bindString(4, c_e.check_empty(eWW.getWapnr()));
-                                            EtWcmWwData_statement.bindString(5, c_e.check_empty(eWW.getIwerk()));
-                                            EtWcmWwData_statement.bindString(6, c_e.check_empty(eWW.getUsage()));
-                                            EtWcmWwData_statement.bindString(7, c_e.check_empty(eWW.getUsagex()));
-                                            EtWcmWwData_statement.bindString(8, c_e.check_empty(eWW.getTrain()));
-                                            EtWcmWwData_statement.bindString(9, c_e.check_empty(eWW.getTrainx()));
-                                            EtWcmWwData_statement.bindString(10, c_e.check_empty(eWW.getAnlzu()));
-                                            EtWcmWwData_statement.bindString(11, c_e.check_empty(eWW.getAnlzux()));
-                                            EtWcmWwData_statement.bindString(12, c_e.check_empty(eWW.getEtape()));
-                                            EtWcmWwData_statement.bindString(13, c_e.check_empty(eWW.getEtapex()));
-                                            EtWcmWwData_statement.bindString(14, c_e.check_empty(eWW.getRctime()));
-                                            EtWcmWwData_statement.bindString(15, c_e.check_empty(eWW.getRcunit()));
-                                            EtWcmWwData_statement.bindString(16, c_e.check_empty(eWW.getPriok()));
-                                            EtWcmWwData_statement.bindString(17, c_e.check_empty(eWW.getPriokx()));
-                                            EtWcmWwData_statement.bindString(18, c_e.check_empty(eWW.getStxt()));
-                                            EtWcmWwData_statement.bindString(19, c_e.check_empty(eWW.getDatefr()));
-                                            EtWcmWwData_statement.bindString(20, c_e.check_empty(eWW.getTimefr()));
-                                            EtWcmWwData_statement.bindString(21, c_e.check_empty(eWW.getDateto()));
-                                            EtWcmWwData_statement.bindString(22, c_e.check_empty(eWW.getTimeto()));
-                                            EtWcmWwData_statement.bindString(23, c_e.check_empty(eWW.getObjnr()));
-                                            EtWcmWwData_statement.bindString(24, c_e.check_empty(eWW.getCrea()));
-                                            EtWcmWwData_statement.bindString(25, c_e.check_empty(eWW.getPrep()));
-                                            EtWcmWwData_statement.bindString(26, c_e.check_empty(eWW.getComp()));
-                                            EtWcmWwData_statement.bindString(27, c_e.check_empty(eWW.getAppr()));
-                                            EtWcmWwData_statement.bindString(28, c_e.check_empty(eWW.getPappr()));
-                                            EtWcmWwData_statement.bindString(29, c_e.check_empty(eWW.getAction()));
-                                            EtWcmWwData_statement.bindString(30, c_e.check_empty(eWW.getBegru()));
-                                            EtWcmWwData_statement.bindString(31, c_e.check_empty(eWW.getBegtx()));
-                                            EtWcmWwData_statement.execute();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        /*EtWcmWaData*/
-                        Orders_SER.EtWcmWaData etWcmWaData = results.get(0).getEtWcmWaData();
-                        if (etWcmWaData != null) {
-                            List<Orders_SER.EtWcmWaData_Result> etWcmWaDataResults = etWcmWaData.getResults();
-                            if (etWcmWaDataResults != null && etWcmWaDataResults.size() > 0) {
-                                for (Orders_SER.EtWcmWaData_Result eWA : etWcmWaDataResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eWA.getAufnr())) {
-                                            String EtWcmWaData_sql = "Insert into EtWcmWaData (UUID, Aufnr, Objart," +
-                                                    " Wapinr, Iwerk, Objtyp, Usage, Usagex, Train, Trainx, Anlzu, " +
-                                                    "Anlzux, Etape, Etapex, Stxt, Datefr, Timefr, Dateto, Timeto, " +
-                                                    "Priok, Priokx, Rctime, Rcunit, Objnr, Refobj, Crea, Prep, " +
-                                                    "Comp, Appr, Action, Begru, Begtx, Extperiod) values(?,?,?,?," +
-                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement EtWcmWaData_statement = App_db.compileStatement(EtWcmWaData_sql);
-                                            EtWcmWaData_statement.clearBindings();
-                                            EtWcmWaData_statement.bindString(1, uD.get("UUID"));
-                                            EtWcmWaData_statement.bindString(2, c_e.check_empty(eWA.getAufnr()));
-                                            EtWcmWaData_statement.bindString(3, c_e.check_empty(eWA.getObjart()));
-                                            EtWcmWaData_statement.bindString(4, c_e.check_empty(eWA.getWapinr()));
-                                            EtWcmWaData_statement.bindString(5, c_e.check_empty(eWA.getIwerk()));
-                                            EtWcmWaData_statement.bindString(6, c_e.check_empty(eWA.getObjtyp()));
-                                            EtWcmWaData_statement.bindString(7, c_e.check_empty(eWA.getUsage()));
-                                            EtWcmWaData_statement.bindString(8, c_e.check_empty(eWA.getUsagex()));
-                                            EtWcmWaData_statement.bindString(9, c_e.check_empty(eWA.getTrain()));
-                                            EtWcmWaData_statement.bindString(10, c_e.check_empty(eWA.getTrainx()));
-                                            EtWcmWaData_statement.bindString(11, c_e.check_empty(eWA.getAnlzu()));
-                                            EtWcmWaData_statement.bindString(12, c_e.check_empty(eWA.getAnlzux()));
-                                            EtWcmWaData_statement.bindString(13, c_e.check_empty(eWA.getEtape()));
-                                            EtWcmWaData_statement.bindString(14, c_e.check_empty(eWA.getEtapex()));
-                                            EtWcmWaData_statement.bindString(15, c_e.check_empty(eWA.getStxt()));
-                                            EtWcmWaData_statement.bindString(16, c_e.check_empty(eWA.getDatefr()));
-                                            EtWcmWaData_statement.bindString(17, c_e.check_empty(eWA.getTimefr()));
-                                            EtWcmWaData_statement.bindString(18, c_e.check_empty(eWA.getDateto()));
-                                            EtWcmWaData_statement.bindString(19, c_e.check_empty(eWA.getTimeto()));
-                                            EtWcmWaData_statement.bindString(20, c_e.check_empty(eWA.getPriok()));
-                                            EtWcmWaData_statement.bindString(21, c_e.check_empty(eWA.getPriokx()));
-                                            EtWcmWaData_statement.bindString(22, c_e.check_empty(eWA.getRctime()));
-                                            EtWcmWaData_statement.bindString(23, c_e.check_empty(eWA.getRcunit()));
-                                            EtWcmWaData_statement.bindString(24, c_e.check_empty(eWA.getObjnr()));
-                                            EtWcmWaData_statement.bindString(25, c_e.check_empty(eWA.getRefobj()));
-                                            EtWcmWaData_statement.bindString(26, c_e.check_empty(eWA.getCrea()));
-                                            EtWcmWaData_statement.bindString(27, c_e.check_empty(eWA.getPrep()));
-                                            EtWcmWaData_statement.bindString(28, c_e.check_empty(eWA.getComp()));
-                                            EtWcmWaData_statement.bindString(29, c_e.check_empty(eWA.getAppr()));
-                                            EtWcmWaData_statement.bindString(30, c_e.check_empty(eWA.getAction()));
-                                            EtWcmWaData_statement.bindString(31, c_e.check_empty(eWA.getBegru()));
-                                            EtWcmWaData_statement.bindString(32, c_e.check_empty(eWA.getBegtx()));
-                                            EtWcmWaData_statement.bindString(33, c_e.check_empty(String.valueOf(eWA.getExtperiod())));
-                                            EtWcmWaData_statement.execute();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        /*EtWcmWaChkReq*/
-                        Orders_SER.EtWcmWaChkReq etWcmWaChkReq = results.get(0).getEtWcmWaChkReq();
-                        if (etWcmWaChkReq != null) {
-                            List<Orders_SER.EtWcmWaChkReq_Result> etWcmWaChkReqResults = etWcmWaChkReq.getResults();
-                            if (etWcmWaChkReqResults != null && etWcmWaChkReqResults.size() > 0) {
-                                for (Orders_SER.EtWcmWaChkReq_Result eWR : etWcmWaChkReqResults) {
-                                    String EtWcmWaChkReq_sql = "Insert into EtWcmWaChkReq (Wapinr, Wapityp, Needid, " +
-                                            "Value, ChkPointType, Desctext, Tplnr, Wkgrp, Needgrp, Equnr) " +
-                                            "values(?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtWcmWaChkReq_statement = App_db.compileStatement(EtWcmWaChkReq_sql);
-                                    EtWcmWaChkReq_statement.clearBindings();
-                                    EtWcmWaChkReq_statement.bindString(1, c_e.check_empty(eWR.getWapinr()));
-                                    EtWcmWaChkReq_statement.bindString(2, c_e.check_empty(eWR.getWapityp()));
-                                    EtWcmWaChkReq_statement.bindString(5, c_e.check_empty(eWR.getChkPointType()));
-                                    if (c_e.check_empty(eWR.getChkPointType()).equalsIgnoreCase("W"))
-                                        EtWcmWaChkReq_statement.bindString(3, c_e.check_empty(eWR.getWkid()));
-                                    else
-                                        EtWcmWaChkReq_statement.bindString(3, c_e.check_empty(eWR.getNeedid()));
-                                    EtWcmWaChkReq_statement.bindString(4, c_e.check_empty(eWR.getValue()));
-                                    EtWcmWaChkReq_statement.bindString(6, c_e.check_empty(eWR.getDesctext()));
-                                    EtWcmWaChkReq_statement.bindString(7, c_e.check_empty(eWR.getTplnr()));
-                                    EtWcmWaChkReq_statement.bindString(8, c_e.check_empty(eWR.getWkgrp()));
-                                    EtWcmWaChkReq_statement.bindString(9, c_e.check_empty(eWR.getNeedgrp()));
-                                    EtWcmWaChkReq_statement.bindString(10, c_e.check_empty(eWR.getEqunr()));
-                                    EtWcmWaChkReq_statement.execute();
-                                }
-                            }
-                        }
-
-                        /*EtWcmWdData*/
-                        Orders_SER.EtWcmWdData etWcmWdData = results.get(0).getEtWcmWdData();
-                        if (etWcmWdData != null) {
-                            List<Orders_SER.EtWcmWdData_Result> etWcmWdDataResults = etWcmWdData.getResults();
-                            if (etWcmWdDataResults != null && etWcmWdDataResults.size() > 0) {
-                                for (Orders_SER.EtWcmWdData_Result eWD : etWcmWdDataResults) {
-                                    String EtWcmWdData_sql = "Insert into EtWcmWdData (Aufnr, Objart, Wcnr, Iwerk," +
-                                            " Objtyp, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape, Etapex," +
-                                            " Stxt, Datefr, Timefr, Dateto, Timeto, Priok, Priokx, Rctime, Rcunit, " +
-                                            "Objnr, Refobj, Crea, Prep, Comp, Appr, Action, Begru, Begtx) " +
-                                            "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtWcmWdData_statement = App_db.compileStatement(EtWcmWdData_sql);
-                                    EtWcmWdData_statement.clearBindings();
-                                    EtWcmWdData_statement.bindString(1, c_e.check_empty(eWD.getAufnr()));
-                                    EtWcmWdData_statement.bindString(2, c_e.check_empty(eWD.getObjart()));
-                                    EtWcmWdData_statement.bindString(3, c_e.check_empty(eWD.getWcnr()));
-                                    EtWcmWdData_statement.bindString(4, c_e.check_empty(eWD.getIwerk()));
-                                    EtWcmWdData_statement.bindString(5, c_e.check_empty(eWD.getObjtyp()));
-                                    EtWcmWdData_statement.bindString(6, c_e.check_empty(eWD.getUsage()));
-                                    EtWcmWdData_statement.bindString(7, c_e.check_empty(eWD.getUsagex()));
-                                    EtWcmWdData_statement.bindString(8, c_e.check_empty(eWD.getTrain()));
-                                    EtWcmWdData_statement.bindString(9, c_e.check_empty(eWD.getTrainx()));
-                                    EtWcmWdData_statement.bindString(10, c_e.check_empty(eWD.getAnlzu()));
-                                    EtWcmWdData_statement.bindString(11, c_e.check_empty(eWD.getAnlzux()));
-                                    EtWcmWdData_statement.bindString(12, c_e.check_empty(eWD.getEtape()));
-                                    EtWcmWdData_statement.bindString(13, c_e.check_empty(eWD.getEtapex()));
-                                    EtWcmWdData_statement.bindString(14, c_e.check_empty(eWD.getStxt()));
-                                    EtWcmWdData_statement.bindString(15, c_e.check_empty(eWD.getDatefr()));
-                                    EtWcmWdData_statement.bindString(16, c_e.check_empty(eWD.getTimefr()));
-                                    EtWcmWdData_statement.bindString(17, c_e.check_empty(eWD.getDateto()));
-                                    EtWcmWdData_statement.bindString(18, c_e.check_empty(eWD.getTimeto()));
-                                    EtWcmWdData_statement.bindString(19, c_e.check_empty(eWD.getPriok()));
-                                    EtWcmWdData_statement.bindString(20, c_e.check_empty(eWD.getPriokx()));
-                                    EtWcmWdData_statement.bindString(21, c_e.check_empty(eWD.getRctime()));
-                                    EtWcmWdData_statement.bindString(22, c_e.check_empty(eWD.getRcunit()));
-                                    EtWcmWdData_statement.bindString(23, c_e.check_empty(eWD.getObjnr()));
-                                    EtWcmWdData_statement.bindString(24, c_e.check_empty(eWD.getRefobj()));
-                                    EtWcmWdData_statement.bindString(25, c_e.check_empty(eWD.getCrea()));
-                                    EtWcmWdData_statement.bindString(26, c_e.check_empty(eWD.getPrep()));
-                                    EtWcmWdData_statement.bindString(27, c_e.check_empty(eWD.getComp()));
-                                    EtWcmWdData_statement.bindString(28, c_e.check_empty(eWD.getAppr()));
-                                    EtWcmWdData_statement.bindString(29, c_e.check_empty(eWD.getAction()));
-                                    EtWcmWdData_statement.bindString(30, c_e.check_empty(eWD.getBegru()));
-                                    EtWcmWdData_statement.bindString(31, c_e.check_empty(eWD.getBegtx()));
-
-                                    Orders_SER.EtWcmWdDataTagtext etWcmWdDataTagtext = eWD.getEtWcmWdDataTagtext();
-                                    if (etWcmWdDataTagtext != null) {
-                                        List<Orders_SER.EtWcmWdDataTagtext_Result> etWcmWdDataTagtextResults = etWcmWdDataTagtext.getResults();
-                                        if (etWcmWdDataTagtextResults != null && etWcmWdDataTagtextResults.size() > 0) {
-                                            for (Orders_SER.EtWcmWdDataTagtext_Result eWDT : etWcmWdDataTagtextResults) {
-                                                String EtWcmWdDataTagtext_sql = "Insert into EtWcmWdDataTagtext (Aufnr, Wcnr," +
-                                                        " Objtype, FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
-                                                SQLiteStatement EtWcmWdDataTagtext_statement = App_db.compileStatement(EtWcmWdDataTagtext_sql);
-                                                EtWcmWdDataTagtext_statement.clearBindings();
-                                                EtWcmWdDataTagtext_statement.bindString(1, c_e.check_empty(eWDT.getAufnr()));
-                                                EtWcmWdDataTagtext_statement.bindString(2, c_e.check_empty(eWDT.getWcnr()));
-                                                EtWcmWdDataTagtext_statement.bindString(3, c_e.check_empty(eWDT.getObjtype()));
-                                                EtWcmWdDataTagtext_statement.bindString(4, c_e.check_empty(eWDT.getFormatCol()));
-                                                EtWcmWdDataTagtext_statement.bindString(5, c_e.check_empty(eWDT.getTextLine()));
-                                                EtWcmWdDataTagtext_statement.bindString(6, c_e.check_empty(eWDT.getAction()));
-                                                EtWcmWdDataTagtext_statement.execute();
+                                /*Orders_SER.EtOrderLongtext etOrderLongtext = results.get(0).getEtOrderLongtext();
+                                if (etOrderLongtext != null) {
+                                    List<Orders_SER.EtOrderLongtext_Result> etOrderLongtextResults = etOrderLongtext.getResults();
+                                    if (etOrderLongtextResults != null && etOrderLongtextResults.size() > 0) {
+                                        for (Orders_SER.EtOrderLongtext_Result eOL : etOrderLongtextResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eOL.getAufnr())) {
+                                                    String EtOrderLongtext_sql = "Insert into DUE_ORDERS_Longtext " +
+                                                            "(UUID, Aufnr, Activity, TextLine, Tdid) values(?,?,?,?,?);";
+                                                    SQLiteStatement EtOrderLongtext_statement = App_db.compileStatement(EtOrderLongtext_sql);
+                                                    EtOrderLongtext_statement.clearBindings();
+                                                    EtOrderLongtext_statement.bindString(1, uD.get("UUID"));
+                                                    EtOrderLongtext_statement.bindString(2, c_e.check_empty(eOL.getAufnr()));
+                                                    EtOrderLongtext_statement.bindString(3, c_e.check_empty(eOL.getActivity()));
+                                                    EtOrderLongtext_statement.bindString(4, c_e.check_empty(eOL.getTextLine()));
+                                                    EtOrderLongtext_statement.bindString(5, c_e.check_empty(eOL.getTdid()));
+                                                    EtOrderLongtext_statement.execute();
+                                                }
                                             }
                                         }
                                     }
+                                }*/
 
-                                    Orders_SER.EtWcmWdDataUntagtext etWcmWdDataUntagtext = eWD.getEtWcmWdDataUntagtext();
-                                    if (etWcmWdDataUntagtext != null) {
-                                        List<Orders_SER.EtWcmWdDataTagtext_Result> etWcmWdDataTagtextResults = etWcmWdDataUntagtext.getResults();
-                                        if (etWcmWdDataTagtextResults != null && etWcmWdDataTagtextResults.size() > 0) {
-                                            for (Orders_SER.EtWcmWdDataTagtext_Result eWDT : etWcmWdDataTagtextResults) {
-                                                String EtWcmWdDataUntagtext_sql = "Insert into EtWcmWdDataUntagtext (Aufnr, Wcnr, Objtype, " +
-                                                        "FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
-                                                SQLiteStatement EtWcmWdDataUntagtext_statement = App_db.compileStatement(EtWcmWdDataUntagtext_sql);
-                                                EtWcmWdDataUntagtext_statement.clearBindings();
-                                                EtWcmWdDataUntagtext_statement.bindString(1, c_e.check_empty(eWDT.getAufnr()));
-                                                EtWcmWdDataUntagtext_statement.bindString(2, c_e.check_empty(eWDT.getWcnr()));
-                                                EtWcmWdDataUntagtext_statement.bindString(3, c_e.check_empty(eWDT.getObjtype()));
-                                                EtWcmWdDataUntagtext_statement.bindString(4, c_e.check_empty(eWDT.getFormatCol()));
-                                                EtWcmWdDataUntagtext_statement.bindString(5, c_e.check_empty(eWDT.getTextLine()));
-                                                EtWcmWdDataUntagtext_statement.bindString(6, c_e.check_empty(eWDT.getAction()));
-                                                EtWcmWdDataUntagtext_statement.execute();
+                            /*EtOrderOlist*/
+                            if (response.body().getD().getResults().get(0).getEtOrderOlist() != null)
+                                if (response.body().getD().getResults().get(0).getEtOrderOlist().getResults() != null
+                                        && response.body().getD().getResults().get(0).getEtOrderOlist().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtOrderOlist_Result orderOlist_result : response.body().getD().getResults()
+                                            .get(0).getEtOrderOlist().getResults()) {
+                                        values.put("UUID", orderOlist_result.getAufnr());
+                                        values.put("Aufnr", orderOlist_result.getAufnr());
+                                        values.put("Obknr", orderOlist_result.getObknr());
+                                        values.put("Obzae", orderOlist_result.getObzae());
+                                        values.put("Qmnum", orderOlist_result.getQmnum());
+                                        values.put("Equnr", orderOlist_result.getEqunr());
+                                        values.put("Strno", orderOlist_result.getStrno());
+                                        values.put("Tplnr", orderOlist_result.getTplnr());
+                                        values.put("Bautl", orderOlist_result.getBautl());
+                                        values.put("Qmtxt", orderOlist_result.getQmtxt());
+                                        values.put("Pltxt", orderOlist_result.getPltxt());
+                                        values.put("Eqktx", orderOlist_result.getEqktx());
+                                        values.put("Maktx", orderOlist_result.getMaktx());
+                                        values.put("Action", orderOlist_result.getAction());
+                                        App_db.insert("EtOrderOlist", null, values);
+                                    }
+                                }
+                               /* Orders_SER.EtOrderOlist etOrderOlist = results.get(0).getEtOrderOlist();
+                                if (etOrderOlist != null) {
+                                    List<Orders_SER.EtOrderOlist_Result> etOrderOlistResults = etOrderOlist.getResults();
+                                    if (etOrderOlistResults != null && etOrderOlistResults.size() > 0) {
+                                        for (Orders_SER.EtOrderOlist_Result eOL : etOrderOlistResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eOL.getAufnr())) {
+                                                    String EtOrderOlist_sql = "Insert into EtOrderOlist (UUID, Aufnr," +
+                                                            " Obknr, Obzae, Qmnum, Equnr, Strno, Tplnr, Bautl, Qmtxt," +
+                                                            " Pltxt, Eqktx, Maktx, Action) values(?,?,?,?,?,?,?,?,?," +
+                                                            "?,?,?,?,?);";
+                                                    SQLiteStatement EtOrderOlist_statement = App_db.compileStatement(EtOrderOlist_sql);
+                                                    EtOrderOlist_statement.clearBindings();
+                                                    EtOrderOlist_statement.bindString(1, uD.get("UUID"));
+                                                    EtOrderOlist_statement.bindString(2, c_e.check_empty(eOL.getAufnr()));
+                                                    EtOrderOlist_statement.bindString(3, c_e.check_empty(eOL.getObknr()));
+                                                    EtOrderOlist_statement.bindString(4, c_e.check_empty(eOL.getObzae()));
+                                                    EtOrderOlist_statement.bindString(5, c_e.check_empty(eOL.getQmnum()));
+                                                    EtOrderOlist_statement.bindString(6, c_e.check_empty(eOL.getEqunr()));
+                                                    EtOrderOlist_statement.bindString(7, c_e.check_empty(eOL.getStrno()));
+                                                    EtOrderOlist_statement.bindString(8, c_e.check_empty(eOL.getTplnr()));
+                                                    EtOrderOlist_statement.bindString(9, c_e.check_empty(eOL.getBautl()));
+                                                    EtOrderOlist_statement.bindString(10, c_e.check_empty(eOL.getQmtxt()));
+                                                    EtOrderOlist_statement.bindString(11, c_e.check_empty(eOL.getPltxt()));
+                                                    EtOrderOlist_statement.bindString(12, c_e.check_empty(eOL.getEqktx()));
+                                                    EtOrderOlist_statement.bindString(13, c_e.check_empty(eOL.getMaktx()));
+                                                    EtOrderOlist_statement.bindString(14, c_e.check_empty(eOL.getAction()));
+                                                    EtOrderOlist_statement.execute();
+                                                }
                                             }
                                         }
                                     }
-                                    EtWcmWdData_statement.execute();
-                                }
-                            }
-                        }
+                                }*/
 
-                        /*EtWcmWdItemData*/
-                        Orders_SER.EtWcmWdItemData etWcmWdItemData = results.get(0).getEtWcmWdItemData();
-                        if (etWcmWdItemData != null) {
-                            List<Orders_SER.EtWcmWdItemData_Result> etWcmWdItemDataResults = etWcmWdItemData.getResults();
-                            if (etWcmWdItemDataResults != null && etWcmWdItemDataResults.size() > 0) {
-                                for (Orders_SER.EtWcmWdItemData_Result eWDI : etWcmWdItemDataResults) {
-                                    String EtWcmWdItemData_sql = "Insert into EtWcmWdItemData (Wcnr, Wcitm, Objnr, " +
-                                            "Itmtyp, Seq, Pred, Succ, Ccobj, Cctyp, Stxt, Tggrp, Tgstep, Tgproc, " +
-                                            "Tgtyp, Tgseq, Tgtxt, Unstep, Unproc, Untyp, Unseq, Untxt, Phblflg, " +
-                                            "Phbltyp, Phblnr, Tgflg, Tgform, Tgnr, Unform, Unnr, Control, Location, " +
-                                            "Refobj, Action, Btg, Etg, Bug, Eug) values(?,?,?,?,?,?,?,?,?,?,?,?,?," +
-                                            "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                    SQLiteStatement EtWcmWdItemData_statement = App_db.compileStatement(EtWcmWdItemData_sql);
-                                    EtWcmWdItemData_statement.clearBindings();
-                                    EtWcmWdItemData_statement.bindString(1, c_e.check_empty(eWDI.getWcnr()));
-                                    EtWcmWdItemData_statement.bindString(2, c_e.check_empty(eWDI.getWcitm()));
-                                    EtWcmWdItemData_statement.bindString(3, c_e.check_empty(eWDI.getObjnr()));
-                                    EtWcmWdItemData_statement.bindString(4, c_e.check_empty(eWDI.getItmtyp()));
-                                    EtWcmWdItemData_statement.bindString(5, c_e.check_empty(eWDI.getSeq()));
-                                    EtWcmWdItemData_statement.bindString(6, c_e.check_empty(eWDI.getPred()));
-                                    EtWcmWdItemData_statement.bindString(7, c_e.check_empty(eWDI.getSucc()));
-                                    EtWcmWdItemData_statement.bindString(8, c_e.check_empty(eWDI.getCcobj()));
-                                    EtWcmWdItemData_statement.bindString(9, c_e.check_empty(eWDI.getCctyp()));
-                                    EtWcmWdItemData_statement.bindString(10, c_e.check_empty(eWDI.getStxt()));
-                                    EtWcmWdItemData_statement.bindString(11, c_e.check_empty(eWDI.getTggrp()));
-                                    EtWcmWdItemData_statement.bindString(12, c_e.check_empty(eWDI.getTgstep()));
-                                    EtWcmWdItemData_statement.bindString(13, c_e.check_empty(eWDI.getTgproc()));
-                                    EtWcmWdItemData_statement.bindString(14, c_e.check_empty(eWDI.getTgtyp()));
-                                    EtWcmWdItemData_statement.bindString(15, c_e.check_empty(eWDI.getTgseq()));
-                                    EtWcmWdItemData_statement.bindString(16, c_e.check_empty(eWDI.getTgtxt()));
-                                    EtWcmWdItemData_statement.bindString(17, c_e.check_empty(eWDI.getUnstep()));
-                                    EtWcmWdItemData_statement.bindString(18, c_e.check_empty(eWDI.getUnproc()));
-                                    EtWcmWdItemData_statement.bindString(19, c_e.check_empty(eWDI.getUntyp()));
-                                    EtWcmWdItemData_statement.bindString(20, c_e.check_empty(eWDI.getUnseq()));
-                                    EtWcmWdItemData_statement.bindString(21, c_e.check_empty(eWDI.getUntxt()));
-                                    EtWcmWdItemData_statement.bindString(22, c_e.check_empty(eWDI.getPhblflg()));
-                                    EtWcmWdItemData_statement.bindString(23, c_e.check_empty(eWDI.getPhbltyp()));
-                                    EtWcmWdItemData_statement.bindString(24, c_e.check_empty(eWDI.getPhblnr()));
-                                    EtWcmWdItemData_statement.bindString(25, c_e.check_empty(eWDI.getTgflg()));
-                                    EtWcmWdItemData_statement.bindString(26, c_e.check_empty(eWDI.getTgform()));
-                                    EtWcmWdItemData_statement.bindString(27, c_e.check_empty(eWDI.getTgnr()));
-                                    EtWcmWdItemData_statement.bindString(28, c_e.check_empty(eWDI.getUnform()));
-                                    EtWcmWdItemData_statement.bindString(29, c_e.check_empty(eWDI.getUnnr()));
-                                    EtWcmWdItemData_statement.bindString(30, c_e.check_empty(eWDI.getControl()));
-                                    EtWcmWdItemData_statement.bindString(31, c_e.check_empty(eWDI.getLocation()));
-                                    EtWcmWdItemData_statement.bindString(32, c_e.check_empty(eWDI.getRefobj()));
-                                    EtWcmWdItemData_statement.bindString(33, c_e.check_empty(eWDI.getAction()));
-                                    EtWcmWdItemData_statement.bindString(34, c_e.check_empty(eWDI.getBtg()));
-                                    EtWcmWdItemData_statement.bindString(35, c_e.check_empty(eWDI.getEtg()));
-                                    EtWcmWdItemData_statement.bindString(36, c_e.check_empty(eWDI.getBug()));
-                                    EtWcmWdItemData_statement.bindString(37, c_e.check_empty(eWDI.getEug()));
-                                    EtWcmWdItemData_statement.execute();
-                                }
-                            }
-                        }
-
-                        /*EtWcmWcagns*/
-                        Orders_SER.EtWcmWcagns etWcmWcagns = results.get(0).getEtWcmWcagns();
-                        if (etWcmWcagns != null) {
-                            List<Orders_SER.EtWcmWcagns_Result> etWcmWcagnsResults = etWcmWcagns.getResults();
-                            if (etWcmWcagnsResults != null && etWcmWcagnsResults.size() > 0) {
-                                for (Orders_SER.EtWcmWcagns_Result eWCG : etWcmWcagnsResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eWCG.getAufnr())) {
-                                            String EtWcmWcagns_sql = "Insert into EtWcmWcagns (UUID, Aufnr, Objnr, " +
-                                                    "Counter, Objart, Objtyp, Pmsog, Gntxt, Geniakt, Genvname, " +
-                                                    "Action, Werks, Crname, Hilvl, Procflg, Direction, Copyflg, " +
-                                                    "Mandflg, Deacflg, Status, Asgnflg, Autoflg, Agent, Valflg," +
-                                                    " Wcmuse, Gendatum, Gentime)" +
-                                                    " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement EtWcmWcagns_statement = App_db.compileStatement(EtWcmWcagns_sql);
-                                            EtWcmWcagns_statement.clearBindings();
-                                            EtWcmWcagns_statement.bindString(1, uD.get("UUID"));
-                                            EtWcmWcagns_statement.bindString(2, c_e.check_empty(eWCG.getAufnr()));
-                                            EtWcmWcagns_statement.bindString(3, c_e.check_empty(eWCG.getObjnr()));
-                                            EtWcmWcagns_statement.bindString(4, c_e.check_empty(eWCG.getCounter()));
-                                            EtWcmWcagns_statement.bindString(5, c_e.check_empty(eWCG.getObjart()));
-                                            EtWcmWcagns_statement.bindString(6, c_e.check_empty(eWCG.getObjtyp()));
-                                            EtWcmWcagns_statement.bindString(7, c_e.check_empty(eWCG.getPmsog()));
-                                            EtWcmWcagns_statement.bindString(8, c_e.check_empty(eWCG.getGntxt()));
-                                            EtWcmWcagns_statement.bindString(9, c_e.check_empty(eWCG.getGeniakt()));
-                                            EtWcmWcagns_statement.bindString(10, c_e.check_empty(eWCG.getGenvname()));
-                                            EtWcmWcagns_statement.bindString(11, c_e.check_empty(eWCG.getAction()));
-                                            EtWcmWcagns_statement.bindString(12, c_e.check_empty(eWCG.getWerks()));
-                                            EtWcmWcagns_statement.bindString(13, c_e.check_empty(eWCG.getCrname()));
-                                            EtWcmWcagns_statement.bindString(14, c_e.check_empty(String.valueOf(eWCG.getHilvl())));
-                                            EtWcmWcagns_statement.bindString(15, c_e.check_empty(eWCG.getProcflg()));
-                                            EtWcmWcagns_statement.bindString(16, c_e.check_empty(eWCG.getDirection()));
-                                            EtWcmWcagns_statement.bindString(17, c_e.check_empty(eWCG.getCopyflg()));
-                                            EtWcmWcagns_statement.bindString(18, c_e.check_empty(eWCG.getMandflg()));
-                                            EtWcmWcagns_statement.bindString(19, c_e.check_empty(eWCG.getDeacflg()));
-                                            EtWcmWcagns_statement.bindString(20, c_e.check_empty(eWCG.getStatus()));
-                                            EtWcmWcagns_statement.bindString(21, c_e.check_empty(eWCG.getAsgnflg()));
-                                            EtWcmWcagns_statement.bindString(22, c_e.check_empty(eWCG.getAutoflg()));
-                                            EtWcmWcagns_statement.bindString(23, c_e.check_empty(eWCG.getAgent()));
-                                            EtWcmWcagns_statement.bindString(24, c_e.check_empty(eWCG.getValflg()));
-                                            EtWcmWcagns_statement.bindString(25, c_e.check_empty(eWCG.getWcmuse()));
-                                            EtWcmWcagns_statement.bindString(26, c_e.check_empty(eWCG.getGendatum()));
-                                            EtWcmWcagns_statement.bindString(27, c_e.check_empty(eWCG.getGentime()));
-                                            EtWcmWcagns_statement.execute();
-                                        }
+                            /*EtOrderStatus*/
+                            if (response.body().getD().getResults().get(0).getEtOrderStatus() != null)
+                                if (response.body().getD().getResults().get(0).getEtOrderStatus().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtOrderStatus().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtOrderStatus_Result orderStatus_result : response.body().getD().getResults()
+                                            .get(0).getEtOrderStatus().getResults()) {
+                                        values.put("UUID", orderStatus_result.getAufnr());
+                                        values.put("Aufnr", orderStatus_result.getAufnr());
+                                        values.put("Vornr", orderStatus_result.getVornr());
+                                        values.put("Objnr", orderStatus_result.getObjnr());
+                                        values.put("Stsma", orderStatus_result.getStsma());
+                                        values.put("Inist", orderStatus_result.getInist());
+                                        values.put("Stonr", orderStatus_result.getStonr());
+                                        values.put("Hsonr", orderStatus_result.getHsonr());
+                                        values.put("Nsonr", orderStatus_result.getNsonr());
+                                        values.put("Stat", orderStatus_result.getStat());
+                                        values.put("Act", orderStatus_result.getAct());
+                                        values.put("Txt04", orderStatus_result.getTxt04());
+                                        values.put("Txt30", orderStatus_result.getTxt30());
+                                        values.put("Action", orderStatus_result.getAction());
+                                        App_db.insert("EtOrderStatus", null, values);
                                     }
                                 }
-                            }
-                        }
+                                /*Orders_SER.EtOrderStatus etOrderStatus = results.get(0).getEtOrderStatus();
+                                if (etOrderStatus != null) {
+                                    List<Orders_SER.EtOrderStatus_Result> etOrderStatusResults = etOrderStatus.getResults();
+                                    if (etOrderStatusResults != null && etOrderStatusResults.size() > 0) {
+                                        for (Orders_SER.EtOrderStatus_Result eOS : etOrderStatusResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eOS.getAufnr())) {
+                                                    String EtOrderStatus_sql = "Insert into EtOrderStatus (UUID,Aufnr, " +
+                                                            "Vornr, Objnr, Stsma, Inist, Stonr, Hsonr, Nsonr,Stat, Act," +
+                                                            " Txt04, Txt30, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement EtOrderStatus_statement = App_db.compileStatement(EtOrderStatus_sql);
+                                                    EtOrderStatus_statement.clearBindings();
+                                                    EtOrderStatus_statement.bindString(1, uD.get("UUID"));
+                                                    EtOrderStatus_statement.bindString(2, c_e.check_empty(eOS.getAufnr()));
+                                                    EtOrderStatus_statement.bindString(3, c_e.check_empty(eOS.getVornr()));
+                                                    EtOrderStatus_statement.bindString(4, c_e.check_empty(eOS.getObjnr()));
+                                                    EtOrderStatus_statement.bindString(5, c_e.check_empty(eOS.getStsma()));
+                                                    EtOrderStatus_statement.bindString(6, c_e.check_empty(eOS.getInist()));
+                                                    EtOrderStatus_statement.bindString(7, c_e.check_empty(eOS.getStonr()));
+                                                    EtOrderStatus_statement.bindString(8, c_e.check_empty(eOS.getHsonr()));
+                                                    EtOrderStatus_statement.bindString(9, c_e.check_empty(eOS.getNsonr()));
+                                                    EtOrderStatus_statement.bindString(10, c_e.check_empty(eOS.getStat()));
+                                                    EtOrderStatus_statement.bindString(11, c_e.check_empty(eOS.getAct()));
+                                                    EtOrderStatus_statement.bindString(12, c_e.check_empty(eOS.getTxt04()));
+                                                    EtOrderStatus_statement.bindString(13, c_e.check_empty(eOS.getTxt30()));
+                                                    EtOrderStatus_statement.bindString(14, c_e.check_empty(eOS.getAction()));
+                                                    EtOrderStatus_statement.execute();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }*/
 
-                        /*EtOrderComponenets*/
-                        Orders_SER.EtOrderComponents etOrderComponents = results.get(0).getEtOrderComponents();
-                        if (etOrderComponents != null) {
-                            List<Orders_SER.EtOrderComponents_Result> etOrderComponentsResults = etOrderComponents.getResults();
-                            if (etOrderComponentsResults != null && etOrderComponentsResults.size() > 0) {
-                                for (Orders_SER.EtOrderComponents_Result eOC : etOrderComponentsResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eOC.getAufnr())) {
-                                            String EtOrderComponents_sql = "Insert into EtOrderComponents (UUID, Aufnr, Vornr," +
-                                                    " Uvorn, Rsnum, Rspos, Matnr, Werks, Lgort, Posnr, Bdmng, Meins, Postp, " +
-                                                    "MatnrText, WerksText, LgortText, PostpText, Usr01, Usr02, Usr03, Usr04, " +
-                                                    "Usr05, Action, Wempf, Ablad) " +
-                                                    "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement EtOrderComponents_statement = App_db.compileStatement(EtOrderComponents_sql);
-                                            EtOrderComponents_statement.clearBindings();
-                                            EtOrderComponents_statement.bindString(1, uD.get("UUID"));
-                                            EtOrderComponents_statement.bindString(2, c_e.check_empty(eOC.getAufnr()));
-                                            EtOrderComponents_statement.bindString(3, c_e.check_empty(eOC.getVornr()));
-                                            EtOrderComponents_statement.bindString(4, c_e.check_empty(eOC.getUvorn()));
-                                            EtOrderComponents_statement.bindString(5, c_e.check_empty(eOC.getRsnum()));
-                                            EtOrderComponents_statement.bindString(6, c_e.check_empty(eOC.getRspos()));
-                                            EtOrderComponents_statement.bindString(7, c_e.check_empty(eOC.getMatnr()));
-                                            EtOrderComponents_statement.bindString(8, c_e.check_empty(eOC.getWerks()));
-                                            EtOrderComponents_statement.bindString(9, c_e.check_empty(eOC.getLgort()));
-                                            EtOrderComponents_statement.bindString(10, c_e.check_empty(eOC.getPosnr()));
-                                            EtOrderComponents_statement.bindString(11, c_e.check_empty(eOC.getBdmng()));
-                                            EtOrderComponents_statement.bindString(12, c_e.check_empty(eOC.getMeins()));
-                                            EtOrderComponents_statement.bindString(13, c_e.check_empty(eOC.getPostp()));
-                                            EtOrderComponents_statement.bindString(14, c_e.check_empty(eOC.getMatnrText()));
-                                            EtOrderComponents_statement.bindString(15, c_e.check_empty(eOC.getWerksText()));
-                                            EtOrderComponents_statement.bindString(16, c_e.check_empty(eOC.getLgortText()));
-                                            EtOrderComponents_statement.bindString(17, c_e.check_empty(eOC.getPostpText()));
-                                            EtOrderComponents_statement.bindString(18, c_e.check_empty(eOC.getUsr01()));
-                                            EtOrderComponents_statement.bindString(19, c_e.check_empty(eOC.getUsr02()));
-                                            EtOrderComponents_statement.bindString(20, c_e.check_empty(eOC.getUsr03()));
-                                            EtOrderComponents_statement.bindString(21, c_e.check_empty(eOC.getUsr04()));
-                                            EtOrderComponents_statement.bindString(22, c_e.check_empty(eOC.getUsr05()));
-                                            EtOrderComponents_statement.bindString(23, c_e.check_empty(eOC.getAction()));
-                                            EtOrderComponents_statement.bindString(24, c_e.check_empty(eOC.getWempf()));
-                                            EtOrderComponents_statement.bindString(25, c_e.check_empty(eOC.getAblad()));
-                                            EtOrderComponents_statement.execute();
+                            /*EtDocs*/
+                            if (response.body().getD().getResults().get(0).getEtDocs() != null)
+                                if (response.body().getD().getResults().get(0).getEtDocs().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtDocs().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtDocs_Result etDocs_result : response.body().getD().getResults()
+                                            .get(0).getEtDocs().getResults()) {
+                                        values.put("UUID", etDocs_result.getZobjid());
+                                        values.put("Zobjid", etDocs_result.getZobjid());
+                                        values.put("Zdoctype", etDocs_result.getZdoctype());
+                                        values.put("ZdoctypeItem", etDocs_result.getZdoctypeItem());
+                                        values.put("Filename", etDocs_result.getFilename());
+                                        values.put("Filetype", etDocs_result.getFiletype());
+                                        values.put("Fsize", etDocs_result.getFsize());
+                                        values.put("Content", etDocs_result.getContent());
+                                        values.put("DocId", etDocs_result.getDocID());
+                                        values.put("DocType", etDocs_result.getDocType());
+                                        values.put("Objtype", etDocs_result.getObjtype());
+                                        App_db.insert("DUE_ORDERS_EtDocs", null, values);
+                                    }
+                                }
 
-                                            Orders_SER.EtOrderHeaderFields etOrderComponentFields = eOC.getEtOrderComponentsFields();
-                                            if (etOrderComponentFields != null) {
-                                                List<Orders_SER.EtOrderHeaderFields_Result> etOrderComponentFieldResults = etOrderComponentFields.getResults();
-                                                if (etOrderComponentFieldResults != null && etOrderComponentFieldResults.size() > 0) {
-                                                    String sql1 = "Insert into DUE_ORDERS_EtOrderComponents_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem," +
-                                                            " Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID, PartID)" +
-                                                            " values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                                    SQLiteStatement statement1 = App_db.compileStatement(sql1);
-                                                    statement1.clearBindings();
-                                                    for (Orders_SER.EtOrderHeaderFields_Result eCF : etOrderComponentFieldResults) {
-                                                        statement1.bindString(1, uD.get("UUID"));
-                                                        statement1.bindString(2, c_e.check_empty(eOC.getAufnr()));
-                                                        statement1.bindString(3, c_e.check_empty(eCF.getZdoctype()));
-                                                        statement1.bindString(4, c_e.check_empty(eCF.getZdoctypeItem()));
-                                                        statement1.bindString(5, c_e.check_empty(eCF.getTabname()));
-                                                        statement1.bindString(6, c_e.check_empty(eCF.getFieldname()));
-                                                        statement1.bindString(7, c_e.check_empty(eCF.getValue()));
-                                                        statement1.bindString(8, c_e.check_empty(eCF.getFlabel()));
-                                                        statement1.bindString(9, c_e.check_empty(eCF.getSequence()));
-                                                        statement1.bindString(10, c_e.check_empty(eCF.getLength()));
-                                                        statement1.bindString(11, c_e.check_empty(eCF.getDatatype()));
-                                                        statement1.bindString(12, c_e.check_empty(eOC.getVornr()));
-                                                        statement1.bindString(13, c_e.check_empty(eOC.getPosnr()));
-                                                        statement1.execute();
+                                /*Orders_SER.EtDocs etDocs = results.get(0).getEtDocs();
+                                if (etDocs != null) {
+                                    List<Orders_SER.EtDocs_Result> etDocsResults = etDocs.getResults();
+                                    if (etDocsResults != null && etDocsResults.size() > 0) {
+                                        for (Orders_SER.EtDocs_Result eD : etDocsResults) {
+                                            String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype," +
+                                                    " ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId," +
+                                                    " DocType, Objtype) values(?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
+                                            EtDocs_statement.clearBindings();
+                                            EtDocs_statement.bindString(1, "");
+                                            EtDocs_statement.bindString(2, c_e.check_empty(eD.getZobjid()));
+                                            EtDocs_statement.bindString(3, c_e.check_empty(eD.getZdoctype()));
+                                            EtDocs_statement.bindString(4, c_e.check_empty(eD.getZdoctypeItem()));
+                                            EtDocs_statement.bindString(5, c_e.check_empty(eD.getFilename()));
+                                            EtDocs_statement.bindString(6, c_e.check_empty(eD.getFiletype()));
+                                            EtDocs_statement.bindString(7, c_e.check_empty(eD.getFsize()));
+                                            EtDocs_statement.bindString(8, c_e.check_empty(eD.getContent()));
+                                            EtDocs_statement.bindString(9, c_e.check_empty(eD.getDocID()));
+                                            EtDocs_statement.bindString(10, c_e.check_empty(eD.getDocType()));
+                                            EtDocs_statement.bindString(11, c_e.check_empty(eD.getObjtype()));
+                                            EtDocs_statement.execute();
+                                        }
+                                    }
+                                }*/
+
+                            /*EtWcmWwData*/
+                            if (response.body().getD().getResults().get(0).getEtWcmWwData() != null)
+                                if (response.body().getD().getResults().get(0).getEtWcmWwData().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtWcmWwData().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtWcmWwData_Result wcmWwData_result : response.body().getD().getResults()
+                                            .get(0).getEtWcmWwData().getResults()) {
+                                        values.put("UUID", wcmWwData_result.getAufnr());
+                                        values.put("Aufnr", wcmWwData_result.getAufnr());
+                                        values.put("Objart", wcmWwData_result.getObjart());
+                                        values.put("Wapnr", wcmWwData_result.getWapnr());
+                                        values.put("Iwerk", wcmWwData_result.getIwerk());
+                                        values.put("Usage", wcmWwData_result.getUsage());
+                                        values.put("Usagex", wcmWwData_result.getUsagex());
+                                        values.put("Train", wcmWwData_result.getTrain());
+                                        values.put("Trainx", wcmWwData_result.getTrainx());
+                                        values.put("Anlzu", wcmWwData_result.getAnlzu());
+                                        values.put("Anlzux", wcmWwData_result.getAnlzux());
+                                        values.put("Etape", wcmWwData_result.getEtape());
+                                        values.put("Etapex", wcmWwData_result.getEtapex());
+                                        values.put("Rctime", wcmWwData_result.getRctime());
+                                        values.put("Rcunit", wcmWwData_result.getRcunit());
+                                        values.put("Priok", wcmWwData_result.getPriok());
+                                        values.put("Priokx", wcmWwData_result.getPriokx());
+                                        values.put("Stxt", wcmWwData_result.getStxt());
+                                        values.put("Datefr", wcmWwData_result.getDatefr());
+                                        values.put("Timefr", wcmWwData_result.getTimefr());
+                                        values.put("Dateto", wcmWwData_result.getDateto());
+                                        values.put("Timeto", wcmWwData_result.getTimeto());
+                                        values.put("Objnr", wcmWwData_result.getObjnr());
+                                        values.put("Crea", wcmWwData_result.getCrea());
+                                        values.put("Prep", wcmWwData_result.getPrep());
+                                        values.put("Comp", wcmWwData_result.getComp());
+                                        values.put("Appr", wcmWwData_result.getAppr());
+                                        values.put("Pappr", wcmWwData_result.getPappr());
+                                        values.put("Action", wcmWwData_result.getAction());
+                                        values.put("Begru", wcmWwData_result.getBegru());
+                                        values.put("Begtx", wcmWwData_result.getBegtx());
+                                        App_db.insert("EtWcmWwData", null, values);
+                                    }
+                                }
+                                /*Orders_SER.EtWcmWwData etWcmWwData = results.get(0).getEtWcmWwData();
+                                if (etWcmWwData != null) {
+                                    List<Orders_SER.EtWcmWwData_Result> etWcmWwDataResults = etWcmWwData.getResults();
+                                    if (etWcmWwDataResults != null && etWcmWwDataResults.size() > 0) {
+                                        for (Orders_SER.EtWcmWwData_Result eWW : etWcmWwDataResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eWW.getAufnr())) {
+                                                    String EtWcmWwData_sql = "Insert into EtWcmWwData (UUID, Aufnr, Objart," +
+                                                            " Wapnr, Iwerk, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape," +
+                                                            " Etapex, Rctime, Rcunit, Priok, Priokx, Stxt, Datefr, Timefr, Dateto," +
+                                                            " Timeto, Objnr, Crea, Prep, Comp, Appr, Pappr, Action, Begru, Begtx)" +
+                                                            " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement EtWcmWwData_statement = App_db.compileStatement(EtWcmWwData_sql);
+                                                    EtWcmWwData_statement.clearBindings();
+                                                    EtWcmWwData_statement.bindString(1, uD.get("UUID"));
+                                                    EtWcmWwData_statement.bindString(2, c_e.check_empty(eWW.getAufnr()));
+                                                    EtWcmWwData_statement.bindString(3, c_e.check_empty(eWW.getObjart()));
+                                                    EtWcmWwData_statement.bindString(4, c_e.check_empty(eWW.getWapnr()));
+                                                    EtWcmWwData_statement.bindString(5, c_e.check_empty(eWW.getIwerk()));
+                                                    EtWcmWwData_statement.bindString(6, c_e.check_empty(eWW.getUsage()));
+                                                    EtWcmWwData_statement.bindString(7, c_e.check_empty(eWW.getUsagex()));
+                                                    EtWcmWwData_statement.bindString(8, c_e.check_empty(eWW.getTrain()));
+                                                    EtWcmWwData_statement.bindString(9, c_e.check_empty(eWW.getTrainx()));
+                                                    EtWcmWwData_statement.bindString(10, c_e.check_empty(eWW.getAnlzu()));
+                                                    EtWcmWwData_statement.bindString(11, c_e.check_empty(eWW.getAnlzux()));
+                                                    EtWcmWwData_statement.bindString(12, c_e.check_empty(eWW.getEtape()));
+                                                    EtWcmWwData_statement.bindString(13, c_e.check_empty(eWW.getEtapex()));
+                                                    EtWcmWwData_statement.bindString(14, c_e.check_empty(eWW.getRctime()));
+                                                    EtWcmWwData_statement.bindString(15, c_e.check_empty(eWW.getRcunit()));
+                                                    EtWcmWwData_statement.bindString(16, c_e.check_empty(eWW.getPriok()));
+                                                    EtWcmWwData_statement.bindString(17, c_e.check_empty(eWW.getPriokx()));
+                                                    EtWcmWwData_statement.bindString(18, c_e.check_empty(eWW.getStxt()));
+                                                    EtWcmWwData_statement.bindString(19, c_e.check_empty(eWW.getDatefr()));
+                                                    EtWcmWwData_statement.bindString(20, c_e.check_empty(eWW.getTimefr()));
+                                                    EtWcmWwData_statement.bindString(21, c_e.check_empty(eWW.getDateto()));
+                                                    EtWcmWwData_statement.bindString(22, c_e.check_empty(eWW.getTimeto()));
+                                                    EtWcmWwData_statement.bindString(23, c_e.check_empty(eWW.getObjnr()));
+                                                    EtWcmWwData_statement.bindString(24, c_e.check_empty(eWW.getCrea()));
+                                                    EtWcmWwData_statement.bindString(25, c_e.check_empty(eWW.getPrep()));
+                                                    EtWcmWwData_statement.bindString(26, c_e.check_empty(eWW.getComp()));
+                                                    EtWcmWwData_statement.bindString(27, c_e.check_empty(eWW.getAppr()));
+                                                    EtWcmWwData_statement.bindString(28, c_e.check_empty(eWW.getPappr()));
+                                                    EtWcmWwData_statement.bindString(29, c_e.check_empty(eWW.getAction()));
+                                                    EtWcmWwData_statement.bindString(30, c_e.check_empty(eWW.getBegru()));
+                                                    EtWcmWwData_statement.bindString(31, c_e.check_empty(eWW.getBegtx()));
+                                                    EtWcmWwData_statement.execute();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }*/
+
+                            /*EtWcmWaData*/
+                            if (response.body().getD().getResults().get(0).getEtWcmWaData() != null)
+                                if (response.body().getD().getResults().get(0).getEtWcmWaData().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtWcmWaData().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtWcmWaData_Result wcmWaData_result : response.body().getD().getResults()
+                                            .get(0).getEtWcmWaData().getResults()) {
+                                        values.put("UUID", wcmWaData_result.getAufnr());
+                                        values.put("Aufnr", wcmWaData_result.getAufnr());
+                                        values.put("Objart", wcmWaData_result.getObjart());
+                                        values.put("Wapinr", wcmWaData_result.getWapinr());
+                                        values.put("Iwerk", wcmWaData_result.getIwerk());
+                                        values.put("Objtyp", wcmWaData_result.getObjtyp());
+                                        values.put("Usage", wcmWaData_result.getUsage());
+                                        values.put("Usagex", wcmWaData_result.getUsagex());
+                                        values.put("Train", wcmWaData_result.getTrain());
+                                        values.put("Trainx", wcmWaData_result.getTrainx());
+                                        values.put("Anlzu", wcmWaData_result.getAnlzu());
+                                        values.put("Anlzux", wcmWaData_result.getAnlzux());
+                                        values.put("Etape", wcmWaData_result.getEtape());
+                                        values.put("Etapex", wcmWaData_result.getEtapex());
+                                        values.put("Stxt", wcmWaData_result.getStxt());
+                                        values.put("Datefr", wcmWaData_result.getDatefr());
+                                        values.put("Timefr", wcmWaData_result.getTimefr());
+                                        values.put("Dateto", wcmWaData_result.getDateto());
+                                        values.put("Timeto", wcmWaData_result.getTimeto());
+                                        values.put("Priok", wcmWaData_result.getPriok());
+                                        values.put("Priokx", wcmWaData_result.getPriokx());
+                                        values.put("Rctime", wcmWaData_result.getRctime());
+                                        values.put("Rcunit", wcmWaData_result.getRcunit());
+                                        values.put("Objnr", wcmWaData_result.getObjnr());
+                                        values.put("Refobj", wcmWaData_result.getRefobj());
+                                        values.put("Crea", wcmWaData_result.getCrea());
+                                        values.put("Prep", wcmWaData_result.getPrep());
+                                        values.put("Comp", wcmWaData_result.getComp());
+                                        values.put("Appr", wcmWaData_result.getAppr());
+                                        values.put("Action", wcmWaData_result.getAction());
+                                        values.put("Begru", wcmWaData_result.getBegru());
+                                        values.put("Begtx", wcmWaData_result.getBegtx());
+                                        values.put("Extperiod", wcmWaData_result.getExtperiod());
+                                        App_db.insert("EtWcmWaData", null, values);
+                                    }
+                                }
+                               /* Orders_SER.EtWcmWaData etWcmWaData = results.get(0).getEtWcmWaData();
+                                if (etWcmWaData != null) {
+                                    List<Orders_SER.EtWcmWaData_Result> etWcmWaDataResults = etWcmWaData.getResults();
+                                    if (etWcmWaDataResults != null && etWcmWaDataResults.size() > 0) {
+                                        for (Orders_SER.EtWcmWaData_Result eWA : etWcmWaDataResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eWA.getAufnr())) {
+                                                    String EtWcmWaData_sql = "Insert into EtWcmWaData (UUID, Aufnr, Objart," +
+                                                            " Wapinr, Iwerk, Objtyp, Usage, Usagex, Train, Trainx, Anlzu, " +
+                                                            "Anlzux, Etape, Etapex, Stxt, Datefr, Timefr, Dateto, Timeto, " +
+                                                            "Priok, Priokx, Rctime, Rcunit, Objnr, Refobj, Crea, Prep, " +
+                                                            "Comp, Appr, Action, Begru, Begtx, Extperiod) values(?,?,?,?," +
+                                                            "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement EtWcmWaData_statement = App_db.compileStatement(EtWcmWaData_sql);
+                                                    EtWcmWaData_statement.clearBindings();
+                                                    EtWcmWaData_statement.bindString(1, uD.get("UUID"));
+                                                    EtWcmWaData_statement.bindString(2, c_e.check_empty(eWA.getAufnr()));
+                                                    EtWcmWaData_statement.bindString(3, c_e.check_empty(eWA.getObjart()));
+                                                    EtWcmWaData_statement.bindString(4, c_e.check_empty(eWA.getWapinr()));
+                                                    EtWcmWaData_statement.bindString(5, c_e.check_empty(eWA.getIwerk()));
+                                                    EtWcmWaData_statement.bindString(6, c_e.check_empty(eWA.getObjtyp()));
+                                                    EtWcmWaData_statement.bindString(7, c_e.check_empty(eWA.getUsage()));
+                                                    EtWcmWaData_statement.bindString(8, c_e.check_empty(eWA.getUsagex()));
+                                                    EtWcmWaData_statement.bindString(9, c_e.check_empty(eWA.getTrain()));
+                                                    EtWcmWaData_statement.bindString(10, c_e.check_empty(eWA.getTrainx()));
+                                                    EtWcmWaData_statement.bindString(11, c_e.check_empty(eWA.getAnlzu()));
+                                                    EtWcmWaData_statement.bindString(12, c_e.check_empty(eWA.getAnlzux()));
+                                                    EtWcmWaData_statement.bindString(13, c_e.check_empty(eWA.getEtape()));
+                                                    EtWcmWaData_statement.bindString(14, c_e.check_empty(eWA.getEtapex()));
+                                                    EtWcmWaData_statement.bindString(15, c_e.check_empty(eWA.getStxt()));
+                                                    EtWcmWaData_statement.bindString(16, c_e.check_empty(eWA.getDatefr()));
+                                                    EtWcmWaData_statement.bindString(17, c_e.check_empty(eWA.getTimefr()));
+                                                    EtWcmWaData_statement.bindString(18, c_e.check_empty(eWA.getDateto()));
+                                                    EtWcmWaData_statement.bindString(19, c_e.check_empty(eWA.getTimeto()));
+                                                    EtWcmWaData_statement.bindString(20, c_e.check_empty(eWA.getPriok()));
+                                                    EtWcmWaData_statement.bindString(21, c_e.check_empty(eWA.getPriokx()));
+                                                    EtWcmWaData_statement.bindString(22, c_e.check_empty(eWA.getRctime()));
+                                                    EtWcmWaData_statement.bindString(23, c_e.check_empty(eWA.getRcunit()));
+                                                    EtWcmWaData_statement.bindString(24, c_e.check_empty(eWA.getObjnr()));
+                                                    EtWcmWaData_statement.bindString(25, c_e.check_empty(eWA.getRefobj()));
+                                                    EtWcmWaData_statement.bindString(26, c_e.check_empty(eWA.getCrea()));
+                                                    EtWcmWaData_statement.bindString(27, c_e.check_empty(eWA.getPrep()));
+                                                    EtWcmWaData_statement.bindString(28, c_e.check_empty(eWA.getComp()));
+                                                    EtWcmWaData_statement.bindString(29, c_e.check_empty(eWA.getAppr()));
+                                                    EtWcmWaData_statement.bindString(30, c_e.check_empty(eWA.getAction()));
+                                                    EtWcmWaData_statement.bindString(31, c_e.check_empty(eWA.getBegru()));
+                                                    EtWcmWaData_statement.bindString(32, c_e.check_empty(eWA.getBegtx()));
+                                                    EtWcmWaData_statement.bindString(33, c_e.check_empty(String.valueOf(eWA.getExtperiod())));
+                                                    EtWcmWaData_statement.execute();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }*/
+
+                            /*EtWcmWaChkReq*/
+                            if (response.body().getD().getResults().get(0).getEtWcmWaChkReq() != null)
+                                if (response.body().getD().getResults().get(0).getEtWcmWaChkReq().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtWcmWaChkReq().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtWcmWaChkReq_Result wcmWaChkReq_result : response.body().getD().getResults()
+                                            .get(0).getEtWcmWaChkReq().getResults()) {
+
+                                        values.put("Wapinr", wcmWaChkReq_result.getWapinr());
+                                        values.put("Wapityp", wcmWaChkReq_result.getWapityp());
+                                        values.put("Needid", wcmWaChkReq_result.getNeedid());
+                                        values.put("Value", wcmWaChkReq_result.getValue());
+                                        values.put("ChkPointType", wcmWaChkReq_result.getChkPointType());
+                                        values.put("Desctext", wcmWaChkReq_result.getDesctext());
+                                        values.put("Tplnr", wcmWaChkReq_result.getTplnr());
+                                        values.put("Wkgrp", wcmWaChkReq_result.getWkgrp());
+                                        values.put("Needgrp", wcmWaChkReq_result.getNeedgrp());
+                                        values.put("Equnr", wcmWaChkReq_result.getEqunr());
+                                        values.put("Wkid", wcmWaChkReq_result.getWkid());
+                                        App_db.insert("EtWcmWaChkReq", null, values);
+                                    }
+                                }
+
+
+                               /* Orders_SER.EtWcmWaChkReq etWcmWaChkReq = results.get(0).getEtWcmWaChkReq();
+                                if (etWcmWaChkReq != null) {
+                                    List<Orders_SER.EtWcmWaChkReq_Result> etWcmWaChkReqResults = etWcmWaChkReq.getResults();
+                                    if (etWcmWaChkReqResults != null && etWcmWaChkReqResults.size() > 0) {
+                                        for (Orders_SER.EtWcmWaChkReq_Result eWR : etWcmWaChkReqResults) {
+                                            String EtWcmWaChkReq_sql = "Insert into EtWcmWaChkReq (Wapinr, Wapityp, Needid, " +
+                                                    "Value, ChkPointType, Desctext, Tplnr, Wkgrp, Needgrp, Equnr) " +
+                                                    "values(?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtWcmWaChkReq_statement = App_db.compileStatement(EtWcmWaChkReq_sql);
+                                            EtWcmWaChkReq_statement.clearBindings();
+                                            EtWcmWaChkReq_statement.bindString(1, c_e.check_empty(eWR.getWapinr()));
+                                            EtWcmWaChkReq_statement.bindString(2, c_e.check_empty(eWR.getWapityp()));
+                                            EtWcmWaChkReq_statement.bindString(5, c_e.check_empty(eWR.getChkPointType()));
+                                            if (c_e.check_empty(eWR.getChkPointType()).equalsIgnoreCase("W"))
+                                                EtWcmWaChkReq_statement.bindString(3, c_e.check_empty(eWR.getWkid()));
+                                            else
+                                                EtWcmWaChkReq_statement.bindString(3, c_e.check_empty(eWR.getNeedid()));
+                                            EtWcmWaChkReq_statement.bindString(4, c_e.check_empty(eWR.getValue()));
+                                            EtWcmWaChkReq_statement.bindString(6, c_e.check_empty(eWR.getDesctext()));
+                                            EtWcmWaChkReq_statement.bindString(7, c_e.check_empty(eWR.getTplnr()));
+                                            EtWcmWaChkReq_statement.bindString(8, c_e.check_empty(eWR.getWkgrp()));
+                                            EtWcmWaChkReq_statement.bindString(9, c_e.check_empty(eWR.getNeedgrp()));
+                                            EtWcmWaChkReq_statement.bindString(10, c_e.check_empty(eWR.getEqunr()));
+                                            EtWcmWaChkReq_statement.execute();
+                                        }
+                                    }
+                                }*/
+
+                            /*EtWcmWdData*/
+                            if (response.body().getD().getResults().get(0).getEtWcmWdData() != null)
+                                if (response.body().getD().getResults().get(0).getEtWcmWdData().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtWcmWdData().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtWcmWdData_Result wcmWdData_result : response.body().getD().getResults()
+                                            .get(0).getEtWcmWdData().getResults()) {
+
+
+                                        values.put("Aufnr", wcmWdData_result.getAufnr());
+                                        values.put("Objart", wcmWdData_result.getObjart());
+                                        values.put("Wcnr", wcmWdData_result.getWcnr());
+                                        values.put("Iwerk", wcmWdData_result.getIwerk());
+                                        values.put("Objtyp", wcmWdData_result.getObjtyp());
+                                        values.put("Usage", wcmWdData_result.getUsage());
+                                        values.put("Usagex", wcmWdData_result.getUsagex());
+                                        values.put("Train", wcmWdData_result.getTrain());
+                                        values.put("Trainx", wcmWdData_result.getTrainx());
+                                        values.put("Anlzu", wcmWdData_result.getAnlzu());
+                                        values.put("Anlzux", wcmWdData_result.getAnlzux());
+                                        values.put("Etape", wcmWdData_result.getEtape());
+                                        values.put("Etapex", wcmWdData_result.getEtapex());
+                                        values.put("Stxt", wcmWdData_result.getStxt());
+                                        values.put("Datefr", wcmWdData_result.getDatefr());
+                                        values.put("Timefr", wcmWdData_result.getTimefr());
+                                        values.put("Dateto", wcmWdData_result.getDateto());
+                                        values.put("Timeto", wcmWdData_result.getTimeto());
+                                        values.put("Priok", wcmWdData_result.getPriok());
+                                        values.put("Priokx", wcmWdData_result.getPriokx());
+                                        values.put("Rctime", wcmWdData_result.getRctime());
+                                        values.put("Rcunit", wcmWdData_result.getRcunit());
+                                        values.put("Objnr", wcmWdData_result.getObjnr());
+                                        values.put("Refobj", wcmWdData_result.getRefobj());
+                                        values.put("Crea", wcmWdData_result.getCrea());
+                                        values.put("Prep", wcmWdData_result.getPrep());
+                                        values.put("Comp", wcmWdData_result.getComp());
+                                        values.put("Appr", wcmWdData_result.getAppr());
+                                        values.put("Action", wcmWdData_result.getAction());
+                                        values.put("Begru", wcmWdData_result.getBegru());
+                                        values.put("Begtx", wcmWdData_result.getBegtx());
+                                        App_db.insert("EtWcmWdData", null, values);
+
+                                        /*EtWcmWdDataTagtext*/
+                                        if (wcmWdData_result.getEtWcmWdDataTagtext() != null)
+                                            if (wcmWdData_result.getEtWcmWdDataTagtext().getResults() != null
+                                                    && wcmWdData_result.getEtWcmWdDataTagtext().getResults().size() > 0) {
+                                                ContentValues valuesTag = new ContentValues();
+                                                for (Orders_SER.EtWcmWdDataTagtext_Result wcmWdDataTagtext_result :
+                                                        wcmWdData_result.getEtWcmWdDataTagtext().getResults()) {
+                                                    valuesTag.put("Aufnr", wcmWdDataTagtext_result.getAufnr());
+                                                    valuesTag.put("Wcnr", wcmWdDataTagtext_result.getWcnr());
+                                                    valuesTag.put("Objtype", wcmWdDataTagtext_result.getObjtype());
+                                                    valuesTag.put("FormatCol", wcmWdDataTagtext_result.getFormatCol());
+                                                    valuesTag.put("TextLine", wcmWdDataTagtext_result.getTextLine());
+                                                    valuesTag.put("Action", wcmWdDataTagtext_result.getAction());
+                                                    App_db.insert("EtWcmWdDataTagtext", null, valuesTag);
+                                                }
+                                            }
+
+                                        /*EtWcmWdDataUntagtext*/
+                                        if (wcmWdData_result.getEtWcmWdDataUntagtext() != null)
+                                            if (wcmWdData_result.getEtWcmWdDataUntagtext().getResults() != null
+                                                    && wcmWdData_result.getEtWcmWdDataUntagtext().getResults().size() > 0) {
+                                                ContentValues valuesUnTag = new ContentValues();
+                                                for (Orders_SER.EtWcmWdDataTagtext_Result wcmWdDataUntagtext :
+                                                        wcmWdData_result.getEtWcmWdDataUntagtext().getResults()) {
+                                                    valuesUnTag.put("Aufnr", wcmWdDataUntagtext.getAufnr());
+                                                    valuesUnTag.put("Wcnr", wcmWdDataUntagtext.getWcnr());
+                                                    valuesUnTag.put("Objtype", wcmWdDataUntagtext.getObjtype());
+                                                    valuesUnTag.put("FormatCol", wcmWdDataUntagtext.getFormatCol());
+                                                    valuesUnTag.put("TextLine", wcmWdDataUntagtext.getTextLine());
+                                                    valuesUnTag.put("Action", wcmWdDataUntagtext.getAction());
+                                                    App_db.insert("EtWcmWdDataUntagtext", null, valuesUnTag);
+                                                }
+                                            }
+                                    }
+                                }
+
+                               /* Orders_SER.EtWcmWdData etWcmWdData = results.get(0).getEtWcmWdData();
+                                if (etWcmWdData != null) {
+                                    List<Orders_SER.EtWcmWdData_Result> etWcmWdDataResults = etWcmWdData.getResults();
+                                    if (etWcmWdDataResults != null && etWcmWdDataResults.size() > 0) {
+                                        for (Orders_SER.EtWcmWdData_Result eWD : etWcmWdDataResults) {
+                                            String EtWcmWdData_sql = "Insert into EtWcmWdData (Aufnr, Objart, Wcnr, Iwerk," +
+                                                    " Objtyp, Usage, Usagex, Train, Trainx, Anlzu, Anlzux, Etape, Etapex," +
+                                                    " Stxt, Datefr, Timefr, Dateto, Timeto, Priok, Priokx, Rctime, Rcunit, " +
+                                                    "Objnr, Refobj, Crea, Prep, Comp, Appr, Action, Begru, Begtx) " +
+                                                    "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtWcmWdData_statement = App_db.compileStatement(EtWcmWdData_sql);
+                                            EtWcmWdData_statement.clearBindings();
+                                            EtWcmWdData_statement.bindString(1, c_e.check_empty(eWD.getAufnr()));
+                                            EtWcmWdData_statement.bindString(2, c_e.check_empty(eWD.getObjart()));
+                                            EtWcmWdData_statement.bindString(3, c_e.check_empty(eWD.getWcnr()));
+                                            EtWcmWdData_statement.bindString(4, c_e.check_empty(eWD.getIwerk()));
+                                            EtWcmWdData_statement.bindString(5, c_e.check_empty(eWD.getObjtyp()));
+                                            EtWcmWdData_statement.bindString(6, c_e.check_empty(eWD.getUsage()));
+                                            EtWcmWdData_statement.bindString(7, c_e.check_empty(eWD.getUsagex()));
+                                            EtWcmWdData_statement.bindString(8, c_e.check_empty(eWD.getTrain()));
+                                            EtWcmWdData_statement.bindString(9, c_e.check_empty(eWD.getTrainx()));
+                                            EtWcmWdData_statement.bindString(10, c_e.check_empty(eWD.getAnlzu()));
+                                            EtWcmWdData_statement.bindString(11, c_e.check_empty(eWD.getAnlzux()));
+                                            EtWcmWdData_statement.bindString(12, c_e.check_empty(eWD.getEtape()));
+                                            EtWcmWdData_statement.bindString(13, c_e.check_empty(eWD.getEtapex()));
+                                            EtWcmWdData_statement.bindString(14, c_e.check_empty(eWD.getStxt()));
+                                            EtWcmWdData_statement.bindString(15, c_e.check_empty(eWD.getDatefr()));
+                                            EtWcmWdData_statement.bindString(16, c_e.check_empty(eWD.getTimefr()));
+                                            EtWcmWdData_statement.bindString(17, c_e.check_empty(eWD.getDateto()));
+                                            EtWcmWdData_statement.bindString(18, c_e.check_empty(eWD.getTimeto()));
+                                            EtWcmWdData_statement.bindString(19, c_e.check_empty(eWD.getPriok()));
+                                            EtWcmWdData_statement.bindString(20, c_e.check_empty(eWD.getPriokx()));
+                                            EtWcmWdData_statement.bindString(21, c_e.check_empty(eWD.getRctime()));
+                                            EtWcmWdData_statement.bindString(22, c_e.check_empty(eWD.getRcunit()));
+                                            EtWcmWdData_statement.bindString(23, c_e.check_empty(eWD.getObjnr()));
+                                            EtWcmWdData_statement.bindString(24, c_e.check_empty(eWD.getRefobj()));
+                                            EtWcmWdData_statement.bindString(25, c_e.check_empty(eWD.getCrea()));
+                                            EtWcmWdData_statement.bindString(26, c_e.check_empty(eWD.getPrep()));
+                                            EtWcmWdData_statement.bindString(27, c_e.check_empty(eWD.getComp()));
+                                            EtWcmWdData_statement.bindString(28, c_e.check_empty(eWD.getAppr()));
+                                            EtWcmWdData_statement.bindString(29, c_e.check_empty(eWD.getAction()));
+                                            EtWcmWdData_statement.bindString(30, c_e.check_empty(eWD.getBegru()));
+                                            EtWcmWdData_statement.bindString(31, c_e.check_empty(eWD.getBegtx()));
+
+                                            Orders_SER.EtWcmWdDataTagtext etWcmWdDataTagtext = eWD.getEtWcmWdDataTagtext();
+                                            if (etWcmWdDataTagtext != null) {
+                                                List<Orders_SER.EtWcmWdDataTagtext_Result> etWcmWdDataTagtextResults = etWcmWdDataTagtext.getResults();
+                                                if (etWcmWdDataTagtextResults != null && etWcmWdDataTagtextResults.size() > 0) {
+                                                    for (Orders_SER.EtWcmWdDataTagtext_Result eWDT : etWcmWdDataTagtextResults) {
+                                                        String EtWcmWdDataTagtext_sql = "Insert into EtWcmWdDataTagtext (Aufnr, Wcnr," +
+                                                                " Objtype, FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
+                                                        SQLiteStatement EtWcmWdDataTagtext_statement = App_db.compileStatement(EtWcmWdDataTagtext_sql);
+                                                        EtWcmWdDataTagtext_statement.clearBindings();
+                                                        EtWcmWdDataTagtext_statement.bindString(1, c_e.check_empty(eWDT.getAufnr()));
+                                                        EtWcmWdDataTagtext_statement.bindString(2, c_e.check_empty(eWDT.getWcnr()));
+                                                        EtWcmWdDataTagtext_statement.bindString(3, c_e.check_empty(eWDT.getObjtype()));
+                                                        EtWcmWdDataTagtext_statement.bindString(4, c_e.check_empty(eWDT.getFormatCol()));
+                                                        EtWcmWdDataTagtext_statement.bindString(5, c_e.check_empty(eWDT.getTextLine()));
+                                                        EtWcmWdDataTagtext_statement.bindString(6, c_e.check_empty(eWDT.getAction()));
+                                                        EtWcmWdDataTagtext_statement.execute();
+                                                    }
+                                                }
+                                            }
+
+                                            Orders_SER.EtWcmWdDataUntagtext etWcmWdDataUntagtext = eWD.getEtWcmWdDataUntagtext();
+                                            if (etWcmWdDataUntagtext != null) {
+                                                List<Orders_SER.EtWcmWdDataTagtext_Result> etWcmWdDataTagtextResults = etWcmWdDataUntagtext.getResults();
+                                                if (etWcmWdDataTagtextResults != null && etWcmWdDataTagtextResults.size() > 0) {
+                                                    for (Orders_SER.EtWcmWdDataTagtext_Result eWDT : etWcmWdDataTagtextResults) {
+                                                        String EtWcmWdDataUntagtext_sql = "Insert into EtWcmWdDataUntagtext (Aufnr, Wcnr, Objtype, " +
+                                                                "FormatCol, TextLine, Action) values(?,?,?,?,?,?);";
+                                                        SQLiteStatement EtWcmWdDataUntagtext_statement = App_db.compileStatement(EtWcmWdDataUntagtext_sql);
+                                                        EtWcmWdDataUntagtext_statement.clearBindings();
+                                                        EtWcmWdDataUntagtext_statement.bindString(1, c_e.check_empty(eWDT.getAufnr()));
+                                                        EtWcmWdDataUntagtext_statement.bindString(2, c_e.check_empty(eWDT.getWcnr()));
+                                                        EtWcmWdDataUntagtext_statement.bindString(3, c_e.check_empty(eWDT.getObjtype()));
+                                                        EtWcmWdDataUntagtext_statement.bindString(4, c_e.check_empty(eWDT.getFormatCol()));
+                                                        EtWcmWdDataUntagtext_statement.bindString(5, c_e.check_empty(eWDT.getTextLine()));
+                                                        EtWcmWdDataUntagtext_statement.bindString(6, c_e.check_empty(eWDT.getAction()));
+                                                        EtWcmWdDataUntagtext_statement.execute();
+                                                    }
+                                                }
+                                            }
+                                            EtWcmWdData_statement.execute();
+                                        }
+                                    }
+                                }*/
+
+                            /*EtWcmWdItemData*/
+                            if (response.body().getD().getResults().get(0).getEtWcmWdItemData() != null)
+                                if (response.body().getD().getResults().get(0).getEtWcmWdItemData().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtWcmWdItemData().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtWcmWdItemData_Result wcmWdItemData_result : response.body().getD().getResults()
+                                            .get(0).getEtWcmWdItemData().getResults()) {
+                                        values.put("Wcnr", wcmWdItemData_result.getWcnr());
+                                        values.put("Wcitm", wcmWdItemData_result.getWcitm());
+                                        values.put("Objnr", wcmWdItemData_result.getObjnr());
+                                        values.put("Itmtyp", wcmWdItemData_result.getItmtyp());
+                                        values.put("Seq", wcmWdItemData_result.getSeq());
+                                        values.put("Pred", wcmWdItemData_result.getPred());
+                                        values.put("Succ", wcmWdItemData_result.getSucc());
+                                        values.put("Ccobj", wcmWdItemData_result.getCcobj());
+                                        values.put("Cctyp", wcmWdItemData_result.getCctyp());
+                                        values.put("Stxt", wcmWdItemData_result.getStxt());
+                                        values.put("Tggrp", wcmWdItemData_result.getTggrp());
+                                        values.put("Tgstep", wcmWdItemData_result.getTgstep());
+                                        values.put("Tgproc", wcmWdItemData_result.getTgproc());
+                                        values.put("Tgtyp", wcmWdItemData_result.getTgtyp());
+                                        values.put("Tgseq", wcmWdItemData_result.getTgseq());
+                                        values.put("Tgtxt", wcmWdItemData_result.getTgtxt());
+                                        values.put("Unstep", wcmWdItemData_result.getUnstep());
+                                        values.put("Unproc", wcmWdItemData_result.getUnproc());
+                                        values.put("Untyp", wcmWdItemData_result.getUntyp());
+                                        values.put("Unseq", wcmWdItemData_result.getUnseq());
+                                        values.put("Untxt", wcmWdItemData_result.getUntxt());
+                                        values.put("Phblflg", wcmWdItemData_result.getPhblflg());
+                                        values.put("Phbltyp", wcmWdItemData_result.getPhbltyp());
+                                        values.put("Phblnr", wcmWdItemData_result.getPhblnr());
+                                        values.put("Tgflg", wcmWdItemData_result.getTgflg());
+                                        values.put("Tgform", wcmWdItemData_result.getTgform());
+                                        values.put("Tgnr", wcmWdItemData_result.getTgnr());
+                                        values.put("Unform", wcmWdItemData_result.getUnform());
+                                        values.put("Unnr", wcmWdItemData_result.getUnnr());
+                                        values.put("Control", wcmWdItemData_result.getControl());
+                                        values.put("Location", wcmWdItemData_result.getLocation());
+                                        values.put("Refobj", wcmWdItemData_result.getRefobj());
+                                        values.put("Action", wcmWdItemData_result.getAction());
+                                        values.put("Btg", wcmWdItemData_result.getBtg());
+                                        values.put("Etg", wcmWdItemData_result.getEtg());
+                                        values.put("Bug", wcmWdItemData_result.getBug());
+                                        values.put("Eug", wcmWdItemData_result.getEug());
+                                        App_db.insert("EtWcmWdItemData", null, values);
+                                    }
+                                }
+
+                               /* Orders_SER.EtWcmWdItemData etWcmWdItemData = results.get(0).getEtWcmWdItemData();
+                                if (etWcmWdItemData != null) {
+                                    List<Orders_SER.EtWcmWdItemData_Result> etWcmWdItemDataResults = etWcmWdItemData.getResults();
+                                    if (etWcmWdItemDataResults != null && etWcmWdItemDataResults.size() > 0) {
+                                        for (Orders_SER.EtWcmWdItemData_Result eWDI : etWcmWdItemDataResults) {
+                                            String EtWcmWdItemData_sql = "Insert into EtWcmWdItemData (Wcnr, Wcitm, Objnr, " +
+                                                    "Itmtyp, Seq, Pred, Succ, Ccobj, Cctyp, Stxt, Tggrp, Tgstep, Tgproc, " +
+                                                    "Tgtyp, Tgseq, Tgtxt, Unstep, Unproc, Untyp, Unseq, Untxt, Phblflg, " +
+                                                    "Phbltyp, Phblnr, Tgflg, Tgform, Tgnr, Unform, Unnr, Control, Location, " +
+                                                    "Refobj, Action, Btg, Etg, Bug, Eug) values(?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                            SQLiteStatement EtWcmWdItemData_statement = App_db.compileStatement(EtWcmWdItemData_sql);
+                                            EtWcmWdItemData_statement.clearBindings();
+                                            EtWcmWdItemData_statement.bindString(1, c_e.check_empty(eWDI.getWcnr()));
+                                            EtWcmWdItemData_statement.bindString(2, c_e.check_empty(eWDI.getWcitm()));
+                                            EtWcmWdItemData_statement.bindString(3, c_e.check_empty(eWDI.getObjnr()));
+                                            EtWcmWdItemData_statement.bindString(4, c_e.check_empty(eWDI.getItmtyp()));
+                                            EtWcmWdItemData_statement.bindString(5, c_e.check_empty(eWDI.getSeq()));
+                                            EtWcmWdItemData_statement.bindString(6, c_e.check_empty(eWDI.getPred()));
+                                            EtWcmWdItemData_statement.bindString(7, c_e.check_empty(eWDI.getSucc()));
+                                            EtWcmWdItemData_statement.bindString(8, c_e.check_empty(eWDI.getCcobj()));
+                                            EtWcmWdItemData_statement.bindString(9, c_e.check_empty(eWDI.getCctyp()));
+                                            EtWcmWdItemData_statement.bindString(10, c_e.check_empty(eWDI.getStxt()));
+                                            EtWcmWdItemData_statement.bindString(11, c_e.check_empty(eWDI.getTggrp()));
+                                            EtWcmWdItemData_statement.bindString(12, c_e.check_empty(eWDI.getTgstep()));
+                                            EtWcmWdItemData_statement.bindString(13, c_e.check_empty(eWDI.getTgproc()));
+                                            EtWcmWdItemData_statement.bindString(14, c_e.check_empty(eWDI.getTgtyp()));
+                                            EtWcmWdItemData_statement.bindString(15, c_e.check_empty(eWDI.getTgseq()));
+                                            EtWcmWdItemData_statement.bindString(16, c_e.check_empty(eWDI.getTgtxt()));
+                                            EtWcmWdItemData_statement.bindString(17, c_e.check_empty(eWDI.getUnstep()));
+                                            EtWcmWdItemData_statement.bindString(18, c_e.check_empty(eWDI.getUnproc()));
+                                            EtWcmWdItemData_statement.bindString(19, c_e.check_empty(eWDI.getUntyp()));
+                                            EtWcmWdItemData_statement.bindString(20, c_e.check_empty(eWDI.getUnseq()));
+                                            EtWcmWdItemData_statement.bindString(21, c_e.check_empty(eWDI.getUntxt()));
+                                            EtWcmWdItemData_statement.bindString(22, c_e.check_empty(eWDI.getPhblflg()));
+                                            EtWcmWdItemData_statement.bindString(23, c_e.check_empty(eWDI.getPhbltyp()));
+                                            EtWcmWdItemData_statement.bindString(24, c_e.check_empty(eWDI.getPhblnr()));
+                                            EtWcmWdItemData_statement.bindString(25, c_e.check_empty(eWDI.getTgflg()));
+                                            EtWcmWdItemData_statement.bindString(26, c_e.check_empty(eWDI.getTgform()));
+                                            EtWcmWdItemData_statement.bindString(27, c_e.check_empty(eWDI.getTgnr()));
+                                            EtWcmWdItemData_statement.bindString(28, c_e.check_empty(eWDI.getUnform()));
+                                            EtWcmWdItemData_statement.bindString(29, c_e.check_empty(eWDI.getUnnr()));
+                                            EtWcmWdItemData_statement.bindString(30, c_e.check_empty(eWDI.getControl()));
+                                            EtWcmWdItemData_statement.bindString(31, c_e.check_empty(eWDI.getLocation()));
+                                            EtWcmWdItemData_statement.bindString(32, c_e.check_empty(eWDI.getRefobj()));
+                                            EtWcmWdItemData_statement.bindString(33, c_e.check_empty(eWDI.getAction()));
+                                            EtWcmWdItemData_statement.bindString(34, c_e.check_empty(eWDI.getBtg()));
+                                            EtWcmWdItemData_statement.bindString(35, c_e.check_empty(eWDI.getEtg()));
+                                            EtWcmWdItemData_statement.bindString(36, c_e.check_empty(eWDI.getBug()));
+                                            EtWcmWdItemData_statement.bindString(37, c_e.check_empty(eWDI.getEug()));
+                                            EtWcmWdItemData_statement.execute();
+                                        }
+                                    }
+                                }*/
+
+                            /*EtWcmWcagns*/
+                            if (response.body().getD().getResults().get(0).getEtWcmWcagns() != null)
+                                if (response.body().getD().getResults().get(0).getEtWcmWcagns().getResults() != null
+                                        && response.body().getD().getResults().get(0).getEtWcmWcagns().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtWcmWcagns_Result wcmWcagns_result : response.body().getD().getResults()
+                                            .get(0).getEtWcmWcagns().getResults()) {
+                                        values.put("UUID", wcmWcagns_result.getAufnr());
+                                        values.put("Aufnr", wcmWcagns_result.getAufnr());
+                                        values.put("Objnr", wcmWcagns_result.getObjnr());
+                                        values.put("Counter", wcmWcagns_result.getCounter());
+                                        values.put("Objart", wcmWcagns_result.getObjart());
+                                        values.put("Objtyp", wcmWcagns_result.getObjtyp());
+                                        values.put("Pmsog", wcmWcagns_result.getPmsog());
+                                        values.put("Gntxt", wcmWcagns_result.getGntxt());
+                                        values.put("Geniakt", wcmWcagns_result.getGeniakt());
+                                        values.put("Genvname", wcmWcagns_result.getGenvname());
+                                        values.put("Action", wcmWcagns_result.getAction());
+                                        values.put("Werks", wcmWcagns_result.getWerks());
+                                        values.put("Crname", wcmWcagns_result.getCrname());
+                                        values.put("Hilvl", wcmWcagns_result.getHilvl());
+                                        values.put("Procflg", wcmWcagns_result.getProcflg());
+                                        values.put("Direction", wcmWcagns_result.getDirection());
+                                        values.put("Copyflg", wcmWcagns_result.getCopyflg());
+                                        values.put("Mandflg", wcmWcagns_result.getMandflg());
+                                        values.put("Deacflg", wcmWcagns_result.getDeacflg());
+                                        values.put("Status", wcmWcagns_result.getStatus());
+                                        values.put("Asgnflg", wcmWcagns_result.getAsgnflg());
+                                        values.put("Autoflg", wcmWcagns_result.getAutoflg());
+                                        values.put("Agent", wcmWcagns_result.getAgent());
+                                        values.put("Valflg", wcmWcagns_result.getValflg());
+                                        values.put("Wcmuse", wcmWcagns_result.getWcmuse());
+                                        values.put("Gendatum", wcmWcagns_result.getGendatum());
+                                        values.put("Gentime", wcmWcagns_result.getGentime());
+
+                                        App_db.insert("EtWcmWcagns", null, values);
+                                    }
+                                }
+                               /* Orders_SER.EtWcmWcagns etWcmWcagns = results.get(0).getEtWcmWcagns();
+                                if (etWcmWcagns != null) {
+                                    List<Orders_SER.EtWcmWcagns_Result> etWcmWcagnsResults = etWcmWcagns.getResults();
+                                    if (etWcmWcagnsResults != null && etWcmWcagnsResults.size() > 0) {
+                                        for (Orders_SER.EtWcmWcagns_Result eWCG : etWcmWcagnsResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eWCG.getAufnr())) {
+                                                    String EtWcmWcagns_sql = "Insert into EtWcmWcagns (UUID, Aufnr, Objnr, " +
+                                                            "Counter, Objart, Objtyp, Pmsog, Gntxt, Geniakt, Genvname, " +
+                                                            "Action, Werks, Crname, Hilvl, Procflg, Direction, Copyflg, " +
+                                                            "Mandflg, Deacflg, Status, Asgnflg, Autoflg, Agent, Valflg," +
+                                                            " Wcmuse, Gendatum, Gentime)" +
+                                                            " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement EtWcmWcagns_statement = App_db.compileStatement(EtWcmWcagns_sql);
+                                                    EtWcmWcagns_statement.clearBindings();
+                                                    EtWcmWcagns_statement.bindString(1, uD.get("UUID"));
+                                                    EtWcmWcagns_statement.bindString(2, c_e.check_empty(eWCG.getAufnr()));
+                                                    EtWcmWcagns_statement.bindString(3, c_e.check_empty(eWCG.getObjnr()));
+                                                    EtWcmWcagns_statement.bindString(4, c_e.check_empty(eWCG.getCounter()));
+                                                    EtWcmWcagns_statement.bindString(5, c_e.check_empty(eWCG.getObjart()));
+                                                    EtWcmWcagns_statement.bindString(6, c_e.check_empty(eWCG.getObjtyp()));
+                                                    EtWcmWcagns_statement.bindString(7, c_e.check_empty(eWCG.getPmsog()));
+                                                    EtWcmWcagns_statement.bindString(8, c_e.check_empty(eWCG.getGntxt()));
+                                                    EtWcmWcagns_statement.bindString(9, c_e.check_empty(eWCG.getGeniakt()));
+                                                    EtWcmWcagns_statement.bindString(10, c_e.check_empty(eWCG.getGenvname()));
+                                                    EtWcmWcagns_statement.bindString(11, c_e.check_empty(eWCG.getAction()));
+                                                    EtWcmWcagns_statement.bindString(12, c_e.check_empty(eWCG.getWerks()));
+                                                    EtWcmWcagns_statement.bindString(13, c_e.check_empty(eWCG.getCrname()));
+                                                    EtWcmWcagns_statement.bindString(14, c_e.check_empty(String.valueOf(eWCG.getHilvl())));
+                                                    EtWcmWcagns_statement.bindString(15, c_e.check_empty(eWCG.getProcflg()));
+                                                    EtWcmWcagns_statement.bindString(16, c_e.check_empty(eWCG.getDirection()));
+                                                    EtWcmWcagns_statement.bindString(17, c_e.check_empty(eWCG.getCopyflg()));
+                                                    EtWcmWcagns_statement.bindString(18, c_e.check_empty(eWCG.getMandflg()));
+                                                    EtWcmWcagns_statement.bindString(19, c_e.check_empty(eWCG.getDeacflg()));
+                                                    EtWcmWcagns_statement.bindString(20, c_e.check_empty(eWCG.getStatus()));
+                                                    EtWcmWcagns_statement.bindString(21, c_e.check_empty(eWCG.getAsgnflg()));
+                                                    EtWcmWcagns_statement.bindString(22, c_e.check_empty(eWCG.getAutoflg()));
+                                                    EtWcmWcagns_statement.bindString(23, c_e.check_empty(eWCG.getAgent()));
+                                                    EtWcmWcagns_statement.bindString(24, c_e.check_empty(eWCG.getValflg()));
+                                                    EtWcmWcagns_statement.bindString(25, c_e.check_empty(eWCG.getWcmuse()));
+                                                    EtWcmWcagns_statement.bindString(26, c_e.check_empty(eWCG.getGendatum()));
+                                                    EtWcmWcagns_statement.bindString(27, c_e.check_empty(eWCG.getGentime()));
+                                                    EtWcmWcagns_statement.execute();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }*/
+
+                            /*EtOrderComponenets*/
+                            if (response.body().getD().getResults().get(0).getEtOrderComponents() != null)
+                                if (response.body().getD().getResults().get(0).getEtOrderComponents().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtOrderComponents().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtOrderComponents_Result etOrderComponents_result : response.body().getD().getResults()
+                                            .get(0).getEtOrderComponents().getResults()) {
+                                        values.put("UUID", etOrderComponents_result.getAufnr());
+                                        values.put("Aufnr", etOrderComponents_result.getAufnr());
+                                        values.put("Vornr", etOrderComponents_result.getVornr());
+                                        values.put("Uvorn", etOrderComponents_result.getUvorn());
+                                        values.put("Rsnum", etOrderComponents_result.getRsnum());
+                                        values.put("Rspos", etOrderComponents_result.getRspos());
+                                        values.put("Matnr", etOrderComponents_result.getMatnr());
+                                        values.put("Werks", etOrderComponents_result.getWerks());
+                                        values.put("Lgort", etOrderComponents_result.getLgort());
+                                        values.put("Posnr", etOrderComponents_result.getPosnr());
+                                        values.put("Bdmng", etOrderComponents_result.getBdmng());
+                                        values.put("Meins", etOrderComponents_result.getMeins());
+                                        values.put("Postp", etOrderComponents_result.getPostp());
+                                        values.put("MatnrText", etOrderComponents_result.getMatnrText());
+                                        values.put("WerksText", etOrderComponents_result.getWerksText());
+                                        values.put("LgortText", etOrderComponents_result.getLgortText());
+                                        values.put("PostpText", etOrderComponents_result.getPostpText());
+                                        values.put("Usr01", etOrderComponents_result.getUsr01());
+                                        values.put("Usr02", etOrderComponents_result.getUsr02());
+                                        values.put("Usr03", etOrderComponents_result.getUsr03());
+                                        values.put("Usr04", etOrderComponents_result.getUsr04());
+                                        values.put("Usr05", etOrderComponents_result.getUsr05());
+                                        values.put("Action", etOrderComponents_result.getAction());
+                                        values.put("Wempf", etOrderComponents_result.getWempf());
+                                        values.put("Ablad", etOrderComponents_result.getAblad());
+                                        App_db.insert("EtOrderComponents", null, values);
+                                    }
+                                }
+                                /*Orders_SER.EtOrderComponents etOrderComponents = results.get(0).getEtOrderComponents();
+                                if (etOrderComponents != null) {
+                                    List<Orders_SER.EtOrderComponents_Result> etOrderComponentsResults = etOrderComponents.getResults();
+                                    if (etOrderComponentsResults != null && etOrderComponentsResults.size() > 0) {
+                                        for (Orders_SER.EtOrderComponents_Result eOC : etOrderComponentsResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eOC.getAufnr())) {
+                                                    String EtOrderComponents_sql = "Insert into EtOrderComponents (UUID, Aufnr, Vornr," +
+                                                            " Uvorn, Rsnum, Rspos, Matnr, Werks, Lgort, Posnr, Bdmng, Meins, Postp, " +
+                                                            "MatnrText, WerksText, LgortText, PostpText, Usr01, Usr02, Usr03, Usr04, " +
+                                                            "Usr05, Action, Wempf, Ablad) " +
+                                                            "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement EtOrderComponents_statement = App_db.compileStatement(EtOrderComponents_sql);
+                                                    EtOrderComponents_statement.clearBindings();
+                                                    EtOrderComponents_statement.bindString(1, uD.get("UUID"));
+                                                    EtOrderComponents_statement.bindString(2, c_e.check_empty(eOC.getAufnr()));
+                                                    EtOrderComponents_statement.bindString(3, c_e.check_empty(eOC.getVornr()));
+                                                    EtOrderComponents_statement.bindString(4, c_e.check_empty(eOC.getUvorn()));
+                                                    EtOrderComponents_statement.bindString(5, c_e.check_empty(eOC.getRsnum()));
+                                                    EtOrderComponents_statement.bindString(6, c_e.check_empty(eOC.getRspos()));
+                                                    EtOrderComponents_statement.bindString(7, c_e.check_empty(eOC.getMatnr()));
+                                                    EtOrderComponents_statement.bindString(8, c_e.check_empty(eOC.getWerks()));
+                                                    EtOrderComponents_statement.bindString(9, c_e.check_empty(eOC.getLgort()));
+                                                    EtOrderComponents_statement.bindString(10, c_e.check_empty(eOC.getPosnr()));
+                                                    EtOrderComponents_statement.bindString(11, c_e.check_empty(eOC.getBdmng()));
+                                                    EtOrderComponents_statement.bindString(12, c_e.check_empty(eOC.getMeins()));
+                                                    EtOrderComponents_statement.bindString(13, c_e.check_empty(eOC.getPostp()));
+                                                    EtOrderComponents_statement.bindString(14, c_e.check_empty(eOC.getMatnrText()));
+                                                    EtOrderComponents_statement.bindString(15, c_e.check_empty(eOC.getWerksText()));
+                                                    EtOrderComponents_statement.bindString(16, c_e.check_empty(eOC.getLgortText()));
+                                                    EtOrderComponents_statement.bindString(17, c_e.check_empty(eOC.getPostpText()));
+                                                    EtOrderComponents_statement.bindString(18, c_e.check_empty(eOC.getUsr01()));
+                                                    EtOrderComponents_statement.bindString(19, c_e.check_empty(eOC.getUsr02()));
+                                                    EtOrderComponents_statement.bindString(20, c_e.check_empty(eOC.getUsr03()));
+                                                    EtOrderComponents_statement.bindString(21, c_e.check_empty(eOC.getUsr04()));
+                                                    EtOrderComponents_statement.bindString(22, c_e.check_empty(eOC.getUsr05()));
+                                                    EtOrderComponents_statement.bindString(23, c_e.check_empty(eOC.getAction()));
+                                                    EtOrderComponents_statement.bindString(24, c_e.check_empty(eOC.getWempf()));
+                                                    EtOrderComponents_statement.bindString(25, c_e.check_empty(eOC.getAblad()));
+                                                    EtOrderComponents_statement.execute();
+
+                                                    Orders_SER.EtOrderHeaderFields etOrderComponentFields = eOC.getEtOrderComponentsFields();
+                                                    if (etOrderComponentFields != null) {
+                                                        List<Orders_SER.EtOrderHeaderFields_Result> etOrderComponentFieldResults = etOrderComponentFields.getResults();
+                                                        if (etOrderComponentFieldResults != null && etOrderComponentFieldResults.size() > 0) {
+                                                            String sql1 = "Insert into DUE_ORDERS_EtOrderComponents_FIELDS (UUID, Aufnr, Zdoctype, ZdoctypeItem," +
+                                                                    " Tabname, Fieldname, Value, Flabel, Sequence, Length, Datatype, OperationID, PartID)" +
+                                                                    " values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                            SQLiteStatement statement1 = App_db.compileStatement(sql1);
+                                                            statement1.clearBindings();
+                                                            for (Orders_SER.EtOrderHeaderFields_Result eCF : etOrderComponentFieldResults) {
+                                                                statement1.bindString(1, uD.get("UUID"));
+                                                                statement1.bindString(2, c_e.check_empty(eOC.getAufnr()));
+                                                                statement1.bindString(3, c_e.check_empty(eCF.getZdoctype()));
+                                                                statement1.bindString(4, c_e.check_empty(eCF.getZdoctypeItem()));
+                                                                statement1.bindString(5, c_e.check_empty(eCF.getTabname()));
+                                                                statement1.bindString(6, c_e.check_empty(eCF.getFieldname()));
+                                                                statement1.bindString(7, c_e.check_empty(eCF.getValue()));
+                                                                statement1.bindString(8, c_e.check_empty(eCF.getFlabel()));
+                                                                statement1.bindString(9, c_e.check_empty(eCF.getSequence()));
+                                                                statement1.bindString(10, c_e.check_empty(eCF.getLength()));
+                                                                statement1.bindString(11, c_e.check_empty(eCF.getDatatype()));
+                                                                statement1.bindString(12, c_e.check_empty(eOC.getVornr()));
+                                                                statement1.bindString(13, c_e.check_empty(eOC.getPosnr()));
+                                                                statement1.execute();
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            }
-                        }
+                                }*/
 
-                        /*EtImrg*/
-                        Orders_SER.EtImrg etImrg = results.get(0).getEtImrg();
-                        if (etImrg != null) {
-                            List<Orders_SER.EtImrg_Result> etImrgResults = etImrg.getResults();
-                            if (etImrgResults != null && etImrgResults.size() > 0) {
-                                for (Orders_SER.EtImrg_Result eIM : etImrgResults) {
-                                    for (HashMap<String, String> uD : orders_uuid_list) {
-                                        if (uD.get("Aufnr").equals(eIM.getAufnr())) {
-                                            String EtImrg_sql = "Insert into Orders_EtImrg (UUID,Qmnum, Aufnr, Vornr, " +
-                                                    "Mdocm, Point, Mpobj, Mpobt, Psort,Pttxt, Atinn, Idate, Itime, " +
-                                                    "Mdtxt,Readr,Atbez,Msehi,Msehl,Readc,Desic,Prest,Docaf, Codct, " +
-                                                    "Codgr, Vlcod, Action, Equnr) " +
-                                                    "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                            SQLiteStatement EtImrg_statement = App_db.compileStatement(EtImrg_sql);
-                                            EtImrg_statement.bindString(1, uD.get("UUID"));
-                                            EtImrg_statement.bindString(2, c_e.check_empty(eIM.getQmnum()));
-                                            EtImrg_statement.bindString(3, c_e.check_empty(eIM.getAufnr()));
-                                            EtImrg_statement.bindString(4, c_e.check_empty(eIM.getVornr()));
-                                            EtImrg_statement.bindString(5, c_e.check_empty(eIM.getMdocm()));
-                                            EtImrg_statement.bindString(6, c_e.check_empty(eIM.getPoint()));
-                                            EtImrg_statement.bindString(7, c_e.check_empty(eIM.getMpobj()));
-                                            EtImrg_statement.bindString(8, c_e.check_empty(eIM.getMpobt()));
-                                            EtImrg_statement.bindString(9, c_e.check_empty(eIM.getPsort()));
-                                            EtImrg_statement.bindString(10, c_e.check_empty(eIM.getPttxt()));
-                                            EtImrg_statement.bindString(11, c_e.check_empty(eIM.getAtinn()));
-                                            EtImrg_statement.bindString(12, c_e.check_empty(eIM.getIdate()));
-                                            EtImrg_statement.bindString(13, c_e.check_empty(eIM.getItime()));
-                                            EtImrg_statement.bindString(14, c_e.check_empty(eIM.getMdtxt()));
-                                            EtImrg_statement.bindString(15, c_e.check_empty(eIM.getReadr()));
-                                            EtImrg_statement.bindString(16, c_e.check_empty(eIM.getAtbez()));
-                                            EtImrg_statement.bindString(17, c_e.check_empty(eIM.getMsehi()));
-                                            EtImrg_statement.bindString(18, c_e.check_empty(eIM.getMsehl()));
-                                            EtImrg_statement.bindString(19, c_e.check_empty(eIM.getReadc()));
-                                            EtImrg_statement.bindString(20, c_e.check_empty(eIM.getDesic()));
-                                            EtImrg_statement.bindString(21, c_e.check_empty(eIM.getPrest()));
-                                            EtImrg_statement.bindString(22, c_e.check_empty(eIM.getDocaf()));
-                                            EtImrg_statement.bindString(23, c_e.check_empty(eIM.getCodct()));
-                                            EtImrg_statement.bindString(24, c_e.check_empty(eIM.getCodgr()));
-                                            EtImrg_statement.bindString(25, c_e.check_empty(eIM.getVlcod()));
-                                            EtImrg_statement.bindString(26, c_e.check_empty(eIM.getAction()));
-                                            EtImrg_statement.bindString(27, c_e.check_empty(eIM.getEqunr()));
-                                            EtImrg_statement.execute();
-                                        }
+                            /*EtImrg*/
+                            if (response.body().getD().getResults().get(0).getEtImrg() != null)
+                                if (response.body().getD().getResults().get(0).getEtImrg().getResults() != null &&
+                                        response.body().getD().getResults().get(0).getEtImrg().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtImrg_Result etImrg_result : response.body().getD().getResults()
+                                            .get(0).getEtImrg().getResults()) {
+                                        values.put("UUID", etImrg_result.getAufnr());
+                                        values.put("Qmnum", etImrg_result.getQmnum());
+                                        values.put("Aufnr", etImrg_result.getAufnr());
+                                        values.put("Vornr", etImrg_result.getVornr());
+                                        values.put("Mdocm", etImrg_result.getMdocm());
+                                        values.put("Point", etImrg_result.getPoint());
+                                        values.put("Mpobj", etImrg_result.getMpobj());
+                                        values.put("Mpobt", etImrg_result.getMpobt());
+                                        values.put("Psort", etImrg_result.getPsort());
+                                        values.put("Pttxt", etImrg_result.getPttxt());
+                                        values.put("Atinn", etImrg_result.getAtinn());
+                                        values.put("Idate", etImrg_result.getIdate());
+                                        values.put("Itime", etImrg_result.getItime());
+                                        values.put("Mdtxt", etImrg_result.getMdtxt());
+                                        values.put("Readr", etImrg_result.getReadr());
+                                        values.put("Atbez", etImrg_result.getAtbez());
+                                        values.put("Msehi", etImrg_result.getMsehi());
+                                        values.put("Msehl", etImrg_result.getMsehl());
+                                        values.put("Readc", etImrg_result.getReadc());
+                                        values.put("Desic", etImrg_result.getDesic());
+                                        values.put("Prest", etImrg_result.getPrest());
+                                        values.put("Docaf", etImrg_result.getDocaf());
+                                        values.put("Codct", etImrg_result.getCodct());
+                                        values.put("Codgr", etImrg_result.getCodgr());
+                                        values.put("Vlcod", etImrg_result.getVlcod());
+                                        values.put("Action", etImrg_result.getAction());
+                                        values.put("Equnr", etImrg_result.getEqunr());
+                                        App_db.insert("Orders_EtImrg", null, values);
                                     }
                                 }
-                            }
+                               /* Orders_SER.EtImrg etImrg = results.get(0).getEtImrg();
+                                if (etImrg != null) {
+                                    List<Orders_SER.EtImrg_Result> etImrgResults = etImrg.getResults();
+                                    if (etImrgResults != null && etImrgResults.size() > 0) {
+                                        for (Orders_SER.EtImrg_Result eIM : etImrgResults) {
+                                            for (HashMap<String, String> uD : orders_uuid_list) {
+                                                if (uD.get("Aufnr").equals(eIM.getAufnr())) {
+                                                    String EtImrg_sql = "Insert into Orders_EtImrg (UUID,Qmnum, Aufnr, Vornr, " +
+                                                            "Mdocm, Point, Mpobj, Mpobt, Psort,Pttxt, Atinn, Idate, Itime, " +
+                                                            "Mdtxt,Readr,Atbez,Msehi,Msehl,Readc,Desic,Prest,Docaf, Codct, " +
+                                                            "Codgr, Vlcod, Action, Equnr) " +
+                                                            "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                                    SQLiteStatement EtImrg_statement = App_db.compileStatement(EtImrg_sql);
+                                                    EtImrg_statement.bindString(1, uD.get("UUID"));
+                                                    EtImrg_statement.bindString(2, c_e.check_empty(eIM.getQmnum()));
+                                                    EtImrg_statement.bindString(3, c_e.check_empty(eIM.getAufnr()));
+                                                    EtImrg_statement.bindString(4, c_e.check_empty(eIM.getVornr()));
+                                                    EtImrg_statement.bindString(5, c_e.check_empty(eIM.getMdocm()));
+                                                    EtImrg_statement.bindString(6, c_e.check_empty(eIM.getPoint()));
+                                                    EtImrg_statement.bindString(7, c_e.check_empty(eIM.getMpobj()));
+                                                    EtImrg_statement.bindString(8, c_e.check_empty(eIM.getMpobt()));
+                                                    EtImrg_statement.bindString(9, c_e.check_empty(eIM.getPsort()));
+                                                    EtImrg_statement.bindString(10, c_e.check_empty(eIM.getPttxt()));
+                                                    EtImrg_statement.bindString(11, c_e.check_empty(eIM.getAtinn()));
+                                                    EtImrg_statement.bindString(12, c_e.check_empty(eIM.getIdate()));
+                                                    EtImrg_statement.bindString(13, c_e.check_empty(eIM.getItime()));
+                                                    EtImrg_statement.bindString(14, c_e.check_empty(eIM.getMdtxt()));
+                                                    EtImrg_statement.bindString(15, c_e.check_empty(eIM.getReadr()));
+                                                    EtImrg_statement.bindString(16, c_e.check_empty(eIM.getAtbez()));
+                                                    EtImrg_statement.bindString(17, c_e.check_empty(eIM.getMsehi()));
+                                                    EtImrg_statement.bindString(18, c_e.check_empty(eIM.getMsehl()));
+                                                    EtImrg_statement.bindString(19, c_e.check_empty(eIM.getReadc()));
+                                                    EtImrg_statement.bindString(20, c_e.check_empty(eIM.getDesic()));
+                                                    EtImrg_statement.bindString(21, c_e.check_empty(eIM.getPrest()));
+                                                    EtImrg_statement.bindString(22, c_e.check_empty(eIM.getDocaf()));
+                                                    EtImrg_statement.bindString(23, c_e.check_empty(eIM.getCodct()));
+                                                    EtImrg_statement.bindString(24, c_e.check_empty(eIM.getCodgr()));
+                                                    EtImrg_statement.bindString(25, c_e.check_empty(eIM.getVlcod()));
+                                                    EtImrg_statement.bindString(26, c_e.check_empty(eIM.getAction()));
+                                                    EtImrg_statement.bindString(27, c_e.check_empty(eIM.getEqunr()));
+                                                    EtImrg_statement.execute();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }*/
+                            App_db.setTransactionSuccessful();
+                            Get_Response = "success";
+                        } finally {
+                            App_db.endTransaction();
                         }
                     }
-                    App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
-                    Get_Response = "success";
                 }
             }
         } catch (Exception ex) {

@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -338,14 +339,24 @@ public class VHLP_WCM {
             int response_status_code = response.code();
             Log.v("kiran_Vhlp_WCM_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<VHLP_WCM_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
-
+                    try {
                         /*EtWCMUsages*/
-                        VHLP_WCM_SER.EtWCMUsages etWCMUsages = results.get(0).getEtWCMUsages();
+                        if (response.body().getD().getResults().get(0).getEtWCMUsages() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMUsages().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMUsages().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMUsages_Result eWU : response.body().getD().getResults().get(0).getEtWCMUsages().getResults()) {
+                                    values.put("Iwerk, ", eWU.getIwerk());
+                                    values.put("Objart", eWU.getObjart());
+                                    values.put("Use", eWU.getUse());
+                                    values.put("Usex", eWU.getUsex());
+                                    App_db.insert("EtWcmUsages", null, values);
+                                }
+                            }
+                        }
+                       /* VHLP_WCM_SER.EtWCMUsages etWCMUsages = results.get(0).getEtWCMUsages();
                         if (etWCMUsages != null) {
                             List<VHLP_WCM_SER.EtWCMUsages_Result> etWCMUsagesResults = etWCMUsages.getResults();
                             if (etWCMUsagesResults != null && etWCMUsagesResults.size() > 0) {
@@ -361,10 +372,21 @@ public class VHLP_WCM {
                                     EtWcmUsages_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtWCMBegru*/
-                        VHLP_WCM_SER.EtWCMBegru etWCMBegru = results.get(0).getEtWCMBegru();
+                        if (response.body().getD().getResults().get(0).getEtWCMBegru() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMBegru().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMBegru().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMBegru_Result eWB : response.body().getD().getResults().get(0).getEtWCMBegru().getResults()) {
+                                    values.put("Begru, ", eWB.getBegru());
+                                    values.put("Begtx", eWB.getBegtx());
+                                    App_db.insert("EtWcmBegru", null, values);
+                                }
+                            }
+                        }
+                        /*VHLP_WCM_SER.EtWCMBegru etWCMBegru = results.get(0).getEtWCMBegru();
                         if (etWCMBegru != null) {
                             List<VHLP_WCM_SER.EtWCMBegru_Result> etWCMBegruResults = etWCMBegru.getResults();
                             if (etWCMBegruResults != null && etWCMBegruResults.size() > 0) {
@@ -377,10 +399,29 @@ public class VHLP_WCM {
                                     EtWcmBegru_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtWCMTgtyp*/
-                        VHLP_WCM_SER.EtWCMTgtyp etWCMTgtyp = results.get(0).getEtWCMTgtyp();
+                        if (response.body().getD().getResults().get(0).getEtWCMTgtyp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMTgtyp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMTgtyp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMTgtyp_Result eWT : response.body().getD().getResults().get(0).getEtWCMTgtyp().getResults()) {
+                                    values.put("Iwerk, ", eWT.getIwerk());
+                                    values.put("Tggrp", eWT.getTggrp());
+                                    values.put("Tgproc", eWT.getTgproc());
+                                    values.put("Tgtyp", eWT.getTgtyp());
+                                    values.put("Unproc", eWT.getUnproc());
+                                    values.put("Untyp", eWT.getUntyp());
+                                    values.put("Phblflg", eWT.getPhblflg());
+                                    values.put("Tgflg", eWT.getTgflg());
+                                    values.put("Usable", eWT.getUsable());
+                                    values.put("Tgprocx", eWT.getTgprocx());
+                                    App_db.insert("EtWcmTgtyp", null, values);
+                                }
+                            }
+                        }
+                       /* VHLP_WCM_SER.EtWCMTgtyp etWCMTgtyp = results.get(0).getEtWCMTgtyp();
                         if (etWCMTgtyp != null) {
                             List<VHLP_WCM_SER.EtWCMTgtyp_Result> etWCMTgtypResults = etWCMTgtyp.getResults();
                             if (etWCMTgtypResults != null && etWCMTgtypResults.size() > 0) {
@@ -403,10 +444,23 @@ public class VHLP_WCM {
                                     EtWcmTgtyp_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtWCMTypes*/
-                        VHLP_WCM_SER.EtWCMTypes etWCMTypes = results.get(0).getEtWCMTypes();
+                        if (response.body().getD().getResults().get(0).getEtWCMTypes() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMTypes().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMTypes().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMTypes_Result eWTY : response.body().getD().getResults().get(0).getEtWCMTypes().getResults()) {
+                                    values.put("Iwerk, ", eWTY.getIwerk());
+                                    values.put("Objart", eWTY.getObjart());
+                                    values.put("Objtyp", eWTY.getObjtyp());
+                                    values.put("Stxt", eWTY.getStxt());
+                                    App_db.insert("EtWcmTypes", null, values);
+                                }
+                            }
+                        }
+                       /* VHLP_WCM_SER.EtWCMTypes etWCMTypes = results.get(0).getEtWCMTypes();
                         if (etWCMTypes != null) {
                             List<VHLP_WCM_SER.EtWCMTypes_Result> etWCMTypesResults = etWCMTypes.getResults();
                             if (etWCMTypesResults != null && etWCMTypesResults.size() > 0) {
@@ -422,10 +476,27 @@ public class VHLP_WCM {
                                     EtWcmTypes_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtWCMWcvp6*/
-                        VHLP_WCM_SER.EtWCMWcvp6 etWCMWcvp6 = results.get(0).getEtWCMWcvp6();
+                        if (response.body().getD().getResults().get(0).getEtWCMWcvp6() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMWcvp6().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMWcvp6().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMWcvp6_Result eC6 : response.body().getD().getResults().get(0).getEtWCMWcvp6().getResults()) {
+                                    values.put("Mandt", " ");
+                                    values.put("Iwerk", eC6.getIwerk());
+                                    values.put("Objart", eC6.getObjart());
+                                    values.put("Objtyp", eC6.getObjtyp());
+                                    values.put("Pmsog", eC6.getPmsog());
+                                    values.put("Gntxt", eC6.getGntxt());
+                                    values.put("Agent", eC6.getAgent());
+                                    values.put("Stxt", eC6.getStxt());
+                                    App_db.insert("EtWcmWcvp6", null, values);
+                                }
+                            }
+                        }
+                        /*VHLP_WCM_SER.EtWCMWcvp6 etWCMWcvp6 = results.get(0).getEtWCMWcvp6();
                         if (etWCMWcvp6 != null) {
                             List<VHLP_WCM_SER.EtWCMWcvp6_Result> etWCMWcvp6Results = etWCMWcvp6.getResults();
                             if (etWCMWcvp6Results != null && etWCMWcvp6Results.size() > 0) {
@@ -445,10 +516,31 @@ public class VHLP_WCM {
                                     EtWcmWcvp6_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtWCMWork*/
-                        VHLP_WCM_SER.EtWCMWork etWCMWork = results.get(0).getEtWCMWork();
+                        if (response.body().getD().getResults().get(0).getEtWCMWork() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMWork().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMWork().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMWork_Result eWW : response.body().getD().getResults().get(0).getEtWCMWork().getResults()) {
+                                    values.put("Iwerk", eWW.getIwerk());
+                                    values.put("Objart", eWW.getObjart());
+                                    values.put("Objtyp", eWW.getObjtyp());
+                                    values.put("Wapiuse", eWW.getWapiuse());
+                                    values.put("Wkid", eWW.getWkid());
+                                    values.put("ScrtextL", eWW.getScrtextL());
+                                    values.put("Wkgrp", eWW.getWkgrp());
+                                    values.put("Propflg", eWW.getPropflg());
+                                    values.put("Modflg", eWW.getModflg());
+                                    values.put("Dpflg", eWW.getDpflg());
+                                    values.put("Aprv4unmarked", eWW.getAprv4unmarked());
+                                    values.put("Aprv4marked", eWW.getAprv4marked());
+                                    App_db.insert("EtWcmWork", null, values);
+                                }
+                            }
+                        }
+                        /*VHLP_WCM_SER.EtWCMWork etWCMWork = results.get(0).getEtWCMWork();
                         if (etWCMWork != null) {
                             List<VHLP_WCM_SER.EtWCMWork_Result> etWCMWorkResults = etWCMWork.getResults();
                             if (etWCMWorkResults != null && etWCMWorkResults.size() > 0) {
@@ -473,10 +565,31 @@ public class VHLP_WCM {
                                     EtWcmWork_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtWCMReqm*/
-                        VHLP_WCM_SER.EtWCMReqm etWCMReqm = results.get(0).getEtWCMReqm();
+                        if (response.body().getD().getResults().get(0).getEtWCMReqm() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMReqm().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMReqm().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMReqm_Result eWR : response.body().getD().getResults().get(0).getEtWCMReqm().getResults()) {
+                                    values.put("Iwerk", eWR.getIwerk());
+                                    values.put("Objart", eWR.getObjart());
+                                    values.put("Objtyp", eWR.getObjtyp());
+                                    values.put("Wapiuse", eWR.getWapiuse());
+                                    values.put("Needid", eWR.getNeedid());
+                                    values.put("ScrtextL", eWR.getScrtextL());
+                                    values.put("Needgrp", eWR.getNeedgrp());
+                                    values.put("Propflg", eWR.getPropflg());
+                                    values.put("Modflg", eWR.getModflg());
+                                    values.put("Dpflg", eWR.getDpflg());
+                                    values.put("Aprv4unmarked", eWR.getAprv4unmarked());
+                                    values.put("Aprv4marked", eWR.getAprv4marked());
+                                    App_db.insert("EtWCMReqm", null, values);
+                                }
+                            }
+                        }
+                       /* VHLP_WCM_SER.EtWCMReqm etWCMReqm = results.get(0).getEtWCMReqm();
                         if (etWCMReqm != null) {
                             List<VHLP_WCM_SER.EtWCMReqm_Result> etWCMReqmResults = etWCMReqm.getResults();
                             if (etWCMReqmResults != null && etWCMReqmResults.size() > 0) {
@@ -501,10 +614,21 @@ public class VHLP_WCM {
                                     EtWCMReqm_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtWCMUsgrp*/
-                        VHLP_WCM_SER.EtWCMUsgrp etWCMUsgrp = results.get(0).getEtWCMUsgrp();
+                        if (response.body().getD().getResults().get(0).getEtWCMUsgrp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWCMUsgrp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWCMUsgrp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWCMUsgrp_Result eWR : response.body().getD().getResults().get(0).getEtWCMUsgrp().getResults()) {
+                                    values.put("Usgrp", eWR.getUsgrp());
+                                    values.put("Pmsog", eWR.getPmsog());
+                                    App_db.insert("EtUsgrpWccp", null, values);
+                                }
+                            }
+                        }
+                       /* VHLP_WCM_SER.EtWCMUsgrp etWCMUsgrp = results.get(0).getEtWCMUsgrp();
                         if (etWCMUsgrp != null) {
                             List<VHLP_WCM_SER.EtWCMUsgrp_Result> etWCMUsgrpResults = etWCMUsgrp.getResults();
                             if (etWCMUsgrpResults != null && etWCMUsgrpResults.size() > 0) {
@@ -517,10 +641,25 @@ public class VHLP_WCM {
                                     EtUsgrpWccp_statement.execute();
                                 }
                             }
-                        }
+                        }*/
 
                         /*EtECMWcco*/
-                        VHLP_WCM_SER.EtWcmWcco etWcmWcco = results.get(0).getEtWcmWcco();
+                        if (response.body().getD().getResults().get(0).getEtWcmWcco() != null) {
+                            if (response.body().getD().getResults().get(0).getEtWcmWcco().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtWcmWcco().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (VHLP_WCM_SER.EtWcmWcco_Result eWWO : response.body().getD().getResults().get(0).getEtWcmWcco().getResults()) {
+                                    values.put("Iwerk", eWWO.getIwerk());
+                                    values.put("Objart", eWWO.getObjart());
+                                    values.put("Objtyp", eWWO.getObjtyp());
+                                    values.put("Wcmuse", eWWO.getWcmuse());
+                                    values.put("Direction", eWWO.getDirection());
+                                    values.put("Asgnflg", eWWO.getAsgnflg());
+                                    App_db.insert("EtWcmWcco", null, values);
+                                }
+                            }
+                        }
+                       /* VHLP_WCM_SER.EtWcmWcco etWcmWcco = results.get(0).getEtWcmWcco();
                         if (etWcmWcco != null) {
                             List<VHLP_WCM_SER.EtWcmWcco_Result> etWcmWccoResults = etWcmWcco.getResults();
                             if (etWcmWccoResults != null && etWcmWccoResults.size() > 0) {
@@ -539,10 +678,12 @@ public class VHLP_WCM {
                                 }
                             }
                         }
+                    }*/
+                        App_db.setTransactionSuccessful();
+                        Get_Response = "success";
+                    }finally {
+                        App_db.endTransaction();
                     }
-                    App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
-                    Get_Response = "success";
                 }
             } else {
                 Get_Response = "exception";

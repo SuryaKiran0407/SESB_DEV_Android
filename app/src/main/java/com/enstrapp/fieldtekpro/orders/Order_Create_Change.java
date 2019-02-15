@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.orders;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -1052,47 +1053,32 @@ public class Order_Create_Change {
             Log.v("kiran_response_status_code", response_status_code + "...");
             if (response_status_code == 201) {
                 if (response.isSuccessful() && response.body() != null) {
-                    orders_uuid_list.clear();
+                    if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0){
 
-                    /*Reading Response Data and Parsing to Serializable*/
-                    Orders_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
-
-                    /*Converting GSON Response to JSON Data for Parsing*/
-                    String response_data = new Gson().toJson(rs.getD());
-                    /*Converting GSON Response to JSON Data for Parsing*/
-
-                    /*Converting Response JSON Data to JSONArray for Reading*/
-                    try {
-                        JSONObject jsonObject = new JSONObject(response_data);
-                        /*Converting Response JSON Data to JSONArray for Reading*/
-
-                        /*Reading Data by using FOR Loop*/
-                        /*for (int i = 0; i < response_data_jsonArray.length(); i++) {
-                         *//*Reading Data by using FOR Loop*//*
-                        JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
-*/
                         success = false;
                         message = new StringBuffer();
                         if (operation.equals("CRORD")) {
+                            try {
+                            if (response.body().getD().getEsAufnr().getResults() != null) {
+                                if (response.body().getD().getEsAufnr().getResults() != null && response.body().getD().getEsAufnr().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EsAufnr_Result esAufnr : response.body().getD().getEsAufnr().getResults()) {
+                                        message.append("\n");
+                                        values.put("Aufnr", esAufnr.getAufnr());
+                                        values.put("Message", esAufnr.getMessage());
+                                        message.append(esAufnr.getMessage());
 
-                            if (jsonObject.has("EsAufnr")) {
-                                try {
-                                    String EtOrderHeader_response_data1 = new Gson().toJson(rs.getD().getEsAufnr().getResults());
-                                    JSONArray jsonArray1 = new JSONArray(EtOrderHeader_response_data1);
-
-                                    for (int j = 0; j < jsonArray1.length(); j++) {
-                                        if (j >= 1)
-                                            message.append("\n");
-                                        String Aufnr = jsonArray1.getJSONObject(j).optString("Aufnr");
-                                        message.append(jsonArray1.getJSONObject(j).optString("Message"));
                                     }
+
                                     if (message.toString().startsWith("S")) {
                                         success = true;
                                     } else {
                                         success = false;
                                         Get_Response = message.toString();
                                     }
+                                }
+                            }
+
                                 } catch (Exception e) {
                                     success = false;
                                 }
@@ -1100,7 +1086,7 @@ public class Order_Create_Change {
                                 /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
                                 /*Reading and Inserting Data into Database Table for EtOrderComponents*/
-                            }
+
                         } else {
                             if (jsonObject.has("EtMessages")) {
                                 try {
