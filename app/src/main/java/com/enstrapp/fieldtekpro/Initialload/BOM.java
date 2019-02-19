@@ -234,7 +234,7 @@ public class BOM {
                                     && response.body().getD().getResults().get(0).getEtBomHeader().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (BOM_SER.EtBomHeader_Result eBH : response.body().getD().getResults().get(0).getEtBomHeader().getResults()) {
-                                    values.put("Bom, ", eBH.getBom());
+                                    values.put("Bom", eBH.getBom());
                                     values.put("BomDesc", eBH.getBomDesc());
                                     values.put("Plant", eBH.getPlant());
                                     App_db.insert("EtBomHeader", null, values);

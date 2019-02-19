@@ -1615,43 +1615,47 @@ public class VHLP
                                                         }
 
                                                 }
+                                                App_db.insert("Get_NOTIFCODES_ItemCodes", null, values);
                                             }
                                         if (etNotifCodes_result.getCauseCodes() != null)
                                             if (etNotifCodes_result.getCauseCodes().getResults() != null
                                                     && etNotifCodes_result.getCauseCodes().getResults().size() > 0) {
                                                 ContentValues valuesCCode = new ContentValues();
                                                 for (VHLP_SER.CauseCodes_Result causeCodes_result : etNotifCodes_result.getCauseCodes().getResults()) {
-                                                    valuesCCode.put("Codegruppe", causeCodes_result.getCodegruppe());
-                                                    valuesCCode.put("Kurztext", causeCodes_result.getKurztext());
+                                                    values.put("Codegruppe", causeCodes_result.getCodegruppe());
+                                                    values.put("Kurztext", causeCodes_result.getKurztext());
                                                     if (causeCodes_result.getICodes() != null)
                                                         if (causeCodes_result.getICodes().getResults() != null
                                                                 && causeCodes_result.getICodes().getResults().size() > 0) {
                                                             ContentValues valuesCodes = new ContentValues();
                                                             for (VHLP_SER.Codes_Result codes_result : causeCodes_result.getICodes().getResults()) {
-                                                                valuesCodes.put("Code", codes_result.getCode());
-                                                                valuesCodes.put("Kurztext1", codes_result.getKurztext1());
+                                                                values.put("Code", codes_result.getCode());
+                                                                values.put("Kurztext1", codes_result.getKurztext1());
 
                                                             }
                                                         }
+                                                    App_db.insert("Get_NOTIFCODES_CauseCodes", null, values);
                                                 }
+
                                             }
                                         if (etNotifCodes_result.getObjectCodes() != null)
                                             if (etNotifCodes_result.getObjectCodes().getResults() != null
                                                     && etNotifCodes_result.getObjectCodes().getResults().size() > 0) {
                                                 ContentValues valuesOCode = new ContentValues();
                                                 for (VHLP_SER.ObjectCodes_Result objectCodes_result : etNotifCodes_result.getObjectCodes().getResults()) {
-                                                    valuesOCode.put("Codegruppe", objectCodes_result.getCodegruppe());
-                                                    valuesOCode.put("Kurztext", objectCodes_result.getKurztext());
+                                                    values.put("Codegruppe", objectCodes_result.getCodegruppe());
+                                                    values.put("Kurztext", objectCodes_result.getKurztext());
                                                     if (objectCodes_result.getICodes() != null)
                                                         if (objectCodes_result.getICodes().getResults() != null
                                                                 && objectCodes_result.getICodes().getResults().size() > 0) {
                                                             ContentValues valuesCodes = new ContentValues();
                                                             for (VHLP_SER.Codes_Result codes_result : objectCodes_result.getICodes().getResults()) {
-                                                                valuesCodes.put("Code", codes_result.getCode());
-                                                                valuesCodes.put("Kurztext1", codes_result.getKurztext1());
+                                                                values.put("Code", codes_result.getCode());
+                                                                values.put("Kurztext1", codes_result.getKurztext1());
 
                                                             }
                                                         }
+                                                    App_db.insert("Get_NOTIFCODES_ObjectCodes", null, values);
                                                 }
                                             }
                                         if (etNotifCodes_result.getActCodes() != null)
@@ -1659,18 +1663,19 @@ public class VHLP
                                                     && etNotifCodes_result.getActCodes().getResults().size() > 0) {
                                                 ContentValues valuesACode = new ContentValues();
                                                 for (VHLP_SER.ActCodes_Result actCodes_result : etNotifCodes_result.getActCodes().getResults()) {
-                                                    valuesACode.put("Codegruppe", actCodes_result.getCodegruppe());
-                                                    valuesACode.put("Kurztext", actCodes_result.getKurztext());
+                                                    values.put("Codegruppe", actCodes_result.getCodegruppe());
+                                                    values.put("Kurztext", actCodes_result.getKurztext());
                                                     if (actCodes_result.getACall() != null)
                                                         if (actCodes_result.getACall().getResults() != null
                                                                 && actCodes_result.getACall().getResults().size() > 0) {
                                                             ContentValues valuesCodes = new ContentValues();
                                                             for (VHLP_SER.Codes_Result codes_result : actCodes_result.getACall().getResults()) {
-                                                                valuesCodes.put("Code", codes_result.getCode());
-                                                                valuesCodes.put("Kurztext1", codes_result.getKurztext1());
+                                                                values.put("Code", codes_result.getCode());
+                                                                values.put("Kurztext1", codes_result.getKurztext1());
 
                                                             }
                                                         }
+                                                    App_db.insert("Get_NOTIFCODES_ActCodes", null, values);
                                                 }
                                             }
                                         if (etNotifCodes_result.getTaskCodes() != null)
@@ -1678,25 +1683,26 @@ public class VHLP
                                                     && etNotifCodes_result.getTaskCodes().getResults().size() > 0) {
                                                 ContentValues valuesTCode = new ContentValues();
                                                 for (VHLP_SER.TaskCodes_Result taskCodes_result : etNotifCodes_result.getTaskCodes().getResults()) {
-                                                    valuesTCode.put("Codegruppe", taskCodes_result.getCodegruppe());
-                                                    valuesTCode.put("Kurztext", taskCodes_result.getKurztext());
+                                                    values.put("Codegruppe", taskCodes_result.getCodegruppe());
+                                                    values.put("Kurztext", taskCodes_result.getKurztext());
                                                     if (taskCodes_result.getACall() != null)
                                                         if (taskCodes_result.getACall().getResults() != null
                                                                 && taskCodes_result.getACall().getResults().size() > 0) {
                                                             ContentValues valuesCodes = new ContentValues();
                                                             for (VHLP_SER.Codes_Result codes_result : taskCodes_result.getACall().getResults()) {
-                                                                valuesCodes.put("Code", codes_result.getCode());
-                                                                valuesCodes.put("Kurztext1", codes_result.getKurztext1());
+                                                                values.put("Code", codes_result.getCode());
+                                                                values.put("Kurztext1", codes_result.getKurztext1());
 
                                                             }
                                                         }
+                                                    App_db.insert("Get_NOTIFCODES_TaskCodes", null, values);
                                                 }
                                             }
-                                        App_db.insert("Get_NOTIFCODES_ItemCodes", null, values);
+                                        /*App_db.insert("Get_NOTIFCODES_ItemCodes", null, values);
                                         App_db.insert("Get_NOTIFCODES_CauseCodes", null, values);
                                         App_db.insert("Get_NOTIFCODES_ObjectCodes", null, values);
                                         App_db.insert("Get_NOTIFCODES_ActCodes", null, values);
-                                        App_db.insert("Get_NOTIFCODES_TaskCodes", null, values);
+                                        App_db.insert("Get_NOTIFCODES_TaskCodes", null, values);*/
 
                                     }
                                 }

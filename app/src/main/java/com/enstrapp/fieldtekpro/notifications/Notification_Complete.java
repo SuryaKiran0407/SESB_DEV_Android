@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.notifications;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.provider.Settings;
 import android.util.Base64;
 
 import com.enstrapp.fieldtekpro.Initialload.Notifications_SER;
+import com.enstrapp.fieldtekpro.Initialload.Orders_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
 import com.google.gson.Gson;
@@ -37,6 +39,7 @@ public class Notification_Complete {
     private static SharedPreferences.Editor FieldTekPro_SharedPrefeditor;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
+    private static StringBuffer message = new StringBuffer();
 
     public static String Get_NOCO_Data(Context activity, String notification_id) {
         try {
@@ -85,6 +88,7 @@ public class Notification_Complete {
             map.put("Content-Type", "application/json");
             map.put("IvCommit", "X");
             map.put("IvTransmitType", "");
+            map.put("Operation", "NOCO");
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(120000, TimeUnit.MILLISECONDS)
                     .writeTimeout(120000, TimeUnit.SECONDS)
@@ -103,15 +107,22 @@ public class Notification_Complete {
                     /*Reading Response Data and Parsing to Serializable*/
                     Notifications_SER rs = response.body();
                     /*Reading Response Data and Parsing to Serializable*/
+                    message = new StringBuffer();
+                    if (response.body().getD().getResults().get(0).getEtMessages() != null) {
+                        if (response.body().getD().getResults().get(0).getEtMessages().getResults() != null && response.body().getD().getResults().get(0).getEtMessages().getResults().size() > 0) {
+                            ContentValues values = new ContentValues();
+                            for (Notifications_SER.EtMessages_Result etMessages_result : response.body().getD().getResults().get(0).getEtMessages().getResults()) {
+                                values.put("Message", etMessages_result.getMessage());
+                                message.append(etMessages_result.getMessage());
 
-                    /*Converting GSON Response to JSON Data for Parsing*/
-                    String response_data = new Gson().toJson(rs.getD().getNotiComplete());
-                    JSONObject jsonObject = new JSONObject(response_data);
-                    String message = jsonObject.getString("Message");
-                    if (message.startsWith("S")) {
-                        Get_Response = "success";
-                    } else if (message.startsWith("E")) {
-                        Get_Response = message;
+                            }
+                        }
+                    }
+
+                    if (message.toString().startsWith("S")) {
+                        Get_Response = "Success";
+                    } else {
+                        Get_Response = message.toString();
                     }
                     /*Converting GSON Response to JSON Data for Parsing*/
                 }
@@ -121,6 +132,9 @@ public class Notification_Complete {
             Get_Response = activity.getString(R.string.notifcomplete_fail);
         } finally {
         }
+        String[] response = new String[2];
+        response[0] = Get_Response;
+
         return Get_Response;
     }
 }

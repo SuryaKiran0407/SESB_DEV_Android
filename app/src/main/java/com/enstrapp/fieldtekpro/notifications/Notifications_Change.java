@@ -427,7 +427,7 @@ public class Notifications_Change {
 
                                        /*Reading and Inserting Data into Database Table for EtNotifItems*/
                                         try {
-                                            if (response.body().getD().getResults().get(0).getEtNotifItems().getResults() != null) {
+                                            if (response.body().getD().getEtNotifItems().getResults() != null) {
                                                 if (response.body().getD().getEtNotifItems().getResults() != null
                                                         && response.body().getD().getEtNotifItems().getResults().size() > 0) {
                                                     ContentValues values = new ContentValues();

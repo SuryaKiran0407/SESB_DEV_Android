@@ -268,6 +268,9 @@ public class Notifications_SER {
         @SerializedName("EvMessage")
         @Expose
         private EvMessage EvMessage;
+        @SerializedName("EtMessages")
+        @Expose
+        private EtMessages EtMessages;
         @SerializedName("EtNotifHeader")
         @Expose
         private EtNotifHeader EtNotifHeader;
@@ -321,7 +324,13 @@ public class Notifications_SER {
         public void setEvMessage(Notifications_SER.EvMessage evMessage) {
             EvMessage = evMessage;
         }
+        public Notifications_SER.EtMessages getEtMessages() {
+            return EtMessages;
+        }
 
+        public void setEtMessages(Notifications_SER.EtMessages etMessages) {
+            EtMessages = etMessages;
+        }
         public Notifications_SER.EtNotifItems getEtNotifItems() {
             return EtNotifItems;
         }
@@ -352,6 +361,33 @@ public class Notifications_SER {
 
         public void setEtDocs(Notifications_SER.EtDocs etDocs) {
             EtDocs = etDocs;
+        }
+    }
+    public class EtMessages {
+        @SerializedName("results")
+        @Expose
+        private List<EtMessages_Result> results = null;
+
+        public List<EtMessages_Result> getResults() {
+            return results;
+        }
+
+        public void setResults(List<EtMessages_Result> results) {
+            this.results = results;
+        }
+    }
+
+    public class EtMessages_Result {
+        @SerializedName("Message")
+        @Expose
+        private String Message;
+
+        public String getMessage() {
+            return Message;
+        }
+
+        public void setMessage(String message) {
+            Message = message;
         }
     }
 
