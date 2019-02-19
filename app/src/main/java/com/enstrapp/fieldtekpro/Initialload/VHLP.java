@@ -1683,19 +1683,19 @@ public class VHLP
                                                     && etNotifCodes_result.getTaskCodes().getResults().size() > 0) {
                                                 ContentValues valuesTCode = new ContentValues();
                                                 for (VHLP_SER.TaskCodes_Result taskCodes_result : etNotifCodes_result.getTaskCodes().getResults()) {
-                                                    values.put("Codegruppe", taskCodes_result.getCodegruppe());
-                                                    values.put("Kurztext", taskCodes_result.getKurztext());
+                                                    valuesTCode.put("Codegruppe", taskCodes_result.getCodegruppe());
+                                                    valuesTCode.put("Kurztext", taskCodes_result.getKurztext());
                                                     if (taskCodes_result.getACall() != null)
                                                         if (taskCodes_result.getACall().getResults() != null
                                                                 && taskCodes_result.getACall().getResults().size() > 0) {
                                                             ContentValues valuesCodes = new ContentValues();
                                                             for (VHLP_SER.Codes_Result codes_result : taskCodes_result.getACall().getResults()) {
-                                                                values.put("Code", codes_result.getCode());
-                                                                values.put("Kurztext1", codes_result.getKurztext1());
+                                                                valuesTCode.put("Code", codes_result.getCode());
+                                                                valuesTCode.put("Kurztext1", codes_result.getKurztext1());
 
                                                             }
                                                         }
-                                                    App_db.insert("Get_NOTIFCODES_TaskCodes", null, values);
+                                                    App_db.insert("Get_NOTIFCODES_TaskCodes", null, valuesTCode);
                                                 }
                                             }
                                         /*App_db.insert("Get_NOTIFCODES_ItemCodes", null, values);
@@ -1705,6 +1705,7 @@ public class VHLP
                                         App_db.insert("Get_NOTIFCODES_TaskCodes", null, values);*/
 
                                     }
+
                                 }
                             /*try {
                                 String ItemCodes_sql = "Insert into Get_NOTIFCODES_ItemCodes (NotifType, Rbnr, Codegruppe, Kurztext, Code, Kurztext1) values(?,?,?,?,?,?);";
