@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">FTekP ED9</string>
+    <string name="application">FieldTekPro</string>
 
     <!--<string name="ip_address">https://ed9.enstrapp.com:443/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string>-->
 
@@ -825,5 +826,6 @@
     <string name="cnf_slctordr">Do you want to perform time confirmation for the selected order %1s?</string>
     <string name="teco_slctordr">Do you want to perform TECO for the selected order %1s?</string>
     <string name="refresh_calibration">Refresh In Progress&#8230;</string>
+    <string name="sync">Sync</string>
 
 </resources>

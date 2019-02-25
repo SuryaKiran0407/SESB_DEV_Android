@@ -67,7 +67,7 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
-                        vkatart = cursor1.getString(5);
+                        vkatart = cursor1.getString(8);
                     }
                     while (cursor1.moveToNext());
                 }

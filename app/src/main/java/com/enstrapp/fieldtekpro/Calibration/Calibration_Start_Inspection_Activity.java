@@ -131,7 +131,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
                 {
                     do
                     {
-                        vkatart = cursor1.getString(5);
+                        vkatart = cursor1.getString(8);
                     }
                     while (cursor1.moveToNext());
                 }

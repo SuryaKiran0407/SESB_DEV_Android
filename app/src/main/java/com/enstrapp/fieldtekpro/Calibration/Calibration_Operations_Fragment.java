@@ -502,6 +502,7 @@ public class Calibration_Operations_Fragment extends Fragment {
                         start_calibration_parcelable.setMSEHI(start_inspection_arraylist.get(i).get("MSEHI"));
                         start_calibration_parcelable.setKURZTEXT(start_inspection_arraylist.get(i).get("KURZTEXT"));
                         start_calibration_parcelable.setQUALITAT(start_inspection_arraylist.get(i).get("QUALITAT"));
+                        start_calibration_parcelable.setQUANTITAT(start_inspection_arraylist.get(i).get("QUANTITAT"));
                         start_calibration_parcelable.setRESULT(start_inspection_arraylist.get(i).get("RESULT"));
                         start_calibration_parcelable.setPRUEFBEMKT(start_inspection_arraylist.get(i).get("PRUEFBEMKT"));
                         start_calibration_parcelable.setTOLERANZUB(start_inspection_arraylist.get(i).get("TOLERANZUB"));

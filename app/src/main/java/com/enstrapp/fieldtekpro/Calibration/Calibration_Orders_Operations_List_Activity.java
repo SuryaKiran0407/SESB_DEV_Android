@@ -24,6 +24,7 @@ import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
+import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -137,7 +138,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
-                        vkatart = cursor1.getString(5);
+                        vkatart = cursor1.getString(8);
                     }
                     while (cursor1.moveToNext());
                 }
@@ -420,25 +421,19 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             custom_progress_dialog.dismiss_progress_dialog();
-            final Dialog success_dialog = new Dialog(Calibration_Orders_Operations_List_Activity.this);
-            success_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            success_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            success_dialog.setCancelable(false);
-            success_dialog.setCanceledOnTouchOutside(false);
-            success_dialog.setContentView(R.layout.error_dialog);
-            ImageView imageview = (ImageView) success_dialog.findViewById(R.id.imageView1);
-            TextView description_textview = (TextView) success_dialog.findViewById(R.id.description_textview);
-            Button ok_button = (Button) success_dialog.findViewById(R.id.ok_button);
-            description_textview.setText(getString(R.string.calib_save));
-            Glide.with(Calibration_Orders_Operations_List_Activity.this).load(R.drawable.success_checkmark).into(imageview);
-            success_dialog.show();
-            ok_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    success_dialog.dismiss();
-                    Calibration_Orders_Operations_List_Activity.this.finish();
-                }
-            });
+            if (calibration_submit_status.get("response_status") != null &&
+                    calibration_submit_status.get("response_status").startsWith("S")){
+                Success_Dialog successDialog = new Success_Dialog();
+                successDialog.dismissActivity(Calibration_Orders_Operations_List_Activity.this,
+                        calibration_submit_status.get("response_status").substring(1));
+            } else if (calibration_submit_status.get("response_status") != null &&
+                    calibration_submit_status.get("response_status").startsWith("E")){
+                error_dialog.show_error_dialog(Calibration_Orders_Operations_List_Activity.this,
+                        calibration_submit_status.get("response_status").substring(1));
+            } else {
+                error_dialog.show_error_dialog(Calibration_Orders_Operations_List_Activity.this,
+                        getString(R.string.unable_prcscalb));
+            }
         }
     }
 

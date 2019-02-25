@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:text="@string/retry"
+                        android:text="@string/sync"
                         android:textSize="15sp"/>
                 </LinearLayout>
             </LinearLayout>

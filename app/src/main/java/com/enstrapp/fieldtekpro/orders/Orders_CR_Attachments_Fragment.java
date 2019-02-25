@@ -48,6 +48,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
+import static android.view.View.GONE;
 
 public class Orders_CR_Attachments_Fragment extends Fragment {
 
@@ -84,7 +85,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
         DATABASE_NAME = ma.getString(R.string.database_name);
         App_db = ma.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        attachments_rv.setVisibility(View.GONE);
+        attachments_rv.setVisibility(GONE);
         noData_tv.setVisibility(View.VISIBLE);
 
         return rootView;
@@ -466,9 +467,9 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
             attachments_rv.setItemAnimator(new DefaultItemAnimator());
             attachments_rv.setAdapter(adapter);
             attachments_rv.setVisibility(View.VISIBLE);
-            noData_tv.setVisibility(View.GONE);
+            noData_tv.setVisibility(GONE);
         } else {
-            attachments_rv.setVisibility(View.GONE);
+            attachments_rv.setVisibility(GONE);
             noData_tv.setVisibility(View.VISIBLE);
         }
         ma.updateTabDataCount();
@@ -519,13 +520,14 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
             holder.checkbox.setChecked((nep.isSelected() == true ? true : false));
             holder.filename_textview.setText(nep.getFilename());
             String object_type = nep.getObjtype();
-            if (object_type.equalsIgnoreCase("EQUI")) {
+            /*if (object_type.equalsIgnoreCase("EQUI")) {
                 holder.file_objtype_textview.setText("Equipment");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.footer_color));
             } else {
                 holder.file_objtype_textview.setText("Notification");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.dark_green));
-            }
+            }*/
+            holder.file_objtype_textview.setVisibility(GONE);
             String size = nep.getFsize();
             int int_size = Integer.parseInt(size);
             int size_mb = int_size / 1024;

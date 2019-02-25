@@ -53,6 +53,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
+import static android.view.View.GONE;
 
 public class Orders_CH_Attachments_Fragment extends Fragment {
 
@@ -671,13 +672,14 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
             }
             holder.content_textview.setText(nep.getContentX());
             String object_type = nep.getObjtype();
-            if (object_type.equalsIgnoreCase("EQUI")) {
+            /*if (object_type.equalsIgnoreCase("EQUI")) {
                 holder.file_objtype_textview.setText("Equipment");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.footer_color));
             } else {
                 holder.file_objtype_textview.setText("Notification");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.dark_green));
-            }
+            }*/
+            holder.file_objtype_textview.setVisibility(GONE);
             String size = nep.getFsize();
             int size_mb = 0;
             if (size != null && !size.equals("")) {
