@@ -126,7 +126,7 @@ public interface Interface {
     @GET
     Call<Notifications_SER> Notif_Release(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
-    @POST
+    @GET
     Call<Notifications_SER> Notif_Complete(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
     @POST

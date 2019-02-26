@@ -273,7 +273,16 @@ public class Maintenance_Plan_Activity extends AppCompatActivity {
                                 } else {
                                     Addatdate_formateed = "";
                                 }
-                                MaintenancePlan_List_Object olo = new MaintenancePlan_List_Object(jsonObject.optString("Abnum"), jsonObject.optString("Warpl"), jsonObject.optString("Wptxt"), jsonObject.optString("Wapos"), jsonObject.optString("Pstxt"), jsonObject.optString("Strat"), jsonObject.optString("Equnr"), jsonObject.optString("Mptyp"), jsonObject.optString("Iwerk"), jsonObject.optString("Gewrk"), jsonObject.optString("Arbpl"), jsonObject.optString("Qmnum"), jsonObject.optString("Aufnr"), Gstrpdate_formateed, Addatdate_formateed, jsonObject.optString("Status"), jsonObject.optString("Mityp"), jsonObject.optString("Strno"), jsonObject.optString("Eqktx"), jsonObject.optString("Pltxt"));
+                                MaintenancePlan_List_Object olo = new MaintenancePlan_List_Object(jsonObject.optString("Abnum"),
+                                        jsonObject.optString("Warpl"), jsonObject.optString("Wptxt"),
+                                        jsonObject.optString("Wapos"), jsonObject.optString("Pstxt"),
+                                        jsonObject.optString("Strat"), jsonObject.optString("Equnr"),
+                                        jsonObject.optString("Mptyp"), jsonObject.optString("Iwerk"),
+                                        jsonObject.optString("Gstrpe"), jsonObject.optString("Arbpl"),
+                                        jsonObject.optString("Qmnum"), jsonObject.optString("Aufnr"),
+                                        Gstrpdate_formateed, Addatdate_formateed, jsonObject.optString("Status"),
+                                        jsonObject.optString("Mityp"), jsonObject.optString("Strno"),
+                                        jsonObject.optString("Eqktx"), jsonObject.optString("Pltxt"));
                                 maintenanceplan_list.add(olo);
                             }
                             if (maintenanceplan_list.size() > 0) {

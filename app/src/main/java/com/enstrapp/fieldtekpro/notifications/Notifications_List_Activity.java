@@ -824,7 +824,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                             @Override
                             public void onClick(View v) {
                                 decision_dialog.dismiss();
-                                new Get_Token().execute(notif_number);
+                                new Post_Notification_Complete().execute(notif_number);
                             }
                         });
                         decision_dialog.show();

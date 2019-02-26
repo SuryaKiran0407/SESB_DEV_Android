@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -85,6 +86,7 @@ public class Notification_Complete {
             map.put("Content-Type", "application/json");
             map.put("IvCommit", "X");
             map.put("IvTransmitType", "");
+            map.put("Operation", "NOCO");
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(120000, TimeUnit.MILLISECONDS)
                     .writeTimeout(120000, TimeUnit.SECONDS)
@@ -100,22 +102,28 @@ public class Notification_Complete {
             int response_status_code = response.code();
             if (response_status_code == 200) {
                 if (response.isSuccessful() && response.body() != null) {
-                    /*Reading Response Data and Parsing to Serializable*/
-                    Notifications_SER rs = response.body();
-                    /*Reading Response Data and Parsing to Serializable*/
-
-                    /*Converting GSON Response to JSON Data for Parsing*/
-                    String response_data = new Gson().toJson(rs.getD().getNotiComplete());
-                    JSONObject jsonObject = new JSONObject(response_data);
-                    String message = jsonObject.getString("Message");
-                    if (message.startsWith("S")) {
-                        Get_Response = "success";
-                    } else if (message.startsWith("E")) {
-                        Get_Response = message;
+                    if (response.body().getD().getResults().get(0).getEtMessages().getResults() != null &&
+                            response.body().getD().getResults().get(0).getEtMessages().getResults().size() > 0) {
+                        StringBuilder Message_stringbuilder = new StringBuilder();
+                        List<Notifications_SER.EtMessages_Result> messages =
+                                response.body().getD().getResults().get(0).getEtMessages().getResults();
+                        for (int i = 0; i < response.body().getD().getResults().get(0).getEtMessages().getResults().size(); i++) {
+                            if (i == 0)
+                                Message_stringbuilder.append(messages.get(i).getMessage());
+                            else {
+                                Message_stringbuilder.append("\n");
+                                Message_stringbuilder.append(messages.get(i).getMessage().substring(1));
+                            }
+                        }
+                        if (Message_stringbuilder.toString().startsWith("S")){
+                            Get_Response = "success";
+                        } else if (Message_stringbuilder.toString().startsWith("E")){
+                            Get_Response = Message_stringbuilder.toString();
+                        }
                     }
-                    /*Converting GSON Response to JSON Data for Parsing*/
                 }
             } else {
+                Get_Response = activity.getString(R.string.notifcomplete_fail);
             }
         } catch (Exception ex) {
             Get_Response = activity.getString(R.string.notifcomplete_fail);

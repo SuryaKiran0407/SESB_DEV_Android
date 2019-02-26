@@ -67,9 +67,9 @@ public class MaintenancePlan_SER
         @SerializedName("Iwerk")
         @Expose
         private String iwerk;
-        @SerializedName("Gewrk")
+        @SerializedName("Gstrpe")
         @Expose
-        private String gewrk;
+        private String gstrpe;
         @SerializedName("Arbpl")
         @Expose
         private String arbpl;
@@ -173,12 +173,12 @@ public class MaintenancePlan_SER
             this.iwerk = iwerk;
         }
 
-        public String getGewrk() {
-            return gewrk;
+        public String getGstrpe() {
+            return gstrpe;
         }
 
-        public void setGewrk(String gewrk) {
-            this.gewrk = gewrk;
+        public void setGstrpe(String gstrpe) {
+            this.gstrpe = gstrpe;
         }
 
         public String getArbpl() {
