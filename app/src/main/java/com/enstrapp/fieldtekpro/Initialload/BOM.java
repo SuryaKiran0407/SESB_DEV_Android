@@ -227,7 +227,6 @@ public class BOM {
                 if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
                     try {
-
                         /*EtBomHeader*/
                         if (response.body().getD().getResults().get(0).getEtBomHeader() != null) {
                             if (response.body().getD().getResults().get(0).getEtBomHeader().getResults() != null
@@ -241,22 +240,6 @@ public class BOM {
                                 }
                             }
                         }
-                       /* BOM_SER.EtBomHeader etBomHeader = results.get(0).getEtBomHeader();
-                        if (etBomHeader != null) {
-                            List<BOM_SER.EtBomHeader_Result> etBomHeaderResults = etBomHeader.getResults();
-                            if (etBomHeaderResults != null && etBomHeaderResults.size() > 0) {
-                                String sql = "Insert into EtBomHeader (Bom,BomDesc,Plant) " +
-                                        "values (?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (BOM_SER.EtBomHeader_Result eBH : etBomHeaderResults) {
-                                    statement.bindString(1, c_e.check_empty(eBH.getBom()));
-                                    statement.bindString(2, c_e.check_empty(eBH.getBomDesc()));
-                                    statement.bindString(3, c_e.check_empty(eBH.getPlant()));
-                                    statement.execute();
-                                }
-                            }
-                        }*/
 
                         /*EtBomItem*/
                         if (response.body().getD().getResults().get(0).getEtBomItem() != null) {
@@ -264,7 +247,7 @@ public class BOM {
                                     && response.body().getD().getResults().get(0).getEtBomItem().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (BOM_SER.EtBomItem_Result eBI : response.body().getD().getResults().get(0).getEtBomItem().getResults()) {
-                                    values.put("Bom, ", eBI.getBom());
+                                    values.put("Bom", eBI.getBom());
                                     values.put("BomComponent", eBI.getBomComponent());
                                     values.put("CompText", eBI.getCompText());
                                     values.put("Quantity", eBI.getQuantity());
@@ -274,26 +257,6 @@ public class BOM {
                                 }
                             }
                         }
-                        /*BOM_SER.EtBomItem etBomItem = results.get(0).getEtBomItem();
-                        if (etBomItem != null) {
-                            List<BOM_SER.EtBomItem_Result> etBomItemResults = etBomItem.getResults();
-                            if (etBomItemResults != null && etBomItemResults.size() > 0) {
-                                String sql = "Insert into EtBomItem (Bom, BomComponent, CompText," +
-                                        " Quantity, Unit, Stlkz) values(?,?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (BOM_SER.EtBomItem_Result eBI : etBomItemResults) {
-                                    statement.bindString(1, c_e.check_empty(eBI.getBom()));
-                                    statement.bindString(2, c_e.check_empty(eBI.getBomComponent()));
-                                    statement.bindString(3, c_e.check_empty(eBI.getCompText()));
-                                    statement.bindString(4, c_e.check_empty(eBI.getQuantity()));
-                                    statement.bindString(5, c_e.check_empty(eBI.getUnit()));
-                                    statement.bindString(6, c_e.check_empty(eBI.getStlkz()));
-                                    statement.execute();
-                                }
-                            }
-                        }*/
-
                         /*EtStock*/
                         if (response.body().getD().getResults().get(0).getEtStock() != null) {
                             if (response.body().getD().getResults().get(0).getEtStock().getResults() != null
@@ -312,30 +275,6 @@ public class BOM {
                                 }
                             }
                         }
-                        /*BOM_SER.EtStock etStock = results.get(0).getEtStock();
-                        if (etStock != null) {
-                            List<BOM_SER.EtStock_Result> etStockResults = etStock.getResults();
-                            if (etStockResults != null && etStockResults.size() > 0) {
-                                String sql = "Insert into GET_STOCK_DATA (Matnr,Werks,Maktx,Lgort," +
-                                        "Labst,Speme,Bwtar,Lgpbe) values (?,?,?,?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (BOM_SER.EtStock_Result eS : etStockResults) {
-                                    App_db.execSQL("delete from GET_STOCK_DATA where Matnr = ?",
-                                            new String[]{c_e.check_empty(eS.getMatnr())});
-                                    statement.bindString(1, c_e.check_empty(eS.getMatnr()));
-                                    statement.bindString(2, c_e.check_empty(eS.getWerks()));
-                                    statement.bindString(3, c_e.check_empty(eS.getMaktx()));
-                                    statement.bindString(4, c_e.check_empty(eS.getLgort()));
-                                    statement.bindString(5, c_e.check_empty(eS.getLabst()));
-                                    statement.bindString(6, c_e.check_empty(eS.getSpeme()));
-                                    statement.bindString(7, c_e.check_empty(eS.getBwtar()));
-                                    statement.bindString(8, c_e.check_empty(eS.getLgpbe()));
-                                    statement.execute();
-                                }
-                            }
-                        }
-                    }*/
                         App_db.setTransactionSuccessful();
                         Get_Response = "success";
 

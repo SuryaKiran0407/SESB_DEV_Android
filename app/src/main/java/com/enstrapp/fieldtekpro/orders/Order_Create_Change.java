@@ -1055,147 +1055,115 @@ public class Order_Create_Change {
                 if (response.isSuccessful() && response.body() != null) {
                     //if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
 
-                        success = false;
-                        message = new StringBuffer();
-                        try {
-                            if (operation.equals("CRORD")) {
-                                if (response.body().getD().getEsAufnr().getResults() != null) {
-                                    if (response.body().getD().getEsAufnr().getResults() != null && response.body().getD().getEsAufnr().getResults().size() > 0) {
-                                        ContentValues values = new ContentValues();
-                                        for (Orders_SER.EsAufnr_Result esAufnr : response.body().getD().getEsAufnr().getResults()) {
-                                            message.append("\n");
-                                            values.put("Aufnr", esAufnr.getAufnr());
-                                            values.put("Message", esAufnr.getMessage());
-                                            message.append(esAufnr.getMessage());
+                    success = false;
+                    message = new StringBuffer();
+                    try {
+                        if (operation.equals("CRORD")) {
+                            if (response.body().getD().getEsAufnr().getResults() != null) {
+                                if (response.body().getD().getEsAufnr().getResults() != null && response.body().getD().getEsAufnr().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EsAufnr_Result esAufnr : response.body().getD().getEsAufnr().getResults()) {
+                                        //message.append("\n");
+                                        values.put("Aufnr", esAufnr.getAufnr());
+                                        values.put("Message", esAufnr.getMessage());
+                                        message.append(esAufnr.getMessage());
 
-                                        }
-
-                                        if (message.toString().startsWith("S")) {
-                                            success = true;
-                                        } else {
-                                            success = false;
-                                            Get_Response = message.toString();
-                                        }
                                     }
-                                }
-                            } else {
-                                if (response.body().getD().getEtMessages().getResults() != null) {
-                                    if (response.body().getD().getEtMessages().getResults() != null && response.body().getD().getEtMessages().getResults().size() > 0) {
-                                        ContentValues values = new ContentValues();
-                                        for (Orders_SER.EtMessages_Result etMessages_result : response.body().getD().getEtMessages().getResults()) {
-                                            values.put("Message", etMessages_result.getMessage());
-                                            message.append(etMessages_result.getMessage());
 
-                                        }
+                                    if (message.toString().startsWith("S")) {
+                                        success = true;
+                                    } else {
+                                        success = false;
+                                        Get_Response = message.toString();
                                     }
-                                }
-                                if (message.toString().startsWith("S")) {
-                                    success = true;
-                                    App_db.execSQL("delete from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtOrderHeader_CustomInfo where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations_FIELDS where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_Longtext where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtOrderOlist where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtOrderStatus where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWwData where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWaData where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWdData where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWcagns where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtOrderComponents where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_EtOrderComponents_FIELDS where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWdDataTagtext where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWdDataUntagtext where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from Orders_Attachments");
-
-                                    try {
-
-                                        if (response.body().getD().getEtWcmWaData().getResults() != null) {
-                                            if (response.body().getD().getEtWcmWaData().getResults() != null && response.body().getD().getEtWcmWaData().getResults().size() > 0) {
-                                                ContentValues values = new ContentValues();
-                                                for (Orders_SER.EtWcmWaData_Result etWcmWaData_result : response.body().getD().getEtWcmWaData().getResults()) {
-                                                    values.put("Wapinr", etWcmWaData_result.getWapinr());
-                                                    App_db.delete("DUE_ORDERS_EtDocs","Zobjid =?",new String[]{"Wapinr"} );
-                                                }
-                                            }
-                                        }
-                                           /* if (jsonObject.has("EtWcmWaData")) {
-                                                try {
-                                                    String EtWcmWaData_response_data = new Gson().toJson(rs.getD().getEtWcmWaData().getResults());
-                                                    JSONArray jsonArray = new JSONArray(EtWcmWaData_response_data);
-                                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                                        String wapinr = jsonArray.getJSONObject(i).optString("Wapinr");
-                                                        App_db.execSQL("delete from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{wapinr});
-                                                    }
-                                                } catch (Exception e) {
-                                                }
-                                            }*/
-                                    } catch (Exception e) {
-                                    }
-                                    try {
-                                        if (response.body().getD().getEtWcmWaChkReq().getResults() != null) {
-                                            if (response.body().getD().getEtWcmWaChkReq().getResults() != null && response.body().getD().getEtWcmWaChkReq().getResults().size() > 0) {
-                                                ContentValues values = new ContentValues();
-                                                for (Orders_SER.EtWcmWaChkReq_Result etWcmWaChkReq_result : response.body().getD().getEtWcmWaChkReq().getResults()) {
-                                                    values.put("Wapinr", etWcmWaChkReq_result.getWapinr());
-                                                    App_db.delete("EtWcmWaChkReq", "Wapinr = ?", new String[]{"wapinr"});
-                                                    App_db.delete("EtWcmWaData","Wapinr", new String[]{"wapinr"});
-                                                }
-                                            }
-                                        }
-                                           /* if (jsonObject.has("EtWcmWaChkReq")) {
-                                                try {
-                                                    String EtWcmWaChkReq_response_data = new Gson().toJson(rs.getD().getEtWcmWaChkReq().getResults());
-                                                    JSONArray jsonArray = new JSONArray(EtWcmWaChkReq_response_data);
-                                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                                        String wapinr = jsonArray.getJSONObject(i).optString("Wapinr");
-                                                        App_db.execSQL("delete from EtWcmWaChkReq where Wapinr = ?", new String[]{wapinr});
-                                                        App_db.execSQL("delete from EtWcmWaData where Wapinr = ?", new String[]{wapinr});
-                                                    }
-                                                } catch (Exception e) {
-                                                }
-                                            }*/
-                                    } catch (Exception e) {
-                                    }
-                                    try {
-                                        if (response.body().getD().getEtWcmWdData().getResults() != null) {
-                                            if (response.body().getD().getEtWcmWdData().getResults() != null && response.body().getD().getEtWcmWdData().getResults().size() > 0) {
-                                                ContentValues values = new ContentValues();
-                                                for (Orders_SER.EtWcmWdData_Result etWcmWdData_result : response.body().getD().getEtWcmWdData().getResults()) {
-                                                    values.put("Wcnr", etWcmWdData_result.getWapinr());
-                                                    App_db.delete("EtWcmWdItemData", "Wcnr = ?", new String[]{"Wcnr"});
-
-                                                }
-                                            }
-                                        }
-                                           /* if (jsonObject.has("EtWcmWdData")) {
-                                                String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getEtWcmWdData().getResults());
-                                                JSONArray jsonArray = new JSONArray(EtWcmWdData_response_data);
-                                                for (int i = 0; i < jsonArray.length(); i++) {
-                                                    String Wcnr = jsonArray.getJSONObject(i).optString("Wcnr");
-                                                    App_db.execSQL("delete from EtWcmWdItemData where Wcnr = ?", new String[]{Wcnr});
-                                                }
-                                            }*/
-                                    } catch (Exception e) {
-                                    }
-                                } else {
-                                    success = false;
-                                    Get_Response = message.toString();
                                 }
                             }
-                        } catch (Exception e) {
-                            success = false;
+                        } else {
+                            if (response.body().getD().getEtMessages().getResults() != null) {
+                                if (response.body().getD().getEtMessages().getResults() != null && response.body().getD().getEtMessages().getResults().size() > 0) {
+                                    ContentValues values = new ContentValues();
+                                    for (Orders_SER.EtMessages_Result etMessages_result : response.body().getD().getEtMessages().getResults()) {
+                                        values.put("Message", etMessages_result.getMessage());
+                                        message.append(etMessages_result.getMessage());
+
+                                    }
+                                }
+                            }
+                            if (message.toString().startsWith("S")) {
+                                success = true;
+                                App_db.execSQL("delete from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtOrderHeader_CustomInfo where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations_FIELDS where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from DUE_ORDERS_Longtext where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtOrderOlist where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtOrderStatus where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtWcmWwData where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtWcmWaData where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtWcmWdData where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtWcmWcagns where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtOrderComponents where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from DUE_ORDERS_EtOrderComponents_FIELDS where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtWcmWdDataTagtext where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from EtWcmWdDataUntagtext where Aufnr = ?", new String[]{orderId});
+                                App_db.execSQL("delete from Orders_Attachments");
+
+                                try {
+
+                                    if (response.body().getD().getEtWcmWaData().getResults() != null) {
+                                        if (response.body().getD().getEtWcmWaData().getResults() != null && response.body().getD().getEtWcmWaData().getResults().size() > 0) {
+                                            ContentValues values = new ContentValues();
+                                            for (Orders_SER.EtWcmWaData_Result etWcmWaData_result : response.body().getD().getEtWcmWaData().getResults()) {
+                                                values.put("Wapinr", etWcmWaData_result.getWapinr());
+                                                App_db.delete("DUE_ORDERS_EtDocs", "Zobjid =?", new String[]{"Wapinr"});
+                                            }
+                                        }
+                                    }
+
+                                } catch (Exception e) {
+                                }
+                                try {
+                                    if (response.body().getD().getEtWcmWaChkReq().getResults() != null) {
+                                        if (response.body().getD().getEtWcmWaChkReq().getResults() != null && response.body().getD().getEtWcmWaChkReq().getResults().size() > 0) {
+                                            ContentValues values = new ContentValues();
+                                            for (Orders_SER.EtWcmWaChkReq_Result etWcmWaChkReq_result : response.body().getD().getEtWcmWaChkReq().getResults()) {
+                                                values.put("Wapinr", etWcmWaChkReq_result.getWapinr());
+                                                App_db.delete("EtWcmWaChkReq", "Wapinr = ?", new String[]{"wapinr"});
+                                                App_db.delete("EtWcmWaData", "Wapinr", new String[]{"wapinr"});
+                                            }
+                                        }
+                                    }
+
+                                } catch (Exception e) {
+                                }
+                                try {
+                                    if (response.body().getD().getEtWcmWdData().getResults() != null) {
+                                        if (response.body().getD().getEtWcmWdData().getResults() != null && response.body().getD().getEtWcmWdData().getResults().size() > 0) {
+                                            ContentValues values = new ContentValues();
+                                            for (Orders_SER.EtWcmWdData_Result etWcmWdData_result : response.body().getD().getEtWcmWdData().getResults()) {
+                                                values.put("Wcnr", etWcmWdData_result.getWapinr());
+                                                App_db.delete("EtWcmWdItemData", "Wcnr = ?", new String[]{"Wcnr"});
+
+                                            }
+                                        }
+                                    }
+
+                                } catch (Exception e) {
+                                }
+                            } else {
+                                success = false;
+                                Get_Response = message.toString();
+                            }
                         }
+                    } catch (Exception e) {
+                        success = false;
+                    }
 
-                        /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
+                    /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
-                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
-                  //  }
-
-
+                    /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                     if (success) {
-
                         if (response.body().getD().getEtOrderHeader().getResults() != null) {
                             if (response.body().getD().getEtOrderHeader().getResults() != null && response.body().getD().getEtOrderHeader().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
@@ -1207,22 +1175,6 @@ public class Order_Create_Change {
                                 }
                             }
                         }
-
-                           /* if (jsonObject.has("EtOrderHeader")) {
-                                try {
-                                    String EtOrderHeader_response_data = new Gson().toJson(rs.getD().getEtOrderHeader().getResults());
-                                    JSONArray jsonArray = new JSONArray(EtOrderHeader_response_data);
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        String Aufnr = jsonArray.getJSONObject(j).optString("Aufnr");
-                                        HashMap<String, String> uuid_hashmap = new HashMap<String, String>();
-                                        UUID uniqueKey = UUID.randomUUID();
-                                        uuid_hashmap.put("UUID", uniqueKey.toString());
-                                        uuid_hashmap.put("Aufnr", checkempty.check_empty(Aufnr));
-                                        orders_uuid_list.add(uuid_hashmap);
-                                    }
-                                } catch (Exception e) {
-                                }
-                            }*/
                         /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
                         App_db.beginTransaction();
@@ -1237,7 +1189,6 @@ public class Order_Create_Change {
                                         for (Orders_SER.EtOrderHeader_Result orderHeader_result : response.body().getD().getEtOrderHeader().getResults()) {
                                             values.put("UUID", orderHeader_result.getAufnr());
                                             values.put("Aufnr", orderHeader_result.getAufnr());
-                                            String Aufnr_id = orderHeader_result.getAufnr();
                                             values.put("Auart", orderHeader_result.getAuart());
                                             values.put("Ktext", orderHeader_result.getKtext());
                                             values.put("Ilart", orderHeader_result.getIlart());
@@ -1284,22 +1235,23 @@ public class Order_Create_Change {
                                             values.put("Kostl", orderHeader_result.getKostl());
                                             values.put("Anlzu", orderHeader_result.getAnlzu());
                                             values.put("Anlzux", orderHeader_result.getAnlzux());
-                                            values.put("Ausvn", (String) orderHeader_result.getAusvn());
-                                            values.put("Ausbs", (String) orderHeader_result.getAusbs());
+                                            values.put("Ausvn",  orderHeader_result.getAusvn());
+                                            values.put("Ausbs",  orderHeader_result.getAusbs());
                                             values.put("Auswk", orderHeader_result.getAuswk());
                                             values.put("Qmnam", orderHeader_result.getQmnam());
                                             values.put("ParnrVw", orderHeader_result.getParnrVw());
                                             values.put("NameVw", orderHeader_result.getNameVw());
                                             values.put("Posid", orderHeader_result.getPosid());
                                             values.put("Revnr", orderHeader_result.getRevnr());
+                                            App_db.insert("DUE_ORDERS_EtOrderHeader", null, values);
 
                                             if (orderHeader_result.getEtOrderHeaderFields() != null)
                                                 if (orderHeader_result.getEtOrderHeaderFields().getResults() != null
                                                         && orderHeader_result.getEtOrderHeaderFields().getResults().size() > 0) {
                                                     ContentValues ValuesHCf = new ContentValues();
                                                     for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields_result : orderHeader_result.getEtOrderHeaderFields().getResults()) {
-                                                        ValuesHCf.put("UUID", Aufnr_id);
-                                                        ValuesHCf.put("Aufnr", Aufnr_id);
+                                                        ValuesHCf.put("UUID",orderHeader_result.getAufnr());
+                                                        ValuesHCf.put("Aufnr", orderHeader_result.getAufnr());
                                                         ValuesHCf.put("Zdoctype", etOrderHeaderFields_result.getZdoctype());
                                                         ValuesHCf.put("ZdoctypeItem", etOrderHeaderFields_result.getZdoctypeItem());
                                                         ValuesHCf.put("Tabname", etOrderHeaderFields_result.getTabname());
@@ -1312,11 +1264,9 @@ public class Order_Create_Change {
                                                         App_db.insert("EtOrderHeader_CustomInfo", null, ValuesHCf);
                                                     }
                                                 }
-                                            App_db.insert("DUE_ORDERS_EtOrderHeader", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             try {
@@ -1324,10 +1274,9 @@ public class Order_Create_Change {
                                     if (response.body().getD().getEtOrderOperations().getResults() != null
                                             && response.body().getD().getEtOrderOperations().getResults().size() > 0) {
                                         ContentValues values = new ContentValues();
-                                        for (Orders_SER.EtOrderOperations_Result orderOperations :response.body().getD().getEtOrderOperations().getResults()) {
+                                        for (Orders_SER.EtOrderOperations_Result orderOperations : response.body().getD().getEtOrderOperations().getResults()) {
                                             values.put("UUID", orderOperations.getAufnr());
                                             values.put("Aufnr", orderOperations.getAufnr());
-                                            String Aufnr_id = orderOperations.getAufnr();
                                             values.put("Vornr", orderOperations.getVornr());
                                             values.put("Uvorn", orderOperations.getUvorn());
                                             values.put("Ltxa1", orderOperations.getLtxa1());
@@ -1356,14 +1305,15 @@ public class Order_Create_Change {
                                             values.put("Usr04", orderOperations.getUsr04());
                                             values.put("Usr05", orderOperations.getUsr05());
                                             values.put("Action", orderOperations.getAction());
+                                            App_db.insert("DUE_ORDERS_EtOrderOperations", null, values);
 
                                             if (orderOperations.getEtOrderOperationsFields() != null)
                                                 if (orderOperations.getEtOrderOperationsFields().getResults() != null
                                                         && orderOperations.getEtOrderOperationsFields().getResults().size() > 0) {
                                                     ContentValues ValuesOCf = new ContentValues();
                                                     for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields : orderOperations.getEtOrderOperationsFields().getResults()) {
-                                                        ValuesOCf.put("UUID", Aufnr_id);
-                                                        ValuesOCf.put("Aufnr", Aufnr_id);
+                                                        ValuesOCf.put("UUID", orderOperations.getAufnr());
+                                                        ValuesOCf.put("Aufnr", orderOperations.getAufnr());
                                                         ValuesOCf.put("Zdoctype", etOrderHeaderFields.getZdoctype());
                                                         ValuesOCf.put("ZdoctypeItem", etOrderHeaderFields.getZdoctypeItem());
                                                         ValuesOCf.put("Tabname", etOrderHeaderFields.getTabname());
@@ -1377,16 +1327,12 @@ public class Order_Create_Change {
                                                         App_db.insert("DUE_ORDERS_EtOrderOperations_FIELDS", null, ValuesOCf);
                                                     }
                                                 }
-                                            App_db.insert("DUE_ORDERS_EtOrderOperations", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
-
                             /*Reading and Inserting Data into Database Table for EtOrderOperations*/
-
 
                             /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
                             try {
@@ -1404,19 +1350,16 @@ public class Order_Create_Change {
                                             App_db.insert("DUE_ORDERS_Longtext", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
-
                             /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
-
 
                             /*Reading and Inserting Data into Database Table for EtOrderOlist*/
                             try {
                                 if (response.body().getD().getEtOrderOlist().getResults() != null)
                                     if (response.body().getD().getEtOrderOlist().getResults() != null
-                                            &&response.body().getD().getEtOrderOlist().getResults().size() > 0) {
+                                            && response.body().getD().getEtOrderOlist().getResults().size() > 0) {
                                         ContentValues values = new ContentValues();
                                         for (Orders_SER.EtOrderOlist_Result orderOlist_result : response.body().getD().getEtOrderOlist().getResults()) {
                                             values.put("UUID", orderOlist_result.getAufnr());
@@ -1436,12 +1379,10 @@ public class Order_Create_Change {
                                             App_db.insert("EtOrderOlist", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtOrderOlist*/
-
 
                             /*Reading and Inserting Data into Database Table for EtOrderStatus*/
                             try {
@@ -1467,12 +1408,10 @@ public class Order_Create_Change {
                                             App_db.insert("EtOrderStatus", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtOrderStatus*/
-
 
                             /*Reading and Inserting Data into Database Table for EtDocs*/
                             try {
@@ -1496,12 +1435,10 @@ public class Order_Create_Change {
                                             App_db.insert("DUE_ORDERS_EtDocs", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtDocs*/
-
 
                             /*Reading and Inserting Data into Database Table for EtWcmWwData*/
                             try {
@@ -1509,7 +1446,7 @@ public class Order_Create_Change {
                                     if (response.body().getD().getEtWcmWwData().getResults() != null &&
                                             response.body().getD().getEtWcmWwData().getResults().size() > 0) {
                                         ContentValues values = new ContentValues();
-                                        for (Orders_SER.EtWcmWwData_Result wcmWwData_result :response.body().getD().getEtWcmWwData().getResults()) {
+                                        for (Orders_SER.EtWcmWwData_Result wcmWwData_result : response.body().getD().getEtWcmWwData().getResults()) {
                                             values.put("UUID", wcmWwData_result.getAufnr());
                                             values.put("Aufnr", wcmWwData_result.getAufnr());
                                             values.put("Objart", wcmWwData_result.getObjart());
@@ -1544,12 +1481,10 @@ public class Order_Create_Change {
                                             App_db.insert("EtWcmWwData", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtWcmWwData*/
-
 
                             /*Reading and Inserting Data into Database Table for EtWcmWaData*/
                             try {
@@ -1557,7 +1492,7 @@ public class Order_Create_Change {
                                     if (response.body().getD().getEtWcmWaData().getResults() != null &&
                                             response.body().getD().getEtWcmWaData().getResults().size() > 0) {
                                         ContentValues values = new ContentValues();
-                                        for (Orders_SER.EtWcmWaData_Result wcmWaData_result :response.body().getD().getEtWcmWaData().getResults()) {
+                                        for (Orders_SER.EtWcmWaData_Result wcmWaData_result : response.body().getD().getEtWcmWaData().getResults()) {
                                             values.put("UUID", wcmWaData_result.getAufnr());
                                             values.put("Aufnr", wcmWaData_result.getAufnr());
                                             values.put("Objart", wcmWaData_result.getObjart());
@@ -1594,12 +1529,10 @@ public class Order_Create_Change {
                                             App_db.insert("EtWcmWaData", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtWcmWaData*/
-
 
                             /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
                             try {
@@ -1608,7 +1541,6 @@ public class Order_Create_Change {
                                             response.body().getD().getEtWcmWaChkReq().getResults().size() > 0) {
                                         ContentValues values = new ContentValues();
                                         for (Orders_SER.EtWcmWaChkReq_Result wcmWaChkReq_result : response.body().getD().getEtWcmWaChkReq().getResults()) {
-
                                             values.put("Wapinr", wcmWaChkReq_result.getWapinr());
                                             values.put("Wapityp", wcmWaChkReq_result.getWapityp());
                                             values.put("Needid", wcmWaChkReq_result.getNeedid());
@@ -1623,12 +1555,10 @@ public class Order_Create_Change {
                                             App_db.insert("EtWcmWaChkReq", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
-
 
                             /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                             try {
@@ -1705,12 +1635,10 @@ public class Order_Create_Change {
                                                 }
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtWcmWdData*/
-
 
                             /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                             try {
@@ -1759,12 +1687,10 @@ public class Order_Create_Change {
                                             App_db.insert("EtWcmWdItemData", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
-
 
                             /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
                             try {
@@ -1803,8 +1729,7 @@ public class Order_Create_Change {
                                             App_db.insert("EtWcmWcagns", null, values);
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
@@ -1842,10 +1767,31 @@ public class Order_Create_Change {
                                             values.put("Wempf", etOrderComponents_result.getWempf());
                                             values.put("Ablad", etOrderComponents_result.getAblad());
                                             App_db.insert("EtOrderComponents", null, values);
+
+                                            if (etOrderComponents_result.getEtOrderComponentsFields() != null)
+                                                if (etOrderComponents_result.getEtOrderComponentsFields().getResults() != null
+                                                        &&etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
+                                                    ContentValues ValuesOCf = new ContentValues();
+                                                    for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields : etOrderComponents_result.getEtOrderComponentsFields().getResults()) {
+                                                        ValuesOCf.put("UUID", etOrderComponents_result.getAufnr());
+                                                        ValuesOCf.put("Aufnr", etOrderComponents_result.getAufnr());
+                                                        ValuesOCf.put("Zdoctype", etOrderHeaderFields.getZdoctype());
+                                                        ValuesOCf.put("ZdoctypeItem", etOrderHeaderFields.getZdoctypeItem());
+                                                        ValuesOCf.put("Tabname", etOrderHeaderFields.getTabname());
+                                                        ValuesOCf.put("Fieldname", etOrderHeaderFields.getFieldname());
+                                                        ValuesOCf.put("Value", etOrderHeaderFields.getValue());
+                                                        ValuesOCf.put("Flabel", etOrderHeaderFields.getFlabel());
+                                                        ValuesOCf.put("Sequence", etOrderHeaderFields.getSequence());
+                                                        ValuesOCf.put("Length", etOrderHeaderFields.getLength());
+                                                        ValuesOCf.put("Datatype", etOrderHeaderFields.getDatatype());
+                                                        ValuesOCf.put("OperationID", etOrderComponents_result.getVornr());
+                                                        ValuesOCf.put("PartID", etOrderComponents_result.getPosnr());
+                                                        App_db.insert("DUE_ORDERS_EtOrderComponents_FIELDS ", null, values);
+                                                    }
+                                                }
                                         }
                                     }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
 
                             }
                             App_db.setTransactionSuccessful();
@@ -1870,20 +1816,20 @@ public class Order_Create_Change {
                         }
                     }
                 }
-            }else {
-                    Get_Response = activity
-                            .getString(R.string.crtordr_unable);
-                }
+            } else {
+                Get_Response = activity
+                        .getString(R.string.crtordr_unable);
+            }
 
         } catch (Exception e) {
 
         }
         /*Reading Data by using FOR Loop*/
         String[] response = new String[2];
-        response[0]=Get_Response;
-        response[1]=Get_Data;
+        response[0] = Get_Response;
+        response[1] = Get_Data;
         return response;
-}
+    }
 
     private static String dateFormat(String date) {
         if (date != null && !date.equals("")) {

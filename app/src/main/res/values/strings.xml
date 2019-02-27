@@ -11,7 +11,7 @@
     <string name="login_url">AuthLoginSet?$filter=&amp;$expand=EsUser&amp;$format=json</string>
     <string name="syncmap_url">ServiceEndPointSet?$filter=&amp;$format=json</string>
 
-    <string name="database_name">FIELDTEKPRO</string>
+    <string name="database_name">FIELDTEKPRO_ED9.db</string>
     <string name="orders">Orders</string>
     <string name="home_button">Home Button</string>
     <string name="cancel">Cancel</string>

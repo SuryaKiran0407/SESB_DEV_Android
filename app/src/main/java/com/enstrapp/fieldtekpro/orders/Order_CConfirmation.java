@@ -384,7 +384,6 @@ public class Order_CConfirmation {
                 ordrSer.setEtOrderComponents(Empty_Al);
                 ordrSer.setEtMessages(Empty_Al);
             }
-
             String credentials = username + ":" + password;
             final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
             Call<Orders_SER> call;
@@ -397,9 +396,7 @@ public class Order_CConfirmation {
             Log.v("kiran_response_status_code", response_status_code + "...");
             if (response_status_code == 201) {
                 if (response.isSuccessful() && response.body() != null) {
-
                     message = new StringBuffer();
-
                     try {
                         if (response.body().getD().getEtMessages().getResults() != null) {
                             if (response.body().getD().getEtMessages().getResults() != null && response.body().getD().getEtMessages().getResults().size() > 0) {
@@ -411,66 +408,55 @@ public class Order_CConfirmation {
                                 }
                             }
                         }
-                                if (message.toString().startsWith("S")) {
-                                    success = true;
-                                    App_db.execSQL("delete from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_Longtext where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtOrderOlist where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtOrderStatus where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWwData where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWaData where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWdData where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtWcmWcagns where Aufnr = ?", new String[]{orderId});
-                                    App_db.execSQL("delete from EtOrderComponents where Aufnr = ?", new String[]{orderId});
+                        if (message.toString().startsWith("S")) {
+                            success = true;
+                            App_db.execSQL("delete from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from DUE_ORDERS_EtOrderOperations where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from DUE_ORDERS_Longtext where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from EtOrderOlist where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from EtOrderStatus where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{orderId});
+                            App_db.execSQL("delete from EtWcmWwData where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from EtWcmWaData where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from EtWcmWdData where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from EtWcmWcagns where Aufnr = ?", new String[]{orderId});
+                            App_db.execSQL("delete from EtOrderComponents where Aufnr = ?", new String[]{orderId});
 
-                                    try {
-                                        if (response.body().getD().getEtWcmWaChkReq().getResults() != null) {
-                                            if (response.body().getD().getEtWcmWaChkReq().getResults() != null && response.body().getD().getEtWcmWaChkReq().getResults().size() > 0) {
-                                                ContentValues values = new ContentValues();
-                                                for (Orders_SER.EtWcmWaChkReq_Result etWcmWaChkReq_result : response.body().getD().getEtWcmWaChkReq().getResults()) {
-                                                    values.put("Wapinr", etWcmWaChkReq_result.getWapinr());
-                                                    App_db.delete("EtWcmWaChkReq", "Wapinr = ?", new String[]{"wapinr"});
-                                                    App_db.delete("EtWcmWaData", "Wapinr = ?", new String[]{"wapinr"});
-                                                }
-                                            }
+                            try {
+                                if (response.body().getD().getEtWcmWaChkReq().getResults() != null) {
+                                    if (response.body().getD().getEtWcmWaChkReq().getResults() != null && response.body().getD().getEtWcmWaChkReq().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Orders_SER.EtWcmWaChkReq_Result etWcmWaChkReq_result : response.body().getD().getEtWcmWaChkReq().getResults()) {
+                                            values.put("Wapinr", etWcmWaChkReq_result.getWapinr());
+                                            App_db.delete("EtWcmWaChkReq", "Wapinr = ?", new String[]{"wapinr"});
+                                            App_db.delete("EtWcmWaData", "Wapinr = ?", new String[]{"wapinr"});
                                         }
-                                    }catch (Exception e) {
                                     }
-                                    try {
-                                        if (response.body().getD().getEtWcmWdData().getResults() != null) {
-                                            if (response.body().getD().getEtWcmWdData().getResults() != null && response.body().getD().getEtWcmWdData().getResults().size() > 0) {
-                                                ContentValues values = new ContentValues();
-                                                for (Orders_SER.EtWcmWdData_Result etWcmWdData_result : response.body().getD().getEtWcmWdData().getResults()) {
-                                                    values.put("Wcnr", etWcmWdData_result.getWapinr());
-                                                    App_db.delete("EtWcmWdItemData", "Wcnr = ?",new String[]{"Wcnr"});
-
-                                                }
-                                            }
-                                        }
-
-                                      /*  if (jsonObject.has("EtWcmWdData")) {
-                                            String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getEtWcmWdData().getResults());
-                                            JSONArray jsonArray = new JSONArray(EtWcmWdData_response_data);
-                                            for (int k = 0; k < jsonArray.length(); k++) {
-                                                String Wcnr = jsonArray.getJSONObject(k).optString("Wcnr");
-                                                App_db.execSQL("delete from EtWcmWdItemData where Wcnr = ?", new String[]{Wcnr});
-                                            }
-                                        }*/
-                                    } catch (Exception e) {
-                                    }
-                                } else {
-                                    success = false;
-                                    Get_Response = message.toString();
                                 }
+                            } catch (Exception e) {
+                            }
+                            try {
+                                if (response.body().getD().getEtWcmWdData().getResults() != null) {
+                                    if (response.body().getD().getEtWcmWdData().getResults() != null && response.body().getD().getEtWcmWdData().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Orders_SER.EtWcmWdData_Result etWcmWdData_result : response.body().getD().getEtWcmWdData().getResults()) {
+                                            values.put("Wcnr", etWcmWdData_result.getWapinr());
+                                            App_db.delete("EtWcmWdItemData", "Wcnr = ?", new String[]{"Wcnr"});
+
+                                        }
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        } else {
+                            success = false;
+                            Get_Response = message.toString();
+                        }
                     } catch (Exception e) {
                         success = false;
                     }
                 }
-
-
-
                 if (success) {
                     if (response.body().getD().getEtOrderHeader().getResults() != null) {
                         if (response.body().getD().getEtOrderHeader().getResults() != null && response.body().getD().getEtOrderHeader().getResults().size() > 0) {
@@ -560,7 +546,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtOrderHeader*/
 
-
                         /*Reading and Inserting Data into Database Table for EtOrderOperations*/
                         try {
                             if (response.body().getD().getEtOrderOperations().getResults() != null)
@@ -607,7 +592,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtOrderOperations*/
 
-
                         /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
                         try {
 
@@ -628,7 +612,6 @@ public class Order_CConfirmation {
 
                         }
                         /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
-
 
                         /*Reading and Inserting Data into Database Table for EtOrderOlist*/
                         try {
@@ -659,7 +642,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtOrderOlist*/
 
-
                         /*Reading and Inserting Data into Database Table for EtOrderStatus*/
                         try {
                             if (response.body().getD().getEtOrderStatus().getResults() != null)
@@ -689,7 +671,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtOrderStatus*/
 
-
                         /*Reading and Inserting Data into Database Table for EtDocs*/
                         try {
 
@@ -716,7 +697,6 @@ public class Order_CConfirmation {
 
                         }
                         /*Reading and Inserting Data into Database Table for EtDocs*/
-
 
                         /*Reading and Inserting Data into Database Table for EtWcmWwData*/
                         try {
@@ -813,7 +793,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtWcmWaData*/
 
-
                         /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
                         try {
                             if (response.body().getD().getEtWcmWaChkReq().getResults() != null)
@@ -821,7 +800,6 @@ public class Order_CConfirmation {
                                         response.body().getD().getEtWcmWaChkReq().getResults().size() > 0) {
                                     ContentValues values = new ContentValues();
                                     for (Orders_SER.EtWcmWaChkReq_Result wcmWaChkReq_result : response.body().getD().getEtWcmWaChkReq().getResults()) {
-
                                         values.put("Wapinr", wcmWaChkReq_result.getWapinr());
                                         values.put("Wapityp", wcmWaChkReq_result.getWapityp());
                                         values.put("Needid", wcmWaChkReq_result.getNeedid());
@@ -840,7 +818,6 @@ public class Order_CConfirmation {
 
                         }
                         /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
-
 
                         /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                         try {
@@ -922,7 +899,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
-
                         /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                         try {
                             if (response.body().getD().getEtWcmWdItemData().getResults() != null)
@@ -975,7 +951,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
 
-
                         /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
                         try {
                             if (response.body().getD().getEtWcmWcagns().getResults() != null)
@@ -1018,7 +993,6 @@ public class Order_CConfirmation {
                         }
                         /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
 
-
                         /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                         try {
                             if (response.body().getD().getEtOrderComponents().getResults() != null)
@@ -1052,6 +1026,28 @@ public class Order_CConfirmation {
                                         values.put("Wempf", etOrderComponents_result.getWempf());
                                         values.put("Ablad", etOrderComponents_result.getAblad());
                                         App_db.insert("EtOrderComponents", null, values);
+
+                                        if (etOrderComponents_result.getEtOrderComponentsFields() != null)
+                                            if (etOrderComponents_result.getEtOrderComponentsFields().getResults() != null
+                                                    &&etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
+                                                ContentValues ValuesOCf = new ContentValues();
+                                                for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields : etOrderComponents_result.getEtOrderComponentsFields().getResults()) {
+                                                    ValuesOCf.put("UUID", etOrderComponents_result.getAufnr());
+                                                    ValuesOCf.put("Aufnr", etOrderComponents_result.getAufnr());
+                                                    ValuesOCf.put("Zdoctype", etOrderHeaderFields.getZdoctype());
+                                                    ValuesOCf.put("ZdoctypeItem", etOrderHeaderFields.getZdoctypeItem());
+                                                    ValuesOCf.put("Tabname", etOrderHeaderFields.getTabname());
+                                                    ValuesOCf.put("Fieldname", etOrderHeaderFields.getFieldname());
+                                                    ValuesOCf.put("Value", etOrderHeaderFields.getValue());
+                                                    ValuesOCf.put("Flabel", etOrderHeaderFields.getFlabel());
+                                                    ValuesOCf.put("Sequence", etOrderHeaderFields.getSequence());
+                                                    ValuesOCf.put("Length", etOrderHeaderFields.getLength());
+                                                    ValuesOCf.put("Datatype", etOrderHeaderFields.getDatatype());
+                                                    ValuesOCf.put("OperationID", etOrderComponents_result.getVornr());
+                                                    ValuesOCf.put("PartID", etOrderComponents_result.getPosnr());
+                                                    App_db.insert("DUE_ORDERS_EtOrderComponents_FIELDS ", null, values);
+                                                }
+                                            }
                                     }
                                 }
                         } catch (Exception e) {
@@ -1063,13 +1059,12 @@ public class Order_CConfirmation {
                     } finally {
                         App_db.endTransaction();
                     }
-                }else {
+                } else {
                     Get_Response = message.toString();
                 }
 
-                    /*Reading Data by using FOR Loop*/
-                }
-            else {
+                /*Reading Data by using FOR Loop*/
+            } else {
                 Get_Response = activity.getString(R.string.cnfrmordr_unable);
             }
 

@@ -205,12 +205,12 @@ public class SyncMap {
                         if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                             ContentValues values = new ContentValues();
                             for (SyncMap_SER.Result rs : response.body().getD().getResults()) {
-                                values.put("Sysid",rs.getSysid());
-                                values.put("Endpoint",rs.getWsname());
-                                values.put("Zdoctype",rs.getZdoctype());
-                                values.put("Zactivity",rs.getZactivity());
-                                values.put("Zwsrv",rs.getZwsrv());
-                                App_db.insert("Get_SYNC_MAP_DATA",null,values);
+                                values.put("Sysid", rs.getSysid());
+                                values.put("Endpoint", rs.getWsname());
+                                values.put("Zdoctype", rs.getZdoctype());
+                                values.put("Zactivity", rs.getZactivity());
+                                values.put("Zwsrv", rs.getZwsrv());
+                                App_db.insert("Get_SYNC_MAP_DATA", null, values);
                             }
                         }
                         App_db.setTransactionSuccessful();
@@ -218,28 +218,7 @@ public class SyncMap {
                     } finally {
                         App_db.endTransaction();
                     }
-                    /*List<SyncMap_SER.Result> results = response.body().getD().getResults();
 
-                    if (results != null && results.size() > 0) {
-                        App_db.beginTransaction();
-                        String sql = "Insert into Get_SYNC_MAP_DATA (Sysid, Endpoint, Zdoctype," +
-                                " Zactivity, Zwsrv) values(?,?,?,?,?);";
-                        SQLiteStatement statement = App_db.compileStatement(sql);
-                        statement.clearBindings();
-                        for (SyncMap_SER.Result rs : results) {
-                            statement.bindString(1, c_e.check_empty(rs.getSysid()));
-                            statement.bindString(2, c_e.check_empty(rs.getWsname()));
-                            statement.bindString(3, c_e.check_empty(rs.getZdoctype()));
-                            statement.bindString(4, c_e.check_empty(rs.getZactivity()));
-                            statement.bindString(5, c_e.check_empty(rs.getZwsrv()));
-                            statement.execute();
-                        }
-                        App_db.setTransactionSuccessful();
-                        App_db.endTransaction();
-                        Get_Syncmap_Response = "success";
-                    } else {
-                        Get_Syncmap_Response = "no data";
-                    }*/
                 } else {
                     Get_Syncmap_Response = "no data";
                 }

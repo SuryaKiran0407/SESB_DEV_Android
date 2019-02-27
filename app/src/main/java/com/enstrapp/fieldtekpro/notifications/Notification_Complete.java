@@ -11,12 +11,8 @@ import android.provider.Settings;
 import android.util.Base64;
 
 import com.enstrapp.fieldtekpro.Initialload.Notifications_SER;
-import com.enstrapp.fieldtekpro.Initialload.Orders_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;

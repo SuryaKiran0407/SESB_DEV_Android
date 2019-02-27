@@ -73,7 +73,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
 
     }
 
-
     public class Get_Syncmap_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -104,7 +103,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
         }
     }
 
-
     public class Get_LoadSettings_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -129,12 +127,67 @@ public class InitialLoad_Activity extends AppCompatActivity {
             super.onPostExecute(result);
             Log.v("kiran_LoadSettings_status", LoadSettings_status + "...");
             if (LoadSettings_status.equalsIgnoreCase("success")) {
-                new Get_VHLP_Data().execute();
+                new Set_DeviceToken_Data().execute();
             } else {
             }
         }
     }
+    public class Set_DeviceToken_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                DeviceToken_status = DeviceToken.set_devicetoken_data(InitialLoad_Activity.this);
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_DeviceToken_status", DeviceToken_status + "...");
+            new Get_Auth_Data().execute();
+
+        }
+    }
+    public class Get_Auth_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String Auth_Load_status = FieldTekPro_SharedPref.getString("Auth_Load_status", null);
+                if (Auth_Load_status.equalsIgnoreCase("X")) {
+                    Auth_status = Auth.Get_Auth_Data(InitialLoad_Activity.this, transmit_type);
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_Auth_Status", Auth_status + "...");
+            new Get_VHLP_Data().execute();
+        }
+    }
 
     public class Get_VHLP_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -166,7 +219,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
         }
     }
 
-
     public class Get_VHLP_WCM_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -196,7 +248,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
             new Get_DORD_Data().execute();
         }
     }
-
 
     public class Get_DORD_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -228,7 +279,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
         }
     }
 
-
     public class Get_DNOT_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -258,8 +308,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
             new Get_BOM_Data().execute();
         }
     }
-
-
     public class Get_BOM_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -289,8 +337,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
             new Get_FLOC_Data().execute();
         }
     }
-
-
     public class Get_FLOC_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -317,42 +363,9 @@ public class InitialLoad_Activity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.v("kiran_FLOC_Status", FLOC_Status + "...");
-            new Get_Auth_Data().execute();
-        }
-    }
-
-
-    public class Get_Auth_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String Auth_Load_status = FieldTekPro_SharedPref.getString("Auth_Load_status", null);
-                if (Auth_Load_status.equalsIgnoreCase("X")) {
-                    Auth_status = Auth.Get_Auth_Data(InitialLoad_Activity.this, transmit_type);
-                }
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_Auth_Status", Auth_status + "...");
             new Get_Measurepoints_Data().execute();
         }
     }
-
-
     public class Get_Measurepoints_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -376,39 +389,9 @@ public class InitialLoad_Activity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.v("kiran_mPoint_Status", Measurementpoint_status + "...");
-            new Set_DeviceToken_Data().execute();
-        }
-    }
-
-
-    public class Set_DeviceToken_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                DeviceToken_status = DeviceToken.set_devicetoken_data(InitialLoad_Activity.this);
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_DeviceToken_status", DeviceToken_status + "...");
             new Get_Calibration_Data().execute();
         }
     }
-
-
     public class Get_Calibration_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -440,7 +423,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
             startActivity(dashboard_intent);
         }
     }
-
 
     public class Get_JRA_Data extends AsyncTask<Void, Integer, Void> {
         @Override

@@ -991,7 +991,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                 oop.setSelected(false);
                 oop.setOrdrId("");
                 oop.setOrdrSatus("");
-                oop.setOprtnId("0010");
+                oop.setOprtnId("0020");
                 oop.setOprtnShrtTxt(ohp.getOrdrShrtTxt());
                 oop.setOprtnLngTxt(ohp.getOrdrLngTxt());
                 oop.setDuration("0");

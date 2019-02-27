@@ -177,14 +177,13 @@ public class Auth {
                     if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                         App_db.beginTransaction();
                         try {
-
                             /*EtBusf*/
                             if (response.body().getD().getResults().get(0).getEtBusf() != null) {
                                 if (response.body().getD().getResults().get(0).getEtBusf().getResults() != null
                                         && response.body().getD().getResults().get(0).getEtBusf().getResults().size() > 0) {
                                     ContentValues values = new ContentValues();
                                     for (Auth_SER.EtBusf_Result eBF : response.body().getD().getResults().get(0).getEtBusf().getResults()) {
-                                        values.put("Mandt, ", eBF.getMandt());
+                                        values.put("Mandt", " ");
                                         values.put("Usgrp", eBF.getUsgrp());
                                         values.put("Busftype", eBF.getBusftype());
                                         values.put("Active", eBF.getActive());
@@ -192,34 +191,13 @@ public class Auth {
                                     }
                                 }
                             }
-
-
-
-                       /* Auth_SER.EtBusf etBusf = results.get(0).getEtBusf();
-                        if (etBusf != null) {
-                            List<Auth_SER.EtBusf_Result> etBusfResults = etBusf.getResults();
-                            if (etBusfResults != null && etBusfResults.size() > 0) {
-                                String sql = "Insert into Authorization_EtBusf (Mandt,Usgrp," +
-                                        "Busftype,Active) values (?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (Auth_SER.EtBusf_Result eB : etBusfResults) {
-                                    statement.bindString(1, c_e.check_empty(eB.getMandt()));
-                                    statement.bindString(2, c_e.check_empty(eB.getUsgrp()));
-                                    statement.bindString(3, c_e.check_empty(eB.getBusftype()));
-                                    statement.bindString(4, c_e.check_empty(eB.getActive()));
-                                    statement.execute();
-                                }
-                            }
-                        }*/
-
                             /*EtMusrf*/
                             if (response.body().getD().getResults().get(0).getEtMusrf() != null) {
                                 if (response.body().getD().getResults().get(0).getEtMusrf().getResults() != null
                                         && response.body().getD().getResults().get(0).getEtMusrf().getResults().size() > 0) {
                                     ContentValues values = new ContentValues();
                                     for (Auth_SER.EtMusrf_Result eBF : response.body().getD().getResults().get(0).getEtMusrf().getResults()) {
-                                        values.put("Mandt, ", eBF.getMandt());
+                                        values.put("Mandt", " ");
                                         values.put("Muser", eBF.getMuser());
                                         values.put("Zdoctype", eBF.getZdoctype());
                                         values.put("Zactivity", eBF.getZactivity());
@@ -228,32 +206,13 @@ public class Auth {
                                     }
                                 }
                             }
-                       /* Auth_SER.EtMusrf etMusrf = results.get(0).getEtMusrf();
-                        if (etMusrf != null) {
-                            List<Auth_SER.EtMusrf_Result> etMusrfResults = etMusrf.getResults();
-                            if (etMusrfResults != null && etMusrfResults.size() > 0) {
-                                String sql = "Insert into Authorization_EtMusrf (Mandt, Muser," +
-                                        " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (Auth_SER.EtMusrf_Result eM : etMusrfResults) {
-                                    statement.bindString(1, c_e.check_empty(eM.getMandt()));
-                                    statement.bindString(2, c_e.check_empty(eM.getMuser()));
-                                    statement.bindString(3, c_e.check_empty(eM.getZdoctype()));
-                                    statement.bindString(4, c_e.check_empty(eM.getZactivity()));
-                                    statement.bindString(5, c_e.check_empty(eM.getInactive()));
-                                    statement.execute();
-                                }
-                            }
-                        }*/
-
                             /*EtUsrf*/
                             if (response.body().getD().getResults().get(0).getEtUsrf() != null) {
                                 if (response.body().getD().getResults().get(0).getEtUsrf().getResults() != null
                                         && response.body().getD().getResults().get(0).getEtUsrf().getResults().size() > 0) {
                                     ContentValues values = new ContentValues();
                                     for (Auth_SER.EtUsrf_Result eUF : response.body().getD().getResults().get(0).getEtUsrf().getResults()) {
-                                        values.put("Mandt, ", eUF.getMandt());
+                                        values.put("Mandt", " ");
                                         values.put("Usgrp", eUF.getUsgrp());
                                         values.put("Zdoctype", eUF.getZdoctype());
                                         values.put("Zactivity", eUF.getZactivity());
@@ -262,27 +221,7 @@ public class Auth {
                                     }
                                 }
                             }
-                        /*Auth_SER.EtUsrf etUsrf = results.get(0).getEtUsrf();
-                        if (etUsrf != null) {
-                            List<Auth_SER.EtUsrf_Result> etUsrfResults = etUsrf.getResults();
-                            if (etUsrfResults != null && etUsrfResults.size() > 0) {
-                                String sql = "Insert into GET_USER_FUNCTIONS_EtUsrf (Mandt, Usgrp," +
-                                        " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (Auth_SER.EtUsrf_Result eUs : etUsrfResults) {
-                                    statement.bindString(1, c_e.check_empty(eUs.getMandt()));
-                                    statement.bindString(2, c_e.check_empty(eUs.getUsgrp()));
-                                    statement.bindString(3, c_e.check_empty(eUs.getZdoctype()));
-                                    statement.bindString(4, c_e.check_empty(eUs.getZactivity()));
-                                    statement.bindString(5, c_e.check_empty(eUs.getInactive()));
-                                    statement.execute();
-                                }
-                            }
-                        }
-                    }*/
                             App_db.setTransactionSuccessful();
-
                             Get_Response = "success";
                         } finally {
                             App_db.endTransaction();
@@ -299,79 +238,3 @@ public class Auth {
     }
 }
 
-              /*  if (response.isSuccessful() && response.body() != null) {
-                    List<Auth_SER.Result> results = response.body().getD().getResults();
-                    App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
-
-                        *//*EtBusf*//*
-                        Auth_SER.EtBusf etBusf = results.get(0).getEtBusf();
-                        if (etBusf != null) {
-                            List<Auth_SER.EtBusf_Result> etBusfResults = etBusf.getResults();
-                            if (etBusfResults != null && etBusfResults.size() > 0) {
-                                String sql = "Insert into Authorization_EtBusf (Mandt,Usgrp," +
-                                        "Busftype,Active) values (?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (Auth_SER.EtBusf_Result eB : etBusfResults) {
-                                    statement.bindString(1, c_e.check_empty(eB.getMandt()));
-                                    statement.bindString(2, c_e.check_empty(eB.getUsgrp()));
-                                    statement.bindString(3, c_e.check_empty(eB.getBusftype()));
-                                    statement.bindString(4, c_e.check_empty(eB.getActive()));
-                                    statement.execute();
-                                }
-                            }
-                        }
-
-                        *//*EtMusrf*//*
-                        Auth_SER.EtMusrf etMusrf = results.get(0).getEtMusrf();
-                        if (etMusrf != null) {
-                            List<Auth_SER.EtMusrf_Result> etMusrfResults = etMusrf.getResults();
-                            if (etMusrfResults != null && etMusrfResults.size() > 0) {
-                                String sql = "Insert into Authorization_EtMusrf (Mandt, Muser," +
-                                        " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (Auth_SER.EtMusrf_Result eM : etMusrfResults) {
-                                    statement.bindString(1, c_e.check_empty(eM.getMandt()));
-                                    statement.bindString(2, c_e.check_empty(eM.getMuser()));
-                                    statement.bindString(3, c_e.check_empty(eM.getZdoctype()));
-                                    statement.bindString(4, c_e.check_empty(eM.getZactivity()));
-                                    statement.bindString(5, c_e.check_empty(eM.getInactive()));
-                                    statement.execute();
-                                }
-                            }
-                        }
-
-                        *//*EtUsrf*//*
-                        Auth_SER.EtUsrf etUsrf = results.get(0).getEtUsrf();
-                        if (etUsrf != null) {
-                            List<Auth_SER.EtUsrf_Result> etUsrfResults = etUsrf.getResults();
-                            if (etUsrfResults != null && etUsrfResults.size() > 0) {
-                                String sql = "Insert into GET_USER_FUNCTIONS_EtUsrf (Mandt, Usgrp," +
-                                        " Zdoctype, Zactivity, Inactive) values(?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (Auth_SER.EtUsrf_Result eUs : etUsrfResults) {
-                                    statement.bindString(1, c_e.check_empty(eUs.getMandt()));
-                                    statement.bindString(2, c_e.check_empty(eUs.getUsgrp()));
-                                    statement.bindString(3, c_e.check_empty(eUs.getZdoctype()));
-                                    statement.bindString(4, c_e.check_empty(eUs.getZactivity()));
-                                    statement.bindString(5, c_e.check_empty(eUs.getInactive()));
-                                    statement.execute();
-                                }
-                            }
-                        }
-                    }
-                    App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
-                    Get_Response = "success";
-                }
-            }
-        } catch (Exception ex) {
-            Get_Response = "exception";
-        }
-        return Get_Response;
-    }
-}*/

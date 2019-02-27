@@ -348,7 +348,7 @@ public class VHLP_WCM {
                                     && response.body().getD().getResults().get(0).getEtWCMUsages().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (VHLP_WCM_SER.EtWCMUsages_Result eWU : response.body().getD().getResults().get(0).getEtWCMUsages().getResults()) {
-                                    values.put("Iwerk, ", eWU.getIwerk());
+                                    values.put("Iwerk", eWU.getIwerk());
                                     values.put("Objart", eWU.getObjart());
                                     values.put("Use", eWU.getUse());
                                     values.put("Usex", eWU.getUsex());
@@ -356,23 +356,6 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                       /* VHLP_WCM_SER.EtWCMUsages etWCMUsages = results.get(0).getEtWCMUsages();
-                        if (etWCMUsages != null) {
-                            List<VHLP_WCM_SER.EtWCMUsages_Result> etWCMUsagesResults = etWCMUsages.getResults();
-                            if (etWCMUsagesResults != null && etWCMUsagesResults.size() > 0) {
-                                String EtWcmUsages_sql = "Insert into EtWcmUsages (Iwerk, Objart, Use, Usex)" +
-                                        " values(?,?,?,?);";
-                                SQLiteStatement EtWcmUsages_statement = App_db.compileStatement(EtWcmUsages_sql);
-                                EtWcmUsages_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMUsages_Result eWU : etWCMUsagesResults) {
-                                    EtWcmUsages_statement.bindString(1, c_e.check_empty(eWU.getIwerk()));
-                                    EtWcmUsages_statement.bindString(2, c_e.check_empty(eWU.getObjart()));
-                                    EtWcmUsages_statement.bindString(3, c_e.check_empty(eWU.getUse()));
-                                    EtWcmUsages_statement.bindString(4, c_e.check_empty(eWU.getUsex()));
-                                    EtWcmUsages_statement.execute();
-                                }
-                            }
-                        }*/
 
                         /*EtWCMBegru*/
                         if (response.body().getD().getResults().get(0).getEtWCMBegru() != null) {
@@ -380,26 +363,12 @@ public class VHLP_WCM {
                                     && response.body().getD().getResults().get(0).getEtWCMBegru().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (VHLP_WCM_SER.EtWCMBegru_Result eWB : response.body().getD().getResults().get(0).getEtWCMBegru().getResults()) {
-                                    values.put("Begru, ", eWB.getBegru());
+                                    values.put("Begru", eWB.getBegru());
                                     values.put("Begtx", eWB.getBegtx());
                                     App_db.insert("EtWcmBegru", null, values);
                                 }
                             }
                         }
-                        /*VHLP_WCM_SER.EtWCMBegru etWCMBegru = results.get(0).getEtWCMBegru();
-                        if (etWCMBegru != null) {
-                            List<VHLP_WCM_SER.EtWCMBegru_Result> etWCMBegruResults = etWCMBegru.getResults();
-                            if (etWCMBegruResults != null && etWCMBegruResults.size() > 0) {
-                                String EtWcmBegru_sql = "Insert into EtWcmBegru (Begru, Begtx) values(?,?);";
-                                SQLiteStatement EtWcmBegru_statement = App_db.compileStatement(EtWcmBegru_sql);
-                                EtWcmBegru_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMBegru_Result eWB : etWCMBegruResults) {
-                                    EtWcmBegru_statement.bindString(1, c_e.check_empty(eWB.getBegru()));
-                                    EtWcmBegru_statement.bindString(2, c_e.check_empty(eWB.getBegtx()));
-                                    EtWcmBegru_statement.execute();
-                                }
-                            }
-                        }*/
 
                         /*EtWCMTgtyp*/
                         if (response.body().getD().getResults().get(0).getEtWCMTgtyp() != null) {
@@ -407,7 +376,7 @@ public class VHLP_WCM {
                                     && response.body().getD().getResults().get(0).getEtWCMTgtyp().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (VHLP_WCM_SER.EtWCMTgtyp_Result eWT : response.body().getD().getResults().get(0).getEtWCMTgtyp().getResults()) {
-                                    values.put("Iwerk, ", eWT.getIwerk());
+                                    values.put("Iwerk", eWT.getIwerk());
                                     values.put("Tggrp", eWT.getTggrp());
                                     values.put("Tgproc", eWT.getTgproc());
                                     values.put("Tgtyp", eWT.getTgtyp());
@@ -421,30 +390,6 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                       /* VHLP_WCM_SER.EtWCMTgtyp etWCMTgtyp = results.get(0).getEtWCMTgtyp();
-                        if (etWCMTgtyp != null) {
-                            List<VHLP_WCM_SER.EtWCMTgtyp_Result> etWCMTgtypResults = etWCMTgtyp.getResults();
-                            if (etWCMTgtypResults != null && etWCMTgtypResults.size() > 0) {
-                                String EtWcmTgtyp_sql = "Insert into EtWcmTgtyp (Iwerk, Tggrp, Tgproc, Tgtyp," +
-                                        " Unproc, Untyp, Phblflg, Tgflg, Usable, Tgprocx)" +
-                                        " values(?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement EtWcmTgtyp_statement = App_db.compileStatement(EtWcmTgtyp_sql);
-                                EtWcmTgtyp_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMTgtyp_Result eWT : etWCMTgtypResults) {
-                                    EtWcmTgtyp_statement.bindString(1, c_e.check_empty(eWT.getIwerk()));
-                                    EtWcmTgtyp_statement.bindString(2, c_e.check_empty(eWT.getTggrp()));
-                                    EtWcmTgtyp_statement.bindString(3, c_e.check_empty(eWT.getTgproc()));
-                                    EtWcmTgtyp_statement.bindString(4, c_e.check_empty(eWT.getTgtyp()));
-                                    EtWcmTgtyp_statement.bindString(5, c_e.check_empty(eWT.getUnproc()));
-                                    EtWcmTgtyp_statement.bindString(6, c_e.check_empty(eWT.getUntyp()));
-                                    EtWcmTgtyp_statement.bindString(7, c_e.check_empty(eWT.getPhblflg()));
-                                    EtWcmTgtyp_statement.bindString(8, c_e.check_empty(eWT.getTgflg()));
-                                    EtWcmTgtyp_statement.bindString(9, c_e.check_empty(eWT.getUsable()));
-                                    EtWcmTgtyp_statement.bindString(10, c_e.check_empty(eWT.getTgprocx()));
-                                    EtWcmTgtyp_statement.execute();
-                                }
-                            }
-                        }*/
 
                         /*EtWCMTypes*/
                         if (response.body().getD().getResults().get(0).getEtWCMTypes() != null) {
@@ -452,7 +397,7 @@ public class VHLP_WCM {
                                     && response.body().getD().getResults().get(0).getEtWCMTypes().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (VHLP_WCM_SER.EtWCMTypes_Result eWTY : response.body().getD().getResults().get(0).getEtWCMTypes().getResults()) {
-                                    values.put("Iwerk, ", eWTY.getIwerk());
+                                    values.put("Iwerk", eWTY.getIwerk());
                                     values.put("Objart", eWTY.getObjart());
                                     values.put("Objtyp", eWTY.getObjtyp());
                                     values.put("Stxt", eWTY.getStxt());
@@ -460,23 +405,6 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                       /* VHLP_WCM_SER.EtWCMTypes etWCMTypes = results.get(0).getEtWCMTypes();
-                        if (etWCMTypes != null) {
-                            List<VHLP_WCM_SER.EtWCMTypes_Result> etWCMTypesResults = etWCMTypes.getResults();
-                            if (etWCMTypesResults != null && etWCMTypesResults.size() > 0) {
-                                String EtWcmTypes_sql = "Insert into EtWcmTypes (Iwerk, Objart, Objtyp, Stxt)" +
-                                        " values(?,?,?,?);";
-                                SQLiteStatement EtWcmTypes_statement = App_db.compileStatement(EtWcmTypes_sql);
-                                EtWcmTypes_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMTypes_Result eWT : etWCMTypesResults) {
-                                    EtWcmTypes_statement.bindString(1, c_e.check_empty(eWT.getIwerk()));
-                                    EtWcmTypes_statement.bindString(2, c_e.check_empty(eWT.getObjart()));
-                                    EtWcmTypes_statement.bindString(3, c_e.check_empty(eWT.getObjtyp()));
-                                    EtWcmTypes_statement.bindString(4, c_e.check_empty(eWT.getStxt()));
-                                    EtWcmTypes_statement.execute();
-                                }
-                            }
-                        }*/
 
                         /*EtWCMWcvp6*/
                         if (response.body().getD().getResults().get(0).getEtWCMWcvp6() != null) {
@@ -496,27 +424,6 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                        /*VHLP_WCM_SER.EtWCMWcvp6 etWCMWcvp6 = results.get(0).getEtWCMWcvp6();
-                        if (etWCMWcvp6 != null) {
-                            List<VHLP_WCM_SER.EtWCMWcvp6_Result> etWCMWcvp6Results = etWCMWcvp6.getResults();
-                            if (etWCMWcvp6Results != null && etWCMWcvp6Results.size() > 0) {
-                                String EtWcmWcvp6_sql = "Insert into EtWcmWcvp6 (Mandt, Iwerk, Objart," +
-                                        " Objtyp, Pmsog, Gntxt, Agent, Stxt) values(?,?,?,?,?,?,?,?);";
-                                SQLiteStatement EtWcmWcvp6_statement = App_db.compileStatement(EtWcmWcvp6_sql);
-                                EtWcmWcvp6_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMWcvp6_Result eWW : etWCMWcvp6Results) {
-                                    EtWcmWcvp6_statement.bindString(1, "");
-                                    EtWcmWcvp6_statement.bindString(2, c_e.check_empty(eWW.getIwerk()));
-                                    EtWcmWcvp6_statement.bindString(3, c_e.check_empty(eWW.getObjart()));
-                                    EtWcmWcvp6_statement.bindString(4, c_e.check_empty(eWW.getObjtyp()));
-                                    EtWcmWcvp6_statement.bindString(5, c_e.check_empty(eWW.getPmsog()));
-                                    EtWcmWcvp6_statement.bindString(6, c_e.check_empty(eWW.getGntxt()));
-                                    EtWcmWcvp6_statement.bindString(7, c_e.check_empty(eWW.getAgent()));
-                                    EtWcmWcvp6_statement.bindString(8, c_e.check_empty(eWW.getStxt()));
-                                    EtWcmWcvp6_statement.execute();
-                                }
-                            }
-                        }*/
 
                         /*EtWCMWork*/
                         if (response.body().getD().getResults().get(0).getEtWCMWork() != null) {
@@ -540,32 +447,7 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                        /*VHLP_WCM_SER.EtWCMWork etWCMWork = results.get(0).getEtWCMWork();
-                        if (etWCMWork != null) {
-                            List<VHLP_WCM_SER.EtWCMWork_Result> etWCMWorkResults = etWCMWork.getResults();
-                            if (etWCMWorkResults != null && etWCMWorkResults.size() > 0) {
-                                String EtWcmWork_sql = "Insert into EtWcmWork (Iwerk, Objart, Objtyp, Wapiuse," +
-                                        " Wkid, ScrtextL, Wkgrp, Propflg, Modflg, Dpflg, Aprv4unmarked," +
-                                        " Aprv4marked) values(?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement EtWcmWork_statement = App_db.compileStatement(EtWcmWork_sql);
-                                EtWcmWork_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMWork_Result eWW : etWCMWorkResults) {
-                                    EtWcmWork_statement.bindString(1, c_e.check_empty(eWW.getIwerk()));
-                                    EtWcmWork_statement.bindString(2, c_e.check_empty(eWW.getObjart()));
-                                    EtWcmWork_statement.bindString(3, c_e.check_empty(eWW.getObjtyp()));
-                                    EtWcmWork_statement.bindString(4, c_e.check_empty(eWW.getWapiuse()));
-                                    EtWcmWork_statement.bindString(5, c_e.check_empty(eWW.getWkid()));
-                                    EtWcmWork_statement.bindString(6, c_e.check_empty(eWW.getScrtextL()));
-                                    EtWcmWork_statement.bindString(7, c_e.check_empty(eWW.getWkgrp()));
-                                    EtWcmWork_statement.bindString(8, c_e.check_empty(eWW.getPropflg()));
-                                    EtWcmWork_statement.bindString(9, c_e.check_empty(eWW.getModflg()));
-                                    EtWcmWork_statement.bindString(10, c_e.check_empty(eWW.getDpflg()));
-                                    EtWcmWork_statement.bindString(11, c_e.check_empty(eWW.getAprv4unmarked()));
-                                    EtWcmWork_statement.bindString(12, c_e.check_empty(eWW.getAprv4marked()));
-                                    EtWcmWork_statement.execute();
-                                }
-                            }
-                        }*/
+
 
                         /*EtWCMReqm*/
                         if (response.body().getD().getResults().get(0).getEtWCMReqm() != null) {
@@ -589,32 +471,7 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                       /* VHLP_WCM_SER.EtWCMReqm etWCMReqm = results.get(0).getEtWCMReqm();
-                        if (etWCMReqm != null) {
-                            List<VHLP_WCM_SER.EtWCMReqm_Result> etWCMReqmResults = etWCMReqm.getResults();
-                            if (etWCMReqmResults != null && etWCMReqmResults.size() > 0) {
-                                String EtWCMReqm_sql = "Insert into EtWCMReqm (Iwerk, Objart, Objtyp, Wapiuse," +
-                                        " Needid, ScrtextL, Needgrp, Propflg, Modflg, Dpflg, Aprv4unmarked," +
-                                        " Aprv4marked) values(?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement EtWCMReqm_statement = App_db.compileStatement(EtWCMReqm_sql);
-                                EtWCMReqm_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMReqm_Result eWR : etWCMReqmResults) {
-                                    EtWCMReqm_statement.bindString(1, c_e.check_empty(eWR.getIwerk()));
-                                    EtWCMReqm_statement.bindString(2, c_e.check_empty(eWR.getObjart()));
-                                    EtWCMReqm_statement.bindString(3, c_e.check_empty(eWR.getObjtyp()));
-                                    EtWCMReqm_statement.bindString(4, c_e.check_empty(eWR.getWapiuse()));
-                                    EtWCMReqm_statement.bindString(5, c_e.check_empty(eWR.getNeedid()));
-                                    EtWCMReqm_statement.bindString(6, c_e.check_empty(eWR.getScrtextL()));
-                                    EtWCMReqm_statement.bindString(7, c_e.check_empty(eWR.getNeedgrp()));
-                                    EtWCMReqm_statement.bindString(8, c_e.check_empty(eWR.getPropflg()));
-                                    EtWCMReqm_statement.bindString(9, c_e.check_empty(eWR.getModflg()));
-                                    EtWCMReqm_statement.bindString(10, c_e.check_empty(eWR.getDpflg()));
-                                    EtWCMReqm_statement.bindString(11, c_e.check_empty(eWR.getAprv4unmarked()));
-                                    EtWCMReqm_statement.bindString(12, c_e.check_empty(eWR.getAprv4marked()));
-                                    EtWCMReqm_statement.execute();
-                                }
-                            }
-                        }*/
+
 
                         /*EtWCMUsgrp*/
                         if (response.body().getD().getResults().get(0).getEtWCMUsgrp() != null) {
@@ -628,20 +485,6 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                       /* VHLP_WCM_SER.EtWCMUsgrp etWCMUsgrp = results.get(0).getEtWCMUsgrp();
-                        if (etWCMUsgrp != null) {
-                            List<VHLP_WCM_SER.EtWCMUsgrp_Result> etWCMUsgrpResults = etWCMUsgrp.getResults();
-                            if (etWCMUsgrpResults != null && etWCMUsgrpResults.size() > 0) {
-                                String EtUsgrpWccp_sql = "Insert into EtUsgrpWccp (Usgrp, Pmsog) values(?,?);";
-                                SQLiteStatement EtUsgrpWccp_statement = App_db.compileStatement(EtUsgrpWccp_sql);
-                                EtUsgrpWccp_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWCMUsgrp_Result eWU : etWCMUsgrpResults) {
-                                    EtUsgrpWccp_statement.bindString(1, c_e.check_empty(eWU.getUsgrp()));
-                                    EtUsgrpWccp_statement.bindString(2, c_e.check_empty(eWU.getPmsog()));
-                                    EtUsgrpWccp_statement.execute();
-                                }
-                            }
-                        }*/
 
                         /*EtECMWcco*/
                         if (response.body().getD().getResults().get(0).getEtWcmWcco() != null) {
@@ -659,26 +502,7 @@ public class VHLP_WCM {
                                 }
                             }
                         }
-                       /* VHLP_WCM_SER.EtWcmWcco etWcmWcco = results.get(0).getEtWcmWcco();
-                        if (etWcmWcco != null) {
-                            List<VHLP_WCM_SER.EtWcmWcco_Result> etWcmWccoResults = etWcmWcco.getResults();
-                            if (etWcmWccoResults != null && etWcmWccoResults.size() > 0) {
-                                String EtWcmWcco_sql = "Insert into EtWcmWcco (Iwerk, Objart, Objtyp, Wcmuse," +
-                                        " Direction, Asgnflg) values(?,?,?,?,?,?);";
-                                SQLiteStatement EtWcmWcco_statement = App_db.compileStatement(EtWcmWcco_sql);
-                                EtWcmWcco_statement.clearBindings();
-                                for (VHLP_WCM_SER.EtWcmWcco_Result eWC : etWcmWccoResults) {
-                                    EtWcmWcco_statement.bindString(1, c_e.check_empty(eWC.getIwerk()));
-                                    EtWcmWcco_statement.bindString(2, c_e.check_empty(eWC.getObjart()));
-                                    EtWcmWcco_statement.bindString(3, c_e.check_empty(eWC.getObjtyp()));
-                                    EtWcmWcco_statement.bindString(4, c_e.check_empty(eWC.getWcmuse()));
-                                    EtWcmWcco_statement.bindString(5, c_e.check_empty(eWC.getDirection()));
-                                    EtWcmWcco_statement.bindString(6, c_e.check_empty(eWC.getAsgnflg()));
-                                    EtWcmWcco_statement.execute();
-                                }
-                            }
-                        }
-                    }*/
+
                         App_db.setTransactionSuccessful();
                         Get_Response = "success";
                     }finally {

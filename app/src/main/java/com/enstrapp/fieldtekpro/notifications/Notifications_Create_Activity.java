@@ -562,53 +562,54 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                 /*Fetching Task Custom Fields*/
                 ArrayList<HashMap<String, String>> selected_task_custominfo =
                         task_list.get(i).getSelected_tasks_custom_info_arraylist();
-                if (selected_task_custominfo.size() > 0) {
-                    for (int j = 0; j < selected_task_custominfo.size(); j++) {
-                        Model_CustomInfo model_customInfo = new Model_CustomInfo();
-                        model_customInfo.setZdoctype(selected_task_custominfo.get(j).get("Zdoctype"));
-                        model_customInfo.setZdoctypeItem(selected_task_custominfo.get(j).get("ZdoctypeItem"));
-                        model_customInfo.setTabname(selected_task_custominfo.get(j).get("Tabname"));
-                        model_customInfo.setFieldname(selected_task_custominfo.get(j).get("Fieldname"));
-                        model_customInfo.setDatatype(selected_task_custominfo.get(j).get("Datatype"));
-                        String datatype = selected_task_custominfo.get(j).get("Datatype");
-                        if (datatype.equalsIgnoreCase("DATS")) {
-                            String value = selected_task_custominfo.get(j).get("Value");
-                            String inputPattern = "MMM dd, yyyy";
-                            String outputPattern = "yyyyMMdd";
-                            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-                            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                            try {
-                                Date date = inputFormat.parse(value);
-                                String formatted_date = outputFormat.format(date);
-                                model_customInfo.setValue(formatted_date);
-                            } catch (Exception e) {
-                                model_customInfo.setValue("");
+                if(selected_task_custominfo!=null) {
+                    if (selected_task_custominfo.size() > 0) {
+                        for (int j = 0; j < selected_task_custominfo.size(); j++) {
+                            Model_CustomInfo model_customInfo = new Model_CustomInfo();
+                            model_customInfo.setZdoctype(selected_task_custominfo.get(j).get("Zdoctype"));
+                            model_customInfo.setZdoctypeItem(selected_task_custominfo.get(j).get("ZdoctypeItem"));
+                            model_customInfo.setTabname(selected_task_custominfo.get(j).get("Tabname"));
+                            model_customInfo.setFieldname(selected_task_custominfo.get(j).get("Fieldname"));
+                            model_customInfo.setDatatype(selected_task_custominfo.get(j).get("Datatype"));
+                            String datatype = selected_task_custominfo.get(j).get("Datatype");
+                            if (datatype.equalsIgnoreCase("DATS")) {
+                                String value = selected_task_custominfo.get(j).get("Value");
+                                String inputPattern = "MMM dd, yyyy";
+                                String outputPattern = "yyyyMMdd";
+                                SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+                                SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+                                try {
+                                    Date date = inputFormat.parse(value);
+                                    String formatted_date = outputFormat.format(date);
+                                    model_customInfo.setValue(formatted_date);
+                                } catch (Exception e) {
+                                    model_customInfo.setValue("");
+                                }
+                            } else if (datatype.equalsIgnoreCase("TIMS")) {
+                                String value = selected_task_custominfo.get(j).get("Value");
+                                String inputPattern = "HH:mm:ss";
+                                String outputPattern = "HHmmss";
+                                SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+                                SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+                                try {
+                                    Date date = inputFormat.parse(value);
+                                    String formatted_date = outputFormat.format(date);
+                                    model_customInfo.setValue(formatted_date);
+                                } catch (Exception e) {
+                                    model_customInfo.setValue("");
+                                }
+                            } else {
+                                model_customInfo.setValue(selected_task_custominfo.get(j).get("Value"));
                             }
-                        } else if (datatype.equalsIgnoreCase("TIMS")) {
-                            String value = selected_task_custominfo.get(j).get("Value");
-                            String inputPattern = "HH:mm:ss";
-                            String outputPattern = "HHmmss";
-                            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-                            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                            try {
-                                Date date = inputFormat.parse(value);
-                                String formatted_date = outputFormat.format(date);
-                                model_customInfo.setValue(formatted_date);
-                            } catch (Exception e) {
-                                model_customInfo.setValue("");
-                            }
-                        } else {
-                            model_customInfo.setValue(selected_task_custominfo.get(j).get("Value"));
+                            model_customInfo.setFlabel(selected_task_custominfo.get(j).get("Flabel"));
+                            model_customInfo.setSequence(selected_task_custominfo.get(j).get("Sequence"));
+                            model_customInfo.setLength(selected_task_custominfo.get(j).get("Length"));
+                            task_custominfo.add(model_customInfo);
                         }
-                        model_customInfo.setFlabel(selected_task_custominfo.get(j).get("Flabel"));
-                        model_customInfo.setSequence(selected_task_custominfo.get(j).get("Sequence"));
-                        model_customInfo.setLength(selected_task_custominfo.get(j).get("Length"));
-                        task_custominfo.add(model_customInfo);
                     }
-                }
-                mnc.setItNotfTaskFields(task_custominfo);
-                TasksArrayList.add(mnc);
-                /*Fetching Task Custom Fields*/
+                    mnc.setItNotfTaskFields(task_custominfo);
+                    TasksArrayList.add(mnc);
+                }  /*Fetching Task Custom Fields*/
             }
             /*Fetching Task Data*/
 

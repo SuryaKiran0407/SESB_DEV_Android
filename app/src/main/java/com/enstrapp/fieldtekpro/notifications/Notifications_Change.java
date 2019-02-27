@@ -413,7 +413,7 @@ public class Notifications_Change {
                                                                     ValuesHCf.put("Sequence", customFields_result.getSequence());
                                                                     ValuesHCf.put("Length", customFields_result.getLength());
                                                                     ValuesHCf.put("Datatype", customFields_result.getDatatype());
-                                                                    App_db.insert("EtOrderHeader_CustomInfo", null, ValuesHCf);
+                                                                    App_db.insert("EtNotifHeader_CustomInfo ", null, ValuesHCf);
                                                                 }
                                                             }
                                                         App_db.insert("DUE_NOTIFICATION_NotifHeader", null, values);
@@ -424,8 +424,7 @@ public class Notifications_Change {
                                         {
 
                                         }
-
-                                       /*Reading and Inserting Data into Database Table for EtNotifItems*/
+                                        /*Reading and Inserting Data into Database Table for EtNotifItems*/
                                         try {
                                             if (response.body().getD().getEtNotifItems().getResults() != null) {
                                                 if (response.body().getD().getEtNotifItems().getResults() != null
@@ -485,7 +484,6 @@ public class Notifications_Change {
                                         {
 
                                         }
-
                                         /*Reading and Inserting Data into Database Table for EtNotifActvs*/
                                         try {
 
@@ -544,8 +542,7 @@ public class Notifications_Change {
                                                                     App_db.insert("EtNotifActivity_CustomInfo", null, ValuesHCf);
                                                                 }
                                                             }
-
-                                                        App_db.insert("DUE_NOTIFICATION_EtNotifActvs", null, values);
+                                                            App_db.insert("DUE_NOTIFICATION_EtNotifActvs", null, values);
                                                     }
                                                 }
                                             }
@@ -657,7 +654,7 @@ public class Notifications_Change {
                                                         values.put("TaskGrp", eNT.getTaskGrp());
                                                         values.put("Taskgrptext", eNT.getTaskgrptext());
                                                         values.put("TaskCod", eNT.getTaskCod());
-                                                        values.put(" Taskcodetext", eNT.getTaskcodetext());
+                                                        values.put("Taskcodetext", eNT.getTaskcodetext());
                                                         values.put("TaskShtxt", eNT.getTaskShtxt());
                                                         values.put("Pster", eNT.getPster());
                                                         values.put("Peter", eNT.getPeter());
@@ -700,8 +697,7 @@ public class Notifications_Change {
                                                                     App_db.insert("EtNotifTask_CustomInfo", null, ValuesHCf);
                                                                 }
                                                             }
-
-                                                        App_db.insert("DUE_NOTIFICATION_EtNotifTasks", null, values);
+                                                            App_db.insert("DUE_NOTIFICATION_EtNotifTasks", null, values);
                                                     }
                                                 }
                                             }

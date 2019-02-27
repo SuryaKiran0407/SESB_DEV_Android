@@ -739,5 +739,4 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             super.onPostExecute(result);
         }
     }
-    /*Performing Login Asynctask*/
 }

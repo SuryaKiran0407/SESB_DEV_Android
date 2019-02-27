@@ -85,7 +85,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                         oop.setSelected(false);
                         oop.setOrdrId("");
                         oop.setOrdrSatus("");
-                        oop.setOprtnId("0010");
+                        oop.setOprtnId("0020");
                         oop.setOprtnShrtTxt(ma.ohp.getOrdrShrtTxt());
                         oop.setOprtnLngTxt(ma.ohp.getOrdrLngTxt());
                         oop.setDuration("0");

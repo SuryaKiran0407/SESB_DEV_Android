@@ -148,14 +148,13 @@ public class MeasurementPoint {
                 if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
                     try {
-
                         /*EquiMPs*/
                         if (response.body().getD().getResults().get(0).getEquiMPs() != null) {
                             if (response.body().getD().getResults().get(0).getEquiMPs().getResults() != null
                                     && response.body().getD().getResults().get(0).getEquiMPs().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (MeasurementPoint_SER.EquiMPs_Result eMP : response.body().getD().getResults().get(0).getEquiMPs().getResults()) {
-                                    values.put("Tplnr, ", eMP.getTplnr());
+                                    values.put("Tplnr", eMP.getTplnr());
                                     values.put("Strno", eMP.getStrno());
                                     values.put("Equnr", eMP.getEqunr());
                                     values.put("Point", eMP.getPoint());
@@ -178,48 +177,12 @@ public class MeasurementPoint {
                                 }
                             }
                         }
-                        /*MeasurementPoint_SER.EquiMPs equiMPs = results.get(0).getEquiMPs();
-                        if (equiMPs != null) {
-                            List<MeasurementPoint_SER.EquiMPs_Result> equiMPsResults = equiMPs.getResults();
-                            if (equiMPsResults != null && equiMPsResults.size() > 0) {
-                                String EtEquiMptt_sql = "Insert into EtEquiMptt (Tplnr, Strno, " +
-                                        "Equnr, Point, Mpobj, Mpobt, Psort, Pttxt, Mptyp, Atinn, " +
-                                        "Atbez, Mrngu, Msehl, Desir, Mrmin, Mrmax, Cdsuf, Codct, " +
-                                        "Codgr) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement EtEquiMptt_statement = App_db.compileStatement(EtEquiMptt_sql);
-                                EtEquiMptt_statement.clearBindings();
-                                for (MeasurementPoint_SER.EquiMPs_Result eM : equiMPsResults) {
-                                    EtEquiMptt_statement.bindString(1, c_e.check_empty(eM.getTplnr()));
-                                    EtEquiMptt_statement.bindString(2, c_e.check_empty(eM.getStrno()));
-                                    EtEquiMptt_statement.bindString(3, c_e.check_empty(eM.getEqunr()));
-                                    EtEquiMptt_statement.bindString(4, c_e.check_empty(eM.getPoint()));
-                                    EtEquiMptt_statement.bindString(5, c_e.check_empty(eM.getMpobj()));
-                                    EtEquiMptt_statement.bindString(6, c_e.check_empty(eM.getMpobt()));
-                                    EtEquiMptt_statement.bindString(7, c_e.check_empty(eM.getPsort()));
-                                    EtEquiMptt_statement.bindString(8, c_e.check_empty(eM.getPttxt()));
-                                    EtEquiMptt_statement.bindString(9, c_e.check_empty(eM.getMptyp()));
-                                    EtEquiMptt_statement.bindString(10, c_e.check_empty(eM.getAtinn()));
-                                    EtEquiMptt_statement.bindString(11, c_e.check_empty(eM.getAtbez()));
-                                    EtEquiMptt_statement.bindString(12, c_e.check_empty(eM.getMrngu()));
-                                    EtEquiMptt_statement.bindString(13, c_e.check_empty(eM.getMsehl()));
-                                    EtEquiMptt_statement.bindString(14, c_e.check_empty(eM.getDesir()));
-                                    EtEquiMptt_statement.bindString(15, c_e.check_empty(eM.getMrmin()));
-                                    EtEquiMptt_statement.bindString(16, c_e.check_empty(eM.getMrmax()));
-                                    EtEquiMptt_statement.bindString(17, c_e.check_empty(eM.getCdsuf()));
-                                    EtEquiMptt_statement.bindString(18, c_e.check_empty(eM.getCodct()));
-                                    EtEquiMptt_statement.bindString(19, c_e.check_empty(eM.getCodgr()));
-                                    EtEquiMptt_statement.execute();
-                                }
-                            }
-                        }
-                    }*/
-                    App_db.setTransactionSuccessful();
-
-                    Get_Response = "success";
-                }finally {
+                        App_db.setTransactionSuccessful();
+                        Get_Response = "success";
+                    } finally {
                         App_db.endTransaction();
                     }
-                    }
+                }
             }
         } catch (Exception ex) {
             Get_Response = "exception";
