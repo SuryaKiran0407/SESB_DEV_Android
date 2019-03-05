@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -461,12 +462,13 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     EtOrderHeader_statement.bindString(52, "");
                     EtOrderHeader_statement.bindString(53, ohp.getPerRespId());
                     EtOrderHeader_statement.bindString(54, ohp.getPerRespName());
-                    EtOrderHeader_statement.bindString(55, ohp.getPosid());
-                    EtOrderHeader_statement.bindString(56, ohp.getRevnr());
+                    /*EtOrderHeader_statement.bindString(55, ohp.getPosid());
+                    EtOrderHeader_statement.bindString(56, ohp.getRevnr());*/
                     EtOrderHeader_statement.execute();
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
                 } catch (Exception e) {
+                    Log.v("offline insertion",""+e.getMessage());
                 }
 
                 try {

@@ -164,7 +164,8 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 }
                 plannerGroup_edittext.setText(plannergroup_id + " - " + plannergroup_text);
                 workcenter_id = bundle.getString("work_center_id");
-                workCenter_edittext.setText(workcenter_id);
+                workcenter_text = bundle.getString("workcenter_text");
+                workCenter_edittext.setText(workcenter_id + "-" + workcenter_text );
             } catch (Exception e) {
             }
         }
@@ -332,14 +333,28 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && !data.equals("")) {
             if (requestCode == longtext) {
+                /*longtext_text = data.getStringExtra("longtext_new");
+                if (notifshtTxt_edittext != null && !notifshtTxt_edittext.getText().toString().equals(" ")) {
+                    if (longtext_text.length() > 40) {
+                        notifshtTxt_edittext.setText(longtext_text.substring(0,
+                                Math.min(longtext_text.length(), 40)));
+                    } else {
+                        notifshtTxt_edittext.setText(longtext_text);
+                    }
+                }*/
                 longtext_text = data.getStringExtra("longtext_new");
-                if (longtext_text.length() > 40) {
-                    notifshtTxt_edittext.setText(longtext_text.substring(0,
-                            Math.min(longtext_text.length(), 40)));
-                } else {
-                    notifshtTxt_edittext.setText(longtext_text);
-                }
-            } else if (requestCode == notification_type) {
+                if (notifshtTxt_edittext != null &&
+                        notifshtTxt_edittext.getText().toString().equals(""))
+                    if (longtext_text != null && !longtext_text.equals("")) {
+                        String[] next = longtext_text.split("\n");
+                        if (next[0].length() > 40) {
+                            notifshtTxt_edittext.setText(next[0].substring(0,
+                                    Math.min(next[0].length(), 40)));
+                        } else {
+                            notifshtTxt_edittext.setText(next[0]);
+                        }
+                    }
+            }else if (requestCode == notification_type) {
                 notification_type_id = data.getStringExtra("notification_type_id");
                 notification_type_text = data.getStringExtra("notification_type_text");
                 notiftyp_edittext.setText(getString(R.string.hypen_text, notification_type_id,
@@ -351,14 +366,22 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 equipment_id = "";
                 equipment_text = "";
                 equipid_edittext.setText("");
+                equiptext_edittext.setText("");
                 floc_edittext.setText(functionlocation_id);
                 flocname_edittext.setText(functionlocation_text);
                 plannergroup_id = data.getStringExtra("ingrp_id");
-                plannergroup_text = data.getStringExtra("ingrp_text");
-                plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
-                        plannergroup_text));
+                plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                if (plannergroup_id != null && !plannergroup_id.equals(""))
+                    if (plannergroup_text != null && !plannergroup_text.equals(""))
+                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                plannergroup_text));
+                    else
+                        plannerGroup_edittext.setText(plannergroup_id);
+                else
+                    plannerGroup_edittext.setText("");
                 workcenter_id = data.getStringExtra("work_center");
-                workCenter_edittext.setText(workcenter_id);
+                workcenter_text =data.getStringExtra("workcenter_text");
+                workCenter_edittext.setText(workcenter_id + "-" + workcenter_text );
             } else if (requestCode == equipment_type) {
                 equipment_id = data.getStringExtra("equipment_id");
                 equipment_text = data.getStringExtra("equipment_text");
@@ -372,8 +395,25 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = "";
                 workcenter_id = data.getStringExtra("work_center");
-                workCenter_edittext.setText(workcenter_id);
-                plannerGroup_edittext.setText(plannergroup_id);
+                workcenter_text = wrkCntrName(workcenter_id, plant_id);
+                if (workcenter_id != null && !workcenter_id.equals(""))
+                    if (workcenter_text != null && !workcenter_text.equals(""))
+                        workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                                workcenter_text));
+                    else
+                        workCenter_edittext.setText(workcenter_id);
+                else
+                    workCenter_edittext.setText("");
+                plannergroup_id = data.getStringExtra("ingrp_id");
+                plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                if (plannergroup_id != null && !plannergroup_id.equals(""))
+                    if (plannergroup_text != null && !plannergroup_text.equals(""))
+                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                plannergroup_text));
+                    else
+                        plannerGroup_edittext.setText(plannergroup_id);
+                else
+                    plannerGroup_edittext.setText("");
             } else if (requestCode == barcode_scan) {
                 String message = data.getStringExtra("MESSAGE");
                 equipid_edittext.setText(message);
@@ -394,7 +434,16 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                                     workcenter_id = cursor.getString(11);
                                     workCenter_edittext.setText(workcenter_id);
                                     floc_edittext.setText(functionlocation_id);
-                                    plannerGroup_edittext.setText(plannergroup_id);
+                                    plannergroup_id = data.getStringExtra("ingrp_id");
+                                    plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                                    if (plannergroup_id != null && !plannergroup_id.equals(""))
+                                        if (plannergroup_text != null && !plannergroup_text.equals(""))
+                                            plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                                    plannergroup_text));
+                                        else
+                                            plannerGroup_edittext.setText(plannergroup_id);
+                                    else
+                                        plannerGroup_edittext.setText("");
                                     equiptext_edittext.setText(equipment_text);
                                 }
                                 while (cursor.moveToNext());
@@ -426,7 +475,7 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
             } else if (requestCode == workcenter_type) {
                 workcenter_id = data.getStringExtra("workcenter_id");
                 workcenter_text = data.getStringExtra("workcenter_text");
-                workCenter_edittext.setText(workcenter_id);
+                workCenter_edittext.setText(workcenter_id + "-" + workcenter_text);
             } else if (requestCode == notification_priority) {
                 priority_type_id = data.getStringExtra("priority_type_id");
                 priority_type_text = data.getStringExtra("priority_type_text");
@@ -495,6 +544,44 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+    private String wrkCntrName(String wrkCntrId, String plant) {
+        Cursor cursor = null;
+        try {
+            cursor = FieldTekPro_db.rawQuery("select * from GET_WKCTR where Arbpl = ? and Werks" +
+                    " = ?", new String[]{wrkCntrId, plant});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(8);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+    private String plnrGrpName(String plnrGrpId, String iwerk) {
+        Cursor cursor = null;
+        try {
+            cursor = FieldTekPro_db.rawQuery("select * from GET_EtIngrp where Ingrp = ? and" +
+                    " Iwerk = ?", new String[]{plnrGrpId, iwerk});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(3);
                 }
             }
         } catch (Exception e) {

@@ -35,6 +35,7 @@ import com.enstrapp.fieldtekpro.maintenance_plan.Maintenance_Plan_Activity;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.notifications.Notifications_List_Activity;
+import com.enstrapp.fieldtekpro.notifications.Notifications_List_Activity1;
 import com.enstrapp.fieldtekpro.orders.Orders_Activity;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
     private static String DATABASE_NAME = "";
     ArrayList<String> authorization_list = new ArrayList<String>();
     Error_Dialog error_dialog = new Error_Dialog();
-    private String username = "";
+    private String username = "", success = "";;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,13 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            success = extra.getString("success");
+            if (success != null && success.equals("N"))
+                error_dialog.show_error_dialog(DashBoard_Activity.this,
+                        getString(R.string.initialload_unsuccess));
+        }
         web = new String[]
                 {
                         getString(R.string.notifications),
@@ -157,10 +165,10 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     }
                 } else if (web[+position].equals("Notifications")) {
                     if (authorization_list.contains("ALL")) {
-                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity.class);
+                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity1.class);
                         startActivity(notif_intent);
                     } else if (authorization_list.contains("NOT")) {
-                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity.class);
+                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity1.class);
                         startActivity(notif_intent);
                     } else {
                         error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Notifications");

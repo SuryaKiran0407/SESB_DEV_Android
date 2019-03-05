@@ -190,11 +190,13 @@ public class Notifications_Priority_Select_Activity extends AppCompatActivity im
                 list_recycleview.setLayoutManager(layoutManager);
                 adapter = new TYPE_ADAPTER(Notifications_Priority_Select_Activity.this,
                         filteredList);
+                title_textview.setText(getResources().getString(R.string.priority) + " (" + type_list.size() + ")");
                 list_recycleview.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 no_data_textview.setVisibility(View.GONE);
                 list_recycleview.setVisibility(View.VISIBLE);
             } else {
+                title_textview.setText(getResources().getString(R.string.priority) + " (0)");
                 no_data_textview.setVisibility(View.VISIBLE);
                 list_recycleview.setVisibility(View.GONE);
             }
@@ -219,6 +221,30 @@ public class Notifications_Priority_Select_Activity extends AppCompatActivity im
                 id_textview = (TextView) view.findViewById(R.id.id_textview);
                 value_textview = (TextView) view.findViewById(R.id.text_textview);
                 checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+                checkbox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (checkbox.isChecked()) {
+                            type_details_list.get((Integer) v.getTag()).setChecked_status(true);
+                            for (int i = 0; i < type_list.size(); i++) {
+                                if (type_details_list
+                                        .get((Integer)v.getTag()).getId()
+                                        .equals(type_list.get(i).getId())){
+                                    type_list.get(i).setChecked_status(true);
+                                }
+                            }
+                        } else {
+                            type_details_list.get((Integer) v.getTag()).setChecked_status(false);
+                            for (int i = 0; i < type_list.size(); i++) {
+                                if (type_details_list
+                                        .get((Integer)v.getTag()).getId()
+                                        .equals(type_list.get(i).getId())){
+                                    type_list.get(i).setChecked_status(false);
+                                }
+                            }
+                        }
+                    }
+                });
             }
         }
 
@@ -240,7 +266,7 @@ public class Notifications_Priority_Select_Activity extends AppCompatActivity im
             final Type_Object nto = type_details_list.get(position);
             holder.id_textview.setText(nto.getId());
             holder.value_textview.setText(nto.getText());
-            holder.checkbox.setOnClickListener(new View.OnClickListener() {
+           /* holder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (holder.checkbox.isChecked()) {
@@ -249,7 +275,7 @@ public class Notifications_Priority_Select_Activity extends AppCompatActivity im
                         type_details_list.get(position).setChecked_status(false);
                     }
                 }
-            });
+            });*/
             holder.checkbox.setTag(position);
             holder.checkbox.setChecked((type_details_list.get(position)
                     .isChecked_status() == true ? true : false));

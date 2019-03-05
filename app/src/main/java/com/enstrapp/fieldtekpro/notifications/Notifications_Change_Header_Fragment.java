@@ -166,10 +166,10 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             plant_id = nhp.getWerks();
             plannergroup_id = nhp.getIngrp();
             plannergroup_text = nhp.getIngrpName();
-            plannerGroup_edittext.setText(plannergroup_id);
+            plannerGroup_edittext.setText(plannergroup_id + "-" + plannergroup_text);
             workcenter_id = nhp.getArbpl();
             workcenter_text = nhp.getWrkCntrTxt();
-            workCenter_edittext.setText(workcenter_id);
+            workCenter_edittext.setText(workcenter_id + "-" +workcenter_text);
             priority_type_id = nhp.getPriority();
             priority_type_text = nhp.getPriorityTxt();
             priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
@@ -686,12 +686,19 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 equipment_id = "";
                 equipment_text = "";
                 equipid_edittext.setText("");
+                equiptext_edittext.setText("");
                 floc_edittext.setText(functionlocation_id);
                 flocname_edittext.setText(functionlocation_text);
                 plannergroup_id = data.getStringExtra("ingrp_id");
-                plannergroup_text = data.getStringExtra("ingrp_text");
-                plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
-                        plannergroup_text));
+                plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                if (plannergroup_id != null && !plannergroup_id.equals(""))
+                    if (plannergroup_text != null && !plannergroup_text.equals(""))
+                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                plannergroup_text));
+                    else
+                        plannerGroup_edittext.setText(plannergroup_id);
+                else
+                    plannerGroup_edittext.setText("");
                 workcenter_id = data.getStringExtra("work_center");
                 workCenter_edittext.setText(workcenter_id);
             } else if (requestCode == equipment_type) {
@@ -707,8 +714,25 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = "";
                 workcenter_id = data.getStringExtra("work_center");
-                workCenter_edittext.setText(workcenter_id);
-                plannerGroup_edittext.setText(plannergroup_id);
+                workcenter_text = wrkCntrName(workcenter_id, plant_id);
+                if (workcenter_id != null && !workcenter_id.equals(""))
+                    if (workcenter_text != null && !workcenter_text.equals(""))
+                        workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                                workcenter_text));
+                    else
+                        workCenter_edittext.setText(workcenter_id);
+                else
+                    workCenter_edittext.setText("");
+                plannergroup_id = data.getStringExtra("ingrp_id");
+                plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                if (plannergroup_id != null && !plannergroup_id.equals(""))
+                    if (plannergroup_text != null && !plannergroup_text.equals(""))
+                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                plannergroup_text));
+                    else
+                        plannerGroup_edittext.setText(plannergroup_id);
+                else
+                    plannerGroup_edittext.setText("");
             } else if (requestCode == barcode_scan) {
                 String message = data.getStringExtra("MESSAGE");
                 equipid_edittext.setText(message);
@@ -729,7 +753,16 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                     workcenter_id = cursor.getString(11);
                                     workCenter_edittext.setText(workcenter_id);
                                     floc_edittext.setText(functionlocation_id);
-                                    plannerGroup_edittext.setText(plannergroup_id);
+                                    plannergroup_id = data.getStringExtra("ingrp_id");
+                                    plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                                    if (plannergroup_id != null && !plannergroup_id.equals(""))
+                                        if (plannergroup_text != null && !plannergroup_text.equals(""))
+                                            plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                                    plannergroup_text));
+                                        else
+                                            plannerGroup_edittext.setText(plannergroup_id);
+                                    else
+                                        plannerGroup_edittext.setText("");
                                     equiptext_edittext.setText(equipment_text);
                                 }
                                 while (cursor.moveToNext());
@@ -1891,6 +1924,44 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+    private String wrkCntrName(String wrkCntrId, String plant) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from GET_WKCTR where Arbpl = ? and Werks" +
+                    " = ?", new String[]{wrkCntrId, plant});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(8);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+    private String plnrGrpName(String plnrGrpId, String iwerk) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ? and" +
+                    " Iwerk = ?", new String[]{plnrGrpId, iwerk});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(3);
                 }
             }
         } catch (Exception e) {
