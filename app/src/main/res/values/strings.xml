@@ -785,7 +785,7 @@
     <string name="geo_tag">Geo Tag</string>
     <string name="cordnts">These are the coordinates for this equipment (%1s). Latitude: %2s &amp; Longitude: %3s. Do you want to capture these coordinates?</string>
     <string name="curnt_cordnts">New Coordinates:\nLatitude: %1s ,\nLongitude: %2s</string>
-    <string name="your_cordnts">Your Location\nLatitude: %1s\nLongitude: %2s</string>
+    <string name="your_cordnts">Your Location\nLatitude: %18s\nLongitude: %2s</string>
     <string name="geo_tagprgs">Geo Tagging in progress&#8230;</string>
     <string name="goe_unable">Unable to process Geo Tagging. Please try again</string>
     <string name="stats">Statistics</string>
@@ -839,6 +839,6 @@
     <string name="measurpoint_sp">MPTT</string>
     <string name="jsa_sp">JSA</string>
     <string name="Calib_sp">CALIBRATION</string>
-    <string name="initialload_unsuccess">Data load is not successful.\nCan you please do Initialload again.</string>
+    <string name="initialload_unsuccess">Initial data load is not completed.\nPlease perform initial load again.</string>
 
 </resources>

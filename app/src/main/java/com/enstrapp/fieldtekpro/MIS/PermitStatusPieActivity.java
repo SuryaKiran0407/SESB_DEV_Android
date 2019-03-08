@@ -184,7 +184,7 @@ public class PermitStatusPieActivity extends AppCompatActivity {
                 if (!Iwerk_plant.equals("")) {
                     if (!workcenter.equals("")) {
                         if (value.equalsIgnoreCase("Crea")) {
-                            cursor1 = FieldTekPro_db.rawQuery("select * from EtPermitWa where Crea = 'X' and Iwerk = ? and Arbpl = ?", new String[]{Iwerk_plant, workcenter});
+                                cursor1 = FieldTekPro_db.rawQuery("select * from EtPermitWa where Crea = 'X' and Iwerk = ? and Arbpl = ?", new String[]{Iwerk_plant, workcenter});
                         } else if (value.equalsIgnoreCase("Prep")) {
                             cursor1 = FieldTekPro_db.rawQuery("select * from EtPermitWa where Prep = 'X' and Iwerk = ? and Arbpl = ?", new String[]{Iwerk_plant, workcenter});
                         } else if (value.equalsIgnoreCase("Clsd")) {

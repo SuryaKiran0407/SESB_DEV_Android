@@ -183,6 +183,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                 equipName_tiet.setText(ma.ohp.getEquipName());
                 wbs_tiet.setText(ma.ohp.getPosid());
                 revision_tiet.setText(ma.ohp.getRevnr());
+
             } else {
                 equipId_ll.setVisibility(View.VISIBLE);
                 equipName_til.setVisibility(View.VISIBLE);

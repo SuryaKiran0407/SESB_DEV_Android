@@ -574,8 +574,7 @@ public class Notifications_Create {
                                                     if (response.body().getD().getEtNotifLongtext().getResults() != null
                                                             && response.body().getD().getEtNotifLongtext().getResults().size()> 0) {
                                                         ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtNotifLongtext_Result eNL : response.body().getD().getResults()
-                                                                .get(0).getEtNotifLongtext().getResults()) {
+                                                        for (Notifications_SER.EtNotifLongtext_Result eNL : response.body().getD().getEtNotifLongtext().getResults()) {
                                                             values.put("UUID", eNL.getQmnum());
                                                             values.put("Qmnum", eNL.getQmnum());
                                                             values.put("Objtype", eNL.getObjtype());
@@ -587,7 +586,7 @@ public class Notifications_Create {
                                                 }
                                             }catch (Exception e)
                                             {
-
+                                                Log.v("Long text response",""+e.getMessage());
                                             }
                                             /*Reading and Inserting Data into Database Table for EtNotifLongtext*/
 

@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
         <activity
-        android:name=".orders.Orders_Activity"
+        android:name=".orders.Orders_Activity1"
         android:screenOrientation="portrait"
         android:windowSoftInputMode="stateHidden" />
         <activity

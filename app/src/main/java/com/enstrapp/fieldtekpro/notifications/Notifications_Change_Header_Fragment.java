@@ -1760,6 +1760,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             ohp.setPosid(cursor.getString(55));
                             ohp.setRevnr(cursor.getString(56));
                             ohp.setBukrs(getBukrs(cursor.getString(9)));
+                            ohp.setActivitytype_id(cursor.getString(5));
+                            ohp.setActivitytype_text(cursor.getString(34));
                             ohp.setOrdrOprtnPrcbls(oop_al);
                             ohp.setOrdrObjectPrcbls(oobp_al);
                             ohp.setOrdrMatrlPrcbls(omp_al);

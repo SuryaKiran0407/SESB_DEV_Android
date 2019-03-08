@@ -37,6 +37,7 @@ import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialo
 import com.enstrapp.fieldtekpro.notifications.Notifications_List_Activity;
 import com.enstrapp.fieldtekpro.notifications.Notifications_List_Activity1;
 import com.enstrapp.fieldtekpro.orders.Orders_Activity;
+import com.enstrapp.fieldtekpro.orders.Orders_Activity1;
 
 import java.util.ArrayList;
 
@@ -155,10 +156,10 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (web[+position].equals("Orders")) {
                     if (authorization_list.contains("ALL")) {
-                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity.class);
+                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity1.class);
                         startActivity(orders_intent);
                     } else if (authorization_list.contains("ORD")) {
-                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity.class);
+                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity1.class);
                         startActivity(orders_intent);
                     } else {
                         error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Orders");

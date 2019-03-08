@@ -64,6 +64,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static android.view.View.GONE;
+
 public class Orders_Activity1 extends AppCompatActivity implements View.OnClickListener {
 
     RecyclerView recyclerView;
@@ -115,7 +117,7 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
     static final int fil_notif_type = 7, fil_prior_type = 8, fil_status_type = 9,
             fil_wckt_type = 10, scan_status = 11;
     String equipment_id = "", functionlocation_id = "";
-
+    boolean clearAll;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,38 +208,33 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
         @Override
         public boolean onQueryTextChange(String query) {
             query = query.toLowerCase();
-            final List<Orders_Object> filteredList = new ArrayList<>();
+            ordersList_ad.clear();
+           // final List<Orders_Object> filteredList = new ArrayList<>();
             for (int i = 0; i < ordersList.size(); i++) {
                 if (ordersList.get(i).getOrderId().toLowerCase().contains(query) ||
                         ordersList.get(i).getOrderShortText().toLowerCase().contains(query) ||
                         ordersList.get(i).getOrderStatus().toLowerCase().contains(query) ||
                         ordersList.get(i).getPriorityText().toLowerCase().contains(query)) {
-                    Orders_Object blo = new Orders_Object(ordersList.get(i).getUUID(),
-                            ordersList.get(i).getOrderId(), ordersList.get(i).getPriorityText(),
-                            ordersList.get(i).getBasicStartDate(),
-                            ordersList.get(i).getOrderShortText(),
-                            ordersList.get(i).getWocoStatus(), ordersList.get(i).getOrderStatus(),
-                            ordersList.get(i).getOrderPlant(), ordersList.get(i).getWorkCenter(),
-                            ordersList.get(i).getOrderType(), ordersList.get(i).getPriority(),
-                            ordersList.get(i).getAttachment(), ordersList.get(i).getWorkCmplt(),
-                            ordersList.get(i).getUsr02(), ordersList.get(i).getEndDate(),
-                            ordersList.get(i).getEquipment(), ordersList.get(i).getFunctionLocation(),
-                            ordersList.get(i).getPernar(), ordersList.get(i).getRel_status(),
-                            ordersList.get(i).getCnf_status(), ordersList.get(i).getTeco_status(),
-                            ordersList.get(i).getWoco_status());
-                    filteredList.add(blo);
+                    Orders_Object blo = ordersList.get(i);
+                    ordersList_ad.add(blo);
                 }
             }
-            if (filteredList.size() > 0) {
-                RecyclerView.LayoutManager layoutManager =
-                        new LinearLayoutManager(Orders_Activity1.this);
-                list_recycleview.setLayoutManager(layoutManager);
-                ordersAdapter = new OrdersAdapter(Orders_Activity1.this, filteredList);
-                list_recycleview.setAdapter(ordersAdapter);
-                ordersAdapter.notifyDataSetChanged();
-                no_data_layout.setVisibility(View.GONE);
-                swiperefreshlayout.setVisibility(View.VISIBLE);
-                title_tv.setText(getString(R.string.orders_count, String.valueOf(filteredList.size())));
+            filterData( ordersList_ad);
+            if (ordersList_ad.size() > 0) {
+                if (ordersAdapter != null) {
+                    ordersAdapter.notifyDataSetChanged();
+                    no_data_layout.setVisibility(GONE);
+                    swiperefreshlayout.setVisibility(View.VISIBLE);
+                    title_tv.setText(getString(R.string.orders_count, String.valueOf(ordersList_ad.size())));
+                } else {
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Orders_Activity1.this);
+                    list_recycleview.setLayoutManager(layoutManager);
+                    ordersAdapter = new OrdersAdapter(Orders_Activity1.this, ordersList_ad);
+                    list_recycleview.setAdapter(ordersAdapter);
+                    no_data_layout.setVisibility(GONE);
+                    swiperefreshlayout.setVisibility(View.VISIBLE);
+                    title_tv.setText(getString(R.string.orders_count, String.valueOf(ordersList_ad.size())));
+                }
             } else {
                 title_tv.setText(getString(R.string.orders));
                 no_data_layout.setVisibility(View.VISIBLE);
@@ -551,6 +548,7 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
                         filt_wckt_text = "";
                         filt_wckt_ids = "";
                         attachment_clicked_status = "";
+                        clearAll=true;
                         dialog.dismiss();
                         new Get_Order_List().execute();
                     }
@@ -619,7 +617,7 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
                                 filt_selected_persresp_ids.append(person_responsible_id);
                             }
 
-                            CollectionUtils.filter(ordersList, new Predicate() {
+                           /* CollectionUtils.filter(ordersList, new Predicate() {
                                 @Override
                                 public boolean evaluate(Object o) {
                                     return ((Orders_Object) o).getOrderType()
@@ -635,12 +633,12 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
                                             ((Orders_Object) o).getPernar()
                                                     .matches(filt_selected_persresp_ids.toString());
                                 }
-                            });
+                            });*/
                             ordersList_ad.clear();
                             ordersList_ad.addAll(ordersList);
                             filterData(ordersList_ad);
 
-                            if (ordersList.size() > 0) {
+                            if (ordersList_ad.size() > 0) {
                                 no_data_layout.setVisibility(View.GONE);
                                 swiperefreshlayout.setVisibility(View.VISIBLE);
                                 title_tv.setText(getString(R.string.orders_count, String.valueOf(ordersList_ad.size())));
@@ -1371,7 +1369,10 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!clearAll)
+                customProgressDialog.show_progress_dialog(Orders_Activity1.this, getString(R.string.loading));
             ordersList.clear();
+            ordersList_ad.clear();
         }
 
         @Override
@@ -1471,6 +1472,7 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
                                     cursor.getString(53), rel_status, cnf_status,
                                     teco_status, woco_status);
                             ordersList.add(olo);
+                            ordersList_ad.add(olo);
                         }
                         while (cursor.moveToNext());
                     }
@@ -1488,8 +1490,12 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (ordersList.size() > 0) {
-                Collections.sort(ordersList, new Comparator<Orders_Object>() {
+            if (!clearAll)
+                customProgressDialog.dismiss_progress_dialog();
+            else
+                clearAll = true;
+            if (ordersList_ad.size() > 0) {
+                Collections.sort(ordersList_ad, new Comparator<Orders_Object>() {
                     public int compare(Orders_Object o1, Orders_Object o2) {
                         return o2.getBasicStartDate().compareTo(o1.getBasicStartDate());
                     }
@@ -1502,7 +1508,8 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
                             return ((Orders_Object) o).getPernar().matches(person_responsible_id);
                         }
                     });*/
-                ordersAdapter = new OrdersAdapter(Orders_Activity1.this, ordersList);
+                filterData(ordersList_ad);
+                ordersAdapter = new OrdersAdapter(Orders_Activity1.this, ordersList_ad);
                 list_recycleview.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager =
                         new LinearLayoutManager(Orders_Activity1.this);
@@ -1514,7 +1521,7 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
                 search.setVisibility(View.VISIBLE);
                 list_recycleview.setVisibility(View.VISIBLE);
                 swiperefreshlayout.setVisibility(View.VISIBLE);
-                title_tv.setText(getString(R.string.orders_count, String.valueOf(ordersList.size())));
+                title_tv.setText(getString(R.string.orders_count, String.valueOf(ordersList_ad.size())));
             } else {
                 title_tv.setText(getString(R.string.orders));
                 no_data_layout.setVisibility(View.VISIBLE);
@@ -2065,13 +2072,1008 @@ public class Orders_Activity1 extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
+
     private void filterData(List<Orders_Object> ordersList_ad) {
-        if ((filt_notification_ids != null && !filt_notification_ids.equals(""))){
-          if (filt_priority_ids != null && !filt_priority_ids.equals("")) {
+        if ((filt_notification_ids != null && !filt_notification_ids.equals(""))) {
+            if (filt_priority_ids != null && !filt_priority_ids.equals("")) {
+                if (filt_status_ids != null && !filt_status_ids.equals("")) {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }else
+                {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
             }
+            else
+            {
+                if (filt_status_ids != null && !filt_status_ids.equals("")) {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }else
+                {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderType()
+                                                .matches(filt_selected_notif_ids);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }else {
+            if (filt_priority_ids != null && !filt_priority_ids.equals("")) {
+                if (filt_status_ids != null && !filt_status_ids.equals("")) {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }else
+                {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPriority()
+                                                        .matches(filt_selected_prior_ids);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (filt_status_ids != null && !filt_status_ids.equals("")) {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getOrderStatus()
+                                                        .matches(filt_selected_status_ids);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }else
+                {
+                    if (filt_wckt_ids != null && !filt_wckt_ids.equals("")) {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getWorkCenter()
+                                                        .matches(filt_selected_wckt_ids) ;
+                                    }
+                                });
+                            }
+                        }
+                    }else
+                    {
+                        if (attachment_clicked_status != null &&
+                                !attachment_clicked_status.equals("")) {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status) &&
+                                                ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }else
+                            {
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getAttachment()
+                                                        .matches(attachment_clicked_status);
+                                    }
+                                });
+                            }
+                        }else
+                        {
+                            if (pers_resp_status != null && !pers_resp_status.equals("")) {
+
+                                CollectionUtils.filter(ordersList_ad, new Predicate() {
+                                    @Override
+                                    public boolean evaluate(Object o) {
+                                        return ((Orders_Object) o).getPernar()
+                                                        .matches(person_responsible_id);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
             }
         }
 
 
     }
+}
 
