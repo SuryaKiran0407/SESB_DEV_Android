@@ -415,7 +415,7 @@ public class Isolation_Add_Update_Activity extends AppCompatActivity implements 
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Isolation_Template().Get_Data(Isolation_Add_Update_Activity.this, "", "WCDTL", equipId, funcId);
+           // Response = new Isolation_Template().Get_Data(Isolation_Add_Update_Activity.this, "", "WCDTL", equipId, funcId);
             return null;
         }
 

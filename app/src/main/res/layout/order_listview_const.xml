@@ -12,7 +12,7 @@
     <com.enstrapp.fieldtekpro.Swipe.SwipeRevealLayout
         android:id="@+id/swipe_layout_1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:dragEdge="right"
         app:mode="normal">
 

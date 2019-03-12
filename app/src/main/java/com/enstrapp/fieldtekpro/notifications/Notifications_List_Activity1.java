@@ -655,22 +655,22 @@ public class Notifications_List_Activity1 extends AppCompatActivity implements V
             if (holder.priority_textview.getText().toString().contains("Critical")) {
                 holder.priority_textview.setVisibility(View.VISIBLE);
                 holder.priority_textview.setBackground(getResources()
-                        .getDrawable(R.color.footer_color));
+                        .getDrawable(R.drawable.critical_round));
             } else if (holder.priority_textview.getText().toString().contains("Very")) {
                 holder.priority_textview.setVisibility(View.VISIBLE);
                 holder.priority_textview.setBackground(getResources()
-                        .getDrawable(R.color.footer_color));
+                        .getDrawable(R.drawable.vhigh_round));
             } else if (holder.priority_textview.getText().toString().contains("High")) {
                 holder.priority_textview.setVisibility(View.VISIBLE);
                 holder.priority_textview.setBackground(getResources()
-                        .getDrawable(R.color.dark_grey1));
+                        .getDrawable(R.drawable.high_round));
             } else if (holder.priority_textview.getText().toString().contains("Medium")) {
                 holder.priority_textview.setVisibility(View.VISIBLE);
-                holder.priority_textview.setBackground(getResources().getDrawable(R.color.orange));
+                holder.priority_textview.setBackground(getResources().getDrawable(R.drawable.medium_round));
             } else if (holder.priority_textview.getText().toString().contains("Low")) {
                 holder.priority_textview.setVisibility(View.VISIBLE);
                 holder.priority_textview.setBackground(getResources()
-                        .getDrawable(R.color.dark_grey2));
+                        .getDrawable(R.drawable.low_round));
             } else {
                 holder.priority_textview.setVisibility(View.GONE);
             }

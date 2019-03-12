@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/main_frag">
+    android:id="@+id/main_frag"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/imageView"
@@ -83,7 +84,10 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="300dp"
             android:textColorHint="@color/white"
-            android:layout_height="wrap_content" android:layout_marginTop="10dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/white">
             <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
                 android:id="@+id/password_edittext"
                 android:layout_width="match_parent"

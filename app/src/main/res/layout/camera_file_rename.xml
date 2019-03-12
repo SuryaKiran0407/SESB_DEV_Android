@@ -45,12 +45,12 @@
         android:background="@color/colorPrimary">
 
         <com.enstrapp.fieldtekpro.customfont.Font_Button
-            android:id="@+id/yes_button"
+            android:id="@+id/no_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
-            android:text="@string/yes"
+            android:text="@string/no"
             android:textColor="@color/white"
             android:textSize="14sp"/>
 
@@ -61,12 +61,12 @@
             android:background="@color/white"/>
 
         <com.enstrapp.fieldtekpro.customfont.Font_Button
-            android:id="@+id/no_button"
+            android:id="@+id/yes_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
-            android:text="@string/no"
+            android:text="@string/yes"
             android:textColor="@color/white"
             android:textSize="14sp"/>
         <!-- <Button

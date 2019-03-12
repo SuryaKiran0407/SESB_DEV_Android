@@ -2000,8 +2000,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Response = new Order_Rel().Get_Data(Orders_Activity.this, "",
-                    "X", "RLORD", orderId);
+     //       Response = new Order_Rel().Get_Data(Orders_Activity.this, "",
+                    //"X", "RLORD", orderId);
             return null;
         }
 
