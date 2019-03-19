@@ -113,6 +113,8 @@
     <string name="notification_text_star">*  Notification Short Text</string>
     <string name="notification_text">Notification Text</string>
     <string name="reported_by">Reported By</string>
+    <string name="planning_plant">Planning Plant</string>
+    <string name="maintenance_plant">Maintenance Plant</string>
     <string name="responsible">Responsible</string>
     <string name="user_responsible"> Primary User Responsible</string>
     <string name="equipment_inspection">Equipment Inspection</string>

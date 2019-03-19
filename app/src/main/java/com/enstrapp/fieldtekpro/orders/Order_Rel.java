@@ -110,7 +110,7 @@ public class Order_Rel {
 
                     message = new StringBuffer();
                     try {
-                        if (response.body().getD().getResults().get(0).getEvMessageRe().getResults()!=null) {
+                        if (response.body().getD().getResults().get(0).getEvMessageRe().getResults() != null) {
                             if (response.body().getD().getResults().get(0).getEvMessageRe().getResults() != null && response.body().getD().getResults().get(0).getEvMessageRe().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (Orders_SER.EvMessageRe_Result etMessages_result : response.body().getD().getResults().get(0).getEvMessageRe().getResults()) {
@@ -714,7 +714,7 @@ public class Order_Rel {
                                 if (response.body().getD().getResults().get(0).getEtOrderComponents().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtOrderComponents().getResults().size() > 0) {
                                     ContentValues values = new ContentValues();
-                                    for (Orders_SER.EtOrderComponents_Result etOrderComponents_result :response.body().getD().getResults().get(0).getEtOrderComponents().getResults()) {
+                                    for (Orders_SER.EtOrderComponents_Result etOrderComponents_result : response.body().getD().getResults().get(0).getEtOrderComponents().getResults()) {
                                         values.put("UUID", etOrderComponents_result.getAufnr());
                                         values.put("Aufnr", etOrderComponents_result.getAufnr());
                                         values.put("Vornr", etOrderComponents_result.getVornr());
@@ -743,7 +743,7 @@ public class Order_Rel {
                                         App_db.insert("EtOrderComponents", null, values);
                                         if (etOrderComponents_result.getEtOrderComponentsFields() != null)
                                             if (etOrderComponents_result.getEtOrderComponentsFields().getResults() != null
-                                                    &&etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
+                                                    && etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
                                                 ContentValues ValuesOCf = new ContentValues();
                                                 for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields : etOrderComponents_result.getEtOrderComponentsFields().getResults()) {
                                                     ValuesOCf.put("UUID", etOrderComponents_result.getAufnr());

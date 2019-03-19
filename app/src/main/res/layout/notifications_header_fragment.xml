@@ -2,6 +2,7 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey1">
@@ -402,6 +403,32 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/textInputSideMargins"
+            android:layout_marginStart="@dimen/textInputSideMargins"
+            android:layout_marginTop="@dimen/textInputTopMargin"
+            android:background="@drawable/bluedashborder"
+            android:paddingEnd="@dimen/textInputSidePadd"
+            android:paddingStart="@dimen/textInputSidePadd"
+            android:paddingTop="@dimen/textInputTopPadd"
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                android:id="@+id/plant_tiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:enabled="false"
+                android:hint="@string/maintenance_plant"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/dark_grey2"
+                android:textSize="@dimen/textSize" />
+        </android.support.design.widget.TextInputLayout>
+
         <LinearLayout
             android:id="@+id/plannerGroup_layout"
             android:layout_width="match_parent"
@@ -443,6 +470,31 @@
                 android:src="@drawable/ic_arrow_drop_down_blue_24px" />
         </LinearLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/textInputSideMargins"
+            android:layout_marginStart="@dimen/textInputSideMargins"
+            android:layout_marginTop="@dimen/textInputTopMargin"
+            android:background="@drawable/bluedashborder"
+            android:paddingEnd="@dimen/textInputSidePadd"
+            android:paddingStart="@dimen/textInputSidePadd"
+            android:paddingTop="@dimen/textInputTopPadd"
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+            <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
+                android:id="@+id/iwerk_tiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:enabled="false"
+                android:hint="@string/planning_plant"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/dark_grey2"
+                android:textSize="@dimen/textSize" />
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

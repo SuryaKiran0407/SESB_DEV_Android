@@ -57,7 +57,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             malFunctnStDt_edittext, reqEnDt_edittext, reqStDt_edittext, personResp_edittext,
             primUsrResp_edittext, reportedby_edittext, plannerGroup_edittext, priority_edittext,
             workCenter_edittext, notiftyp_edittext, floc_edittext, flocname_edittext,
-            equipid_edittext, equiptext_edittext;
+            equipid_edittext, equiptext_edittext,iwerk_tiet, plant_tiet;
     int custom_info = 14, longtext = 13, effect = 12, malf_end_date = 11, malf_st_date = 10,
             req_enddate = 9, req_stdate = 8, personResp = 7, planner_group = 6,
             functionlocation_type = 1, equipment_type = 2, barcode_scan = 3, workcenter_type = 4,
@@ -72,7 +72,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             req_stdate_time = "", personresponsible_id = "", personresponsible_text = "",
             priority_type_id = "", priority_type_text = "", workcenter_id = "",
             workcenter_text = "", plannergroup_text = "", plannergroup_id = "", plant_id = "",
-            notification_type_id = "", notification_type_text = "", functionlocation_id = "",
+            notification_type_id = "", notification_type_text = "", functionlocation_id = "",iwerk = "",
             functionlocation_text = "", equipment_id = "", equipment_text = "";
     ImageView notiftype_dropdown_iv, equipmentsearch_imageview, equipmentscan_imageview,
             longtext_imageview;
@@ -133,6 +133,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         notif_Date_edittext = (TextView) rootView.findViewById(R.id.notif_Date_edittext);
         longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
         header_custominfo_button = (Button) rootView.findViewById(R.id.header_custominfo_button);
+        iwerk_tiet = (EditText) rootView.findViewById(R.id.iwerk_tiet);
+        plant_tiet = (EditText) rootView.findViewById(R.id.plant_tiet);
 
         status_til.setVisibility(View.GONE);
         notiftype_dropdown_iv.setVisibility(View.GONE);
@@ -163,7 +165,16 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             equipment_text = nhp.getEquipTxt();
             equipid_edittext.setText(equipment_id);
             equiptext_edittext.setText(equipment_text);
+
             plant_id = nhp.getWerks();
+            iwerk = nhp.getIwerk();
+
+            if (plant_id != null && !plant_id.equals(""))
+                plant_tiet.setText(plant_id);
+
+            if (iwerk != null && !iwerk.equals(""))
+                iwerk_tiet.setText(iwerk);
+
             plannergroup_id = nhp.getIngrp();
             plannergroup_text = nhp.getIngrpName();
             plannerGroup_edittext.setText(plannergroup_id + "-" + plannergroup_text);

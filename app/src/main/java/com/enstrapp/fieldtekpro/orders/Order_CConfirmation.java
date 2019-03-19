@@ -323,8 +323,6 @@ public class Order_CConfirmation {
 
             /*Adding Empty_Al to Arraylist*/
             ArrayList Empty_Al = new ArrayList<>();
-
-
             OrdrCreateSer ordrSer = new OrdrCreateSer();
             OrderPartialConfirm_Ser ordrpSer = new OrderPartialConfirm_Ser();
             if (type.equals("pc")) {
@@ -1030,7 +1028,7 @@ public class Order_CConfirmation {
 
                                         if (etOrderComponents_result.getEtOrderComponentsFields() != null)
                                             if (etOrderComponents_result.getEtOrderComponentsFields().getResults() != null
-                                                    &&etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
+                                                    && etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
                                                 ContentValues ValuesOCf = new ContentValues();
                                                 for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields : etOrderComponents_result.getEtOrderComponentsFields().getResults()) {
                                                     ValuesOCf.put("UUID", etOrderComponents_result.getAufnr());
