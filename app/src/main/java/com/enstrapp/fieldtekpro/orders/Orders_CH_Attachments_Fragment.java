@@ -426,14 +426,15 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                                             attachments_list.add(notif_etDocs_parcelable);
                                             try {
                                                 App_db.beginTransaction();
-                                                String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id) values(?,?,?,?,?);";
+                                                String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id,doctype) values(?,?,?,?,?,?);";
                                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                                 statement11.clearBindings();
-                                                statement11.bindString(1, "");
+                                                statement11.bindString(1,filee_name);
                                                 statement11.bindString(2, ma.ohp.getOrdrId());
                                                 statement11.bindString(3, "Orders");
-                                                statement11.bindString(4, image_Path);
-                                                statement11.bindString(5, "");
+                                                statement11.bindString(4, encodedImage);
+                                                statement11.bindString(5, mimeType);
+                                                statement11.bindString(6, fileExtension);
                                                 statement11.execute();
                                                 App_db.setTransactionSuccessful();
                                                 App_db.endTransaction();
@@ -503,14 +504,15 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                                     attachments_list.add(notif_etDocs_parcelable);
                                     try {
                                         App_db.beginTransaction();
-                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id) values(?,?,?,?,?);";
+                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id,doctype) values(?,?,?,?,?,?);";
                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                         statement11.clearBindings();
-                                        statement11.bindString(1, "");
+                                        statement11.bindString(1,filee_name);
                                         statement11.bindString(2, ma.ohp.getOrdrId());
                                         statement11.bindString(3, "Orders");
-                                        statement11.bindString(4, file_path);
-                                        statement11.bindString(5, "");
+                                        statement11.bindString(4, encodedImage);
+                                        statement11.bindString(5, mimeType);
+                                        statement11.bindString(6, fileExtension);
                                         statement11.execute();
                                         App_db.setTransactionSuccessful();
                                         App_db.endTransaction();
@@ -567,14 +569,15 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                                     attachments_list.add(notif_etDocs_parcelable);
                                     try {
                                         App_db.beginTransaction();
-                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id) values(?,?,?,?,?);";
+                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id,doctype) values(?,?,?,?,?,?);";
                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                         statement11.clearBindings();
-                                        statement11.bindString(1, "");
+                                        statement11.bindString(1,filee_name);
                                         statement11.bindString(2, ma.ohp.getOrdrId());
                                         statement11.bindString(3, "Orders");
-                                        statement11.bindString(4, path);
-                                        statement11.bindString(5, "");
+                                        statement11.bindString(4, encodedImage);
+                                        statement11.bindString(5, mimeType);
+                                        statement11.bindString(6, fileExtension);
                                         statement11.execute();
                                         App_db.setTransactionSuccessful();
                                         App_db.endTransaction();
@@ -641,6 +644,7 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                 content_textview = (TextView) view.findViewById(R.id.content_textview);
                 download_imageview = (ImageView) view.findViewById(R.id.download_imageview);
                 layout = (LinearLayout) view.findViewById(R.id.layout);
+
             }
         }
 
@@ -670,14 +674,15 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                 holder.file_size_textview.setVisibility(View.VISIBLE);
             }
             holder.content_textview.setText(nep.getContentX());
-            String object_type = nep.getObjtype();
+            holder.file_objtype_textview.setVisibility(View.GONE);
+            /*String object_type = nep.getObjtype();
             if (object_type.equalsIgnoreCase("EQUI")) {
                 holder.file_objtype_textview.setText("Equipment");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.footer_color));
             } else {
                 holder.file_objtype_textview.setText("Notification");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.dark_green));
-            }
+            }*/
             String size = nep.getFsize();
             int size_mb = 0;
             if (size != null && !size.equals("")) {

@@ -121,7 +121,6 @@ public class Order_Create_Change {
             map.put("Content-Type", "application/json");
             /*For Send Data in POST Header*/
 
-
             ArrayList<OrdrHdrSer> ItOrderHeader_Al = new ArrayList<>();
             ArrayList<OrdrOprtnSer> ItOrderOperations_Al = new ArrayList<>();
             ArrayList<OrdrMatrlSer> ItOrderComponents_Al = new ArrayList<>();
@@ -238,7 +237,6 @@ public class Order_Create_Change {
                 }
                 /*Adding Order Longtext to Arraylist*/
 
-
                 if (ohp.getOrdrOprtnPrcbls() != null)
                     for (int i = 0; i < ohp.getOrdrOprtnPrcbls().size(); i++) {
                         OrdrOprtnSer oprtnSer = new OrdrOprtnSer();
@@ -295,7 +293,6 @@ public class Order_Create_Change {
                             }
                         }
                         /*Adding Operation Longtext to Arraylist*/
-
 
                         operation_custominfo = new ArrayList<>();
                         String operation_id = ohp.getOrdrOprtnPrcbls().get(i).getOprtnId();
@@ -908,9 +905,9 @@ public class Order_Create_Change {
                     if (cursor1 != null && cursor1.getCount() > 0) {
                         if (cursor1.moveToFirst()) {
                             do {
-                                String path = cursor1.getString(4);
+                               /* String path = cursor1.getString(4);
                                 final File file = new File(path);
-                                if (file.exists()) {
+                               if (file.exists()) {
                                     Uri selectedUri = Uri.fromFile(file);
                                     final String filee_name = file.getName();
                                     final String fileExtension = MimeTypeMap.getFileExtensionFromUrl(selectedUri.toString());
@@ -926,20 +923,21 @@ public class Order_Create_Change {
                                     }
                                     byteArray = bos.toByteArray();
                                     final String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
+                                }*/
                                     OrdrDocSer ods = new OrdrDocSer();
                                     ods.setZobjid(id);
                                     ods.setZdoctype("Q");
                                     ods.setZdoctypeItem("QH");
-                                    ods.setFilename(filee_name);
-                                    ods.setFiletype(fileExtension);
-                                    ods.setFsize(String.valueOf(file_size));
-                                    ods.setContent(encodedImage);
+                                    ods.setFilename(cursor1.getString(1));
+                                    ods.setFiletype(cursor1.getString(5));
+                                    ods.setFsize(String.valueOf(""));
+                                    ods.setContent(cursor1.getString(4));
                                     ods.setDocId("");
                                     ods.setDocType("");
                                     ods.setObjtype("BUS2038");
                                     ItDocs_Al.add(ods);
-                                }
+
+
                             }
                             while (cursor1.moveToNext());
                         }
@@ -1168,7 +1166,7 @@ public class Order_Create_Change {
                             if (response.body().getD().getEtOrderHeader().getResults() != null && response.body().getD().getEtOrderHeader().getResults().size() > 0) {
                                 ContentValues values = new ContentValues();
                                 for (Orders_SER.EtOrderHeader_Result etOrderHeader_result : response.body().getD().getEtOrderHeader().getResults()) {
-                                    values.put("UUID", " ");
+                                   // values.put("UUID", " ");
                                     values.put("Aufnr", etOrderHeader_result.getAufnr());
                                     App_db.insert("EtWcmWdItemData", null, values);
 
@@ -1429,9 +1427,10 @@ public class Order_Create_Change {
                                             values.put("Filetype", etDocs_result.getFiletype());
                                             values.put("Fsize", etDocs_result.getFsize());
                                             values.put("Content", etDocs_result.getContent());
-                                            values.put("DocId", etDocs_result.getDocID());
+                                            values.put("DocID", etDocs_result.getDocID());
                                             values.put("DocType", etDocs_result.getDocType());
                                             values.put("Objtype", etDocs_result.getObjtype());
+                                            values.put("Contentx", etDocs_result.getContentX());
                                             App_db.insert("DUE_ORDERS_EtDocs", null, values);
                                         }
                                     }
@@ -1822,6 +1821,7 @@ public class Order_Create_Change {
             }
 
         } catch (Exception e) {
+            Log.v("REsponse",""+e.getMessage());
 
         }
         /*Reading Data by using FOR Loop*/

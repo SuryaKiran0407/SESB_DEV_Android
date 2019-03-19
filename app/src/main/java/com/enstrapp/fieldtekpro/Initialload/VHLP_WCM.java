@@ -505,7 +505,7 @@ public class VHLP_WCM {
 
                         App_db.setTransactionSuccessful();
                         Get_Response = "success";
-                    }finally {
+                    } finally {
                         App_db.endTransaction();
                     }
                 }

@@ -26,7 +26,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -138,6 +137,7 @@ public class Orders {
     private static final String KEY_Orders_Attachments_OBJECTTYPE = "Object_type";
     private static final String KEY_Orders_Attachments_file_path = "file_path";
     private static final String KEY_Orders_Attachments_jsaid = "jsa_id";
+    private static final String KEY_Orders_Attachments_doctype = "doctype";
     /*  Order TKConfirm Attachments */
 
     /*EtImrg Table and Fields Names */
@@ -730,7 +730,8 @@ public class Orders {
                         + KEY_Orders_Attachments_OBJECTID + " TEXT,"
                         + KEY_Orders_Attachments_OBJECTTYPE + " TEXT,"
                         + KEY_Orders_Attachments_file_path + " TEXT,"
-                        + KEY_Orders_Attachments_jsaid + " TEXT"
+                        + KEY_Orders_Attachments_jsaid + " TEXT,"
+                        + KEY_Orders_Attachments_doctype + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_Orders_Attachments);
                 /* Orders TKConfirm Attachments */
@@ -1290,16 +1291,15 @@ public class Orders {
             String credentials = username + ":" + password;
             final String basic = "Basic " + Base64
                     .encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-            Call<ResponseBody> call = service.getORDERDetails(url_link, basic, map);
-            Response<ResponseBody> response = call.execute();
+            Call<Orders_SER> call = service.getORDERDetails(url_link, basic, map);
+            Response<Orders_SER> response = call.execute();
             int response_status_code = response.code();
             if (response_status_code == 200) {
-                Get_Response = response.body().string();
-              /*  if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                         App_db.beginTransaction();
                         try {
-                            *//*EtOrderHeader*//*
+                            /*EtOrderHeader*/
                             if (response.body().getD().getResults().get(0).getEtOrderHeader() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderHeader().getResults() != null
                                         && response.body().getD().getResults().get(0).getEtOrderHeader().getResults().size() > 0) {
@@ -1385,7 +1385,7 @@ public class Orders {
 
                                     }
                                 }
-                            *//*EtOrderOperations*//*
+                            /*EtOrderOperations*/
                             if (response.body().getD().getResults().get(0).getEtOrderOperations() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderOperations().getResults() != null
                                         && response.body().getD().getResults().get(0).getEtOrderOperations().getResults().size() > 0) {
@@ -1447,7 +1447,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtOrderLongtext*//*
+                            /*EtOrderLongtext*/
                             if (response.body().getD().getResults().get(0).getEtOrderLongtext() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderLongtext().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtOrderLongtext().getResults().size() > 0) {
@@ -1463,7 +1463,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtOrderOlist*//*
+                            /*EtOrderOlist*/
                             if (response.body().getD().getResults().get(0).getEtOrderOlist() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderOlist().getResults() != null
                                         && response.body().getD().getResults().get(0).getEtOrderOlist().getResults().size() > 0) {
@@ -1488,7 +1488,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtOrderStatus*//*
+                            /*EtOrderStatus*/
                             if (response.body().getD().getResults().get(0).getEtOrderStatus() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderStatus().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtOrderStatus().getResults().size() > 0) {
@@ -1513,7 +1513,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtDocs*//*
+                            /*EtDocs*/
                             if (response.body().getD().getResults().get(0).getEtDocs() != null)
                                 if (response.body().getD().getResults().get(0).getEtDocs().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtDocs().getResults().size() > 0) {
@@ -1528,14 +1528,15 @@ public class Orders {
                                         values.put("Filetype", etDocs_result.getFiletype());
                                         values.put("Fsize", etDocs_result.getFsize());
                                         values.put("Content", etDocs_result.getContent());
-                                        values.put("DocId", etDocs_result.getDocID());
+                                        values.put("DocID", etDocs_result.getDocID());
                                         values.put("DocType", etDocs_result.getDocType());
                                         values.put("Objtype", etDocs_result.getObjtype());
+                                        values.put("Contentx", etDocs_result.getContentX());
                                         App_db.insert("DUE_ORDERS_EtDocs", null, values);
                                     }
                                 }
 
-                            *//*EtWcmWwData*//*
+                            /*EtWcmWwData*/
                             if (response.body().getD().getResults().get(0).getEtWcmWwData() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWwData().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtWcmWwData().getResults().size() > 0) {
@@ -1577,7 +1578,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtWcmWaData*//*
+                            /*EtWcmWaData*/
                             if (response.body().getD().getResults().get(0).getEtWcmWaData() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWaData().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtWcmWaData().getResults().size() > 0) {
@@ -1621,7 +1622,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtWcmWaChkReq*//*
+                            /*EtWcmWaChkReq*/
                             if (response.body().getD().getResults().get(0).getEtWcmWaChkReq() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWaChkReq().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtWcmWaChkReq().getResults().size() > 0) {
@@ -1643,7 +1644,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtWcmWdData*//*
+                            /*EtWcmWdData*/
                             if (response.body().getD().getResults().get(0).getEtWcmWdData() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWdData().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtWcmWdData().getResults().size() > 0) {
@@ -1683,7 +1684,7 @@ public class Orders {
                                         values.put("Begtx", wcmWdData_result.getBegtx());
                                         App_db.insert("EtWcmWdData", null, values);
 
-                                        *//*EtWcmWdDataTagtext*//*
+                                        /*EtWcmWdDataTagtext*/
                                         if (wcmWdData_result.getEtWcmWdDataTagtext() != null)
                                             if (wcmWdData_result.getEtWcmWdDataTagtext().getResults() != null
                                                     && wcmWdData_result.getEtWcmWdDataTagtext().getResults().size() > 0) {
@@ -1700,7 +1701,7 @@ public class Orders {
                                                 }
                                             }
 
-                                        *//*EtWcmWdDataUntagtext*//*
+                                        /*EtWcmWdDataUntagtext*/
                                         if (wcmWdData_result.getEtWcmWdDataUntagtext() != null)
                                             if (wcmWdData_result.getEtWcmWdDataUntagtext().getResults() != null
                                                     && wcmWdData_result.getEtWcmWdDataUntagtext().getResults().size() > 0) {
@@ -1719,7 +1720,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtWcmWdItemData*//*
+                            /*EtWcmWdItemData*/
                             if (response.body().getD().getResults().get(0).getEtWcmWdItemData() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWdItemData().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtWcmWdItemData().getResults().size() > 0) {
@@ -1767,7 +1768,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtWcmWcagns*//*
+                            /*EtWcmWcagns*/
                             if (response.body().getD().getResults().get(0).getEtWcmWcagns() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWcagns().getResults() != null
                                         && response.body().getD().getResults().get(0).getEtWcmWcagns().getResults().size() > 0) {
@@ -1805,7 +1806,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtOrderComponenets*//*
+                            /*EtOrderComponenets*/
                             if (response.body().getD().getResults().get(0).getEtOrderComponents() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderComponents().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtOrderComponents().getResults().size() > 0) {
@@ -1841,7 +1842,7 @@ public class Orders {
 
                                         if (etOrderComponents_result.getEtOrderComponentsFields() != null)
                                             if (etOrderComponents_result.getEtOrderComponentsFields().getResults() != null
-                                                    &&etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
+                                                    && etOrderComponents_result.getEtOrderComponentsFields().getResults().size() > 0) {
                                                 ContentValues ValuesOCf = new ContentValues();
                                                 for (Orders_SER.EtOrderHeaderFields_Result etOrderHeaderFields : etOrderComponents_result.getEtOrderComponentsFields().getResults()) {
                                                     ValuesOCf.put("UUID", etOrderComponents_result.getAufnr());
@@ -1863,7 +1864,7 @@ public class Orders {
                                     }
                                 }
 
-                            *//*EtImrg*//*
+                            /*EtImrg*/
                             if (response.body().getD().getResults().get(0).getEtImrg() != null)
                                 if (response.body().getD().getResults().get(0).getEtImrg().getResults() != null &&
                                         response.body().getD().getResults().get(0).getEtImrg().getResults().size() > 0) {
@@ -1907,7 +1908,7 @@ public class Orders {
                             App_db.endTransaction();
                         }
                     }
-                }*/
+                }
             }
         } catch (Exception ex) {
             Get_Response = "exception";

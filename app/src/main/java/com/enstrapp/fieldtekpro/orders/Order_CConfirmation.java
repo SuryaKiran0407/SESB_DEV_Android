@@ -687,9 +687,10 @@ public class Order_CConfirmation {
                                         values.put("Filetype", etDocs_result.getFiletype());
                                         values.put("Fsize", etDocs_result.getFsize());
                                         values.put("Content", etDocs_result.getContent());
-                                        values.put("DocId", etDocs_result.getDocID());
+                                        values.put("DocID", etDocs_result.getDocID());
                                         values.put("DocType", etDocs_result.getDocType());
                                         values.put("Objtype", etDocs_result.getObjtype());
+                                        values.put("Contentx", etDocs_result.getContentX());
                                         App_db.insert("DUE_ORDERS_EtDocs", null, values);
                                     }
                                 }

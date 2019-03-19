@@ -6,33 +6,31 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Calibration_SER
-{
+public class Calibration_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
 
@@ -43,15 +41,19 @@ public class Calibration_SER
         @SerializedName("EtQudData")
         @Expose
         private EtQudData EtQudData;
+
         public Calibration_SER.EtQudData getEtQudData() {
             return EtQudData;
         }
+
         public void setEtQudData(Calibration_SER.EtQudData etQudData) {
             EtQudData = etQudData;
         }
+
         public EtQinspData getEtQinspData() {
             return etQinspData;
         }
+
         public void setEtQinspData(EtQinspData etQinspData) {
             this.etQinspData = etQinspData;
         }
@@ -60,9 +62,11 @@ public class Calibration_SER
         @SerializedName("EtMessage")
         @Expose
         private EtMessage etMessage;
+
         public EtMessage getEtMessage() {
             return etMessage;
         }
+
         public void setEtMessage(EtMessage etMessage) {
             this.etMessage = etMessage;
         }
@@ -70,83 +74,86 @@ public class Calibration_SER
 
 
     /*For Parsing EtMessage*/
-    public class EtMessage
-    {
+    public class EtMessage {
         @SerializedName("results")
         @Expose
         private List<EtMessage_Result> results = null;
-        public List<EtMessage_Result> getResults()
-        {
+
+        public List<EtMessage_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtMessage_Result> results)
-        {
+
+        public void setResults(List<EtMessage_Result> results) {
             this.results = results;
         }
     }
-    public class EtMessage_Result
-    {
+
+    public class EtMessage_Result {
         @SerializedName("Message")
         @Expose
         private String Message;
         @SerializedName("Resnum")
         @Expose
         private String Resnum;
+
         public String getMessage() {
             return Message;
         }
+
         public void setMessage(String message) {
             Message = message;
         }
+
         public String getResnum() {
             return Resnum;
         }
+
         public void setResnum(String Resnum) {
             this.Resnum = Resnum;
         }
     }
     /*For Parsing EtMessage*/
 
-
-    public class Result
-    {
+    public class Result {
         @SerializedName("EtQinspData")
         @Expose
         private EtQinspData etQinspData;
         @SerializedName("EtQudData")
         @Expose
         private EtQudData EtQudData;
+
         public Calibration_SER.EtQudData getEtQudData() {
             return EtQudData;
         }
+
         public void setEtQudData(Calibration_SER.EtQudData etQudData) {
             EtQudData = etQudData;
         }
+
         public EtQinspData getEtQinspData() {
             return etQinspData;
         }
+
         public void setEtQinspData(EtQinspData etQinspData) {
             this.etQinspData = etQinspData;
         }
     }
 
-
-    public class EtQudData
-    {
+    public class EtQudData {
         @SerializedName("results")
         @Expose
         private List<EtQudData_Result> results = null;
-        public List<EtQudData_Result> getResults()
-        {
+
+        public List<EtQudData_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtQudData_Result> results)
-        {
+
+        public void setResults(List<EtQudData_Result> results) {
             this.results = results;
         }
     }
-    public class EtQudData_Result
-    {
+
+    public class EtQudData_Result {
         @SerializedName("Prueflos")
         @Expose
         private String prueflos;
@@ -359,22 +366,21 @@ public class Calibration_SER
     }
 
 
-    public class EtQinspData
-    {
+    public class EtQinspData {
         @SerializedName("results")
         @Expose
         private List<EtQinspData_Result> results = null;
-        public List<EtQinspData_Result> getResults()
-        {
+
+        public List<EtQinspData_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtQinspData_Result> results)
-        {
+
+        public void setResults(List<EtQinspData_Result> results) {
             this.results = results;
         }
     }
-    public class EtQinspData_Result
-    {
+
+    public class EtQinspData_Result {
         @SerializedName("Aufnr")
         @Expose
         private String aufnr;

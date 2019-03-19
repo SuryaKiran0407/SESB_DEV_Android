@@ -145,41 +145,41 @@ public class Passcode_Fragment extends Fragment {
         click_status = "clicked";
         String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
 
-            String passcode_text = FieldTekPro_SharedPref.getString("passcode_text", null);
-            String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
-            String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
-            String offline = FieldTekPro_SharedPref.getString("offline", null);
-            if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
+        String passcode_text = FieldTekPro_SharedPref.getString("passcode_text", null);
+        String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
+        String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
+        String offline = FieldTekPro_SharedPref.getString("offline", null);
+        if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
             if (text.equals(passcode_text)) {
-                    if (offline != null && offline.equals("X")) {
+                if (offline != null && offline.equals("X")) {
+                    getActivity().finish();
+                    Intent notification_intent = new Intent(getActivity(), DashBoard_Activity.class);
+                    startActivity(notification_intent);
+                    FieldTekPro_SharedPrefeditor.putString("offline", "");
+                    FieldTekPro_SharedPrefeditor.commit();
+                } else {
+                    if (InitialLoad != null && !InitialLoad.equals("")) {
+                        getActivity().finish();
+                        Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
+                        intialload_intent.putExtra("From", "LOAD");
+                        startActivity(intialload_intent);
+                    } else if (Refresh != null && !Refresh.equals("")) {
+                        getActivity().finish();
+                        Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
+                        intialload_intent.putExtra("From", "REFR");
+                        startActivity(intialload_intent);
+                    } else {
                         getActivity().finish();
                         Intent notification_intent = new Intent(getActivity(), DashBoard_Activity.class);
                         startActivity(notification_intent);
-                        FieldTekPro_SharedPrefeditor.putString("offline", "");
-                        FieldTekPro_SharedPrefeditor.commit();
-                    } else {
-                        if (InitialLoad != null && !InitialLoad.equals("")) {
-                            getActivity().finish();
-                            Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-                            intialload_intent.putExtra("From", "LOAD");
-                            startActivity(intialload_intent);
-                        } else if (Refresh != null && !Refresh.equals("")) {
-                            getActivity().finish();
-                            Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-                            intialload_intent.putExtra("From", "REFR");
-                            startActivity(intialload_intent);
-                        } else {
-                            getActivity().finish();
-                            Intent notification_intent = new Intent(getActivity(), DashBoard_Activity.class);
-                            startActivity(notification_intent);
-                        }
                     }
-                } else {
+                }
+            } else {
                 click_status = "";
                 passCodeView.setError(true);
                 Toast.makeText(getActivity(), getString(R.string.wrong_passcode), Toast.LENGTH_LONG).show();
             }
-        }else {
+        } else {
             if (text.equals(passcode_text)) {
                 getActivity().finish();
                 Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);

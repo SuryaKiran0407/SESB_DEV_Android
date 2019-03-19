@@ -752,6 +752,7 @@
             android:layout_marginBottom="20dp"
             android:drawableLeft="@drawable/ic_custominfo_icon"
             android:drawablePadding="5dp"
+            android:elevation="@dimen/cardview_default_elevation"
             android:background="@color/light_grey1"/>
 
 

@@ -35,9 +35,7 @@ import com.enstrapp.fieldtekpro.maintenance_plan.Maintenance_Plan_Activity;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.notifications.Notifications_List_Activity;
-import com.enstrapp.fieldtekpro.notifications.Notifications_List_Activity1;
 import com.enstrapp.fieldtekpro.orders.Orders_Activity;
-import com.enstrapp.fieldtekpro.orders.Orders_Activity1;
 
 import java.util.ArrayList;
 
@@ -71,7 +69,8 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
     private static String DATABASE_NAME = "";
     ArrayList<String> authorization_list = new ArrayList<String>();
     Error_Dialog error_dialog = new Error_Dialog();
-    private String username = "", success = "";;
+    private String username = "", success = "";
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,20 +155,20 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (web[+position].equals("Orders")) {
                     if (authorization_list.contains("ALL")) {
-                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity1.class);
+                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity.class);
                         startActivity(orders_intent);
                     } else if (authorization_list.contains("ORD")) {
-                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity1.class);
+                        Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity.class);
                         startActivity(orders_intent);
                     } else {
                         error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Orders");
                     }
                 } else if (web[+position].equals("Notifications")) {
                     if (authorization_list.contains("ALL")) {
-                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity1.class);
+                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity.class);
                         startActivity(notif_intent);
                     } else if (authorization_list.contains("NOT")) {
-                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity1.class);
+                        Intent notif_intent = new Intent(DashBoard_Activity.this, Notifications_List_Activity.class);
                         startActivity(notif_intent);
                     } else {
                         error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Notifications");

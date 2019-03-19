@@ -21,7 +21,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
     String Calibration_Status = "", JRA_status = "", DeviceToken_status = "",
             Measurementpoint_status = "", Auth_status = "", BOM_status = "", FLOC_Status = "",
             DORD_Status = "", DNOT_Status = "", VHLP_WCM_Status = "", VHLP_Status = "", From = "",
-            transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "",  username = "";
+            transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "", username = "";
     private SQLiteDatabase App_db;
     private String DATABASE_NAME = "";
 
@@ -100,8 +100,8 @@ public class InitialLoad_Activity extends AppCompatActivity {
                 FieldTekPro_SharedPrefeditor.putString(getString(R.string.syncmap_sp), "X");
             else
                 FieldTekPro_SharedPrefeditor.putString(getString(R.string.syncmap_sp), "");
-                FieldTekPro_SharedPrefeditor.commit();
-                new Get_LoadSettings_Data().execute();
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_LoadSettings_Data().execute();
 
         }
     }
@@ -133,11 +133,12 @@ public class InitialLoad_Activity extends AppCompatActivity {
                 FieldTekPro_SharedPrefeditor.putString(getString(R.string.loadsettings_sp), "X");
             else
                 FieldTekPro_SharedPrefeditor.putString(getString(R.string.loadsettings_sp), "");
-                FieldTekPro_SharedPrefeditor.commit();
-                new Set_DeviceToken_Data().execute();
+            FieldTekPro_SharedPrefeditor.commit();
+            new Set_DeviceToken_Data().execute();
 
         }
     }
+
     public class Set_DeviceToken_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -171,6 +172,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
 
         }
     }
+
     public class Get_Auth_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -346,6 +348,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
             new Get_BOM_Data().execute();
         }
     }
+
     public class Get_BOM_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -380,6 +383,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
             new Get_FLOC_Data().execute();
         }
     }
+
     public class Get_FLOC_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -414,6 +418,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
             new Get_Measurepoints_Data().execute();
         }
     }
+
     public class Get_Measurepoints_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -445,6 +450,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
             new Get_Calibration_Data().execute();
         }
     }
+
     public class Get_Calibration_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -472,7 +478,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
             String success = "Y";
             check[0] = FieldTekPro_SharedPref.getString(getString(R.string.syncmap_sp), null);
             check[1] = FieldTekPro_SharedPref.getString(getString(R.string.loadsettings_sp), null);
-           /* check[2] = FieldTekPro_SharedPref.getString(getString(R.string.devicetoken_sp), null);*/
+            /* check[2] = FieldTekPro_SharedPref.getString(getString(R.string.devicetoken_sp), null);*/
             check[2] = "X";
             check[3] = FieldTekPro_SharedPref.getString(getString(R.string.auth_sp), null);
             check[4] = FieldTekPro_SharedPref.getString(getString(R.string.vhlp_sp), null);
@@ -496,7 +502,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
                     FieldTekPro_SharedPrefeditor.putString("FieldTekPro_InitialLoad", "");
                     FieldTekPro_SharedPrefeditor.commit();
                     dashboard_intent.putExtra("success", success);
-                }else
+                } else
                     dashboard_intent.putExtra("success", "Y");
                 startActivity(dashboard_intent);
             } else {

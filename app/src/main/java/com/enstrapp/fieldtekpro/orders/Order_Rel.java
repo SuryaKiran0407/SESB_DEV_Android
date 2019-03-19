@@ -1,4 +1,3 @@
-/*
 package com.enstrapp.fieldtekpro.orders;
 
 import android.content.ContentValues;
@@ -55,9 +54,7 @@ public class Order_Rel {
             DATABASE_NAME = activity.getString(R.string.database_name);
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-            */
-/* Initializing Shared Preferences *//*
-
+            /* Initializing Shared Preferences */
             FieldTekPro_SharedPref = activity
                     .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
@@ -65,9 +62,7 @@ public class Order_Rel {
             password = FieldTekPro_SharedPref.getString("Password", null);
             String webservice_type = FieldTekPro_SharedPref.getString("webservice_type",
                     null);
-            */
-/* Initializing Shared Preferences *//*
-
+            /* Initializing Shared Preferences */
             Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype =" +
                     " ? and Zactivity = ? and Endpoint = ?", new String[]{"W", "RL", "ODATA"});
             if (cursor != null && cursor.getCount() > 0) {
@@ -75,9 +70,7 @@ public class Order_Rel {
                 url_link = cursor.getString(5);
             } else {
             }
-            */
-/* Fetching Device Details like Device ID, Device Serial Number and Device UUID *//*
-
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(),
                     Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
@@ -86,9 +79,7 @@ public class Order_Rel {
             UUID deviceUuid = new UUID(androidId.hashCode(),
                     ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-            */
-/* Fetching Device Details like Device ID, Device Serial Number and Device UUID *//*
-
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
             Map<String, String> map = new HashMap<>();
             map.put("IvUser", username.toUpperCase().toString());
@@ -178,9 +169,7 @@ public class Order_Rel {
                     }
                 }
                 if (success) {
-                    */
-/*Reading and Inserting Data into Database Table for EtOrderHeader UUID*//*
-
+                    /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
                     if (response.body().getD().getResults().get(0).getEtOrderHeader().getResults() != null) {
                         if (response.body().getD().getResults().get(0).getEtOrderHeader().getResults() != null && response.body().getD().getResults().get(0).getEtOrderHeader().getResults().size() > 0) {
                             ContentValues values = new ContentValues();
@@ -192,15 +181,11 @@ public class Order_Rel {
                             }
                         }
                     }
-                    */
-/*Reading and Inserting Data into Database Table for EtOrderHeader UUID*//*
-
+                    /*Reading and Inserting Data into Database Table for EtOrderHeader UUID*/
 
                     App_db.beginTransaction();
 
-                    */
-/*Reading and Inserting Data into Database Table for EtOrderHeader*//*
-
+                    /*Reading and Inserting Data into Database Table for EtOrderHeader*/
                     try {
                         try {
                             if (response.body().getD().getResults().get(0).getEtOrderHeader().getResults() != null)
@@ -271,14 +256,10 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderHeader*//*
+                        /*Reading and Inserting Data into Database Table for EtOrderHeader*/
 
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderOperations*//*
-
+                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtOrderOperations().getResults() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderOperations().getResults() != null
@@ -322,14 +303,10 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderOperations*//*
+                        /*Reading and Inserting Data into Database Table for EtOrderOperations*/
 
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderLongtext*//*
-
+                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
                         try {
 
                             if (response.body().getD().getResults().get(0).getEtOrderLongtext().getResults() != null)
@@ -348,13 +325,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderLongtext*//*
+                        /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderOlist*//*
-
+                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtOrderOlist().getResults() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderOlist().getResults() != null
@@ -381,13 +354,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderOlist*//*
+                        /*Reading and Inserting Data into Database Table for EtOrderOlist*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderStatus*//*
-
+                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtOrderStatus() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderStatus().getResults() != null &&
@@ -414,13 +383,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderStatus*//*
+                        /*Reading and Inserting Data into Database Table for EtOrderStatus*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtDocs*//*
-
+                        /*Reading and Inserting Data into Database Table for EtDocs*/
                         try {
 
                             if (response.body().getD().getResults().get(0).getEtDocs().getResults() != null)
@@ -436,22 +401,19 @@ public class Order_Rel {
                                         values.put("Filetype", etDocs_result.getFiletype());
                                         values.put("Fsize", etDocs_result.getFsize());
                                         values.put("Content", etDocs_result.getContent());
-                                        values.put("DocId", etDocs_result.getDocID());
+                                        values.put("DocID", etDocs_result.getDocID());
                                         values.put("DocType", etDocs_result.getDocType());
                                         values.put("Objtype", etDocs_result.getObjtype());
+                                        values.put("Contentx", etDocs_result.getContentX());
                                         App_db.insert("DUE_ORDERS_EtDocs", null, values);
                                     }
                                 }
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtDocs*//*
+                        /*Reading and Inserting Data into Database Table for EtDocs*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWwData*//*
-
+                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtWcmWwData().getResults() != null)
                                 if (response.body().getD().getEtWcmWwData().getResults() != null &&
@@ -495,13 +457,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWwData*//*
+                        /*Reading and Inserting Data into Database Table for EtWcmWwData*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWaData*//*
-
+                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtWcmWaData() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWaData().getResults() != null &&
@@ -547,13 +505,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWaData*//*
+                        /*Reading and Inserting Data into Database Table for EtWcmWaData*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWaChkReq*//*
-
+                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtWcmWaChkReq().getResults() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWaChkReq().getResults() != null &&
@@ -578,13 +532,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWaChkReq*//*
+                        /*Reading and Inserting Data into Database Table for EtWcmWaChkReq*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWdData*//*
-
+                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtWcmWdData().getResults() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWdData().getResults() != null &&
@@ -624,9 +574,7 @@ public class Order_Rel {
                                         values.put("Begtx", wcmWdData_result.getBegtx());
                                         App_db.insert("EtWcmWdData", null, values);
 
-                                        */
-/*EtWcmWdDataTagtext*//*
-
+                                        /*EtWcmWdDataTagtext*/
                                         if (wcmWdData_result.getEtWcmWdDataTagtext() != null)
                                             if (wcmWdData_result.getEtWcmWdDataTagtext().getResults() != null
                                                     && wcmWdData_result.getEtWcmWdDataTagtext().getResults().size() > 0) {
@@ -643,9 +591,7 @@ public class Order_Rel {
                                                 }
                                             }
 
-                                        */
-/*EtWcmWdDataUntagtext*//*
-
+                                        /*EtWcmWdDataUntagtext*/
                                         if (wcmWdData_result.getEtWcmWdDataUntagtext() != null)
                                             if (wcmWdData_result.getEtWcmWdDataUntagtext().getResults() != null
                                                     && wcmWdData_result.getEtWcmWdDataUntagtext().getResults().size() > 0) {
@@ -666,13 +612,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWdData*//*
+                        /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWdItemData*//*
-
+                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtWcmWdItemData() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWdItemData().getResults() != null &&
@@ -722,13 +664,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWdItemData*//*
+                        /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWcagns*//*
-
+                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtWcmWcagns() != null)
                                 if (response.body().getD().getResults().get(0).getEtWcmWcagns().getResults() != null
@@ -768,13 +706,9 @@ public class Order_Rel {
                         } catch (Exception e) {
 
                         }
-                        */
-/*Reading and Inserting Data into Database Table for EtWcmWcagns*//*
+                        /*Reading and Inserting Data into Database Table for EtWcmWcagns*/
 
-
-                        */
-/*Reading and Inserting Data into Database Table for EtOrderComponents*//*
-
+                        /*Reading and Inserting Data into Database Table for EtOrderComponents*/
                         try {
                             if (response.body().getD().getResults().get(0).getEtOrderComponents() != null)
                                 if (response.body().getD().getResults().get(0).getEtOrderComponents().getResults() != null &&
@@ -839,12 +773,8 @@ public class Order_Rel {
                     } finally {
                         App_db.endTransaction();
                     }
-                    */
-/*Reading and Inserting Data into Database Table for EtOrderComponents*//*
-
-                    */
-/*Reading Data by using FOR Loop*//*
-
+                    /*Reading and Inserting Data into Database Table for EtOrderComponents*/
+                    /*Reading Data by using FOR Loop*/
                 } else {
                     Get_Response = activity.getString(R.string.relordr_unable);
                 }
@@ -858,4 +788,3 @@ public class Order_Rel {
         return Get_Response;
     }
 }
-*/

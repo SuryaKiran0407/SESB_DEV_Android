@@ -1285,259 +1285,127 @@ public class VHLP {
                                     }
                                 }
 
-
-
-                                    /*Reading and Inserting Data into Database Table for EtNotifCodes*//*
-                                    if (response.body().getD().getResults().get(0).getEtNotifCodes() != null)
-                                        if (response.body().getD().getResults().get(0).getEtNotifCodes().getResults() != null
-                                                && response.body().getD().getResults().get(0).getEtNotifCodes().getResults().size() > 0) {
-                                            ContentValues values = new ContentValues();
-                                            for (VHLP_SER.EtNotifCodes_Result etNotifCodes_result : response.body().getD().getResults()
-                                                    .get(0).getEtNotifCodes().getResults()) {
-                                                values.put("NotifType", etNotifCodes_result.getNotifType());
-                                                values.put("Rbnr", etNotifCodes_result.getRbnr());
-
-
-                                                if (etNotifCodes_result.getItemCodes() != null)
-                                                    if (etNotifCodes_result.getItemCodes().getResults() != null
-                                                            && etNotifCodes_result.getItemCodes().getResults().size() > 0) {
-                                                        ContentValues valuesICode = new ContentValues();
-                                                        for (VHLP_SER.ItemCodes_Result itemCodes_result : etNotifCodes_result.getItemCodes().getResults()) {
-                                                            values.put("Codegruppe", itemCodes_result.getCodegruppe());
-                                                            values.put("Kurztext", itemCodes_result.getKurztext());
-                                                            if (itemCodes_result.getICodes() != null)
-                                                                if (itemCodes_result.getICodes().getResults() != null
-                                                                        && itemCodes_result.getICodes().getResults().size() > 0) {
-                                                                    ContentValues valuesCodes = new ContentValues();
-                                                                    for (VHLP_SER.Codes_Result codes_result : itemCodes_result.getICodes().getResults()) {
-                                                                        values.put("Code", codes_result.getCode());
-                                                                        values.put("Kurztext1", codes_result.getKurztext1());
-
-                                                                    }
-                                                                }
-
-                                                        }
-                                                        App_db.insert("Get_NOTIFCODES_ItemCodes", null, values);
-                                                    }
-
-                                                if (etNotifCodes_result.getCauseCodes() != null)
-                                                    if (etNotifCodes_result.getCauseCodes().getResults() != null
-                                                            && etNotifCodes_result.getCauseCodes().getResults().size() > 0) {
-                                                        ContentValues valuesCCode = new ContentValues();
-                                                        for (VHLP_SER.CauseCodes_Result causeCodes_result : etNotifCodes_result.getCauseCodes().getResults()) {
-                                                            values.put("Codegruppe", causeCodes_result.getCodegruppe());
-                                                            values.put("Kurztext", causeCodes_result.getKurztext());
-                                                            if (causeCodes_result.getICodes() != null)
-                                                                if (causeCodes_result.getICodes().getResults() != null
-                                                                        && causeCodes_result.getICodes().getResults().size() > 0) {
-                                                                    ContentValues valuesCodes = new ContentValues();
-                                                                    for (VHLP_SER.Codes_Result codes_result : causeCodes_result.getICodes().getResults()) {
-                                                                        values.put("Code", codes_result.getCode());
-                                                                        values.put("Kurztext1", codes_result.getKurztext1());
-
-                                                                    }
-                                                                }
-                                                            App_db.insert("Get_NOTIFCODES_CauseCodes", null, values);
-                                                        }
-
-                                                    }
-
-                                                if (etNotifCodes_result.getObjectCodes() != null)
-                                                    if (etNotifCodes_result.getObjectCodes().getResults() != null
-                                                            && etNotifCodes_result.getObjectCodes().getResults().size() > 0) {
-                                                        ContentValues valuesOCode = new ContentValues();
-                                                        for (VHLP_SER.ObjectCodes_Result objectCodes_result : etNotifCodes_result.getObjectCodes().getResults()) {
-                                                            values.put("Codegruppe", objectCodes_result.getCodegruppe());
-                                                            values.put("Kurztext", objectCodes_result.getKurztext());
-                                                            if (objectCodes_result.getICodes() != null)
-                                                                if (objectCodes_result.getICodes().getResults() != null
-                                                                        && objectCodes_result.getICodes().getResults().size() > 0) {
-                                                                    ContentValues valuesCodes = new ContentValues();
-                                                                    for (VHLP_SER.Codes_Result codes_result : objectCodes_result.getICodes().getResults()) {
-                                                                        values.put("Code", codes_result.getCode());
-                                                                        values.put("Kurztext1", codes_result.getKurztext1());
-
-                                                                    }
-                                                                }
-                                                            App_db.insert("Get_NOTIFCODES_ObjectCodes", null, values);
-                                                        }
-                                                    }
-
-                                                if (etNotifCodes_result.getActCodes() != null)
-                                                    if (etNotifCodes_result.getActCodes().getResults() != null
-                                                            && etNotifCodes_result.getActCodes().getResults().size() > 0) {
-                                                        ContentValues valuesACode = new ContentValues();
-                                                        for (VHLP_SER.ActCodes_Result actCodes_result : etNotifCodes_result.getActCodes().getResults()) {
-                                                            values.put("Codegruppe", actCodes_result.getCodegruppe());
-                                                            values.put("Kurztext", actCodes_result.getKurztext());
-                                                            if (actCodes_result.getACall() != null)
-                                                                if (actCodes_result.getACall().getResults() != null
-                                                                        && actCodes_result.getACall().getResults().size() > 0) {
-                                                                    ContentValues valuesCodes = new ContentValues();
-                                                                    for (VHLP_SER.Codes_Result codes_result : actCodes_result.getACall().getResults()) {
-                                                                        values.put("Code", codes_result.getCode());
-                                                                        values.put("Kurztext1", codes_result.getKurztext1());
-
-                                                                    }
-                                                                }
-                                                            App_db.insert("Get_NOTIFCODES_ActCodes", null, values);
-                                                        }
-                                                    }
-
-                                                if (etNotifCodes_result.getTaskCodes() != null)
-                                                    if (etNotifCodes_result.getTaskCodes().getResults() != null
-                                                            && etNotifCodes_result.getTaskCodes().getResults().size() > 0) {
-                                                        ContentValues valuesTCode = new ContentValues();
-                                                        for (VHLP_SER.TaskCodes_Result taskCodes_result : etNotifCodes_result.getTaskCodes().getResults()) {
-                                                            valuesTCode.put("Codegruppe", taskCodes_result.getCodegruppe());
-                                                            valuesTCode.put("Kurztext", taskCodes_result.getKurztext());
-                                                            if (taskCodes_result.getACall() != null)
-                                                                if (taskCodes_result.getACall().getResults() != null
-                                                                        && taskCodes_result.getACall().getResults().size() > 0) {
-                                                                    ContentValues valuesCodes = new ContentValues();
-                                                                    for (VHLP_SER.Codes_Result codes_result : taskCodes_result.getACall().getResults()) {
-                                                                        valuesTCode.put("Code", codes_result.getCode());
-                                                                        valuesTCode.put("Kurztext1", codes_result.getKurztext1());
-
-                                                                    }
-                                                                }
-                                                            App_db.insert("Get_NOTIFCODES_TaskCodes", null, valuesTCode);
-                                                        }
-                                                    }
-                                            }
-
-                                        }*/
-
-                                    /*Reading and Inserting Data into Database Table for EtNotifPriority*/
-                                    if (response.body().getD().getResults().get(0).getEtNotifPriority() != null)
-                                        if (response.body().getD().getResults().get(0).getEtNotifPriority().getResults() != null
-                                                && response.body().getD().getResults().get(0).getEtNotifPriority().getResults().size() > 0) {
-                                            ContentValues values = new ContentValues();
-                                            for (VHLP_SER.EtNotifPriority_Result etNotifPriority_result : response.body().getD().getResults()
-                                                    .get(0).getEtNotifPriority().getResults()) {
-                                                values.put("Priok", etNotifPriority_result.getPriok());
-                                                values.put("Priokx", etNotifPriority_result.getPriokx());
-                                                App_db.insert("GET_NOTIFICATION_PRIORITY", null, values);
-                                            }
+                                /*Reading and Inserting Data into Database Table for EtNotifPriority*/
+                                if (response.body().getD().getResults().get(0).getEtNotifPriority() != null)
+                                    if (response.body().getD().getResults().get(0).getEtNotifPriority().getResults() != null
+                                            && response.body().getD().getResults().get(0).getEtNotifPriority().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (VHLP_SER.EtNotifPriority_Result etNotifPriority_result : response.body().getD().getResults()
+                                                .get(0).getEtNotifPriority().getResults()) {
+                                            values.put("Priok", etNotifPriority_result.getPriok());
+                                            values.put("Priokx", etNotifPriority_result.getPriokx());
+                                            App_db.insert("GET_NOTIFICATION_PRIORITY", null, values);
                                         }
+                                    }
 
-                                    /*Reading and Inserting Data into Database Table for EtNotifTypes*/
-                                    if (response.body().getD().getResults().get(0).getEtNotifTypes() != null)
-                                        if (response.body().getD().getResults().get(0).getEtNotifTypes().getResults() != null
-                                                && response.body().getD().getResults().get(0).getEtNotifTypes().getResults().size() > 0) {
-                                            ContentValues values = new ContentValues();
-                                            for (VHLP_SER.EtNotifTypes_Result etNotifTypes_result : response.body().getD().getResults()
-                                                    .get(0).getEtNotifTypes().getResults()) {
-                                                values.put("Qmart", etNotifTypes_result.getQmart());
-                                                values.put("Qmartx", etNotifTypes_result.getQmartx());
-                                                App_db.insert("GET_NOTIFICATION_TYPES", null, values);
-                                            }
+                                /*Reading and Inserting Data into Database Table for EtNotifTypes*/
+                                if (response.body().getD().getResults().get(0).getEtNotifTypes() != null)
+                                    if (response.body().getD().getResults().get(0).getEtNotifTypes().getResults() != null
+                                            && response.body().getD().getResults().get(0).getEtNotifTypes().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (VHLP_SER.EtNotifTypes_Result etNotifTypes_result : response.body().getD().getResults()
+                                                .get(0).getEtNotifTypes().getResults()) {
+                                            values.put("Qmart", etNotifTypes_result.getQmart());
+                                            values.put("Qmartx", etNotifTypes_result.getQmartx());
+                                            App_db.insert("GET_NOTIFICATION_TYPES", null, values);
                                         }
-                                    /*Reading and Inserting Data into Database Table for EtNotifTypes*/
+                                    }
+                                /*Reading and Inserting Data into Database Table for EtNotifTypes*/
 
 
-                                    /*Reading and Inserting Data into Database Table for EtRevnr*/
-                                    if (response.body().getD().getResults().get(0).getEtRevnr() != null)
-                                        if (response.body().getD().getResults().get(0).getEtRevnr().getResults() != null
-                                                && response.body().getD().getResults().get(0).getEtRevnr().getResults().size() > 0) {
-                                            ContentValues values = new ContentValues();
-                                            for (VHLP_SER.EtRevnr_Result etRevnr_result : response.body().getD().getResults()
-                                                    .get(0).getEtRevnr().getResults()) {
-                                                values.put("Iwerk", etRevnr_result.getIwerk());
-                                                values.put("Revnr", etRevnr_result.getRevnr());
-                                                values.put("Revtx", etRevnr_result.getRevtx());
-                                                App_db.insert("EtRevnr", null, values);
-                                            }
+                                /*Reading and Inserting Data into Database Table for EtRevnr*/
+                                if (response.body().getD().getResults().get(0).getEtRevnr() != null)
+                                    if (response.body().getD().getResults().get(0).getEtRevnr().getResults() != null
+                                            && response.body().getD().getResults().get(0).getEtRevnr().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (VHLP_SER.EtRevnr_Result etRevnr_result : response.body().getD().getResults()
+                                                .get(0).getEtRevnr().getResults()) {
+                                            values.put("Iwerk", etRevnr_result.getIwerk());
+                                            values.put("Revnr", etRevnr_result.getRevnr());
+                                            values.put("Revtx", etRevnr_result.getRevtx());
+                                            App_db.insert("EtRevnr", null, values);
                                         }
-                                    /*Reading and Inserting Data into Database Table for EtRevnr*/
+                                    }
+                                /*Reading and Inserting Data into Database Table for EtRevnr*/
 
-                                    /*Reading and Inserting Data into Database Table for EtWbs*/
-                                    if (response.body().getD().getResults().get(0).getEtWbs() != null)
-                                        if (response.body().getD().getResults().get(0).getEtWbs().getResults() != null
-                                                && response.body().getD().getResults().get(0).getEtWbs().getResults().size() > 0) {
-                                            ContentValues values = new ContentValues();
-                                            for (VHLP_SER.EtWbs_Result etWbs_result : response.body().getD().getResults()
-                                                    .get(0).getEtWbs().getResults()) {
-                                                values.put("Iwerk", etWbs_result.getIwerk());
-                                                values.put("Gsber", etWbs_result.getGsber());
-                                                values.put("Posid", etWbs_result.getPosid());
-                                                values.put("Poski", etWbs_result.getPoski());
-                                                values.put("Post1", etWbs_result.getPost1());
-                                                values.put("Pspnr", etWbs_result.getPspnr());
-                                                values.put("Pspid", etWbs_result.getPspid());
-                                                App_db.insert("EtWbs", null, values);
-                                            }
+                                /*Reading and Inserting Data into Database Table for EtWbs*/
+                                if (response.body().getD().getResults().get(0).getEtWbs() != null)
+                                    if (response.body().getD().getResults().get(0).getEtWbs().getResults() != null
+                                            && response.body().getD().getResults().get(0).getEtWbs().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (VHLP_SER.EtWbs_Result etWbs_result : response.body().getD().getResults()
+                                                .get(0).getEtWbs().getResults()) {
+                                            values.put("Iwerk", etWbs_result.getIwerk());
+                                            values.put("Gsber", etWbs_result.getGsber());
+                                            values.put("Posid", etWbs_result.getPosid());
+                                            values.put("Poski", etWbs_result.getPoski());
+                                            values.put("Post1", etWbs_result.getPost1());
+                                            values.put("Pspnr", etWbs_result.getPspnr());
+                                            values.put("Pspid", etWbs_result.getPspid());
+                                            App_db.insert("EtWbs", null, values);
                                         }
-                                    /*Reading and Inserting Data into Database Table for EtWbs*/
+                                    }
+                                /*Reading and Inserting Data into Database Table for EtWbs*/
 
 
-                                    /*Reading and Inserting Data into Database Table for EtUdecCodes*/
-                                    if (response.body().getD().getResults().get(0).getEtUdecCodes() != null)
-                                        if (response.body().getD().getResults().get(0).getEtUdecCodes().getResults() != null
-                                                && response.body().getD().getResults().get(0).getEtUdecCodes().getResults().size() > 0) {
-                                            ContentValues values = new ContentValues();
-                                            for (VHLP_SER.EtUdecCodes_Result etUdecCodes_result : response.body().getD().getResults()
-                                                    .get(0).getEtUdecCodes().getResults()) {
-                                                values.put("Werks", etUdecCodes_result.getWerks());
-                                                values.put("Katalogart", etUdecCodes_result.getKatalogart());
-                                                values.put("Auswahlmge", etUdecCodes_result.getAuswahlmge());
-                                                values.put("Codegruppe", etUdecCodes_result.getCodegruppe());
-                                                values.put("Kurztext", etUdecCodes_result.getKurztext());
-                                                if (etUdecCodes_result.getUdecCodes() != null)
-                                                    if (etUdecCodes_result.getUdecCodes().getResults() != null
-                                                            && etUdecCodes_result.getUdecCodes().getResults().size() > 0) {
-                                                        ContentValues values1 = new ContentValues();
-                                                        for (VHLP_SER.UdecCodes_Result udecCodes_result : etUdecCodes_result.getUdecCodes().getResults()) {
-                                                            values.put("Code", udecCodes_result.getCode());
-                                                            values.put("Kurztext1", udecCodes_result.getKurztext1());
-                                                            values.put("Bewertung", udecCodes_result.getBewertung());
-                                                            values.put("Fehlklasse", udecCodes_result.getFehlklasse());
-                                                            values.put("Qkennzahl", udecCodes_result.getQkennzahl());
-                                                            values.put("Folgeakti", udecCodes_result.getFolgeakti());
-                                                            values.put("Fehlklassetxt", udecCodes_result.getFehlklassetxt());
+                                /*Reading and Inserting Data into Database Table for EtUdecCodes*/
+                                if (response.body().getD().getResults().get(0).getEtUdecCodes() != null)
+                                    if (response.body().getD().getResults().get(0).getEtUdecCodes().getResults() != null
+                                            && response.body().getD().getResults().get(0).getEtUdecCodes().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (VHLP_SER.EtUdecCodes_Result etUdecCodes_result : response.body().getD().getResults()
+                                                .get(0).getEtUdecCodes().getResults()) {
+                                            values.put("Werks", etUdecCodes_result.getWerks());
+                                            values.put("Katalogart", etUdecCodes_result.getKatalogart());
+                                            values.put("Auswahlmge", etUdecCodes_result.getAuswahlmge());
+                                            values.put("Codegruppe", etUdecCodes_result.getCodegruppe());
+                                            values.put("Kurztext", etUdecCodes_result.getKurztext());
+                                            if (etUdecCodes_result.getUdecCodes() != null)
+                                                if (etUdecCodes_result.getUdecCodes().getResults() != null
+                                                        && etUdecCodes_result.getUdecCodes().getResults().size() > 0) {
+                                                    ContentValues values1 = new ContentValues();
+                                                    for (VHLP_SER.UdecCodes_Result udecCodes_result : etUdecCodes_result.getUdecCodes().getResults()) {
+                                                        values.put("Code", udecCodes_result.getCode());
+                                                        values.put("Kurztext1", udecCodes_result.getKurztext1());
+                                                        values.put("Bewertung", udecCodes_result.getBewertung());
+                                                        values.put("Fehlklasse", udecCodes_result.getFehlklasse());
+                                                        values.put("Qkennzahl", udecCodes_result.getQkennzahl());
+                                                        values.put("Folgeakti", udecCodes_result.getFolgeakti());
+                                                        values.put("Fehlklassetxt", udecCodes_result.getFehlklassetxt());
 
-                                                        }
                                                     }
-                                                App_db.insert("EtUdecCodes", null, values);
-                                            }
+                                                }
+                                            App_db.insert("EtUdecCodes", null, values);
                                         }
-                                    /*Reading and Inserting Data into Database Table for EtMeasCodes*/
+                                    }
+                                /*Reading and Inserting Data into Database Table for EtMeasCodes*/
+
+                                /* Creating EtValType Table with Fields */
+                                App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtValType);
+                                String CREATE_TABLE_EtValType = "CREATE TABLE IF NOT EXISTS " + TABLE_EtValType + ""
+                                        + "( "
+                                        + KEY_EtValType_ID + " INTEGER PRIMARY KEY,"
+                                        + KEY_EtValType_Bukrs + " TEXT"
+                                        + ")";
+                                App_db.execSQL(CREATE_TABLE_EtValType);
+                                /* Creating EtValType Table with Fields */
 
 
+                                App_db.setTransactionSuccessful();
 
-
-
-
-
-
-                                    /* Creating EtValType Table with Fields */
-                                    App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_EtValType);
-                                    String CREATE_TABLE_EtValType = "CREATE TABLE IF NOT EXISTS " + TABLE_EtValType + ""
-                                            + "( "
-                                            + KEY_EtValType_ID + " INTEGER PRIMARY KEY,"
-                                            + KEY_EtValType_Bukrs + " TEXT"
-                                            + ")";
-                                    App_db.execSQL(CREATE_TABLE_EtValType);
-                                    /* Creating EtValType Table with Fields */
-
-
-                                    App_db.setTransactionSuccessful();
-
-                                    Get_Response = "success";
-                                } finally{
-                                    App_db.endTransaction();
-                                }
+                                Get_Response = "success";
+                            } finally {
+                                App_db.endTransaction();
                             }
-
                     }
+
                 }
             }
-        catch(Exception ex)
-            {
-                Log.v("VHLP_Exception", "" + ex.getMessage());
-            }
-
-            return Get_Response;
+        } catch (Exception ex) {
+            Log.v("VHLP_Exception", "" + ex.getMessage());
         }
 
+        return Get_Response;
     }
+
+}

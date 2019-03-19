@@ -169,7 +169,7 @@ public class Notification_Release {
                                                 values.put("Strmn", eN.getStrmn());
                                                 values.put("Ltrmn", eN.getLtrmn());
                                                 values.put("Aufnr", eN.getAufnr());
-                                                Aufnr= eN.getAufnr();
+                                                Aufnr = eN.getAufnr();
                                                 values.put("Docs", eN.getDocs());
                                                 values.put("Altitude", eN.getAltitude());
                                                 values.put("Latitude", eN.getLatitude());

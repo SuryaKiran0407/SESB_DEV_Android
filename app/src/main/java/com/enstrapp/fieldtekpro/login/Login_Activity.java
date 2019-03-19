@@ -309,61 +309,62 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                     // checking earlier login is done or not. If done, directly navigating to Dashboard Activity, or else performing login and sending username and password to backend server.
                     String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
                     if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
-                            cd = new ConnectionDetector(getApplicationContext());
-                            isInternetPresent = cd.isConnectingToInternet();
-                            if (isInternetPresent) {
-                                FieldTekPro_SharedPrefeditor.putString("Username", fieldtekpro_login_username);
-                                FieldTekPro_SharedPrefeditor.putString("Password", fieldtekpro_login_password);
-                                FieldTekPro_SharedPrefeditor.putString("header_credentials", header_username + ":" + header_password);
+                        cd = new ConnectionDetector(getApplicationContext());
+                        isInternetPresent = cd.isConnectingToInternet();
+                        if (isInternetPresent) {
+                            FieldTekPro_SharedPrefeditor.putString("Username", fieldtekpro_login_username);
+                            FieldTekPro_SharedPrefeditor.putString("Password", fieldtekpro_login_password);
+                            FieldTekPro_SharedPrefeditor.putString("header_credentials", header_username + ":" + header_password);
+                            FieldTekPro_SharedPrefeditor.commit();
+                            if (fieldtekpro_login_username.equals(username_edittext.getText().toString())) {
+                                FieldTekPro_SharedPrefeditor.putString("same_user", "X");
                                 FieldTekPro_SharedPrefeditor.commit();
-                                if (fieldtekpro_login_username.equals(username_edittext.getText().toString())) {
-                                    FieldTekPro_SharedPrefeditor.putString("same_user", "X");
-                                    FieldTekPro_SharedPrefeditor.commit();
-                                    new Login().execute();
-                                } else {
-                                    FieldTekPro_SharedPrefeditor.putString("same_user", "");
-                                    FieldTekPro_SharedPrefeditor.commit();
-                                    new Login().execute();
-                                }
-
-                            } else {
-                                if (username_edittext.getText().toString().equals(fieldtekpro_login_username) &&
-                                        password_edittext.getText().toString().equals(fieldtekpro_login_password)) {
-                                    offlineConfirmationDialog(getString(R.string.offline_confirmation));
-                                } else {
-                                    loginNetworkError();
-                                }
-                            }
-                        } else {
-                            cd = new ConnectionDetector(getApplicationContext());
-                            isInternetPresent = cd.isConnectingToInternet();
-                            if (isInternetPresent) {
-                                //Performing login asynctask and sending data to backend server.
                                 new Login().execute();
                             } else {
-                                //showing network error and navigating to wifi settings.
-                                network_connection_dialog.show_network_connection_dialog(Login_Activity.this);
+                                FieldTekPro_SharedPrefeditor.putString("same_user", "");
+                                FieldTekPro_SharedPrefeditor.commit();
+                                new Login().execute();
+                            }
+
+                        } else {
+                            if (username_edittext.getText().toString().equals(fieldtekpro_login_username) &&
+                                    password_edittext.getText().toString().equals(fieldtekpro_login_password)) {
+                                offlineConfirmationDialog(getString(R.string.offline_confirmation));
+                            } else {
+                                loginNetworkError();
                             }
                         }
-
                     } else {
-                        //showing alert message if password is not entered.
-                        error_dialog.show_error_dialog(Login_Activity.this,
-                                getString(R.string.pls_entpass));
+                        cd = new ConnectionDetector(getApplicationContext());
+                        isInternetPresent = cd.isConnectingToInternet();
+                        if (isInternetPresent) {
+                            //Performing login asynctask and sending data to backend server.
+                            new Login().execute();
+                        } else {
+                            //showing network error and navigating to wifi settings.
+                            network_connection_dialog.show_network_connection_dialog(Login_Activity.this);
+                        }
                     }
 
-            }else {
-                    //showing alert message if username is not entered.
+                } else {
+                    //showing alert message if password is not entered.
                     error_dialog.show_error_dialog(Login_Activity.this,
-                            getString(R.string.pls_entusr));
+                            getString(R.string.pls_entpass));
                 }
-            }else if (v == settings_iv) {
-                Intent settings_intent = new Intent(Login_Activity.this, Settings_Activity.class);
-//            settings_intent.putExtra("Came_From", "Login_Activity");
-                startActivity(settings_intent);
+
+            } else {
+                //showing alert message if username is not entered.
+                error_dialog.show_error_dialog(Login_Activity.this,
+                        getString(R.string.pls_entusr));
             }
+        } else if (v == settings_iv) {
+            Intent settings_intent = new Intent(Login_Activity.this, Settings_Activity.class);
+//            settings_intent.putExtra("Came_From", "Login_Activity");
+            startActivity(settings_intent);
+        }
 
     }
+
     /*Performing Login Asynctask*/
     private class Login extends AsyncTask<Void, Integer, Void> {
         /* Get_User_Data Table and Fields Names */
@@ -575,6 +576,7 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             super.onPostExecute(result);
         }
     }
+
     private void offlineConfirmationDialog(String message) {
         final Dialog cancel_dialog = new Dialog(Login_Activity.this);
         if (cancel_dialog.getWindow() != null)

@@ -72,7 +72,7 @@ public interface Interface {
     Call<VHLP_WCM_SER> getVHLPWCMDetails(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
     @GET
-    Call<ResponseBody> getORDERDetails(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
+    Call<Orders_SER> getORDERDetails(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);
 
     @GET
     Call<Notifications_SER> getNOTIFICATIONDetails(@Url String anEmptyString, @Header("Authorization") String authHeader, @HeaderMap Map<String, String> headers);

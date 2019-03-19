@@ -1,4 +1,3 @@
-/*
 package com.enstrapp.fieldtekpro.orders;
 
 import android.app.Activity;
@@ -50,9 +49,7 @@ public class Isolation_Template {
     private static ArrayList<OrdrTagUnTagTextPrcbl> outp_al = new ArrayList<>();
     private static ArrayList<OrdrWDItemPrcbl> wdi_al = new ArrayList<>();
 
-    */
-/* EtWcmWdData Table and Fields Names *//*
-
+    /* EtWcmWdData Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdData = "Tmp_EtWcmWdData";
     private static final String KEY_GET_EtWcmWdData_ID = "id";
     private static final String KEY_GET_EtWcmWdData_Aufnr = "Aufnr";
@@ -86,13 +83,9 @@ public class Isolation_Template {
     private static final String KEY_GET_EtWcmWdData_Action = "Action";
     private static final String KEY_GET_EtWcmWdData_Begru = "Begru";
     private static final String KEY_GET_EtWcmWdData_Begtx = "Begtx";
-    */
-/* EtWcmWdData Table and Fields Names *//*
+    /* EtWcmWdData Table and Fields Names */
 
-
-    */
-/* EtWcmWdDataTagtext Table and Fields Names *//*
-
+    /* EtWcmWdDataTagtext Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdDataTagtext = "Tmp_EtWcmWdDataTagtext";
     private static final String KEY_EtWcmWdDataTagtext_ID = "id";
     private static final String KEY_EtWcmWdDataTagtext_Aufnr = "Aufnr";
@@ -101,13 +94,9 @@ public class Isolation_Template {
     private static final String KEY_EtWcmWdDataTagtext_FormatCol = "FormatCol";
     private static final String KEY_EtWcmWdDataTagtext_TextLine = "TextLine ";
     private static final String KEY_EtWcmWdDataTagtext_Action = "Action";
-    */
-/* EtWcmWdDataTagtext Table and Fields Names *//*
+    /* EtWcmWdDataTagtext Table and Fields Names */
 
-
-    */
-/* EtWcmWdDataUntagtext Table and Fields Names *//*
-
+    /* EtWcmWdDataUntagtext Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdDataUntagtext = "Tmp_EtWcmWdDataUntagtext";
     private static final String KEY_EtWcmWdDataUntagtext_ID = "id";
     private static final String KEY_EtWcmWdDataUntagtext_Aufnr = "Aufnr";
@@ -116,13 +105,9 @@ public class Isolation_Template {
     private static final String KEY_EtWcmWdDataUntagtext_FormatCol = "FormatCol";
     private static final String KEY_EtWcmWdDataUntagtext_TextLine = "TextLine ";
     private static final String KEY_EtWcmWdDataUntagtext_Action = "Action";
-    */
-/* EtWcmWdDataUntagtext Table and Fields Names *//*
+    /* EtWcmWdDataUntagtext Table and Fields Names */
 
-
-    */
-/* EtWcmWdItemData Table and Fields Names *//*
-
+    /* EtWcmWdItemData Table and Fields Names */
     private static final String TABLE_GET_EtWcmWdItemData = "Tmp_EtWcmWdItemData";
     private static final String KEY_GET_EtWcmWdItemData_ID = "id";
     private static final String KEY_GET_EtWcmWdItemData_Wcnr = "Wcnr";
@@ -162,9 +147,7 @@ public class Isolation_Template {
     private static final String KEY_GET_EtWcmWdItemData_Etg = "Etg";
     private static final String KEY_GET_EtWcmWdItemData_Bug = "Bug";
     private static final String KEY_GET_EtWcmWdItemData_Eug = "Eug";
-    */
-/* EtWcmWdItemData Table and Fields Names *//*
-
+    /* EtWcmWdItemData Table and Fields Names */
 
     public static String Get_Data(Activity activity, String transmit_type, String operation, String equip, String funcLoc) {
         try {
@@ -173,9 +156,7 @@ public class Isolation_Template {
             DATABASE_NAME = activity.getString(R.string.database_name);
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-            */
-/* Creating EtWcmWdData Table with Fields *//*
-
+            /* Creating EtWcmWdData Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdData);
             String CREATE_TABLE_GET_EtWcmWdData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdData + ""
                     + "( "
@@ -213,13 +194,9 @@ public class Isolation_Template {
                     + KEY_GET_EtWcmWdData_Begtx + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_GET_EtWcmWdData);
-            */
-/* Creating EtWcmWdData Table with Fields *//*
+            /* Creating EtWcmWdData Table with Fields */
 
-
-            */
-/* Creating EtWcmWdItemData Table with Fields *//*
-
+            /* Creating EtWcmWdItemData Table with Fields */
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdItemData);
             String CREATE_TABLE_GET_EtWcmWdItemData = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdItemData + ""
                     + "( "
@@ -263,9 +240,7 @@ public class Isolation_Template {
                     + KEY_GET_EtWcmWdItemData_Eug + " TEXT"
                     + ")";
             App_db.execSQL(CREATE_TABLE_GET_EtWcmWdItemData);
-            */
-/* Creating EtWcmWdItemData Table with Fields *//*
-
+            /* Creating EtWcmWdItemData Table with Fields */
 
             App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_EtWcmWdDataTagtext);
             String CREATE_TABLE_EtWcmWdDataTagtext = "CREATE TABLE IF NOT EXISTS " + TABLE_GET_EtWcmWdDataTagtext + ""
@@ -293,34 +268,26 @@ public class Isolation_Template {
                     + ")";
             App_db.execSQL(CREATE_TABLE_EtWcmWdDataUntagtext);
 
-            */
-/* Initializing Shared Preferences *//*
-
+            /* Initializing Shared Preferences */
             FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username", null);
             password = FieldTekPro_SharedPref.getString("Password", null);
             String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
-            */
-/* Initializing Shared Preferences *//*
-
+            /* Initializing Shared Preferences */
             Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D7", "RD", "ODATA"});
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
             } else {
             }
-            */
-/* Fetching Device Details like Device ID, Device Serial Number and Device UUID *//*
-
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             device_serial_number = Build.SERIAL;
             String androidId = "" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
             UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
             device_uuid = deviceUuid.toString();
-            */
-/* Fetching Device Details like Device ID, Device Serial Number and Device UUID *//*
-
+            /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             String URL = activity.getString(R.string.ip_address);
             Map<String, String> map = new HashMap<>();
             map.put("IvUser", username.toUpperCase().toString());
@@ -346,42 +313,26 @@ public class Isolation_Template {
 
                     orders_uuid_list.clear();
 
-                    */
-/*Reading Response Data and Parsing to Serializable*//*
-
+                    /*Reading Response Data and Parsing to Serializable*/
                     Orders_SER rs = response.body();
-                    */
-/*Reading Response Data and Parsing to Serializable*//*
+                    /*Reading Response Data and Parsing to Serializable*/
 
-
-                    */
-/*Converting GSON Response to JSON Data for Parsing*//*
-
+                    /*Converting GSON Response to JSON Data for Parsing*/
                     String response_data = new Gson().toJson(rs.getD().getResults());
-                    */
-/*Converting GSON Response to JSON Data for Parsing*//*
+                    /*Converting GSON Response to JSON Data for Parsing*/
 
-
-                    */
-/*Converting Response JSON Data to JSONArray for Reading*//*
-
+                    /*Converting Response JSON Data to JSONArray for Reading*/
                     JSONArray response_data_jsonArray = new JSONArray(response_data);
-                    */
-/*Converting Response JSON Data to JSONArray for Reading*//*
+                    /*Converting Response JSON Data to JSONArray for Reading*/
 
-
-                    */
-/*Reading Data by using FOR Loop*//*
-
+                    /*Reading Data by using FOR Loop*/
                     try {
                         App_db.beginTransaction();
 
                         for (int i = 0; i < response_data_jsonArray.length(); i++) {
                             JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
 
-                            */
-/*Reading and Inserting Data into Database Table for EtWcmWdData*//*
-
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
                             if (jsonObject.has("EtWcmWdData")) {
                                 try {
                                     String EtWcmWdData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWdData().getResults());
@@ -470,13 +421,9 @@ public class Isolation_Template {
                                 } catch (Exception e) {
                                 }
                             }
-                            */
-/*Reading and Inserting Data into Database Table for EtWcmWdData*//*
+                            /*Reading and Inserting Data into Database Table for EtWcmWdData*/
 
-
-                            */
-/*Reading and Inserting Data into Database Table for EtWcmWdItemData*//*
-
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                             if (jsonObject.has("EtWcmWdItemData")) {
                                 try {
                                     String EtWcmWdItemData_response_data = new Gson().toJson(rs.getD().getResults().get(i).getEtWcmWdItemData().getResults());
@@ -529,9 +476,7 @@ public class Isolation_Template {
                                 } catch (Exception e) {
                                 }
                             }
-                            */
-/*Reading and Inserting Data into Database Table for EtWcmWdItemData*//*
-
+                            /*Reading and Inserting Data into Database Table for EtWcmWdItemData*/
                         }
 
                         App_db.setTransactionSuccessful();
@@ -551,4 +496,3 @@ public class Isolation_Template {
         return Get_Response;
     }
 }
-*/

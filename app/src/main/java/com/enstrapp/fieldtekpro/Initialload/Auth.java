@@ -231,7 +231,7 @@ public class Auth {
                     Get_Response = "no data";
                 }
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             Get_Response = "exception";
         }
         return Get_Response;

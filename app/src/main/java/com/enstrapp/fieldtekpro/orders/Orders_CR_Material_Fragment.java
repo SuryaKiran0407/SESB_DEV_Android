@@ -46,7 +46,7 @@ public class Orders_CR_Material_Fragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.recyclerview_fragment, container,
                 false);
-
+        omp_al.clear();
         material_rv = rootView.findViewById(R.id.recyclerView);
         ma = (Orders_Create_Activity) this.getActivity();
         materialAdapter = new MaterialAdapter(getActivity(), omp_al);
@@ -213,7 +213,7 @@ public class Orders_CR_Material_Fragment extends Fragment {
                         for (int i = selected_material_custom_info_arraylist.size() - 1; i >= 0; i--) {
                             String op_id = selected_material_custom_info_arraylist.get(i).get("Operation_id");
                             String pt_id = selected_material_custom_info_arraylist.get(i).get("Part_id");
-                            if (pt_id.equalsIgnoreCase(part_id)) {
+                              if (pt_id.equalsIgnoreCase(part_id)) {
                                 selected_material_custom_info_arraylist.remove(i);
                             }
                         }
@@ -244,8 +244,11 @@ public class Orders_CR_Material_Fragment extends Fragment {
                     ArrayList<OrdrMatrlPrcbl> omp_al_d = new ArrayList<>();
                     omp_al_d.addAll(omp_al);
                     for (OrdrMatrlPrcbl omp : omp_al_d) {
-                        if (omp.equals(omp_d.getPartId()))
+                        if (omp.getPartId().equals(omp_d.getPartId()))
+                        {
                             omp_al.remove(omp);
+                        }
+
                     }
                     omp_al.add(omp_d);
                     ma.ohp.setOrdrMatrlPrcbls(omp_al);

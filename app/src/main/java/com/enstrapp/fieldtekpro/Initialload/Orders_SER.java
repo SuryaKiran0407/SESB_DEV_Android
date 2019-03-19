@@ -773,6 +773,7 @@ public class Orders_SER {
         public EtOrderHeaderFields getEtOrderComponentsFields() {
             return etOrderComponentsFields;
         }
+
         public void setEtOrderComponentsFields(EtOrderHeaderFields etOrderComponentsFields) {
             this.etOrderComponentsFields = etOrderComponentsFields;
         }
@@ -2298,7 +2299,7 @@ public class Orders_SER {
         }
     }
 
-    public class EtWcmWdDataTagtext_Result{
+    public class EtWcmWdDataTagtext_Result {
         @SerializedName("Aufnr")
         @Expose
         public String Aufnr;
@@ -4851,20 +4852,21 @@ public class Orders_SER {
 
 
     /*For Parsing EtCustomFields*/
-    public class EtOrderHeaderFields
-    {
+    public class EtOrderHeaderFields {
         @SerializedName("results")
         @Expose
         private List<EtOrderHeaderFields_Result> results = null;
+
         public List<EtOrderHeaderFields_Result> getResults() {
             return results;
         }
+
         public void setResults(List<EtOrderHeaderFields_Result> results) {
             this.results = results;
         }
     }
-    public class EtOrderHeaderFields_Result
-    {
+
+    public class EtOrderHeaderFields_Result {
         @SerializedName("Zdoctype")
         @Expose
         private String zdoctype;

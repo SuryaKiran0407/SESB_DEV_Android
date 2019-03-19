@@ -83,7 +83,6 @@ public class Notifications_Create {
             map.put("Content-Type", "application/json");
             /*For Send Data in POST Header*/
 
-
             /*Objects for Assigning Notification Header and Sending Data in BODY*/
             Model_Notif_Header model_notif_header = new Model_Notif_Header();
             model_notif_header.setNotifType(notification_type_id);
@@ -265,449 +264,443 @@ public class Notifications_Create {
                 if (response.isSuccessful() && response.body() != null) {
                     /* if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {*/
                     StringBuilder Message_stringbuilder = new StringBuilder();
-                        if (response.body().getD().getEvMessage().getResults() != null) {
-                            if (response.body().getD().getEvMessage().getResults() != null
-                                    && response.body().getD().getEvMessage().getResults().size() > 0) {
-                                ContentValues values = new ContentValues();
+                    if (response.body().getD().getEvMessage().getResults() != null) {
+                        if (response.body().getD().getEvMessage().getResults() != null
+                                && response.body().getD().getEvMessage().getResults().size() > 0) {
+                            ContentValues values = new ContentValues();
 
-                                for (Notifications_SER.EvMessage_Result eM : response.body().getD().getEvMessage().getResults()) {
-                                    values.put("Message", eM.getMessage());
-                                    values.put("Qmnum", eM.getQmnum());
-                                    String Message = eM.getMessage();
-                                    Message_stringbuilder.append(Message);
-                                }
+                            for (Notifications_SER.EvMessage_Result eM : response.body().getD().getEvMessage().getResults()) {
+                                values.put("Message", eM.getMessage());
+                                values.put("Qmnum", eM.getQmnum());
+                                String Message = eM.getMessage();
+                                Message_stringbuilder.append(Message);
                             }
                         }
-                                    String message = Message_stringbuilder.toString();
-                                    String qmnum="";
-                                    if (message.startsWith("S")) {
-                                        App_db.beginTransaction();
-                                        try {
-                                            try {
-                                                if (response.body().getD().getEtNotifHeader().getResults() != null) {
-                                                    if (response.body().getD().getEtNotifHeader().getResults() != null
-                                                            && response.body().getD().getEtNotifHeader().getResults().size() > 0) {
-                                                        ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtNotifHeader_Result eN : response.body().getD().getEtNotifHeader().getResults()) {
-                                                            values.put("UUID", eN.getQmnum());
-                                                            qmnum = eN.getQmnum();
-                                                            values.put("NotifType", eN.getNotifType());
-                                                            values.put("Qmnum", eN.getQmnum());
-                                                            values.put("NotifShorttxt", eN.getNotifShorttxt());
-                                                            values.put("FunctionLoc", eN.getFunctionLoc());
-                                                            values.put("Equipment", eN.getEquipment());
-                                                            values.put("Bautl", eN.getBautl());
-                                                            values.put("ReportedBy", eN.getReportedBy());
-                                                            values.put("MalfuncStdate", eN.getMalfuncStdate());
-                                                            values.put("MalfuncEddate", eN.getMalfuncEddate());
-                                                            values.put("MalfuncSttime", eN.getMalfuncSttime());
-                                                            values.put("MalfuncEdtime", eN.getMalfuncEdtime());
-                                                            values.put("BreakdownInd", eN.getBreakdownInd());
-                                                            values.put("Priority", eN.getPriority());
-                                                            values.put("Ingrp", eN.getIngrp());
-                                                            values.put("Arbpl", eN.getArbpl());
-                                                            values.put("Werks", eN.getWerks());
-                                                            values.put("Strmn", eN.getStrmn());
-                                                            values.put("Ltrmn", eN.getLtrmn());
-                                                            values.put("Aufnr", eN.getAufnr());
-                                                            values.put("Docs", eN.getDocs());
-                                                            values.put("Altitude", eN.getAltitude());
-                                                            values.put("Latitude", eN.getLatitude());
-                                                            values.put("Longitude", eN.getLongitude());
-                                                            values.put("Closed", eN.getClosed());
-                                                            values.put("Completed", eN.getCompleted());
-                                                            values.put("Createdon", eN.getCreatedon());
-                                                            values.put("Qmartx", eN.getQmartx());
-                                                            values.put("Pltxt", eN.getPltxt());
-                                                            values.put("Eqktx", eN.getEqktx());
-                                                            values.put("Priokx", eN.getPriokx());
-                                                            values.put("Auftext", eN.getAuftext());
-                                                            values.put("Auarttext", eN.getAuarttext());
-                                                            values.put("Plantname", eN.getPlantname());
-                                                            values.put("Wkctrname", eN.getWkctrname());
-                                                            values.put("Ingrpname", eN.getIngrpname());
-                                                            values.put("Maktx", eN.getMaktx());
-                                                            values.put("Xstatus", eN.getXstatus());
-                                                            values.put("Usr01", eN.getUsr01());
-                                                            values.put("Usr02", eN.getUsr02());
-                                                            values.put("Usr03", eN.getUsr03());
-                                                            values.put("Usr04", eN.getUsr04());
-                                                            values.put("Usr05", eN.getUsr05());
-                                                            values.put("STATUS", eN.getXstatus());
-                                                            values.put("ParnrVw", eN.getParnrVw());
-                                                            values.put("NameVw", eN.getNameVw());
-                                                            values.put("Auswk", eN.getAuswk());
-                                                            values.put("Shift", eN.getShift());
-                                                            values.put("Noofperson", eN.getNoofperson());
-                                                            values.put("Auswkt", eN.getAuswkt());
-                                                            values.put("Strur", eN.getStrur());
-                                                            values.put("Ltrur", eN.getLtrur());
-                                                            values.put("sort_malfc", eN.getStrmn() + " " + eN.getStrur());
-                                                            values.put("Qmdat", eN.getQmdat());
-                                                            if (eN.getEtCustomFields() != null)
-                                                                if (eN.getEtCustomFields().getResults() != null
-                                                                        && eN.getEtCustomFields().getResults().size() > 0) {
-                                                                    ContentValues ValuesHCf = new ContentValues();
-                                                                    for (Notifications_SER.CustomFields_Result customFields_result : eN.getEtCustomFields().getResults()) {
-                                                                        ValuesHCf.put("UUID", eN.getQmnum());
-                                                                        //ValuesHCf.put("Qmnum", qmnum);
-                                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
-                                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
-                                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
-                                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
-                                                                        ValuesHCf.put("Value", customFields_result.getValue());
-                                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
-                                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
-                                                                        ValuesHCf.put("Length", customFields_result.getLength());
-                                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
-                                                                        App_db.insert("EtOrderHeader_CustomInfo", null, ValuesHCf);
-                                                                    }
-                                                                }
-                                                            App_db.insert("DUE_NOTIFICATION_NotifHeader", null, values);
-                                                        }
+                    }
+                    String message = Message_stringbuilder.toString();
+                    String qmnum = "";
+                    if (message.startsWith("S")) {
+                        App_db.beginTransaction();
+                        try {
+                            try {
+                                if (response.body().getD().getEtNotifHeader().getResults() != null) {
+                                    if (response.body().getD().getEtNotifHeader().getResults() != null
+                                            && response.body().getD().getEtNotifHeader().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Notifications_SER.EtNotifHeader_Result eN : response.body().getD().getEtNotifHeader().getResults()) {
+                                            values.put("UUID", eN.getQmnum());
+                                            qmnum = eN.getQmnum();
+                                            values.put("NotifType", eN.getNotifType());
+                                            values.put("Qmnum", eN.getQmnum());
+                                            values.put("NotifShorttxt", eN.getNotifShorttxt());
+                                            values.put("FunctionLoc", eN.getFunctionLoc());
+                                            values.put("Equipment", eN.getEquipment());
+                                            values.put("Bautl", eN.getBautl());
+                                            values.put("ReportedBy", eN.getReportedBy());
+                                            values.put("MalfuncStdate", eN.getMalfuncStdate());
+                                            values.put("MalfuncEddate", eN.getMalfuncEddate());
+                                            values.put("MalfuncSttime", eN.getMalfuncSttime());
+                                            values.put("MalfuncEdtime", eN.getMalfuncEdtime());
+                                            values.put("BreakdownInd", eN.getBreakdownInd());
+                                            values.put("Priority", eN.getPriority());
+                                            values.put("Ingrp", eN.getIngrp());
+                                            values.put("Arbpl", eN.getArbpl());
+                                            values.put("Werks", eN.getWerks());
+                                            values.put("Strmn", eN.getStrmn());
+                                            values.put("Ltrmn", eN.getLtrmn());
+                                            values.put("Aufnr", eN.getAufnr());
+                                            values.put("Docs", eN.getDocs());
+                                            values.put("Altitude", eN.getAltitude());
+                                            values.put("Latitude", eN.getLatitude());
+                                            values.put("Longitude", eN.getLongitude());
+                                            values.put("Closed", eN.getClosed());
+                                            values.put("Completed", eN.getCompleted());
+                                            values.put("Createdon", eN.getCreatedon());
+                                            values.put("Qmartx", eN.getQmartx());
+                                            values.put("Pltxt", eN.getPltxt());
+                                            values.put("Eqktx", eN.getEqktx());
+                                            values.put("Priokx", eN.getPriokx());
+                                            values.put("Auftext", eN.getAuftext());
+                                            values.put("Auarttext", eN.getAuarttext());
+                                            values.put("Plantname", eN.getPlantname());
+                                            values.put("Wkctrname", eN.getWkctrname());
+                                            values.put("Ingrpname", eN.getIngrpname());
+                                            values.put("Maktx", eN.getMaktx());
+                                            values.put("Xstatus", eN.getXstatus());
+                                            values.put("Usr01", eN.getUsr01());
+                                            values.put("Usr02", eN.getUsr02());
+                                            values.put("Usr03", eN.getUsr03());
+                                            values.put("Usr04", eN.getUsr04());
+                                            values.put("Usr05", eN.getUsr05());
+                                            values.put("STATUS", eN.getXstatus());
+                                            values.put("ParnrVw", eN.getParnrVw());
+                                            values.put("NameVw", eN.getNameVw());
+                                            values.put("Auswk", eN.getAuswk());
+                                            values.put("Shift", eN.getShift());
+                                            values.put("Noofperson", eN.getNoofperson());
+                                            values.put("Auswkt", eN.getAuswkt());
+                                            values.put("Strur", eN.getStrur());
+                                            values.put("Ltrur", eN.getLtrur());
+                                            values.put("sort_malfc", eN.getStrmn() + " " + eN.getStrur());
+                                            values.put("Qmdat", eN.getQmdat());
+                                            if (eN.getEtCustomFields() != null)
+                                                if (eN.getEtCustomFields().getResults() != null
+                                                        && eN.getEtCustomFields().getResults().size() > 0) {
+                                                    ContentValues ValuesHCf = new ContentValues();
+                                                    for (Notifications_SER.CustomFields_Result customFields_result : eN.getEtCustomFields().getResults()) {
+                                                        ValuesHCf.put("UUID", eN.getQmnum());
+                                                        //ValuesHCf.put("Qmnum", qmnum);
+                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
+                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
+                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
+                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
+                                                        ValuesHCf.put("Value", customFields_result.getValue());
+                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
+                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
+                                                        ValuesHCf.put("Length", customFields_result.getLength());
+                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
+                                                        App_db.insert("EtOrderHeader_CustomInfo", null, ValuesHCf);
                                                     }
                                                 }
-
-                                        }catch (Exception ex) {
-
-                                        }
-                                        /*Reading and Inserting Data into Database Table for EtNotifHeader*/
-
-                                            /*Reading and Inserting Data into Database Table for EtNotifItems*/
-                                            try {
-                                                if (response.body().getD().getEtNotifItems().getResults() != null) {
-                                                    if (response.body().getD().getEtNotifItems().getResults() != null
-                                                            && response.body().getD().getEtNotifItems().getResults().size() > 0) {
-                                                        ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtNotifItems_Result eNI : response.body().getD().getEtNotifItems().getResults()) {
-                                                            values.put("UUID", eNI.getQmnum());
-                                                            values.put("Qmnum", eNI.getQmnum());
-                                                            values.put("ItemKey", eNI.getItemKey());
-                                                            values.put("ItempartGrp", eNI.getItempartGrp());
-                                                            values.put("Partgrptext", eNI.getPartgrptext());
-                                                            values.put("ItempartCod", eNI.getItempartCod());
-                                                            values.put("Partcodetext", eNI.getPartcodetext());
-                                                            values.put("ItemdefectGrp", eNI.getItemdefectGrp());
-                                                            values.put("Defectgrptext", eNI.getDefectgrptext());
-                                                            values.put("ItemdefectCod", eNI.getItemdefectCod());
-                                                            values.put("Defectcodetext", eNI.getDefectcodetext());
-                                                            values.put("ItemdefectShtxt", eNI.getItemdefectShtxt());
-                                                            values.put("CauseKey", eNI.getCauseKey());
-                                                            values.put("CauseGrp", eNI.getCauseGrp());
-                                                            values.put("Causegrptext", eNI.getCausegrptext());
-                                                            values.put("CauseCod", eNI.getCauseCod());
-                                                            values.put("Causecodetext", eNI.getCausecodetext());
-                                                            values.put("CauseShtxt", eNI.getCauseShtxt());
-                                                            values.put("Usr01", eNI.getUsr01());
-                                                            values.put("Usr02", eNI.getUsr02());
-                                                            values.put("Usr03", eNI.getUsr03());
-                                                            values.put("Usr04", eNI.getUsr04());
-                                                            values.put("Usr05", eNI.getUsr05());
-                                                            values.put("Status", "U");
-                                                            if (eNI.getEtCustomFields() != null)
-                                                                if (eNI.getEtCustomFields().getResults() != null
-                                                                        && eNI.getEtCustomFields().getResults().size() > 0) {
-                                                                    ContentValues ValuesHCf = new ContentValues();
-                                                                    for (Notifications_SER.CustomFields_Result customFields_result : eNI.getEtCustomFields().getResults()) {
-                                                                        ValuesHCf.put("UUID", eNI.getQmnum());
-                                                                        //ValuesHCf.put("Qmnum", eNI.getQmnum());
-                                                                        ValuesHCf.put("ItemKey", eNI.getItemKey());
-                                                                        ValuesHCf.put("CauseKey", eNI.getCauseKey());
-                                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
-                                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
-                                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
-                                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
-                                                                        ValuesHCf.put("Value", customFields_result.getValue());
-                                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
-                                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
-                                                                        ValuesHCf.put("Length", customFields_result.getLength());
-                                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
-                                                                        App_db.insert("EtNotifItems_CustomInfo", null, ValuesHCf);
-                                                                    }
-                                                                }
-                                                            App_db.insert("DUE_NOTIFICATIONS_EtNotifItems", null, values);
-                                                        }
-                                                    }
-                                                }
-                                            }catch (Exception ex){
-                                            Log.v("response message",""+ex.getMessage());
-                                            }
-                                            /*Reading and Inserting Data into Database Table for EtNotifItems*/
-
-                                            /*Reading and Inserting Data into Database Table for EtNotifActvs*/
-                                            try {
-
-                                                if (response.body().getD().getEtNotifActvs().getResults() != null) {
-                                                    if (response.body().getD().getEtNotifActvs().getResults() != null
-                                                            && response.body().getD().getEtNotifActvs().getResults().size() > 0) {
-                                                        ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtNotifActvs_Result eNA : response.body().getD().getEtNotifActvs().getResults()) {
-                                                            values.put("UUID", eNA.getQmnum());
-                                                            values.put("Qmnum", eNA.getQmnum());
-                                                            values.put("ItemKey", eNA.getItemKey());
-                                                            values.put("ItempartGrp", eNA.getItempartGrp());
-                                                            values.put("Partgrptext", eNA.getPartgrptext());
-                                                            values.put("ItempartCod", eNA.getItempartCod());
-                                                            values.put("Partcodetext", eNA.getPartcodetext());
-                                                            values.put("ItemdefectGrp", eNA.getItemdefectGrp());
-                                                            values.put("Defectgrptext", eNA.getDefectgrptext());
-                                                            values.put("ItemdefectCod", eNA.getItemdefectCod());
-                                                            values.put("Defectcodetext", eNA.getDefectcodetext());
-                                                            values.put("ItemdefectShtxt", eNA.getItemdefectShtxt());
-                                                            values.put("CauseKey", eNA.getCauseKey());
-                                                            values.put("ActvKey", eNA.getActvKey());
-                                                            values.put("ActvGrp", eNA.getActvGrp());
-                                                            values.put("Actgrptext", eNA.getActgrptext());
-                                                            values.put("ActvCod", eNA.getActvCod());
-                                                            values.put("Actcodetext", eNA.getActcodetext());
-                                                            values.put("ActvShtxt", eNA.getActvShtxt());
-                                                            values.put("StartDate", eNA.getStartDate());
-                                                            values.put("StartTime", eNA.getStartTime());
-                                                            values.put("EndDate", eNA.getEndDate());
-                                                            values.put("EndTime", eNA.getEndTime());
-                                                            values.put("Usr01", eNA.getUsr01());
-                                                            values.put("Usr02", eNA.getUsr02());
-                                                            values.put("Usr03", eNA.getUsr03());
-                                                            values.put("Usr04", eNA.getUsr04());
-                                                            values.put("Usr05", eNA.getUsr05());
-                                                            values.put("Fields", "");
-                                                            values.put("Action", "U");
-                                                            if (eNA.getEtCustomFields() != null)
-                                                                if (eNA.getEtCustomFields().getResults() != null
-                                                                        && eNA.getEtCustomFields().getResults().size() > 0) {
-                                                                    ContentValues ValuesHCf = new ContentValues();
-                                                                    for (Notifications_SER.CustomFields_Result customFields_result : eNA.getEtCustomFields().getResults()) {
-                                                                        ValuesHCf.put("UUID", eNA.getQmnum());
-                                                                        //ValuesHCf.put("Qmnum", eNA.getQmnum());
-                                                                        ValuesHCf.put("ActvKey", eNA.getActvKey());
-                                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
-                                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
-                                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
-                                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
-                                                                        ValuesHCf.put("Value", customFields_result.getValue());
-                                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
-                                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
-                                                                        ValuesHCf.put("Length", customFields_result.getLength());
-                                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
-                                                                        App_db.insert("EtNotifActivity_CustomInfo", null, ValuesHCf);
-                                                                    }
-                                                                }
-
-                                                            App_db.insert("DUE_NOTIFICATION_EtNotifActvs", null, values);
-                                                        }
-                                                    }
-                                                }
-                                            }catch (Exception e)
-                                            {
-
-                                            }
-                                            /*Reading and Inserting Data into Database Table for EtNotifActvs*/
-
-                                            /*Reading and Inserting Data into Database Table for EtDocs*/
-                                            try {
-                                                if (response.body().getD().getEtDocs().getResults() != null) {
-                                                    if (response.body().getD().getEtDocs().getResults() != null
-                                                            &&response.body().getD().getEtDocs().getResults().size() > 0) {
-                                                        ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtDocs_Result eD : response.body().getD().getEtDocs().getResults()) {
-                                                            values.put("UUID", eD.getZobjid());
-                                                            values.put("Zobjid", eD.getZobjid());
-                                                            values.put("Zdoctype", eD.getZdoctype());
-                                                            values.put("ZdoctypeItem", eD.getZdoctypeItem());
-                                                            values.put("Filename", eD.getFilename());
-                                                            values.put("Filetype", eD.getFiletype());
-                                                            values.put("Fsize", eD.getFsize());
-                                                            values.put("Content", eD.getContent());
-                                                            values.put("DocId", eD.getDocId());
-                                                            values.put("DocType", eD.getDocType());
-                                                            values.put("Objtype", eD.getObjtype());
-                                                            values.put("Filepath", "");
-                                                            values.put("Status", "Old");
-                                                            values.put("Contentx", eD.getContentX());
-                                                            App_db.insert("DUE_NOTIFICATION_EtDocs", null, values);
-                                                        }
-                                                    }
-                                                }
-                                            }catch (Exception e)
-                                            {
-
-                                            }
-                                            /*Reading and Inserting Data into Database Table for EtDocs*/
-
-                                            /*Reading and Inserting Data into Database Table for EtNotifStatus*/
-                                            try {
-
-                                                if (response.body().getD().getEtNotifStatus().getResults() != null) {
-                                                    if (response.body().getD().getEtNotifStatus().getResults() != null
-                                                            && response.body().getD().getEtNotifStatus().getResults().size() > 0) {
-                                                        ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtNotifStatus_Result eNS : response.body().getD().getEtNotifStatus().getResults()) {
-                                                            values.put("UUID", "");
-                                                            values.put("Qmnum", eNS.getQmnum());
-                                                            values.put("Aufnr", eNS.getAufnr());
-                                                            values.put("Objnr", eNS.getObjnr());
-                                                            values.put("Manum", eNS.getManum());
-                                                            values.put("Stsma", eNS.getStsma());
-                                                            values.put("Inist", eNS.getInist());
-                                                            values.put("Stonr", eNS.getStonr());
-                                                            values.put("Hsonr", eNS.getHsonr());
-                                                            values.put("Nsonr", eNS.getNsonr());
-                                                            values.put("Stat", eNS.getStat());
-                                                            values.put("Act", eNS.getAct());
-                                                            values.put("Txt04", eNS.getTxt04());
-                                                            values.put("Txt30", eNS.getTxt30());
-                                                            values.put("Action", eNS.getAction());
-                                                            App_db.insert("EtNotifStatus", null, values);
-                                                        }
-                                                    }
-                                                }
-                                            }catch (Exception e)
-                                            {
-
-                                            }
-                                            /*Reading and Inserting Data into Database Table for EtNotifStatus*/
-
-                                            /*Reading and Inserting Data into Database Table for EtNotifLongtext*/
-                                            try {
-
-                                                if (response.body().getD().getEtNotifLongtext().getResults() != null) {
-                                                    if (response.body().getD().getEtNotifLongtext().getResults() != null
-                                                            && response.body().getD().getEtNotifLongtext().getResults().size()> 0) {
-                                                        ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtNotifLongtext_Result eNL : response.body().getD().getEtNotifLongtext().getResults()) {
-                                                            values.put("UUID", eNL.getQmnum());
-                                                            values.put("Qmnum", eNL.getQmnum());
-                                                            values.put("Objtype", eNL.getObjtype());
-                                                            values.put("TextLine", eNL.getTextLine());
-                                                            values.put("Objkey", eNL.getObjkey());
-                                                            App_db.insert("DUE_NOTIFICATIONS_EtNotifLongtext", null, values);
-                                                        }
-                                                    }
-                                                }
-                                            }catch (Exception e)
-                                            {
-                                                Log.v("Long text response",""+e.getMessage());
-                                            }
-                                            /*Reading and Inserting Data into Database Table for EtNotifLongtext*/
-
-                                            /*Reading and Inserting Data into Database Table for EtNotifTasks*/
-                                            try {
-
-                                                if (response.body().getD().getEtNotifTasks().getResults() != null) {
-                                                    if (response.body().getD().getEtNotifTasks().getResults() != null
-                                                            && response.body().getD().getEtNotifTasks().getResults().size() > 0) {
-                                                        ContentValues values = new ContentValues();
-                                                        for (Notifications_SER.EtNotifTasks_Result eNT : response.body().getD().getEtNotifTasks().getResults()) {
-                                                            values.put("UUID", eNT.getQmnum());
-                                                            values.put("Qmnum", eNT.getQmnum());
-                                                            values.put("ItemKey", eNT.getItemKey());
-                                                            values.put("ItempartGrp", eNT.getItempartGrp());
-                                                            values.put("Partgrptext", eNT.getPartgrptext());
-                                                            values.put("ItempartCod", eNT.getItempartCod());
-                                                            values.put("Partcodetext", eNT.getPartcodetext());
-                                                            values.put("ItemdefectGrp", eNT.getItemdefectGrp());
-                                                            values.put("Defectgrptext", eNT.getDefectgrptext());
-                                                            values.put("ItemdefectCod", eNT.getItemdefectCod());
-                                                            values.put("Defectcodetext", eNT.getDefectcodetext());
-                                                            values.put("ItemdefectShtxt", eNT.getItemdefectShtxt());
-                                                            values.put("TaskKey", eNT.getTaskKey());
-                                                            values.put("TaskGrp", eNT.getTaskGrp());
-                                                            values.put("Taskgrptext", eNT.getTaskgrptext());
-                                                            values.put("TaskCod", eNT.getTaskCod());
-                                                            values.put("Taskcodetext", eNT.getTaskcodetext());
-                                                            values.put("TaskShtxt", eNT.getTaskShtxt());
-                                                            values.put("Pster", eNT.getPster());
-                                                            values.put("Peter", eNT.getPeter());
-                                                            values.put("Pstur", eNT.getPstur());
-                                                            values.put("Petur", eNT.getPetur());
-                                                            values.put("Parvw", eNT.getParvw());
-                                                            values.put("Parnr", eNT.getParnr());
-                                                            values.put("Erlnam", eNT.getErlnam());
-                                                            values.put("Erldat", eNT.getErldat());
-                                                            values.put("Erlzeit", eNT.getErlzeit());
-                                                            values.put("Release", eNT.getRelease());
-                                                            values.put("Complete", eNT.getComplete());
-                                                            values.put("Success", eNT.getSuccess());
-                                                            values.put("UserStatus", eNT.getUserStatus());
-                                                            values.put("SysStatus", eNT.getSysStatus());
-                                                            values.put("Smsttxt", eNT.getSmsttxt());
-                                                            values.put("Smastxt", eNT.getSmastxt());
-                                                            values.put("Usr01", eNT.getUsr01());
-                                                            values.put("Usr02", eNT.getUsr02());
-                                                            values.put("Usr03", eNT.getUsr03());
-                                                            values.put("Usr04", eNT.getUsr04());
-                                                            values.put("Usr05", eNT.getUsr05());
-                                                            values.put("Action", "U");
-                                                            if (eNT.getEtCustomFields() != null)
-                                                                if (eNT.getEtCustomFields().getResults() != null
-                                                                        && eNT.getEtCustomFields().getResults().size() > 0) {
-                                                                    ContentValues ValuesHCf = new ContentValues();
-                                                                    for (Notifications_SER.CustomFields_Result customFields_result : eNT.getEtCustomFields().getResults()) {
-                                                                        ValuesHCf.put("UUID", eNT.getQmnum());
-                                                                        //ValuesHCf.put("Qmnum", eNT.getQmnum());
-                                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
-                                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
-                                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
-                                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
-                                                                        ValuesHCf.put("Value", customFields_result.getValue());
-                                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
-                                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
-                                                                        ValuesHCf.put("Length", customFields_result.getLength());
-                                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
-                                                                        App_db.insert("EtNotifTask_CustomInfo", null, ValuesHCf);
-                                                                    }
-                                                                }
-
-                                                            App_db.insert("DUE_NOTIFICATION_EtNotifTasks", null, values);
-                                                        }
-                                                    }
-                                                }
-                                            }catch(Exception e)
-                                            {
-
-                                            }
-                                            /*Reading and Inserting Data into Database Table for EtNotifTasks*/
-                                            App_db.setTransactionSuccessful();
-                                            Get_Response = "success";
-                                            Get_Data = qmnum;
-                                        } finally {
-                                            App_db.endTransaction();
-                                        }
-
-                                    } else if (message.startsWith("E")) {
-                                        Get_Response = message;
-                                        Get_Data = "";
-                                    } else {
-
-                                        if (response.body().getD().getEtNotifDup().getResults() != null) {
-                                            String EtNotifDup_response_data = new Gson().toJson(response.body().getD().getEtNotifDup().getResults());
-                                            if (EtNotifDup_response_data != null && !EtNotifDup_response_data.equals("")) {
-                                                JSONArray jsonArray = new JSONArray(EtNotifDup_response_data);
-
-                                                Get_Response = "Duplicate";
-                                                Get_Data =jsonArray.toString();
-                                                //JSONArray jsonArray = new JSONArray(EtNotifDup_response_data);
-
-
-                                            } else {
-                                                Get_Response = activity
-                                                        .getString(R.string.notification_unabletocreate);
-                                                Get_Data = "";
-                                            }
-                                        } else {
-                                            Get_Response = activity
-                                                    .getString(R.string.notification_unabletocreate);
-                                            Get_Data = "";
+                                            App_db.insert("DUE_NOTIFICATION_NotifHeader", null, values);
                                         }
                                     }
                                 }
+
+                            } catch (Exception ex) {
+
+                            }
+                            /*Reading and Inserting Data into Database Table for EtNotifHeader*/
+
+                            /*Reading and Inserting Data into Database Table for EtNotifItems*/
+                            try {
+                                if (response.body().getD().getEtNotifItems().getResults() != null) {
+                                    if (response.body().getD().getEtNotifItems().getResults() != null
+                                            && response.body().getD().getEtNotifItems().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Notifications_SER.EtNotifItems_Result eNI : response.body().getD().getEtNotifItems().getResults()) {
+                                            values.put("UUID", eNI.getQmnum());
+                                            values.put("Qmnum", eNI.getQmnum());
+                                            values.put("ItemKey", eNI.getItemKey());
+                                            values.put("ItempartGrp", eNI.getItempartGrp());
+                                            values.put("Partgrptext", eNI.getPartgrptext());
+                                            values.put("ItempartCod", eNI.getItempartCod());
+                                            values.put("Partcodetext", eNI.getPartcodetext());
+                                            values.put("ItemdefectGrp", eNI.getItemdefectGrp());
+                                            values.put("Defectgrptext", eNI.getDefectgrptext());
+                                            values.put("ItemdefectCod", eNI.getItemdefectCod());
+                                            values.put("Defectcodetext", eNI.getDefectcodetext());
+                                            values.put("ItemdefectShtxt", eNI.getItemdefectShtxt());
+                                            values.put("CauseKey", eNI.getCauseKey());
+                                            values.put("CauseGrp", eNI.getCauseGrp());
+                                            values.put("Causegrptext", eNI.getCausegrptext());
+                                            values.put("CauseCod", eNI.getCauseCod());
+                                            values.put("Causecodetext", eNI.getCausecodetext());
+                                            values.put("CauseShtxt", eNI.getCauseShtxt());
+                                            values.put("Usr01", eNI.getUsr01());
+                                            values.put("Usr02", eNI.getUsr02());
+                                            values.put("Usr03", eNI.getUsr03());
+                                            values.put("Usr04", eNI.getUsr04());
+                                            values.put("Usr05", eNI.getUsr05());
+                                            values.put("Status", "U");
+                                            if (eNI.getEtCustomFields() != null)
+                                                if (eNI.getEtCustomFields().getResults() != null
+                                                        && eNI.getEtCustomFields().getResults().size() > 0) {
+                                                    ContentValues ValuesHCf = new ContentValues();
+                                                    for (Notifications_SER.CustomFields_Result customFields_result : eNI.getEtCustomFields().getResults()) {
+                                                        ValuesHCf.put("UUID", eNI.getQmnum());
+                                                        //ValuesHCf.put("Qmnum", eNI.getQmnum());
+                                                        ValuesHCf.put("ItemKey", eNI.getItemKey());
+                                                        ValuesHCf.put("CauseKey", eNI.getCauseKey());
+                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
+                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
+                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
+                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
+                                                        ValuesHCf.put("Value", customFields_result.getValue());
+                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
+                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
+                                                        ValuesHCf.put("Length", customFields_result.getLength());
+                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
+                                                        App_db.insert("EtNotifItems_CustomInfo", null, ValuesHCf);
+                                                    }
+                                                }
+                                            App_db.insert("DUE_NOTIFICATIONS_EtNotifItems", null, values);
+                                        }
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                Log.v("response message", "" + ex.getMessage());
+                            }
+                            /*Reading and Inserting Data into Database Table for EtNotifItems*/
+
+                            /*Reading and Inserting Data into Database Table for EtNotifActvs*/
+                            try {
+
+                                if (response.body().getD().getEtNotifActvs().getResults() != null) {
+                                    if (response.body().getD().getEtNotifActvs().getResults() != null
+                                            && response.body().getD().getEtNotifActvs().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Notifications_SER.EtNotifActvs_Result eNA : response.body().getD().getEtNotifActvs().getResults()) {
+                                            values.put("UUID", eNA.getQmnum());
+                                            values.put("Qmnum", eNA.getQmnum());
+                                            values.put("ItemKey", eNA.getItemKey());
+                                            values.put("ItempartGrp", eNA.getItempartGrp());
+                                            values.put("Partgrptext", eNA.getPartgrptext());
+                                            values.put("ItempartCod", eNA.getItempartCod());
+                                            values.put("Partcodetext", eNA.getPartcodetext());
+                                            values.put("ItemdefectGrp", eNA.getItemdefectGrp());
+                                            values.put("Defectgrptext", eNA.getDefectgrptext());
+                                            values.put("ItemdefectCod", eNA.getItemdefectCod());
+                                            values.put("Defectcodetext", eNA.getDefectcodetext());
+                                            values.put("ItemdefectShtxt", eNA.getItemdefectShtxt());
+                                            values.put("CauseKey", eNA.getCauseKey());
+                                            values.put("ActvKey", eNA.getActvKey());
+                                            values.put("ActvGrp", eNA.getActvGrp());
+                                            values.put("Actgrptext", eNA.getActgrptext());
+                                            values.put("ActvCod", eNA.getActvCod());
+                                            values.put("Actcodetext", eNA.getActcodetext());
+                                            values.put("ActvShtxt", eNA.getActvShtxt());
+                                            values.put("StartDate", eNA.getStartDate());
+                                            values.put("StartTime", eNA.getStartTime());
+                                            values.put("EndDate", eNA.getEndDate());
+                                            values.put("EndTime", eNA.getEndTime());
+                                            values.put("Usr01", eNA.getUsr01());
+                                            values.put("Usr02", eNA.getUsr02());
+                                            values.put("Usr03", eNA.getUsr03());
+                                            values.put("Usr04", eNA.getUsr04());
+                                            values.put("Usr05", eNA.getUsr05());
+                                            values.put("Fields", "");
+                                            values.put("Action", "U");
+                                            if (eNA.getEtCustomFields() != null)
+                                                if (eNA.getEtCustomFields().getResults() != null
+                                                        && eNA.getEtCustomFields().getResults().size() > 0) {
+                                                    ContentValues ValuesHCf = new ContentValues();
+                                                    for (Notifications_SER.CustomFields_Result customFields_result : eNA.getEtCustomFields().getResults()) {
+                                                        ValuesHCf.put("UUID", eNA.getQmnum());
+                                                        //ValuesHCf.put("Qmnum", eNA.getQmnum());
+                                                        ValuesHCf.put("ActvKey", eNA.getActvKey());
+                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
+                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
+                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
+                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
+                                                        ValuesHCf.put("Value", customFields_result.getValue());
+                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
+                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
+                                                        ValuesHCf.put("Length", customFields_result.getLength());
+                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
+                                                        App_db.insert("EtNotifActivity_CustomInfo", null, ValuesHCf);
+                                                    }
+                                                }
+
+                                            App_db.insert("DUE_NOTIFICATION_EtNotifActvs", null, values);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+
+                            }
+                            /*Reading and Inserting Data into Database Table for EtNotifActvs*/
+
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
+                            try {
+                                if (response.body().getD().getEtDocs().getResults() != null) {
+                                    if (response.body().getD().getEtDocs().getResults() != null
+                                            && response.body().getD().getEtDocs().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Notifications_SER.EtDocs_Result eD : response.body().getD().getEtDocs().getResults()) {
+                                            values.put("UUID", eD.getZobjid());
+                                            values.put("Zobjid", eD.getZobjid());
+                                            values.put("Zdoctype", eD.getZdoctype());
+                                            values.put("ZdoctypeItem", eD.getZdoctypeItem());
+                                            values.put("Filename", eD.getFilename());
+                                            values.put("Filetype", eD.getFiletype());
+                                            values.put("Fsize", eD.getFsize());
+                                            values.put("Content", eD.getContent());
+                                            values.put("DocId", eD.getDocId());
+                                            values.put("DocType", eD.getDocType());
+                                            values.put("Objtype", eD.getObjtype());
+                                            values.put("Filepath", "");
+                                            values.put("Status", "Old");
+                                            values.put("Contentx", eD.getContentX());
+                                            App_db.insert("DUE_NOTIFICATION_EtDocs", null, values);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+
+                            }
+                            /*Reading and Inserting Data into Database Table for EtDocs*/
+
+                            /*Reading and Inserting Data into Database Table for EtNotifStatus*/
+                            try {
+
+                                if (response.body().getD().getEtNotifStatus().getResults() != null) {
+                                    if (response.body().getD().getEtNotifStatus().getResults() != null
+                                            && response.body().getD().getEtNotifStatus().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Notifications_SER.EtNotifStatus_Result eNS : response.body().getD().getEtNotifStatus().getResults()) {
+                                            values.put("UUID", "");
+                                            values.put("Qmnum", eNS.getQmnum());
+                                            values.put("Aufnr", eNS.getAufnr());
+                                            values.put("Objnr", eNS.getObjnr());
+                                            values.put("Manum", eNS.getManum());
+                                            values.put("Stsma", eNS.getStsma());
+                                            values.put("Inist", eNS.getInist());
+                                            values.put("Stonr", eNS.getStonr());
+                                            values.put("Hsonr", eNS.getHsonr());
+                                            values.put("Nsonr", eNS.getNsonr());
+                                            values.put("Stat", eNS.getStat());
+                                            values.put("Act", eNS.getAct());
+                                            values.put("Txt04", eNS.getTxt04());
+                                            values.put("Txt30", eNS.getTxt30());
+                                            values.put("Action", eNS.getAction());
+                                            App_db.insert("EtNotifStatus", null, values);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+
+                            }
+                            /*Reading and Inserting Data into Database Table for EtNotifStatus*/
+
+                            /*Reading and Inserting Data into Database Table for EtNotifLongtext*/
+                            try {
+
+                                if (response.body().getD().getEtNotifLongtext().getResults() != null) {
+                                    if (response.body().getD().getEtNotifLongtext().getResults() != null
+                                            && response.body().getD().getEtNotifLongtext().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Notifications_SER.EtNotifLongtext_Result eNL : response.body().getD().getEtNotifLongtext().getResults()) {
+                                            values.put("UUID", eNL.getQmnum());
+                                            values.put("Qmnum", eNL.getQmnum());
+                                            values.put("Objtype", eNL.getObjtype());
+                                            values.put("TextLine", eNL.getTextLine());
+                                            values.put("Objkey", eNL.getObjkey());
+                                            App_db.insert("DUE_NOTIFICATIONS_EtNotifLongtext", null, values);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.v("Long text response", "" + e.getMessage());
+                            }
+                            /*Reading and Inserting Data into Database Table for EtNotifLongtext*/
+
+                            /*Reading and Inserting Data into Database Table for EtNotifTasks*/
+                            try {
+
+                                if (response.body().getD().getEtNotifTasks().getResults() != null) {
+                                    if (response.body().getD().getEtNotifTasks().getResults() != null
+                                            && response.body().getD().getEtNotifTasks().getResults().size() > 0) {
+                                        ContentValues values = new ContentValues();
+                                        for (Notifications_SER.EtNotifTasks_Result eNT : response.body().getD().getEtNotifTasks().getResults()) {
+                                            values.put("UUID", eNT.getQmnum());
+                                            values.put("Qmnum", eNT.getQmnum());
+                                            values.put("ItemKey", eNT.getItemKey());
+                                            values.put("ItempartGrp", eNT.getItempartGrp());
+                                            values.put("Partgrptext", eNT.getPartgrptext());
+                                            values.put("ItempartCod", eNT.getItempartCod());
+                                            values.put("Partcodetext", eNT.getPartcodetext());
+                                            values.put("ItemdefectGrp", eNT.getItemdefectGrp());
+                                            values.put("Defectgrptext", eNT.getDefectgrptext());
+                                            values.put("ItemdefectCod", eNT.getItemdefectCod());
+                                            values.put("Defectcodetext", eNT.getDefectcodetext());
+                                            values.put("ItemdefectShtxt", eNT.getItemdefectShtxt());
+                                            values.put("TaskKey", eNT.getTaskKey());
+                                            values.put("TaskGrp", eNT.getTaskGrp());
+                                            values.put("Taskgrptext", eNT.getTaskgrptext());
+                                            values.put("TaskCod", eNT.getTaskCod());
+                                            values.put("Taskcodetext", eNT.getTaskcodetext());
+                                            values.put("TaskShtxt", eNT.getTaskShtxt());
+                                            values.put("Pster", eNT.getPster());
+                                            values.put("Peter", eNT.getPeter());
+                                            values.put("Pstur", eNT.getPstur());
+                                            values.put("Petur", eNT.getPetur());
+                                            values.put("Parvw", eNT.getParvw());
+                                            values.put("Parnr", eNT.getParnr());
+                                            values.put("Erlnam", eNT.getErlnam());
+                                            values.put("Erldat", eNT.getErldat());
+                                            values.put("Erlzeit", eNT.getErlzeit());
+                                            values.put("Release", eNT.getRelease());
+                                            values.put("Complete", eNT.getComplete());
+                                            values.put("Success", eNT.getSuccess());
+                                            values.put("UserStatus", eNT.getUserStatus());
+                                            values.put("SysStatus", eNT.getSysStatus());
+                                            values.put("Smsttxt", eNT.getSmsttxt());
+                                            values.put("Smastxt", eNT.getSmastxt());
+                                            values.put("Usr01", eNT.getUsr01());
+                                            values.put("Usr02", eNT.getUsr02());
+                                            values.put("Usr03", eNT.getUsr03());
+                                            values.put("Usr04", eNT.getUsr04());
+                                            values.put("Usr05", eNT.getUsr05());
+                                            values.put("Action", "U");
+                                            if (eNT.getEtCustomFields() != null)
+                                                if (eNT.getEtCustomFields().getResults() != null
+                                                        && eNT.getEtCustomFields().getResults().size() > 0) {
+                                                    ContentValues ValuesHCf = new ContentValues();
+                                                    for (Notifications_SER.CustomFields_Result customFields_result : eNT.getEtCustomFields().getResults()) {
+                                                        ValuesHCf.put("UUID", eNT.getQmnum());
+                                                        //ValuesHCf.put("Qmnum", eNT.getQmnum());
+                                                        ValuesHCf.put("Zdoctype", customFields_result.getZdoctype());
+                                                        ValuesHCf.put("ZdoctypeItem", customFields_result.getZdoctypeItem());
+                                                        ValuesHCf.put("Tabname", customFields_result.getTabname());
+                                                        ValuesHCf.put("Fieldname", customFields_result.getFieldname());
+                                                        ValuesHCf.put("Value", customFields_result.getValue());
+                                                        ValuesHCf.put("Flabel", customFields_result.getFlabel());
+                                                        ValuesHCf.put("Sequence", customFields_result.getSequence());
+                                                        ValuesHCf.put("Length", customFields_result.getLength());
+                                                        ValuesHCf.put("Datatype", customFields_result.getDatatype());
+                                                        App_db.insert("EtNotifTask_CustomInfo", null, ValuesHCf);
+                                                    }
+                                                }
+
+                                            App_db.insert("DUE_NOTIFICATION_EtNotifTasks", null, values);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+
+                            }
+                            /*Reading and Inserting Data into Database Table for EtNotifTasks*/
+                            App_db.setTransactionSuccessful();
+                            Get_Response = "success";
+                            Get_Data = qmnum;
+                        } finally {
+                            App_db.endTransaction();
+                        }
+
+                    } else if (message.startsWith("E")) {
+                        Get_Response = message;
+                        Get_Data = "";
+                    } else {
+
+                        if (response.body().getD().getEtNotifDup().getResults() != null) {
+                            String EtNotifDup_response_data = new Gson().toJson(response.body().getD().getEtNotifDup().getResults());
+                            if (EtNotifDup_response_data != null && !EtNotifDup_response_data.equals("")) {
+                                JSONArray jsonArray = new JSONArray(EtNotifDup_response_data);
+
+                                Get_Response = "Duplicate";
+                                Get_Data = jsonArray.toString();
+                                //JSONArray jsonArray = new JSONArray(EtNotifDup_response_data);
+
+
                             } else {
-                                Get_Response = activity.getString(R.string.notification_unabletocreate);
+                                Get_Response = activity
+                                        .getString(R.string.notification_unabletocreate);
                                 Get_Data = "";
                             }
-
+                        } else {
+                            Get_Response = activity
+                                    .getString(R.string.notification_unabletocreate);
+                            Get_Data = "";
                         }
-                        catch (Exception e) {
+                    }
+                }
+            } else {
+                Get_Response = activity.getString(R.string.notification_unabletocreate);
+                Get_Data = "";
+            }
+
+        } catch (Exception e) {
             Get_Response = activity.getString(R.string.notification_unabletocreate);
             Get_Data = "";
         } finally {
