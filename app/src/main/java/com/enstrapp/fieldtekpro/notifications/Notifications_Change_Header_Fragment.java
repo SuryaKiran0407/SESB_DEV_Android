@@ -632,7 +632,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         Notifications_PlannerGroup_Activity.class);
                 planner_group_intent.putExtra("equip_id",
                         equipid_edittext.getText().toString());
-                planner_group_intent.putExtra("plant_id", nhp.getIwerk());
+                planner_group_intent.putExtra("plant_id",iwerk);
                 planner_group_intent.putExtra("request_id",
                         Integer.toString(planner_group));
                 startActivityForResult(planner_group_intent, planner_group);
@@ -694,6 +694,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 functionlocation_id = data.getStringExtra("functionlocation_id");
                 functionlocation_text = data.getStringExtra("functionlocation_text");
                 plant_id = data.getStringExtra("plant_id");
+                iwerk = data.getStringExtra("iwerk");
                 equipment_id = "";
                 equipment_text = "";
                 equipid_edittext.setText("");
@@ -701,7 +702,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 floc_edittext.setText(functionlocation_id);
                 flocname_edittext.setText(functionlocation_text);
                 plannergroup_id = data.getStringExtra("ingrp_id");
-                plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                 if (plannergroup_id != null && !plannergroup_id.equals(""))
                     if (plannergroup_text != null && !plannergroup_text.equals(""))
                         plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
@@ -712,6 +713,10 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                     plannerGroup_edittext.setText("");
                 workcenter_id = data.getStringExtra("work_center");
                 workCenter_edittext.setText(workcenter_id);
+                if (plant_id != null && !plant_id.equals(""))
+                    plant_tiet.setText(plant_id);
+                if (iwerk != null && !iwerk.equals(""))
+                    iwerk_tiet.setText(iwerk);
             } else if (requestCode == equipment_type) {
                 equipment_id = data.getStringExtra("equipment_id");
                 equipment_text = data.getStringExtra("equipment_text");
@@ -724,6 +729,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 plant_id = data.getStringExtra("plant_id");
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = "";
+                iwerk = data.getStringExtra("iwerk");
                 workcenter_id = data.getStringExtra("work_center");
                 workcenter_text = wrkCntrName(workcenter_id, plant_id);
                 if (workcenter_id != null && !workcenter_id.equals(""))
@@ -734,8 +740,12 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         workCenter_edittext.setText(workcenter_id);
                 else
                     workCenter_edittext.setText("");
+                if (plant_id != null && !plant_id.equals(""))
+                    plant_tiet.setText(plant_id);
+                if (iwerk != null && !iwerk.equals(""))
+                    iwerk_tiet.setText(iwerk);
                 plannergroup_id = data.getStringExtra("ingrp_id");
-                plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                 if (plannergroup_id != null && !plannergroup_id.equals(""))
                     if (plannergroup_text != null && !plannergroup_text.equals(""))
                         plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
@@ -762,10 +772,15 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                     plannergroup_text = "";
                                     floc_edittext.setText(functionlocation_id);
                                     workcenter_id = cursor.getString(11);
+                                    iwerk = cursor.getString(29);
                                     workCenter_edittext.setText(workcenter_id);
+                                    if (plant_id != null && !plant_id.equals(""))
+                                        plant_tiet.setText(plant_id);
+                                    if (iwerk != null && !iwerk.equals(""))
+                                        iwerk_tiet.setText(iwerk);
                                     floc_edittext.setText(functionlocation_id);
                                     plannergroup_id = data.getStringExtra("ingrp_id");
-                                    plannergroup_text = plnrGrpName(plannergroup_id, plant_id);
+                                    plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                                     if (plannergroup_id != null && !plannergroup_id.equals(""))
                                         if (plannergroup_text != null && !plannergroup_text.equals(""))
                                             plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
