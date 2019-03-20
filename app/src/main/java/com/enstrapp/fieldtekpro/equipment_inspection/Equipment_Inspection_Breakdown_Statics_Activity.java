@@ -285,6 +285,7 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                         count_m = new float[bmt.size()];
                         SpmonSS = new String[bmt.size()];
                         for (int j = 0; j < bmt.size(); j++) {
+
                             try {
                                 if (bmt.get(j).getCount() != null && !bmt.get(j).getCount().equals("")) {
                                     count_m[j] = Float.parseFloat(bmt.get(j).getCount());

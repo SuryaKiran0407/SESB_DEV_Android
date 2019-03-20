@@ -37,7 +37,7 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
 
     String Lgort = "", storage_location = "", costcenter_id = "", costcenter_text = "", Requirement_date = "", movement_type_id = "", movement_type_text = "", Plant = "", BOM = "", Component = "", Component_text = "", Quantity = "", Unit = "", req_date = "";
     ImageView back_imageview;
-    Button reserve_button;
+    Button reserve_button,cancel_button;
     LinearLayout ordernumber_layout, movement_type_layout, requirement_date_layout, costcenter_layout;
     EditText ordernumber_edittext, movement_type_edittext, plant_edittext, requirement_date_edittext, quantity_edittext, costcenter_edittext;
     Error_Dialog error_dialog = new Error_Dialog();
@@ -100,6 +100,7 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
         movement_type_edittext = (EditText) findViewById(R.id.movement_type_edittext);
         movement_type_layout = (LinearLayout) findViewById(R.id.movement_type_layout);
         reserve_button = (Button) findViewById(R.id.reserve_button);
+        cancel_button = (Button) findViewById(R.id.cancel_button);
         quantity_edittext = (EditText) findViewById(R.id.quantity_edittext);
         requirement_date_edittext = (EditText) findViewById(R.id.requirement_date_edittext);
         requirement_date_layout = (LinearLayout) findViewById(R.id.requirement_date_layout);
@@ -122,6 +123,7 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
         movement_type_layout.setOnClickListener(this);
         costcenter_layout.setOnClickListener(this);
         reserve_button.setOnClickListener(this);
+        cancel_button.setOnClickListener(this);
 
         String auth_status = Authorizations.Get_Authorizations_Data(BOM_Reservation_Activity.this, "R", "I");
         if (auth_status.equalsIgnoreCase("true")) {
@@ -136,7 +138,11 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
     public void onClick(View v) {
         if (v == back_imageview) {
             BOM_Reservation_Activity.this.finish();
-        } else if (v == requirement_date_layout) {
+        } else if(v == cancel_button)
+        {
+            BOM_Reservation_Activity.this.finish();
+        }
+        else if (v == requirement_date_layout) {
             Intent intent = new Intent(BOM_Reservation_Activity.this, DatePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(req_stdate));
             startActivityForResult(intent, req_stdate);

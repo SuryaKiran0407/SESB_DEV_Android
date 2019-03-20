@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -215,95 +216,78 @@ public class FLOC {
             int response_status_code = response.code();
             Log.v("kiran_FLOC_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<FLOC_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
-
+                    try {
                         /*EtFuncEquip*/
-                        FLOC_SER.EtFuncEquip fLoc = results.get(0).getEtFuncEquip();
-                        if (fLoc != null) {
-                            List<FLOC_SER.EtFuncEquip_Result> fLocResults = fLoc.getResults();
-                            if (fLocResults != null && fLocResults.size() > 0) {
-                                String EtFuncEquip_sql = "Insert into EtFuncEquip (Tplnr, Pltxt, " +
-                                        "Werks, Arbpl, Kostl, Fltyp, Ingrp, Tplma, Eqart, Rbnr, " +
-                                        "Inactive, Level, Stplnr, Iwerk)" +
-                                        " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement EtFuncEquip_statement = App_db.compileStatement(EtFuncEquip_sql);
-                                EtFuncEquip_statement.clearBindings();
-                                for (FLOC_SER.EtFuncEquip_Result fL : fLocResults) {
-                                    EtFuncEquip_statement.bindString(1, c_e.check_empty(fL.getTplnr()));
-                                    EtFuncEquip_statement.bindString(2, c_e.check_empty(fL.getPltxt()));
-                                    EtFuncEquip_statement.bindString(3, c_e.check_empty(fL.getWerks()));
-                                    EtFuncEquip_statement.bindString(4, c_e.check_empty(fL.getArbpl()));
-                                    EtFuncEquip_statement.bindString(5, c_e.check_empty(fL.getKostl()));
-                                    EtFuncEquip_statement.bindString(6, c_e.check_empty(fL.getFltyp()));
-                                    EtFuncEquip_statement.bindString(7, c_e.check_empty(fL.getIngrp()));
-                                    EtFuncEquip_statement.bindString(8, c_e.check_empty(fL.getTplma()));
-                                    EtFuncEquip_statement.bindString(9, c_e.check_empty(fL.getEqart()));
-                                    EtFuncEquip_statement.bindString(10, c_e.check_empty(fL.getRbnr()));
-                                    EtFuncEquip_statement.bindString(11, c_e.check_empty(fL.getInactive()));
-                                    EtFuncEquip_statement.bindString(12, c_e.check_empty(fL.getLevel()));
-                                    EtFuncEquip_statement.bindString(13, c_e.check_empty(fL.getStplnr()));
-                                    EtFuncEquip_statement.bindString(14, c_e.check_empty(fL.getIwerk()));
-                                    EtFuncEquip_statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtFuncEquip() != null) {
+                            if (response.body().getD().getResults().get(0).getEtFuncEquip().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtFuncEquip().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (FLOC_SER.EtFuncEquip_Result eFE : response.body().getD().getResults().get(0).getEtFuncEquip().getResults()) {
+                                    values.put("Tplnr", eFE.getTplnr());
+                                    values.put("Pltxt", eFE.getPltxt());
+                                    values.put("Werks", eFE.getWerks());
+                                    values.put("Arbpl", eFE.getArbpl());
+                                    values.put("Kostl", eFE.getKostl());
+                                    values.put("Fltyp", eFE.getFltyp());
+                                    values.put("Ingrp", eFE.getIngrp());
+                                    values.put("Tplma", eFE.getTplma());
+                                    values.put("Eqart", eFE.getEqart());
+                                    values.put("Rbnr", eFE.getRbnr());
+                                    values.put("Inactive", eFE.getInactive());
+                                    values.put("Level", eFE.getLevel());
+                                    values.put("Stplnr", eFE.getStplnr());
+                                    values.put("Iwerk", eFE.getIwerk());
+                                    App_db.insert("EtFuncEquip", null, values);
                                 }
                             }
                         }
-
                         /*EtEqui*/
-                        FLOC_SER.EtEqui equip = results.get(0).getEtEqui();
-                        if (equip != null) {
-                            List<FLOC_SER.EtEqui_Result> equipResult = equip.getResults();
-                            if (equipResult != null && equipResult.size() > 0) {
-                                String Equip_sql = "Insert into EtEqui (Tplnr, Pltxt, Equnr, Spras," +
-                                        " Eqktx, Rbnr, Eqtyp, Herst, Eqart, Werks, Arbpl, Kostl," +
-                                        " Ingrp, Serge, Typbz, Mapar, Inactive, Permit, Hequi," +
-                                        " Stlkz, Level, Sequi, Stort, Beber, Anlnr, Anlun, Ivdat," +
-                                        " Invzu, Iwerk, Bukrs)" +
-                                        " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement Equip_statement = App_db.compileStatement(Equip_sql);
-                                Equip_statement.clearBindings();
-                                for (FLOC_SER.EtEqui_Result eq : equipResult) {
-                                    Equip_statement.bindString(1, c_e.check_empty(eq.getTplnr()));
-                                    Equip_statement.bindString(2, "");
-                                    Equip_statement.bindString(3, c_e.check_empty(eq.getEqunr()));
-                                    Equip_statement.bindString(4, "");
-                                    Equip_statement.bindString(5, c_e.check_empty(eq.getEqktx()));
-                                    Equip_statement.bindString(6, c_e.check_empty(eq.getRbnr()));
-                                    Equip_statement.bindString(7, c_e.check_empty(eq.getEqtyp()));
-                                    Equip_statement.bindString(8, c_e.check_empty(eq.getHerst()));
-                                    Equip_statement.bindString(9, c_e.check_empty(eq.getEqart()));
-                                    Equip_statement.bindString(10, c_e.check_empty(eq.getWerks()));
-                                    Equip_statement.bindString(11, c_e.check_empty(eq.getArbpl()));
-                                    Equip_statement.bindString(12, c_e.check_empty(eq.getKostl()));
-                                    Equip_statement.bindString(13, c_e.check_empty(eq.getIngrp()));
-                                    Equip_statement.bindString(14, c_e.check_empty(eq.getSerge()));
-                                    Equip_statement.bindString(15, c_e.check_empty(eq.getTypbz()));
-                                    Equip_statement.bindString(16, c_e.check_empty(eq.getMapar()));
-                                    Equip_statement.bindString(17, "");
-                                    Equip_statement.bindString(18, "");
-                                    Equip_statement.bindString(19, c_e.check_empty(eq.getHequi()));
-                                    Equip_statement.bindString(20, c_e.check_empty(eq.getStlkz()));
-                                    Equip_statement.bindString(21, c_e.check_empty(eq.getLevel()));
-                                    Equip_statement.bindString(22, c_e.check_empty(eq.getSequi()));
-                                    Equip_statement.bindString(23, c_e.check_empty(eq.getStort()));
-                                    Equip_statement.bindString(24, c_e.check_empty(eq.getBeber()));
-                                    Equip_statement.bindString(25, c_e.check_empty(eq.getAnlnr()));
-                                    Equip_statement.bindString(26, c_e.check_empty(eq.getAnlun()));
-                                    Equip_statement.bindString(27, c_e.check_empty(eq.getIvdat()));
-                                    Equip_statement.bindString(28, c_e.check_empty(eq.getInvzu()));
-                                    Equip_statement.bindString(29, c_e.check_empty(eq.getIwerk()));
-                                    Equip_statement.bindString(30, c_e.check_empty(eq.getBukrs()));
-                                    Equip_statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEqui() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEqui().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEqui().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (FLOC_SER.EtEqui_Result eEE : response.body().getD().getResults().get(0).getEtEqui().getResults()) {
+                                    values.put("Tplnr", eEE.getTplnr());
+                                    values.put("Pltxt", " ");
+                                    values.put("Equnr", eEE.getEqunr());
+                                    values.put("Spras", " ");
+                                    values.put("Eqktx", eEE.getEqktx());
+                                    values.put("Rbnr", eEE.getRbnr());
+                                    values.put("Eqtyp", eEE.getEqtyp());
+                                    values.put("Herst", eEE.getHerst());
+                                    values.put("Eqart", eEE.getEqart());
+                                    values.put("Werks", eEE.getWerks());
+                                    values.put("Arbpl", eEE.getArbpl());
+                                    values.put("Kostl", eEE.getKostl());
+                                    values.put("Ingrp", eEE.getIngrp());
+                                    values.put("Serge", eEE.getSerge());
+                                    values.put("Typbz", eEE.getTypbz());
+                                    values.put("Mapar", eEE.getMapar());
+                                    values.put("Inactive", " ");
+                                    values.put("Permit", " ");
+                                    values.put("Hequi", eEE.getHequi());
+                                    values.put("Stlkz", eEE.getStlkz());
+                                    values.put("Level", eEE.getLevel());
+                                    values.put("Sequi", eEE.getSequi());
+                                    values.put("Stort", eEE.getStort());
+                                    values.put("Beber", eEE.getBeber());
+                                    values.put("Anlnr", eEE.getAnlnr());
+                                    values.put("Anlun", eEE.getAnlun());
+                                    values.put("Ivdat", eEE.getIvdat());
+                                    values.put("Invzu", eEE.getInvzu());
+                                    values.put("Iwerk", eEE.getIwerk());
+                                    values.put("Bukrs", eEE.getBukrs());
+                                    App_db.insert("EtEqui", null, values);
                                 }
                             }
                         }
+                        App_db.setTransactionSuccessful();
+                        Get_Response = "success";
+                    } finally {
+                        App_db.endTransaction();
                     }
-                    App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
-                    Get_Response = "success";
                 }
             }
         } catch (Exception ex) {

@@ -6,79 +6,78 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class FLOC_SER
-{
+public class FLOC_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
     }
 
 
-    public class Result
-    {
+    public class Result {
         @SerializedName("EtFuncEquip")
         @Expose
         private EtFuncEquip EtFuncEquip;
         @SerializedName("EtEqui")
         @Expose
         private EtEqui EtEqui;
+
         public EtFuncEquip getEtFuncEquip() {
             return EtFuncEquip;
         }
+
         public void setEtFuncEquip(EtFuncEquip etFuncEquip) {
             EtFuncEquip = etFuncEquip;
         }
+
         public EtEqui getEtEqui() {
             return EtEqui;
         }
+
         public void setEtEqui(EtEqui etEqui) {
             EtEqui = etEqui;
         }
     }
 
 
-
     /*For Parsing EtFuncEquip*/
-    public class EtFuncEquip
-    {
+    public class EtFuncEquip {
         @SerializedName("results")
         @Expose
         private List<EtFuncEquip_Result> results = null;
-        public List<EtFuncEquip_Result> getResults()
-        {
+
+        public List<EtFuncEquip_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtFuncEquip_Result> results)
-        {
+
+        public void setResults(List<EtFuncEquip_Result> results) {
             this.results = results;
         }
     }
-    public class EtFuncEquip_Result
-    {
+
+    public class EtFuncEquip_Result {
         public String getTplnr() {
             return tplnr;
         }
@@ -249,22 +248,21 @@ public class FLOC_SER
 
 
     /*For Parsing EtEqui*/
-    public class EtEqui
-    {
+    public class EtEqui {
         @SerializedName("results")
         @Expose
         private List<EtEqui_Result> results = null;
-        public List<EtEqui_Result> getResults()
-        {
+
+        public List<EtEqui_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtEqui_Result> results)
-        {
+
+        public void setResults(List<EtEqui_Result> results) {
             this.results = results;
         }
     }
-    public class EtEqui_Result
-    {
+
+    public class EtEqui_Result {
         @SerializedName("Tplnr")
         @Expose
         private String tplnr;

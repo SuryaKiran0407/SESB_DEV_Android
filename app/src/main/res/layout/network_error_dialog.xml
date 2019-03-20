@@ -51,12 +51,12 @@
         android:weightSum="2">
 
         <com.enstrapp.fieldtekpro.customfont.Font_Button
-            android:id="@+id/ok_button"
+            android:id="@+id/cancel_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.995"
             android:background="@color/colorPrimary"
-            android:text="@string/yes"
+            android:text="@string/cancel"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="14sp" />
@@ -69,12 +69,12 @@
             android:background="@color/white" />
 
         <com.enstrapp.fieldtekpro.customfont.Font_Button
-            android:id="@+id/cancel_button"
+            android:id="@+id/ok_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.995"
             android:background="@color/colorPrimary"
-            android:text="@string/cancel"
+            android:text="@string/yes"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="14sp" />

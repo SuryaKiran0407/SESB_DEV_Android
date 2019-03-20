@@ -6,30 +6,30 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Token_SER
-{
+public class Token_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("EntitySets")
         @Expose
         private List<String> entitySets = null;
+
         public List<String> getEntitySets() {
             return entitySets;
         }
+
         public void setEntitySets(List<String> entitySets) {
             this.entitySets = entitySets;
         }

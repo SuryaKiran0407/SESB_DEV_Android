@@ -1,5 +1,6 @@
 package com.enstrapp.fieldtekpro.notifications;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,9 +13,6 @@ import android.util.Base64;
 import com.enstrapp.fieldtekpro.Initialload.Notifications_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.R;
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;

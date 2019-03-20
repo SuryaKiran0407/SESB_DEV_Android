@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -248,120 +249,99 @@ public class Calibration {
             int response_status_code = response.code();
             Log.v("kiran_Calibration_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Calibration_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
-
+                    try {
                         /*EtQinspData*/
-                        Calibration_SER.EtQinspData etQinspData = results.get(0).getEtQinspData();
-                        if (etQinspData != null) {
-                            List<Calibration_SER.EtQinspData_Result> etQinspDataResults = etQinspData.getResults();
-                            if (etQinspDataResults != null && etQinspDataResults.size() > 0) {
-                                String EtQinspData_sql = "Insert into EtQinspData (Aufnr, Prueflos, Vornr, " +
-                                        "Plnty, Plnnr, Plnkn, Merknr, Quantitat, Qualitat, QpmkZaehl, Msehi," +
-                                        " Msehl, Verwmerkm, Kurztext, Result, Sollwert, Toleranzob, Toleranzub," +
-                                        " Rueckmelnr, Satzstatus, Equnr, Pruefbemkt, Mbewertg, Pruefer, " +
-                                        "Pruefdatuv, Pruefdatub, Pruefzeitv, Pruefzeitb, Iststpumf, Anzfehleh," +
-                                        " Anzwertg, Ktextmat, Katab1, Katalgart1, Auswmenge1, Codetext, Xstatus," +
-                                        " Action, UUID, Udid, Werks)" +
-                                        "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
-                                        "?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(EtQinspData_sql);
-                                statement.clearBindings();
-                                for (Calibration_SER.EtQinspData_Result eQ : etQinspDataResults) {
-                                    statement.bindString(1, c_e.check_empty(eQ.getAufnr()));
-                                    statement.bindString(2, c_e.check_empty(eQ.getPrueflos()));
-                                    statement.bindString(3, c_e.check_empty(eQ.getVornr()));
-                                    statement.bindString(4, c_e.check_empty(eQ.getPlnty()));
-                                    statement.bindString(5, c_e.check_empty(eQ.getPlnnr()));
-                                    statement.bindString(6, c_e.check_empty(eQ.getPlnkn()));
-                                    statement.bindString(7, c_e.check_empty(eQ.getMerknr()));
-                                    statement.bindString(8, c_e.check_empty(eQ.getQuantitat()));
-                                    statement.bindString(9, c_e.check_empty(eQ.getQualitat()));
-                                    statement.bindString(10, c_e.check_empty(eQ.getQpmkZaehl()));
-                                    statement.bindString(11, c_e.check_empty(eQ.getMsehi()));
-                                    statement.bindString(12, c_e.check_empty(eQ.getMsehl()));
-                                    statement.bindString(13, c_e.check_empty(eQ.getVerwmerkm()));
-                                    statement.bindString(14, c_e.check_empty(eQ.getKurztext()));
-                                    statement.bindString(15, c_e.check_empty(eQ.getResult()));
-                                    statement.bindString(16, c_e.check_empty(eQ.getSollwert()));
-                                    statement.bindString(17, c_e.check_empty(eQ.getToleranzob()));
-                                    statement.bindString(18, c_e.check_empty(eQ.getToleranzub()));
-                                    statement.bindString(19, c_e.check_empty(eQ.getRueckmelnr()));
-                                    statement.bindString(20, c_e.check_empty(eQ.getSatzstatus()));
-                                    statement.bindString(21, c_e.check_empty(eQ.getEqunr()));
-                                    statement.bindString(22, c_e.check_empty(eQ.getPruefbemkt()));
-                                    statement.bindString(23, getMbewertg(c_e.check_empty(eQ.getQuantitat()),
-                                            c_e.check_empty(eQ.getResult()), c_e.check_empty(eQ.getToleranzub()),
-                                            c_e.check_empty(eQ.getToleranzob()), c_e.check_empty(eQ.getMbewertg())));
-                                    statement.bindString(24, c_e.check_empty(eQ.getPruefer()));
-                                    statement.bindString(25, c_e.check_empty(eQ.getPruefdatuv()));
-                                    statement.bindString(26, c_e.check_empty(eQ.getPruefdatub()));
-                                    statement.bindString(27, c_e.check_empty(eQ.getPruefzeitv()));
-                                    statement.bindString(28, c_e.check_empty(eQ.getPruefzeitb()));
-                                    statement.bindString(29, c_e.check_empty(String.valueOf(eQ.getIststpumf())));
-                                    statement.bindString(30, c_e.check_empty(String.valueOf(eQ.getAnzfehleh())));
-                                    statement.bindString(31, c_e.check_empty(String.valueOf(eQ.getAnzwertg())));
-                                    statement.bindString(32, c_e.check_empty(eQ.getKtextmat()));
-                                    statement.bindString(33, c_e.check_empty(eQ.getKatab1()));
-                                    statement.bindString(34, c_e.check_empty(eQ.getKatalgart1()));
-                                    statement.bindString(35, c_e.check_empty(eQ.getAuswmenge1()));
-                                    statement.bindString(36, c_e.check_empty(eQ.getCodetext()));
-                                    statement.bindString(37, c_e.check_empty(eQ.getXstatus()));
-                                    statement.bindString(38, c_e.check_empty(eQ.getAction()));
-                                    statement.bindString(39, UUID.randomUUID().toString());
-                                    statement.bindString(40, c_e.check_empty(eQ.getUdid()));
-                                    statement.bindString(41, c_e.check_empty(eQ.getWerks()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtQinspData() != null) {
+                            if (response.body().getD().getResults().get(0).getEtQinspData().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtQinspData().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (Calibration_SER.EtQinspData_Result eQD : response.body().getD().getResults().get(0).getEtQinspData().getResults()) {
+                                    values.put("Aufnr", eQD.getAufnr());
+                                    values.put("Prueflos", eQD.getPrueflos());
+                                    values.put("Vornr", eQD.getVornr());
+                                    values.put("Plnty", eQD.getPlnty());
+                                    values.put("Plnnr", eQD.getPlnnr());
+                                    values.put("Plnkn", eQD.getPlnkn());
+                                    values.put("Merknr", eQD.getMerknr());
+                                    values.put("Quantitat", eQD.getQuantitat());
+                                    values.put("Qualitat", eQD.getQualitat());
+                                    values.put("QpmkZaehl", eQD.getQpmkZaehl());
+                                    values.put("Msehi", eQD.getMsehi());
+                                    values.put("Msehl", eQD.getMsehl());
+                                    values.put("Verwmerkm", eQD.getVerwmerkm());
+                                    values.put("Kurztext", eQD.getKurztext());
+                                    values.put("Result", eQD.getResult());
+                                    values.put("Sollwert", eQD.getSollwert());
+                                    values.put("Toleranzob", eQD.getToleranzob());
+                                    values.put("Toleranzub", eQD.getToleranzub());
+                                    values.put("Rueckmelnr", eQD.getRueckmelnr());
+                                    values.put("Satzstatus", eQD.getSatzstatus());
+                                    values.put("Equnr", eQD.getEqunr());
+                                    values.put("Pruefbemkt", eQD.getPruefbemkt());
+                                    values.put("Mbewertg", eQD.getMbewertg());
+                                    values.put("Pruefer", eQD.getPruefer());
+                                    values.put("Pruefdatuv", eQD.getPruefdatuv());
+                                    values.put("Pruefdatub", eQD.getPruefdatub());
+                                    values.put("Pruefzeitv", eQD.getPruefzeitv());
+                                    values.put("Pruefzeitb", eQD.getPruefzeitb());
+                                    values.put("Iststpumf", eQD.getIststpumf());
+                                    values.put("Anzfehleh", eQD.getAnzfehleh());
+                                    values.put("Anzwertg", eQD.getAnzwertg());
+                                    values.put("Ktextmat", eQD.getKtextmat());
+                                    values.put("Katab1", eQD.getKatab1());
+                                    values.put("Katalgart1", eQD.getKatalgart1());
+                                    values.put("Auswmenge1", eQD.getAuswmenge1());
+                                    values.put("Codetext", eQD.getCodetext());
+                                    values.put("Xstatus", eQD.getXstatus());
+                                    values.put("Action", eQD.getAction());
+                                    values.put("UUID", " ");
+                                    values.put("Udid", eQD.getUdid());
+                                    values.put("Werks", eQD.getWerks());
+                                    App_db.insert("EtQinspData", null, values);
                                 }
                             }
                         }
 
                         /*EtQudData*/
-                        Calibration_SER.EtQudData etQudData = results.get(0).getEtQudData();
-                        if (etQudData != null) {
-                            List<Calibration_SER.EtQudData_Result> etQudDataResults = etQudData.getResults();
-                            if (etQudDataResults != null && etQudDataResults.size() > 0) {
-                                String EtQudData_sql = "Insert into EtQudData (Prueflos,Aufnr,Werks, Equnr," +
-                                        " Vkatart, Vcodegrp, Vauswahlmg, Vcode, Qkennzahl, Vname, Vdatum," +
-                                        " Vaedatum, Vezeitaen, Udtext, Udforce, Rcode, Xstatus, Action, " +
-                                        "Udid, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement EtQudData_statement = App_db.compileStatement(EtQudData_sql);
-                                EtQudData_statement.clearBindings();
-                                for (Calibration_SER.EtQudData_Result eQU : etQudDataResults) {
-                                    EtQudData_statement.bindString(1, c_e.check_empty(eQU.getPrueflos()));
-                                    EtQudData_statement.bindString(2, c_e.check_empty(eQU.getAufnr()));
-                                    EtQudData_statement.bindString(3, c_e.check_empty(eQU.getWerks()));
-                                    EtQudData_statement.bindString(4, c_e.check_empty(eQU.getEqunr()));
-                                    EtQudData_statement.bindString(5, c_e.check_empty(eQU.getVkatart()));
-                                    EtQudData_statement.bindString(6, c_e.check_empty(eQU.getVcodegrp()));
-                                    EtQudData_statement.bindString(7, c_e.check_empty(eQU.getVauswahlmg()));
-                                    EtQudData_statement.bindString(8, c_e.check_empty(eQU.getVcode()));
-                                    EtQudData_statement.bindString(9, c_e.check_empty(eQU.getQkennzahl()));
-                                    EtQudData_statement.bindString(10, c_e.check_empty(eQU.getVname()));
-                                    EtQudData_statement.bindString(11, c_e.check_empty(eQU.getVdatum()));
-                                    EtQudData_statement.bindString(12, c_e.check_empty(eQU.getVaedatum()));
-                                    EtQudData_statement.bindString(13, c_e.check_empty(eQU.getVezeitaen()));
-                                    EtQudData_statement.bindString(14, c_e.check_empty(eQU.getUdtext()));
-                                    EtQudData_statement.bindString(15, c_e.check_empty(eQU.getUdforce()));
-                                    EtQudData_statement.bindString(16, c_e.check_empty(eQU.getRcode()));
-                                    EtQudData_statement.bindString(17, c_e.check_empty(eQU.getXstatus()));
-                                    EtQudData_statement.bindString(18, c_e.check_empty(eQU.getAction()));
-                                    EtQudData_statement.bindString(19, c_e.check_empty(eQU.getUdid()));
-                                    if (!c_e.check_empty(eQU.getVcode()).equals("") || !c_e.check_empty(eQU.getUdtext()).equals(""))
-                                        EtQudData_statement.bindString(20, "hide");
+                        if (response.body().getD().getResults().get(0).getEtQudData() != null) {
+                            if (response.body().getD().getResults().get(0).getEtQudData().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtQudData().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (Calibration_SER.EtQudData_Result eQD : response.body().getD().getResults().get(0).getEtQudData().getResults()) {
+                                    values.put("Aufnr", eQD.getAufnr());
+                                    values.put("Prueflos", eQD.getPrueflos());
+                                    values.put("Werks", eQD.getWerks());
+                                    values.put("Equnr", eQD.getEqunr());
+                                    values.put("Vkatart", eQD.getVkatart());
+                                    values.put("Vcodegrp", eQD.getVcodegrp());
+                                    values.put("Vauswahlmg", eQD.getVauswahlmg());
+                                    values.put("Vcode", eQD.getVcode());
+                                    values.put("Qkennzahl", eQD.getQkennzahl());
+                                    values.put("Vname", eQD.getVname());
+                                    values.put("Vdatum", eQD.getVdatum());
+                                    values.put("Vaedatum", eQD.getVaedatum());
+                                    values.put("Vezeitaen", eQD.getVezeitaen());
+                                    values.put("Udtext", eQD.getUdtext());
+                                    values.put("Udforce", eQD.getUdforce());
+                                    values.put("Rcode", eQD.getRcode());
+                                    values.put("Xstatus", eQD.getXstatus());
+                                    values.put("Action", eQD.getAction());
+                                    values.put("Udid", eQD.getUdid());
+                                    if (!eQD.getVcode().equals("") || !eQD.getUdtext().equals(""))
+                                        values.put("Status", "hide");
                                     else
-                                        EtQudData_statement.bindString(20, "visible");
-                                    EtQudData_statement.execute();
+                                        values.put("Status", "Visible");
+                                    App_db.insert("EtQudData", null, values);
                                 }
                             }
                         }
+                        App_db.setTransactionSuccessful();
+                        Get_Response = "success";
+                    } finally {
+                        App_db.endTransaction();
                     }
-                    App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
-                    Get_Response = "success";
                 }
             }
         } catch (Exception ex) {

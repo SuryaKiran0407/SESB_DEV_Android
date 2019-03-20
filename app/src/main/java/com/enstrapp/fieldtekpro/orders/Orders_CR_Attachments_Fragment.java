@@ -20,6 +20,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
     Error_Dialog error_dialog = new Error_Dialog();
     private static final String IMAGE_DIRECTORY_NAME = "FIELDTEKPRO";
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    String path = "", filee_name = "", image_Path = "", file_path = "";
+    String path = "", filee_name = "", file_path = "";
     private static String DATABASE_NAME = "";
     private List<Notif_EtDocs_Parcelable> attachments_list = new ArrayList<>();
     RecyclerView attachments_rv;
@@ -223,11 +224,24 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                         try {
                             Bitmap photo = (Bitmap) data.getExtras().get("data");
                             Uri selectedImage = getImageUri(getActivity(), photo);
-                            image_Path = getRealPathFromURI(selectedImage);
+                            final String image_Path = getRealPathFromURI(selectedImage);
                             final File file = new File(image_Path);
                             Uri selectedUri = Uri.fromFile(file);
                             final String fileExtension = MimeTypeMap.getFileExtensionFromUrl(selectedUri.toString());
-                            if (fileExtension.equalsIgnoreCase("txt") || fileExtension.equalsIgnoreCase("pdf") || fileExtension.equalsIgnoreCase("png") || fileExtension.equalsIgnoreCase("doc") || fileExtension.equalsIgnoreCase("docx") || fileExtension.equalsIgnoreCase("png") || fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("xls") || fileExtension.equalsIgnoreCase("xlsx") || fileExtension.equalsIgnoreCase("dxf") || fileExtension.equalsIgnoreCase("dwf") || fileExtension.equalsIgnoreCase("dxf") || fileExtension.equalsIgnoreCase("dwg")) {
+
+                            if (fileExtension.equalsIgnoreCase("txt") ||
+                                    fileExtension.equalsIgnoreCase("pdf") ||
+                                    fileExtension.equalsIgnoreCase("png") ||
+                                    fileExtension.equalsIgnoreCase("doc") ||
+                                    fileExtension.equalsIgnoreCase("docx") ||
+                                    fileExtension.equalsIgnoreCase("png") ||
+                                    fileExtension.equalsIgnoreCase("jpg") ||
+                                    fileExtension.equalsIgnoreCase("xls") ||
+                                    fileExtension.equalsIgnoreCase("xlsx") ||
+                                    fileExtension.equalsIgnoreCase("dxf") ||
+                                    fileExtension.equalsIgnoreCase("dwf") ||
+                                    fileExtension.equalsIgnoreCase("dxf") ||
+                                    fileExtension.equalsIgnoreCase("dwg")) {
                                 final String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
                                 final int file_size = Integer.parseInt(String.valueOf(file.length()));
                                 byte[] byteArray = null;
@@ -275,7 +289,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                             }
 
                                             Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                                            notif_etDocs_parcelable.setZobjid("");
+                                            notif_etDocs_parcelable.setZobjid(" ");
                                             notif_etDocs_parcelable.setZdoctype("Q");
                                             notif_etDocs_parcelable.setZdoctypeitem("QH");
                                             notif_etDocs_parcelable.setFilename(filee_name);
@@ -289,18 +303,20 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                             attachments_list.add(notif_etDocs_parcelable);
                                             try {
                                                 App_db.beginTransaction();
-                                                String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id) values(?,?,?,?,?);";
+                                                String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id, doctype) values(?,?,?,?,?,?);";
                                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                                 statement11.clearBindings();
-                                                statement11.bindString(1, "");
+                                                statement11.bindString(1,filee_name);
                                                 statement11.bindString(2, ma.uniqeId);
                                                 statement11.bindString(3, "Orders");
-                                                statement11.bindString(4, image_Path.toString());
-                                                statement11.bindString(5, "");
+                                                statement11.bindString(4, encodedImage);
+                                                statement11.bindString(5, mimeType);
+                                                statement11.bindString(6, fileExtension);
                                                 statement11.execute();
                                                 App_db.setTransactionSuccessful();
                                                 App_db.endTransaction();
                                             } catch (Exception e) {
+                                                Log.v("order insert response",""+e.getMessage());
 
                                             }
                                             Display_Attachments();
@@ -366,14 +382,15 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                     attachments_list.add(notif_etDocs_parcelable);
                                     try {
                                         App_db.beginTransaction();
-                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id) values(?,?,?,?,?);";
+                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id, doctype) values(?,?,?,?,?,?);";
                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                         statement11.clearBindings();
-                                        statement11.bindString(1, "");
+                                        statement11.bindString(1,filee_name);
                                         statement11.bindString(2, ma.uniqeId);
                                         statement11.bindString(3, "Orders");
-                                        statement11.bindString(4, file_path);
-                                        statement11.bindString(5, "");
+                                        statement11.bindString(4, encodedImage);
+                                        statement11.bindString(5, mimeType);
+                                        statement11.bindString(6, fileExtension);
                                         statement11.execute();
                                         App_db.setTransactionSuccessful();
                                         App_db.endTransaction();
@@ -429,14 +446,15 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                     attachments_list.add(notif_etDocs_parcelable);
                                     try {
                                         App_db.beginTransaction();
-                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id) values(?,?,?,?,?);";
+                                        String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id,doctype) values(?,?,?,?,?,?);";
                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                         statement11.clearBindings();
-                                        statement11.bindString(1, "");
+                                        statement11.bindString(1,filee_name);
                                         statement11.bindString(2, ma.uniqeId);
                                         statement11.bindString(3, "Orders");
-                                        statement11.bindString(4, file_path);
-                                        statement11.bindString(5, "");
+                                        statement11.bindString(4, encodedImage);
+                                        statement11.bindString(5, mimeType);
+                                        statement11.bindString(6, fileExtension);
                                         statement11.execute();
                                         App_db.setTransactionSuccessful();
                                         App_db.endTransaction();
@@ -488,7 +506,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
             protected ImageView pic_imageview;
             protected TextView uuid_textview;
             protected CheckBox checkbox;
-            protected LinearLayout layout;
+
 
             public MyViewHolder(View view) {
                 super(view);
@@ -519,15 +537,15 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
             holder.checkbox.setTag(position);
             holder.checkbox.setChecked((nep.isSelected() == true ? true : false));
             holder.filename_textview.setText(nep.getFilename());
-            String object_type = nep.getObjtype();
-            /*if (object_type.equalsIgnoreCase("EQUI")) {
+           // String object_type = nep.getObjtype();
+            holder.file_objtype_textview.setVisibility(View.GONE);
+           /* if (object_type.equalsIgnoreCase("EQUI")) {
                 holder.file_objtype_textview.setText("Equipment");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.footer_color));
             } else {
                 holder.file_objtype_textview.setText("Notification");
                 holder.file_objtype_textview.setBackgroundColor(getResources().getColor(R.color.dark_green));
             }*/
-            holder.file_objtype_textview.setVisibility(GONE);
             String size = nep.getFsize();
             int int_size = Integer.parseInt(size);
             int size_mb = int_size / 1024;

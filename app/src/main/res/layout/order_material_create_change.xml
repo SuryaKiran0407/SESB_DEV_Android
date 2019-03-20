@@ -81,7 +81,11 @@
                         android:hint="@string/operations_id_star"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:textSize="@dimen/textSize" />
+                        android:textSize="@dimen/textSize"
+                        android:enabled="false"
+                        android:cursorVisible="false"
+                        android:textColor="@android:color/black"
+                        android:focusable="false"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageView
@@ -92,6 +96,7 @@
                     android:layout_marginEnd="@dimen/dropDownIconEndMarg"
                     android:layout_marginTop="@dimen/dropDownIconTopMarg"
                     android:layout_weight=".1"
+                    android:enabled="false"
                     android:src="@drawable/ic_arrow_drop_down_blue_24px" />
             </LinearLayout>
 
@@ -164,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@android:color/transparent"
                         android:hint="@string/quantity"
-                        android:inputType="text"
+                        android:inputType="numberDecimal|numberSigned"
                         android:maxLines="1"
                         android:textSize="@dimen/textSize" />
                 </android.support.design.widget.TextInputLayout>

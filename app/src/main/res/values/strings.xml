@@ -12,7 +12,7 @@
     <string name="login_url">AuthLoginSet?$filter=&amp;$expand=EsUser&amp;$format=json</string>
     <string name="syncmap_url">ServiceEndPointSet?$filter=&amp;$format=json</string>
 
-    <string name="database_name">FIELDTEKPRO</string>
+    <string name="database_name">FIELDTEKPRO_ED9.db</string>
     <string name="orders">Orders</string>
     <string name="home_button">Home Button</string>
     <string name="cancel">Cancel</string>
@@ -114,6 +114,8 @@
     <string name="notification_text_star">*  Notification Short Text</string>
     <string name="notification_text">Notification Text</string>
     <string name="reported_by">Reported By</string>
+    <string name="planning_plant">Planning Plant</string>
+    <string name="maintenance_plant">Maintenance Plant</string>
     <string name="responsible">Responsible</string>
     <string name="user_responsible"> Primary User Responsible</string>
     <string name="equipment_inspection">Equipment Inspection</string>
@@ -613,7 +615,7 @@
     <string name="notification_change">Do you want to change the selected notification ?</string>
     <string name="notifchange_offline">No Internet Connectivity. Do you want to proceed Notification Change with offline ?</string>
     <string name="notification_unabletochange">Unable to process Notification Change. Please try again.</string>
-    <string name="notification_changesuccess">Notification %1s has been created successfully.</string>
+    <string name="notification_changesuccess">Notification %1s has been Changed successfully.</string>
     <string name="notification_noorderfound">No data found for Order %1s.</string>
     <string name="notifactivity_selectcode">Please select Code.</string>
     <string name="notifactivity_selectcodegrp">Please select Code Group.</string>
@@ -827,5 +829,20 @@
     <string name="teco_slctordr">Do you want to perform TECO for the selected order %1s?</string>
     <string name="refresh_calibration">Refresh In Progress&#8230;</string>
     <string name="sync">Sync</string>
+    <string name="offline_confirmation">No Internet Connectivity. Do you want to proceed in Offline mode?</string>
+    <string name="syncmap_sp">SYNCMAP</string>
+    <string name="devicetoken_sp">DEVICE_TOKEN</string>
+    <string name="loadsettings_sp">LOAD_SETT</string>
+    <string name="auth_sp">AUTH</string>
+    <string name="vhlp_sp">VHLP</string>
+    <string name="vhlpwcm_sp">VHLP_WCM</string>
+    <string name="dord_sp">DUE_ORDERS</string>
+    <string name="dnot_sp">DUE_NOTIF</string>
+    <string name="bom_sp">BOM</string>
+    <string name="floc_sp">FLOC</string>
+    <string name="measurpoint_sp">MPTT</string>
+    <string name="jsa_sp">JSA</string>
+    <string name="Calib_sp">CALIBRATION</string>
+    <string name="initialload_unsuccess">Initial data load is not completed.\nPlease perform initial load again.</string>
 
 </resources>

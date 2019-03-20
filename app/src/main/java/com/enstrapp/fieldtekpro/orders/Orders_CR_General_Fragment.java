@@ -466,6 +466,9 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     funcLocName_tiet.setText(data.getStringExtra("functionlocation_text"));
                     respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,
                             data.getStringExtra("kostl_id"), respCostCntrName(data.getStringExtra("kostl_id"))));
+                    equipId_tiet.setText("");
+                    equipName_tiet.setText("");
+
                 }
                 break;
 
@@ -604,13 +607,17 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                 if (resultCode == RESULT_OK) {
                     ma.ohp.setOrdrLngTxt(data.getStringExtra("longtext_new"));
                     String longtext_text = data.getStringExtra("longtext_new");
-                    if (longtext_text.length() > 40) {
-                        ordrLngTxt_tiet.setText(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
-                        ma.ohp.setOrdrShrtTxt(longtext_text.substring(0, Math.min(longtext_text.length(), 40)));
-                    } else {
-                        ordrLngTxt_tiet.setText(longtext_text);
-                        ma.ohp.setOrdrShrtTxt(longtext_text);
-                    }
+                    if (ordrLngTxt_tiet != null &&
+                            ordrLngTxt_tiet.getText().toString().equals(""))
+                        if (longtext_text != null && !longtext_text.equals("")) {
+                            String[] next = longtext_text.split("\n");
+                            if (next[0].length() > 40) {
+                                ordrLngTxt_tiet.setText(next[0].substring(0,
+                                        Math.min(next[0].length(), 40)));
+                            } else {
+                                ordrLngTxt_tiet.setText(next[0]);
+                            }
+                        }
                 }
 
             case (activity_type):

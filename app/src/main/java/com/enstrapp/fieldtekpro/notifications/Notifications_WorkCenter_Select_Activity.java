@@ -28,6 +28,9 @@ import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity implements View.OnClickListener {
 
     TextView title_textview, no_data_textview, searchview_textview;
@@ -108,30 +111,21 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            custom_progress_dialog
-                    .show_progress_dialog(Notifications_WorkCenter_Select_Activity.this,
-                            getResources().getString(R.string.loading));
+            custom_progress_dialog.show_progress_dialog(Notifications_WorkCenter_Select_Activity.this, getResources().getString(R.string.loading));
             type_list.clear();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_WKCTR",
-                        null);
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_WKCTR", null);
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            String id = cursor.getString(8);
-                            if (filt_array.contains(id)) {
-                                Type_Object nto = new Type_Object(cursor.getString(7),
-                                        cursor.getString(8), true);
-                                type_list.add(nto);
-                            } else {
-                                Type_Object nto = new Type_Object(cursor.getString(7),
-                                        cursor.getString(8), false);
-                                type_list.add(nto);
-                            }
+                            Type_Object nto = new Type_Object(cursor.getString(7),
+                                    cursor.getString(8),
+                                    cursor.getString(5), false);
+                            type_list.add(nto);
                         }
                         while (cursor.moveToNext());
                     }
@@ -144,30 +138,23 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (type_list.size() > 0) {
                 title_textview.setText(getResources().getString(R.string.work_center) + " (" + type_list.size() + ")");
-                adapter = new TYPE_ADAPTER(Notifications_WorkCenter_Select_Activity.this,
-                        type_list);
+                adapter = new TYPE_ADAPTER(Notifications_WorkCenter_Select_Activity.this, type_list);
                 list_recycleview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager =
-                        new LinearLayoutManager(Notifications_WorkCenter_Select_Activity.this);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Notifications_WorkCenter_Select_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 list_recycleview.setItemAnimator(new DefaultItemAnimator());
                 list_recycleview.setAdapter(adapter);
                 search.setOnQueryTextListener(listener);
-                no_data_textview.setVisibility(View.GONE);
-                list_recycleview.setVisibility(View.VISIBLE);
+                no_data_textview.setVisibility(GONE);
+                list_recycleview.setVisibility(VISIBLE);
             } else {
                 title_textview.setText(getResources().getString(R.string.work_center) + " (0)");
-                no_data_textview.setVisibility(View.VISIBLE);
-                list_recycleview.setVisibility(View.GONE);
+                no_data_textview.setVisibility(VISIBLE);
+                list_recycleview.setVisibility(GONE);
             }
             custom_progress_dialog.dismiss_progress_dialog();
         }
@@ -182,8 +169,7 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
                 String id = type_list.get(i).getId().toLowerCase();
                 String value = type_list.get(i).getText().toLowerCase();
                 if (id.contains(query) || value.contains(query)) {
-                    Type_Object nto = new Type_Object(type_list.get(i).getId(),
-                            type_list.get(i).getText(), type_list.get(i).isChecked_status());
+                    Type_Object nto = type_list.get(i);
                     filteredList.add(nto);
                 }
             }
@@ -222,6 +208,34 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
                 id_textview = (TextView) view.findViewById(R.id.id_textview);
                 value_textview = (TextView) view.findViewById(R.id.text_textview);
                 checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+                checkbox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (checkbox.isChecked()) {
+                            type_details_list.get((Integer) v.getTag()).setChecked_status(true);
+                            for (int i = 0; i < type_list.size(); i++) {
+                                if (type_details_list
+                                        .get((Integer) v.getTag()).getId()
+                                        .equals(type_list.get(i).getId()) &&
+                                        type_details_list.get((Integer) v.getTag()).getPlant()
+                                                .equals(type_list.get(i).getPlant())) {
+                                    type_list.get(i).setChecked_status(true);
+                                }
+                            }
+                        } else {
+                            type_details_list.get((Integer) v.getTag()).setChecked_status(false);
+                            for (int i = 0; i < type_list.size(); i++) {
+                                if (type_details_list
+                                        .get((Integer) v.getTag()).getId()
+                                        .equals(type_list.get(i).getId()) &&
+                                        type_details_list.get((Integer) v.getTag()).getPlant()
+                                                .equals(type_list.get(i).getPlant())) {
+                                    type_list.get(i).setChecked_status(false);
+                                }
+                            }
+                        }
+                    }
+                });
             }
         }
 
@@ -243,7 +257,7 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
             final Type_Object nto = type_details_list.get(position);
             holder.id_textview.setText(nto.getId());
             holder.value_textview.setText(nto.getText());
-            holder.checkbox.setOnClickListener(new View.OnClickListener() {
+            /*holder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (holder.checkbox.isChecked()) {
@@ -252,7 +266,7 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
                         type_details_list.get(position).setChecked_status(false);
                     }
                 }
-            });
+            });*/
             holder.checkbox.setTag(position);
             holder.checkbox.setChecked((type_details_list.get(position)
                     .isChecked_status() == true ? true : false));
@@ -267,11 +281,13 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
     public class Type_Object {
         private String id;
         private String text;
+        private String plant;
         private boolean checked_status;
 
-        public Type_Object(String id, String text, boolean checked_status) {
+        public Type_Object(String id, String text,String plant, boolean checked_status) {
             this.id = id;
             this.text = text;
+            this.plant = plant;
             this.checked_status = checked_status;
         }
 
@@ -297,6 +313,14 @@ public class Notifications_WorkCenter_Select_Activity extends AppCompatActivity 
 
         public void setText(String text) {
             this.text = text;
+        }
+
+        public String getPlant() {
+            return plant;
+        }
+
+        public void setPlant(String plant) {
+            this.plant = plant;
         }
     }
 

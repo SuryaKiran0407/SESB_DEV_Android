@@ -6,40 +6,37 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Auth_SER
-{
+public class Auth_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
     }
 
 
-    public class Result
-    {
+    public class Result {
         @SerializedName("EtBusf")
         @Expose
         private EtBusf EtBusf;
@@ -52,27 +49,35 @@ public class Auth_SER
         @SerializedName("EtUsrf")
         @Expose
         private EtUsrf EtUsrf;
+
         public Auth_SER.EtUsrf getEtUsrf() {
             return EtUsrf;
         }
+
         public void setEtUsrf(Auth_SER.EtUsrf etUsrf) {
             EtUsrf = etUsrf;
         }
+
         public Auth_SER.EtMusrf getEtMusrf() {
             return EtMusrf;
         }
+
         public void setEtMusrf(Auth_SER.EtMusrf etMusrf) {
             EtMusrf = etMusrf;
         }
+
         public EsUser getEsUser() {
             return EsUser;
         }
+
         public void setEsUser(EsUser esUser) {
             EsUser = esUser;
         }
+
         public Auth_SER.EtBusf getEtBusf() {
             return EtBusf;
         }
+
         public void setEtBusf(Auth_SER.EtBusf etBusf) {
             EtBusf = etBusf;
         }
@@ -80,22 +85,21 @@ public class Auth_SER
 
 
     /*For EtUsrf*/
-    public class EtUsrf
-    {
+    public class EtUsrf {
         @SerializedName("results")
         @Expose
         private List<EtUsrf_Result> results = null;
-        public List<EtUsrf_Result> getResults()
-        {
+
+        public List<EtUsrf_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtUsrf_Result> results)
-        {
+
+        public void setResults(List<EtUsrf_Result> results) {
             this.results = results;
         }
     }
-    public class EtUsrf_Result
-    {
+
+    public class EtUsrf_Result {
         @SerializedName("Mandt")
         @Expose
         private String Mandt;
@@ -156,22 +160,21 @@ public class Auth_SER
 
 
     /*For EtMusrf*/
-    public class EtMusrf
-    {
+    public class EtMusrf {
         @SerializedName("results")
         @Expose
         private List<EtMusrf_Result> results = null;
-        public List<EtMusrf_Result> getResults()
-        {
+
+        public List<EtMusrf_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtMusrf_Result> results)
-        {
+
+        public void setResults(List<EtMusrf_Result> results) {
             this.results = results;
         }
     }
-    public class EtMusrf_Result
-    {
+
+    public class EtMusrf_Result {
         @SerializedName("Mandt")
         @Expose
         private String Mandt;
@@ -232,22 +235,21 @@ public class Auth_SER
 
 
     /*For EsUser*/
-    public class EsUser
-    {
+    public class EsUser {
         @SerializedName("results")
         @Expose
         private List<EsUser_Result> results = null;
-        public List<EsUser_Result> getResults()
-        {
+
+        public List<EsUser_Result> getResults() {
             return results;
         }
-        public void setResults(List<EsUser_Result> results)
-        {
+
+        public void setResults(List<EsUser_Result> results) {
             this.results = results;
         }
     }
-    public class EsUser_Result
-    {
+
+    public class EsUser_Result {
         @SerializedName("Sapuser")
         @Expose
         private String sapuser;
@@ -418,22 +420,21 @@ public class Auth_SER
 
 
     /*For EtBusf*/
-    public class EtBusf
-    {
+    public class EtBusf {
         @SerializedName("results")
         @Expose
         private List<EtBusf_Result> results = null;
-        public List<EtBusf_Result> getResults()
-        {
+
+        public List<EtBusf_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtBusf_Result> results)
-        {
+
+        public void setResults(List<EtBusf_Result> results) {
             this.results = results;
         }
     }
-    public class EtBusf_Result
-    {
+
+    public class EtBusf_Result {
         @SerializedName("Mandt")
         @Expose
         private String Mandt;
@@ -446,12 +447,15 @@ public class Auth_SER
         @SerializedName("Active")
         @Expose
         private String Active;
+
         public String getMandt() {
             return Mandt;
         }
+
         public void setMandt(String mandt) {
             Mandt = mandt;
         }
+
         public String getUsgrp() {
             return Usgrp;
         }

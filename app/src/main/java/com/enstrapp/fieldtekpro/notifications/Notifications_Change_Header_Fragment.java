@@ -57,7 +57,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             malFunctnStDt_edittext, reqEnDt_edittext, reqStDt_edittext, personResp_edittext,
             primUsrResp_edittext, reportedby_edittext, plannerGroup_edittext, priority_edittext,
             workCenter_edittext, notiftyp_edittext, floc_edittext, flocname_edittext,
-            equipid_edittext, equiptext_edittext;
+            equipid_edittext, equiptext_edittext,iwerk_tiet, plant_tiet;
     int custom_info = 14, longtext = 13, effect = 12, malf_end_date = 11, malf_st_date = 10,
             req_enddate = 9, req_stdate = 8, personResp = 7, planner_group = 6,
             functionlocation_type = 1, equipment_type = 2, barcode_scan = 3, workcenter_type = 4,
@@ -72,7 +72,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             req_stdate_time = "", personresponsible_id = "", personresponsible_text = "",
             priority_type_id = "", priority_type_text = "", workcenter_id = "",
             workcenter_text = "", plannergroup_text = "", plannergroup_id = "", plant_id = "",
-            notification_type_id = "", notification_type_text = "", functionlocation_id = "",
+            notification_type_id = "", notification_type_text = "", functionlocation_id = "",iwerk = "",
             functionlocation_text = "", equipment_id = "", equipment_text = "";
     ImageView notiftype_dropdown_iv, equipmentsearch_imageview, equipmentscan_imageview,
             longtext_imageview;
@@ -133,6 +133,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         notif_Date_edittext = (TextView) rootView.findViewById(R.id.notif_Date_edittext);
         longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
         header_custominfo_button = (Button) rootView.findViewById(R.id.header_custominfo_button);
+        iwerk_tiet = (EditText) rootView.findViewById(R.id.iwerk_tiet);
+        plant_tiet = (EditText) rootView.findViewById(R.id.plant_tiet);
 
         status_til.setVisibility(View.GONE);
         notiftype_dropdown_iv.setVisibility(View.GONE);
@@ -163,13 +165,22 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             equipment_text = nhp.getEquipTxt();
             equipid_edittext.setText(equipment_id);
             equiptext_edittext.setText(equipment_text);
+
             plant_id = nhp.getWerks();
+            iwerk = nhp.getIwerk();
+
+            if (plant_id != null && !plant_id.equals(""))
+                plant_tiet.setText(plant_id);
+
+            if (iwerk != null && !iwerk.equals(""))
+                iwerk_tiet.setText(iwerk);
+
             plannergroup_id = nhp.getIngrp();
             plannergroup_text = nhp.getIngrpName();
-            plannerGroup_edittext.setText(plannergroup_id);
+            plannerGroup_edittext.setText(plannergroup_id + "-" + plannergroup_text);
             workcenter_id = nhp.getArbpl();
             workcenter_text = nhp.getWrkCntrTxt();
-            workCenter_edittext.setText(workcenter_id);
+            workCenter_edittext.setText(workcenter_id + "-" +workcenter_text);
             priority_type_id = nhp.getPriority();
             priority_type_text = nhp.getPriorityTxt();
             priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
@@ -621,7 +632,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         Notifications_PlannerGroup_Activity.class);
                 planner_group_intent.putExtra("equip_id",
                         equipid_edittext.getText().toString());
-                planner_group_intent.putExtra("plant_id", nhp.getIwerk());
+                planner_group_intent.putExtra("plant_id",iwerk);
                 planner_group_intent.putExtra("request_id",
                         Integer.toString(planner_group));
                 startActivityForResult(planner_group_intent, planner_group);
@@ -683,17 +694,29 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 functionlocation_id = data.getStringExtra("functionlocation_id");
                 functionlocation_text = data.getStringExtra("functionlocation_text");
                 plant_id = data.getStringExtra("plant_id");
+                iwerk = data.getStringExtra("iwerk");
                 equipment_id = "";
                 equipment_text = "";
                 equipid_edittext.setText("");
+                equiptext_edittext.setText("");
                 floc_edittext.setText(functionlocation_id);
                 flocname_edittext.setText(functionlocation_text);
                 plannergroup_id = data.getStringExtra("ingrp_id");
-                plannergroup_text = data.getStringExtra("ingrp_text");
-                plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
-                        plannergroup_text));
+                plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
+                if (plannergroup_id != null && !plannergroup_id.equals(""))
+                    if (plannergroup_text != null && !plannergroup_text.equals(""))
+                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                plannergroup_text));
+                    else
+                        plannerGroup_edittext.setText(plannergroup_id);
+                else
+                    plannerGroup_edittext.setText("");
                 workcenter_id = data.getStringExtra("work_center");
                 workCenter_edittext.setText(workcenter_id);
+                if (plant_id != null && !plant_id.equals(""))
+                    plant_tiet.setText(plant_id);
+                if (iwerk != null && !iwerk.equals(""))
+                    iwerk_tiet.setText(iwerk);
             } else if (requestCode == equipment_type) {
                 equipment_id = data.getStringExtra("equipment_id");
                 equipment_text = data.getStringExtra("equipment_text");
@@ -706,9 +729,31 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 plant_id = data.getStringExtra("plant_id");
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = "";
+                iwerk = data.getStringExtra("iwerk");
                 workcenter_id = data.getStringExtra("work_center");
-                workCenter_edittext.setText(workcenter_id);
-                plannerGroup_edittext.setText(plannergroup_id);
+                workcenter_text = wrkCntrName(workcenter_id, plant_id);
+                if (workcenter_id != null && !workcenter_id.equals(""))
+                    if (workcenter_text != null && !workcenter_text.equals(""))
+                        workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                                workcenter_text));
+                    else
+                        workCenter_edittext.setText(workcenter_id);
+                else
+                    workCenter_edittext.setText("");
+                if (plant_id != null && !plant_id.equals(""))
+                    plant_tiet.setText(plant_id);
+                if (iwerk != null && !iwerk.equals(""))
+                    iwerk_tiet.setText(iwerk);
+                plannergroup_id = data.getStringExtra("ingrp_id");
+                plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
+                if (plannergroup_id != null && !plannergroup_id.equals(""))
+                    if (plannergroup_text != null && !plannergroup_text.equals(""))
+                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                plannergroup_text));
+                    else
+                        plannerGroup_edittext.setText(plannergroup_id);
+                else
+                    plannerGroup_edittext.setText("");
             } else if (requestCode == barcode_scan) {
                 String message = data.getStringExtra("MESSAGE");
                 equipid_edittext.setText(message);
@@ -727,9 +772,23 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                     plannergroup_text = "";
                                     floc_edittext.setText(functionlocation_id);
                                     workcenter_id = cursor.getString(11);
+                                    iwerk = cursor.getString(29);
                                     workCenter_edittext.setText(workcenter_id);
+                                    if (plant_id != null && !plant_id.equals(""))
+                                        plant_tiet.setText(plant_id);
+                                    if (iwerk != null && !iwerk.equals(""))
+                                        iwerk_tiet.setText(iwerk);
                                     floc_edittext.setText(functionlocation_id);
-                                    plannerGroup_edittext.setText(plannergroup_id);
+                                    plannergroup_id = data.getStringExtra("ingrp_id");
+                                    plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
+                                    if (plannergroup_id != null && !plannergroup_id.equals(""))
+                                        if (plannergroup_text != null && !plannergroup_text.equals(""))
+                                            plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                                    plannergroup_text));
+                                        else
+                                            plannerGroup_edittext.setText(plannergroup_id);
+                                    else
+                                        plannerGroup_edittext.setText("");
                                     equiptext_edittext.setText(equipment_text);
                                 }
                                 while (cursor.moveToNext());
@@ -1727,6 +1786,8 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             ohp.setPosid(cursor.getString(55));
                             ohp.setRevnr(cursor.getString(56));
                             ohp.setBukrs(getBukrs(cursor.getString(9)));
+                            ohp.setActivitytype_id(cursor.getString(5));
+                            ohp.setActivitytype_text(cursor.getString(34));
                             ohp.setOrdrOprtnPrcbls(oop_al);
                             ohp.setOrdrObjectPrcbls(oobp_al);
                             ohp.setOrdrMatrlPrcbls(omp_al);
@@ -1891,6 +1952,44 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     return cursor.getString(2);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+    private String wrkCntrName(String wrkCntrId, String plant) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from GET_WKCTR where Arbpl = ? and Werks" +
+                    " = ?", new String[]{wrkCntrId, plant});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(8);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+    private String plnrGrpName(String plnrGrpId, String iwerk) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ? and" +
+                    " Iwerk = ?", new String[]{plnrGrpId, iwerk});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(3);
                 }
             }
         } catch (Exception e) {

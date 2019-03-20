@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="true"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="8dp"
     android:orientation="vertical">
 
         <com.enstrapp.fieldtekpro.Swipe.SwipeRevealLayout
@@ -24,7 +23,8 @@
                     android:layout_width="75dp"
                     android:layout_height="fill_parent"
                     android:gravity="center"
-                    android:background="@color/blue"
+                    android:background="@drawable/blueborder"
+                    android:backgroundTint="@color/blue"
                     android:padding="10dp"
                     android:orientation="vertical">
                     <ImageView
@@ -44,7 +44,8 @@
                     android:layout_width="75dp"
                     android:layout_height="fill_parent"
                     android:gravity="center"
-                    android:background="@color/orange1"
+                    android:background="@drawable/blueborder"
+                    android:backgroundTint="@color/orange1"
                     android:padding="10dp"
                     android:orientation="vertical">
                     <ImageView
@@ -64,7 +65,8 @@
                     android:layout_width="75dp"
                     android:layout_height="fill_parent"
                     android:gravity="center"
-                    android:background="@color/dark_green"
+                    android:background="@drawable/blueborder"
+                    android:backgroundTint="@color/dark_green"
                     android:padding="10dp"
                     android:orientation="vertical">
                     <ImageView
@@ -85,13 +87,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/blueborder"
+                android:backgroundTint="@color/blue"
                 android:id="@+id/data_layout">
                 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="1dp">
+                    android:background="@drawable/blueborder"
+                    android:paddingBottom="6dp"
+                    android:paddingStart="8dp">
 
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:id="@+id/status_type_textview"
@@ -123,6 +127,8 @@
                         android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginTop="1dp"
                         android:visibility="gone"
                         android:padding="4dp"
                         android:textSize="12sp"
@@ -148,9 +154,8 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="8dp"
                         android:textSize="14sp"
-                        android:textColor="@color/light_grey2"
-                        android:maxLines="2"
                         android:maxLength="40"
+                        android:textColor="@color/light_grey2"
                         app:layout_constraintHorizontal_bias=".0"
                         app:layout_constraintEnd_toStartOf="@+id/status_imageview"
                         app:layout_constraintStart_toEndOf="@id/status_type_textview"

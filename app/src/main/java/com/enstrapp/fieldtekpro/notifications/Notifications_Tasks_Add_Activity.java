@@ -103,8 +103,8 @@ public class Notifications_Tasks_Add_Activity extends FragmentActivity implement
                 task_text = extras.getString("task_text");
                 task_text_edittext.setText(task_text);
                 taskprocessor_id = extras.getString("taskprocessor_id");
-                tasks_processor_edittext.setText(taskprocessor_id);
                 taskprocessor_text = extras.getString("taskprocessor_text");
+                tasks_processor_edittext.setText(taskprocessor_id + "-" + taskprocessor_text);
                 task_responsible = extras.getString("task_responsible");
                 responsible_edittext.setText(task_responsible);
                 planned_st_date_formatted = extras.getString("planned_st_date_formatted");
@@ -391,18 +391,18 @@ public class Notifications_Tasks_Add_Activity extends FragmentActivity implement
             if (requestCode == taskcodegroup) {
                 taskcodegroup_id = data.getStringExtra("taskcodegroup_id");
                 taskcodegroup_text = data.getStringExtra("taskcodegroup_text");
-                tasks_codegroup_edittext.setText(taskcodegroup_id);
+                tasks_codegroup_edittext.setText(taskcodegroup_id + " - " + taskcodegroup_text);
                 taskcode_id = "";
                 taskcode_text = "";
                 tasks_code_edittext.setText("");
             } else if (requestCode == taskcode) {
                 taskcode_id = data.getStringExtra("taskcode_id");
                 taskcode_text = data.getStringExtra("taskcode_text");
-                tasks_code_edittext.setText(taskcode_id);
+                tasks_code_edittext.setText(taskcode_id + " - " + taskcode_text);
             } else if (requestCode == taskprocessor) {
                 taskprocessor_id = data.getStringExtra("taskprocessor_id");
                 taskprocessor_text = data.getStringExtra("taskprocessor_text");
-                tasks_processor_edittext.setText(taskprocessor_id);
+                tasks_processor_edittext.setText(taskprocessor_id + "-" + taskprocessor_text);
             } else if (requestCode == planned_st_datetime) {
                 planned_st_date = data.getStringExtra("date");
                 planned_st_date_formatted = data.getStringExtra("date_formatted");

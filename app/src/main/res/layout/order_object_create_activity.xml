@@ -182,7 +182,7 @@
                     android:enabled="false"
                     android:hint="@string/equipment_description"
                     android:maxLength="40"
-                    android:textColor="@color/dark_grey"
+                    android:textColor="@color/dark_grey2"
                     android:textSize="@dimen/textSize" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
