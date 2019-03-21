@@ -221,7 +221,38 @@ public class Auto_Sync_Notif_Dup extends BroadcastReceiver {
                     }
                 }
                 /*Fetching Notification Activity*/
-
+                Cursor taskdata_cursor = null;
+                taskdata_cursor = FieldTekPro_db.rawQuery("select * from DUE_NOTIFICATION_EtNotifTasks where Qmnum = ?", new String[]{notification_id});
+                if (taskdata_cursor != null && taskdata_cursor.getCount() > 0) {
+                    if (taskdata_cursor.moveToFirst()) {
+                        do {
+                            Model_Notif_Task mnt = new Model_Notif_Task();
+                            mnt.setQmnum("");
+                            mnt.setTaskKey(taskdata_cursor.getString(3));
+                            mnt.setItemKey(taskdata_cursor.getString(3));
+                            mnt.setTaskGrp(taskdata_cursor.getString(14));
+                            mnt.setTaskgrptext(taskdata_cursor.getString(15));
+                            mnt.setTaskCod(taskdata_cursor.getString(16));
+                            mnt.setTaskcodetext(taskdata_cursor.getString(17));
+                            mnt.setTaskShtxt(taskdata_cursor.getString(18));
+                            mnt.setPster(taskdata_cursor.getString(19));
+                            mnt.setPeter(taskdata_cursor.getString(20));
+                            mnt.setPstur(taskdata_cursor.getString(21));
+                            mnt.setPetur(taskdata_cursor.getString(22));
+                            mnt.setRelease(taskdata_cursor.getString(28));
+                            mnt.setComplete(taskdata_cursor.getString(29));
+                            mnt.setSuccess(taskdata_cursor.getString(30));
+                            mnt.setAction("I");
+                            TasksArrayList.add(mnt);
+                        }
+                        while (taskdata_cursor.moveToNext());
+                    }
+                }else
+                {
+                    if (taskdata_cursor != null) {
+                        taskdata_cursor.close();
+                    }
+                }
 
                 /*Fetching Notification Attachments*/
                 Cursor attachmentsdata_cursor = null;

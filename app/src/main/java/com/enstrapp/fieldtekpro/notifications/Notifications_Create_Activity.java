@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -947,6 +948,76 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                     }
 
                                                     try {
+                                                        String EgtNotifTAsk_sql = "Insert into DUE_NOTIFICATION_EtNotifTasks" +
+                                                                "(UUID, Qmnum, ItemKey, ItempartGrp,Partgrptext, ItempartCod, Partcodetext, " +
+                                                                "ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, " +
+                                                                "ItemdefectShtxt, TaskKey, TaskGrp, Taskgrptext, TaskCod, Taskcodetext," +
+                                                                "TaskShtxt, Pster, Peter, Pstur, Petur, Parvw, Parnr, Erlnam, Erldat, " +
+                                                                "Erlzeit, Release, Complete, Success, UserStatus, SysStatus, Smsttxt, " +
+                                                                "Smastxt, Usr01, Usr02, Usr03, Usr04, Usr05, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
+                                                        SQLiteStatement EtTasks_statement = App_db.compileStatement(EgtNotifTAsk_sql);
+                                                        EtTasks_statement.clearBindings();
+                                                        Notifications_Create_Task_Fragment task_fragment =
+                                                                (Notifications_Create_Task_Fragment) getSupportFragmentManager()
+                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
+                                                        List<Notifications_Create_Task_Fragment.Task_Object> task_list =
+                                                                task_fragment.getTaskData();
+                                                        if (task_list.size() > 0) {
+                                                            App_db.beginTransaction();
+                                                            for (int i = 0; i < task_list.size(); i++) {
+                                                                EtTasks_statement.bindString(1, uniqueKey.toString());
+                                                                EtTasks_statement.bindString(2,"NOT_" + timeStamp );
+                                                                EtTasks_statement.bindString(3, task_list.get(i).getItem_key());
+                                                                EtTasks_statement.bindString(4, " ");
+                                                                EtTasks_statement.bindString(5, " ");
+                                                                EtTasks_statement.bindString(6, " ");
+                                                                EtTasks_statement.bindString(7, " ");
+                                                                EtTasks_statement.bindString(8, " ");
+                                                                EtTasks_statement.bindString(9, " ");
+                                                                EtTasks_statement.bindString(10, " ");
+                                                                EtTasks_statement.bindString(11, " ");
+                                                                EtTasks_statement.bindString(12, " ");
+                                                                EtTasks_statement.bindString(13, task_list.get(i).getItem_key());
+                                                                EtTasks_statement.bindString(14, task_list.get(i).getTaskcodegroup_id());
+                                                                EtTasks_statement.bindString(15, task_list.get(i).getTaskcodegroup_text());
+                                                                EtTasks_statement.bindString(16, task_list.get(i).getTaskcode_id());
+                                                                EtTasks_statement.bindString(17, task_list.get(i).getTaskcode_text());
+                                                                EtTasks_statement.bindString(18, task_list.get(i).getTask_text());
+                                                                EtTasks_statement.bindString(19, task_list.get(i).getPlanned_st_date_formatted());
+                                                                EtTasks_statement.bindString(20, task_list.get(i).getPlanned_end_date_formatted());
+                                                                EtTasks_statement.bindString(21, task_list.get(i).getPlanned_st_time_formatted());
+                                                                EtTasks_statement.bindString(22, task_list.get(i).getPlanned_end_time_formatted());
+                                                                EtTasks_statement.bindString(23, task_list.get(i).getTaskprocessor_id());
+                                                                EtTasks_statement.bindString(24, task_list.get(i).getTask_responsible());
+                                                                EtTasks_statement.bindString(25, task_list.get(i).getCompletedby());
+                                                                EtTasks_statement.bindString(26, task_list.get(i).getCompletion_date_formatted());
+                                                                EtTasks_statement.bindString(27, task_list.get(i).getCompletion_time_formatted());
+                                                                EtTasks_statement.bindString(28, " ");
+                                                                EtTasks_statement.bindString(29, " ");
+                                                                EtTasks_statement.bindString(30, task_list.get(i).getRelease_status());
+                                                                EtTasks_statement.bindString(31, task_list.get(i).getCompleted_status());
+                                                                EtTasks_statement.bindString(32, task_list.get(i).getSuccess_status());
+                                                                EtTasks_statement.bindString(33, " ");
+                                                                EtTasks_statement.bindString(34, " ");
+                                                                EtTasks_statement.bindString(35, " ");
+                                                                EtTasks_statement.bindString(36, " ");
+                                                                EtTasks_statement.bindString(37, " ");
+                                                                EtTasks_statement.bindString(38, " ");
+                                                                EtTasks_statement.bindString(39, " ");
+                                                                EtTasks_statement.bindString(40, " ");
+                                                                EtTasks_statement.execute();
+                                                            }
+                                                            App_db.setTransactionSuccessful();
+                                                            App_db.endTransaction();
+                                                        }
+                                                    }
+                                                    catch (Exception e)
+                                                    {
+                                                        Log.v("task response",""+e.getMessage());
+
+                                                    }
+                                                    try {
                                                         String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs" +
                                                                 "(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, " +
                                                                 "Filetype, Fsize, Content, DocId, DocType, Objtype," +
@@ -955,7 +1026,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                         EtDocs_statement.clearBindings();
                                                         Notifications_Create_Attachments_Fragment attachment_fragment =
                                                                 (Notifications_Create_Attachments_Fragment) getSupportFragmentManager()
-                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
+                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
                                                         List<Notif_EtDocs_Parcelable> attachment_list =
                                                                 attachment_fragment.getAttachmentsData();
                                                         if (attachment_list.size() > 0) {
