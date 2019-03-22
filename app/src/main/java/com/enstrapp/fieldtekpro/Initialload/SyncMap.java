@@ -82,6 +82,7 @@ public class SyncMap {
     private static final String KEY_ChangeLog_UUID = "UUID";
     private static final String KEY_ChangeLog_Message = "MESSAGE";
     private static final String KEY_ChangeLog_Loguuid = "LOG_UUID";
+    private static final String KEY_ChangeLog_ObjectTxt = "OBJECT_TXT";
     /* Change Log Table and Fields Names */
 
     public static String Get_Syncmap_Data(Activity activity, String transmit_type) {
@@ -148,7 +149,8 @@ public class SyncMap {
                         + KEY_ChangeLog_Status + " TEXT,"
                         + KEY_ChangeLog_UUID + " TEXT,"
                         + KEY_ChangeLog_Message + " TEXT,"
-                        + KEY_ChangeLog_Loguuid + " TEXT"
+                        + KEY_ChangeLog_Loguuid + " TEXT,"
+                        + KEY_ChangeLog_ObjectTxt + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_TABLE_ChangeLog);
                 /* Change Log Table and Fields Names */

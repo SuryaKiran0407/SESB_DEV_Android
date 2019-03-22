@@ -66,7 +66,6 @@
     <string name="loading_bom">Loading Equipment BOM...</string>
     <string name="loading">Loading...</string>
     <string name="bom_no">BOM #</string>
-    <string name="description">Description</string>
     <string name="plant">Plant</string>
     <string name="sort_by">Sort By:</string>
     <string name="clear_all">Clear All</string>
@@ -121,6 +120,7 @@
     <string name="equipment_inspection">Equipment Inspection</string>
     <string name="calibration">Calibration</string>
     <string name="object_id">Object ID</string>
+    <string name="msg">Message</string>
     <string name="downloading_pleasewait">Downloading JSA PDF. Please wait...</string>
     <string name="doc_type">Doc. Type</string>
     <string name="wcd_templates">Isolation Templates</string>
@@ -552,10 +552,14 @@
     <string name="retry">Retry</string>
     <string name="alert_log">Alert Log</string>
     <string name="document_type">Document Type</string>
+    <string name="description">Description</string>
     <string name="change_log_loading">Loading Alert Log...</string>
     <string name="call_number">Call Number</string>
     <string name="save_calibration">Saving Calibration Data in progress...</string>
     <string name="order_num_star">* Order No.</string>
+    <string name="sync_data">Do you want to Sync Offline Data?</string>
+    <string name="sync_prgs">Sync in progress&#8230;</string>
+    <string name="no_sync">No Data to Sync.</string>
 
 
     <string-array name="wcm_wcd_type_list">

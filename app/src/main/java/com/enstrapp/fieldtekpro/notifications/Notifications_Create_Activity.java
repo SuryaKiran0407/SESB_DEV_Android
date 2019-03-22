@@ -772,13 +772,13 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                         EtNotifHeader_statement.bindString(35, workcenter_text);
                                                         EtNotifHeader_statement.bindString(36, plannergroup_text);
                                                         EtNotifHeader_statement.bindString(37, "");
-                                                        EtNotifHeader_statement.bindString(38, "OSNO");
+                                                        EtNotifHeader_statement.bindString(38, "OFL");
                                                         EtNotifHeader_statement.bindString(39, primary_user_resp);
                                                         EtNotifHeader_statement.bindString(40, "");
                                                         EtNotifHeader_statement.bindString(41, "");
                                                         EtNotifHeader_statement.bindString(42, "");
                                                         EtNotifHeader_statement.bindString(43, "");
-                                                        EtNotifHeader_statement.bindString(44, "OSNO");
+                                                        EtNotifHeader_statement.bindString(44, "OFL");
                                                         EtNotifHeader_statement.bindString(45, personresponsible_id);
                                                         EtNotifHeader_statement.bindString(46, personresponsible_text);
                                                         EtNotifHeader_statement.bindString(47, effect_id);
@@ -1062,7 +1062,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
 
                                                         String sql11 = "Insert into Alert_Log (DATE, TIME," +
                                                                 " DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
-                                                                " STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                                                " STATUS, UUID, MESSAGE, LOG_UUID,OBJECT_TXT) values(?,?,?,?,?,?,?,?,?,?,?);";
                                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                                         App_db.beginTransaction();
                                                         statement11.clearBindings();
@@ -1076,6 +1076,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                         statement11.bindString(8, uniqueKey.toString());
                                                         statement11.bindString(9, "");
                                                         statement11.bindString(10, uniqueKey.toString());
+                                                        statement11.bindString(11, notif_text);
                                                         statement11.execute();
                                                         App_db.setTransactionSuccessful();
                                                         App_db.endTransaction();

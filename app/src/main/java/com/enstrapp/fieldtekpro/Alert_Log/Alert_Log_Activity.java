@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +70,7 @@ import java.util.Map;
 
 public class Alert_Log_Activity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView back_imageview;
+    ImageView back_imageview,refresh_imageview;
     RecyclerView recyclerview;
     TextView no_data_textview;
     Custom_Progress_Dialog custom_progress_dialog = new Custom_Progress_Dialog();
@@ -84,7 +85,8 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
     Error_Dialog error_dialog = new Error_Dialog();
     Success_Dialog success_dialog = new Success_Dialog();
     String movement_type_id = "", costcenter_id = "", Lgort = "", Unit = "", Plant = "", quantity = "", date = "";
-
+    boolean all = false;
+    ArrayList<String> logUUID = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
 
 
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
+        refresh_imageview = findViewById(R.id.refresh_imageview);
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         no_data_textview = (TextView) findViewById(R.id.no_data_textview);
 
@@ -105,6 +108,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
 
 
         back_imageview.setOnClickListener(this);
+        refresh_imageview.setOnClickListener(this);
     }
 
 
@@ -112,6 +116,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.change_log_loading));
             alertLogList_array.clear();
         }
@@ -123,7 +128,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     do {
-                        AlertLogList_Object clo = new AlertLogList_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9), cursor.getString(10));
+                        AlertLogList_Object clo = new AlertLogList_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9), cursor.getString(10),cursor.getString(11));
                         alertLogList_array.add(clo);
                     }
                     while
@@ -158,6 +163,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                 no_data_textview.setVisibility(View.VISIBLE);
                 recyclerview.setVisibility(View.GONE);
             }
+            if (!all)
             custom_progress_dialog.dismiss_progress_dialog();
         }
     }
@@ -168,7 +174,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         private List<AlertLogList_Object> type_details_list;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView log_uuid_textview, uuid_textview, user_textview, obj_id_textview, doc_type_textview, activity_textview, date_time_textview, status_textview;
+            public TextView log_uuid_textview, uuid_textview, user_textview, obj_id_textview, doc_type_textview, activity_textview, date_time_textview, status_textview,obj_text_textview, message_textview;
             FrameLayout data_layout;
             LinearLayout clear_layout, retry_layout;
 
@@ -185,6 +191,8 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                 log_uuid_textview = (TextView) view.findViewById(R.id.log_uuid_textview);
                 clear_layout = (LinearLayout) view.findViewById(R.id.clear_layout);
                 retry_layout = (LinearLayout) view.findViewById(R.id.retry_layout);
+                obj_text_textview = view.findViewById(R.id.obj_text_textview);
+                message_textview = view.findViewById(R.id.message_textview);
             }
         }
 
@@ -203,6 +211,8 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final AlertLogList_Object nto = type_details_list.get(position);
             holder.obj_id_textview.setText(nto.getOBJECT_ID());
+            holder.obj_text_textview.setText(nto.getOBJECT_TXT());
+            holder.message_textview.setText(nto.getSTATUS());
             holder.doc_type_textview.setText(nto.getDOCUMENT_CATEGORY());
             holder.activity_textview.setText(nto.getACTIVITY_TYPE());
             holder.date_time_textview.setText(nto.getDATE() + " " + nto.getTIME());
@@ -453,6 +463,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.compl_inprog));
         }
 
@@ -473,18 +484,32 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (!all)
             custom_progress_dialog.dismiss_progress_dialog();
             if (Response.startsWith("S")) {
                 ContentValues cv = new ContentValues();
                 cv.put("STATUS", "Success");
                 FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                success_dialog.show_success_dialog(Alert_Log_Activity.this, Response.substring(1));
-                new Get_Alert_Log_Data().execute();
+                addMessage(Response.substring(1), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    success_dialog.show_success_dialog(Alert_Log_Activity.this, Response.substring(1));
+                }
             } else if (Response.startsWith("E")) {
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(1));
+                addMessage(Response.substring(1), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(1));
             } else {
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, Response);
+                addMessage(Response, log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, Response);
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Order TECO to Backend Server*/
@@ -500,6 +525,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.confirm_progs));
         }
 
@@ -572,19 +598,32 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            custom_progress_dialog.dismiss_progress_dialog();
+            if (!all)
+                custom_progress_dialog.dismiss_progress_dialog();
             if (Response.startsWith("S")) {
                 FieldTekPro_db.execSQL("delete from Orders_TKConfirm where Aufnr = ?", new String[]{order_id});
                 ContentValues cv = new ContentValues();
                 cv.put("STATUS", "Success");
                 FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                success_dialog.show_success_dialog(Alert_Log_Activity.this, Response.substring(1));
-                new Get_Alert_Log_Data().execute();
+                addMessage(Response.substring(1), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    success_dialog.show_success_dialog(Alert_Log_Activity.this, Response.substring(1));
             } else if (Response.startsWith("E")) {
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(1));
+                addMessage(Response.substring(1), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(1));
             } else {
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(1));
+                addMessage(Response.substring(1), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(1));
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Order TKConfirm to Backend Server*/
@@ -607,6 +646,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.change_order));
         }
 
@@ -922,8 +962,11 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                 cv.put("STATUS", "Success");
                 cv.put("OBJECT_ID", Response[1].toString());
                 FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                success_dialog.show_success_dialog(Alert_Log_Activity.this, Response[0].substring(1));
-                new Get_Alert_Log_Data().execute();
+                addMessage(Response[0].substring(1), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    success_dialog.show_success_dialog(Alert_Log_Activity.this, Response[0].substring(1));
             } else if (Response[0].startsWith("E")) {
                 StringBuilder response = new StringBuilder();
                 String[] sp = Response[0].split("\n");
@@ -932,10 +975,19 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                         response.append("\n");
                     response.append(sp[0].substring(2));
                 }
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, response.toString());
+                addMessage(response.toString(), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, response.toString());
             } else {
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, Response[0]);
+                addMessage(Response[0], log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, Response[0]);
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Order Change to Backend Server*/
@@ -958,6 +1010,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.creating_order));
         }
 
@@ -1195,6 +1248,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            if (!all)
             custom_progress_dialog.dismiss_progress_dialog();
             if (Response[0].startsWith("S")) {
                 try {
@@ -1258,6 +1312,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.release_order));
         }
 
@@ -1272,18 +1327,31 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            custom_progress_dialog.dismiss_progress_dialog();
+            if (!all)
+                custom_progress_dialog.dismiss_progress_dialog();
             if (Response.startsWith("S")) {
                 ContentValues cv = new ContentValues();
                 cv.put("STATUS", "Success");
                 FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                success_dialog.show_success_dialog(Alert_Log_Activity.this, Response.substring(2));
-                new Get_Alert_Log_Data().execute();
+                addMessage(Response.substring(2), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    success_dialog.show_success_dialog(Alert_Log_Activity.this, Response.substring(2));
             } else if (Response.startsWith("E")) {
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(2));
+                addMessage(Response.substring(2), log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, Response.substring(2));
             } else {
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, Response);
+                addMessage(Response, log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, Response);
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Order Release to Backend Server*/
@@ -1296,6 +1364,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.bom_reservation_inprogress));
         }
 
@@ -1350,16 +1419,32 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                 if (stock_availability_status.startsWith("S")) {
                     new POST_BOM_Reservation().execute(matnr_id, log_uuid);
                 } else if (stock_availability_status.startsWith("E")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, stock_availability_status.substring(1).toString());
+                    addMessage(stock_availability_status.substring(1).toString(), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, stock_availability_status.substring(1).toString());
+                    }
                 } else {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, stock_availability_status.substring(1).toString());
+                    addMessage(stock_availability_status.substring(1).toString(), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, stock_availability_status.substring(1).toString());
+                    }
                 }
             } else {
-                custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Alert_Log_Activity.this, getString(R.string.bomresvr_unable));
+                addMessage("Unable to process BOM Reservation. Please try again.", log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process BOM Reservation. Please try again.");
+                }
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Material Availability Check for BOM Reservation to Backend Server*/
@@ -1399,22 +1484,40 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                     ContentValues cv = new ContentValues();
                     cv.put("STATUS", "Success");
                     FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    success_dialog.show_success_dialog(Alert_Log_Activity.this, bom_reservation_status.substring(1));
-                    new Get_Alert_Log_Data().execute();
+                    addMessage(bom_reservation_status.substring(1), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        success_dialog.show_success_dialog(Alert_Log_Activity.this, bom_reservation_status.substring(1));
+                    }
                 } else if (bom_reservation_status.startsWith("E")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, bom_reservation_status.substring(1).toString());
+                    addMessage(bom_reservation_status.substring(1), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, bom_reservation_status.substring(1).toString());
+                    }
                 } else {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            getString(R.string.bomresvr_unable));
+                    addMessage("Unable to process BOM Reservation. Please try again.", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process BOM Reservation. Please try again.");
+                    }
                 }
             } else {
-                custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                        getString(R.string.bomresvr_unable));
+                addMessage("Unable to process BOM Reservation. Please try again.", log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process BOM Reservation. Please try again.");
+                }
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting BOM Reservation to Backend Server*/
@@ -1436,6 +1539,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.change_notif_inprogress));
         }
 
@@ -1585,7 +1689,38 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                 }
                 /*Fetching Notification Activity*/
 
-
+                Cursor taskdata_cursor = null;
+                taskdata_cursor = FieldTekPro_db.rawQuery("select * from DUE_NOTIFICATION_EtNotifTasks where Qmnum = ?", new String[]{notification_id});
+                if (taskdata_cursor != null && taskdata_cursor.getCount() > 0) {
+                    if (taskdata_cursor.moveToFirst()) {
+                        do {
+                            Model_Notif_Task mnt = new Model_Notif_Task();
+                            mnt.setQmnum(notification_id);
+                            mnt.setTaskKey(taskdata_cursor.getString(13));
+                            mnt.setItemKey(taskdata_cursor.getString(3));
+                            mnt.setTaskGrp(taskdata_cursor.getString(14));
+                            mnt.setTaskgrptext(taskdata_cursor.getString(15));
+                            mnt.setTaskCod(taskdata_cursor.getString(16));
+                            mnt.setTaskcodetext(taskdata_cursor.getString(17));
+                            mnt.setTaskShtxt(taskdata_cursor.getString(18));
+                            mnt.setPster(taskdata_cursor.getString(19));
+                            mnt.setPeter(taskdata_cursor.getString(20));
+                            mnt.setPstur(taskdata_cursor.getString(21));
+                            mnt.setPetur(taskdata_cursor.getString(22));
+                            mnt.setRelease(taskdata_cursor.getString(28));
+                            mnt.setComplete(taskdata_cursor.getString(29));
+                            mnt.setSuccess(taskdata_cursor.getString(30));
+                            mnt.setAction(taskdata_cursor.getString(40));
+                            TasksArrayList.add(mnt);
+                        }
+                        while (taskdata_cursor.moveToNext());
+                    }
+                }else
+                {
+                    if (taskdata_cursor != null) {
+                        taskdata_cursor.close();
+                    }
+                }
                 /*Fetching Notification Attachments*/
                 Cursor attachmentsdata_cursor = null;
                 attachmentsdata_cursor = FieldTekPro_db.rawQuery("select * from DUE_NOTIFICATION_EtDocs where Zobjid = ?", new String[]{notification_id});
@@ -1654,32 +1789,52 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                     if (duplicate_data != null && !duplicate_data.equals("")) {
 
                     } else {
-                        custom_progress_dialog.dismiss_progress_dialog();
-                        error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                                getString(R.string.notification_dupnotfound));
+                        addMessage("No Duplicate Notifications Found. Please try again.", log_uuid);
+                        if (all)
+                            RemoveId(log_uuid);
+                        else {
+                            custom_progress_dialog.dismiss_progress_dialog();
+                            error_dialog.show_error_dialog(Alert_Log_Activity.this, "No Duplicate Notifications Found. Please try again.");
+                        }
                     }
                 } else if (notif_change_status.get("response_status").equalsIgnoreCase("success")) {
                     ContentValues cv = new ContentValues();
                     cv.put("STATUS", "Success");
                     FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    success_dialog.show_success_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notif_createauto,
-                                    notif_change_status.get("response_data")));
-                    new Get_Alert_Log_Data().execute();
+                    addMessage("Success", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        success_dialog.show_success_dialog(Alert_Log_Activity.this, "Notification " + notif_change_status.get("response_data") + " has been created successfully.");
+                    }
                 } else if (notif_change_status.get("response_status").startsWith("E")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_change_status.get("response_status").toString().substring(1));
+                    addMessage(notif_change_status.get("response_status").toString().substring(1), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_change_status.get("response_status").toString().substring(1));
+                    }
                 } else {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notification_unabletochange));
+                    addMessage("Unable to process Notification Change. Please try again.", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Change. Please try again.");
+                    }
                 }
             } else {
-                custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                        getString(R.string.notification_unabletochange));
+                addMessage("Unable to process Notification Change. Please try again.", log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Change. Please try again.");
+                }
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Notification Change to Backend Server*/
@@ -1701,6 +1856,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.create_notif_inprogress));
         }
 
@@ -1975,7 +2131,8 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                                 Notif_Dup_List_Object olo = new Notif_Dup_List_Object(Priok_text, jsonArray.getJSONObject(i).optString("Qmnum"), jsonArray.getJSONObject(i).optString("Qmtxt"));
                                 notification_duplicate_list.add(olo);
                             }
-                            custom_progress_dialog.dismiss_progress_dialog();
+                            if (!all)
+                                custom_progress_dialog.dismiss_progress_dialog();
                             final Dialog aa = new Dialog(Alert_Log_Activity.this, R.style.AppThemeDialog_Dark);
                             aa.requestWindowFeature(Window.FEATURE_NO_TITLE);
                             aa.setCancelable(false);
@@ -2009,9 +2166,13 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                         } catch (Exception e) {
                         }
                     } else {
-                        custom_progress_dialog.dismiss_progress_dialog();
-                        error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                                getString(R.string.notification_dupnotfound));
+                        addMessage("No Duplicate Notifications Found. Please try again.", log_uuid);
+                        if (all)
+                            RemoveId(log_uuid);
+                        else {
+                            custom_progress_dialog.dismiss_progress_dialog();
+                            error_dialog.show_error_dialog(Alert_Log_Activity.this, "No Duplicate Notifications Found. Please try again.");
+                        }
                     }
                 } else if (notif_create_status.get("response_status").equalsIgnoreCase("success")) {
                     FieldTekPro_db.execSQL("delete from DUE_NOTIFICATION_NotifHeader where Qmnum = ?", new String[]{notification_id});
@@ -2023,23 +2184,40 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                     cv.put("STATUS", "Success");
                     cv.put("OBJECT_ID", notif_create_status.get("response_data"));
                     FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    success_dialog.show_success_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notif_createauto, notif_create_status.get("response_data")));
-                    new Get_Alert_Log_Data().execute();
+                    addMessage("Success", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        success_dialog.show_success_dialog(Alert_Log_Activity.this, "Notification " + notif_create_status.get("response_data") + " has been created successfully.");
+                    }
                 } else if (notif_create_status.get("response_status").startsWith("E")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_create_status.get("response_status").toString().substring(1));
+                    addMessage(notif_create_status.get("response_status").toString().substring(1), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_create_status.get("response_status").toString().substring(1));
+                    }
                 } else {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notification_unabletocreate));
+                    addMessage("Unable to process Notification Create. Please try again.", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Create. Please try again.");
+                    }
                 }
             } else {
-                custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                        getString(R.string.notification_unabletocreate));
+                addMessage("Unable to process Notification Create. Please try again.", log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Create. Please try again.");
+                }
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Notification Create to Backend Server*/
@@ -2134,6 +2312,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.notif_complete_inprogress));
         }
 
@@ -2161,22 +2340,40 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                     ContentValues cv = new ContentValues();
                     cv.put("STATUS", "Success");
                     FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    success_dialog.show_success_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notif_compatuo, notification_id));
-                    new Get_Alert_Log_Data().execute();
+                    addMessage("Success", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        success_dialog.show_success_dialog(Alert_Log_Activity.this, "Notification " + notification_id + " is completed succesfully");
+                    }
                 } else if (notif_complete_status.startsWith("E")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_complete_status.substring(1));
+                    addMessage(notif_complete_status.substring(1), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_complete_status.substring(1));
+                    }
                 } else {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_complete_status);
+                    addMessage(notif_complete_status, log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_complete_status);
+                    }
                 }
             } else {
-                custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                        getString(R.string.notifcomplete_fail));
+                addMessage("Unable to process Notification Complete. Please try again.", log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Complete. Please try again.");
+                }
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Notification Complete to Backend Server*/
@@ -2189,6 +2386,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.notif_postpone_inprogress));
         }
 
@@ -2216,27 +2414,48 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                     ContentValues cv = new ContentValues();
                     cv.put("STATUS", "Success");
                     FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    success_dialog.show_success_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notif_postpatuo, notification_id));
-                    new Get_Alert_Log_Data().execute();
+                    addMessage("Success", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        success_dialog.show_success_dialog(Alert_Log_Activity.this, "Notification " + notification_id + " is postponed successfully");
+                    }
                 } else if (notif_postpone_status.contains("already postponed")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notifpostpone_already, notification_id));
+                    addMessage("Already Postponed", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, "Notification " + notification_id + " is already postponed.");
+                    }
                 } else if (notif_postpone_status.startsWith("E")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_postpone_status.substring(0));
+                    addMessage(notif_postpone_status.substring(2), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_postpone_status.substring(2));
+                    }
                 } else {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notifpostpone_fail));
+                    addMessage("Unable to process Notification Postpone. Please try again.", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Postpone. Please try again.");
+                    }
                 }
             } else {
-                custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                        getString(R.string.notifpostpone_fail));
+                addMessage("Unable to process Notification Postpone. Please try again.", log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Postpone. Please try again.");
+                }
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Notification Postpone to Backend Server*/
@@ -2250,6 +2469,7 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (!all)
             custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getResources().getString(R.string.notif_release_inprogress));
         }
 
@@ -2277,30 +2497,47 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                     String aufnr = notif_release_status.get("response_data");
                     new Get_DORD_Data().execute(aufnr, notification_id, log_uuid);
                 } else if (notif_release_status.get("response_status").contains("already released")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notif_alreadyreleased, notification_id));
+                    addMessage("Already Released", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, "Notification " + notification_id + " is already released");
+                    }
                 } else if (notif_release_status.get("response_status").startsWith("E")) {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            notif_release_status.get("response_status").substring(1));
+                    addMessage(notif_release_status.get("response_status").substring(1), log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, notif_release_status.get("response_status").substring(1));
+                    }
                 } else {
-                    custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                            getString(R.string.notifrel_unable));
+                    addMessage("Unable to process Notification Release. Please try again.", log_uuid);
+                    if (all)
+                        RemoveId(log_uuid);
+                    else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Release. Please try again.");
+                    }
                 }
             } else {
-                custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Alert_Log_Activity.this,
-                        getString(R.string.notifrel_unable));
+                addMessage("Unable to process Notification Release. Please try again.", log_uuid);
+                if (all)
+                    RemoveId(log_uuid);
+                else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Alert_Log_Activity.this, "Unable to process Notification Release. Please try again.");
+                }
             }
+            new Get_Alert_Log_Data().execute();
         }
     }
     /*Posting Notification Release to Backend Server*/
 
     /*Getting Order Data After Notification Release*/
     private class Get_DORD_Data extends AsyncTask<String, Integer, Void> {
-        String notification_id = "", aufnr = "", log_uuid = "";
+        String notification_id = "", aufnr = "", log_uuid = "" , DORD_Status = "";
 
         @Override
         protected void onPreExecute() {
@@ -2330,9 +2567,13 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
             ContentValues cv = new ContentValues();
             cv.put("STATUS", "Success");
             FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
-            custom_progress_dialog.dismiss_progress_dialog();
-            success_dialog.show_success_dialog(Alert_Log_Activity.this,
-                    getString(R.string.notifrel_ordrcrtdauto, notification_id, aufnr));
+            addMessage(DORD_Status, log_uuid);
+            if (all)
+                RemoveId(log_uuid);
+            else {
+                custom_progress_dialog.dismiss_progress_dialog();
+                success_dialog.show_success_dialog(Alert_Log_Activity.this, "Notification " + notification_id + " is released successfully." + "\n" + "Order " + aufnr + " has been created successfully.");
+            }
             new Get_Alert_Log_Data().execute();
         }
     }
@@ -2343,6 +2584,57 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         if (v == back_imageview) {
             Alert_Log_Activity.this.finish();
+        } else if (v == refresh_imageview) {
+            if (alertLogList_array != null && alertLogList_array.size() > 0) {
+                decision_dialog = new Dialog(Alert_Log_Activity.this);
+                decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                decision_dialog.setCancelable(false);
+                decision_dialog.setCanceledOnTouchOutside(false);
+                decision_dialog.setContentView(R.layout.decision_dialog);
+                ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
+                TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
+                Glide.with(Alert_Log_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
+                Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+                Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+                description_textview.setText(getString(R.string.sync_data));
+                decision_dialog.show();
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        decision_dialog.dismiss();
+                    }
+                });
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        decision_dialog.dismiss();
+                        cd = new ConnectionDetector(Alert_Log_Activity.this);
+                        isInternetPresent = cd.isConnectingToInternet();
+                        if (isInternetPresent) {
+                            all = true;
+                            logUUID.clear();
+                            Cursor cursor = FieldTekPro_db.rawQuery("select * from Alert_Log ORDER BY ID ASC", null);
+                            if (cursor != null && cursor.getCount() > 0) {
+                                cursor.moveToNext();
+                                do {
+                                    if (cursor.getString(7).equals("Fail"))
+                                        logUUID.add(cursor.getString(10));
+                                } while (cursor.moveToNext());
+                            }
+                            if (logUUID != null && logUUID.size() > 0) {
+                                custom_progress_dialog.show_progress_dialog(Alert_Log_Activity.this, getString(R.string.sync_prgs));
+                                SyncFunc();
+                            } else {
+                                error_dialog.show_error_dialog(Alert_Log_Activity.this, getString(R.string.no_sync));
+                            }
+                        } else {
+                            network_connection_dialog.show_network_connection_dialog(Alert_Log_Activity.this);
+                        }
+                    }
+                });
+                decision_dialog.show();
+            }
         }
     }
 
@@ -2354,10 +2646,12 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         private String ACTIVITY_TYPE;
         private String USER;
         private String OBJECT_ID;
+        private String OBJECT_TXT;
         private String STATUS;
         private String UUID;
         private String MESSAGE;
         private String LOG_UUID;
+
 
         public String getLOG_UUID() {
             return LOG_UUID;
@@ -2377,6 +2671,14 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
 
         public String getTIME() {
             return TIME;
+        }
+
+        public String getOBJECT_TXT() {
+            return OBJECT_TXT;
+        }
+
+        public void setOBJECT_TXT(String OBJECT_TXT) {
+            this.OBJECT_TXT = OBJECT_TXT;
         }
 
         public void setTIME(String TIME) {
@@ -2439,13 +2741,14 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
             this.MESSAGE = MESSAGE;
         }
 
-        public AlertLogList_Object(String DATE, String TIME, String DOCUMENT_CATEGORY, String ACTIVITY_TYPE, String USER, String OBJECT_ID, String STATUS, String UUID, String MESSAGE, String LOG_UUID) {
+        public AlertLogList_Object(String DATE, String TIME, String DOCUMENT_CATEGORY, String ACTIVITY_TYPE, String USER, String OBJECT_ID, String STATUS, String UUID, String MESSAGE, String LOG_UUID,String OBJECT_TXT) {
             this.DATE = DATE;
             this.TIME = TIME;
             this.DOCUMENT_CATEGORY = DOCUMENT_CATEGORY;
             this.ACTIVITY_TYPE = ACTIVITY_TYPE;
             this.USER = USER;
             this.OBJECT_ID = OBJECT_ID;
+            this.OBJECT_TXT = OBJECT_TXT;
             this.STATUS = STATUS;
             this.UUID = UUID;
             this.MESSAGE = MESSAGE;
@@ -2453,5 +2756,125 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private void addMessage(String message, String log_uuid) {
+        ContentValues cv = new ContentValues();
+        cv.put("MESSAGE", message);
+        FieldTekPro_db.update("Alert_Log", cv, "LOG_UUID = ?", new String[]{log_uuid});
+    }
+    private void RemoveId(String log_uuid) {
+        if (all) {
+            int rm = 0;
+            if (logUUID != null && logUUID.size() > 0) {
+                for (int i = 0; i < logUUID.size(); i++) {
+                    if (logUUID.get(i).equals(log_uuid))
+                        rm = i;
+                }
+                logUUID.remove(rm);
+            }
+            SyncFunc();
+        }
+    }
+    private void SyncFunc() {
+        String UUID = "";
+        if (logUUID != null && logUUID.size() > 0) {
+            UUID = logUUID.get(0);
+        }
+        if (UUID != null && !UUID.equals("")) {
+            try {
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from Alert_Log where LOG_UUID = ?",
+                        new String[]{UUID});
+                if (cursor != null && cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            String document_type = cursor.getString(3);
+                            String activity_type = cursor.getString(4);
+                            String status = cursor.getString(7);
+                            if (status.equalsIgnoreCase("Fail")) {
+                                String selected_uuid = cursor.getString(10);
+                                String OBJECT_ID = cursor.getString(6);
+                                if (document_type.equalsIgnoreCase("Notification") && activity_type.equalsIgnoreCase("Release")) {
+                                    new Post_Notification_Release().execute(OBJECT_ID, selected_uuid);
+                                } else if (document_type.equalsIgnoreCase("Notification") && activity_type.equalsIgnoreCase("Postpone")) {
+                                    new Post_Notification_Postpone().execute(OBJECT_ID, selected_uuid);
+                                } else if (document_type.equalsIgnoreCase("Notification") && activity_type.equalsIgnoreCase("Complete")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Notif_complete");
+                                } else if (document_type.equalsIgnoreCase("Notification") && activity_type.equalsIgnoreCase("Create")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Notif_create");
+                                } else if (document_type.equalsIgnoreCase("Notification") && activity_type.equalsIgnoreCase("Change")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Notif_change");
+                                } else if (document_type.equalsIgnoreCase("Reservation") && activity_type.equalsIgnoreCase("Create")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Bom_Resv");
+                                } else if (document_type.equalsIgnoreCase("Order") && activity_type.equalsIgnoreCase("Release")) {
+                                    new Post_Order_Release().execute(OBJECT_ID, selected_uuid);
+                                } else if (document_type.equalsIgnoreCase("Order") && activity_type.equalsIgnoreCase("Create")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Ord_Create");
+                                } else if (document_type.equalsIgnoreCase("Order") && activity_type.equalsIgnoreCase("Change")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Ord_Change");
+                                } else if (document_type.equalsIgnoreCase("Order") && activity_type.equalsIgnoreCase("Time Confirmation")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Ord_tkconfirm");
+                                } else if (document_type.equalsIgnoreCase("Order") && activity_type.equalsIgnoreCase("TECO")) {
+                                    new Get_Token_Auto().execute(OBJECT_ID, selected_uuid, "Ord_teco");
+                                }
+                            }
+                        }
+                        while (cursor.moveToNext());
+                    }
+                }
+            } catch (Exception e) {
+                Log.v("alertLog_exception", e.getMessage());
+            }
+        } else {
+            all = false;
+            custom_progress_dialog.dismiss_progress_dialog();
+        }
+    }
+    private class Get_Token_Auto extends AsyncTask<String, Integer, Void> {
+        String token_status = "", id = "", log_uuid = "", post_type = "";
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                id = params[0];
+                log_uuid = params[1];
+                post_type = params[2];
+                token_status = Token.Get_Token(Alert_Log_Activity.this);
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if (token_status.equalsIgnoreCase("success")) {
+                if (post_type.equalsIgnoreCase("Notif_complete")) {
+                    new Post_Notification_Complete().execute(id, log_uuid);
+                } else if (post_type.equalsIgnoreCase("Notif_create")) {
+                    new Post_Notification_Create().execute("", id, log_uuid);
+                } else if (post_type.equalsIgnoreCase("Notif_change")) {
+                    new Post_Notification_Change().execute("", id, log_uuid);
+                } else if (post_type.equalsIgnoreCase("Bom_Resv")) {
+                    new Get_Quantity_Availability_Check().execute("", id, log_uuid);
+                } else if (post_type.equalsIgnoreCase("Ord_Create")) {
+                    new Post_Order_Create().execute("", id, log_uuid);
+                } else if (post_type.equalsIgnoreCase("Ord_Change")) {
+                    new Post_Order_Change().execute("", id, log_uuid);
+                } else if (post_type.equalsIgnoreCase("Ord_tkconfirm")) {
+                    new Post_Order_TKConfirmation().execute("", id, log_uuid);
+                } else if (post_type.equalsIgnoreCase("Ord_teco")) {
+                    new Post_Order_TECO().execute("", id, log_uuid);
+                }
+            }
+        }
+    }
 }
