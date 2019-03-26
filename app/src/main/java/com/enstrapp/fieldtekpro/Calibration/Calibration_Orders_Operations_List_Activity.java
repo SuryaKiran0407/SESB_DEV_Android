@@ -55,6 +55,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     RelativeLayout footer;
+    ImageView home_imageview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,19 +72,19 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
         tabTitle = new String[]{getString(R.string.operations),
                 getString(R.string.usg_decs), getString(R.string.defects)};
-
+        home_imageview = findViewById(R.id.home_imageview);
         cancel_button = (Button) findViewById(R.id.cancel_button);
         submit_button = (Button) findViewById(R.id.submit_button);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar = (Toolbar) findViewById(R.id.toolbar);
         title_textview = (TextView) findViewById(R.id.title_textview);
         footer = (RelativeLayout) findViewById(R.id.footer);
 
-        setSupportActionBar(toolbar);
+        /*setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(null);
         toolbar.setPadding(0, 0, 0, 0);//for tab otherwise give space in tab
-        toolbar.setContentInsetsAbsolute(0, 0);
-        ImageView home_imageview = (ImageView) toolbar.findViewById(R.id.home_imageview);
+        toolbar.setContentInsetsAbsolute(0, 0);*/
+
         home_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +150,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         } catch (Exception e) {
             vkatart = "";
         }
-        if (vkatart != null && !vkatart.equals("")) {
+       if (vkatart != null && !vkatart.equals("")) {
             footer.setVisibility(View.GONE);
         }
 

@@ -44,6 +44,7 @@ import com.enstrapp.fieldtekpro.orders.Measurement_Parceble;
 import com.enstrapp.fieldtekpro.orders.Order_CConfirmation;
 import com.enstrapp.fieldtekpro.orders.Order_Create_Change;
 //import com.enstrapp.fieldtekpro.orders.Order_Rel;
+import com.enstrapp.fieldtekpro.orders.Order_Rel;
 import com.enstrapp.fieldtekpro.orders.OrdrHeaderPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrMatrlPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrObjectPrcbl;
@@ -750,7 +751,7 @@ public class Auto_Sync_BackgroundService extends Service {
     /*Posting Order Create to Backend Server*/
     private class Post_Order_Create extends AsyncTask<String, Integer, Void> {
         OrdrHeaderPrcbl ohp = new OrdrHeaderPrcbl();
-        String order_id = "", log_uuid = "", ordrLngTxt = "";
+        String order_id = "", log_uuid = "", ordrLngTxt = "",id;
         String[] Response = new String[2];
         ArrayList<OrdrOprtnPrcbl> oop_al = new ArrayList<OrdrOprtnPrcbl>();
         ArrayList<OrdrObjectPrcbl> oobp_al = new ArrayList<OrdrObjectPrcbl>();
@@ -986,7 +987,7 @@ public class Auto_Sync_BackgroundService extends Service {
                 /*Fetching Order Header Data*/
 
 
-                Response = new Order_Create_Change().Post_Create_Order(context, ohp, "LOAD", "CRORD", "", "", header_custominfo, operation_custom_info_arraylist, material_custom_info_arraylist, "");
+                Response = new Order_Create_Change().Post_Create_Order(context, ohp, "LOAD", "CRORD", "", "", header_custominfo, operation_custom_info_arraylist, material_custom_info_arraylist, log_uuid);
             } catch (Exception e) {
             }
             return null;
@@ -1054,7 +1055,7 @@ public class Auto_Sync_BackgroundService extends Service {
         protected Void doInBackground(String... params) {
             orderId = params[0];
             log_uuid = params[1];
-        //    Response = new Order_Rel().Get_Data(context, "", "X", "RLORD", orderId);
+            Response = new Order_Rel().Get_Data(context, "", "X", "RLORD", orderId);
             return null;
         }
 

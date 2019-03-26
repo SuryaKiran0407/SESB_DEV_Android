@@ -30,7 +30,7 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     TextView udcode_text_textview, quality_score_textview;
     EditText notes_edittext;
-    ImageView valuation_imageview;
+    ImageView valuation_imageview,udcode_iv;
 
     public Calibration_UsageDecision_Fragment() {
     }
@@ -56,7 +56,7 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
         quality_score_textview = (TextView) rootView.findViewById(R.id.quality_score_textview);
         notes_edittext = (EditText) rootView.findViewById(R.id.notes_edittext);
         valuation_imageview = (ImageView) rootView.findViewById(R.id.valuation_imageview);
-
+        udcode_iv = (ImageView) rootView.findViewById(R.id.udcode_iv);
         udcode_button.setOnClickListener(this);
 
 
@@ -156,9 +156,9 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
             quality_score_textview.setText(quality_score);
             notes_edittext.setText(Udtext);
             if (udcode_id.startsWith("A")) {
-                valuation_imageview.setImageResource(R.drawable.ic_tickmark_enabled);
+                udcode_iv.setImageResource(R.drawable.green_right);
             } else {
-                valuation_imageview.setImageResource(R.drawable.ic_tickmark_disabled);
+                udcode_iv.setImageResource(R.drawable.red_wrong);
             }
             progressDialog.dismiss_progress_dialog();
         }
@@ -187,6 +187,11 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
                 udcode_button.setText(udcode_id);
                 udcode_text_textview.setText(udcode_text);
                 quality_score_textview.setText(quality_score);
+                if (udcode_id.startsWith("A")) {
+                    udcode_iv.setImageResource(R.drawable.green_right);
+                } else {
+                    udcode_iv.setImageResource(R.drawable.red_wrong);
+                }
                 //notes_edittext.setText(Udtext);
             }
         }

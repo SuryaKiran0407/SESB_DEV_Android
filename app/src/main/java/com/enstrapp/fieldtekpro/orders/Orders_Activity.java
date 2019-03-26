@@ -74,7 +74,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
     ImageButton back_iv;
     String orderUUID = "", orderId = "", orderStatus = "", DO_STATUS = "", statusId = "",
             priorityId = "", ordrTypID = "", ordrStDt = "", ordrEdDt = "", Equipment = "",
-            FuncLoc = "";
+            FuncLoc = "",shrtTxt = "";
     public SearchView search;
     TextView searchview_textview, title_tv;
     RecyclerView list_recycleview;
@@ -800,8 +800,12 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             final Orders_Object olo = orders_list_data.get(position);
             holder.orderId_tv.setText(olo.getOrderId());
             holder.shortText_tv.setText(olo.getOrderShortText());
+            shrtTxt = holder.shortText_tv.getText().toString();
             holder.basicStart_tv.setText(dateFormat(olo.getBasicStartDate()));
-            holder.status_tv.setText(olo.getOrderStatus());
+            if (!olo.getOrderStatus().equals("OFL"))
+                holder.status_tv.setText(olo.getOrderStatus());
+            else
+                holder.status_tv.setText("");
             holder.priority_tv.setText(olo.getPriorityText());
             holder.plant_tv.setText(olo.getOrderPlant());
             holder.uuid_tv.setText(olo.getUUID());
@@ -891,7 +895,15 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     holder.teco_layout.setVisibility(View.GONE);
                 }
-            } else {
+            }else   if (holder.orderId_tv.getText().toString().startsWith("ORD")) {
+                holder.status_tv.setBackground(getDrawable(R.drawable.offline_status));
+//                    holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
+                holder.teco_layout.setVisibility(GONE);
+                holder.release_layout.setVisibility(GONE);
+                holder.cnf_ll.setVisibility(GONE);
+
+            }
+            else {
                 holder.status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
                 holder.teco_layout.setVisibility(View.GONE);
@@ -1713,8 +1725,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
                                     String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                             "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
-                                            " STATUS, UUID, MESSAGE, LOG_UUID)" +
-                                            " values(?,?,?,?,?,?,?,?,?,?);";
+                                            " STATUS, UUID, MESSAGE, LOG_UUID,OBJECT_TXT)" +
+                                            " values(?,?,?,?,?,?,?,?,?,?,?);";
                                     SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                     App_db.beginTransaction();
                                     statement11.clearBindings();
@@ -1728,6 +1740,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                     statement11.bindString(8, "");
                                     statement11.bindString(9, "");
                                     statement11.bindString(10, uniqueKey.toString());
+                                    statement11.bindString(11,shrtTxt);
                                     statement11.execute();
                                     App_db.setTransactionSuccessful();
                                     App_db.endTransaction();
@@ -1804,10 +1817,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 String time = time_format.format(todaysdate.getTime());
 
                                 UUID uniqueKey = UUID.randomUUID();
-
                                 String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                         "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS," +
-                                        " UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                        " UUID, MESSAGE, LOG_UUID,OBJECT_TXT) values(?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 App_db.beginTransaction();
                                 statement11.clearBindings();
@@ -1821,6 +1833,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 statement11.bindString(8, "");
                                 statement11.bindString(9, "");
                                 statement11.bindString(10, uniqueKey.toString());
+                                statement11.bindString(11, shrtTxt);
                                 statement11.execute();
                                 App_db.setTransactionSuccessful();
                                 App_db.endTransaction();

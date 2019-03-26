@@ -77,7 +77,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dash_board_activity);
 
-        startService(new Intent(this, Auto_Sync_BackgroundService.class));
+        //startService(new Intent(this, Auto_Sync_BackgroundService.class));
         logout_imageview = (ImageView) findViewById(R.id.logout_imageview);
         refresh_imageview = (ImageView) findViewById(R.id.refresh_imageview);
         userName_tv = (TextView) findViewById(R.id.userName_tv);

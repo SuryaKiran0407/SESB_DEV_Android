@@ -3,6 +3,7 @@ package com.enstrapp.fieldtekpro.Calibration;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -55,6 +56,8 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
     String equip_id = "", plant = "", DORD_Status = "", Calibration_Status = "";
     FloatingActionButton refresh_fab_button;
     SwipeRefreshLayout swiperefreshlayout;
+    SharedPreferences FieldTekPro_SharedPref;
+    static String DateFormat = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,9 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-
+        FieldTekPro_SharedPref = getApplicationContext()
+                .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+        DateFormat = FieldTekPro_SharedPref.getString("Date_Format", null);
 
         new Get_Calib_Orders_Data().execute();
 
@@ -167,21 +172,27 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select DISTINCT Aufnr from EtQinspData where Equnr = ?", new String[]{equip_id});
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtQinspData where Equnr = ? group by Aufnr", new String[]{equip_id});
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     do {
-                        String Aufnr = cursor.getString(0);
-
-
                         String vkatart = "";
                         try {
                             Cursor cursor1 = null;
-                            cursor1 = FieldTekPro_db.rawQuery("select * from EtQudData Where Aufnr = ?", new String[]{Aufnr});
+                            cursor1 = FieldTekPro_db.rawQuery("select * from EtQudData Where Aufnr = ?", new String[]{cursor.getString(1)});
                             if (cursor1 != null && cursor1.getCount() > 0) {
                                 if (cursor1.moveToFirst()) {
                                     do {
                                         vkatart = cursor1.getString(8);
+                                        Orders_List_Object olo = new Orders_List_Object(
+                                                cursor.getString(1),
+                                                cursor.getString(1),
+                                                cursor.getString(25),
+                                                cursor.getString(32),
+                                                cursor.getString(37),
+                                                cursor.getString(41),
+                                                vkatart);
+                                        ordersList.add(olo);
                                     }
                                     while (cursor1.moveToNext());
                                 }
@@ -193,7 +204,7 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
                             vkatart = "";
                         }
 
-                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{Aufnr});
+                        /*Cursor cursor1 = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_EtOrderHeader where Aufnr = ?", new String[]{Aufnr});
                         if (cursor1 != null && cursor1.getCount() > 0) {
                             if (cursor1.moveToFirst()) {
                                 do {
@@ -211,7 +222,7 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
                             }
                         } else {
                             cursor1.close();
-                        }
+                        }*/
 
                     }
                     while
@@ -302,22 +313,9 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
             holder.status_tv.setText(olo.getOrderStatus());
             holder.priority_tv.setText(olo.getPriorityText());
             holder.woco_status_tv.setText(olo.getVkatart());
+            holder.priority_tv.setVisibility(View.GONE);
+            holder.basicStart_tv.setVisibility(View.VISIBLE);
 
-            if (holder.priority_tv.getText().toString().contains("Critical")) {
-                holder.priority_tv.setVisibility(View.VISIBLE);
-                holder.priority_tv.setBackground(getDrawable(R.drawable.critical_round));
-            } else if (holder.priority_tv.getText().toString().contains("High")) {
-                holder.priority_tv.setVisibility(View.VISIBLE);
-                holder.priority_tv.setBackground(getDrawable(R.drawable.high_round));
-            } else if (holder.priority_tv.getText().toString().contains("Medium")) {
-                holder.priority_tv.setVisibility(View.VISIBLE);
-                holder.priority_tv.setBackground(getDrawable(R.drawable.medium_round));
-            } else if (holder.priority_tv.getText().toString().contains("Low")) {
-                holder.priority_tv.setVisibility(View.VISIBLE);
-                holder.priority_tv.setBackground(getDrawable(R.drawable.low_round));
-            } else {
-                holder.priority_tv.setVisibility(View.GONE);
-            }
 
             holder.teco_layout.setVisibility(View.GONE);
             holder.release_layout.setVisibility(View.GONE);
@@ -457,7 +455,7 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
     private String dateFormat(String date) {
         if (!date.equals("00000000")) {
             DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
-            DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+            DateFormat outputFormat = new SimpleDateFormat("dd.MM.yy");
             Date date1;
             try {
                 date1 = inputFormat.parse(date);
