@@ -87,7 +87,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd,yyyy");
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
         start_date = date.format(c.getTime());
         start_date_formatted = dateFormat.format(c.getTime());

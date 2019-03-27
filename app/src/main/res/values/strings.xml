@@ -847,6 +847,8 @@
     <string name="measurpoint_sp">MPTT</string>
     <string name="jsa_sp">JSA</string>
     <string name="Calib_sp">CALIBRATION</string>
+    <string name="languages">Languages</string>
     <string name="initialload_unsuccess">Initial data load is not completed.\nPlease perform initial load again.</string>
-
+    <string name="mob_user">Mob. User</string>
+    <string name="chars_left">You have 300 characters left</string>
 </resources>

@@ -562,7 +562,7 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                                     notif_etDocs_parcelable.setFiletype(mimeType);
                                     notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
                                     notif_etDocs_parcelable.setFilepath(path);
-                                    notif_etDocs_parcelable.setContent(encodedImage);
+                                    notif_etDocs_parcelable.setContent(path);
                                     notif_etDocs_parcelable.setDocid("");
                                     notif_etDocs_parcelable.setDoctype(fileExtension);
                                     notif_etDocs_parcelable.setObjtype("BUS2038");
@@ -576,7 +576,7 @@ public class Orders_CH_Attachments_Fragment extends Fragment {
                                         statement11.bindString(1,filee_name);
                                         statement11.bindString(2, ma.ohp.getOrdrId());
                                         statement11.bindString(3, "Orders");
-                                        statement11.bindString(4, encodedImage);
+                                        statement11.bindString(4, path);
                                         statement11.bindString(5, mimeType);
                                         statement11.bindString(6, fileExtension);
                                         statement11.execute();
