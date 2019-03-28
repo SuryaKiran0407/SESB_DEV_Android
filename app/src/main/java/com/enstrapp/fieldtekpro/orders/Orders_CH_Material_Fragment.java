@@ -434,4 +434,35 @@ public class Orders_CH_Material_Fragment extends Fragment {
             return 0;
         }
     }
+    public void remove_component(String operation_id)
+    {
+        if(omp_al_rv.size() > 0)
+        {
+            ArrayList<OrdrMatrlPrcbl> rmomp = new ArrayList<>();
+            rmomp.addAll(omp_al_rv);
+
+            for (OrdrMatrlPrcbl oo : rmomp)
+            {
+                if (oo.getOprtnId().equalsIgnoreCase(operation_id))
+                {
+                    if (oo.getStatus().equals("I"))
+                    {
+                        omp_al_rv.remove(oo);
+                        omp_al.remove(oo);
+                    }
+                    else
+                    {
+                        omp_al_rv.remove(oo);
+                        String partId = oo.getPartId();
+                        for(int i = 0; i < omp_al.size(); i++)
+                        {
+                            if(omp_al.get(i).getPartId().equals(partId))
+                                omp_al.get(i).setStatus("D");
+                        }
+                    }
+                }
+            }
+            materialAdapter.notifyDataSetChanged();
+        }
+    }
 }

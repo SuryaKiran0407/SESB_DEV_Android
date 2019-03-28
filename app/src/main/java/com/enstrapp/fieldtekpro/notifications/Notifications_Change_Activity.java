@@ -65,7 +65,7 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
             personresponsible_id = "", personresponsible_text = "", req_st_date = "",
             req_st_time = "", req_end_date = "", req_end_time = "", mal_st_date = "",
             mal_st_time = "", mal_end_date = "", mal_end_time = "", effect_id = "",
-            effect_text = "", plant_id = "";
+            effect_text = "", plant_id = "", created_aufnr ="";
     Error_Dialog error_dialog = new Error_Dialog();
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
@@ -275,7 +275,7 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {
-                        String created_aufnr = cursor.getString(20);
+                         created_aufnr = cursor.getString(20);
                         nhp.setAufnr(created_aufnr);
                     }
                     while (cursor.moveToNext());
@@ -1489,7 +1489,7 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
                                 effect_text, plant_id, workcenter_id, primary_user_resp,
                                 causecodeArrayList, ActivityArrayList, AttachmentsArrayList,
                                 LongtextsArrayList, statusArrayList, TasksArrayList,
-                                header_custominfo);
+                                header_custominfo,created_aufnr);
             } catch (Exception e) {
             }
             return null;

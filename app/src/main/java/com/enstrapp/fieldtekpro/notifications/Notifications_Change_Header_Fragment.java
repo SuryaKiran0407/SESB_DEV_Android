@@ -177,21 +177,43 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
             plannergroup_id = nhp.getIngrp();
             plannergroup_text = nhp.getIngrpName();
-            plannerGroup_edittext.setText(plannergroup_id + "-" + plannergroup_text);
+            if (plannergroup_id != null && !plannergroup_id.equals(""))
+                if (plannergroup_text != null && !plannergroup_text.equals(""))
+                    plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                            plannergroup_text));
+                else
+                    plannerGroup_edittext.setText(plannergroup_id);
+            else
+                plannerGroup_edittext.setText("");
             workcenter_id = nhp.getArbpl();
             workcenter_text = nhp.getWrkCntrTxt();
-            workCenter_edittext.setText(workcenter_id + "-" +workcenter_text);
+            if (workcenter_id != null && !workcenter_id.equals(""))
+                if (workcenter_text != null && !workcenter_text.equals(""))
+                    workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                            workcenter_text));
+                else
+                    workCenter_edittext.setText(workcenter_id);
+            else
+                workCenter_edittext.setText("");
             priority_type_id = nhp.getPriority();
             priority_type_text = nhp.getPriorityTxt();
-            priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
-                    priority_type_text));
+            if (priority_type_id != null && !priority_type_id.equals(""))
+                if (priority_type_text != null && !priority_type_text.equals(""))
+                    priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
+                            priority_type_text));
+                else
+                    priority_edittext.setText(priority_type_id);
+
             reportedby_edittext.setText(nhp.getReportedBy());
             primUsrResp_edittext.setText(nhp.getUsr01());
             personresponsible_id = nhp.getParnrVw();
             personresponsible_text = nhp.getNameVw();
-            personResp_edittext.setText(getString(R.string.hypen_text, personresponsible_id,
-                    personresponsible_text));
-
+            if (personresponsible_id != null && !personresponsible_id.equals(""))
+                if (personresponsible_text != null && !personresponsible_text.equals(""))
+                    personResp_edittext.setText(getString(R.string.hypen_text, personresponsible_id,
+                            personresponsible_text));
+                else
+                    personResp_edittext.setText(personresponsible_id);
             String req_stdate = nhp.getStrmn();
             if (req_stdate != null && !req_stdate.equals("")) {
                 if (req_stdate.equalsIgnoreCase("00000000")) {
@@ -338,8 +360,14 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
             effect_id = nhp.getAuswk();
             effect_text = nhp.getAuswkt();
-            effect_edittext.setText(getString(R.string.hypen_text, effect_id, effect_text));
-
+            if (effect_id != null && !effect_id.equals(""))
+                if (effect_text != null && !effect_text.equals(""))
+                    effect_edittext.setText(getString(R.string.hypen_text, effect_id,
+                            effect_text));
+                else
+                    effect_edittext.setText(effect_id);
+            else
+                plannerGroup_edittext.setText("");
             final String aufnr = nhp.getAufnr();
             selected_orderID = aufnr;
             if (aufnr != null && !aufnr.equals("")) {
@@ -1662,6 +1690,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                             oop.setAueru(cursor.getString(20));
                             oop.setUsr01(cursor.getString(25));
                             oop.setLarnt(cursor.getString(9));
+                            oop.setLarnt_text(cursor.getString(24));
                             oop.setFsavd(cursor.getString(12));
                             oop.setSsedd(cursor.getString(13));
                             oop.setRueck(cursor.getString(19));

@@ -110,6 +110,7 @@
                     android:hint="@string/or_order_text"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:maxLength="40"
                     android:textSize="@dimen/textSize" />
             </android.support.design.widget.TextInputLayout>
             <ImageView

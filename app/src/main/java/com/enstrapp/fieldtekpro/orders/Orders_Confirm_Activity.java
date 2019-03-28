@@ -45,8 +45,9 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
     private static String DATABASE_NAME = "";
     Error_Dialog errorDialog = new Error_Dialog();
     Success_Dialog success_dialog = new Success_Dialog();
-    String strDt = "", endDt = "";
+    String strDt = "", endDt = "",ctrlKeyId = "",ctrlKeyText = "",plantId = "",plantTxt = "",wrkcntId = "",wrkcntTxt = "",actTypId = "",actTypTxt = "",durId = "",durUnit = "";
     TextInputLayout confirmation_longtext_layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +98,57 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
             oprtnNo_tv.setText(oop.getOprtnId());
             oprtnShrtTxt_tiet.setText(oop.getOprtnShrtTxt());
             oprtnLngTxt_tiet.setText(oop.getOprtnLngTxt());
-            ctrlKey_tiet.setText(oop.getCntrlKeyId() + " - " + oop.getCntrlKeyTxt());
-            plant_tiet.setText(oop.getPlantId() + " - " + oop.getPlantTxt());
-            wrkCntr_tiet.setText(oop.getWrkCntrId() + " - " + oop.getWrkCntrTxt());
-            actvyKey_tiet.setText(oop.getLarnt() + " - " + oop.getLarnt_text());
-            plannedWrkUnt_tiet.setText(oop.getDuration() + "/" + oop.getDurationUnit());
+
             cnfrmWrkUnt_tiet.setText(oop.getUsr01());
+            ctrlKeyId = oop.getCntrlKeyId();
+            ctrlKeyText = oop.getCntrlKeyTxt();
+            if (ctrlKeyId != null && !ctrlKeyId.equals(""))
+                if (ctrlKeyText != null && !ctrlKeyText.equals(""))
+                    ctrlKey_tiet.setText(getString(R.string.hypen_text, ctrlKeyId,
+                            ctrlKeyText));
+                else
+                    ctrlKey_tiet.setText(ctrlKeyId);
+            else
+                ctrlKey_tiet.setText("");
+            plantId = oop.getPlantId();
+            plantTxt = oop.getPlantTxt();
+            if (plantId != null && !plantId.equals(""))
+                if (plantTxt != null && !plantTxt.equals(""))
+                    plant_tiet.setText(getString(R.string.hypen_text, plantId,
+                            plantTxt));
+                else
+                    plant_tiet.setText(plantId);
+            else
+                plant_tiet.setText("");
+            wrkcntId = oop.getWrkCntrId();
+            wrkcntTxt = oop.getWrkCntrTxt();
+            if (wrkcntId != null && !wrkcntId.equals(""))
+                if (wrkcntTxt != null && !wrkcntTxt.equals(""))
+                    wrkCntr_tiet.setText(getString(R.string.hypen_text, wrkcntId,
+                            wrkcntTxt));
+                else
+                    wrkCntr_tiet.setText(wrkcntId);
+            else
+                wrkCntr_tiet.setText("");
+            actTypId = oop.getLarnt();
+            actTypTxt = oop.getLarnt_text();
+            if (actTypId != null && !actTypId.equals(""))
+                if (actTypTxt != null && !actTypTxt.equals(""))
+                    actvyKey_tiet.setText(getString(R.string.hypen_text, actTypId,
+                            actTypTxt));
+                else
+                    actvyKey_tiet.setText(actTypId);
+            else
+                actvyKey_tiet.setText("");
+            durId = oop.getDuration();
+            durUnit = oop.getDurationUnit();
+            if (durId != null && !durId.equals(""))
+                if (durUnit != null && !durUnit.equals(""))
+                    plannedWrkUnt_tiet.setText(oop.getDuration() + "/" + oop.getDurationUnit());
+                else
+                    plannedWrkUnt_tiet.setText(durId);
+            else
+                plannedWrkUnt_tiet.setText("");
 
             StringBuilder longtext_sBuilder = new StringBuilder();
             try {

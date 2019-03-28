@@ -1048,4 +1048,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
 
         }
     }
+    public void remove_component(String operation_id) {
+        Orders_CH_Material_Fragment orders_ch_material_fragment = (Orders_CH_Material_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        orders_ch_material_fragment.remove_component(operation_id);
+    }
 }

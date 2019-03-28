@@ -94,22 +94,22 @@ public class Order_Status_Activity extends AppCompatActivity {
                 status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
                 status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             } else if (status_tv.getText().toString().equalsIgnoreCase("CANC")) {
-                status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
+                status_tv.setBackground(getDrawable(R.drawable.red_circle));
                 status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             } else if (status_tv.getText().toString().equalsIgnoreCase("REL")) {
-                status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
+                status_tv.setBackground(getDrawable(R.drawable.blue_circle));
                 status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             } else if (status_tv.getText().toString().equalsIgnoreCase("ISSU")) {
-                status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
+                status_tv.setBackground(getDrawable(R.drawable.lightgren_circle));
                 status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             } else if (status_tv.getText().toString().equalsIgnoreCase("DLFL")) {
-                status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
+                status_tv.setBackground(getDrawable(R.drawable.red_circle));
                 status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             } else if (status_tv.getText().toString().equalsIgnoreCase("CLSD")) {
-                status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
+                status_tv.setBackground(getDrawable(R.drawable.green_circle));
                 status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             } else if (status_tv.getText().toString().equalsIgnoreCase("CNF")) {
-                status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
+                status_tv.setBackground(getDrawable(R.drawable.orange_circle));
                 status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
             } else {
                 status_tv.setBackground(getDrawable(R.drawable.yellow_circle));

@@ -366,6 +366,7 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 functionlocation_text = data.getStringExtra("functionlocation_text");
                 plant_id = data.getStringExtra("plant_id");
                 iwerk = data.getStringExtra("iwerk");
+                workcenter_text = wrkCntrName(workcenter_id, plant_id);
                 equipment_id = "";
                 equipment_text = "";
                 equipid_edittext.setText("");
@@ -444,6 +445,7 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                                     plannergroup_text = "";
                                     floc_edittext.setText(functionlocation_id);
                                     iwerk = cursor.getString(29);
+                                    workcenter_text = wrkCntrName(workcenter_id, plant_id);
                                     workcenter_id = cursor.getString(11);
                                     workCenter_edittext.setText(workcenter_id);
                                     if (plant_id != null && !plant_id.equals(""))

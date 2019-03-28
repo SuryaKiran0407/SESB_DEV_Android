@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -110,6 +111,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
             recyclerview.setVisibility(View.VISIBLE);
             footer_layout.setVisibility(View.VISIBLE);
             date_time_layout.setVisibility(View.VISIBLE);
+            data_adapter.notifyDataSetChanged();
         }
         else
         {
@@ -241,7 +243,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
         public class MyViewHolder extends RecyclerView.ViewHolder
         {
             public TextView uuid_textview, Valuation_textview, Plant_textview, Auswmenge1_textview, range_unit_textview, characteristic_textview1, unit_type_textview, Qualitat_textview, range_textview, inspect_textview;
-            public LinearLayout result_layout1, result_layout2, range_layout;
+            public LinearLayout result_layout1, result_layout2, range_layout,layout;
             public Button result2_button;
             public EditText reading_edittext, notes_edittext, inspector_edittext, inspected_edittext;
             public MyViewHolder(View view)
@@ -265,6 +267,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
                 Plant_textview = (TextView)view.findViewById(R.id.Plant_textview);
                 Valuation_textview = (TextView)view.findViewById(R.id.Valuation_textview);
                 uuid_textview = (TextView)view.findViewById(R.id.uuid_textview);
+                layout = (LinearLayout) view.findViewById(R.id.layout);
             }
         }
         public Data_Adapter(Context mContext, List<Start_Calibration_Parcelable> list)
@@ -323,7 +326,12 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
             }
             holder.notes_edittext.setText(olo.getPRUEFBEMKT());
             holder.range_textview.setText(olo.getTOLERANZUB()+" - "+olo.getTOLERANZOB()+"  "+olo.getMSEHL());
-            holder.inspector_edittext.setText(olo.getPRUEFER());
+            String inspector = olo.getPRUEFER();
+            if(inspector!=null && !inspector.equals("")) {
+                holder.inspector_edittext.setText(olo.getPRUEFER());
+            }else{
+                holder.inspector_edittext.setText(username.toUpperCase());
+            }
             holder.inspected_edittext.setText(olo.getANZWERTG());
             holder.inspect_textview.setText(olo.getISTSTPUMF());
             holder.Auswmenge1_textview.setText(olo.getAUSWMENGE1());

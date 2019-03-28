@@ -883,11 +883,11 @@ public class VHLP {
                                                         values.put("Qkennzahl", inspCodes_codes_result.getQkennzahl());
                                                         values.put("Folgeakti", inspCodes_codes_result.getFolgeakti());
                                                         values.put("Fehlklassetxt", inspCodes_codes_result.getFehlklassetxt());
-
+                                                        App_db.insert("EtInspCodes", null, values);
                                                     }
 
                                                 }
-                                            App_db.insert("EtInspCodes", null, values);
+
                                         }
                                     }
                                 /*Reading and Inserting Data into Database Table for EtInspCodes*/
@@ -953,10 +953,9 @@ public class VHLP {
                                                     for (VHLP_SER.Codes_Result codes_result : etMeasCodes_result.getEtMeasCodesCodes().getResults()) {
                                                         values.put("Code", codes_result.getCode());
                                                         values.put("Kurztext1", codes_result.getKurztext1());
-
+                                                        App_db.insert("EtMeasCodes", null, values);
                                                     }
                                                 }
-                                            App_db.insert("EtMeasCodes", null, values);
                                         }
                                     }
                                 /*Reading and Inserting Data into Database Table for EtMeasCodes*/
@@ -1372,10 +1371,10 @@ public class VHLP {
                                                         values.put("Qkennzahl", udecCodes_result.getQkennzahl());
                                                         values.put("Folgeakti", udecCodes_result.getFolgeakti());
                                                         values.put("Fehlklassetxt", udecCodes_result.getFehlklassetxt());
-
+                                                        App_db.insert("EtUdecCodes", null, values);
                                                     }
                                                 }
-                                            App_db.insert("EtUdecCodes", null, values);
+
                                         }
                                     }
                                 /*Reading and Inserting Data into Database Table for EtMeasCodes*/

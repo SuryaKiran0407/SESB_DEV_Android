@@ -1434,7 +1434,7 @@ public class Auto_Sync_BackgroundService extends Service {
                 }
                 /*Fetching Notification Attachments*/
 
-                notif_change_status = Notifications_Change.Post_NotifChange_Data(context, transmit_type, notification_id, notification_type_id, notif_text, functionlocation_id, equipment_id, equipment_text, priority_type_id, priority_type_text, plannergroup_id, plannergroup_text, Reported_by, personresponsible_id, personresponsible_text, req_st_date, req_st_time, req_end_date, req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time, effect_id, effect_text, plant_id, workcenter_id, primary_user_resp, causecodeArrayList, ActivityArrayList, AttachmentsArrayList, LongtextsArrayList, statusArrayList, TasksArrayList, header_custominfo);
+                notif_change_status = Notifications_Change.Post_NotifChange_Data(context, transmit_type, notification_id, notification_type_id, notif_text, functionlocation_id, equipment_id, equipment_text, priority_type_id, priority_type_text, plannergroup_id, plannergroup_text, Reported_by, personresponsible_id, personresponsible_text, req_st_date, req_st_time, req_end_date, req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time, effect_id, effect_text, plant_id, workcenter_id, primary_user_resp, causecodeArrayList, ActivityArrayList, AttachmentsArrayList, LongtextsArrayList, statusArrayList, TasksArrayList, header_custominfo,"");
             } catch (Exception e) {
             }
             return null;

@@ -1057,4 +1057,15 @@ public class Orders_Create_Activity extends AppCompatActivity {
 
         }
     }
+    public void remove_component(String operation_id) {
+        Orders_CR_Material_Fragment orders_cr_material_fragment = (Orders_CR_Material_Fragment)
+                getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        orders_cr_material_fragment.remove_component(operation_id);
+    }
+
+    public void replaceOprtnIds(String oldId, String newId, String newText) {
+        Orders_CR_Material_Fragment orders_cr_material_fragment = (Orders_CR_Material_Fragment)
+                getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        orders_cr_material_fragment.replaceOprtnId(oldId, newId, newText);
+    }
 }
