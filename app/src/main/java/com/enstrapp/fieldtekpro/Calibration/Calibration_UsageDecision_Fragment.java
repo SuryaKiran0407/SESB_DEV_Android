@@ -155,7 +155,9 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
             udcode_text_textview.setText(udcode_text);
             quality_score_textview.setText(quality_score);
             notes_edittext.setText(Udtext);
-            if (udcode_id.startsWith("A")) {
+            if(udcode_id.equals("")) {
+
+            }else if (udcode_id.startsWith("A")) {
                 udcode_iv.setImageResource(R.drawable.green_right);
             } else {
                 udcode_iv.setImageResource(R.drawable.red_wrong);
@@ -187,7 +189,10 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
                 udcode_button.setText(udcode_id);
                 udcode_text_textview.setText(udcode_text);
                 quality_score_textview.setText(quality_score);
-                if (udcode_id.startsWith("A")) {
+                if(udcode_id.equals("")) {
+
+                }
+                else if (udcode_id.startsWith("A")) {
                     udcode_iv.setImageResource(R.drawable.green_right);
                 } else {
                     udcode_iv.setImageResource(R.drawable.red_wrong);

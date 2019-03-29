@@ -29,6 +29,7 @@ import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -56,12 +57,16 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     private static String DATABASE_NAME = "";
     RelativeLayout footer;
     ImageView home_imageview;
+    Boolean yes = false;
+
+    private ArrayList<EquiList> equi_list = new ArrayList<>();
+    private ArrayList<EquiList> equi_list1 = new ArrayList<EquiList>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_orders_operations_activity);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -98,25 +103,28 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        setupViewPager(viewPager);
 
         try {
             setupTabIcons();
         } catch (Exception e) {
         }
 
-
         DATABASE_NAME = getApplicationContext().getString(R.string.database_name);
         App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, getApplicationContext().MODE_PRIVATE, null);
 
         String Prueflos = "";
+        String equi_id = "";
+        String equip_txt = "";
+
         try {
             Cursor cursor1 = null;
-            cursor1 = App_db.rawQuery("select * from EtQinspData Where Aufnr = ?", new String[]{order_id});
+            cursor1 = App_db.rawQuery("select DISTINCT Equnr,Prueflos from EtQinspData Where Aufnr = ?", new String[]{order_id});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
-                        Prueflos = cursor1.getString(2);
+                        equi_id = cursor1.getString(0);
+                        Prueflos = cursor1.getString(1);
+                        equip_txt = equipName(equi_id);
                     }
                     while (cursor1.moveToNext());
                 }
@@ -130,7 +138,34 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         if (Prueflos != null && !Prueflos.equals("")) {
             title_textview.setText(getString(R.string.lot_no, Prueflos));
         }
+        EquiList list = new EquiList(equi_id, equip_txt);
+        equi_list1.add(list);
 
+
+        try {
+            Cursor cursor = null;
+            cursor = App_db.rawQuery("select * from EtOrderOlist Where Aufnr = ?", new String[]{order_id});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        EquiList eql = new EquiList(cursor.getString(6), cursor.getString(12));
+                        equi_list.add(eql);
+                    }
+                    while (cursor.moveToNext());
+                }
+            } else {
+                cursor.close();
+                Prueflos = "";
+            }
+        } catch (Exception e) {
+        }
+
+        for (int i = 0; i >= equi_list.size(); i++) {
+            if (equi_id.equals(equi_list.get(i).getEqunr())) {
+                equi_list.remove(equi_list.get(i).getEqunr());
+            }
+        }
+        equi_list1.addAll(equi_list);
 
         String vkatart = "";
         try {
@@ -150,10 +185,10 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         } catch (Exception e) {
             vkatart = "";
         }
-       if (vkatart != null && !vkatart.equals("")) {
+        if (vkatart != null && !vkatart.equals("")) {
             footer.setVisibility(View.GONE);
         }
-
+        setupViewPager(viewPager, equi_list);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -176,13 +211,55 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
     }
 
+    public class EquiList {
+        private String Equnr;
+        private String Eqtxt;
+        ArrayList<EquiList> arrayList = new ArrayList<>();
 
-    private void setupViewPager(final ViewPager viewPager) {
+        public ArrayList<EquiList> getArrayList() {
+            return arrayList;
+        }
+
+        public void setArrayList(ArrayList<EquiList> arrayList) {
+            this.arrayList = arrayList;
+        }
+
+        public String getEqunr() {
+            return Equnr;
+        }
+
+        public void setEqunr(String equnr) {
+            Equnr = equnr;
+        }
+
+        public String getEqtxt() {
+            return Eqtxt;
+        }
+
+        public void setEqtxt(String eqtxt) {
+            Eqtxt = eqtxt;
+        }
+
+        public EquiList(String equnr, String eqtxt) {
+            Equnr = equnr;
+            Eqtxt = eqtxt;
+
+        }
+
+    }
+
+
+    private void setupViewPager(final ViewPager viewPager, List<EquiList> equi_list) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         operations_fragment = new Calibration_Operations_Fragment();
         usageDecision_fragment = new Calibration_UsageDecision_Fragment();
         defects_fragment = new Calibration_Defects_Fragment();
-        adapter.addFragment(operations_fragment, getString(R.string.operations));
+        if (this.equi_list.size() > 0) {
+            adapter.addFragment(operations_fragment, getString(R.string.equipments));
+        } else {
+            adapter.addFragment(operations_fragment, getString(R.string.operations));
+
+        }
         adapter.addFragment(usageDecision_fragment, getString(R.string.usg_decs));
         adapter.addFragment(defects_fragment, getString(R.string.defects));
         viewPager.setAdapter(adapter);
@@ -213,6 +290,13 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         return plant_id;
     }
 
+    ArrayList<EquiList> getEqui_list() {
+        return equi_list;
+    }
+
+    ArrayList<EquiList> getEqui_list1() {
+        return equi_list1;
+    }
 
     @Override
     public void onClick(View v) {
@@ -423,12 +507,12 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             super.onPostExecute(result);
             custom_progress_dialog.dismiss_progress_dialog();
             if (calibration_submit_status.get("response_status") != null &&
-                    calibration_submit_status.get("response_status").startsWith("S")){
+                    calibration_submit_status.get("response_status").startsWith("S")) {
                 Success_Dialog successDialog = new Success_Dialog();
                 successDialog.dismissActivity(Calibration_Orders_Operations_List_Activity.this,
                         calibration_submit_status.get("response_status").substring(1));
             } else if (calibration_submit_status.get("response_status") != null &&
-                    calibration_submit_status.get("response_status").startsWith("E")){
+                    calibration_submit_status.get("response_status").startsWith("E")) {
                 error_dialog.show_error_dialog(Calibration_Orders_Operations_List_Activity.this,
                         calibration_submit_status.get("response_status").substring(1));
             } else {
@@ -443,5 +527,44 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
+    private String equipName(String order_id) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from EtEqui where  Equnr" +
+                    " = ?", new String[]{equip_id});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(5);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
+
+    private String plnrGrpName(String plnrGrpId, String iwerk) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ? and" +
+                    " Iwerk = ?", new String[]{plnrGrpId, iwerk});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(3);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
 
 }

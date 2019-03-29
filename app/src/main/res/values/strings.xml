@@ -183,6 +183,8 @@
     <string name="planner">Planner</string>
     <string name="activity_key">Activity Key</string>
     <string name="activity_text">Activity Text</string>
+    <string name="equi_id">Equipment ID</string>
+    <string name="equi_txt">Equipment Text</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="file">File</string>
@@ -446,6 +448,7 @@
     <string name="material_block">Adding Material is Prohibited for PM08 Order Type</string>
     <string name="create_order_msg">Do you want to submit for order creation?</string>
     <string name="operations">Operations</string>
+    <string name="equipments">Equipments</string>
     <string name="update_order">Do you want to submit for order update?</string>
     <string name="isolation_list">Isolation List</string>
     <string name="monthly_report">Monthly Report</string>

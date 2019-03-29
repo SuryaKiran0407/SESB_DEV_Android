@@ -35,7 +35,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
 
     ImageView back_imageview;
     Button cancel_button, add_button, stdatetime_button, enddatetime_button;
-    String selected_data_position = "", order_id = "", username = "", start_date = "", start_date_formatted = "", start_time = "", end_date = "", end_date_formatted = "", end_time = "";
+    String selected_data_position = "", order_id = "",equip_id = "", username = "", start_date = "", start_date_formatted = "", start_time = "", end_date = "", end_date_formatted = "", end_time = "";
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     Data_Adapter data_adapter;
@@ -58,15 +58,15 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
             start_calibration_parcelables = extras.getParcelableArrayList("start_calib_data");
             selected_data_position = extras.getString("position");
             order_id = extras.getString("order_id");
-        }
+            equip_id = extras.getString("equip_id");
+    }
 
-        DATABASE_NAME = Calibration_Start_Inspection_Activity.this.getString(R.string.database_name);
-        App_db = Calibration_Start_Inspection_Activity.this.openOrCreateDatabase(DATABASE_NAME, Calibration_Start_Inspection_Activity.this.MODE_PRIVATE, null);
-
-         /* Initializing Shared Preferences */
-        app_sharedpreferences = Calibration_Start_Inspection_Activity.this.getSharedPreferences("App_SharedPreferences", MODE_PRIVATE);
+        DATABASE_NAME = getApplicationContext().getString(R.string.database_name);
+        App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        /* Initializing Shared Preferences */
+        app_sharedpreferences = getApplicationContext().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         app_editor = app_sharedpreferences.edit();
-        username = app_sharedpreferences.getString("Username",null);
+        username = app_sharedpreferences.getString("Username", null);
         /* Initializing Shared Preferences */
 
         back_imageview = (ImageView)findViewById(R.id.back_imageview);

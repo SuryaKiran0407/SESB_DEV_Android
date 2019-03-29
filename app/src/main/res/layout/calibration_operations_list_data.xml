@@ -33,27 +33,31 @@
 
                 <LinearLayout
                     android:layout_width="8dp"
-                    android:layout_height="fill_parent">
+                    android:layout_height="fill_parent"
+                    >
                     <View
                         android:id="@+id/status_view"
                         android:layout_width="8dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
-
                 <LinearLayout
+                    android:id="@+id/layout1"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone">
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" >
                         <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:id="@+id/op_id_tv"
                             android:layout_width="0dp"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="0.4"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6"
                             android:text="@string/op_id"
                             android:textColor="@color/light_grey2"
                             android:textSize="15sp"
@@ -86,9 +90,10 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" >
                         <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                            android:id="@+id/op_txt_tv"
                             android:layout_width="0dp"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="0.4"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6"
                             android:text="@string/op_text"
                             android:textColor="@color/light_grey2"
                             android:textSize="15sp"

@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,64 +26,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+public class Calibration_Operation_Activity extends AppCompatActivity {
 
-public class Calibration_Operations_Fragment extends Fragment {
-
-    String order_id = "";
+    String order_id = "",equip_id = "";
     TextView no_data_textview;
     RecyclerView recyclerview;
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     private static SQLiteDatabase App_db;
+    LinearLayout no_data_layout;
     private static String DATABASE_NAME = "";
     Data_Adapter data_adapter;
-    Equi_adapter equi_adapter;
     ArrayList<Orders_Operations_Parcelable> orders_operations_parcables = new ArrayList<Orders_Operations_Parcelable>();
     ArrayList<Start_Calibration_Parcelable> start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
     ArrayList<Start_Calibration_Parcelable> selected_start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
-    ArrayList<Calibration_Orders_Operations_List_Activity.EquiList> equiLists = new ArrayList<Calibration_Orders_Operations_List_Activity.EquiList>();
-    ArrayList<Calibration_Orders_Operations_List_Activity.EquiList> equiLists1 = new ArrayList<Calibration_Orders_Operations_List_Activity.EquiList>();
-
-    public Calibration_Operations_Fragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.operations_list_activity);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.calibration_operations_fragment, container, false);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            order_id = extras.getString("order_id");
+            equip_id = extras.getString("equip_id");
+        }
 
-        Calibration_Orders_Operations_List_Activity activity = (Calibration_Orders_Operations_List_Activity) getActivity();
-        order_id = activity.getorder_id();
-        equiLists = activity.getEqui_list();
-        equiLists1 = activity.getEqui_list1();
+        DATABASE_NAME = getApplicationContext().getString(R.string.database_name);
+        App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, getApplicationContext().MODE_PRIVATE, null);
 
-        DATABASE_NAME = getActivity().getString(R.string.database_name);
-        App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, getActivity().MODE_PRIVATE, null);
-
-        no_data_textview = (TextView) rootView.findViewById(R.id.no_data_textview);
-        recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerview);
-
+        no_data_textview = (TextView) findViewById(R.id.no_data_textview1);
+        recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
+        no_data_layout = (LinearLayout) findViewById(R.id.no_data_layout);
         orders_operations_parcables.clear();
         start_calibration_parcelables.clear();
 
-        if(equiLists.size()>0)
-        {
-            equi_adapter = new Equi_adapter(getActivity(), equiLists1);
-            recyclerview.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            recyclerview.setLayoutManager(layoutManager);
-            recyclerview.setItemAnimator(new DefaultItemAnimator());
-            recyclerview.setAdapter(equi_adapter);
-            no_data_textview.setVisibility(View.GONE);
-            recyclerview.setVisibility(View.VISIBLE);
-        }else {
+        new Get_Operations_Data().execute();
 
-            new Get_Operations_Data().execute();
-        }
-        return rootView;
     }
 
 
@@ -90,7 +70,7 @@ public class Calibration_Operations_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.show_progress_dialog(getActivity(), getResources().getString(R.string.loading));
+            progressDialog.show_progress_dialog(Calibration_Operation_Activity.this, getResources().getString(R.string.loading));
         }
 
         @Override
@@ -423,9 +403,9 @@ public class Calibration_Operations_Fragment extends Fragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (orders_operations_parcables.size() > 0) {
-                data_adapter = new Data_Adapter(getActivity(), orders_operations_parcables);
+                data_adapter = new Data_Adapter(Calibration_Operation_Activity.this, orders_operations_parcables);
                 recyclerview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Calibration_Operation_Activity.this);
                 recyclerview.setLayoutManager(layoutManager);
                 recyclerview.setItemAnimator(new DefaultItemAnimator());
                 recyclerview.setAdapter(data_adapter);
@@ -439,80 +419,6 @@ public class Calibration_Operations_Fragment extends Fragment {
         }
     }
 
-    public  class Equi_adapter extends RecyclerView.Adapter<Equi_adapter.MyViewHolder>
-    {
-        private Context mContext;
-        private ArrayList<Calibration_Orders_Operations_List_Activity.EquiList> list_data;
-        private List<Orders_Operations_Parcelable> list_data1;
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView op_id_textview, op_text_textview, MBEWERTG_textview,op_id_tv,op_txt_tv;
-            View status_view;
-            LinearLayout layout,layout1;
-
-            public MyViewHolder(View view) {
-                super(view);
-                op_id_textview = (TextView) view.findViewById(R.id.op_id_textview);
-                op_text_textview = (TextView) view.findViewById(R.id.op_text_textview);
-                op_id_tv = (TextView) view.findViewById(R.id.op_id_tv);
-                op_txt_tv = (TextView) view.findViewById(R.id.op_txt_tv);
-                MBEWERTG_textview = (TextView) view.findViewById(R.id.MBEWERTG_textview);
-                status_view = (View) view.findViewById(R.id.status_view);
-                layout = (LinearLayout) view.findViewById(R.id.layout);
-                layout1 = (LinearLayout) view.findViewById(R.id.layout1);
-
-
-            }
-        }
-
-        public Equi_adapter(Context mContext, ArrayList<Calibration_Orders_Operations_List_Activity.EquiList> list) {
-            this.mContext = mContext;
-            this.list_data = list;
-        }
-
-        @Override
-        public Equi_adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.calibration_operations_list_data, parent, false);
-            return new Equi_adapter.MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(final Equi_adapter.MyViewHolder holder, final int position) {
-
-            final Calibration_Orders_Operations_List_Activity.EquiList olo = list_data.get(position);
-            holder.layout1.setVisibility(View.VISIBLE);
-            holder.status_view.setVisibility(View.GONE);
-            holder.op_id_tv.setText(R.string.equi_id);
-            holder.op_txt_tv.setText(R.string.equi_txt);
-            holder.op_id_textview.setText(olo.getEqunr());
-            holder.op_text_textview.setText(olo.getEqtxt());
-          //  holder.MBEWERTG_textview.setText(olo.getStatus());
-            if (holder.MBEWERTG_textview.getText().toString().equalsIgnoreCase("R")) {
-                holder.status_view.setBackgroundColor(getResources().getColor(R.color.red));
-            } else if (holder.MBEWERTG_textview.getText().toString().equalsIgnoreCase("A")) {
-                holder.status_view.setBackgroundColor(getResources().getColor(R.color.dark_green));
-            } else {
-                holder.status_view.setBackgroundColor(getResources().getColor(R.color.red));
-            }
-            holder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), Calibration_Operation_Activity.class);
-                    intent.putExtra("position", Integer.toString(position));
-                    intent.putExtra("order_id", order_id);
-                    intent.putExtra("equip_id",list_data.get(position).getEqunr());
-                    startActivityForResult(intent, 0);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return list_data.size();
-        }
-
-
-    }
     public class Data_Adapter extends RecyclerView.Adapter<Data_Adapter.MyViewHolder> {
         private Context mContext;
         private List<Orders_Operations_Parcelable> list_data;
@@ -540,13 +446,13 @@ public class Calibration_Operations_Fragment extends Fragment {
         }
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public Data_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.calibration_operations_list_data, parent, false);
-            return new MyViewHolder(itemView);
+            return new Data_Adapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        public void onBindViewHolder(final Data_Adapter.MyViewHolder holder, final int position) {
             final Orders_Operations_Parcelable olo = list_data.get(position);
             holder.layout1.setVisibility(View.VISIBLE);
             holder.status_view.setVisibility(View.VISIBLE);
@@ -563,10 +469,12 @@ public class Calibration_Operations_Fragment extends Fragment {
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), Calibration_Start_Inspection_Activity.class);
+                    Intent intent = new Intent(Calibration_Operation_Activity.this, Calibration_Start_Inspection_Activity.class);
                     intent.putExtra("start_calib_data", list_data.get(position).getStart_calibration_parcelables());
                     intent.putExtra("position", Integer.toString(position));
                     intent.putExtra("order_id", order_id);
+                    intent.putExtra("equip_id", equip_id);
+
                     startActivityForResult(intent, 0);
                 }
             });
@@ -617,9 +525,9 @@ public class Calibration_Operations_Fragment extends Fragment {
                     orders_operations_parcables.get(pos).setStart_calibration_parcelables(selected_start_calibration_parcelables);
                     orders_operations_parcables.get(pos).setStatus(start_inspection_result);
                     if (orders_operations_parcables.size() > 0) {
-                        data_adapter = new Data_Adapter(getActivity(), orders_operations_parcables);
+                        data_adapter = new Data_Adapter(Calibration_Operation_Activity.this, orders_operations_parcables);
                         recyclerview.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Calibration_Operation_Activity.this);
                         recyclerview.setLayoutManager(layoutManager);
                         recyclerview.setItemAnimator(new DefaultItemAnimator());
                         recyclerview.setAdapter(data_adapter);
@@ -638,5 +546,4 @@ public class Calibration_Operations_Fragment extends Fragment {
     public List<Orders_Operations_Parcelable> getOperationData() {
         return orders_operations_parcables;
     }
-
 }
