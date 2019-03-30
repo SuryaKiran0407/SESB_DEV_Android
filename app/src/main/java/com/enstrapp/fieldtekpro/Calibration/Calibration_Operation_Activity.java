@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,10 +16,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.Utilities.ViewPagerAdapter;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.text.DecimalFormat;
@@ -26,19 +33,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class Calibration_Operation_Activity extends AppCompatActivity {
+public class Calibration_Operation_Activity extends AppCompatActivity implements View.OnClickListener {
 
-    String order_id = "",equip_id = "";
+    String order_id = "", equip_id = "";
     TextView no_data_textview;
     RecyclerView recyclerview;
+    private ViewPager viewPager;
+    Button cancel_button, send_button;
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     private static SQLiteDatabase App_db;
     LinearLayout no_data_layout;
+    RelativeLayout layout;
+    int Position;
+    ImageView back_imageview;
     private static String DATABASE_NAME = "";
     Data_Adapter data_adapter;
     ArrayList<Orders_Operations_Parcelable> orders_operations_parcables = new ArrayList<Orders_Operations_Parcelable>();
     ArrayList<Start_Calibration_Parcelable> start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
     ArrayList<Start_Calibration_Parcelable> selected_start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
+    FragmentTransaction transaction;
+    Calibration_Start_Inspection_Fragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +60,7 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
         setContentView(R.layout.operations_list_activity);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             order_id = extras.getString("order_id");
             equip_id = extras.getString("equip_id");
         }
@@ -58,13 +71,32 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
         no_data_textview = (TextView) findViewById(R.id.no_data_textview1);
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         no_data_layout = (LinearLayout) findViewById(R.id.no_data_layout);
+        back_imageview = findViewById(R.id.back_imageview);
+        layout = findViewById(R.id.layout);
+        cancel_button = findViewById(R.id.cancel_button);
+        send_button = findViewById(R.id.send_button);
         orders_operations_parcables.clear();
         start_calibration_parcelables.clear();
 
         new Get_Operations_Data().execute();
-
+        back_imageview.setOnClickListener(this);
+        cancel_button.setOnClickListener(this);
+        send_button.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == back_imageview) {
+            Calibration_Operation_Activity.this.finish();
+        } else if (v == cancel_button) {
+            Calibration_Operation_Activity.this.finish();
+        } else if (v == send_button) {
+            Intent intent = new Intent();
+            intent.putExtra("start_orderOperation_arraylist", orders_operations_parcables);
+            setResult(0, intent);
+            Calibration_Operation_Activity.this.finish();
+        }
+    }
 
     private class Get_Operations_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -426,7 +458,7 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView op_id_textview, op_text_textview, MBEWERTG_textview;
             View status_view;
-            LinearLayout layout,layout1;
+            LinearLayout layout, layout1;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -436,7 +468,6 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
                 status_view = (View) view.findViewById(R.id.status_view);
                 layout = (LinearLayout) view.findViewById(R.id.layout);
                 layout1 = (LinearLayout) view.findViewById(R.id.layout1);
-
             }
         }
 
@@ -469,13 +500,13 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Calibration_Operation_Activity.this, Calibration_Start_Inspection_Activity.class);
-                    intent.putExtra("start_calib_data", list_data.get(position).getStart_calibration_parcelables());
-                    intent.putExtra("position", Integer.toString(position));
-                    intent.putExtra("order_id", order_id);
-                    intent.putExtra("equip_id", equip_id);
-
-                    startActivityForResult(intent, 0);
+                    Position = position;
+                    start_calibration_parcelables = new ArrayList<>();
+                    start_calibration_parcelables.addAll(olo.getStart_calibration_parcelables());
+                    fragment = new Calibration_Start_Inspection_Fragment();
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.layout, fragment);
+                    transaction.commit();
                 }
             });
         }
@@ -485,7 +516,6 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
             return list_data.size();
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -517,6 +547,7 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
                         start_calibration_parcelable.setPRUEFER(start_inspection_arraylist.get(i).get("PRUEFER"));
                         start_calibration_parcelable.setValuation(start_inspection_arraylist.get(i).get("Valuation"));
                         start_calibration_parcelable.setUuid(start_inspection_arraylist.get(i).get("Uuid"));
+                        start_calibration_parcelable.setEQUNR(equip_id);
                         selected_start_calibration_parcelables.add(start_calibration_parcelable);
                     }
                     String data_position = data.getStringExtra("data_position");
@@ -542,8 +573,20 @@ public class Calibration_Operation_Activity extends AppCompatActivity {
         }
     }
 
+    public ArrayList<Start_Calibration_Parcelable> getStart_calibration_parcelables() {
+        return start_calibration_parcelables;
+    }
+
 
     public List<Orders_Operations_Parcelable> getOperationData() {
         return orders_operations_parcables;
+    }
+
+    public void removeFragment() {
+        if (fragment.isVisible()) {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.remove(fragment);
+            transaction.commit();
+        }
     }
 }

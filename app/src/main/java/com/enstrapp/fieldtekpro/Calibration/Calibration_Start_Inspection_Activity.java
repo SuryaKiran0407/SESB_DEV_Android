@@ -208,6 +208,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
                 start_inspection_hashMap.put("PRUEFER", start_calibration_parcelables.get(i).getPRUEFER());
                 start_inspection_hashMap.put("Valuation", start_calibration_parcelables.get(i).getValuation());
                 start_inspection_hashMap.put("Uuid", start_calibration_parcelables.get(i).getUuid());
+                start_inspection_hashMap.put("EQUNR", equip_id);
                 start_inspection_arraylist.add(start_inspection_hashMap);
             }
             ArrayList<String> valuation_list = new ArrayList<String>();

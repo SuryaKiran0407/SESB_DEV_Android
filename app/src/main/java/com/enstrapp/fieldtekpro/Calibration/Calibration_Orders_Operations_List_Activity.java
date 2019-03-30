@@ -68,6 +68,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_orders_operations_activity);
 
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             order_id = extras.getString("order_id");
@@ -159,13 +160,19 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             }
         } catch (Exception e) {
         }
-
-        for (int i = 0; i >= equi_list.size(); i++) {
-            if (equi_id.equals(equi_list.get(i).getEqunr())) {
-                equi_list.remove(equi_list.get(i).getEqunr());
+        if (equi_list.size()>0) {
+            yes = true;
+            for (int i = 0; i >= equi_list.size(); i++) {
+                if (equi_id.equals(equi_list.get(i).getEqunr())) {
+                    equi_list.remove(equi_list.get(i).getEqunr());
+                }
             }
+            equi_list1.addAll(equi_list);
+        }else
+        {
+            yes = false;
         }
-        equi_list1.addAll(equi_list);
+
 
         String vkatart = "";
         try {
@@ -211,7 +218,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
     }
 
-    public class EquiList {
+        public class EquiList {
         private String Equnr;
         private String Eqtxt;
         ArrayList<EquiList> arrayList = new ArrayList<>();
@@ -397,6 +404,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 String time = time_format.format(todaysdate.getTime());
 
                 /*Fetching Operations Data*/
+
                 Calibration_Operations_Fragment operations_tab = (Calibration_Operations_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                 List<Orders_Operations_Parcelable> operations_data = operations_tab.getOperationData();
                 for (int i = 0; i < operations_data.size(); i++) {
@@ -426,7 +434,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                             model_notif_calibration_operations.setToleranzub(Start_calibration_parcelables.get(j).getTOLERANZUB());
                             model_notif_calibration_operations.setRueckmelnr("");
                             model_notif_calibration_operations.setSatzstatus("");
-                            model_notif_calibration_operations.setEqunr(equip_id);
+                            model_notif_calibration_operations.setEqunr(Start_calibration_parcelables.get(j).getEQUNR());
                             model_notif_calibration_operations.setPruefbemkt(Start_calibration_parcelables.get(j).getPRUEFBEMKT());
                             model_notif_calibration_operations.setMbewertg(Start_calibration_parcelables.get(j).getValuation());
                             model_notif_calibration_operations.setPruefer(Start_calibration_parcelables.get(j).getPRUEFER());

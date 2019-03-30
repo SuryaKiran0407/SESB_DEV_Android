@@ -41,6 +41,8 @@ public class Calibration_Operations_Fragment extends Fragment {
     ArrayList<Start_Calibration_Parcelable> selected_start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
     ArrayList<Calibration_Orders_Operations_List_Activity.EquiList> equiLists = new ArrayList<Calibration_Orders_Operations_List_Activity.EquiList>();
     ArrayList<Calibration_Orders_Operations_List_Activity.EquiList> equiLists1 = new ArrayList<Calibration_Orders_Operations_List_Activity.EquiList>();
+    Calibration_Orders_Operations_List_Activity activity;
+
 
     public Calibration_Operations_Fragment() {
     }
@@ -54,7 +56,7 @@ public class Calibration_Operations_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.calibration_operations_fragment, container, false);
 
-        Calibration_Orders_Operations_List_Activity activity = (Calibration_Orders_Operations_List_Activity) getActivity();
+        activity = (Calibration_Orders_Operations_List_Activity) getActivity();
         order_id = activity.getorder_id();
         equiLists = activity.getEqui_list();
         equiLists1 = activity.getEqui_list1();
@@ -68,8 +70,7 @@ public class Calibration_Operations_Fragment extends Fragment {
         orders_operations_parcables.clear();
         start_calibration_parcelables.clear();
 
-        if(equiLists.size()>0)
-        {
+        if (activity.yes) {
             equi_adapter = new Equi_adapter(getActivity(), equiLists1);
             recyclerview.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -78,7 +79,7 @@ public class Calibration_Operations_Fragment extends Fragment {
             recyclerview.setAdapter(equi_adapter);
             no_data_textview.setVisibility(View.GONE);
             recyclerview.setVisibility(View.VISIBLE);
-        }else {
+        } else {
 
             new Get_Operations_Data().execute();
         }
@@ -439,16 +440,16 @@ public class Calibration_Operations_Fragment extends Fragment {
         }
     }
 
-    public  class Equi_adapter extends RecyclerView.Adapter<Equi_adapter.MyViewHolder>
-    {
+    public class Equi_adapter extends RecyclerView.Adapter<Equi_adapter.MyViewHolder> {
         private Context mContext;
         private ArrayList<Calibration_Orders_Operations_List_Activity.EquiList> list_data;
         private List<Orders_Operations_Parcelable> list_data1;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView op_id_textview, op_text_textview, MBEWERTG_textview,op_id_tv,op_txt_tv;
+            public TextView op_id_textview, op_text_textview, MBEWERTG_textview, op_id_tv, op_txt_tv;
             View status_view;
-            LinearLayout layout,layout1;
+            LinearLayout layout, layout1;
+
 
             public MyViewHolder(View view) {
                 super(view);
@@ -486,7 +487,7 @@ public class Calibration_Operations_Fragment extends Fragment {
             holder.op_txt_tv.setText(R.string.equi_txt);
             holder.op_id_textview.setText(olo.getEqunr());
             holder.op_text_textview.setText(olo.getEqtxt());
-          //  holder.MBEWERTG_textview.setText(olo.getStatus());
+            //  holder.MBEWERTG_textview.setText(olo.getStatus());
             if (holder.MBEWERTG_textview.getText().toString().equalsIgnoreCase("R")) {
                 holder.status_view.setBackgroundColor(getResources().getColor(R.color.red));
             } else if (holder.MBEWERTG_textview.getText().toString().equalsIgnoreCase("A")) {
@@ -500,7 +501,7 @@ public class Calibration_Operations_Fragment extends Fragment {
                     Intent intent = new Intent(getActivity(), Calibration_Operation_Activity.class);
                     intent.putExtra("position", Integer.toString(position));
                     intent.putExtra("order_id", order_id);
-                    intent.putExtra("equip_id",list_data.get(position).getEqunr());
+                    intent.putExtra("equip_id", list_data.get(position).getEqunr());
                     startActivityForResult(intent, 0);
                 }
             });
@@ -513,6 +514,7 @@ public class Calibration_Operations_Fragment extends Fragment {
 
 
     }
+
     public class Data_Adapter extends RecyclerView.Adapter<Data_Adapter.MyViewHolder> {
         private Context mContext;
         private List<Orders_Operations_Parcelable> list_data;
@@ -520,7 +522,7 @@ public class Calibration_Operations_Fragment extends Fragment {
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView op_id_textview, op_text_textview, MBEWERTG_textview;
             View status_view;
-            LinearLayout layout,layout1;
+            LinearLayout layout, layout1;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -584,51 +586,56 @@ public class Calibration_Operations_Fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && !data.equals("")) {
             if (requestCode == 0) {
-                ArrayList<HashMap<String, String>> start_inspection_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("start_inspection_arraylist");
-                if (start_inspection_arraylist.size() > 0) {
-                    selected_start_calibration_parcelables.clear();
-                    for (int i = 0; i < start_inspection_arraylist.size(); i++) {
-                        Start_Calibration_Parcelable start_calibration_parcelable = new Start_Calibration_Parcelable();
-                        start_calibration_parcelable.setMerknr(start_inspection_arraylist.get(i).get("Merknr"));
-                        start_calibration_parcelable.setPrueflos(start_inspection_arraylist.get(i).get("prueflos"));
-                        start_calibration_parcelable.setVorglfnr(start_inspection_arraylist.get(i).get("vorglfnr"));
-                        start_calibration_parcelable.setVERWMERKM(start_inspection_arraylist.get(i).get("VERWMERKM"));
-                        start_calibration_parcelable.setMSEHI(start_inspection_arraylist.get(i).get("MSEHI"));
-                        start_calibration_parcelable.setKURZTEXT(start_inspection_arraylist.get(i).get("KURZTEXT"));
-                        start_calibration_parcelable.setQUALITAT(start_inspection_arraylist.get(i).get("QUALITAT"));
-                        start_calibration_parcelable.setQUANTITAT(start_inspection_arraylist.get(i).get("QUANTITAT"));
-                        start_calibration_parcelable.setRESULT(start_inspection_arraylist.get(i).get("RESULT"));
-                        start_calibration_parcelable.setPRUEFBEMKT(start_inspection_arraylist.get(i).get("PRUEFBEMKT"));
-                        start_calibration_parcelable.setTOLERANZUB(start_inspection_arraylist.get(i).get("TOLERANZUB"));
-                        start_calibration_parcelable.setTOLERANZOB(start_inspection_arraylist.get(i).get("TOLERANZOB"));
-                        start_calibration_parcelable.setANZWERTG(start_inspection_arraylist.get(i).get("ANZWERTG"));
-                        start_calibration_parcelable.setISTSTPUMF(start_inspection_arraylist.get(i).get("ISTSTPUMF"));
-                        start_calibration_parcelable.setMSEHL(start_inspection_arraylist.get(i).get("MSEHL"));
-                        start_calibration_parcelable.setAUSWMENGE1(start_inspection_arraylist.get(i).get("AUSWMENGE1"));
-                        start_calibration_parcelable.setWERKS(start_inspection_arraylist.get(i).get("WERKS"));
-                        start_calibration_parcelable.setPRUEFER(start_inspection_arraylist.get(i).get("PRUEFER"));
-                        start_calibration_parcelable.setValuation(start_inspection_arraylist.get(i).get("Valuation"));
-                        start_calibration_parcelable.setUuid(start_inspection_arraylist.get(i).get("Uuid"));
-                        selected_start_calibration_parcelables.add(start_calibration_parcelable);
+                if (!activity.yes) {
+                    ArrayList<HashMap<String, String>> start_inspection_arraylist = (ArrayList<HashMap<String, String>>) data.getSerializableExtra("start_inspection_arraylist");
+                    if (start_inspection_arraylist.size() > 0) {
+                        selected_start_calibration_parcelables.clear();
+                        for (int i = 0; i < start_inspection_arraylist.size(); i++) {
+                            Start_Calibration_Parcelable start_calibration_parcelable = new Start_Calibration_Parcelable();
+                            start_calibration_parcelable.setMerknr(start_inspection_arraylist.get(i).get("Merknr"));
+                            start_calibration_parcelable.setPrueflos(start_inspection_arraylist.get(i).get("prueflos"));
+                            start_calibration_parcelable.setVorglfnr(start_inspection_arraylist.get(i).get("vorglfnr"));
+                            start_calibration_parcelable.setVERWMERKM(start_inspection_arraylist.get(i).get("VERWMERKM"));
+                            start_calibration_parcelable.setMSEHI(start_inspection_arraylist.get(i).get("MSEHI"));
+                            start_calibration_parcelable.setKURZTEXT(start_inspection_arraylist.get(i).get("KURZTEXT"));
+                            start_calibration_parcelable.setQUALITAT(start_inspection_arraylist.get(i).get("QUALITAT"));
+                            start_calibration_parcelable.setQUANTITAT(start_inspection_arraylist.get(i).get("QUANTITAT"));
+                            start_calibration_parcelable.setRESULT(start_inspection_arraylist.get(i).get("RESULT"));
+                            start_calibration_parcelable.setPRUEFBEMKT(start_inspection_arraylist.get(i).get("PRUEFBEMKT"));
+                            start_calibration_parcelable.setTOLERANZUB(start_inspection_arraylist.get(i).get("TOLERANZUB"));
+                            start_calibration_parcelable.setTOLERANZOB(start_inspection_arraylist.get(i).get("TOLERANZOB"));
+                            start_calibration_parcelable.setANZWERTG(start_inspection_arraylist.get(i).get("ANZWERTG"));
+                            start_calibration_parcelable.setISTSTPUMF(start_inspection_arraylist.get(i).get("ISTSTPUMF"));
+                            start_calibration_parcelable.setMSEHL(start_inspection_arraylist.get(i).get("MSEHL"));
+                            start_calibration_parcelable.setAUSWMENGE1(start_inspection_arraylist.get(i).get("AUSWMENGE1"));
+                            start_calibration_parcelable.setWERKS(start_inspection_arraylist.get(i).get("WERKS"));
+                            start_calibration_parcelable.setPRUEFER(start_inspection_arraylist.get(i).get("PRUEFER"));
+                            start_calibration_parcelable.setValuation(start_inspection_arraylist.get(i).get("Valuation"));
+                            start_calibration_parcelable.setUuid(start_inspection_arraylist.get(i).get("Uuid"));
+                            start_calibration_parcelable.setEQUNR(equiLists1.get(0).getEqunr());
+                            selected_start_calibration_parcelables.add(start_calibration_parcelable);
+                        }
+                        String data_position = data.getStringExtra("data_position");
+                        int pos = Integer.parseInt(data_position);
+                        String start_inspection_result = data.getStringExtra("start_inspection_result");
+                        orders_operations_parcables.get(pos).setStart_calibration_parcelables(selected_start_calibration_parcelables);
+                        orders_operations_parcables.get(pos).setStatus(start_inspection_result);
+                        if (orders_operations_parcables.size() > 0) {
+                            data_adapter = new Data_Adapter(getActivity(), orders_operations_parcables);
+                            recyclerview.setHasFixedSize(true);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                            recyclerview.setLayoutManager(layoutManager);
+                            recyclerview.setItemAnimator(new DefaultItemAnimator());
+                            recyclerview.setAdapter(data_adapter);
+                            no_data_textview.setVisibility(View.GONE);
+                            recyclerview.setVisibility(View.VISIBLE);
+                        } else {
+                            no_data_textview.setVisibility(View.VISIBLE);
+                            recyclerview.setVisibility(View.GONE);
+                        }
                     }
-                    String data_position = data.getStringExtra("data_position");
-                    int pos = Integer.parseInt(data_position);
-                    String start_inspection_result = data.getStringExtra("start_inspection_result");
-                    orders_operations_parcables.get(pos).setStart_calibration_parcelables(selected_start_calibration_parcelables);
-                    orders_operations_parcables.get(pos).setStatus(start_inspection_result);
-                    if (orders_operations_parcables.size() > 0) {
-                        data_adapter = new Data_Adapter(getActivity(), orders_operations_parcables);
-                        recyclerview.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                        recyclerview.setLayoutManager(layoutManager);
-                        recyclerview.setItemAnimator(new DefaultItemAnimator());
-                        recyclerview.setAdapter(data_adapter);
-                        no_data_textview.setVisibility(View.GONE);
-                        recyclerview.setVisibility(View.VISIBLE);
-                    } else {
-                        no_data_textview.setVisibility(View.VISIBLE);
-                        recyclerview.setVisibility(View.GONE);
-                    }
+                } else {
+                    orders_operations_parcables.addAll(data.<Orders_Operations_Parcelable>getParcelableArrayListExtra("start_orderOperation_arraylist"));
                 }
             }
         }

@@ -28,6 +28,15 @@ public class Start_Calibration_Parcelable implements Parcelable {
     private String Valuation;
     private String uuid;
     private String QUANTITAT;
+    private String EQUNR;
+
+    public String getEQUNR() {
+        return EQUNR;
+    }
+
+    public void setEQUNR(String EQUNR) {
+        this.EQUNR = EQUNR;
+    }
 
     public String getMerknr() {
         return Merknr;
@@ -218,6 +227,7 @@ public class Start_Calibration_Parcelable implements Parcelable {
         dest.writeString(this.Valuation);
         dest.writeString(this.uuid);
         dest.writeString(this.QUANTITAT);
+        dest.writeString(this.EQUNR);
     }
 
     protected Start_Calibration_Parcelable(Parcel in) {
@@ -241,6 +251,7 @@ public class Start_Calibration_Parcelable implements Parcelable {
         this.Valuation = in.readString();
         this.uuid = in.readString();
         this.QUANTITAT = in.readString();
+        this.EQUNR = in.readString();
     }
 
     public static final Creator<Start_Calibration_Parcelable> CREATOR = new Creator<Start_Calibration_Parcelable>() {
