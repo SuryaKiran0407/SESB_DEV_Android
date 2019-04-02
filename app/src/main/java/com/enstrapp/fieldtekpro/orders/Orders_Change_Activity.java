@@ -441,8 +441,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     EtOrderHeader_statement.bindString(52, "");
                     EtOrderHeader_statement.bindString(53, ohp.getPerRespId());
                     EtOrderHeader_statement.bindString(54, ohp.getPerRespName());
-                    EtOrderHeader_statement.bindString(55, ohp.getPosid());
-                    EtOrderHeader_statement.bindString(56, ohp.getRevnr());
+                    /*EtOrderHeader_statement.bindString(55, ohp.getPosid());
+                    EtOrderHeader_statement.bindString(56, ohp.getRevnr());*/
                     EtOrderHeader_statement.execute();
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();

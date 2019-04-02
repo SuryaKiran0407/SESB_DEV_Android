@@ -224,6 +224,31 @@ public class Notifications_Type_Select_Activity extends AppCompatActivity implem
                 id_textview = (TextView) view.findViewById(R.id.id_textview);
                 value_textview = (TextView) view.findViewById(R.id.text_textview);
                 checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+                checkbox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (checkbox.isChecked()) {
+                            notification_type_details_list.get((Integer) v.getTag()).setChecked_status(true);
+                            for (int i = 0; i < notification_type_list.size(); i++) {
+                                if (notification_type_details_list
+                                        .get((Integer)v.getTag()).getNotification_id()
+                                        .equals(notification_type_list.get(i).getNotification_id())){
+                                    notification_type_list.get(i).setChecked_status(true);
+                                }
+                            }
+                        } else {
+                            notification_type_details_list.get((Integer) v.getTag()).setChecked_status(false);
+                            for (int i = 0; i < notification_type_list.size(); i++) {
+                                if (notification_type_details_list
+                                        .get((Integer)v.getTag()).getNotification_id()
+                                        .equals(notification_type_list.get(i).getNotification_id())){
+                                    notification_type_list.get(i).setChecked_status(false);
+                                }
+                            }
+                        }
+                        notifyDataSetChanged();
+                    }
+                });
             }
         }
 
@@ -244,7 +269,7 @@ public class Notifications_Type_Select_Activity extends AppCompatActivity implem
             final Notification_Type_Object nto = notification_type_details_list.get(position);
             holder.id_textview.setText(nto.getNotification_id());
             holder.value_textview.setText(nto.getNotification_text());
-            holder.checkbox.setOnClickListener(new View.OnClickListener() {
+            /*holder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (holder.checkbox.isChecked()) {
@@ -253,7 +278,7 @@ public class Notifications_Type_Select_Activity extends AppCompatActivity implem
                         notification_type_details_list.get(position).setChecked_status(false);
                     }
                 }
-            });
+            });*/
             holder.checkbox.setTag(position);
             holder.checkbox.setChecked((notification_type_details_list.get(position)
                     .isChecked_status() == true ? true : false));

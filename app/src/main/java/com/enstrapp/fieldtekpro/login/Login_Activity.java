@@ -309,216 +309,49 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                     // checking earlier login is done or not. If done, directly navigating to Dashboard Activity, or else performing login and sending username and password to backend server.
                     String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
                     if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
-                        if (fieldtekpro_login_password.equals(password_edittext.getText().toString()) && fieldtekpro_login_username.equals(username_edittext.getText().toString())) {
-                            cd = new ConnectionDetector(getApplicationContext());
-                            isInternetPresent = cd.isConnectingToInternet();
-                            if (isInternetPresent) {
-                                FieldTekPro_SharedPrefeditor.putString("Username", fieldtekpro_login_username);
-                                FieldTekPro_SharedPrefeditor.putString("Password", fieldtekpro_login_password);
-                                FieldTekPro_SharedPrefeditor.putString("header_credentials", header_username + ":" + header_password);
-                                FieldTekPro_SharedPrefeditor.commit();
-
-                                String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
-                                String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
-                                if (InitialLoad != null && !InitialLoad.equals("")) {
-                                    if (InitialLoad.equalsIgnoreCase("Checked")) {
-                                        new Login().execute();
-                                    } else if (Refresh != null && !Refresh.equals("")) {
-                                        new Login().execute();
-                                    } else {
-                                        /*Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                                        startActivity(notification_intent);
-                                        Login_Activity.this.finish();*/
-                                        /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                        startActivity(notification_intent);
-                                        Login_Activity.this.finish();*/
-                                        getSupportFragmentManager().beginTransaction()
-                                                .add(R.id.main_frag, new Passcode_Fragment())
-                                                .commit();
-                                    }
-                                } else if (Refresh != null && !Refresh.equals("")) {
-                                    new Login().execute();
-                                } else {
-                                    /*Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                                    startActivity(notification_intent);
-                                    Login_Activity.this.finish();*/
-                                    /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                    startActivity(notification_intent);
-                                    Login_Activity.this.finish();*/
-                                    getSupportFragmentManager().beginTransaction()
-                                            .add(R.id.main_frag, new Passcode_Fragment())
-                                            .commit();
-                                }
-                            } else {
-                                FieldTekPro_SharedPrefeditor.putString("Username", fieldtekpro_login_username);
-                                FieldTekPro_SharedPrefeditor.putString("Password", fieldtekpro_login_password);
-                                FieldTekPro_SharedPrefeditor.putString("header_credentials", header_username + ":" + header_password);
-                                FieldTekPro_SharedPrefeditor.commit();
-
-                                String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
-                                String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
-                                if (InitialLoad != null && !InitialLoad.equals("")) {
-                                    if (InitialLoad.equalsIgnoreCase("Checked")) {
-                                        new Login().execute();
-                                    } else if (Refresh != null && !Refresh.equals("")) {
-                                        new Login().execute();
-                                    } else {
-                                        /*Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                                        startActivity(notification_intent);
-                                        Login_Activity.this.finish();*/
-                                        /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                        startActivity(notification_intent);
-                                        Login_Activity.this.finish();*/
-                                        getSupportFragmentManager().beginTransaction()
-                                                .add(R.id.main_frag, new Passcode_Fragment())
-                                                .commit();
-                                    }
-                                } else if (Refresh != null && !Refresh.equals("")) {
-                                    new Login().execute();
-                                } else {
-                                    /*Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                                    startActivity(notification_intent);
-                                    Login_Activity.this.finish();*/
-                                    /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                    startActivity(notification_intent);
-                                    Login_Activity.this.finish();*/
-                                    getSupportFragmentManager().beginTransaction()
-                                            .add(R.id.main_frag, new Passcode_Fragment())
-                                            .commit();
-                                }
-                            }
-                        } else if (!(fieldtekpro_login_username == username_edittext.getText().toString()) && !(fieldtekpro_login_password == password_edittext.getText().toString())) {
-                            cd = new ConnectionDetector(getApplicationContext());
-                            isInternetPresent = cd.isConnectingToInternet();
-                            if (isInternetPresent) {
-                                new Login().execute();
-                            } else {
-                                final Dialog network_error_dialog = new Dialog(Login_Activity.this);
-                                network_error_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                                network_error_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                network_error_dialog.setCancelable(true);
-                                network_error_dialog.setCanceledOnTouchOutside(false);
-                                network_error_dialog.setContentView(R.layout.network_error_dialog);
-                                final TextView description_textview = (TextView) network_error_dialog.findViewById(R.id.description_textview);
-                                final TextView description_textview1 = (TextView) network_error_dialog.findViewById(R.id.description_textview1);
-                                Button ok_button = (Button) network_error_dialog.findViewById(R.id.ok_button);
-                                Button cancel_button = (Button) network_error_dialog.findViewById(R.id.cancel_button);
-                                description_textview.setText(getResources()
-                                        .getString(R.string.no_network));
-                                description_textview1.setText(getResources()
-                                        .getString(R.string.connect_internet));
-                                ok_button.setText(getResources().getString(
-                                        R.string.connect));
-                                description_textview1.setVisibility(View.VISIBLE);
-                                network_error_dialog.show();
-                                ok_button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        network_error_dialog.dismiss();
-                                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                                        intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
-                                        startActivity(intent);
-                                    }
-                                });
-                                cancel_button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        network_error_dialog.dismiss();
-                                    }
-                                });
-                            }
-                        } else {
+                        cd = new ConnectionDetector(getApplicationContext());
+                        isInternetPresent = cd.isConnectingToInternet();
+                        if (isInternetPresent) {
                             FieldTekPro_SharedPrefeditor.putString("Username", fieldtekpro_login_username);
                             FieldTekPro_SharedPrefeditor.putString("Password", fieldtekpro_login_password);
                             FieldTekPro_SharedPrefeditor.putString("header_credentials", header_username + ":" + header_password);
                             FieldTekPro_SharedPrefeditor.commit();
-
-                            String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
-                            String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
-                            if (InitialLoad != null && !InitialLoad.equals("")) {
-                                if (InitialLoad.equalsIgnoreCase("Checked")) {
-                                    new Login().execute();
-                                } else if (Refresh != null && !Refresh.equals("")) {
-                                    new Login().execute();
-                                } else {
-                                    /*Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                                    startActivity(notification_intent);
-                                    Login_Activity.this.finish();*/
-                                    /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                    startActivity(notification_intent);
-                                    Login_Activity.this.finish();*/
-                                    getSupportFragmentManager().beginTransaction()
-                                            .add(R.id.main_frag, new Passcode_Fragment())
-                                            .commit();
-                                }
-                            } else if (Refresh != null && !Refresh.equals("")) {
+                            if (fieldtekpro_login_username.equals(username_edittext.getText().toString())) {
+                                FieldTekPro_SharedPrefeditor.putString("same_user", "X");
+                                FieldTekPro_SharedPrefeditor.commit();
                                 new Login().execute();
                             } else {
-                                /*Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                                startActivity(notification_intent);
-                                Login_Activity.this.finish();*/
-                                /*Intent notification_intent = new Intent(Login_Activity.this,MainActivity.class);
-                                startActivity(notification_intent);
-                                Login_Activity.this.finish();*/
-                                getSupportFragmentManager().beginTransaction()
-                                        .add(R.id.main_frag, new Passcode_Fragment())
-                                        .commit();
+                                FieldTekPro_SharedPrefeditor.putString("same_user", "");
+                                FieldTekPro_SharedPrefeditor.commit();
+                                new Login().execute();
                             }
 
-                        }
-                        /*String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
-                        String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
-                        if (InitialLoad != null && !InitialLoad.equals(""))
-                        {
-                            if (InitialLoad.equalsIgnoreCase("Checked"))
-                            {
-                                new Login().execute();
-                            }
-                            else if (Refresh.equalsIgnoreCase("Checked"))
-                            {
-                                new Login().execute();
-                            }
-                            else
-                            {
-                                Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                                startActivity(notification_intent);
-                                Login_Activity.this.finish();
+                        } else {
+                            if (username_edittext.getText().toString().equals(fieldtekpro_login_username) &&
+                                    password_edittext.getText().toString().equals(fieldtekpro_login_password)) {
+                                offlineConfirmationDialog(getString(R.string.offline_confirmation));
+                            } else {
+                                loginNetworkError();
                             }
                         }
-                        else if (Refresh.equalsIgnoreCase("Checked"))
-                        {
-                            new Login().execute();
-                        }
-                        else
-                        {
-                            Intent notification_intent = new Intent(Login_Activity.this,DashBoard_Activity.class);
-                            startActivity(notification_intent);
-                            Login_Activity.this.finish();
-                        }
-                        Intent dashboard_intent = new Intent(Login_Activity.this, DashBoard_Activity.class);
-                        startActivity(dashboard_intent);
-                        Login_Activity.this.finish();*/
-                        //new Login().execute();
                     } else {
-                        //if user is not login previously
-                        //checking internet connection availability
                         cd = new ConnectionDetector(getApplicationContext());
                         isInternetPresent = cd.isConnectingToInternet();
                         if (isInternetPresent) {
                             //Performing login asynctask and sending data to backend server.
                             new Login().execute();
-                            //Intent dashboard_intent = new Intent(Login_Activity.this, DashBoard_Activity.class);
-                            //startActivity(dashboard_intent);
                         } else {
                             //showing network error and navigating to wifi settings.
                             network_connection_dialog.show_network_connection_dialog(Login_Activity.this);
                         }
                     }
+
                 } else {
                     //showing alert message if password is not entered.
                     error_dialog.show_error_dialog(Login_Activity.this,
                             getString(R.string.pls_entpass));
                 }
+
             } else {
                 //showing alert message if username is not entered.
                 error_dialog.show_error_dialog(Login_Activity.this,
@@ -529,12 +362,13 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
 //            settings_intent.putExtra("Came_From", "Login_Activity");
             startActivity(settings_intent);
         }
-    }
 
+    }
 
     /*Performing Login Asynctask*/
     private class Login extends AsyncTask<Void, Integer, Void> {
         /* Get_User_Data Table and Fields Names */
+
         private static final String TABLE_GET_USER_DATA = "GET_USER_DATA";
         private static final String KEY_GET_USER_DATA_ID = "id";
         private static final String KEY_SAPUSER = "Sapuser";
@@ -594,11 +428,14 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                         int login_response_status_code = response.code();
                         Log.v("kiran_login_response_code", login_response_status_code + "...");
                         if (login_response_status_code == 200) {
-                            FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "");
-                            if (FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null) != null
-                                    && FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null).equals(""))
-                                FieldTekPro_SharedPrefeditor.putString("passcode_text", "");
-                            FieldTekPro_SharedPrefeditor.commit();
+                            if (FieldTekPro_SharedPref.getString("same_user", null) == null
+                                    || FieldTekPro_SharedPref.getString("same_user", null).equals("")) {
+                                FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "");
+                                if (FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null) != null
+                                        && FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null).equals(""))
+                                    FieldTekPro_SharedPrefeditor.putString("passcode_text", "");
+                                FieldTekPro_SharedPrefeditor.commit();
+                            }
                             if (response.isSuccessful() && response.body() != null) {
                                 try {
                                     DATABASE_NAME = getString(R.string.database_name);
@@ -739,5 +576,73 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             super.onPostExecute(result);
         }
     }
-    /*Performing Login Asynctask*/
+
+    private void offlineConfirmationDialog(String message) {
+        final Dialog cancel_dialog = new Dialog(Login_Activity.this);
+        if (cancel_dialog.getWindow() != null)
+            cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        cancel_dialog.setCancelable(false);
+        cancel_dialog.setCanceledOnTouchOutside(false);
+        cancel_dialog.setContentView(R.layout.network_error_dialog);
+        final TextView description_textview = cancel_dialog.findViewById(R.id.description_textview);
+        description_textview.setText(message);
+        Button confirm = cancel_dialog.findViewById(R.id.ok_button);
+        Button cancel = cancel_dialog.findViewById(R.id.cancel_button);
+        cancel_dialog.show();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel_dialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel_dialog.dismiss();
+                FieldTekPro_SharedPrefeditor.putString("offline", "X");
+                FieldTekPro_SharedPrefeditor.commit();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.main_frag, new Passcode_Fragment())
+                        .commit();
+            }
+        });
+    }
+
+    private void loginNetworkError() {
+        final Dialog network_error_dialog = new Dialog(Login_Activity.this);
+        if (network_error_dialog.getWindow() != null)
+            network_error_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        network_error_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        network_error_dialog.setCancelable(true);
+        network_error_dialog.setCanceledOnTouchOutside(false);
+        network_error_dialog.setContentView(R.layout.network_error_dialog);
+        final TextView description_textview = network_error_dialog.findViewById(R.id.description_textview);
+        final TextView description_textview1 = network_error_dialog.findViewById(R.id.description_textview1);
+        Button ok_button = network_error_dialog.findViewById(R.id.ok_button);
+        Button cancel_button = network_error_dialog.findViewById(R.id.cancel_button);
+        description_textview.setText(getResources()
+                .getString(R.string.no_network));
+        description_textview1.setText(getResources()
+                .getString(R.string.connect_internet));
+        ok_button.setText(getResources().getString(
+                R.string.connect));
+        description_textview1.setVisibility(View.VISIBLE);
+        network_error_dialog.show();
+        ok_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                network_error_dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+                startActivity(intent);
+            }
+        });
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                network_error_dialog.dismiss();
+            }
+        });
+    }
 }

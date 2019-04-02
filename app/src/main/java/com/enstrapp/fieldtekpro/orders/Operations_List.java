@@ -23,6 +23,8 @@ import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Operations_List extends AppCompatActivity implements View.OnClickListener {
@@ -100,6 +102,13 @@ public class Operations_List extends AppCompatActivity implements View.OnClickLi
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (type_list.size() > 0) {
+                Collections.sort(type_list, new Comparator<Type_Object>() {
+                    @Override
+                    public int compare(Type_Object o1, Type_Object o2) {
+                        return o1.getId().compareTo(o2.getId());
+                    }
+                });
+
                 title_textview.setText(getResources().getString(R.string.operations) + " (" + type_list.size() + ")");
                 adapter = new TYPE_ADAPTER(Operations_List.this, type_list);
                 list_recycleview.setHasFixedSize(true);
@@ -112,6 +121,7 @@ public class Operations_List extends AppCompatActivity implements View.OnClickLi
                 no_data_textview.setVisibility(View.GONE);
                 list_recycleview.setVisibility(View.VISIBLE);
                 no_data_layout.setVisibility(View.GONE);
+                adapter.notifyDataSetChanged();
             } else {
                 title_textview.setText(getResources().getString(R.string.operations) + " (0)");
                 no_data_textview.setVisibility(View.VISIBLE);

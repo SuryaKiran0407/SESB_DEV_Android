@@ -21,7 +21,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
     String Calibration_Status = "", JRA_status = "", DeviceToken_status = "",
             Measurementpoint_status = "", Auth_status = "", BOM_status = "", FLOC_Status = "",
             DORD_Status = "", DNOT_Status = "", VHLP_WCM_Status = "", VHLP_Status = "", From = "",
-            transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "",  username = "";
+            transmit_type = "LOAD", Syncmap_status = "", LoadSettings_status = "", username = "";
     private SQLiteDatabase App_db;
     private String DATABASE_NAME = "";
 
@@ -73,7 +73,6 @@ public class InitialLoad_Activity extends AppCompatActivity {
 
     }
 
-
     public class Get_Syncmap_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -97,13 +96,15 @@ public class InitialLoad_Activity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.v("kiran_Syncmap_Status", Syncmap_status + "...");
-            if (Syncmap_status.equalsIgnoreCase("success")) {
-                new Get_LoadSettings_Data().execute();
-            } else {
-            }
+            if (Syncmap_status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.syncmap_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.syncmap_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_LoadSettings_Data().execute();
+
         }
     }
-
 
     public class Get_LoadSettings_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -128,15 +129,17 @@ public class InitialLoad_Activity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.v("kiran_LoadSettings_status", LoadSettings_status + "...");
-            if (LoadSettings_status.equalsIgnoreCase("success")) {
-                new Get_VHLP_Data().execute();
-            } else {
-            }
+            if (LoadSettings_status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.loadsettings_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.loadsettings_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Set_DeviceToken_Data().execute();
+
         }
     }
 
-
-    public class Get_VHLP_Data extends AsyncTask<Void, Integer, Void> {
+    public class Set_DeviceToken_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -145,10 +148,7 @@ public class InitialLoad_Activity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                String vhlp_load_status = FieldTekPro_SharedPref.getString("Vhlp_Load_status", null);
-                if (vhlp_load_status.equalsIgnoreCase("X")) {
-                    VHLP_Status = VHLP.Get_VHLP_Data(InitialLoad_Activity.this, transmit_type);
-                }
+                DeviceToken_status = DeviceToken.set_devicetoken_data(InitialLoad_Activity.this);
             } catch (Exception e) {
             }
             return null;
@@ -161,166 +161,17 @@ public class InitialLoad_Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Log.v("kiran_VHLP_Status", VHLP_Status + "...");
-            new Get_VHLP_WCM_Data().execute();
-        }
-    }
+            Log.v("kiran_DeviceToken_status", DeviceToken_status + "...");
+            if (DeviceToken_status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.devicetoken_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.devicetoken_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
 
-
-    public class Get_VHLP_WCM_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String vhlp_load_status = FieldTekPro_SharedPref.getString("Vhlp_Load_status", null);
-                if (vhlp_load_status.equalsIgnoreCase("X")) {
-                    VHLP_WCM_Status = VHLP_WCM.Get_VHLP_WCM_Data(InitialLoad_Activity.this, transmit_type);
-                }
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_VHLP_WCM_Status", VHLP_WCM_Status + "...");
-            new Get_DORD_Data().execute();
-        }
-    }
-
-
-    public class Get_DORD_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String dord_load_status = FieldTekPro_SharedPref.getString("Dord_Load_status", null);
-                if (dord_load_status.equalsIgnoreCase("X")) {
-                    DORD_Status = Orders.Get_DORD_Data(InitialLoad_Activity.this, transmit_type, "");
-                }
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_DORD_Status", DORD_Status + "...");
-            new Get_DNOT_Data().execute();
-        }
-    }
-
-
-    public class Get_DNOT_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String dnot_load_status = FieldTekPro_SharedPref.getString("Dnot_Load_status", null);
-                if (dnot_load_status.equalsIgnoreCase("X")) {
-                    DNOT_Status = Notifications.Get_DNOT_Data(InitialLoad_Activity.this, transmit_type);
-                }
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_DNOT_Status", DNOT_Status + "...");
-            new Get_BOM_Data().execute();
-        }
-    }
-
-
-    public class Get_BOM_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String Ebom_Load_status = FieldTekPro_SharedPref.getString("Ebom_Load_status", null);
-                if (Ebom_Load_status.equalsIgnoreCase("X")) {
-                    BOM_status = BOM.Get_BOM_Data(InitialLoad_Activity.this, transmit_type, "");
-                }
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_BOM_Status", BOM_status + "...");
-            new Get_FLOC_Data().execute();
-        }
-    }
-
-
-    public class Get_FLOC_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String Floc_Load_status = FieldTekPro_SharedPref.getString("Floc_Load_status", null);
-                if (Floc_Load_status.equalsIgnoreCase("X")) {
-                    FLOC_Status = FLOC.Get_FLOC_Data(InitialLoad_Activity.this, transmit_type);
-                }
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_FLOC_Status", FLOC_Status + "...");
             new Get_Auth_Data().execute();
+
         }
     }
-
 
     public class Get_Auth_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -348,10 +199,225 @@ public class InitialLoad_Activity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.v("kiran_Auth_Status", Auth_status + "...");
-            new Get_Measurepoints_Data().execute();
+            if (Auth_status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.auth_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.auth_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_VHLP_Data().execute();
         }
     }
 
+    public class Get_VHLP_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String vhlp_load_status = FieldTekPro_SharedPref.getString("Vhlp_Load_status", null);
+                if (vhlp_load_status.equalsIgnoreCase("X")) {
+                    VHLP_Status = VHLP.Get_VHLP_Data(InitialLoad_Activity.this, transmit_type);
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_VHLP_Status", VHLP_Status + "...");
+            if (VHLP_Status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.vhlp_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.vhlp_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_VHLP_WCM_Data().execute();
+        }
+    }
+
+    public class Get_VHLP_WCM_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String vhlp_load_status = FieldTekPro_SharedPref.getString("Vhlp_Load_status", null);
+                if (vhlp_load_status.equalsIgnoreCase("X")) {
+                    VHLP_WCM_Status = VHLP_WCM.Get_VHLP_WCM_Data(InitialLoad_Activity.this, transmit_type);
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_VHLP_WCM_Status", VHLP_WCM_Status + "...");
+            if (VHLP_WCM_Status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.vhlpwcm_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.vhlpwcm_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+
+            new Get_DORD_Data().execute();
+        }
+    }
+
+    public class Get_DORD_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String dord_load_status = FieldTekPro_SharedPref.getString("Dord_Load_status", null);
+                if (dord_load_status.equalsIgnoreCase("X")) {
+                    DORD_Status = Orders.Get_DORD_Data(InitialLoad_Activity.this, transmit_type, "");
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_DORD_Status", DORD_Status + "...");
+            if (DORD_Status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.dord_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.dord_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_DNOT_Data().execute();
+        }
+    }
+
+    public class Get_DNOT_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String dnot_load_status = FieldTekPro_SharedPref.getString("Dnot_Load_status", null);
+                if (dnot_load_status.equalsIgnoreCase("X")) {
+                    DNOT_Status = Notifications.Get_DNOT_Data(InitialLoad_Activity.this, transmit_type);
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_DNOT_Status", DNOT_Status + "...");
+            if (DNOT_Status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.dnot_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.dnot_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_BOM_Data().execute();
+        }
+    }
+
+    public class Get_BOM_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String Ebom_Load_status = FieldTekPro_SharedPref.getString("Ebom_Load_status", null);
+                if (Ebom_Load_status.equalsIgnoreCase("X")) {
+                    BOM_status = BOM.Get_BOM_Data(InitialLoad_Activity.this, transmit_type, "");
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_BOM_Status", BOM_status + "...");
+            if (BOM_status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.bom_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.bom_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_FLOC_Data().execute();
+        }
+    }
+
+    public class Get_FLOC_Data extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String Floc_Load_status = FieldTekPro_SharedPref.getString("Floc_Load_status", null);
+                if (Floc_Load_status.equalsIgnoreCase("X")) {
+                    FLOC_Status = FLOC.Get_FLOC_Data(InitialLoad_Activity.this, transmit_type);
+                }
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_FLOC_Status", FLOC_Status + "...");
+            if (FLOC_Status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.floc_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.floc_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
+            new Get_Measurepoints_Data().execute();
+        }
+    }
 
     public class Get_Measurepoints_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -376,38 +442,14 @@ public class InitialLoad_Activity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.v("kiran_mPoint_Status", Measurementpoint_status + "...");
-            new Set_DeviceToken_Data().execute();
-        }
-    }
-
-
-    public class Set_DeviceToken_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                DeviceToken_status = DeviceToken.set_devicetoken_data(InitialLoad_Activity.this);
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.v("kiran_DeviceToken_status", DeviceToken_status + "...");
+            if (Measurementpoint_status.equalsIgnoreCase("success"))
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.measurpoint_sp), "X");
+            else
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.measurpoint_sp), "");
+            FieldTekPro_SharedPrefeditor.commit();
             new Get_Calibration_Data().execute();
         }
     }
-
 
     public class Get_Calibration_Data extends AsyncTask<Void, Integer, Void> {
         @Override
@@ -432,15 +474,52 @@ public class InitialLoad_Activity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             Log.v("kiran_Calibration_status", Calibration_Status + "...");
-            FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "LoggedIn");
-            FieldTekPro_SharedPrefeditor.commit();
-            InitialLoad_Activity.this.finish();
-            progressDialog.dismiss_progress_dialog();
-            Intent dashboard_intent = new Intent(InitialLoad_Activity.this, DashBoard_Activity.class);
-            startActivity(dashboard_intent);
+            String[] check = new String[11];
+            String success = "Y";
+            check[0] = FieldTekPro_SharedPref.getString(getString(R.string.syncmap_sp), null);
+            check[1] = FieldTekPro_SharedPref.getString(getString(R.string.loadsettings_sp), null);
+            /* check[2] = FieldTekPro_SharedPref.getString(getString(R.string.devicetoken_sp), null);*/
+            check[2] = "X";
+            check[3] = FieldTekPro_SharedPref.getString(getString(R.string.auth_sp), null);
+            check[4] = FieldTekPro_SharedPref.getString(getString(R.string.vhlp_sp), null);
+            check[5] = FieldTekPro_SharedPref.getString(getString(R.string.vhlpwcm_sp), null);
+            check[6] = FieldTekPro_SharedPref.getString(getString(R.string.dord_sp), null);
+            check[7] = FieldTekPro_SharedPref.getString(getString(R.string.dnot_sp), null);
+            check[8] = FieldTekPro_SharedPref.getString(getString(R.string.bom_sp), null);
+            check[9] = FieldTekPro_SharedPref.getString(getString(R.string.floc_sp), null);
+            check[10] = FieldTekPro_SharedPref.getString(getString(R.string.measurpoint_sp), null);
+            for (String x : check) {
+                if (x != null && x.equals(""))
+                    success = "N";
+            }
+            if (LoadSettings_status.equalsIgnoreCase("success")) {
+                FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "LoggedIn");
+                FieldTekPro_SharedPrefeditor.commit();
+                InitialLoad_Activity.this.finish();
+                progressDialog.dismiss_progress_dialog();
+                Intent dashboard_intent = new Intent(InitialLoad_Activity.this, DashBoard_Activity.class);
+                if (transmit_type.equals("LOAD")) {
+                    FieldTekPro_SharedPrefeditor.putString("FieldTekPro_InitialLoad", "");
+                    FieldTekPro_SharedPrefeditor.commit();
+                    dashboard_intent.putExtra("success", success);
+                } else
+                    dashboard_intent.putExtra("success", "Y");
+                startActivity(dashboard_intent);
+            } else {
+                FieldTekPro_SharedPrefeditor.putString(getString(R.string.Calib_sp), "X");
+                FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "LoggedIn");
+                FieldTekPro_SharedPrefeditor.commit();
+                InitialLoad_Activity.this.finish();
+                progressDialog.dismiss_progress_dialog();
+                Intent dashboard_intent = new Intent(InitialLoad_Activity.this, DashBoard_Activity.class);
+                if (transmit_type.equals("LOAD"))
+                    dashboard_intent.putExtra("success", success);
+                else
+                    dashboard_intent.putExtra("success", "Y");
+                startActivity(dashboard_intent);
+            }
         }
     }
-
 
     public class Get_JRA_Data extends AsyncTask<Void, Integer, Void> {
         @Override

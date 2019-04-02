@@ -69,7 +69,8 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
     private static String DATABASE_NAME = "";
     ArrayList<String> authorization_list = new ArrayList<String>();
     Error_Dialog error_dialog = new Error_Dialog();
-    private String username = "";
+    private String username = "", success = "";
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,13 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
+        Bundle extra = getIntent().getExtras();
+        if (extra != null) {
+            success = extra.getString("success");
+            if (success != null && success.equals("N"))
+                error_dialog.show_error_dialog(DashBoard_Activity.this,
+                        getString(R.string.initialload_unsuccess));
+        }
         web = new String[]
                 {
                         getString(R.string.notifications),

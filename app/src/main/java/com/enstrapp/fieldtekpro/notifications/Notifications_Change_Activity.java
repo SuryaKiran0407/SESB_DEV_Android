@@ -119,7 +119,7 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
             title_tv.setText(nhp.getQmnum());
             qmnum = nhp.getQmnum();
             uuid = nhp.getUUID();
-            if (qmnum != null && !qmnum.equals("")) {
+            if (qmnum != null &&     !qmnum.equals("")) {
                 menu_imageview.setVisibility(View.VISIBLE);
                 menu_imageview.setVisibility(View.VISIBLE);
             } else {

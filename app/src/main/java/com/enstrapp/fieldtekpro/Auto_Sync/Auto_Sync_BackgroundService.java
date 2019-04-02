@@ -43,7 +43,7 @@ import com.enstrapp.fieldtekpro.orders.ConfirmOrder_Prcbl;
 import com.enstrapp.fieldtekpro.orders.Measurement_Parceble;
 import com.enstrapp.fieldtekpro.orders.Order_CConfirmation;
 import com.enstrapp.fieldtekpro.orders.Order_Create_Change;
-import com.enstrapp.fieldtekpro.orders.Order_Rel;
+//import com.enstrapp.fieldtekpro.orders.Order_Rel;
 import com.enstrapp.fieldtekpro.orders.OrdrHeaderPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrMatrlPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrObjectPrcbl;
@@ -1054,7 +1054,7 @@ public class Auto_Sync_BackgroundService extends Service {
         protected Void doInBackground(String... params) {
             orderId = params[0];
             log_uuid = params[1];
-            Response = new Order_Rel().Get_Data(context, "", "X", "RLORD", orderId);
+        //    Response = new Order_Rel().Get_Data(context, "", "X", "RLORD", orderId);
             return null;
         }
 

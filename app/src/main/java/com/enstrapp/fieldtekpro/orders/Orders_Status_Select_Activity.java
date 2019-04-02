@@ -223,6 +223,30 @@ public class Orders_Status_Select_Activity extends AppCompatActivity implements 
                 id_textview = (TextView) view.findViewById(R.id.id_textview);
                 value_textview = (TextView) view.findViewById(R.id.text_textview);
                 checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+                checkbox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (checkbox.isChecked()) {
+                            type_details_list.get((Integer) v.getTag()).setChecked_status(true);
+                            for (int i = 0; i < type_list.size(); i++) {
+                                if (type_details_list
+                                        .get((Integer)v.getTag()).getId()
+                                        .equals(type_list.get(i).getId())){
+                                    type_list.get(i).setChecked_status(true);
+                                }
+                            }
+                        } else {
+                            type_details_list.get((Integer) v.getTag()).setChecked_status(false);
+                            for (int i = 0; i < type_list.size(); i++) {
+                                if (type_details_list
+                                        .get((Integer)v.getTag()).getId()
+                                        .equals(type_list.get(i).getId())){
+                                    type_list.get(i).setChecked_status(false);
+                                }
+                            }
+                        }
+                    }
+                });
             }
         }
 
@@ -244,7 +268,7 @@ public class Orders_Status_Select_Activity extends AppCompatActivity implements 
             final Type_Object nto = type_details_list.get(position);
             holder.id_textview.setText(nto.getId());
             holder.value_textview.setText(nto.getText());
-            holder.checkbox.setOnClickListener(new View.OnClickListener() {
+          /*  holder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (holder.checkbox.isChecked()) {
@@ -253,7 +277,7 @@ public class Orders_Status_Select_Activity extends AppCompatActivity implements 
                         type_details_list.get(position).setChecked_status(false);
                     }
                 }
-            });
+            });*/
             holder.checkbox.setTag(position);
             holder.checkbox.setChecked((type_details_list.get(position)
                     .isChecked_status() == true ? true : false));

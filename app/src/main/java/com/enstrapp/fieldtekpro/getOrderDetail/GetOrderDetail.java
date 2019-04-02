@@ -826,6 +826,7 @@ public class GetOrderDetail {
                         new String[]{orderId});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
+                        do {
                         Notif_EtDocs_Parcelable docs = new Notif_EtDocs_Parcelable();
                         docs.setZobjid(cursor.getString(2));
                         docs.setZdoctype(cursor.getString(3));
@@ -841,6 +842,9 @@ public class GetOrderDetail {
                         docs.setStatus("old");
                         docs_al.add(docs);
                     }
+                        while (cursor.moveToNext());
+                    }
+
                 }
             } catch (Exception e) {
 

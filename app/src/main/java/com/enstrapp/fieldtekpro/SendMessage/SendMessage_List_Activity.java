@@ -546,7 +546,7 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                VHLP_Token_Status = VHLP_Token.Get_Token_Data(SendMessage_List_Activity.this);
+                //VHLP_Token_Status = VHLP_Token.Get_Token_Data(SendMessage_List_Activity.this);
             } catch (Exception e) {
             }
             return null;

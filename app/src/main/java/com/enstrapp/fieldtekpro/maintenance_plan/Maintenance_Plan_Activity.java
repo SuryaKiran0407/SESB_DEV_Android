@@ -66,7 +66,7 @@ public class Maintenance_Plan_Activity extends AppCompatActivity {
     SharedPreferences.Editor app_editor;
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     private List<MaintenancePlan_List_Object> maintenanceplan_list = new ArrayList<>();
-    TextView no_data_textView;
+    TextView no_data_textView,title_textview;
     MaintenancePlan_Adapter maintenancePlan_adapter;
     int response_status_code = 0;
     Response<MaintenancePlan_SER> response;
@@ -82,6 +82,7 @@ public class Maintenance_Plan_Activity extends AppCompatActivity {
         swiperefreshlayout = (SwipeRefreshLayout) findViewById(R.id.swiperefreshlayout);
         no_data_textView = (TextView) findViewById(R.id.no_data_textview);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
+        title_textview = findViewById(R.id.title_textview);
 
         DATABASE_NAME = Maintenance_Plan_Activity.this.getString(R.string.database_name);
         App_db = Maintenance_Plan_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
@@ -291,6 +292,7 @@ public class Maintenance_Plan_Activity extends AppCompatActivity {
                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Maintenance_Plan_Activity.this);
                                 recyclerview.setLayoutManager(layoutManager);
                                 recyclerview.setItemAnimator(new DefaultItemAnimator());
+                                title_textview.setText(getString(R.string.maintenanceplan) + "(" + maintenanceplan_list.size() + ")" );
                                 recyclerview.setAdapter(maintenancePlan_adapter);
                                 no_data_textView.setVisibility(View.GONE);
                                 swiperefreshlayout.setVisibility(View.VISIBLE);

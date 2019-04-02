@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_grey">
 
-        <SearchView
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/round_borders"
-            android:focusable="false"
-            android:focusableInTouchMode="true"
-            android:iconifiedByDefault="false"
-            android:textColorHint="@color/light_grey"
-            android:textSize="15sp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_recycleview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/search"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:scrollbars="none" />
-
-        <LinearLayout
-            android:id="@+id/no_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:visibility="gone">
-
-            <com.enstrapp.fieldtekpro.customfont.Font_TextView
-                android:id="@+id/no_data_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableTop="@drawable/ic_no_data_icon"
-                android:gravity="center"
-                android:text="@string/no_data_found"
-                android:textColor="@color/red"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-        android:id="@+id/bottom_panel"
-        android:orientation="vertical"
-        android:gravity="right"
-        android:layout_gravity="bottom"
+    <SearchView
+        android:id="@+id/search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="70dp"
-        android:layout_marginRight="10dp"
-            android:visibility="gone">
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/filter_fab_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_fab_filter_icon"
-                android:layout_gravity="bottom|end"
-                app:elevation="6dp"
-                app:pressedTranslationZ="12dp"
-                app:backgroundTint="@color/dark_grey1"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"/>
+        android:layout_height="42dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/round_borders"
+        android:focusable="false"
+        android:focusableInTouchMode="true"
+        android:iconifiedByDefault="false"
+        android:textColorHint="@color/light_grey"
+        android:textSize="15sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:paddingBottom="20dp"
+        android:scrollbars="none" />
+
+    <LinearLayout
+        android:id="@+id/no_data_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/no_data_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_no_data_icon"
+            android:gravity="center"
+            android:text="@string/no_data_found"
+            android:textColor="@color/red"
+            android:textSize="16sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="70dp"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/filter_fab_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_fab_filter_icon"
+            app:backgroundTint="@color/dark_grey1"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+    </LinearLayout>
 
 </RelativeLayout>

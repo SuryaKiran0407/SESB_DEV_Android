@@ -144,11 +144,11 @@
         android:background="@color/dark_grey">
         <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
             <com.enstrapp.fieldtekpro.customfont.Font_Button
-                android:textSize="15sp" android:textColor="@color/white" android:id="@+id/cancel_button" android:background="@color/dark_grey" android:text="@string/cancel" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></com.enstrapp.fieldtekpro.customfont.Font_Button>
+                android:textSize="15sp" android:textColor="@color/white" android:id="@+id/cancel_button" android:background="@color/colorPrimary" android:text="@string/cancel" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></com.enstrapp.fieldtekpro.customfont.Font_Button>
             <com.enstrapp.fieldtekpro.customfont.Font_Button
                 android:layout_width="2dp" android:layout_height="25dp" android:background="@color/white"></com.enstrapp.fieldtekpro.customfont.Font_Button>
             <com.enstrapp.fieldtekpro.customfont.Font_Button
-                android:textSize="15sp" android:textColor="@color/white" android:id="@+id/submit_button" android:background="@color/dark_grey" android:text="@string/submit" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></com.enstrapp.fieldtekpro.customfont.Font_Button>
+                android:textSize="15sp" android:textColor="@color/white" android:id="@+id/submit_button" android:background="@color/colorPrimary" android:text="@string/submit" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></com.enstrapp.fieldtekpro.customfont.Font_Button>
         </LinearLayout>
     </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.enstrapp.fieldtekpro.Initialload;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -579,210 +580,162 @@ public class JSA {
             int response_status_code = response.code();
             Log.v("kiran_JRA_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<JSA_SER.Result> results = response.body().getD().getResults();
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
                     App_db.beginTransaction();
-
-                    if (results != null && results.size() > 0) {
+                    try {
 
                         /*EtEHSOpstat*/
-                        JSA_SER.EtEHSOpstat etEHSOpstat = results.get(0).getEtEHSOpstat();
-                        if (etEHSOpstat != null) {
-                            List<JSA_SER.Result1> result1s = etEHSOpstat.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSOpstat (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
-                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSOpstat() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSOpstat().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSOpstat().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eR : response.body().getD().getResults().get(0).getEtEHSOpstat().getResults()) {
+                                    values.put("Code, ", eR.getCode());
+                                    values.put("Description", eR.getDescription());
+                                    App_db.insert("EtEHSOpstat", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSHazcat*/
-                        JSA_SER.EtEHSHazcat etEHSHazcat = results.get(0).getEtEHSHazcat();
-                        if (etEHSHazcat != null) {
-                            List<JSA_SER.Result1> result1s = etEHSHazcat.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSHazcat (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
-                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazcat() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazcat().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazcat().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eR : response.body().getD().getResults().get(0).getEtEHSHazcat().getResults()) {
+                                    values.put("Code, ", eR.getCode());
+                                    values.put("Description", eR.getDescription());
+                                    App_db.insert("EtEHSHazcat", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSHazard*/
-                        JSA_SER.EtEHSHazard etEHSHazard = results.get(0).getEtEHSHazard();
-                        if (etEHSHazard != null) {
-                            List<JSA_SER.Result1> result1s = etEHSHazard.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSHazard (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, r1.getCode());
-                                    statement.bindString(2, r1.getDescription());
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazard() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazard().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazard().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eR : response.body().getD().getResults().get(0).getEtEHSHazard().getResults()) {
+                                    values.put("Code, ", eR.getCode());
+                                    values.put("Description", eR.getDescription());
+                                    App_db.insert("EtEHSHazard", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSHazimp*/
-                        JSA_SER.EtEHSHazimp etEHSHazimp = results.get(0).getEtEHSHazimp();
-                        if (etEHSHazimp != null) {
-                            List<JSA_SER.EtEHSHazimp_Result> etEHSHazimpResults = etEHSHazimp.getResults();
-                            if (etEHSHazimpResults != null && etEHSHazimpResults.size() > 0) {
-                                String sql = "Insert into EtEHSHazimp (HazardCode,ImpactCode," +
-                                        "Description,Type) values (?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.EtEHSHazimp_Result eHH : etEHSHazimpResults) {
-                                    statement.bindString(1, c_e.check_empty(eHH.getHazardCode()));
-                                    statement.bindString(3, c_e.check_empty(eHH.getImpactCode()));
-                                    statement.bindString(2, c_e.check_empty(eHH.getDescription()));
-                                    statement.bindString(4, c_e.check_empty(eHH.getType()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazimp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazimp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazimp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.EtEHSHazimp_Result eRIMP : response.body().getD().getResults().get(0).getEtEHSHazimp().getResults()) {
+                                    values.put("HazardCode, ", eRIMP.getHazardCode());
+                                    values.put("ImpactCode", eRIMP.getImpactCode());
+                                    values.put("Description", eRIMP.getDescription());
+                                    values.put("Type", eRIMP.getType());
+                                    App_db.insert("EtEHSHazimp", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSHazctrl*/
-                        JSA_SER.EtEHSHazctrl etEHSHazctrl = results.get(0).getEtEHSHazctrl();
-                        if (etEHSHazctrl != null) {
-                            List<JSA_SER.EtEHSHazctrl_Result> etEHSHazctrlResults = etEHSHazctrl.getResults();
-                            if (etEHSHazctrlResults != null && etEHSHazctrlResults.size() > 0) {
-                                String sql = "Insert into EtEHSHazctrl (HazardCode,ControlCode,Type," +
-                                        "Subject,Description,CtrlID) values (?,?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.EtEHSHazctrl_Result eC : etEHSHazctrlResults) {
-                                    statement.bindString(1, c_e.check_empty(eC.getHazardCode()));
-                                    statement.bindString(2, c_e.check_empty(eC.getControlCode()));
-                                    statement.bindString(3, c_e.check_empty(eC.getType()));
-                                    statement.bindString(4, c_e.check_empty(eC.getSubject()));
-                                    statement.bindString(5, c_e.check_empty(eC.getDescription()));
-                                    statement.bindString(6, c_e.check_empty(eC.getCtrlid()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSHazctrl() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSHazctrl().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSHazctrl().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.EtEHSHazctrl_Result eTCTRL : response.body().getD().getResults().get(0).getEtEHSHazctrl().getResults()) {
+                                    values.put("HazardCode, ", eTCTRL.getHazardCode());
+                                    values.put("ControlCode", eTCTRL.getControlCode());
+                                    values.put("Type", eTCTRL.getType());
+                                    values.put("Subject", eTCTRL.getSubject());
+                                    values.put("Description", eTCTRL.getDescription());
+                                    values.put("CtrlID", eTCTRL.getCtrlid());
+                                    App_db.insert("EtEHSHazctrl", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSLocTyp*/
-                        JSA_SER.EtEHSLocTyp etEHSLocTyp = results.get(0).getEtEHSLocTyp();
-                        if (etEHSLocTyp != null) {
-                            List<JSA_SER.Result1> result1s = etEHSLocTyp.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSLocTyp (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
-                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSLocTyp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSLocTyp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSLocTyp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTLT : response.body().getD().getResults().get(0).getEtEHSLocTyp().getResults()) {
+                                    values.put("Code, ", eTLT.getCode());
+                                    values.put("Description", eTLT.getDescription());
+                                    App_db.insert("EtEHSLocTyp", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSLocRev*/
-                        JSA_SER.EtEHSLocRev ehsLocRev = results.get(0).getEtEHSLocRev();
-                        if (ehsLocRev != null) {
-                            List<JSA_SER.EtEHSLocRev_Result> etEHSLocRevResults = ehsLocRev.getResults();
-                            if (etEHSLocRevResults != null && etEHSLocRevResults.size() > 0) {
-                                String sql = "Insert into EtEHSLocRev (Type,Status,FunctLocID," +
-                                        "EquipmentID,PlantID,DbKey,ParentKey,Text, LocRootRefKey," +
-                                        " ParRootRefKey, RefID) values (?,?,?,?,?,?,?,?,?,?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.EtEHSLocRev_Result eL : etEHSLocRevResults) {
-                                    statement.bindString(1, c_e.check_empty(eL.getType()));
-                                    statement.bindString(2, c_e.check_empty(eL.getStatus()));
-                                    statement.bindString(3, c_e.check_empty(eL.getFunctLocID()));
-                                    statement.bindString(4, c_e.check_empty(eL.getEquipmentID()));
-                                    statement.bindString(5, c_e.check_empty(eL.getPlantID()));
-                                    statement.bindString(6, c_e.check_empty(eL.getDbKey()));
-                                    statement.bindString(7, c_e.check_empty(eL.getParentKey()));
-                                    statement.bindString(8, c_e.check_empty(eL.getText()));
-                                    statement.bindString(9, c_e.check_empty(eL.getLocRootRefKey()));
-                                    statement.bindString(10, c_e.check_empty(eL.getParRootRefKey()));
-                                    statement.bindString(11, c_e.check_empty(eL.getRefID()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSLocRev() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSLocRev().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSLocRev().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.EtEHSLocRev_Result eTLR : response.body().getD().getResults().get(0).getEtEHSLocRev().getResults()) {
+                                    values.put("Type, ", eTLR.getType());
+                                    values.put("Status", eTLR.getStatus());
+                                    values.put("FunctLocID", eTLR.getFunctLocID());
+                                    values.put("EquipmentID", eTLR.getEquipmentID());
+                                    values.put("PlantID", eTLR.getPlantID());
+                                    values.put("DbKey", eTLR.getDbKey());
+                                    values.put("ParentKey", eTLR.getParentKey());
+                                    values.put("Text", eTLR.getText());
+                                    values.put("LocRootRefKey", eTLR.getLocRootRefKey());
+                                    values.put("ParRootRefKey", eTLR.getParRootRefKey());
+                                    values.put("RefID", eTLR.getRefID());
+                                    App_db.insert("EtEHSLocRev", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSJobTyp*/
-                        JSA_SER.EtEHSJobTyp etEHSJobTyp = results.get(0).getEtEHSJobTyp();
-                        if (etEHSJobTyp != null) {
-                            List<JSA_SER.Result1> result1s = etEHSJobTyp.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSJobTyp (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
-                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSJobTyp() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSJobTyp().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSJobTyp().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTJT : response.body().getD().getResults().get(0).getEtEHSJobTyp().getResults()) {
+                                    values.put("Code, ", eTJT.getCode());
+                                    values.put("Description", eTJT.getDescription());
+                                    App_db.insert("EtEHSJobTyp", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSReason*/
-                        JSA_SER.EtEHSReason etEHSReason = results.get(0).getEtEHSReason();
-                        if (etEHSReason != null) {
-                            List<JSA_SER.Result1> result1s = etEHSReason.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSReason (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
-                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSReason() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSReason().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSReason().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTER : response.body().getD().getResults().get(0).getEtEHSReason().getResults()) {
+                                    values.put("Code, ", eTER.getCode());
+                                    values.put("Description", eTER.getDescription());
+                                    App_db.insert("EtEHSReason", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSRasrole*/
-                        JSA_SER.EtEHSRasrole etEHSRasrole = results.get(0).getEtEHSRasrole();
-                        if (etEHSRasrole != null) {
-                            List<JSA_SER.Result1> result1s = etEHSRasrole.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSRasrole (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
-                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSRasrole() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSRasrole().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSRasrole().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTER : response.body().getD().getResults().get(0).getEtEHSRasrole().getResults()) {
+                                    values.put("Code, ", eTER.getCode());
+                                    values.put("Description", eTER.getDescription());
+                                    App_db.insert("EtEHSRasrole", null, values);
                                 }
                             }
                         }
-
                         /*EtEHSRasstep*/
-                        JSA_SER.EtEHSRasstep etEHSRasstep = results.get(0).getEtEHSRasstep();
-                        if (etEHSRasstep != null) {
-                            List<JSA_SER.Result1> result1s = etEHSRasstep.getResults();
-                            if (result1s != null && result1s.size() > 0) {
-                                String sql = "Insert into EtEHSRasstep (Code,Description) values (?,?);";
-                                SQLiteStatement statement = App_db.compileStatement(sql);
-                                statement.clearBindings();
-                                for (JSA_SER.Result1 r1 : result1s) {
-                                    statement.bindString(1, c_e.check_empty(r1.getCode()));
-                                    statement.bindString(2, c_e.check_empty(r1.getDescription()));
-                                    statement.execute();
+                        if (response.body().getD().getResults().get(0).getEtEHSRasstep() != null) {
+                            if (response.body().getD().getResults().get(0).getEtEHSRasstep().getResults() != null
+                                    && response.body().getD().getResults().get(0).getEtEHSRasstep().getResults().size() > 0) {
+                                ContentValues values = new ContentValues();
+                                for (JSA_SER.Result1 eTER : response.body().getD().getResults().get(0).getEtEHSRasstep().getResults()) {
+                                    values.put("Code, ", eTER.getCode());
+                                    values.put("Description", eTER.getDescription());
+                                    App_db.insert("EtEHSRasstep", null, values);
                                 }
                             }
                         }
+                        App_db.setTransactionSuccessful();
+                        Get_Response = "success";
+                    } finally {
+                        App_db.endTransaction();
                     }
-                    App_db.setTransactionSuccessful();
-                    App_db.endTransaction();
-                    Get_Response = "success";
                 }
             }
         } catch (Exception ex) {

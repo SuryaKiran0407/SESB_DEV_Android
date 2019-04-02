@@ -6,40 +6,37 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class BOM_SER
-{
+public class BOM_SER {
 
     @SerializedName("d")
     @Expose
     private D d;
-    public D getD()
-    {
+
+    public D getD() {
         return d;
     }
-    public void setD(D d)
-    {
+
+    public void setD(D d) {
         this.d = d;
     }
 
 
-    public class D
-    {
+    public class D {
         @SerializedName("results")
         @Expose
         private List<Result> results = null;
-        public List<Result> getResults()
-        {
+
+        public List<Result> getResults() {
             return results;
         }
-        public void setResults(List<Result> results)
-        {
+
+        public void setResults(List<Result> results) {
             this.results = results;
         }
     }
 
 
-    public class Result
-    {
+    public class Result {
         @SerializedName("EtBomHeader")
         @Expose
         private EtBomHeader EtBomHeader;
@@ -49,45 +46,49 @@ public class BOM_SER
         @SerializedName("EtStock")
         @Expose
         private EtStock EtStock;
+
         public BOM_SER.EtBomHeader getEtBomHeader() {
             return EtBomHeader;
         }
+
         public void setEtBomHeader(BOM_SER.EtBomHeader etBomHeader) {
             EtBomHeader = etBomHeader;
         }
+
         public BOM_SER.EtBomItem getEtBomItem() {
             return EtBomItem;
         }
+
         public void setEtBomItem(BOM_SER.EtBomItem etBomItem) {
             EtBomItem = etBomItem;
         }
+
         public BOM_SER.EtStock getEtStock() {
             return EtStock;
         }
+
         public void setEtStock(BOM_SER.EtStock etStock) {
             EtStock = etStock;
         }
     }
 
 
-
     /*For Parsing EtStock*/
-    public class EtStock
-    {
+    public class EtStock {
         @SerializedName("results")
         @Expose
         private List<EtStock_Result> results = null;
-        public List<EtStock_Result> getResults()
-        {
+
+        public List<EtStock_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtStock_Result> results)
-        {
+
+        public void setResults(List<EtStock_Result> results) {
             this.results = results;
         }
     }
-    public class EtStock_Result
-    {
+
+    public class EtStock_Result {
         @SerializedName("Matnr")
         @Expose
         private String matnr;
@@ -181,22 +182,21 @@ public class BOM_SER
 
 
     /*For Parsing EtBomItem*/
-    public class EtBomItem
-    {
+    public class EtBomItem {
         @SerializedName("results")
         @Expose
         private List<EtBomItem_Result> results = null;
-        public List<EtBomItem_Result> getResults()
-        {
+
+        public List<EtBomItem_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtBomItem_Result> results)
-        {
+
+        public void setResults(List<EtBomItem_Result> results) {
             this.results = results;
         }
     }
-    public class EtBomItem_Result
-    {
+
+    public class EtBomItem_Result {
         @SerializedName("Bom")
         @Expose
         private String bom;
@@ -215,6 +215,7 @@ public class BOM_SER
         @SerializedName("Stlkz")
         @Expose
         private String stlkz;
+
         public String getBom() {
             return bom;
         }
@@ -267,22 +268,21 @@ public class BOM_SER
 
 
     /*For Parsing EtBomHeader*/
-    public class EtBomHeader
-    {
+    public class EtBomHeader {
         @SerializedName("results")
         @Expose
         private List<EtBomHeader_Result> results = null;
-        public List<EtBomHeader_Result> getResults()
-        {
+
+        public List<EtBomHeader_Result> getResults() {
             return results;
         }
-        public void setResults(List<EtBomHeader_Result> results)
-        {
+
+        public void setResults(List<EtBomHeader_Result> results) {
             this.results = results;
         }
     }
-    public class EtBomHeader_Result
-    {
+
+    public class EtBomHeader_Result {
         @SerializedName("Bom")
         @Expose
         private String bom;
@@ -318,7 +318,6 @@ public class BOM_SER
         }
     }
     /*For Parsing EtBomHeader*/
-
 
 
 }

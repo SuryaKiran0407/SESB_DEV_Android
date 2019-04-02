@@ -319,7 +319,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                     if (slctEdDt != null && !slctEdDt.equals(""))
                         cop.setExecFinDate(slctEdDt);
                     else
-                        cop.setExecFinDate(dateFormat(ordrEdDt));
+                        cop.setExecFinDate(ordrEdDt);
                     if (slctEdTm != null && !slctEdTm.equals(""))
                         cop.setExecFinTime(slctEdTm);
                     else
@@ -715,7 +715,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                                 String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                         "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
                                         " STATUS, UUID, MESSAGE, LOG_UUID)" +
-                                        "ō values(?,?,?,?,?,?,?,?,?,?);";
+                                        " values(?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 App_db.beginTransaction();
                                 statement11.clearBindings();

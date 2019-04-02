@@ -183,6 +183,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                 equipName_tiet.setText(ma.ohp.getEquipName());
                 wbs_tiet.setText(ma.ohp.getPosid());
                 revision_tiet.setText(ma.ohp.getRevnr());
+
             } else {
                 equipId_ll.setVisibility(View.VISIBLE);
                 equipName_til.setVisibility(View.VISIBLE);
@@ -567,6 +568,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     funcLocName_tiet.setText(data.getStringExtra("functionlocation_text"));
                     respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,
                             data.getStringExtra("kostl_id"), respCostCntrName(data.getStringExtra("kostl_id"))));
+                    equipId_tiet.setText("");
+                    equipName_tiet.setText("");
                 }
                 break;
 

@@ -160,7 +160,13 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 location_tiet.setText(omp.getLocation() + " - " + loc_text);
                 loc_id = omp.getLocation();
 
-                reservation_tiet.setText(getResources().getString(R.string.hypen_text, omp.getRsnum(), omp.getRspos()));
+                if(omp.getRsnum()!=null && omp.getRspos()!=null) {
+                    reservation_tiet.setText(getResources().getString(R.string.hypen_text, omp.getRsnum(), omp.getRspos()));
+                }else
+                {
+                    reservation_tiet.setText("");
+
+                }
                 receipt_tiet.setText(omp.getReceipt());
                 unloading_tiet.setText(omp.getUnloading());
                 submit_bt.setText(getResources().getString(R.string.update));
@@ -294,6 +300,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
 
             case (R.id.cancel_bt):
                 setResult(RESULT_CANCELED);
+                Material_Add_Update_Activity.this.finish();
                 break;
         }
     }
