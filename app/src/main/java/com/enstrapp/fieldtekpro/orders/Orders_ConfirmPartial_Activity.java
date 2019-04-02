@@ -530,6 +530,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             cop.setLgort("");
             cop.setErfmg("0");
             cop.setErfme("");
+            cop.setWorkCntr(oop.getWrkCntrId());
             cop.setExecStartDate(dateFormat(strtDt_tiet.getText().toString()));
             cop.setExecStartTime(timeFormat(strtTm_tiet.getText().toString()));
             cop.setExecFinDate(dateFormat(endDt_tiet.getText().toString()));

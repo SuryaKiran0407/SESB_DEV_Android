@@ -25,20 +25,16 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Calibration_Defects_Fragment extends Fragment implements View.OnClickListener {
 
-    String order_id = "", insp_lot = "";
+    String insp_lot = "";
     FloatingActionButton add_defect_button;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     private List<Defects_Object> defects_list = new ArrayList<>();
     RecyclerView recyclerview;
     DEFECTS_ADAPTER defects_adapter;
+    Calibration_Orders_Operations_List_Activity activity;
 
     public Calibration_Defects_Fragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -46,14 +42,14 @@ public class Calibration_Defects_Fragment extends Fragment implements View.OnCli
 
         View rootView = inflater.inflate(R.layout.calibration_defects_fragment, container, false);
 
-        Calibration_Orders_Operations_List_Activity activity = (Calibration_Orders_Operations_List_Activity) getActivity();
-        order_id = activity.getorder_id();
+        activity = (Calibration_Orders_Operations_List_Activity) getActivity();
 
         DATABASE_NAME = getActivity().getString(R.string.database_name);
         App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
         try {
-            Cursor cursor1 = App_db.rawQuery("select * from EtQudData where Aufnr = ?", new String[]{order_id});
+            Cursor cursor1 = App_db.rawQuery("select * from EtQudData where Aufnr = ?",
+                    new String[]{activity.order_id});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
@@ -76,7 +72,8 @@ public class Calibration_Defects_Fragment extends Fragment implements View.OnCli
         String vkatart = "";
         try {
             Cursor cursor1 = null;
-            cursor1 = App_db.rawQuery("select * from EtQudData Where Aufnr = ?", new String[]{order_id});
+            cursor1 = App_db.rawQuery("select * from EtQudData Where Aufnr = ?",
+                    new String[]{activity.order_id});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
@@ -103,11 +100,10 @@ public class Calibration_Defects_Fragment extends Fragment implements View.OnCli
         if (v == add_defect_button) {
             Intent intent = new Intent(getActivity(), Calibration_Add_Defect_Activity.class);
             intent.putExtra("Insp_Lot", insp_lot);
-            intent.putExtra("order_id", order_id);
+            intent.putExtra("order_id", activity.order_id);
             startActivityForResult(intent, 1);
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -137,7 +133,6 @@ public class Calibration_Defects_Fragment extends Fragment implements View.OnCli
             }
         }
     }
-
 
     public class DEFECTS_ADAPTER extends RecyclerView.Adapter<DEFECTS_ADAPTER.MyViewHolder> {
         private Context mContext;
@@ -181,7 +176,6 @@ public class Calibration_Defects_Fragment extends Fragment implements View.OnCli
             return type_details_list.size();
         }
     }
-
 
     public class Defects_Object {
         private String object_part_id, object_part_text, object_part_code_id, object_part_code_text, defect_id, defect_text, defect_code_id, defect_code_text, defect_description, num_defects;
@@ -281,9 +275,7 @@ public class Calibration_Defects_Fragment extends Fragment implements View.OnCli
 
     }
 
-
     public List<Defects_Object> getDefectsData() {
         return defects_list;
     }
-
 }

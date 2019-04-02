@@ -131,6 +131,24 @@ public class Orders_Create_Activity extends AppCompatActivity {
                 } catch (Exception e) {
                 }
             }
+            if(ohp.getOrdrTypId()!= null && !ohp.getOrdrTypId().equals(""))
+            {
+                try {
+                    Cursor cursor = App_db.rawQuery("select * from GET_ORDER_TYPES where Auart = ?",
+                            new String[]{ohp.getOrdrTypId()});
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
+                                ohp.setOrdrTypName(cursor.getString(2));
+                            }
+                            while (cursor.moveToNext());
+                        }
+                    } else {
+                        cursor.close();
+                    }
+                } catch (Exception e) {
+                }
+            }
             String equip_id = extras.getString("functionlocation_id");
             String equip_name = "";
             if (equip_id != null && !equip_id.equals("")) {
@@ -999,7 +1017,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                 oop.setSelected(false);
                 oop.setOrdrId("");
                 oop.setOrdrSatus("");
-                oop.setOprtnId("0020");
+                oop.setOprtnId("0010");
                 oop.setOprtnShrtTxt(ohp.getOrdrShrtTxt());
                 oop.setOprtnLngTxt(ohp.getOrdrLngTxt());
                 oop.setDuration("0");

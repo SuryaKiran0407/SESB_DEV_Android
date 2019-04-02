@@ -69,7 +69,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             plannergroup_id = "", plannergroup_text = "", Reported_by = "", personresponsible_id = "",
             personresponsible_text = "", req_st_date = "", req_st_time = "", req_end_date = "",
             req_end_time = "", mal_st_date = "", mal_st_time = "", mal_end_date = "", mal_end_time = "",
-            effect_id = "", effect_text = "", plant_id = "";
+            effect_id = "", effect_text = "", plant_id = "",maintnce_plant = "",planing_plant = "";
     Error_Dialog error_dialog = new Error_Dialog();
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
@@ -105,6 +105,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             plannergroup_id = extras.getString("plannergroup_id");
             plannergroup_text = extras.getString("plannergroup_text");
             workcenter_id = extras.getString("work_center_id");
+            maintnce_plant = extras.getString("maintnce_plant");
+            planing_plant = extras.getString("planing_plant");
         }
 
         DATABASE_NAME = Notifications_Create_Activity.this.getString(R.string.database_name);

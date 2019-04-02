@@ -235,7 +235,7 @@ public class Settings_Activity extends AppCompatActivity implements OnClickListe
                             FieldTekPro_SharedPrefeditor.commit();
                             String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
                             if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
-                                startService(new Intent(Settings_Activity.this, Auto_Sync_BackgroundService.class));
+//                                startService(new Intent(Settings_Activity.this, Auto_Sync_BackgroundService.class));
                             }
                             Settings_Activity.this.finish();
                         }

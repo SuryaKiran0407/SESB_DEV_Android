@@ -115,16 +115,15 @@ public class BOM_Reservation {
             final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
             Call<SER_BOM_Reservation> call = service.postBOMReservation(url_link, basic, map, bom_reservation);
             Response<SER_BOM_Reservation> response = call.execute();
-            Get_Response =response.errorBody().string();
             int response_status_code = response.code();
             Log.v("kiran_MAC_code", response_status_code + "...");
             if (response_status_code == 201) {
-               /* if (response.isSuccessful() && response.body() != null) {
-                    *//*Reading Response Data and Parsing to Serializable*//*
+                if (response.isSuccessful() && response.body() != null) {
+                    /*Reading Response Data and Parsing to Serializable*/
                     SER_BOM_Reservation rs = response.body();
-                    *//*Reading Response Data and Parsing to Serializable*//*
+                    /*Reading Response Data and Parsing to Serializable*/
 
-                    *//*Converting GSON Response to JSON Data for Parsing*//*
+                    /*Converting GSON Response to JSON Data for Parsing*/
                     String response_data = new Gson().toJson(rs.getD().getEtMessage().getResults());
                     JSONArray response_JsonArray = new JSONArray(response_data);
                     StringBuilder stringBuilder = new StringBuilder();
@@ -138,15 +137,13 @@ public class BOM_Reservation {
                     } else {
                         Get_Response = "nodata";
                     }
-                    *//*Converting GSON Response to JSON Data for Parsing*//*
-                }*/
+                    /*Converting GSON Response to JSON Data for Parsing*/
+                }
             }
-
         } catch (Exception ex) {
             Get_Response = "exception";
         } finally {
         }
         return Get_Response;
     }
-
 }

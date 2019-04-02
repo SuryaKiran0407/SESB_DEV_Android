@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet,
             funcLocName_tiet, equipId_tiet,
             equipName_tiet, wrkCntr_tiet, respCostCntr_tiet, priority_tiet, plannerGroup_tiet,
-            personResp_tiet, basicStDt_tiet, basicEnDt_tiet, sysCond_tiet, revision_tiet, wbs_tiet;
+            personResp_tiet, basicStDt_tiet, basicEnDt_tiet, sysCond_tiet, revision_tiet, wbs_tiet,iwerk_tiet, plant_tiet;
     ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv,
             wrkCntr_iv, respCstCntr_iv, priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv,
             basicEdDt_iv, sysCond_iv, wbs_iv, revision_iv, longtext_imageview;
@@ -52,6 +53,7 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
     Error_Dialog error_dialog = new Error_Dialog();
     Orders_Create_Activity ma;
     private static SQLiteDatabase App_db;
+    String plning_plant = "",maintance_plant = "";
     private static String DATABASE_NAME = "";
 
     static final int ORDR_TYP = 1;
@@ -124,15 +126,41 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
         longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
         activity_type_imageview = (ImageView) rootView.findViewById(R.id.activity_type_imageview);
         activity_type_edittext = (TextInputEditText) rootView.findViewById(R.id.activity_type_edittext);
+        iwerk_tiet = (TextInputEditText) rootView.findViewById(R.id.iwerk_tiet);
+        plant_tiet = (TextInputEditText) rootView.findViewById(R.id.plant_tiet);
 
         /*Written by SuryaKiran for Order Create from Notification Change*/
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
-            ordrTyp_tiet.setText(bundle.getString("Order_type_id"));
+            String ordrTypId = bundle.getString("Order_type_id");
+            String ordrTxt = ma.ohp.getOrdrTypName();
+            if(ordrTypId != null && !ordrTypId.equals(""))
+            if(ordrTxt != null && !ordrTxt.equals(""))
+                ordrTyp_tiet.setText(getString(R.string.hypen_text, ordrTypId,
+                        ordrTxt));
+            else
+                ordrTyp_tiet.setText((ordrTypId));
+           else
+                ordrTyp_tiet.setText((""));
+
             ordrLngTxt_tiet.setText(bundle.getString("short_text"));
             funcLocId_tiet.setText(bundle.getString("functionlocation_id"));
             equipId_tiet.setText(bundle.getString("equipment_id"));
-            wrkCntr_tiet.setText(bundle.getString("workcenter"));
+            plning_plant = ma.ohp.getPlant();
+            maintance_plant = ma.ohp.getIwerk();
+            plant_tiet.setText(plning_plant);
+            iwerk_tiet.setText(maintance_plant);
+            String wrkcntrId = bundle.getString("workcenter");
+            ma.ohp.setWrkCntrName(wrkCntrName(wrkcntrId));
+            String wrkcntrName = ma.ohp.getWrkCntrName();
+            if(wrkcntrId != null && !wrkcntrId.equals(""))
+                if(wrkcntrName != null && !wrkcntrName.equals(""))
+                    wrkCntr_tiet.setText(getString(R.string.hypen_text, wrkcntrId,
+                    wrkcntrName) );
+                else
+                    wrkCntr_tiet.setText(wrkcntrId);
+                else
+                    wrkCntr_tiet.setText("");
             String pri = bundle.getString("priority_id");
             if (pri != null && !pri.equals("")) {
                 priority_tiet.setText(bundle.getString("priority_id") + " - "
@@ -468,6 +496,10 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                             data.getStringExtra("kostl_id"), respCostCntrName(data.getStringExtra("kostl_id"))));
                     equipId_tiet.setText("");
                     equipName_tiet.setText("");
+                    if ( ma.ohp.getPlant() != null && !ma.ohp.getPlant().equals(""))
+                        plant_tiet.setText(ma.ohp.getPlant());
+                    if (ma.ohp.getIwerk() != null && !ma.ohp.getIwerk().equals(""))
+                        iwerk_tiet.setText(ma.ohp.getIwerk());
 
                 }
                 break;
@@ -498,6 +530,10 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                             data.getStringExtra("wrkCntr_id"), wrkCntrName(data.getStringExtra("wrkCntr_id"))));
                     respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,
                             data.getStringExtra("kostl_id"), respCostCntrName(data.getStringExtra("kostl_id"))));
+                    if ( ma.ohp.getPlant() != null && !ma.ohp.getPlant().equals(""))
+                        plant_tiet.setText(ma.ohp.getPlant());
+                    if (ma.ohp.getIwerk() != null && !ma.ohp.getIwerk().equals(""))
+                        iwerk_tiet.setText(ma.ohp.getIwerk());
                 }
                 break;
 
@@ -767,6 +803,10 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                                 cursor.getString(11), wrkCntrName(cursor.getString(11))));
                         respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,
                                 cursor.getString(12), respCostCntrName(cursor.getString(12))));
+                        if ( ma.ohp.getPlant() != null && !ma.ohp.getPlant().equals(""))
+                            plant_tiet.setText(ma.ohp.getPlant());
+                        if (ma.ohp.getIwerk() != null && !ma.ohp.getIwerk().equals(""))
+                            iwerk_tiet.setText(ma.ohp.getIwerk());
                     } while (cursor.moveToNext());
                 }
             }

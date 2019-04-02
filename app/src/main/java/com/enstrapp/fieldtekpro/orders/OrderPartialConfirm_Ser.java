@@ -29,6 +29,9 @@ public class OrderPartialConfirm_Ser {
     @SerializedName("Operation")
     @Expose
     private String Operation;
+    @SerializedName("WorkCntr")
+    @Expose
+    private  String WorkCntr;
     @SerializedName("ItConfirmOrder")
     @Expose
     private ArrayList<ItConfirmOrder_Ser> ItConfirmOrder;

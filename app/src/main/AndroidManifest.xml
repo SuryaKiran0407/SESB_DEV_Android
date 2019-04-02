@@ -668,10 +668,10 @@
             android:name=".Alert_Log.Alert_Log_Activity"
             android:screenOrientation="portrait" />
 
-        <service
+        <!--<service
             android:name=".Auto_Sync.Auto_Sync_BackgroundService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true" />-->
 
         <receiver android:name=".Auto_Sync.Auto_Sync_Notif_Dup">
             <intent-filter>

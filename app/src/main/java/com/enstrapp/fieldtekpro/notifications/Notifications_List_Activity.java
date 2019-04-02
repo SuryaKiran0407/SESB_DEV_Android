@@ -248,10 +248,10 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            String startdate = cursor.getString(9);
+                            String startdate = cursor.getString(18);
                             String StartDate_format = "";
-                            String startdate_time = cursor.getString(9) + " " +
-                                    cursor.getString(11);
+                            String startdate_time = cursor.getString(18) + " " +
+                                    cursor.getString(51);
                             if (startdate.equals("00000000")) {
                                 startdate = "";
                                 StartDate_format = "";
@@ -328,7 +328,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                         }
                     });
                 }
-                filterData(notifications_list_ad);
+                //filterData(notifications_list_ad);
                 notif_adapter = new Notif_Adapter(Notifications_List_Activity.this,
                         notifications_list_ad);
                 list_recycleview.setHasFixedSize(true);

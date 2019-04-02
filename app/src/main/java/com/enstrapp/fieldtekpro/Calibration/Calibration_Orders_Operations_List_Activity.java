@@ -58,16 +58,12 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     RelativeLayout footer;
     ImageView home_imageview;
     Boolean yes = false;
-
-    private ArrayList<EquiList> equi_list = new ArrayList<>();
-    private ArrayList<EquiList> equi_list1 = new ArrayList<EquiList>();
-
+    ArrayList<EquiList> equi_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_orders_operations_activity);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -81,15 +77,8 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         home_imageview = findViewById(R.id.home_imageview);
         cancel_button = (Button) findViewById(R.id.cancel_button);
         submit_button = (Button) findViewById(R.id.submit_button);
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
         title_textview = (TextView) findViewById(R.id.title_textview);
         footer = (RelativeLayout) findViewById(R.id.footer);
-
-        /*setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(null);
-        toolbar.setPadding(0, 0, 0, 0);//for tab otherwise give space in tab
-        toolbar.setContentInsetsAbsolute(0, 0);*/
 
         home_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,12 +87,11 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             }
         });
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
 
         try {
             setupTabIcons();
@@ -119,13 +107,14 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
         try {
             Cursor cursor1 = null;
-            cursor1 = App_db.rawQuery("select DISTINCT Equnr,Prueflos from EtQinspData Where Aufnr = ?", new String[]{order_id});
+            cursor1 = App_db.rawQuery("select * from EtQinspData  Where Aufnr = ? group by Equnr", new String[]{order_id});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
-                        equi_id = cursor1.getString(0);
+                        EquiList eql = new EquiList(cursor1.getString(21), equipName(cursor1.getString(21)));
+                        equi_list.add(eql);
                         Prueflos = cursor1.getString(1);
-                        equip_txt = equipName(equi_id);
+
                     }
                     while (cursor1.moveToNext());
                 }
@@ -139,41 +128,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         if (Prueflos != null && !Prueflos.equals("")) {
             title_textview.setText(getString(R.string.lot_no, Prueflos));
         }
-        EquiList list = new EquiList(equi_id, equip_txt);
-        equi_list1.add(list);
-
-
-        try {
-            Cursor cursor = null;
-            cursor = App_db.rawQuery("select * from EtOrderOlist Where Aufnr = ?", new String[]{order_id});
-            if (cursor != null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        EquiList eql = new EquiList(cursor.getString(6), cursor.getString(12));
-                        equi_list.add(eql);
-                    }
-                    while (cursor.moveToNext());
-                }
-            } else {
-                cursor.close();
-                Prueflos = "";
-            }
-        } catch (Exception e) {
-        }
-        if (equi_list.size()>0) {
-            yes = true;
-            for (int i = 0; i >= equi_list.size(); i++) {
-                if (equi_id.equals(equi_list.get(i).getEqunr())) {
-                    equi_list.remove(equi_list.get(i).getEqunr());
-                }
-            }
-            equi_list1.addAll(equi_list);
-        }else
-        {
-            yes = false;
-        }
-
-
         String vkatart = "";
         try {
             Cursor cursor1 = null;
@@ -211,14 +165,16 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             public void onPageScrollStateChanged(int state) {
             }
         });
-
+        if (equi_list.size() > 1) {
+            yes = true;
+        }
 
         cancel_button.setOnClickListener(this);
         submit_button.setOnClickListener(this);
 
     }
 
-        public class EquiList {
+    public class EquiList {
         private String Equnr;
         private String Eqtxt;
         ArrayList<EquiList> arrayList = new ArrayList<>();
@@ -250,18 +206,15 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         public EquiList(String equnr, String eqtxt) {
             Equnr = equnr;
             Eqtxt = eqtxt;
-
         }
-
     }
-
 
     private void setupViewPager(final ViewPager viewPager, List<EquiList> equi_list) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         operations_fragment = new Calibration_Operations_Fragment();
         usageDecision_fragment = new Calibration_UsageDecision_Fragment();
         defects_fragment = new Calibration_Defects_Fragment();
-        if (this.equi_list.size() > 0) {
+        if (this.equi_list.size() > 1) {
             adapter.addFragment(operations_fragment, getString(R.string.equipments));
         } else {
             adapter.addFragment(operations_fragment, getString(R.string.operations));
@@ -272,7 +225,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         viewPager.setAdapter(adapter);
     }
 
-
     private View prepareTabView(int pos) {
         View view = getLayoutInflater().inflate(R.layout.custom_tab, null);
         TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
@@ -280,29 +232,10 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         return view;
     }
 
-
     private void setupTabIcons() {
         for (int i = 0; i < tabTitle.length; i++) {
             tabLayout.getTabAt(i).setCustomView(prepareTabView(i));
         }
-    }
-
-
-    public String getorder_id() {
-        return order_id;
-    }
-
-
-    public String getplant_id() {
-        return plant_id;
-    }
-
-    ArrayList<EquiList> getEqui_list() {
-        return equi_list;
-    }
-
-    ArrayList<EquiList> getEqui_list1() {
-        return equi_list1;
     }
 
     @Override
@@ -345,7 +278,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         }
     }
 
-
     private class Get_Token extends AsyncTask<Void, Integer, Void> {
         String token_status = "";
 
@@ -362,11 +294,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -390,11 +317,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         String Prueflos = "";
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected Void doInBackground(Void... params) {
             try {
                 DateFormat date_format = new SimpleDateFormat("yyyyMMdd");
@@ -404,7 +326,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 String time = time_format.format(todaysdate.getTime());
 
                 /*Fetching Operations Data*/
-
                 Calibration_Operations_Fragment operations_tab = (Calibration_Operations_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                 List<Orders_Operations_Parcelable> operations_data = operations_tab.getOperationData();
                 for (int i = 0; i < operations_data.size(); i++) {
@@ -438,10 +359,10 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                             model_notif_calibration_operations.setPruefbemkt(Start_calibration_parcelables.get(j).getPRUEFBEMKT());
                             model_notif_calibration_operations.setMbewertg(Start_calibration_parcelables.get(j).getValuation());
                             model_notif_calibration_operations.setPruefer(Start_calibration_parcelables.get(j).getPRUEFER());
-                            model_notif_calibration_operations.setPruefdatuv(date);
-                            model_notif_calibration_operations.setPruefdatub(date);
-                            model_notif_calibration_operations.setPruefzeitv(time);
-                            model_notif_calibration_operations.setPruefzeitb(time);
+                            model_notif_calibration_operations.setPruefdatuv(Start_calibration_parcelables.get(j).getPruefdatuv());
+                            model_notif_calibration_operations.setPruefdatub(Start_calibration_parcelables.get(j).getPruefdatub());
+                            model_notif_calibration_operations.setPruefzeitv(Start_calibration_parcelables.get(j).getPruefzeitv());
+                            model_notif_calibration_operations.setPruefzeitb(Start_calibration_parcelables.get(j).getPruefzeitb());
                             model_notif_calibration_operations.setIststpumf(Integer.parseInt(Start_calibration_parcelables.get(j).getISTSTPUMF()));
                             model_notif_calibration_operations.setAnzfehleh(0);
                             model_notif_calibration_operations.setAnzwertg(Integer.parseInt(Start_calibration_parcelables.get(j).getANZWERTG()));
@@ -459,7 +380,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 }
                 /*Fetching Operations Data*/
 
-
                 /*Fetching Usage Decision Data*/
                 Calibration_UsageDecision_Fragment header_tab = (Calibration_UsageDecision_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
                 Calibration_Usage_Decision_Object header_data = header_tab.getUsageDecisionData();
@@ -476,7 +396,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 model_notif_calibration_usageDecision.setAction("I");
                 calib_usagedecision_ArrayList.add(model_notif_calibration_usageDecision);
                 /*Fetching Usage Decision Data*/
-
 
                 /*Fetching Defects Data*/
                 Calibration_Defects_Fragment defects_fragment = (Calibration_Defects_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
@@ -498,16 +417,10 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 }
                 /*Fetching Defects Data*/
 
-
                 calibration_submit_status = Calibration_Save.Post_Calibration_Data(Calibration_Orders_Operations_List_Activity.this, calib_operations_ArrayList, calib_usagedecision_ArrayList, calib_defects_ArrayList, order_id);
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -529,7 +442,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             }
         }
     }
-
 
     private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
@@ -554,25 +466,4 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         }
         return "";
     }
-
-    private String plnrGrpName(String plnrGrpId, String iwerk) {
-        Cursor cursor = null;
-        try {
-            cursor = App_db.rawQuery("select * from GET_EtIngrp where Ingrp = ? and" +
-                    " Iwerk = ?", new String[]{plnrGrpId, iwerk});
-            if (cursor != null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    return cursor.getString(3);
-                }
-            }
-        } catch (Exception e) {
-            if (cursor != null)
-                cursor.close();
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return "";
-    }
-
 }

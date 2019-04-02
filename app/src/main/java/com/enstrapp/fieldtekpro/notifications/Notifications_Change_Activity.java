@@ -864,6 +864,7 @@ public class Notifications_Change_Activity extends AppCompatActivity implements 
                                                     statement11.bindString(8, uuid);
                                                     statement11.bindString(9, "");
                                                     statement11.bindString(10, uniqueKey.toString());
+                                                    statement11.bindString(11,notif_text);
                                                     statement11.execute();
                                                     App_db.setTransactionSuccessful();
                                                     App_db.endTransaction();

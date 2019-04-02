@@ -59,26 +59,41 @@ public class Calibration_Operation_Activity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.operations_list_activity);
 
+        no_data_textview = findViewById(R.id.no_data_textview1);
+        recyclerview = findViewById(R.id.recyclerview);
+        no_data_layout = findViewById(R.id.no_data_layout);
+        back_imageview = findViewById(R.id.back_imageview);
+        layout = findViewById(R.id.layout);
+        cancel_button = findViewById(R.id.cancel_button);
+        send_button = findViewById(R.id.send_button);
+
+        orders_operations_parcables.clear();
+        start_calibration_parcelables.clear();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             order_id = extras.getString("order_id");
             equip_id = extras.getString("equip_id");
+            orders_operations_parcables = extras.getParcelableArrayList("operations");
+        }
+
+        if (orders_operations_parcables.size() > 0) {
+            data_adapter = new Data_Adapter(Calibration_Operation_Activity.this, orders_operations_parcables);
+            recyclerview.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Calibration_Operation_Activity.this);
+            recyclerview.setLayoutManager(layoutManager);
+            recyclerview.setItemAnimator(new DefaultItemAnimator());
+            recyclerview.setAdapter(data_adapter);
+            no_data_textview.setVisibility(View.GONE);
+            recyclerview.setVisibility(View.VISIBLE);
+        } else {
+            no_data_textview.setVisibility(View.VISIBLE);
+            recyclerview.setVisibility(View.GONE);
         }
 
         DATABASE_NAME = getApplicationContext().getString(R.string.database_name);
         App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, getApplicationContext().MODE_PRIVATE, null);
 
-        no_data_textview = (TextView) findViewById(R.id.no_data_textview1);
-        recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
-        no_data_layout = (LinearLayout) findViewById(R.id.no_data_layout);
-        back_imageview = findViewById(R.id.back_imageview);
-        layout = findViewById(R.id.layout);
-        cancel_button = findViewById(R.id.cancel_button);
-        send_button = findViewById(R.id.send_button);
-        orders_operations_parcables.clear();
-        start_calibration_parcelables.clear();
-
-        new Get_Operations_Data().execute();
         back_imageview.setOnClickListener(this);
         cancel_button.setOnClickListener(this);
         send_button.setOnClickListener(this);
@@ -92,362 +107,10 @@ public class Calibration_Operation_Activity extends AppCompatActivity implements
             Calibration_Operation_Activity.this.finish();
         } else if (v == send_button) {
             Intent intent = new Intent();
-            intent.putExtra("start_orderOperation_arraylist", orders_operations_parcables);
+            intent.putExtra("orders_operations_parcables", orders_operations_parcables);
+            intent.putExtra("equip_id", equip_id);
             setResult(0, intent);
             Calibration_Operation_Activity.this.finish();
-        }
-    }
-
-    private class Get_Operations_Data extends AsyncTask<Void, Integer, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog.show_progress_dialog(Calibration_Operation_Activity.this, getResources().getString(R.string.loading));
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                Cursor cursor = App_db.rawQuery("select * from DUE_ORDERS_EtOrderOperations where Aufnr = ?" + "ORDER BY id ASC", new String[]{order_id});
-                if (cursor != null && cursor.getCount() > 0) {
-                    if (cursor.moveToFirst()) {
-                        do {
-
-                            String operation_id = cursor.getString(3);
-
-                            int total_count = 0;
-                            ArrayList<String> list = new ArrayList<String>();
-                            try {
-                                Cursor cursor1 = App_db.rawQuery("select * from EtQinspData where Aufnr = ? and Vornr = ?", new String[]{order_id, operation_id});
-                                total_count = cursor1.getCount();
-                                if (cursor1 != null && cursor1.getCount() > 0) {
-                                    if (cursor1.moveToFirst()) {
-                                        do {
-                                            String Mbewertg = cursor1.getString(23);
-                                            if (Mbewertg.equals("R")) {
-                                            } else if (Mbewertg.equals("A")) {
-                                                list.add(Mbewertg);
-                                            } else {
-                                            }
-                                        }
-                                        while (cursor1.moveToNext());
-                                    }
-                                } else {
-                                    cursor1.close();
-                                }
-                            } catch (Exception e) {
-                            }
-
-                            StringBuilder stringbuilder1 = new StringBuilder();
-                            try {
-                                Cursor cursor11 = App_db.rawQuery("select * from DUE_ORDERS_Longtext where Aufnr = ? and Activity = ?", new String[]{order_id, operation_id});
-                                if (cursor11 != null && cursor11.getCount() > 0) {
-                                    if (cursor11.moveToFirst()) {
-                                        do {
-                                            stringbuilder1.append(cursor11.getString(4));
-                                            stringbuilder1.append(System.getProperty("line.separator"));
-                                        }
-                                        while (cursor11.moveToNext());
-                                    }
-                                } else {
-                                    cursor11.close();
-                                }
-                            } catch (Exception e) {
-                            }
-
-
-                            start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
-                            try {
-                                Cursor cursor2 = App_db.rawQuery("select * from EtQinspData where Aufnr = ? and Vornr = ?", new String[]{order_id, operation_id});
-                                if (cursor2 != null && cursor2.getCount() > 0) {
-                                    if (cursor2.moveToFirst()) {
-                                        do {
-                                            UUID uniqueKey = UUID.randomUUID();
-                                            String Valuation = "R";
-                                            String QUANTITAT = cursor2.getString(8);
-                                            if (QUANTITAT.equalsIgnoreCase("X")) {
-                                                String result = cursor2.getString(15);
-                                                if (result != null && !result.equals("")) {
-                                                    String fromm = "", too = "";
-                                                    String from = cursor2.getString(18);
-                                                    if (from != null && !from.equals("")) {
-                                                        if (from.contains(",")) {
-                                                            String result1 = from.replace(",", ".");
-                                                            Float dvd = Float.parseFloat(result1);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            too = df.format(dvd);
-                                                        } else {
-                                                            Float dvd = Float.parseFloat(from);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            too = df.format(dvd);
-                                                        }
-                                                    } else {
-                                                        too = "";
-                                                    }
-
-                                                    String to = cursor2.getString(17);
-                                                    if (to != null && !to.equals("")) {
-                                                        if (to.contains(",")) {
-                                                            String result1 = to.replace(",", ".");
-                                                            Float dvd = Float.parseFloat(result1);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            fromm = df.format(dvd);
-                                                        } else {
-                                                            Float dvd = Float.parseFloat(to);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            fromm = df.format(dvd);
-                                                        }
-                                                    } else {
-                                                        fromm = "";
-                                                    }
-
-                                                    if (result.contains(",")) {
-                                                        String result1 = result.replace(",", ".");
-                                                        Float dvd = Float.parseFloat(result1);
-                                                        DecimalFormat df = new DecimalFormat("###.##");
-                                                        String res = df.format(dvd);
-                                                        Float floatt = Float.parseFloat(res);
-                                                        Float floatt1 = Float.parseFloat(too);
-                                                        Float floatt2 = Float.parseFloat(fromm);
-                                                        if (floatt >= floatt1 && floatt <= floatt2) {
-                                                            Valuation = "A";
-                                                        } else {
-                                                            Valuation = "R";
-                                                        }
-                                                    } else {
-                                                        Float floatt = Float.parseFloat(result);
-                                                        Float floatt1 = Float.parseFloat(too);
-                                                        Float floatt2 = Float.parseFloat(fromm);
-                                                        if (floatt >= floatt1 && floatt <= floatt2) {
-                                                            Valuation = "A";
-                                                        } else {
-                                                            Valuation = "R";
-                                                        }
-                                                    }
-                                                    Start_Calibration_Parcelable start_calibration_parcelable = new Start_Calibration_Parcelable();
-                                                    start_calibration_parcelable.setMerknr(cursor2.getString(7));
-                                                    start_calibration_parcelable.setPrueflos(cursor2.getString(2));
-                                                    start_calibration_parcelable.setQUANTITAT(cursor2.getString(8));
-                                                    start_calibration_parcelable.setVorglfnr("");
-                                                    start_calibration_parcelable.setVERWMERKM(cursor2.getString(13));
-                                                    start_calibration_parcelable.setMSEHI(cursor2.getString(11));
-                                                    start_calibration_parcelable.setKURZTEXT(cursor2.getString(14));
-                                                    start_calibration_parcelable.setQUALITAT(cursor2.getString(9));
-                                                    start_calibration_parcelable.setRESULT(cursor2.getString(15));
-                                                    start_calibration_parcelable.setPRUEFBEMKT(cursor2.getString(22));
-                                                    start_calibration_parcelable.setTOLERANZUB(too);
-                                                    start_calibration_parcelable.setTOLERANZOB(fromm);
-                                                    start_calibration_parcelable.setANZWERTG(cursor2.getString(31));
-                                                    start_calibration_parcelable.setISTSTPUMF(cursor2.getString(29));
-                                                    start_calibration_parcelable.setMSEHL(cursor2.getString(12));
-                                                    start_calibration_parcelable.setAUSWMENGE1(cursor2.getString(35));
-                                                    start_calibration_parcelable.setWERKS(cursor2.getString(41));
-                                                    start_calibration_parcelable.setPRUEFER(cursor2.getString(24));
-                                                    start_calibration_parcelable.setValuation(Valuation);
-                                                    start_calibration_parcelable.setUuid(uniqueKey.toString());
-                                                    start_calibration_parcelables.add(start_calibration_parcelable);
-                                                } else {
-                                                    Valuation = "R";
-
-                                                    String fromm = "", too = "";
-                                                    String from = cursor2.getString(18);
-                                                    if (from != null && !from.equals("")) {
-                                                        if (from.contains(",")) {
-                                                            String result1 = from.replace(",", ".");
-                                                            Float dvd = Float.parseFloat(result1);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            too = df.format(dvd);
-                                                        } else {
-                                                            Float dvd = Float.parseFloat(from);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            too = df.format(dvd);
-                                                        }
-                                                    } else {
-                                                        too = "";
-                                                    }
-
-                                                    String to = cursor2.getString(17);
-                                                    if (to != null && !to.equals("")) {
-                                                        if (to.contains(",")) {
-                                                            String result1 = to.replace(",", ".");
-                                                            Float dvd = Float.parseFloat(result1);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            fromm = df.format(dvd);
-                                                        } else {
-                                                            Float dvd = Float.parseFloat(to);
-                                                            DecimalFormat df = new DecimalFormat("###.##");
-                                                            fromm = df.format(dvd);
-                                                        }
-                                                    } else {
-                                                        fromm = "";
-                                                    }
-
-                                                    Start_Calibration_Parcelable start_calibration_parcelable = new Start_Calibration_Parcelable();
-                                                    start_calibration_parcelable.setMerknr(cursor2.getString(7));
-                                                    start_calibration_parcelable.setPrueflos(cursor2.getString(2));
-                                                    start_calibration_parcelable.setQUANTITAT(cursor2.getString(8));
-                                                    start_calibration_parcelable.setVorglfnr("");
-                                                    start_calibration_parcelable.setVERWMERKM(cursor2.getString(13));
-                                                    start_calibration_parcelable.setMSEHI(cursor2.getString(11));
-                                                    start_calibration_parcelable.setKURZTEXT(cursor2.getString(14));
-                                                    start_calibration_parcelable.setQUALITAT(cursor2.getString(9));
-                                                    start_calibration_parcelable.setRESULT(cursor2.getString(15));
-                                                    start_calibration_parcelable.setPRUEFBEMKT(cursor2.getString(22));
-                                                    start_calibration_parcelable.setTOLERANZUB(too);
-                                                    start_calibration_parcelable.setTOLERANZOB(fromm);
-                                                    start_calibration_parcelable.setANZWERTG(cursor2.getString(31));
-                                                    start_calibration_parcelable.setISTSTPUMF(cursor2.getString(29));
-                                                    start_calibration_parcelable.setMSEHL(cursor2.getString(12));
-                                                    start_calibration_parcelable.setAUSWMENGE1(cursor2.getString(35));
-                                                    start_calibration_parcelable.setWERKS(cursor2.getString(41));
-                                                    start_calibration_parcelable.setPRUEFER(cursor2.getString(24));
-                                                    start_calibration_parcelable.setValuation(Valuation);
-                                                    start_calibration_parcelable.setUuid(uniqueKey.toString());
-                                                    start_calibration_parcelables.add(start_calibration_parcelable);
-                                                }
-                                            } else {
-                                                /*String result = cursor2.getString(15);
-                                                String Auswmenge1 = cursor2.getString(35);
-                                                String Plant = cursor2.getString(41);
-                                                try
-                                                {
-                                                    Cursor cursor1 = null;
-                                                    cursor1 = App_db.rawQuery("select * from EtInspCodes Where Werks = ? AND Auswahlmge = ?", new String[]{Plant, Auswmenge1});
-                                                    if (cursor1 != null && cursor1.getCount() > 0)
-                                                    {
-                                                        if (cursor1.moveToFirst())
-                                                        {
-                                                            do
-                                                            {
-                                                                String value = cursor1.getString(8);
-                                                                if(value.equalsIgnoreCase("A"))
-                                                                {
-                                                                    Valuation = "A";
-                                                                }
-                                                                else
-                                                                {
-                                                                    Valuation = "";
-                                                                }
-                                                            }
-                                                            while (cursor1.moveToNext());
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        cursor1.close();
-                                                    }
-                                                }
-                                                catch (Exception e)
-                                                {
-                                                }*/
-                                                Valuation = cursor2.getString(23);
-                                                Start_Calibration_Parcelable start_calibration_parcelable = new Start_Calibration_Parcelable();
-                                                start_calibration_parcelable.setMerknr(cursor2.getString(7));
-                                                start_calibration_parcelable.setPrueflos(cursor2.getString(2));
-                                                start_calibration_parcelable.setQUANTITAT(cursor2.getString(8));
-                                                start_calibration_parcelable.setVorglfnr("");
-                                                start_calibration_parcelable.setVERWMERKM(cursor2.getString(13));
-                                                start_calibration_parcelable.setMSEHI(cursor2.getString(11));
-                                                start_calibration_parcelable.setKURZTEXT(cursor2.getString(14));
-                                                start_calibration_parcelable.setQUALITAT(cursor2.getString(9));
-                                                start_calibration_parcelable.setRESULT(cursor2.getString(15));
-                                                start_calibration_parcelable.setPRUEFBEMKT(cursor2.getString(22));
-                                                start_calibration_parcelable.setTOLERANZUB("");
-                                                start_calibration_parcelable.setTOLERANZOB("");
-                                                start_calibration_parcelable.setANZWERTG(cursor2.getString(31));
-                                                start_calibration_parcelable.setISTSTPUMF(cursor2.getString(29));
-                                                start_calibration_parcelable.setMSEHL(cursor2.getString(12));
-                                                start_calibration_parcelable.setAUSWMENGE1(cursor2.getString(35));
-                                                start_calibration_parcelable.setWERKS(cursor2.getString(41));
-                                                start_calibration_parcelable.setPRUEFER(cursor2.getString(24));
-                                                start_calibration_parcelable.setValuation(Valuation);
-                                                start_calibration_parcelable.setUuid(uniqueKey.toString());
-                                                start_calibration_parcelables.add(start_calibration_parcelable);
-                                            }
-                                        }
-                                        while (cursor2.moveToNext());
-                                    }
-                                } else {
-                                    cursor2.close();
-                                }
-                            } catch (Exception e) {
-                            }
-
-                            if (total_count == list.size()) {
-                                /*Operation_Object olo = new Operation_Object(cursor.getString(3), cursor.getString(5),stringbuilder1.toString(), cursor.getString(10), cursor.getString(11),cursor.getString(7) ,cursor.getString(22),cursor.getString(6), cursor.getString(21), cursor.getString(8), cursor.getString(23), "A", cursor.getString(20), cursor.getString(25));
-                                operation_list.add(olo);*/
-                                Orders_Operations_Parcelable orders_operations_parcable = new Orders_Operations_Parcelable();
-                                orders_operations_parcable.setOperation_id(cursor.getString(3));
-                                orders_operations_parcable.setOperations_shorttext(cursor.getString(5));
-                                orders_operations_parcable.setOperations_longtext(stringbuilder1.toString());
-                                orders_operations_parcable.setDuration(cursor.getString(10));
-                                orders_operations_parcable.setDuration_unit(cursor.getString(11));
-                                orders_operations_parcable.setPlant_id(cursor.getString(7));
-                                orders_operations_parcable.setPlant_text(cursor.getString(22));
-                                orders_operations_parcable.setWorkcenter_id(cursor.getString(6));
-                                orders_operations_parcable.setWorkcenter_text(cursor.getString(21));
-                                orders_operations_parcable.setControlkey_id(cursor.getString(8));
-                                orders_operations_parcable.setControlkey_text(cursor.getString(23));
-                                orders_operations_parcable.setStatus("A");
-                                orders_operations_parcable.setAueru(cursor.getString(20));
-                                orders_operations_parcable.setUsr01(cursor.getString(25));
-                                orders_operations_parcable.setStart_calibration_parcelables(start_calibration_parcelables);
-                                orders_operations_parcables.add(orders_operations_parcable);
-                            } else {
-                                /*Operation_Object olo = new Operation_Object(cursor.getString(3), cursor.getString(5),stringbuilder1.toString(), cursor.getString(10), cursor.getString(11),cursor.getString(7) ,cursor.getString(22),cursor.getString(6), cursor.getString(21), cursor.getString(8), cursor.getString(23), "R", cursor.getString(20), cursor.getString(25));
-                                operation_list.add(olo);*/
-                                Orders_Operations_Parcelable orders_operations_parcable = new Orders_Operations_Parcelable();
-                                orders_operations_parcable.setOperation_id(cursor.getString(3));
-                                orders_operations_parcable.setOperations_shorttext(cursor.getString(5));
-                                orders_operations_parcable.setOperations_longtext(stringbuilder1.toString());
-                                orders_operations_parcable.setDuration(cursor.getString(10));
-                                orders_operations_parcable.setDuration_unit(cursor.getString(11));
-                                orders_operations_parcable.setPlant_id(cursor.getString(7));
-                                orders_operations_parcable.setPlant_text(cursor.getString(22));
-                                orders_operations_parcable.setWorkcenter_id(cursor.getString(6));
-                                orders_operations_parcable.setWorkcenter_text(cursor.getString(21));
-                                orders_operations_parcable.setControlkey_id(cursor.getString(8));
-                                orders_operations_parcable.setControlkey_text(cursor.getString(23));
-                                orders_operations_parcable.setStatus("R");
-                                orders_operations_parcable.setAueru(cursor.getString(20));
-                                orders_operations_parcable.setUsr01(cursor.getString(25));
-                                orders_operations_parcable.setStart_calibration_parcelables(start_calibration_parcelables);
-                                orders_operations_parcables.add(orders_operations_parcable);
-                            }
-
-                        }
-                        while (cursor.moveToNext());
-                    }
-                } else {
-                    cursor.close();
-                }
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            if (orders_operations_parcables.size() > 0) {
-                data_adapter = new Data_Adapter(Calibration_Operation_Activity.this, orders_operations_parcables);
-                recyclerview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Calibration_Operation_Activity.this);
-                recyclerview.setLayoutManager(layoutManager);
-                recyclerview.setItemAnimator(new DefaultItemAnimator());
-                recyclerview.setAdapter(data_adapter);
-                no_data_textview.setVisibility(View.GONE);
-                recyclerview.setVisibility(View.VISIBLE);
-            } else {
-                no_data_textview.setVisibility(View.VISIBLE);
-                recyclerview.setVisibility(View.GONE);
-            }
-            progressDialog.dismiss_progress_dialog();
         }
     }
 
@@ -489,14 +152,14 @@ public class Calibration_Operation_Activity extends AppCompatActivity implements
             holder.status_view.setVisibility(View.VISIBLE);
             holder.op_id_textview.setText(olo.getOperation_id());
             holder.op_text_textview.setText(olo.getOperations_shorttext());
-            holder.MBEWERTG_textview.setText(olo.getStatus());
+          /*  holder.MBEWERTG_textview.setText(olo.getStatus());
             if (holder.MBEWERTG_textview.getText().toString().equalsIgnoreCase("R")) {
                 holder.status_view.setBackgroundColor(getResources().getColor(R.color.red));
             } else if (holder.MBEWERTG_textview.getText().toString().equalsIgnoreCase("A")) {
                 holder.status_view.setBackgroundColor(getResources().getColor(R.color.dark_green));
             } else {
                 holder.status_view.setBackgroundColor(getResources().getColor(R.color.red));
-            }
+            }*/
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -548,6 +211,10 @@ public class Calibration_Operation_Activity extends AppCompatActivity implements
                         start_calibration_parcelable.setValuation(start_inspection_arraylist.get(i).get("Valuation"));
                         start_calibration_parcelable.setUuid(start_inspection_arraylist.get(i).get("Uuid"));
                         start_calibration_parcelable.setEQUNR(equip_id);
+                        start_calibration_parcelable.setPruefdatuv(start_inspection_arraylist.get(i).get("Pruefdatuv"));
+                        start_calibration_parcelable.setPruefdatub(start_inspection_arraylist.get(i).get("Pruefdatub"));
+                        start_calibration_parcelable.setPruefzeitv(start_inspection_arraylist.get(i).get("Pruefzeitv"));
+                        start_calibration_parcelable.setPruefzeitb(start_inspection_arraylist.get(i).get("Pruefzeitb"));
                         selected_start_calibration_parcelables.add(start_calibration_parcelable);
                     }
                     String data_position = data.getStringExtra("data_position");

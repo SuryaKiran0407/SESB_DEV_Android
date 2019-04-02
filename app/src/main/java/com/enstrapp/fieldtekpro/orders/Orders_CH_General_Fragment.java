@@ -53,14 +53,14 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
     TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet,
             funcLocName_tiet, equipId_tiet, equipName_tiet, wrkCntr_tiet, respCostCntr_tiet,
             priority_tiet, plannerGroup_tiet, personResp_tiet, basicStDt_tiet, basicEnDt_tiet,
-            sysCond_tiet, status_tiet, revision_tiet, wbs_tiet;
+            sysCond_tiet, status_tiet, revision_tiet, wbs_tiet,iwerk_tiet, plant_tiet;;
     ImageView activity_type_imageview, ordrTyp_iv, funcLoc_iv, equipId_iv, equipIdScan_iv,
             wrkCntr_iv, respCstCntr_iv, priority_iv, plannerGroup_iv, personResp_iv, basicStDt_iv,
             basicEdDt_iv, sysCond_iv, wbs_iv, revision_iv, longtext_imageview;
     TextView notifNum_tv;
     LinearLayout equipId_ll, notifNum_ll, ordrTyp_ll, wbs_ll, revision_ll;
     TextInputLayout equipName_til, status_til;
-
+    String plant_id = "",iwerk = "";
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
 
@@ -141,6 +141,8 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
         activity_type_imageview = (ImageView) rootView.findViewById(R.id.activity_type_imageview);
         activity_type_edittext = rootView.findViewById(R.id.activity_type_edittext);
+        iwerk_tiet = (TextInputEditText) rootView.findViewById(R.id.iwerk_tiet);
+        plant_tiet = (TextInputEditText) rootView.findViewById(R.id.plant_tiet);
 
         ma = (Orders_Change_Activity) this.getActivity();
         ordrTyp_tiet.setEnabled(false);
@@ -246,6 +248,14 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
             sysCond_tiet.setText(ma.ohp.getSysCondName());
             activity_type_edittext
                     .setText(ma.ohp.getActivitytype_id() + " - " + ma.ohp.getActivitytype_text());
+            plant_id = ma.ohp.getPlant();
+            iwerk = ma.ohp.getIwerk();
+
+            if (plant_id != null && !plant_id.equals(""))
+                plant_tiet.setText(plant_id);
+
+            if (iwerk != null && !iwerk.equals(""))
+                iwerk_tiet.setText(iwerk);
         }
 
         ordrLngTxt_tiet.addTextChangedListener(new TextWatcher() {
@@ -570,6 +580,10 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             data.getStringExtra("kostl_id"), respCostCntrName(data.getStringExtra("kostl_id"))));
                     equipId_tiet.setText("");
                     equipName_tiet.setText("");
+                    if (ma.ohp.getPlant() != null && !ma.ohp.getPlant().equals(""))
+                        plant_tiet.setText(ma.ohp.getPlant());
+                    if (ma.ohp.getIwerk() != null && !ma.ohp.getIwerk().equals(""))
+                        iwerk_tiet.setText(ma.ohp.getIwerk());
                 }
                 break;
 
@@ -598,6 +612,10 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                             data.getStringExtra("wrkCntr_id"), wrkCntrName(data.getStringExtra("wrkCntr_id"))));
                     respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,
                             data.getStringExtra("kostl_id"), respCostCntrName(data.getStringExtra("kostl_id"))));
+                    if (ma.ohp.getPlant() != null && !ma.ohp.getPlant().equals(""))
+                        plant_tiet.setText(ma.ohp.getPlant());
+                    if (ma.ohp.getIwerk() != null && !ma.ohp.getIwerk().equals(""))
+                        iwerk_tiet.setText(ma.ohp.getIwerk());
                 }
                 break;
 
@@ -1391,6 +1409,10 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                                 cursor.getString(11), wrkCntrName(cursor.getString(11))));
                         respCostCntr_tiet.setText(getResources().getString(R.string.hypen_text,
                                 cursor.getString(12), respCostCntrName(cursor.getString(12))));
+                        if (ma.ohp.getPlant() != null && !ma.ohp.getPlant().equals(""))
+                            plant_tiet.setText(ma.ohp.getPlant());
+                        if (ma.ohp.getIwerk() != null && !ma.ohp.getIwerk().equals(""))
+                            iwerk_tiet.setText(ma.ohp.getIwerk());
                     } while (cursor.moveToNext());
                 }
             }

@@ -93,6 +93,17 @@ public class ItConfirmOrder_Ser implements Serializable
     @SerializedName("ExecFinTime")
     @Expose
     private String execFinTime;
+    @SerializedName("WorkCntr")
+    @Expose
+    private  String WorkCntr;
+
+    public String getWorkCntr() {
+        return WorkCntr;
+    }
+
+    public void setWorkCntr(String workCntr) {
+        WorkCntr = workCntr;
+    }
 
     public String getOrderid() {
         return orderid;

@@ -29,6 +29,7 @@ import com.enstrapp.fieldtekpro.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,19 +82,31 @@ public class Calibration_Start_Inspection_Fragment extends Fragment implements V
         enddatetime_button.setOnClickListener(this);
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd,yyyy");
-        SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat time = new SimpleDateFormat("HHmmss");
         start_date = date.format(c.getTime());
-        start_date_formatted = dateFormat.format(c.getTime());
         start_time = time.format(c.getTime());
-        stdatetime_button.setText(start_date_formatted + "\n" + start_time);
         end_date = date.format(c.getTime());
-        end_date_formatted = dateFormat.format(c.getTime());
         end_time = time.format(c.getTime());
-        enddatetime_button.setText(end_date_formatted + "\n" + end_time);
 
         if (activity.start_calibration_parcelables.size() > 0) {
+            for (Start_Calibration_Parcelable sCP : activity.start_calibration_parcelables) {
+                if (sCP.getPRUEFER() == null || sCP.getPRUEFER().equals(""))
+                    sCP.setPRUEFER(username);
+                if (sCP.getANZWERTG() == null || sCP.getANZWERTG().equals(""))
+                    if (sCP.getISTSTPUMF() != null && !sCP.getISTSTPUMF().equals(""))
+                        sCP.setANZWERTG(sCP.getISTSTPUMF());
+                if (sCP.getPruefdatuv() != null && !sCP.getPruefdatuv().equals(""))
+                    start_date = sCP.getPruefdatuv();
+                if (sCP.getPruefzeitv() != null && !sCP.getPruefzeitv().equals(""))
+                    start_time = sCP.getPruefzeitv();
+                if (sCP.getPruefdatub() != null && !sCP.getPruefdatub().equals(""))
+                    end_date = sCP.getPruefdatub();
+                if (sCP.getPruefzeitb() != null && !sCP.getPruefzeitb().equals(""))
+                    end_time = sCP.getPruefzeitb();
+                stdatetime_button.setText(formatDate(start_date) + "\n" + formatTime(start_time));
+                enddatetime_button.setText(formatDate(end_date) + "\n" + formatTime(end_time));
+            }
             data_adapter = new Data_Adapter(getActivity(), activity.start_calibration_parcelables);
             recyclerview.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -153,7 +166,6 @@ public class Calibration_Start_Inspection_Fragment extends Fragment implements V
             intent.putExtra("request_id", Integer.toString(2));
             startActivityForResult(intent, 2);
         } else if (v == add_button) {
-
             for (int i = 0; i < activity.start_calibration_parcelables.size(); i++) {
                 Start_Calibration_Parcelable start_calibration_parcelable = new Start_Calibration_Parcelable();
                 start_calibration_parcelable.setMerknr(activity.start_calibration_parcelables.get(i).getMerknr());
@@ -177,9 +189,13 @@ public class Calibration_Start_Inspection_Fragment extends Fragment implements V
                 start_calibration_parcelable.setValuation(activity.start_calibration_parcelables.get(i).getValuation());
                 start_calibration_parcelable.setUuid(activity.start_calibration_parcelables.get(i).getUuid());
                 start_calibration_parcelable.setEQUNR(equip_id);
+                start_calibration_parcelable.setPruefdatuv(start_date);
+                start_calibration_parcelable.setPruefdatub(end_date);
+                start_calibration_parcelable.setPruefzeitv(start_time);
+                start_calibration_parcelable.setPruefzeitb(end_time);
                 selected_start_calibration_parcelables.add(start_calibration_parcelable);
             }
-            int  data_position = activity.Position;
+            int data_position = activity.Position;
             activity.orders_operations_parcables.get(data_position).setStart_calibration_parcelables(selected_start_calibration_parcelables);
             ArrayList<String> valuation_list = new ArrayList<String>();
             if (valuation_list.size() == activity.start_calibration_parcelables.size()) {
@@ -341,7 +357,9 @@ public class Calibration_Start_Inspection_Fragment extends Fragment implements V
                         String from = olo.getTOLERANZUB();
                         String to = olo.getTOLERANZOB();
                         String entered_value = holder.reading_edittext.getText().toString();
-                        if (entered_value != null && !entered_value.equals("")) {
+                        if ((entered_value != null && !entered_value.equals(""))
+                                && (from != null && !from.equals(""))
+                                && (to != null && !to.equals(""))) {
                             Float floatt = Float.parseFloat(entered_value);
                             Float floatt1 = Float.parseFloat(from);
                             Float floatt2 = Float.parseFloat(to);
@@ -388,7 +406,6 @@ public class Calibration_Start_Inspection_Fragment extends Fragment implements V
         }
     }
 
-
     // Call Back method  to get the Message form other Activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -413,18 +430,40 @@ public class Calibration_Start_Inspection_Fragment extends Fragment implements V
                 recyclerview.setItemAnimator(new DefaultItemAnimator());
                 recyclerview.setAdapter(data_adapter);
             } else if (requestCode == 0) {
-                start_date = data.getStringExtra("date");
-                start_date_formatted = data.getStringExtra("date_formatted");
-                start_time = data.getStringExtra("time");
-                stdatetime_button.setText(start_date + "\n" + start_time);
+                start_date = data.getStringExtra("date_formatted");
+                start_time = data.getStringExtra("time_formatted");
+                stdatetime_button.setText(formatDate(start_date) + "\n" + formatTime(start_time));
             } else if (requestCode == 2) {
-                end_date = data.getStringExtra("date");
-                end_date_formatted = data.getStringExtra("date_formatted");
-                end_time = data.getStringExtra("time");
-                enddatetime_button.setText(end_date + "\n" + end_time);
+                end_date = data.getStringExtra("date_formatted");
+                end_time = data.getStringExtra("time_formatted");
+                enddatetime_button.setText(formatDate(end_date) + "\n" + formatTime(end_time));
             }
         }
     }
 
+    private String formatDate(String date) {
+        String inputPattern = "yyyyMMdd";
+        String outputPattern = "MMM dd,yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        try {
+            Date date1 = inputFormat.parse(date);
+            return outputFormat.format(date1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
+    private String formatTime(String time) {
+        String inputPattern = "HHmmss";
+        String outputPattern = "HH:mm:ss";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        try {
+            Date time1 = inputFormat.parse(time);
+            return outputFormat.format(time1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }

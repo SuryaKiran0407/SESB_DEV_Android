@@ -797,17 +797,24 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                     functionlocation_id = cursor.getString(1);
                                     plant_id = cursor.getString(29);
                                     plannergroup_id = cursor.getString(13);
-                                    plannergroup_text = "";
                                     floc_edittext.setText(functionlocation_id);
                                     workcenter_id = cursor.getString(11);
+                                    workcenter_text = wrkCntrName(workcenter_id, plant_id);
                                     iwerk = cursor.getString(29);
-                                    workCenter_edittext.setText(workcenter_id);
+                                    if (workcenter_id != null && !workcenter_id.equals(""))
+                                        if (workcenter_text != null && !workcenter_text.equals(""))
+                                            workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                                                    workcenter_text));
+                                        else
+                                            workCenter_edittext.setText(workcenter_id);
+                                    else
+                                        workCenter_edittext.setText("");
                                     if (plant_id != null && !plant_id.equals(""))
                                         plant_tiet.setText(plant_id);
                                     if (iwerk != null && !iwerk.equals(""))
                                         iwerk_tiet.setText(iwerk);
                                     floc_edittext.setText(functionlocation_id);
-                                    plannergroup_id = data.getStringExtra("ingrp_id");
+
                                     plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                                     if (plannergroup_id != null && !plannergroup_id.equals(""))
                                         if (plannergroup_text != null && !plannergroup_text.equals(""))

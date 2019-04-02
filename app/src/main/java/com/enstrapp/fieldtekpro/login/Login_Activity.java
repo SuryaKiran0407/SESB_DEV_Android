@@ -168,7 +168,7 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             int year = calendar.get(Calendar.YEAR);
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
-            copyright_textview.setText("© " + year + " | " + getResources().getString(R.string.application) + ". All rights reserved.");
+            copyright_textview.setText("© " + year + " | " + getResources().getString(R.string.enst) + ". All rights reserved.");
         } catch (PackageManager.NameNotFoundException e) {
         }
         /* getting current year and application version */

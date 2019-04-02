@@ -321,7 +321,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     public void onClick(View v) {
                         refresh_message_dialog.dismiss();
                         Intent intialload_intent = new Intent(DashBoard_Activity.this, InitialLoad_Activity.class);
-                        intialload_intent.putExtra("From", "");
+                        intialload_intent.putExtra("From", "REFR");
                         startActivity(intialload_intent);
                         DashBoard_Activity.this.finish();
                     }

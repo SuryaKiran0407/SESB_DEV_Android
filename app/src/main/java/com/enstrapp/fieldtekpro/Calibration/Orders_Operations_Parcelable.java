@@ -9,8 +9,24 @@ import java.util.ArrayList;
  * Created by VENKATA SURYA KIRAN on 08-Jun-18.
  */
 
-public class Orders_Operations_Parcelable implements Parcelable
-{
+public class Orders_Operations_Parcelable implements Parcelable {
+    private String operation_id;
+    private String operations_shorttext;
+    private String operations_longtext;
+    private String duration;
+    private String duration_unit;
+    private String plant_id;
+    private String plant_text;
+    private String workcenter_id;
+    private String workcenter_text;
+    private String controlkey_id;
+    private String controlkey_text;
+    private String status;
+    private String aueru;
+    private String Usr01;
+    private String Equnr;
+    private ArrayList<Start_Calibration_Parcelable> start_calibration_parcelables;
+
     public String getOperation_id() {
         return operation_id;
     }
@@ -123,22 +139,13 @@ public class Orders_Operations_Parcelable implements Parcelable
         Usr01 = usr01;
     }
 
-    private String operation_id;
-    private String operations_shorttext;
-    private String operations_longtext;
-    private String duration;
-    private String duration_unit;
-    private String plant_id;
-    private String plant_text;
-    private String workcenter_id;
-    private String workcenter_text;
-    private String controlkey_id;
-    private String controlkey_text;
-    private String status;
-    private String aueru;
-    private String Usr01;
-    private ArrayList<Start_Calibration_Parcelable> start_calibration_parcelables;
+    public String getEqunr() {
+        return Equnr;
+    }
 
+    public void setEqunr(String equnr) {
+        Equnr = equnr;
+    }
 
     public ArrayList<Start_Calibration_Parcelable> getStart_calibration_parcelables() {
         return start_calibration_parcelables;
@@ -147,11 +154,6 @@ public class Orders_Operations_Parcelable implements Parcelable
     public void setStart_calibration_parcelables(ArrayList<Start_Calibration_Parcelable> start_calibration_parcelables) {
         this.start_calibration_parcelables = start_calibration_parcelables;
     }
-
-
-    public Orders_Operations_Parcelable() {
-    }
-
 
     @Override
     public int describeContents() {
@@ -174,7 +176,11 @@ public class Orders_Operations_Parcelable implements Parcelable
         dest.writeString(this.status);
         dest.writeString(this.aueru);
         dest.writeString(this.Usr01);
+        dest.writeString(this.Equnr);
         dest.writeTypedList(this.start_calibration_parcelables);
+    }
+
+    public Orders_Operations_Parcelable() {
     }
 
     protected Orders_Operations_Parcelable(Parcel in) {
@@ -192,6 +198,7 @@ public class Orders_Operations_Parcelable implements Parcelable
         this.status = in.readString();
         this.aueru = in.readString();
         this.Usr01 = in.readString();
+        this.Equnr = in.readString();
         this.start_calibration_parcelables = in.createTypedArrayList(Start_Calibration_Parcelable.CREATOR);
     }
 

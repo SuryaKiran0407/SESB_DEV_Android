@@ -511,7 +511,7 @@ public class Stock_List_Activity extends Fragment {
         private List<STOCK_List_Object> bom_list_data;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView material_number_textview, desc_textview, unrestricted_textview;
+            public TextView material_number_textview, desc_textview, unrestricted_textview,strgBin_tv,strgLoc_tv, plant_tv;
             LinearLayout bom_list_data_layout;
 
             public MyViewHolder(View view) {
@@ -519,6 +519,9 @@ public class Stock_List_Activity extends Fragment {
                 material_number_textview = (TextView) view.findViewById(R.id.material_number_textview);
                 desc_textview = (TextView) view.findViewById(R.id.desc_textview);
                 unrestricted_textview = (TextView) view.findViewById(R.id.unrestricted_textview);
+                strgBin_tv = (TextView) view.findViewById(R.id.strgBin_tv);
+                strgLoc_tv = (TextView) view.findViewById(R.id.strgLoc_tv);
+                plant_tv = (TextView) view.findViewById(R.id.plant_tv);
                 bom_list_data_layout = (LinearLayout) view.findViewById(R.id.bom_list_data_layout);
             }
         }
@@ -540,6 +543,9 @@ public class Stock_List_Activity extends Fragment {
             holder.material_number_textview.setText(blo.getMatnr());
             holder.desc_textview.setText(blo.getMaktx());
             holder.unrestricted_textview.setText(blo.getLabst());
+            holder.strgBin_tv.setText(blo.getLgpbe());
+            holder.strgLoc_tv.setText(blo.getLgort());
+            holder.plant_tv.setText(blo.getWerks());
 
             holder.bom_list_data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
