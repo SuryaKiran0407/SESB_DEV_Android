@@ -686,7 +686,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
             }
 
             if (holder.id_textview.getText().toString().startsWith("NOT")) {
-//                holder.status_type_textview.setBackground(getResources().getDrawable(R.drawable.offline_status));
+                holder.status_type_textview.setBackground(getResources().getDrawable(R.drawable.offline_status));
                /* holder.status_type_textview
                         .setTextColor(getResources().getColor(R.color.light_grey2));*/
                 holder.teco_layout.setVisibility(View.GONE);

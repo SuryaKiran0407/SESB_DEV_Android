@@ -905,7 +905,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     holder.teco_layout.setVisibility(View.GONE);
                 }
             }else   if (holder.orderId_tv.getText().toString().startsWith("ORD")) {
-//                holder.status_tv.setBackground(getDrawable(R.drawable.offline_status));
+                holder.status_tv.setBackground(getDrawable(R.drawable.offline_status));
 //                    holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
                 holder.teco_layout.setVisibility(GONE);
                 holder.release_layout.setVisibility(GONE);

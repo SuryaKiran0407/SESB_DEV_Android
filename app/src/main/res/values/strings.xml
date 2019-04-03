@@ -203,7 +203,7 @@
     <string name="no_network">No Network Available</string>
     <string name="connect_internet">Please Check your Internet Connection</string>
     <string name="settings">Settings</string>
-    <string name="app_version_data">FieldTekPro 1.1.1</string>
+    <string name="app_version_data">FieldTekPro 1.2</string>
     <string name="task_group">Task Group</string>
     <string name="tasks_code">Task Code </string>
     <string name="tasks_code_star">* Task Code </string>
@@ -855,6 +855,6 @@
     <string name="initialload_unsuccess">Initial data load is not completed.\nPlease perform initial load again.</string>
     <string name="mob_user">Mob. User</string>
     <string name="chars_left">You have 300 characters left</string>
-    <string name="enst">Enstrapp Pvt. Ltd</string>
+    <string name="enst">Enstrapp</string>
     <string name="notifrel_success">Notification %1s is released successfully.</string>
 </resources>
