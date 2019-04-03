@@ -501,6 +501,17 @@ public class Calibration_SER {
         @SerializedName("Udid")
         @Expose
         private String udid;
+        @SerializedName("Ltxa1")
+        @Expose
+        private String ltxa1;
+
+        public String getLtxa1() {
+            return ltxa1;
+        }
+
+        public void setLtxa1(String ltxa1) {
+            this.ltxa1 = ltxa1;
+        }
 
         public String getAufnr() {
             return aufnr;

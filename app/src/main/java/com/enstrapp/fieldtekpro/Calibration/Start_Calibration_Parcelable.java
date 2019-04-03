@@ -28,6 +28,55 @@ public class Start_Calibration_Parcelable implements Parcelable {
     private String Valuation;
     private String uuid;
     private String QUANTITAT;
+    private String EQUNR;
+    private String Pruefdatuv;
+    private String Pruefdatub;
+    private String Pruefzeitv;
+    private String Pruefzeitb;
+
+    public String getPruefdatuv() {
+        return Pruefdatuv;
+    }
+
+    public void setPruefdatuv(String pruefdatuv) {
+        Pruefdatuv = pruefdatuv;
+    }
+
+    public String getPruefdatub() {
+        return Pruefdatub;
+    }
+
+    public void setPruefdatub(String pruefdatub) {
+        Pruefdatub = pruefdatub;
+    }
+
+    public String getPruefzeitv() {
+        return Pruefzeitv;
+    }
+
+    public void setPruefzeitv(String pruefzeitv) {
+        Pruefzeitv = pruefzeitv;
+    }
+
+    public String getPruefzeitb() {
+        return Pruefzeitb;
+    }
+
+    public void setPruefzeitb(String pruefzeitb) {
+        Pruefzeitb = pruefzeitb;
+    }
+
+    public static Creator<Start_Calibration_Parcelable> getCREATOR() {
+        return CREATOR;
+    }
+
+    public String getEQUNR() {
+        return EQUNR;
+    }
+
+    public void setEQUNR(String EQUNR) {
+        this.EQUNR = EQUNR;
+    }
 
     public String getMerknr() {
         return Merknr;
@@ -218,6 +267,11 @@ public class Start_Calibration_Parcelable implements Parcelable {
         dest.writeString(this.Valuation);
         dest.writeString(this.uuid);
         dest.writeString(this.QUANTITAT);
+        dest.writeString(this.EQUNR);
+        dest.writeString(this.Pruefdatuv);
+        dest.writeString(this.Pruefdatub);
+        dest.writeString(this.Pruefzeitv);
+        dest.writeString(this.Pruefzeitb);
     }
 
     protected Start_Calibration_Parcelable(Parcel in) {
@@ -241,6 +295,11 @@ public class Start_Calibration_Parcelable implements Parcelable {
         this.Valuation = in.readString();
         this.uuid = in.readString();
         this.QUANTITAT = in.readString();
+        this.EQUNR = in.readString();
+        this.Pruefdatuv = in.readString();
+        this.Pruefdatub = in.readString();
+        this.Pruefzeitv = in.readString();
+        this.Pruefzeitb = in.readString();
     }
 
     public static final Creator<Start_Calibration_Parcelable> CREATOR = new Creator<Start_Calibration_Parcelable>() {

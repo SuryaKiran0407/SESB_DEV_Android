@@ -31,7 +31,8 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
 		<com.enstrapp.fieldtekpro.customfont.Font_Button
-			android:textColor="@color/colorPrimaryDark"
+			android:textColor="@color/white"
+			android:background="@color/colorPrimary"
 			android:textSize="15sp"
 			android:layout_gravity="center"
 			android:id="@+id/no_button"
@@ -41,8 +42,15 @@
 			android:padding="10dp"
 			android:layout_height="wrap_content"
 			android:theme="@style/Button1.Style"/>
+		<Button
+			android:layout_width="1dp"
+			android:layout_height="24dp"
+			android:layout_gravity="center"
+			android:background="@color/white" />
+
 		<com.enstrapp.fieldtekpro.customfont.Font_Button
-			android:textColor="@color/colorPrimaryDark"
+			android:textColor="@color/white"
+			android:background="@color/colorPrimary"
 			android:textSize="15sp"
 			android:layout_gravity="center"
 			android:id="@+id/yes_button"

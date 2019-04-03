@@ -54,7 +54,7 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
             personresponsible_text = "", priority_type_id = "", priority_type_text = "",
             workcenter_id = "", workcenter_text = "", plannergroup_text = "", plannergroup_id = "",
             plant_id = "", notification_type_id = "", notification_type_text = "",
-            functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "",iwerk = "";
+            functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "",iwerk = "",plning_plant = "",maintance_plant = "";
     ImageView equipmentsearch_imageview, equipmentscan_imageview, longtext_imageview;
     private static final int ZXING_CAMERA_PERMISSION = 3;
     Error_Dialog error_dialog = new Error_Dialog();
@@ -121,8 +121,8 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 equipment_text = bundle.getString("equipment_text");
                 functionlocation_id = bundle.getString("functionlocation_id");
                 functionlocation_text = bundle.getString("functionlocation_text");
-                if (functionlocation_text == null || functionlocation_text.equals("") ||
-                        functionlocation_text.equals("null")) {
+                if(functionlocation_text != null && !functionlocation_text.equals("")) {
+                }else {
                     try {
                         Cursor cursor = FieldTekPro_db.rawQuery("select * from EtFuncEquip " +
                                 "where Tplnr = ?", new String[]{functionlocation_id});
@@ -146,6 +146,10 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 plant_id = bundle.getString("plant_id");
                 plannergroup_id = bundle.getString("plannergroup_id");
                 plannergroup_text = bundle.getString("plannergroup_text");
+                plning_plant = bundle.getString("planing_plant");
+                maintance_plant = bundle.getString("maintnce_plant");
+                plant_tiet.setText(maintance_plant);
+                iwerk_tiet.setText(plning_plant);
                 if (plannergroup_text == null || plannergroup_text.equals("") ||
                         plannergroup_text.equals("null")) {
                     try {
@@ -166,8 +170,15 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 }
                 plannerGroup_edittext.setText(plannergroup_id + " - " + plannergroup_text);
                 workcenter_id = bundle.getString("work_center_id");
-                workcenter_text = bundle.getString("workcenter_text");
-                workCenter_edittext.setText(workcenter_id + "-" + workcenter_text );
+                workcenter_text = wrkCntrName(workcenter_id,plant_id);
+                if (workcenter_id != null && !workcenter_id.equals(""))
+                    if (workcenter_text != null && !workcenter_text.equals(""))
+                        workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                                workcenter_text));
+                    else
+                        workCenter_edittext.setText(workcenter_id);
+                else
+                    workCenter_edittext.setText("");
             } catch (Exception e) {
             }
         }
@@ -366,6 +377,7 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                 functionlocation_text = data.getStringExtra("functionlocation_text");
                 plant_id = data.getStringExtra("plant_id");
                 iwerk = data.getStringExtra("iwerk");
+                workcenter_text = wrkCntrName(workcenter_id, plant_id);
                 equipment_id = "";
                 equipment_text = "";
                 equipid_edittext.setText("");
@@ -441,17 +453,23 @@ public class Notifications_Create_Header_Fragment extends Fragment implements Vi
                                     functionlocation_id = cursor.getString(1);
                                     plant_id = cursor.getString(29);
                                     plannergroup_id = cursor.getString(13);
-                                    plannergroup_text = "";
                                     floc_edittext.setText(functionlocation_id);
                                     iwerk = cursor.getString(29);
                                     workcenter_id = cursor.getString(11);
-                                    workCenter_edittext.setText(workcenter_id);
+                                    workcenter_text = wrkCntrName(workcenter_id, plant_id);
+                                    if (workcenter_id != null && !workcenter_id.equals(""))
+                                        if (workcenter_text != null && !workcenter_text.equals(""))
+                                            workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                                                    workcenter_text));
+                                        else
+                                            workCenter_edittext.setText(workcenter_id);
+                                    else
+                                        workCenter_edittext.setText("");
                                     if (plant_id != null && !plant_id.equals(""))
                                         plant_tiet.setText(plant_id);
                                     if (iwerk != null && !iwerk.equals(""))
                                         iwerk_tiet.setText(iwerk);
                                     floc_edittext.setText(functionlocation_id);
-                                    plannergroup_id = data.getStringExtra("ingrp_id");
                                     plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                                     if (plannergroup_id != null && !plannergroup_id.equals(""))
                                         if (plannergroup_text != null && !plannergroup_text.equals(""))

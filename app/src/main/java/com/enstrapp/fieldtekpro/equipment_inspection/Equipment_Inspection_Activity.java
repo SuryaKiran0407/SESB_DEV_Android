@@ -31,7 +31,7 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
     LinearLayout floc_layout, equip_layout;
     EditText floc_edittext, equipment_edittext;
     int floc_status = 0, equip_status = 1;
-    String work_center_id = "", functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "", plant_id = "", plannergroup_id = "", plannergroup_text = "";
+    String work_center_id = "",planing_plant = "",maintainance_plant = "", functionlocation_id = "", functionlocation_text = "", equipment_id = "", equipment_text = "", plant_id = "", plannergroup_id = "", plannergroup_text = "";
     GridView grid;
     String[] web, web1;
     int[] imageId = {R.drawable.ic_create_notif_icon, R.drawable.ic_purchaseorder_icon,};
@@ -129,6 +129,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
                 grid.setAdapter(adapter);
                 grid.setVisibility(View.VISIBLE);
                 selected_status = "floc";
+                planing_plant = data.getStringExtra("iwerk");
+                maintainance_plant = data.getStringExtra("plant_id");
                 grid_clicklistener();
             } else if (requestCode == equip_status) {
                 equipment_id = data.getStringExtra("equipment_id");
@@ -146,6 +148,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
                 grid.setAdapter(adapter);
                 grid.setVisibility(View.VISIBLE);
                 selected_status = "equip";
+                planing_plant = data.getStringExtra("iwerk");
+                maintainance_plant = data.getStringExtra("plant_id");
                 grid_clicklistener();
             } else if (requestCode == barcode_scan) {
                 String message = data.getStringExtra("MESSAGE");
@@ -164,7 +168,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
                                     plannergroup_text = "";
                                     floc_edittext.setText(functionlocation_id);
                                     work_center_id = cursor.getString(11);
-                                    floc_edittext.setText(functionlocation_id);
+                                    planing_plant = cursor.getString(29);
+                                    maintainance_plant =cursor.getString(10);
                                 }
                                 while (cursor.moveToNext());
                             }
@@ -217,6 +222,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
                         create_notif_intent.putExtra("plannergroup_id", plannergroup_id);
                         create_notif_intent.putExtra("plannergroup_text", plannergroup_text);
                         create_notif_intent.putExtra("work_center_id", work_center_id);
+                        create_notif_intent.putExtra("maintnce_plant", maintainance_plant);
+                        create_notif_intent.putExtra("planing_plant", planing_plant);
                         startActivity(create_notif_intent);
                     } else if (web[+position].equals(getString(R.string.orders))) {
                         Intent orders_intent = new Intent(Equipment_Inspection_Activity.this, Orders_Activity.class);
@@ -235,6 +242,8 @@ public class Equipment_Inspection_Activity extends AppCompatActivity {
                         create_notif_intent.putExtra("plannergroup_id", plannergroup_id);
                         create_notif_intent.putExtra("plannergroup_text", plannergroup_text);
                         create_notif_intent.putExtra("work_center_id", work_center_id);
+                        create_notif_intent.putExtra("maintnce_plant", maintainance_plant);
+                        create_notif_intent.putExtra("planing_plant", planing_plant);
                         startActivity(create_notif_intent);
                     } else if (web1[+position].equals(getString(R.string.stats))) {
                         Intent Statistics_intent = new Intent(Equipment_Inspection_Activity.this, Equipment_Inspection_Breakdown_Statics_Activity.class);

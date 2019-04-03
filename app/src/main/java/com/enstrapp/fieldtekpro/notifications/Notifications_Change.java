@@ -81,7 +81,7 @@ public class Notifications_Change {
                                                             ArrayList<Model_Notif_Task>
                                                                     TasksArrayList,
                                                             ArrayList<Model_CustomInfo>
-                                                                    header_custominfo) {
+                                                                    header_custominfo,String created_aufnr) {
         try {
             Get_Response = "";
             Get_Data = "";
@@ -140,6 +140,7 @@ public class Notifications_Change {
             model_notif_header.setFunctionLoc(functionlocation_id);
             model_notif_header.setEquipment(equipment_id);
             model_notif_header.setReportedBy(Reported_by);
+            model_notif_header.setAufnr(created_aufnr);
             /*For Malfunction Start date*/
             if (mal_st_date != null && !mal_st_date.equals("")) {
                 model_notif_header.setMalfuncStdate(mal_st_date);

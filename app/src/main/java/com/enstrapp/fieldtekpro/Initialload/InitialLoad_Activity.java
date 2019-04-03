@@ -428,8 +428,12 @@ public class InitialLoad_Activity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Measurementpoint_status = MeasurementPoint.Get_Mpoint_Data(InitialLoad_Activity.this, transmit_type);
+                String Floc_Load_status = FieldTekPro_SharedPref.getString("Floc_Load_status", null);
+                if (Floc_Load_status.equalsIgnoreCase("X")) {
+                    Measurementpoint_status = MeasurementPoint.Get_Mpoint_Data(InitialLoad_Activity.this, transmit_type);
+                }
             } catch (Exception e) {
+                Measurementpoint_status = "";
             }
             return null;
         }
@@ -499,13 +503,15 @@ public class InitialLoad_Activity extends AppCompatActivity {
                 progressDialog.dismiss_progress_dialog();
                 Intent dashboard_intent = new Intent(InitialLoad_Activity.this, DashBoard_Activity.class);
                 if (transmit_type.equals("LOAD")) {
-                    FieldTekPro_SharedPrefeditor.putString("FieldTekPro_InitialLoad", "");
-                    FieldTekPro_SharedPrefeditor.commit();
+                    if (success.equals("Y")) {
+                        FieldTekPro_SharedPrefeditor.putString("FieldTekPro_InitialLoad", "");
+                        FieldTekPro_SharedPrefeditor.commit();
+                    }
                     dashboard_intent.putExtra("success", success);
                 } else
                     dashboard_intent.putExtra("success", "Y");
                 startActivity(dashboard_intent);
-            } else {
+            }  else {
                 FieldTekPro_SharedPrefeditor.putString(getString(R.string.Calib_sp), "X");
                 FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "LoggedIn");
                 FieldTekPro_SharedPrefeditor.commit();

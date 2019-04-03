@@ -531,7 +531,7 @@ public class Notifications_Create_Attachments_Fragment extends Fragment {
                                             notif_etDocs_parcelable.setFiletype(mimeType);
                                             notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
                                             notif_etDocs_parcelable.setFilepath(path);
-                                            notif_etDocs_parcelable.setContent(encodedImage);
+                                            notif_etDocs_parcelable.setContent(path);
                                             notif_etDocs_parcelable.setDocid("");
                                             notif_etDocs_parcelable.setDoctype("");
                                             notif_etDocs_parcelable.setObjtype("EQUI");
@@ -552,7 +552,7 @@ public class Notifications_Create_Attachments_Fragment extends Fragment {
                                             notif_etDocs_parcelable.setFiletype(mimeType);
                                             notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
                                             notif_etDocs_parcelable.setFilepath(path);
-                                            notif_etDocs_parcelable.setContent(encodedImage);
+                                            notif_etDocs_parcelable.setContent(path);
                                             notif_etDocs_parcelable.setDocid("");
                                             notif_etDocs_parcelable.setDoctype("");
                                             notif_etDocs_parcelable.setObjtype("BUS2038");

@@ -139,7 +139,7 @@ public class Calibration_Save {
                                     String EtQinspData_response_data = new Gson().toJson(rs.getD().getEtQinspData().getResults());
                                     JSONArray response_data_jsonArray = new JSONArray(EtQinspData_response_data);
                                     if (response_data_jsonArray.length() > 0) {
-                                        String EtQinspData_sql = "Insert into EtQinspData (Aufnr, Prueflos, Vornr, Plnty, Plnnr, Plnkn, Merknr, Quantitat, Qualitat, QpmkZaehl, Msehi, Msehl, Verwmerkm, Kurztext, Result, Sollwert, Toleranzob, Toleranzub, Rueckmelnr, Satzstatus, Equnr, Pruefbemkt, Mbewertg, Pruefer, Pruefdatuv, Pruefdatub, Pruefzeitv, Pruefzeitb, Iststpumf, Anzfehleh, Anzwertg, Ktextmat, Katab1, Katalgart1, Auswmenge1, Codetext, Xstatus, Action, UUID, Udid, Werks) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                                        String EtQinspData_sql = "Insert into EtQinspData (Aufnr, Prueflos, Vornr, Plnty, Plnnr, Plnkn, Merknr, Quantitat, Qualitat, QpmkZaehl, Msehi, Msehl, Verwmerkm, Kurztext, Result, Sollwert, Toleranzob, Toleranzub, Rueckmelnr, Satzstatus, Equnr, Pruefbemkt, Mbewertg, Pruefer, Pruefdatuv, Pruefdatub, Pruefzeitv, Pruefzeitb, Iststpumf, Anzfehleh, Anzwertg, Ktextmat, Katab1, Katalgart1, Auswmenge1, Codetext, Xstatus, Action, UUID, Udid, Werks,Ltxa1) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                                         SQLiteStatement statement = App_db.compileStatement(EtQinspData_sql);
                                         statement.clearBindings();
                                         for (int j = 0; j < response_data_jsonArray.length(); j++) {
@@ -252,6 +252,7 @@ public class Calibration_Save {
                                             statement.bindString(39, uniqueKey_uuid.toString());
                                             statement.bindString(40, response_data_jsonArray.getJSONObject(j).optString("Udid"));
                                             statement.bindString(41, response_data_jsonArray.getJSONObject(j).optString("Werks"));
+                                            statement.bindString(42, response_data_jsonArray.getJSONObject(j).optString("Ltxa1"));
                                             statement.execute();
                                         }
                                     }

@@ -45,7 +45,7 @@ public class Calibration_UDCode_List_Activity extends AppCompatActivity implemen
     private List<UDCodes_Object> udcodes_list = new ArrayList<>();
     UDCodes_Adapter udcodes_adapter;
     ImageView back_imageview;
-    String VAUSWAHLMG = "", WERKS = "";
+    String VAUSWAHLMG = "", WERKS = "",Vcodegrp = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class Calibration_UDCode_List_Activity extends AppCompatActivity implemen
         if (extras != null) {
             VAUSWAHLMG = extras.getString("VAUSWAHLMG");
             WERKS = extras.getString("WERKS");
+            Vcodegrp = extras.getString("Vcode");
         }
 
         search = (SearchView) findViewById(R.id.search);
@@ -95,11 +96,11 @@ public class Calibration_UDCode_List_Activity extends AppCompatActivity implemen
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = App_db.rawQuery("select * from EtUdecCodes where Auswahlmge = ? and Werks = ?", new String[]{VAUSWAHLMG, WERKS});
+                Cursor cursor = App_db.rawQuery("select DISTINCT Code,Kurztext1,Bewertung,Qkennzahl  from EtUdecCodes where Auswahlmge = ? and Werks = ? and Codegruppe = ?", new String[]{VAUSWAHLMG, WERKS , Vcodegrp});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            UDCodes_Object olo = new UDCodes_Object(cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(10));
+                            UDCodes_Object olo = new UDCodes_Object(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
                             udcodes_list.add(olo);
                         }
                         while (cursor.moveToNext());

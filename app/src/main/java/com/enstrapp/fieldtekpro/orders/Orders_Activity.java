@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
+import com.enstrapp.fieldtekpro.BarcodeScanner.Barcode_Scanner_Activity;
 import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
 import com.enstrapp.fieldtekpro.Initialload.Orders;
 import com.enstrapp.fieldtekpro.Initialload.Token;
@@ -74,7 +75,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
     ImageButton back_iv;
     String orderUUID = "", orderId = "", orderStatus = "", DO_STATUS = "", statusId = "",
             priorityId = "", ordrTypID = "", ordrStDt = "", ordrEdDt = "", Equipment = "",
-            FuncLoc = "";
+            FuncLoc = "",shrtTxt = "";
     public SearchView search;
     TextView searchview_textview, title_tv;
     RecyclerView list_recycleview;
@@ -104,8 +105,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
     static final int TODT = 6;
     String TYP = "", Iwerk = "";
     SysStsAdapter sysStsAdapter;
+    static final int EQUIP_SCAN = 217;
     FloatingActionButton map_fab_button, create_fab_button, filter_fab_button, refresh_fab_button,
-            sort_fab_button;
+            sort_fab_button,scan_fab_button;
     FloatingActionMenu floatingActionMenu;
     String person_responsible_id = "", pers_resp_status = "", sort_selected = "",
             attachment_clicked_status = "", filt_selected_wckt_ids = "", filt_wckt_text = "",
@@ -142,6 +144,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         no_data_layout = findViewById(R.id.ordersNoData_ll);
         title_tv = findViewById(R.id.orders_tv);
         map_fab_button = (FloatingActionButton) findViewById(R.id.map_fab_button);
+        scan_fab_button = findViewById(R.id.scan_fab_button);
 
         DATABASE_NAME = Orders_Activity.this.getString(R.string.database_name);
         App_db = Orders_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
@@ -163,6 +166,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         sort_fab_button.setOnClickListener(this);
         filter_fab_button.setOnClickListener(this);
         map_fab_button.setOnClickListener(this);
+        scan_fab_button.setOnClickListener(this);
         swiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -657,6 +661,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 });
                 break;
 
+            case (R.id.scan_fab_button):
+                Intent scanintent = new Intent(Orders_Activity.this, Barcode_Scanner_Activity.class);
+                startActivityForResult(scanintent, EQUIP_SCAN);
+                break;
+
             case (R.id.back_iv):
                 onBackPressed();
                 break;
@@ -800,8 +809,12 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             final Orders_Object olo = orders_list_data.get(position);
             holder.orderId_tv.setText(olo.getOrderId());
             holder.shortText_tv.setText(olo.getOrderShortText());
+            shrtTxt = holder.shortText_tv.getText().toString();
             holder.basicStart_tv.setText(dateFormat(olo.getBasicStartDate()));
-            holder.status_tv.setText(olo.getOrderStatus());
+            if (!olo.getOrderStatus().equals("OFL"))
+                holder.status_tv.setText(olo.getOrderStatus());
+            else
+                holder.status_tv.setText("");
             holder.priority_tv.setText(olo.getPriorityText());
             holder.plant_tv.setText(olo.getOrderPlant());
             holder.uuid_tv.setText(olo.getUUID());
@@ -891,7 +904,15 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     holder.teco_layout.setVisibility(View.GONE);
                 }
-            } else {
+            }else   if (holder.orderId_tv.getText().toString().startsWith("ORD")) {
+//                holder.status_tv.setBackground(getDrawable(R.drawable.offline_status));
+//                    holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
+                holder.teco_layout.setVisibility(GONE);
+                holder.release_layout.setVisibility(GONE);
+                holder.cnf_ll.setVisibility(GONE);
+
+            }
+            else {
                 holder.status_tv.setBackground(getDrawable(R.drawable.yellow_circle));
                 holder.status_tv.setTextColor(getResources().getColor(R.color.light_grey2));
                 holder.teco_layout.setVisibility(View.GONE);
@@ -1508,7 +1529,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                             return ((Orders_Object) o).getPernar().matches(person_responsible_id);
                         }
                     });*/
-                filterData(ordersList_ad);
+                //filterData(ordersList_ad);
                 ordersAdapter = new OrdersAdapter(Orders_Activity.this, ordersList_ad);
                 list_recycleview.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager =
@@ -1713,8 +1734,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
                                     String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                             "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
-                                            " STATUS, UUID, MESSAGE, LOG_UUID)" +
-                                            " values(?,?,?,?,?,?,?,?,?,?);";
+                                            " STATUS, UUID, MESSAGE, LOG_UUID,OBJECT_TXT)" +
+                                            " values(?,?,?,?,?,?,?,?,?,?,?);";
                                     SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                     App_db.beginTransaction();
                                     statement11.clearBindings();
@@ -1728,6 +1749,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                     statement11.bindString(8, "");
                                     statement11.bindString(9, "");
                                     statement11.bindString(10, uniqueKey.toString());
+                                    statement11.bindString(11,shrtTxt);
                                     statement11.execute();
                                     App_db.setTransactionSuccessful();
                                     App_db.endTransaction();
@@ -1804,10 +1826,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 String time = time_format.format(todaysdate.getTime());
 
                                 UUID uniqueKey = UUID.randomUUID();
-
                                 String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                         "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS," +
-                                        " UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                        " UUID, MESSAGE, LOG_UUID,OBJECT_TXT) values(?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 App_db.beginTransaction();
                                 statement11.clearBindings();
@@ -1821,6 +1842,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 statement11.bindString(8, "");
                                 statement11.bindString(9, "");
                                 statement11.bindString(10, uniqueKey.toString());
+                                statement11.bindString(11, shrtTxt);
                                 statement11.execute();
                                 App_db.setTransactionSuccessful();
                                 App_db.endTransaction();
@@ -2068,6 +2090,11 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             case (scan_status):
                 if (data != null && !data.equals("")) {
                     final String message = data.getStringExtra("MESSAGE");
+                }
+                break;
+            case (EQUIP_SCAN):
+                if (resultCode == RESULT_OK) {
+                    searchview_textview.setText(data.getStringExtra("MESSAGE"));
                 }
                 break;
         }

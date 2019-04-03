@@ -631,7 +631,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     String date = date_format.format(todaysdate.getTime());
                     String time = time_format.format(todaysdate.getTime());
 
-                    String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                    String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID,OBJECT_TXT) values(?,?,?,?,?,?,?,?,?,?,?);";
                     SQLiteStatement statement11 = App_db.compileStatement(sql11);
                     App_db.beginTransaction();
                     statement11.clearBindings();
@@ -645,6 +645,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                     statement11.bindString(8, ohp.getOrdrUUId());
                     statement11.bindString(9, "");
                     statement11.bindString(10, uniqueKey.toString());
+                    statement11.bindString(11, ohp.getOrdrShrtTxt());
                     statement11.execute();
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
@@ -1046,5 +1047,9 @@ public class Orders_Change_Activity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
+    }
+    public void remove_component(String operation_id) {
+        Orders_CH_Material_Fragment orders_ch_material_fragment = (Orders_CH_Material_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        orders_ch_material_fragment.remove_component(operation_id);
     }
 }

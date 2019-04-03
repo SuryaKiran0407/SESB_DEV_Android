@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,11 +33,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class Calibration_Start_Inspection_Activity extends AppCompatActivity implements View.OnClickListener {
+import static android.content.Context.MODE_PRIVATE;
+
+public class Calibration_Start_Inspection_Fragment extends Fragment implements View.OnClickListener {
 
     ImageView back_imageview;
     Button cancel_button, add_button, stdatetime_button, enddatetime_button;
-    String selected_data_position = "", order_id = "", equip_id = "", username = "", start_date = "", start_date_formatted = "", start_date_formattedd = "", start_time_formattedd = "", end_time_formattedd = "", start_time = "", end_date = "", end_date_formatted = "", end_date_formattedd = "", end_time = "";
+    String selected_data_position = "", order_id = "", equip_id = "", username = "", start_date = "", start_date_formatted = "", start_time = "", end_date = "", end_date_formatted = "", end_time = "";
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     Data_Adapter data_adapter;
@@ -44,39 +47,33 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
     LinearLayout no_data_layout, date_time_layout, footer_layout;
     private static SharedPreferences app_sharedpreferences;
     private static SharedPreferences.Editor app_editor;
-    ArrayList<Start_Calibration_Parcelable> start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
     String vkatart = "";
+    Calibration_Operation_Activity activity;
+    ArrayList<Start_Calibration_Parcelable> selected_start_calibration_parcelables = new ArrayList<Start_Calibration_Parcelable>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.calibration_start_inspection_activity);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.calibration_start_inspection_activity, container, false);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            start_calibration_parcelables = extras.getParcelableArrayList("start_calib_data");
-            selected_data_position = extras.getString("position");
-            order_id = extras.getString("order_id");
-            equip_id = extras.getString("equip_id");
-        }
-
-        DATABASE_NAME = getApplicationContext().getString(R.string.database_name);
-        App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        activity = (Calibration_Operation_Activity) getActivity();
+        equip_id = activity.equip_id;
+        DATABASE_NAME = getActivity().getString(R.string.database_name);
+        App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
         /* Initializing Shared Preferences */
-        app_sharedpreferences = getApplicationContext().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+        app_sharedpreferences = getActivity().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         app_editor = app_sharedpreferences.edit();
         username = app_sharedpreferences.getString("Username", null);
         /* Initializing Shared Preferences */
 
-        back_imageview = (ImageView) findViewById(R.id.back_imageview);
-        cancel_button = (Button) findViewById(R.id.cancel_button);
-        add_button = (Button) findViewById(R.id.add_button);
-        recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
-        no_data_layout = (LinearLayout) findViewById(R.id.no_data_layout);
-        date_time_layout = (LinearLayout) findViewById(R.id.date_time_layout);
-        footer_layout = (LinearLayout) findViewById(R.id.footer_layout);
-        stdatetime_button = (Button) findViewById(R.id.stdatetime_button);
-        enddatetime_button = (Button) findViewById(R.id.enddatetime_button);
+        back_imageview = (ImageView) rootView.findViewById(R.id.back_imageview);
+        cancel_button = (Button) rootView.findViewById(R.id.cancel_button);
+        add_button = (Button) rootView.findViewById(R.id.add_button);
+        recyclerview = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+        no_data_layout = (LinearLayout) rootView.findViewById(R.id.no_data_layout);
+        date_time_layout = (LinearLayout) rootView.findViewById(R.id.date_time_layout);
+        footer_layout = (LinearLayout) rootView.findViewById(R.id.footer_layout);
+        stdatetime_button = (Button) rootView.findViewById(R.id.stdatetime_button);
+        enddatetime_button = (Button) rootView.findViewById(R.id.enddatetime_button);
 
         back_imageview.setOnClickListener(this);
         cancel_button.setOnClickListener(this);
@@ -92,8 +89,8 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
         end_date = date.format(c.getTime());
         end_time = time.format(c.getTime());
 
-        if (start_calibration_parcelables.size() > 0) {
-            for (Start_Calibration_Parcelable sCP : start_calibration_parcelables) {
+        if (activity.start_calibration_parcelables.size() > 0) {
+            for (Start_Calibration_Parcelable sCP : activity.start_calibration_parcelables) {
                 if (sCP.getPRUEFER() == null || sCP.getPRUEFER().equals(""))
                     sCP.setPRUEFER(username);
                 if (sCP.getANZWERTG() == null || sCP.getANZWERTG().equals(""))
@@ -110,9 +107,9 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
                 stdatetime_button.setText(formatDate(start_date) + "\n" + formatTime(start_time));
                 enddatetime_button.setText(formatDate(end_date) + "\n" + formatTime(end_time));
             }
-            data_adapter = new Data_Adapter(Calibration_Start_Inspection_Activity.this, start_calibration_parcelables);
+            data_adapter = new Data_Adapter(getActivity(), activity.start_calibration_parcelables);
             recyclerview.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Calibration_Start_Inspection_Activity.this);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerview.setLayoutManager(layoutManager);
             recyclerview.setItemAnimator(new DefaultItemAnimator());
             recyclerview.setAdapter(data_adapter);
@@ -150,73 +147,65 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
             stdatetime_button.setEnabled(false);
             enddatetime_button.setEnabled(false);
         }
+
+        return rootView;
     }
 
     @Override
     public void onClick(View v) {
         if (v == back_imageview) {
-            Calibration_Start_Inspection_Activity.this.finish();
+            activity.removeFragment();
         } else if (v == cancel_button) {
-            Calibration_Start_Inspection_Activity.this.finish();
+            activity.removeFragment();
         } else if (v == stdatetime_button) {
-            Intent intent = new Intent(Calibration_Start_Inspection_Activity.this, DateTimePickerDialog.class);
+            Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(0));
             startActivityForResult(intent, 0);
         } else if (v == enddatetime_button) {
-            Intent intent = new Intent(Calibration_Start_Inspection_Activity.this, DateTimePickerDialog.class);
+            Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(2));
             startActivityForResult(intent, 2);
         } else if (v == add_button) {
-            ArrayList<HashMap<String, String>> start_inspection_arraylist = new ArrayList<HashMap<String, String>>();
-            for (int i = 0; i < start_calibration_parcelables.size(); i++) {
-                HashMap<String, String> start_inspection_hashMap = new HashMap<String, String>();
-                start_inspection_hashMap.put("Merknr", start_calibration_parcelables.get(i).getMerknr());
-                start_inspection_hashMap.put("prueflos", start_calibration_parcelables.get(i).getPrueflos());
-                start_inspection_hashMap.put("vorglfnr", start_calibration_parcelables.get(i).getVorglfnr());
-                start_inspection_hashMap.put("QUANTITAT", start_calibration_parcelables.get(i).getQUANTITAT());
-                start_inspection_hashMap.put("VERWMERKM", start_calibration_parcelables.get(i).getVERWMERKM());
-                start_inspection_hashMap.put("MSEHI", start_calibration_parcelables.get(i).getMSEHI());
-                start_inspection_hashMap.put("KURZTEXT", start_calibration_parcelables.get(i).getKURZTEXT());
-                start_inspection_hashMap.put("QUALITAT", start_calibration_parcelables.get(i).getQUALITAT());
-                start_inspection_hashMap.put("RESULT", start_calibration_parcelables.get(i).getRESULT());
-                start_inspection_hashMap.put("PRUEFBEMKT", start_calibration_parcelables.get(i).getPRUEFBEMKT());
-                start_inspection_hashMap.put("TOLERANZUB", start_calibration_parcelables.get(i).getTOLERANZUB());
-                start_inspection_hashMap.put("TOLERANZOB", start_calibration_parcelables.get(i).getTOLERANZOB());
-                start_inspection_hashMap.put("ANZWERTG", start_calibration_parcelables.get(i).getANZWERTG());
-                start_inspection_hashMap.put("ISTSTPUMF", start_calibration_parcelables.get(i).getISTSTPUMF());
-                start_inspection_hashMap.put("MSEHL", start_calibration_parcelables.get(i).getMSEHL());
-                start_inspection_hashMap.put("AUSWMENGE1", start_calibration_parcelables.get(i).getAUSWMENGE1());
-                start_inspection_hashMap.put("WERKS", start_calibration_parcelables.get(i).getWERKS());
-                start_inspection_hashMap.put("PRUEFER", start_calibration_parcelables.get(i).getPRUEFER());
-                start_inspection_hashMap.put("Valuation", start_calibration_parcelables.get(i).getValuation());
-                start_inspection_hashMap.put("Uuid", start_calibration_parcelables.get(i).getUuid());
-                start_inspection_hashMap.put("EQUNR", equip_id);
-                start_inspection_hashMap.put("Pruefdatuv", start_date);
-                start_inspection_hashMap.put("Pruefdatub", end_date);
-                start_inspection_hashMap.put("Pruefzeitv", start_time);
-                start_inspection_hashMap.put("Pruefzeitb", end_time);
-                start_inspection_arraylist.add(start_inspection_hashMap);
+            for (int i = 0; i < activity.start_calibration_parcelables.size(); i++) {
+                Start_Calibration_Parcelable start_calibration_parcelable = new Start_Calibration_Parcelable();
+                start_calibration_parcelable.setMerknr(activity.start_calibration_parcelables.get(i).getMerknr());
+                start_calibration_parcelable.setPrueflos(activity.start_calibration_parcelables.get(i).getPrueflos());
+                start_calibration_parcelable.setVorglfnr(activity.start_calibration_parcelables.get(i).getVorglfnr());
+                start_calibration_parcelable.setVERWMERKM(activity.start_calibration_parcelables.get(i).getVERWMERKM());
+                start_calibration_parcelable.setMSEHI(activity.start_calibration_parcelables.get(i).getMSEHI());
+                start_calibration_parcelable.setKURZTEXT(activity.start_calibration_parcelables.get(i).getKURZTEXT());
+                start_calibration_parcelable.setQUALITAT(activity.start_calibration_parcelables.get(i).getQUALITAT());
+                start_calibration_parcelable.setQUANTITAT(activity.start_calibration_parcelables.get(i).getQUANTITAT());
+                start_calibration_parcelable.setRESULT(activity.start_calibration_parcelables.get(i).getRESULT());
+                start_calibration_parcelable.setPRUEFBEMKT(activity.start_calibration_parcelables.get(i).getPRUEFBEMKT());
+                start_calibration_parcelable.setTOLERANZUB(activity.start_calibration_parcelables.get(i).getTOLERANZUB());
+                start_calibration_parcelable.setTOLERANZOB(activity.start_calibration_parcelables.get(i).getTOLERANZOB());
+                start_calibration_parcelable.setANZWERTG(activity.start_calibration_parcelables.get(i).getANZWERTG());
+                start_calibration_parcelable.setISTSTPUMF(activity.start_calibration_parcelables.get(i).getISTSTPUMF());
+                start_calibration_parcelable.setMSEHL(activity.start_calibration_parcelables.get(i).getMSEHL());
+                start_calibration_parcelable.setAUSWMENGE1(activity.start_calibration_parcelables.get(i).getAUSWMENGE1());
+                start_calibration_parcelable.setWERKS(activity.start_calibration_parcelables.get(i).getWERKS());
+                start_calibration_parcelable.setPRUEFER(activity.start_calibration_parcelables.get(i).getPRUEFER());
+                start_calibration_parcelable.setValuation(activity.start_calibration_parcelables.get(i).getValuation());
+                start_calibration_parcelable.setUuid(activity.start_calibration_parcelables.get(i).getUuid());
+                start_calibration_parcelable.setEQUNR(equip_id);
+                start_calibration_parcelable.setPruefdatuv(start_date);
+                start_calibration_parcelable.setPruefdatub(end_date);
+                start_calibration_parcelable.setPruefzeitv(start_time);
+                start_calibration_parcelable.setPruefzeitb(end_time);
+                selected_start_calibration_parcelables.add(start_calibration_parcelable);
             }
+            int data_position = activity.Position;
+            activity.orders_operations_parcables.get(data_position).setStart_calibration_parcelables(selected_start_calibration_parcelables);
             ArrayList<String> valuation_list = new ArrayList<String>();
-            for (int i = 0; i < start_calibration_parcelables.size(); i++) {
-                String Valuation = start_calibration_parcelables.get(i).getValuation();
-                if (Valuation.equalsIgnoreCase("A")) {
-                    valuation_list.add("A");
-                }
-            }
-            Intent intent = new Intent();
-            if (valuation_list.size() == start_calibration_parcelables.size()) {
-                intent.putExtra("start_inspection_result", "A");
+            if (valuation_list.size() == activity.start_calibration_parcelables.size()) {
+                activity.orders_operations_parcables.get(data_position).setStatus("A");
             } else {
-                intent.putExtra("start_inspection_result", "R");
+                activity.orders_operations_parcables.get(data_position).setStatus("R");
             }
-            intent.putExtra("start_inspection_arraylist", start_inspection_arraylist);
-            intent.putExtra("data_position", selected_data_position);
-            setResult(0, intent);
-            Calibration_Start_Inspection_Activity.this.finish();
+            activity.removeFragment();
         }
     }
-
 
     public class Data_Adapter extends RecyclerView.Adapter<Data_Adapter.MyViewHolder> {
         private Context mContext;
@@ -258,13 +247,13 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
         }
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public Data_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.calibration_start_inspection_list_data, parent, false);
-            return new MyViewHolder(itemView);
+            return new Data_Adapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        public void onBindViewHolder(final Data_Adapter.MyViewHolder holder, final int position) {
             final Start_Calibration_Parcelable olo = list_data.get(position);
             holder.characteristic_textview1.setText(olo.getVERWMERKM() + "  /  " + olo.getKURZTEXT());
             holder.unit_type_textview.setText(olo.getMSEHI());
@@ -311,7 +300,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
             holder.result2_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent result_intent = new Intent(Calibration_Start_Inspection_Activity.this, Calibration_Start_Result_Activity.class);
+                    Intent result_intent = new Intent(getActivity(), Calibration_Start_Result_Activity.class);
                     result_intent.putExtra("Position", Integer.toString(position));
                     result_intent.putExtra("Auswmenge1", holder.Auswmenge1_textview.getText().toString());
                     result_intent.putExtra("Werk", holder.Plant_textview.getText().toString());
@@ -329,7 +318,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
 
                 @Override
                 public void afterTextChanged(Editable arg0) {
-                    start_calibration_parcelables.get(position).setANZWERTG(holder.inspected_edittext.getText().toString());
+                    activity.start_calibration_parcelables.get(position).setANZWERTG(holder.inspected_edittext.getText().toString());
                 }
             });
             holder.inspector_edittext.addTextChangedListener(new TextWatcher() {
@@ -343,7 +332,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
 
                 @Override
                 public void afterTextChanged(Editable arg0) {
-                    start_calibration_parcelables.get(position).setPRUEFER(holder.inspector_edittext.getText().toString());
+                    activity.start_calibration_parcelables.get(position).setPRUEFER(holder.inspector_edittext.getText().toString());
                 }
             });
             holder.notes_edittext.addTextChangedListener(new TextWatcher() {
@@ -357,7 +346,7 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
 
                 @Override
                 public void afterTextChanged(Editable arg0) {
-                    start_calibration_parcelables.get(position).setPRUEFBEMKT(holder.notes_edittext.getText().toString());
+                    activity.start_calibration_parcelables.get(position).setPRUEFBEMKT(holder.notes_edittext.getText().toString());
                 }
             });
             holder.reading_edittext.addTextChangedListener(new TextWatcher() {
@@ -377,19 +366,19 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
                             if (floatt >= floatt1 && floatt <= floatt2) {
                                 holder.unit_type_textview.setBackgroundColor(getResources().getColor(R.color.dark_green));
                                 holder.reading_edittext.setBackground(getResources().getDrawable(R.drawable.accepted_border));
-                                start_calibration_parcelables.get(position).setValuation("A");
-                                start_calibration_parcelables.get(position).setRESULT(entered_value);
+                                activity.start_calibration_parcelables.get(position).setValuation("A");
+                                activity.start_calibration_parcelables.get(position).setRESULT(entered_value);
                             } else {
                                 holder.unit_type_textview.setBackgroundColor(getResources().getColor(R.color.red));
                                 holder.reading_edittext.setBackground(getResources().getDrawable(R.drawable.rejected_border));
-                                start_calibration_parcelables.get(position).setValuation("R");
-                                start_calibration_parcelables.get(position).setRESULT(entered_value);
+                                activity.start_calibration_parcelables.get(position).setValuation("R");
+                                activity.start_calibration_parcelables.get(position).setRESULT(entered_value);
                             }
                         } else {
                             holder.unit_type_textview.setBackgroundColor(getResources().getColor(R.color.red));
                             holder.reading_edittext.setBackground(getResources().getDrawable(R.drawable.rejected_border));
-                            start_calibration_parcelables.get(position).setValuation("R");
-                            start_calibration_parcelables.get(position).setRESULT(entered_value);
+                            activity.start_calibration_parcelables.get(position).setValuation("R");
+                            activity.start_calibration_parcelables.get(position).setRESULT(entered_value);
                         }
                     }
                 }
@@ -417,7 +406,6 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
         }
     }
 
-
     // Call Back method  to get the Message form other Activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -429,15 +417,15 @@ public class Calibration_Start_Inspection_Activity extends AppCompatActivity imp
                 String result_Bewertung = data.getStringExtra("result_Bewertung");
                 String Position = data.getStringExtra("Position");
                 int selected_position = Integer.parseInt(Position);
-                start_calibration_parcelables.get(selected_position).setRESULT(result_id);
+                activity.start_calibration_parcelables.get(selected_position).setRESULT(result_id);
                 if (result_Bewertung.equalsIgnoreCase("A")) {
-                    start_calibration_parcelables.get(selected_position).setValuation("A");
+                    activity.start_calibration_parcelables.get(selected_position).setValuation("A");
                 } else {
-                    start_calibration_parcelables.get(selected_position).setValuation("R");
+                    activity.start_calibration_parcelables.get(selected_position).setValuation("R");
                 }
-                data_adapter = new Data_Adapter(Calibration_Start_Inspection_Activity.this, start_calibration_parcelables);
+                data_adapter = new Data_Adapter(getActivity(), activity.start_calibration_parcelables);
                 recyclerview.setHasFixedSize(true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Calibration_Start_Inspection_Activity.this);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 recyclerview.setLayoutManager(layoutManager);
                 recyclerview.setItemAnimator(new DefaultItemAnimator());
                 recyclerview.setAdapter(data_adapter);

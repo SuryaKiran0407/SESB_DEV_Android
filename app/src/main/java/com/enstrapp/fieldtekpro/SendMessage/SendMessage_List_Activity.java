@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -67,7 +68,7 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
     Custom_Progress_Dialog custom_progress_dialog = new Custom_Progress_Dialog();
     Dialog sendmessage_dialog, decision_dialog;
     Success_Dialog success_dialog = new Success_Dialog();
-
+    LinearLayout footer_ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
         setContentView(R.layout.sendmessage_list_activity);
 
         title_textview = (TextView) findViewById(R.id.title_textview);
-        no_data_textview = (TextView) findViewById(R.id.no_data_textview);
+        no_data_textview = (TextView) findViewById(R.id.no_data_textview1);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         cancel_button = (Button) findViewById(R.id.cancel_button);
@@ -83,8 +84,8 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
         search = (SearchView) findViewById(R.id.search);
         users_all_checkbox = (CheckBox) findViewById(R.id.users_all_checkbox);
         refresh_imageview = (ImageView) findViewById(R.id.refresh_imageview);
-
-
+        footer_ll = findViewById(R.id.footer_ll);
+        recyclerview.setNestedScrollingEnabled(false);
         DATABASE_NAME = SendMessage_List_Activity.this.getString(R.string.database_name);
         App_db = SendMessage_List_Activity.this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
@@ -331,10 +332,12 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SendMessage_List_Activity.this);
                     recyclerview.setLayoutManager(layoutManager);
                     dataadapter = new DATAADAPTER(SendMessage_List_Activity.this, filteredList);
+                    title_textview.setText(getString(R.string.send_message) + " (" + filteredList.size() + ")");
                     recyclerview.setAdapter(dataadapter);
                     dataadapter.notifyDataSetChanged();
                     no_data_textview.setVisibility(View.GONE);
                 } else {
+                    title_textview.setText(getString(R.string.send_message) + " (0)");
                     no_data_textview.setVisibility(View.VISIBLE);
                 }
             }
@@ -546,7 +549,7 @@ public class SendMessage_List_Activity extends AppCompatActivity implements View
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                //VHLP_Token_Status = VHLP_Token.Get_Token_Data(SendMessage_List_Activity.this);
+                VHLP_Token_Status = VHLP_Token.Get_Token_Data(SendMessage_List_Activity.this);
             } catch (Exception e) {
             }
             return null;

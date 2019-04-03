@@ -366,4 +366,35 @@ public class Orders_CR_Material_Fragment extends Fragment {
         return selected_material_custom_info_arraylist;
     }
     /*Written By SuryaKiran to Return Custom Info Data*/
+
+    public void remove_component(String operation_id) {
+        if (omp_al.size() > 0) {
+            ArrayList<OrdrMatrlPrcbl> rmomp = new ArrayList<>();
+            rmomp.addAll(omp_al);
+
+            for (OrdrMatrlPrcbl oo : rmomp) {
+                if (oo.getOprtnId().equalsIgnoreCase(operation_id)) {
+                    omp_al.remove(oo);
+                }
+            }
+            for (int i = 0; i < omp_al.size(); i++){
+                omp_al.get(i).setPartId(gnrtMatrlId(i));
+            }
+            materialAdapter.notifyDataSetChanged();
+            ma.ohp.setOrdrMatrlPrcbls(omp_al);
+        }
+    }
+
+    public void replaceOprtnId(String oldId, String newId, String newText) {
+        if (omp_al != null && omp_al.size() > 0) {
+            for (OrdrMatrlPrcbl omp : omp_al){
+                if (omp.getOprtnId().equals(oldId)){
+                    omp.setOprtnId(newId);
+                    omp.setOprtnShrtTxt(newText);
+                }
+            }
+            ma.ohp.setOrdrMatrlPrcbls(omp_al);
+            materialAdapter.notifyDataSetChanged();
+        }
+    }
 }

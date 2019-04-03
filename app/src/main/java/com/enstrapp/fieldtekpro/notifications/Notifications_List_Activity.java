@@ -248,10 +248,10 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            String startdate = cursor.getString(9);
+                            String startdate = cursor.getString(18);
                             String StartDate_format = "";
-                            String startdate_time = cursor.getString(9) + " " +
-                                    cursor.getString(11);
+                            String startdate_time = cursor.getString(18) + " " +
+                                    cursor.getString(51);
                             if (startdate.equals("00000000")) {
                                 startdate = "";
                                 StartDate_format = "";
@@ -328,7 +328,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                         }
                     });
                 }
-                filterData(notifications_list_ad);
+                //filterData(notifications_list_ad);
                 notif_adapter = new Notif_Adapter(Notifications_List_Activity.this,
                         notifications_list_ad);
                 list_recycleview.setHasFixedSize(true);
@@ -640,10 +640,14 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             final Notif_List_Object olo = orders_list_data.get(position);
+            if (!olo.getstatus().equals("OFL"))
+                holder.status_type_textview.setText(olo.getstatus());
+            else
+                holder.status_type_textview.setText("");
             holder.id_textview.setText(olo.getnotif_id());
             holder.description_textview.setText(olo.getshort_text());
             holder.date_time_textview.setText(olo.getstartdate_format());
-            holder.status_type_textview.setText(olo.getstatus());
+            //holder.status_type_textview.setText(olo.getstatus());
             holder.priority_textview.setText(olo.getpriority_text());
             holder.plant_textview.setText(olo.getplant());
             holder.uuid_textview.setText(olo.getUUID());
@@ -682,10 +686,9 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
             }
 
             if (holder.id_textview.getText().toString().startsWith("NOT")) {
-                holder.status_type_textview.setBackground(getResources()
-                        .getDrawable(R.drawable.yellow_circle));
-                holder.status_type_textview
-                        .setTextColor(getResources().getColor(R.color.light_grey2));
+//                holder.status_type_textview.setBackground(getResources().getDrawable(R.drawable.offline_status));
+               /* holder.status_type_textview
+                        .setTextColor(getResources().getColor(R.color.light_grey2));*/
                 holder.teco_layout.setVisibility(View.GONE);
                 holder.release_layout.setVisibility(View.GONE);
                 holder.postpone_layout.setVisibility(View.GONE);
@@ -845,13 +848,18 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                                                 "DUE_NOTIFICATION_NotifHeader where Qmnum = ?",
                                         new String[]{notif_number});
                                 if (cursor != null && cursor.getCount() > 0) {
-                                    String mal_date = cursor.getString(10);
-                                    String mal_time = cursor.getString(12);
-                                    if ((mal_date != null && !mal_date.equals("")) &&
-                                            (mal_time != null && !mal_time.equals(""))) {
-                                        mal_dat_tim_status = "true";
-                                    } else {
-                                        mal_dat_tim_status = "false";
+                                    if(cursor.moveToFirst()) {
+                                        do {
+                                            String mal_date = cursor.getString(10);
+                                            String mal_time = cursor.getString(12);
+                                            if ((mal_date != null && !mal_date.equals("")) &&
+                                                    (mal_time != null && !mal_time.equals(""))) {
+                                                mal_dat_tim_status = "true";
+                                            } else {
+                                                mal_dat_tim_status = "false";
+                                            }
+                                        }
+                                        while (cursor.moveToNext());
                                     }
                                 } else {
                                     cursor.close();
@@ -901,8 +909,8 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
 
                                         String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                                 "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID," +
-                                                " STATUS, UUID, MESSAGE, LOG_UUID) " +
-                                                "values(?,?,?,?,?,?,?,?,?,?);";
+                                                " STATUS, UUID, MESSAGE, LOG_UUID,OBJECT_TXT) " +
+                                                "values(?,?,?,?,?,?,?,?,?,?,?);";
                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                         App_db.beginTransaction();
                                         statement11.clearBindings();
@@ -916,6 +924,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                                         statement11.bindString(8, holder.uuid_textview.getText().toString());
                                         statement11.bindString(9, "");
                                         statement11.bindString(10, uniqueKey.toString());
+                                        statement11.bindString(11,  holder.description_textview.getText().toString() );
                                         statement11.execute();
                                         App_db.setTransactionSuccessful();
                                         App_db.endTransaction();
@@ -1032,7 +1041,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
 
                                 String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                         "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS," +
-                                        " UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                        " UUID, MESSAGE, LOG_UUID,OBJECT_TXT) values(?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 App_db.beginTransaction();
                                 statement11.clearBindings();
@@ -1046,6 +1055,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                                 statement11.bindString(8, holder.uuid_textview.getText().toString());
                                 statement11.bindString(9, "");
                                 statement11.bindString(10, uniqueKey.toString());
+                                statement11.bindString(11,  holder.description_textview.getText().toString());
                                 statement11.execute();
                                 App_db.setTransactionSuccessful();
                                 App_db.endTransaction();
@@ -1156,7 +1166,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
 
                                 String sql11 = "Insert into Alert_Log (DATE, TIME, " +
                                         "DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS," +
-                                        " UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                                        " UUID, MESSAGE, LOG_UUID,OBJECT_TXT) values(?,?,?,?,?,?,?,?,?,?,?);";
                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
                                 App_db.beginTransaction();
                                 statement11.clearBindings();
@@ -1170,6 +1180,7 @@ public class Notifications_List_Activity extends AppCompatActivity implements Vi
                                 statement11.bindString(8, holder.uuid_textview.getText().toString());
                                 statement11.bindString(9, "");
                                 statement11.bindString(10, uniqueKey.toString());
+                                statement11.bindString(11,  holder.description_textview.getText().toString());
                                 statement11.execute();
                                 App_db.setTransactionSuccessful();
                                 App_db.endTransaction();

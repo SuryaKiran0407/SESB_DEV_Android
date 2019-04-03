@@ -283,6 +283,7 @@ public class Order_CConfirmation {
                     confirmOrderSer.setMatnr(cop.getMatnr());
                     confirmOrderSer.setBwart(cop.getBwart());
                     confirmOrderSer.setWerks(cop.getWerks());
+                    confirmOrderSer.setWorkCntr(cop.getWorkCntr());
                     confirmOrderSer.setLgort(cop.getLgort());
                     confirmOrderSer.setErfmg(cop.getErfmg());
                     confirmOrderSer.setErfme(cop.getErfme());

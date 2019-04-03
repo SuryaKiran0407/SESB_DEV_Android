@@ -29,6 +29,7 @@ import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +56,14 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     RelativeLayout footer;
+    ImageView home_imageview;
+    Boolean yes = false;
+    ArrayList<EquiList> equi_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calibration_orders_operations_activity);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -71,19 +74,12 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
 
         tabTitle = new String[]{getString(R.string.operations),
                 getString(R.string.usg_decs), getString(R.string.defects)};
-
+        home_imageview = findViewById(R.id.home_imageview);
         cancel_button = (Button) findViewById(R.id.cancel_button);
         submit_button = (Button) findViewById(R.id.submit_button);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         title_textview = (TextView) findViewById(R.id.title_textview);
         footer = (RelativeLayout) findViewById(R.id.footer);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(null);
-        toolbar.setPadding(0, 0, 0, 0);//for tab otherwise give space in tab
-        toolbar.setContentInsetsAbsolute(0, 0);
-        ImageView home_imageview = (ImageView) toolbar.findViewById(R.id.home_imageview);
         home_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,31 +87,34 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             }
         });
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        setupViewPager(viewPager);
 
         try {
             setupTabIcons();
         } catch (Exception e) {
         }
 
-
         DATABASE_NAME = getApplicationContext().getString(R.string.database_name);
         App_db = getApplicationContext().openOrCreateDatabase(DATABASE_NAME, getApplicationContext().MODE_PRIVATE, null);
 
         String Prueflos = "";
+        String equi_id = "";
+        String equip_txt = "";
+
         try {
             Cursor cursor1 = null;
-            cursor1 = App_db.rawQuery("select * from EtQinspData Where Aufnr = ?", new String[]{order_id});
+            cursor1 = App_db.rawQuery("select * from EtQinspData  Where Aufnr = ? group by Equnr", new String[]{order_id});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
-                        Prueflos = cursor1.getString(2);
+                        EquiList eql = new EquiList(cursor1.getString(21), equipName(cursor1.getString(21)));
+                        equi_list.add(eql);
+                        Prueflos = cursor1.getString(1);
+
                     }
                     while (cursor1.moveToNext());
                 }
@@ -129,8 +128,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         if (Prueflos != null && !Prueflos.equals("")) {
             title_textview.setText(getString(R.string.lot_no, Prueflos));
         }
-
-
         String vkatart = "";
         try {
             Cursor cursor1 = null;
@@ -152,7 +149,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         if (vkatart != null && !vkatart.equals("")) {
             footer.setVisibility(View.GONE);
         }
-
+        setupViewPager(viewPager, equi_list);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -168,25 +165,65 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             public void onPageScrollStateChanged(int state) {
             }
         });
-
+        if (equi_list.size() > 1) {
+            yes = true;
+        }
 
         cancel_button.setOnClickListener(this);
         submit_button.setOnClickListener(this);
 
     }
 
+    public class EquiList {
+        private String Equnr;
+        private String Eqtxt;
+        ArrayList<EquiList> arrayList = new ArrayList<>();
 
-    private void setupViewPager(final ViewPager viewPager) {
+        public ArrayList<EquiList> getArrayList() {
+            return arrayList;
+        }
+
+        public void setArrayList(ArrayList<EquiList> arrayList) {
+            this.arrayList = arrayList;
+        }
+
+        public String getEqunr() {
+            return Equnr;
+        }
+
+        public void setEqunr(String equnr) {
+            Equnr = equnr;
+        }
+
+        public String getEqtxt() {
+            return Eqtxt;
+        }
+
+        public void setEqtxt(String eqtxt) {
+            Eqtxt = eqtxt;
+        }
+
+        public EquiList(String equnr, String eqtxt) {
+            Equnr = equnr;
+            Eqtxt = eqtxt;
+        }
+    }
+
+    private void setupViewPager(final ViewPager viewPager, List<EquiList> equi_list) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         operations_fragment = new Calibration_Operations_Fragment();
         usageDecision_fragment = new Calibration_UsageDecision_Fragment();
         defects_fragment = new Calibration_Defects_Fragment();
-        adapter.addFragment(operations_fragment, getString(R.string.operations));
+        if (this.equi_list.size() > 1) {
+            adapter.addFragment(operations_fragment, getString(R.string.equipments));
+        } else {
+            adapter.addFragment(operations_fragment, getString(R.string.operations));
+
+        }
         adapter.addFragment(usageDecision_fragment, getString(R.string.usg_decs));
         adapter.addFragment(defects_fragment, getString(R.string.defects));
         viewPager.setAdapter(adapter);
     }
-
 
     private View prepareTabView(int pos) {
         View view = getLayoutInflater().inflate(R.layout.custom_tab, null);
@@ -195,23 +232,11 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         return view;
     }
 
-
     private void setupTabIcons() {
         for (int i = 0; i < tabTitle.length; i++) {
             tabLayout.getTabAt(i).setCustomView(prepareTabView(i));
         }
     }
-
-
-    public String getorder_id() {
-        return order_id;
-    }
-
-
-    public String getplant_id() {
-        return plant_id;
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -253,7 +278,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         }
     }
 
-
     private class Get_Token extends AsyncTask<Void, Integer, Void> {
         String token_status = "";
 
@@ -270,11 +294,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
         }
 
         @Override
@@ -296,11 +315,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         ArrayList<Model_Notif_Calibration_Defects> calib_defects_ArrayList = new ArrayList<>();
         Map<String, String> calibration_submit_status;
         String Prueflos = "";
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -341,14 +355,14 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                             model_notif_calibration_operations.setToleranzub(Start_calibration_parcelables.get(j).getTOLERANZUB());
                             model_notif_calibration_operations.setRueckmelnr("");
                             model_notif_calibration_operations.setSatzstatus("");
-                            model_notif_calibration_operations.setEqunr(equip_id);
+                            model_notif_calibration_operations.setEqunr(Start_calibration_parcelables.get(j).getEQUNR());
                             model_notif_calibration_operations.setPruefbemkt(Start_calibration_parcelables.get(j).getPRUEFBEMKT());
                             model_notif_calibration_operations.setMbewertg(Start_calibration_parcelables.get(j).getValuation());
                             model_notif_calibration_operations.setPruefer(Start_calibration_parcelables.get(j).getPRUEFER());
-                            model_notif_calibration_operations.setPruefdatuv(date);
-                            model_notif_calibration_operations.setPruefdatub(date);
-                            model_notif_calibration_operations.setPruefzeitv(time);
-                            model_notif_calibration_operations.setPruefzeitb(time);
+                            model_notif_calibration_operations.setPruefdatuv(Start_calibration_parcelables.get(j).getPruefdatuv());
+                            model_notif_calibration_operations.setPruefdatub(Start_calibration_parcelables.get(j).getPruefdatub());
+                            model_notif_calibration_operations.setPruefzeitv(Start_calibration_parcelables.get(j).getPruefzeitv());
+                            model_notif_calibration_operations.setPruefzeitb(Start_calibration_parcelables.get(j).getPruefzeitb());
                             model_notif_calibration_operations.setIststpumf(Integer.parseInt(Start_calibration_parcelables.get(j).getISTSTPUMF()));
                             model_notif_calibration_operations.setAnzfehleh(0);
                             model_notif_calibration_operations.setAnzwertg(Integer.parseInt(Start_calibration_parcelables.get(j).getANZWERTG()));
@@ -366,7 +380,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 }
                 /*Fetching Operations Data*/
 
-
                 /*Fetching Usage Decision Data*/
                 Calibration_UsageDecision_Fragment header_tab = (Calibration_UsageDecision_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
                 Calibration_Usage_Decision_Object header_data = header_tab.getUsageDecisionData();
@@ -383,7 +396,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 model_notif_calibration_usageDecision.setAction("I");
                 calib_usagedecision_ArrayList.add(model_notif_calibration_usageDecision);
                 /*Fetching Usage Decision Data*/
-
 
                 /*Fetching Defects Data*/
                 Calibration_Defects_Fragment defects_fragment = (Calibration_Defects_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
@@ -405,7 +417,6 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                 }
                 /*Fetching Defects Data*/
 
-
                 calibration_submit_status = Calibration_Save.Post_Calibration_Data(Calibration_Orders_Operations_List_Activity.this, calib_operations_ArrayList, calib_usagedecision_ArrayList, calib_defects_ArrayList, order_id);
             } catch (Exception e) {
             }
@@ -413,21 +424,16 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             custom_progress_dialog.dismiss_progress_dialog();
             if (calibration_submit_status.get("response_status") != null &&
-                    calibration_submit_status.get("response_status").startsWith("S")){
+                    calibration_submit_status.get("response_status").startsWith("S")) {
                 Success_Dialog successDialog = new Success_Dialog();
                 successDialog.dismissActivity(Calibration_Orders_Operations_List_Activity.this,
                         calibration_submit_status.get("response_status").substring(1));
             } else if (calibration_submit_status.get("response_status") != null &&
-                    calibration_submit_status.get("response_status").startsWith("E")){
+                    calibration_submit_status.get("response_status").startsWith("E")) {
                 error_dialog.show_error_dialog(Calibration_Orders_Operations_List_Activity.this,
                         calibration_submit_status.get("response_status").substring(1));
             } else {
@@ -437,10 +443,27 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
         }
     }
 
-
     private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
-
+    private String equipName(String order_id) {
+        Cursor cursor = null;
+        try {
+            cursor = App_db.rawQuery("select * from EtEqui where  Equnr" +
+                    " = ?", new String[]{equip_id});
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(5);
+                }
+            }
+        } catch (Exception e) {
+            if (cursor != null)
+                cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return "";
+    }
 }

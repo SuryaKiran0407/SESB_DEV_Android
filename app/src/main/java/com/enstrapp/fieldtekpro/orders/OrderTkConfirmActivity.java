@@ -307,7 +307,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                     cop.setRsnum("");
                     cop.setPostgDate("");
                     cop.setPlant("");
-                    cop.setWorkCntr("");
+                    cop.setWorkCntr(oop.getWrkCntrId());
                     if (slctStDt != null && !slctStDt.equals(""))
                         cop.setExecStartDate(slctStDt);
                     else

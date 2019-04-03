@@ -5,40 +5,32 @@
     android:background="@color/light_grey"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/header"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/title_textview"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/settings"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-            <com.enstrapp.fieldtekpro.customfont.Font_TextView
-                android:id="@+id/title_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/settings"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <ImageButton
-                android:id="@+id/back_iv"
-                android:layout_width="@dimen/default_icon_size"
-                android:layout_height="@dimen/default_icon_size"
-                android:layout_marginStart="@dimen/toolbar_icon_margin"
-                android:layout_marginTop="@dimen/toolbar_icon_margin"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/ic_arrow_back_white_24px" />
-        </RelativeLayout>
-    </LinearLayout>
-
+        <ImageButton
+            android:id="@+id/back_iv"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_marginStart="@dimen/toolbar_icon_margin"
+            android:layout_marginTop="@dimen/toolbar_icon_margin"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_arrow_back_white_24px" />
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -49,21 +41,23 @@
         android:scrollbars="none">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="center|right"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
                     android:text="@string/application_ver"
                     android:textColor="@color/light_grey2"
                     android:textSize="14sp" />
@@ -82,26 +76,26 @@
                     android:id="@+id/version_data"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="10dp"
+                    android:layout_weight=".7"
+                    android:padding="8dp"
                     android:text="@string/app_version_data"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
 
-
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="center|right"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
                     android:text="@string/initial_load"
                     android:textColor="@color/light_grey2"
                     android:textSize="14sp" />
@@ -121,24 +115,24 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/checkBox_margin"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
+                    android:padding="@dimen/checkBox_margin"
                     android:theme="@style/CheckBox" />
             </LinearLayout>
 
-
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="center|right"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
                     android:text="@string/refresh"
                     android:textColor="@color/light_grey2"
                     android:textSize="14sp" />
@@ -158,24 +152,25 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/checkBox_margin"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
+                    android:padding="@dimen/checkBox_margin"
                     android:theme="@style/CheckBox" />
             </LinearLayout>
 
-
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="1">
 
                 <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="center|right"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
                     android:text="@string/push_interval"
                     android:textColor="@color/light_grey2"
                     android:textSize="14sp" />
@@ -194,8 +189,8 @@
                     android:id="@+id/pushIntrvl_et"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.7"
                     android:background="@drawable/blueborder"
                     android:maxLength="3"
                     android:minLines="1"
@@ -205,20 +200,20 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/passcode_layout"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="center|right"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
                     android:text="@string/passcode"
                     android:textColor="@color/light_grey2"
                     android:textSize="14sp" />
@@ -237,16 +232,58 @@
                     android:id="@+id/reset_passcode_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="10dp"
+                    android:layout_weight="0.7"
+                    android:padding="8dp"
                     android:text="@string/reset_passcode"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
 
+           <!-- <LinearLayout
+                android:id="@+id/languages_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
+                    android:text="@string/languages"
+                    android:textColor="@color/light_grey2"
+                    android:textSize="14sp" />
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.1"
+                    android:gravity="center"
+                    android:text="@string/colon"
+                    android:textColor="@color/light_grey2"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/blueborder">
+
+                    <Spinner
+                        android:id="@+id/language_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>-->
         </LinearLayout>
     </ScrollView>
-
 
     <LinearLayout
         android:id="@+id/footer_ll"
@@ -264,6 +301,7 @@
             android:layout_weight="0.995"
             android:background="@color/colorPrimary"
             android:text="@string/reset"
+            android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -281,8 +319,8 @@
             android:layout_weight="0.995"
             android:background="@color/colorPrimary"
             android:text="@string/submit"
+            android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>
-
 </RelativeLayout>

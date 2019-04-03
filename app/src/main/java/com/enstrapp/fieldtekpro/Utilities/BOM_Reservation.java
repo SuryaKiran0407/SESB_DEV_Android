@@ -140,12 +140,10 @@ public class BOM_Reservation {
                     /*Converting GSON Response to JSON Data for Parsing*/
                 }
             }
-
         } catch (Exception ex) {
             Get_Response = "exception";
         } finally {
         }
         return Get_Response;
     }
-
 }

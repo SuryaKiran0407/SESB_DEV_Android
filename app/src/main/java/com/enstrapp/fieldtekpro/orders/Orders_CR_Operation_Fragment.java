@@ -85,7 +85,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                         oop.setSelected(false);
                         oop.setOrdrId("");
                         oop.setOrdrSatus("");
-                        oop.setOprtnId("0020");
+                        oop.setOprtnId("0010");
                         oop.setOprtnShrtTxt(ma.ohp.getOrdrShrtTxt());
                         oop.setOprtnLngTxt(ma.ohp.getOrdrLngTxt());
                         oop.setDuration("0");
@@ -127,6 +127,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                     rmoop.addAll(oop_al);
                     for (OrdrOprtnPrcbl oo : rmoop) {
                         if (oo.isSelected()) {
+                            ma.remove_component(oo.getOprtnId());
                             oop_al.remove(oo);
 
                             /*Written By SuryaKiran for Deleting Custom Info Data based on Operation ID*/
@@ -146,6 +147,8 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                     }
                     if (oop_al.size() > 0)
                         for (int i = 0; i < oop_al.size(); i++) {
+                            ma.replaceOprtnIds(oop_al.get(i).getOprtnId(),
+                                    gnrtOprtnId(i), oop_al.get(i).getOprtnShrtTxt());
                             oop_al.get(i).setOprtnId(gnrtOprtnId(i));
                         }
                     ma.animateFab(false);

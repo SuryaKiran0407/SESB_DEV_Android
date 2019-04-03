@@ -47,8 +47,8 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
             {
                     R.drawable.ic_notification_icon,
                     R.drawable.ic_orders_icon,
-                    R.drawable.ic_permit_list_icon,
-                    R.drawable.ic_isolation_list_icon,
+                   // R.drawable.ic_permit_list_icon,
+                  //  R.drawable.ic_isolation_list_icon,
                     R.drawable.ic_sort_icon,
                     R.drawable.ic_calibration_icon,
                     R.drawable.ic_mis_icon,
@@ -77,7 +77,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dash_board_activity);
 
-        startService(new Intent(this, Auto_Sync_BackgroundService.class));
+        //startService(new Intent(this, Auto_Sync_BackgroundService.class));
         logout_imageview = (ImageView) findViewById(R.id.logout_imageview);
         refresh_imageview = (ImageView) findViewById(R.id.refresh_imageview);
         userName_tv = (TextView) findViewById(R.id.userName_tv);
@@ -96,8 +96,8 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                 {
                         getString(R.string.notifications),
                         getString(R.string.orders),
-                        getString(R.string.permit_list),
-                        getString(R.string.isolation_list),
+                       // getString(R.string.permit_list),
+                       // getString(R.string.isolation_list),
                         getString(R.string.equipment_inspection),
                         getString(R.string.calibration),
                         getString(R.string.mis),
@@ -220,7 +220,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     }*/
                     Intent intent = new Intent(DashBoard_Activity.this, Settings_Activity.class);
                     startActivity(intent);
-                } else if (web[+position].equals("Permit List")) {
+                } /*else if (web[+position].equals("Permit List")) {
                     if (authorization_list.contains("ALL")) {
                         Intent permitlist_intent = new Intent(DashBoard_Activity.this, PermitList_Activity.class);
                         startActivity(permitlist_intent);
@@ -240,7 +240,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     } else {
                         error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Isolation List");
                     }
-                } else if (web[+position].equals("Send Message")) {
+                }*/ else if (web[+position].equals("Send Message")) {
                     Intent orders_intent = new Intent(DashBoard_Activity.this, SendMessage_List_Activity.class);
                     startActivity(orders_intent);
                 } else if (web[+position].equals("MIS")) {
@@ -321,7 +321,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     public void onClick(View v) {
                         refresh_message_dialog.dismiss();
                         Intent intialload_intent = new Intent(DashBoard_Activity.this, InitialLoad_Activity.class);
-                        intialload_intent.putExtra("From", "");
+                        intialload_intent.putExtra("From", "REFR");
                         startActivity(intialload_intent);
                         DashBoard_Activity.this.finish();
                     }

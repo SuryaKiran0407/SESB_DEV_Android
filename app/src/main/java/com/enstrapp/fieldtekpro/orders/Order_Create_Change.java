@@ -1169,6 +1169,7 @@ public class Order_Create_Change {
                                         for (Orders_SER.EtOrderHeader_Result orderHeader_result : response.body().getD().getEtOrderHeader().getResults()) {
                                             values.put("UUID", orderHeader_result.getAufnr());
                                             values.put("Aufnr", orderHeader_result.getAufnr());
+                                            created_aufnr = orderHeader_result.getAufnr();
                                             values.put("Auart", orderHeader_result.getAuart());
                                             values.put("Ktext", orderHeader_result.getKtext());
                                             values.put("Ilart", orderHeader_result.getIlart());
@@ -1782,29 +1783,39 @@ public class Order_Create_Change {
                             App_db.endTransaction();
                         }
                     } else {
-                        if (response.body().getD().getEtWcmWdDup().getResults() != null) {
-                            String EtNotifDup_response_data = new Gson().toJson(response.body().getD().getEtWcmWdDup().getResults());
-                            if (EtNotifDup_response_data != null && !EtNotifDup_response_data.equals("")) {
-                                JSONArray jsonArray = new JSONArray(EtNotifDup_response_data);
+                        try {
+                            if (response.body().getD().getEtWcmWdDup().getResults() != null) {
+                                String EtNotifDup_response_data = new Gson().toJson(response.body().getD().getEtWcmWdDup().getResults());
+                                if (EtNotifDup_response_data != null && !EtNotifDup_response_data.equals("")) {
+                                    JSONArray jsonArray = new JSONArray(EtNotifDup_response_data);
 
-                                Get_Response = "Duplicate";
-                                Get_Data = jsonArray.toString();
-                            } else {
-                                Get_Response = activity
-                                        .getString(R.string.crtordr_unable);
-                                Get_Data = "";
+                                    Get_Response = "Duplicate";
+                                    Get_Data = jsonArray.toString();
+                                } else {
+                                    Get_Response = activity
+                                            .getString(R.string.crtordr_unable);
+                                    Get_Data = "";
+                                }
                             }
+                        }catch(Exception e)
+                        {
+                            Log.v("response",""+e.getMessage());
                         }
                     }
                 }
             } else {
-                Get_Response = activity
-                        .getString(R.string.crtordr_unable);
+                if (operation.equals("CHORD"))
+                    Get_Response = activity.getString(R.string.unable_change);
+                else
+                    Get_Response = activity.getString(R.string.crtordr_unable);
             }
 
         } catch (Exception e) {
             Log.v("REsponse", "" + e.getMessage());
-
+            if (operation.equals("CHORD"))
+                Get_Response = activity.getString(R.string.unable_change);
+            else
+                Get_Response = activity.getString(R.string.crtordr_unable);
         }
         /*Reading Data by using FOR Loop*/
         String[] response = new String[2];

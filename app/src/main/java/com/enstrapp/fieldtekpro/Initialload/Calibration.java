@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -83,7 +84,8 @@ public class Calibration {
     private static final String KEY_EtQinspData_Action = "Action";//38
     private static final String KEY_EtQinspData_UUID = "UUID";//39
     private static final String KEY_EtQinspData_Udid = "Udid";//40
-    private static final String KEY_EtQinspData_Werks = "Werks";//40
+    private static final String KEY_EtQinspData_Werks = "Werks";//41
+    private static final String KEY_EtQinspData_Ltxa1 = "Ltxa1";//41
     /* EtQinspData Table and Fields Names */
 
     /* EtQudData Table and Fields Names */
@@ -162,7 +164,8 @@ public class Calibration {
                         + KEY_EtQinspData_Action + " TEXT,"//7
                         + KEY_EtQinspData_UUID + " TEXT,"//7
                         + KEY_EtQinspData_Udid + " TEXT,"//7
-                        + KEY_EtQinspData_Werks + " TEXT"//7
+                        + KEY_EtQinspData_Werks + " TEXT,"//7
+                        + KEY_EtQinspData_Ltxa1 + " TEXT"//7
                         + ")";
                 App_db.execSQL(CREATE_TABLE_EtQinspData);
                 /* EtQinspData Table and Fields Names */
@@ -299,6 +302,7 @@ public class Calibration {
                                     values.put("UUID", " ");
                                     values.put("Udid", eQD.getUdid());
                                     values.put("Werks", eQD.getWerks());
+                                    values.put("Ltxa1", eQD.getLtxa1());
                                     App_db.insert("EtQinspData", null, values);
                                 }
                             }

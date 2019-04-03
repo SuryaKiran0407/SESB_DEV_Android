@@ -22,7 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Calibration_UsageDecision_Fragment extends Fragment implements View.OnClickListener {
 
-    String Aufnr = "", WERKS = "", VAUSWAHLMG = "", udcode_id = "", udcode_text = "", quality_score = "", Udtext = "";
+    String VAUSWAHLMG = "", udcode_id = "", udcode_text = "", quality_score = "", Udtext = "",Vcodegrp = "";
     Button udcode_button;
     int udcode_intent_value = 1;
     private static SQLiteDatabase App_db;
@@ -30,7 +30,8 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     TextView udcode_text_textview, quality_score_textview;
     EditText notes_edittext;
-    ImageView valuation_imageview;
+    ImageView valuation_imageview, udcode_iv;
+    Calibration_Orders_Operations_List_Activity activity;
 
     public Calibration_UsageDecision_Fragment() {
     }
@@ -47,23 +48,21 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
         DATABASE_NAME = getActivity().getString(R.string.database_name);
         App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        Calibration_Orders_Operations_List_Activity activity = (Calibration_Orders_Operations_List_Activity) getActivity();
-        Aufnr = activity.getorder_id();
-        WERKS = activity.getplant_id();
+        activity = (Calibration_Orders_Operations_List_Activity) getActivity();
 
         udcode_button = (Button) rootView.findViewById(R.id.udcode_button);
         udcode_text_textview = (TextView) rootView.findViewById(R.id.udcode_text_textview);
         quality_score_textview = (TextView) rootView.findViewById(R.id.quality_score_textview);
         notes_edittext = (EditText) rootView.findViewById(R.id.notes_edittext);
         valuation_imageview = (ImageView) rootView.findViewById(R.id.valuation_imageview);
-
+        udcode_iv = (ImageView) rootView.findViewById(R.id.udcode_iv);
         udcode_button.setOnClickListener(this);
-
 
         String vkatart = "";
         try {
             Cursor cursor1 = null;
-            cursor1 = App_db.rawQuery("select * from EtQudData Where Aufnr = ?", new String[]{Aufnr});
+            cursor1 = App_db.rawQuery("select * from EtQudData Where Aufnr = ?",
+                    new String[]{activity.order_id});
             if (cursor1 != null && cursor1.getCount() > 0) {
                 if (cursor1.moveToFirst()) {
                     do {
@@ -83,7 +82,6 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
             notes_edittext.setEnabled(false);
         }
 
-
         new Get_UsageDecision_Data().execute();
 
         return rootView;
@@ -99,12 +97,14 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = App_db.rawQuery("select * from EtQudData where Aufnr = ?", new String[]{Aufnr});
+                Cursor cursor = App_db.rawQuery("select * from EtQudData where Aufnr = ?",
+                        new String[]{activity.order_id});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
                             VAUSWAHLMG = cursor.getString(7);
                             Udtext = cursor.getString(14);
+                            Vcodegrp = cursor.getString(6);
                             String VCODE = cursor.getString(8);
                             if (VCODE != null && !VCODE.equals("")) {
                                 if (VCODE.equalsIgnoreCase("null")) {
@@ -114,7 +114,9 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
                                     quality_score = cursor.getString(7);
                                     try {
                                         Cursor cursor1 = null;
-                                        cursor1 = App_db.rawQuery("select * from EtUdecCodes Where Code = ? AND Werks = ? AND Auswahlmge = ?", new String[]{udcode_id, WERKS, VAUSWAHLMG});
+                                        cursor1 = App_db.rawQuery("select * from EtUdecCodes" +
+                                                        " Where Code = ? AND Werks = ? AND Auswahlmge = ?",
+                                                new String[]{udcode_id, activity.plant_id, VAUSWAHLMG});
                                         if (cursor1 != null && cursor1.getCount() > 0) {
                                             if (cursor1.moveToFirst()) {
                                                 do {
@@ -144,21 +146,18 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             udcode_button.setText(udcode_id);
             udcode_text_textview.setText(udcode_text);
             quality_score_textview.setText(quality_score);
             notes_edittext.setText(Udtext);
-            if (udcode_id.startsWith("A")) {
-                valuation_imageview.setImageResource(R.drawable.ic_tickmark_enabled);
+            if (udcode_id.equals("")) {
+
+            } else if (udcode_id.startsWith("A")) {
+                udcode_iv.setImageResource(R.drawable.green_right);
             } else {
-                valuation_imageview.setImageResource(R.drawable.ic_tickmark_disabled);
+                udcode_iv.setImageResource(R.drawable.red_wrong);
             }
             progressDialog.dismiss_progress_dialog();
         }
@@ -168,8 +167,9 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
     public void onClick(View v) {
         if (v == udcode_button) {
             Intent notification_type_intent = new Intent(getActivity(), Calibration_UDCode_List_Activity.class);
-            notification_type_intent.putExtra("WERKS", WERKS);
+            notification_type_intent.putExtra("WERKS", activity.plant_id);
             notification_type_intent.putExtra("VAUSWAHLMG", VAUSWAHLMG);
+            notification_type_intent.putExtra("Vcode", Vcodegrp);
             startActivityForResult(notification_type_intent, udcode_intent_value);
         }
     }
@@ -187,15 +187,19 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
                 udcode_button.setText(udcode_id);
                 udcode_text_textview.setText(udcode_text);
                 quality_score_textview.setText(quality_score);
+                if (udcode_id.equals("")) {
+
+                } else if (udcode_id.startsWith("A")) {
+                    udcode_iv.setImageResource(R.drawable.green_right);
+                } else {
+                    udcode_iv.setImageResource(R.drawable.red_wrong);
+                }
                 //notes_edittext.setText(Udtext);
             }
         }
     }
 
-
     public Calibration_Usage_Decision_Object getUsageDecisionData() {
         return new Calibration_Usage_Decision_Object(udcode_id, udcode_text, quality_score, notes_edittext.getText().toString());
     }
-
-
 }

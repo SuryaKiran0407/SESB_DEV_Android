@@ -44,6 +44,7 @@ import com.enstrapp.fieldtekpro.orders.Measurement_Parceble;
 import com.enstrapp.fieldtekpro.orders.Order_CConfirmation;
 import com.enstrapp.fieldtekpro.orders.Order_Create_Change;
 //import com.enstrapp.fieldtekpro.orders.Order_Rel;
+import com.enstrapp.fieldtekpro.orders.Order_Rel;
 import com.enstrapp.fieldtekpro.orders.OrdrHeaderPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrMatrlPrcbl;
 import com.enstrapp.fieldtekpro.orders.OrdrObjectPrcbl;
@@ -750,7 +751,7 @@ public class Auto_Sync_BackgroundService extends Service {
     /*Posting Order Create to Backend Server*/
     private class Post_Order_Create extends AsyncTask<String, Integer, Void> {
         OrdrHeaderPrcbl ohp = new OrdrHeaderPrcbl();
-        String order_id = "", log_uuid = "", ordrLngTxt = "";
+        String order_id = "", log_uuid = "", ordrLngTxt = "",id;
         String[] Response = new String[2];
         ArrayList<OrdrOprtnPrcbl> oop_al = new ArrayList<OrdrOprtnPrcbl>();
         ArrayList<OrdrObjectPrcbl> oobp_al = new ArrayList<OrdrObjectPrcbl>();
@@ -986,7 +987,7 @@ public class Auto_Sync_BackgroundService extends Service {
                 /*Fetching Order Header Data*/
 
 
-                Response = new Order_Create_Change().Post_Create_Order(context, ohp, "LOAD", "CRORD", "", "", header_custominfo, operation_custom_info_arraylist, material_custom_info_arraylist, "");
+                Response = new Order_Create_Change().Post_Create_Order(context, ohp, "LOAD", "CRORD", "", "", header_custominfo, operation_custom_info_arraylist, material_custom_info_arraylist, log_uuid);
             } catch (Exception e) {
             }
             return null;
@@ -1054,7 +1055,7 @@ public class Auto_Sync_BackgroundService extends Service {
         protected Void doInBackground(String... params) {
             orderId = params[0];
             log_uuid = params[1];
-        //    Response = new Order_Rel().Get_Data(context, "", "X", "RLORD", orderId);
+            Response = new Order_Rel().Get_Data(context, "", "X", "RLORD", orderId);
             return null;
         }
 
@@ -1352,7 +1353,38 @@ public class Auto_Sync_BackgroundService extends Service {
                     }
                 }
                 /*Fetching Notification Activity*/
-
+                Cursor taskdata_cursor = null;
+                taskdata_cursor = FieldTekPro_db.rawQuery("select * from DUE_NOTIFICATION_EtNotifTasks where Qmnum = ?", new String[]{notification_id});
+                if (taskdata_cursor != null && taskdata_cursor.getCount() > 0) {
+                    if (taskdata_cursor.moveToFirst()) {
+                        do {
+                            Model_Notif_Task mnt = new Model_Notif_Task();
+                            mnt.setQmnum(notification_id);
+                            mnt.setTaskKey(taskdata_cursor.getString(13));
+                            mnt.setItemKey(taskdata_cursor.getString(3));
+                            mnt.setTaskGrp(taskdata_cursor.getString(14));
+                            mnt.setTaskgrptext(taskdata_cursor.getString(15));
+                            mnt.setTaskCod(taskdata_cursor.getString(16));
+                            mnt.setTaskcodetext(taskdata_cursor.getString(17));
+                            mnt.setTaskShtxt(taskdata_cursor.getString(18));
+                            mnt.setPster(taskdata_cursor.getString(19));
+                            mnt.setPeter(taskdata_cursor.getString(20));
+                            mnt.setPstur(taskdata_cursor.getString(21));
+                            mnt.setPetur(taskdata_cursor.getString(22));
+                            mnt.setRelease(taskdata_cursor.getString(28));
+                            mnt.setComplete(taskdata_cursor.getString(29));
+                            mnt.setSuccess(taskdata_cursor.getString(30));
+                            mnt.setAction(taskdata_cursor.getString(40));
+                            TasksArrayList.add(mnt);
+                        }
+                        while (taskdata_cursor.moveToNext());
+                    }
+                }else
+                {
+                    if (taskdata_cursor != null) {
+                        taskdata_cursor.close();
+                    }
+                }
 
                 /*Fetching Notification Attachments*/
                 Cursor attachmentsdata_cursor = null;
@@ -1402,7 +1434,7 @@ public class Auto_Sync_BackgroundService extends Service {
                 }
                 /*Fetching Notification Attachments*/
 
-                notif_change_status = Notifications_Change.Post_NotifChange_Data(context, transmit_type, notification_id, notification_type_id, notif_text, functionlocation_id, equipment_id, equipment_text, priority_type_id, priority_type_text, plannergroup_id, plannergroup_text, Reported_by, personresponsible_id, personresponsible_text, req_st_date, req_st_time, req_end_date, req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time, effect_id, effect_text, plant_id, workcenter_id, primary_user_resp, causecodeArrayList, ActivityArrayList, AttachmentsArrayList, LongtextsArrayList, statusArrayList, TasksArrayList, header_custominfo);
+                notif_change_status = Notifications_Change.Post_NotifChange_Data(context, transmit_type, notification_id, notification_type_id, notif_text, functionlocation_id, equipment_id, equipment_text, priority_type_id, priority_type_text, plannergroup_id, plannergroup_text, Reported_by, personresponsible_id, personresponsible_text, req_st_date, req_st_time, req_end_date, req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time, effect_id, effect_text, plant_id, workcenter_id, primary_user_resp, causecodeArrayList, ActivityArrayList, AttachmentsArrayList, LongtextsArrayList, statusArrayList, TasksArrayList, header_custominfo,"");
             } catch (Exception e) {
             }
             return null;
@@ -1595,7 +1627,38 @@ public class Auto_Sync_BackgroundService extends Service {
                 }
                 /*Fetching Notification Activity*/
 
-
+                Cursor taskdata_cursor = null;
+                taskdata_cursor = FieldTekPro_db.rawQuery("select * from DUE_NOTIFICATION_EtNotifTasks where Qmnum = ?", new String[]{notification_id});
+                if (taskdata_cursor != null && taskdata_cursor.getCount() > 0) {
+                    if (taskdata_cursor.moveToFirst()) {
+                        do {
+                            Model_Notif_Task mnt = new Model_Notif_Task();
+                            mnt.setQmnum("");
+                            mnt.setTaskKey(taskdata_cursor.getString(3));
+                            mnt.setItemKey(taskdata_cursor.getString(3));
+                            mnt.setTaskGrp(taskdata_cursor.getString(14));
+                            mnt.setTaskgrptext(taskdata_cursor.getString(15));
+                            mnt.setTaskCod(taskdata_cursor.getString(16));
+                            mnt.setTaskcodetext(taskdata_cursor.getString(17));
+                            mnt.setTaskShtxt(taskdata_cursor.getString(18));
+                            mnt.setPster(taskdata_cursor.getString(19));
+                            mnt.setPeter(taskdata_cursor.getString(20));
+                            mnt.setPstur(taskdata_cursor.getString(21));
+                            mnt.setPetur(taskdata_cursor.getString(22));
+                            mnt.setRelease(taskdata_cursor.getString(28));
+                            mnt.setComplete(taskdata_cursor.getString(29));
+                            mnt.setSuccess(taskdata_cursor.getString(30));
+                            mnt.setAction("I");
+                            TasksArrayList.add(mnt);
+                        }
+                        while (taskdata_cursor.moveToNext());
+                    }
+                }else
+                {
+                    if (taskdata_cursor != null) {
+                        taskdata_cursor.close();
+                    }
+                }
                 /*Fetching Notification Attachments*/
                 Cursor attachmentsdata_cursor = null;
                 attachmentsdata_cursor = FieldTekPro_db.rawQuery("select * from DUE_NOTIFICATION_EtDocs where Zobjid = ?", new String[]{notification_id});

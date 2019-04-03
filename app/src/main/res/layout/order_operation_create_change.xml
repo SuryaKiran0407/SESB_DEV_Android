@@ -75,6 +75,7 @@
                         android:hint="@string/oprtn_shrt_start"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:maxLength="40"
                         android:textSize="@dimen/textSize" />
                 </android.support.design.widget.TextInputLayout>
                 <ImageView

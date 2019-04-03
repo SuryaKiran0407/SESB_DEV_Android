@@ -126,20 +126,18 @@ public class Orders_CH_Operation_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isSelected) {
-                    ArrayList<OrdrOprtnPrcbl> rmoop = new ArrayList<>();
-                    String optId = "";
-
-                    rmoop.addAll(oop_al_rv);
+                    ArrayList<OrdrOprtnPrcbl> rmoop = new ArrayList<>(oop_al_rv);
                     for (OrdrOprtnPrcbl oo : rmoop) {
                         if (oo.isSelected() && oo.getStatus().equals("I")) {
+                            ma.remove_component(oo.getOprtnId());
                             oop_al_rv.remove(oo);
                             oop_al.remove(oo);
                         } else if (oo.isSelected()) {
                             oop_al_rv.remove(oo);
-                            optId = oo.getOprtnId();
                             for (int i = 0; i < oop_al.size(); i++) {
-                                if (oop_al.get(i).getOprtnId().equals(optId))
+                                if (oop_al.get(i).getOprtnId().equals(oo.getOprtnId()))
                                     oop_al.get(i).setStatus("D");
+                                    ma.remove_component(oo.getOprtnId());
                             }
                         }
                     }
@@ -453,4 +451,6 @@ public class Orders_CH_Operation_Fragment extends Fragment {
             return 0;
         }
     }
+
+
 }

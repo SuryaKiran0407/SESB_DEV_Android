@@ -93,9 +93,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
+                android:drawableStart="@drawable/ic_login_password_icon"
                 android:hint="@string/sap_password"
                 android:inputType="textPassword"
-                android:drawableLeft="@drawable/ic_login_password_icon"
                 android:drawablePadding="10dp"
                 android:textSize="16sp"
                 android:textColor="@color/white"/>

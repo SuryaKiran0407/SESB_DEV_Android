@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -75,6 +76,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
     Boolean isInternetPresent = false;
     Network_Connection_Dialog network_connection_dialog = new Network_Connection_Dialog();
     Dialog decision_dialog;
+    Check_Empty checkEmpty = new Check_Empty();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
 
         UUID uniqueKey_uuid = UUID.randomUUID();
         uniqeId = uniqueKey_uuid.toString();
+
 
         ohp = new OrdrHeaderPrcbl();
 
@@ -119,6 +122,24 @@ public class Orders_Create_Activity extends AppCompatActivity {
                             do {
                                 floc_name = cursor.getString(2);
                                 costcenter_id = cursor.getString(5);
+                            }
+                            while (cursor.moveToNext());
+                        }
+                    } else {
+                        cursor.close();
+                    }
+                } catch (Exception e) {
+                }
+            }
+            if(ohp.getOrdrTypId()!= null && !ohp.getOrdrTypId().equals(""))
+            {
+                try {
+                    Cursor cursor = App_db.rawQuery("select * from GET_ORDER_TYPES where Auart = ?",
+                            new String[]{ohp.getOrdrTypId()});
+                    if (cursor != null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
+                                ohp.setOrdrTypName(cursor.getString(2));
                             }
                             while (cursor.moveToNext());
                         }
@@ -446,7 +467,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     EtOrderHeader_statement.bindString(36, ohp.getWrkCntrName());
                     EtOrderHeader_statement.bindString(37, ohp.getPlnrGrpName());
                     EtOrderHeader_statement.bindString(38, "");
-                    EtOrderHeader_statement.bindString(39, "CRTD");
+                    EtOrderHeader_statement.bindString(39, "OFL");
                     EtOrderHeader_statement.bindString(40, "");
                     EtOrderHeader_statement.bindString(41, "");
                     EtOrderHeader_statement.bindString(42, "");
@@ -454,14 +475,14 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     EtOrderHeader_statement.bindString(44, "");
                     EtOrderHeader_statement.bindString(45, "");
                     EtOrderHeader_statement.bindString(46, ohp.getRespCostCntrId());
-                    EtOrderHeader_statement.bindString(47, ohp.getSysCondId());
-                    EtOrderHeader_statement.bindString(48, ohp.getSysCondName());
+                    EtOrderHeader_statement.bindString(47, checkEmpty.check_empty(ohp.getSysCondId()));
+                    EtOrderHeader_statement.bindString(48, checkEmpty.check_empty(ohp.getSysCondName()));
                     EtOrderHeader_statement.bindString(49, "");
                     EtOrderHeader_statement.bindString(50, "");
                     EtOrderHeader_statement.bindString(51, "");
                     EtOrderHeader_statement.bindString(52, "");
-                    EtOrderHeader_statement.bindString(53, ohp.getPerRespId());
-                    EtOrderHeader_statement.bindString(54, ohp.getPerRespName());
+                    EtOrderHeader_statement.bindString(53, checkEmpty.check_empty(ohp.getPerRespId()));
+                    EtOrderHeader_statement.bindString(54, checkEmpty.check_empty(ohp.getPerRespName()));
                     /*EtOrderHeader_statement.bindString(55, ohp.getPosid());
                     EtOrderHeader_statement.bindString(56, ohp.getRevnr());*/
                     EtOrderHeader_statement.execute();
@@ -502,6 +523,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         App_db.endTransaction();
                     }
                 } catch (Exception e) {
+                    Log.v("Long text response",""+e.getMessage());
                 }
 
                 try {
@@ -548,6 +570,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         App_db.endTransaction();
                     }
                 } catch (Exception e) {
+                    Log.v("op response",""+e.getMessage());
                 }
 
 
@@ -600,7 +623,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     String date = date_format.format(todaysdate.getTime());
                     String time = time_format.format(todaysdate.getTime());
 
-                    String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID) values(?,?,?,?,?,?,?,?,?,?);";
+                    String sql11 = "Insert into Alert_Log (DATE, TIME, DOCUMENT_CATEGORY, ACTIVITY_TYPE, USER, OBJECT_ID, STATUS, UUID, MESSAGE, LOG_UUID, OBJECT_TXT) values(?,?,?,?,?,?,?,?,?,?,?);";
                     SQLiteStatement statement11 = App_db.compileStatement(sql11);
                     App_db.beginTransaction();
                     statement11.clearBindings();
@@ -611,9 +634,10 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     statement11.bindString(5, "");
                     statement11.bindString(6, "ORD_" + timeStamp);
                     statement11.bindString(7, "Fail");
-                    statement11.bindString(8, uniqueKey.toString());
+                    statement11.bindString(8, uniqeId);
                     statement11.bindString(9, "");
-                    statement11.bindString(10, uniqueKey.toString());
+                    statement11.bindString(10, uniqeId);
+                    statement11.bindString(11, ohp.getOrdrShrtTxt());
                     statement11.execute();
                     App_db.setTransactionSuccessful();
                     App_db.endTransaction();
@@ -993,7 +1017,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                 oop.setSelected(false);
                 oop.setOrdrId("");
                 oop.setOrdrSatus("");
-                oop.setOprtnId("0020");
+                oop.setOprtnId("0010");
                 oop.setOprtnShrtTxt(ohp.getOrdrShrtTxt());
                 oop.setOprtnLngTxt(ohp.getOrdrLngTxt());
                 oop.setDuration("0");
@@ -1050,5 +1074,16 @@ public class Orders_Create_Activity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
+    }
+    public void remove_component(String operation_id) {
+        Orders_CR_Material_Fragment orders_cr_material_fragment = (Orders_CR_Material_Fragment)
+                getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        orders_cr_material_fragment.remove_component(operation_id);
+    }
+
+    public void replaceOprtnIds(String oldId, String newId, String newText) {
+        Orders_CR_Material_Fragment orders_cr_material_fragment = (Orders_CR_Material_Fragment)
+                getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 2));
+        orders_cr_material_fragment.replaceOprtnId(oldId, newId, newText);
     }
 }
