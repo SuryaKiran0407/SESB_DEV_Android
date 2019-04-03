@@ -4,7 +4,7 @@
 
     <!--<string name="ip_address">https://ed9.enstrapp.com:443/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string>-->
 
-    <string name="ip_address">http://103.6.157.25:8200/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string>
+    <string name="ip_address">http://ed9.enstrapp.com/sap/opu/odata/sap/ZEMT_PMAPP_SRV/</string>
     <string name="ip_address_port">103.6.157.25:8200</string>
     <string name="ip_address_port_attach">http://103.6.157.25:8200%1s</string>
 
