@@ -113,7 +113,7 @@ public class Calibration_Orders_Operations_List_Activity extends AppCompatActivi
                     do {
                         EquiList eql = new EquiList(cursor1.getString(21), equipName(cursor1.getString(21)));
                         equi_list.add(eql);
-                        Prueflos = cursor1.getString(1);
+                        Prueflos = cursor1.getString(2);
 
                     }
                     while (cursor1.moveToNext());
