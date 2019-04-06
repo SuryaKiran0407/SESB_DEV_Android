@@ -455,7 +455,7 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
     private String dateFormat(String date) {
         if (!date.equals("00000000")) {
             DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
-            DateFormat outputFormat = new SimpleDateFormat("dd.MM.yy");
+            DateFormat outputFormat = new SimpleDateFormat("MMM dd,yyyy");
             Date date1;
             try {
                 date1 = inputFormat.parse(date);
@@ -525,6 +525,4 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
             new Get_Calib_Orders_Data().execute();
         }
     }
-
-
 }

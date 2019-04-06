@@ -111,7 +111,7 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
                                     udcode_id = "";
                                 } else {
                                     udcode_id = VCODE;
-                                    quality_score = cursor.getString(7);
+                                    quality_score = cursor.getString(9);
                                     try {
                                         Cursor cursor1 = null;
                                         cursor1 = App_db.rawQuery("select * from EtUdecCodes" +
@@ -120,7 +120,7 @@ public class Calibration_UsageDecision_Fragment extends Fragment implements View
                                         if (cursor1 != null && cursor1.getCount() > 0) {
                                             if (cursor1.moveToFirst()) {
                                                 do {
-                                                    udcode_text = cursor1.getString(6);
+                                                    udcode_text = cursor1.getString(7);
                                                 }
                                                 while (cursor1.moveToNext());
                                             }
