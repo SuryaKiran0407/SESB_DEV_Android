@@ -85,7 +85,8 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
                 .getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         DateFormat = FieldTekPro_SharedPref.getString("Date_Format", null);
 
-        new Get_Calib_Orders_Data().execute();
+       // new Get_Calib_Orders_Data().execute();
+
 
 
         back_imageview.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +121,11 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        new Get_Calib_Orders_Data().execute();
     }
 
 
@@ -253,6 +259,7 @@ public class Calibration_Orders_List_Activity extends AppCompatActivity {
                 recyclerview.setLayoutManager(layoutManager);
                 recyclerview.setItemAnimator(new DefaultItemAnimator());
                 recyclerview.setAdapter(ordersAdapter);
+                ordersAdapter.notifyDataSetChanged();
                 no_data_textview.setVisibility(View.GONE);
                 recyclerview.setVisibility(View.VISIBLE);
             } else {

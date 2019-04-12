@@ -451,6 +451,14 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                 if (resultCode == RESULT_OK) {
                     ma.ohp.setOrdrTypId(data.getStringExtra("ordrTypId"));
                     ma.ohp.setOrdrTypName(data.getStringExtra("ordrTypTxt"));
+                    ma.ohp.setOpera(data.getStringExtra("ordrOpTyp"));
+                    if(ma.ohp.getOpera().equals(""))
+                    {
+                        ma.empty = true;
+                    }else
+                    {
+                        ma.empty = false;
+                    }
                     ordrTyp_tiet.setText(getResources().getString(R.string.hypen_text,
                             data.getStringExtra("ordrTypId"),
                             data.getStringExtra("ordrTypTxt")));

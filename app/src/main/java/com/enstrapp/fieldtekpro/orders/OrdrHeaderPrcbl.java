@@ -16,6 +16,7 @@ public class OrdrHeaderPrcbl implements Parcelable {
     private String statusALL;
     private String ordrTypId;
     private String ordrTypName;
+    private String opera;
     private String ordrShrtTxt;
     private String ordrLngTxt;
     private String notifId;
@@ -52,54 +53,6 @@ public class OrdrHeaderPrcbl implements Parcelable {
     private ArrayList<OrdrPermitPrcbl> ordrPermitPrcbls;
     private ArrayList<Notif_EtDocs_Parcelable> ordrDocsPrcbls;
 
-    public String getActivitytype_id() {
-        return activitytype_id;
-    }
-
-    public void setActivitytype_id(String activitytype_id) {
-        this.activitytype_id = activitytype_id;
-    }
-
-    public String getActivitytype_text() {
-        return activitytype_text;
-    }
-
-    public void setActivitytype_text(String activitytype_text) {
-        this.activitytype_text = activitytype_text;
-    }
-
-    public String getBukrs() {
-        return bukrs;
-    }
-
-    public void setBukrs(String bukrs) {
-        this.bukrs = bukrs;
-    }
-
-    public String getPosid() {
-        return posid;
-    }
-
-    public void setPosid(String posid) {
-        this.posid = posid;
-    }
-
-    public String getRevnr() {
-        return revnr;
-    }
-
-    public void setRevnr(String revnr) {
-        this.revnr = revnr;
-    }
-
-    public String getStatusALL() {
-        return statusALL;
-    }
-
-    public void setStatusALL(String statusALL) {
-        this.statusALL = statusALL;
-    }
-
     public String getOrdrId() {
         return ordrId;
     }
@@ -108,64 +61,8 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.ordrId = ordrId;
     }
 
-    public ArrayList<Notif_EtDocs_Parcelable> getOrdrDocsPrcbls() {
-        return ordrDocsPrcbls;
-    }
-
-    public void setOrdrDocsPrcbls(ArrayList<Notif_EtDocs_Parcelable> ordrDocsPrcbls) {
-        this.ordrDocsPrcbls = ordrDocsPrcbls;
-    }
-
-    public String getIwerk() {
-        return iwerk;
-    }
-
-    public void setIwerk(String iwerk) {
-        this.iwerk = iwerk;
-    }
-
-    public ArrayList<NotifOrdrStatusPrcbl> getOrdrStatusPrcbls() {
-        return ordrStatusPrcbls;
-    }
-
-    public void setOrdrStatusPrcbls(ArrayList<NotifOrdrStatusPrcbl> ordrStatusPrcbls) {
-        this.ordrStatusPrcbls = ordrStatusPrcbls;
-    }
-
-    public ArrayList<OrdrPermitPrcbl> getOrdrPermitPrcbls() {
-        return ordrPermitPrcbls;
-    }
-
-    public void setOrdrPermitPrcbls(ArrayList<OrdrPermitPrcbl> ordrPermitPrcbls) {
-        this.ordrPermitPrcbls = ordrPermitPrcbls;
-    }
-
-    public String getRespCostCntrName() {
-        return respCostCntrName;
-    }
-
-    public void setRespCostCntrName(String respCostCntrName) {
-        this.respCostCntrName = respCostCntrName;
-    }
-
-    public ArrayList<OrdrMatrlPrcbl> getOrdrMatrlPrcbls() {
-        return ordrMatrlPrcbls;
-    }
-
-    public void setOrdrMatrlPrcbls(ArrayList<OrdrMatrlPrcbl> ordrMatrlPrcbls) {
-        this.ordrMatrlPrcbls = ordrMatrlPrcbls;
-    }
-
     public String getOrdrUUId() {
         return ordrUUId;
-    }
-
-    public String getPlantName() {
-        return plantName;
-    }
-
-    public void setPlantName(String plantName) {
-        this.plantName = plantName;
     }
 
     public void setOrdrUUId(String ordrUUId) {
@@ -178,6 +75,14 @@ public class OrdrHeaderPrcbl implements Parcelable {
 
     public void setOrdrStatus(String ordrStatus) {
         this.ordrStatus = ordrStatus;
+    }
+
+    public String getStatusALL() {
+        return statusALL;
+    }
+
+    public void setStatusALL(String statusALL) {
+        this.statusALL = statusALL;
     }
 
     public String getOrdrTypId() {
@@ -194,6 +99,14 @@ public class OrdrHeaderPrcbl implements Parcelable {
 
     public void setOrdrTypName(String ordrTypName) {
         this.ordrTypName = ordrTypName;
+    }
+
+    public String getOpera() {
+        return opera;
+    }
+
+    public void setOpera(String opera) {
+        this.opera = opera;
     }
 
     public String getOrdrShrtTxt() {
@@ -324,6 +237,14 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.respCostCntrId = respCostCntrId;
     }
 
+    public String getRespCostCntrName() {
+        return respCostCntrName;
+    }
+
+    public void setRespCostCntrName(String respCostCntrName) {
+        this.respCostCntrName = respCostCntrName;
+    }
+
     public String getSysCondId() {
         return sysCondId;
     }
@@ -356,12 +277,68 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.plant = plant;
     }
 
+    public String getPlantName() {
+        return plantName;
+    }
+
+    public void setPlantName(String plantName) {
+        this.plantName = plantName;
+    }
+
     public String getWrkCntrName() {
         return wrkCntrName;
     }
 
     public void setWrkCntrName(String wrkCntrName) {
         this.wrkCntrName = wrkCntrName;
+    }
+
+    public String getIwerk() {
+        return iwerk;
+    }
+
+    public void setIwerk(String iwerk) {
+        this.iwerk = iwerk;
+    }
+
+    public String getPosid() {
+        return posid;
+    }
+
+    public void setPosid(String posid) {
+        this.posid = posid;
+    }
+
+    public String getRevnr() {
+        return revnr;
+    }
+
+    public void setRevnr(String revnr) {
+        this.revnr = revnr;
+    }
+
+    public String getBukrs() {
+        return bukrs;
+    }
+
+    public void setBukrs(String bukrs) {
+        this.bukrs = bukrs;
+    }
+
+    public String getActivitytype_id() {
+        return activitytype_id;
+    }
+
+    public void setActivitytype_id(String activitytype_id) {
+        this.activitytype_id = activitytype_id;
+    }
+
+    public String getActivitytype_text() {
+        return activitytype_text;
+    }
+
+    public void setActivitytype_text(String activitytype_text) {
+        this.activitytype_text = activitytype_text;
     }
 
     public ArrayList<OrdrOprtnPrcbl> getOrdrOprtnPrcbls() {
@@ -380,7 +357,36 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.ordrObjectPrcbls = ordrObjectPrcbls;
     }
 
-    public OrdrHeaderPrcbl() {
+    public ArrayList<OrdrMatrlPrcbl> getOrdrMatrlPrcbls() {
+        return ordrMatrlPrcbls;
+    }
+
+    public void setOrdrMatrlPrcbls(ArrayList<OrdrMatrlPrcbl> ordrMatrlPrcbls) {
+        this.ordrMatrlPrcbls = ordrMatrlPrcbls;
+    }
+
+    public ArrayList<NotifOrdrStatusPrcbl> getOrdrStatusPrcbls() {
+        return ordrStatusPrcbls;
+    }
+
+    public void setOrdrStatusPrcbls(ArrayList<NotifOrdrStatusPrcbl> ordrStatusPrcbls) {
+        this.ordrStatusPrcbls = ordrStatusPrcbls;
+    }
+
+    public ArrayList<OrdrPermitPrcbl> getOrdrPermitPrcbls() {
+        return ordrPermitPrcbls;
+    }
+
+    public void setOrdrPermitPrcbls(ArrayList<OrdrPermitPrcbl> ordrPermitPrcbls) {
+        this.ordrPermitPrcbls = ordrPermitPrcbls;
+    }
+
+    public ArrayList<Notif_EtDocs_Parcelable> getOrdrDocsPrcbls() {
+        return ordrDocsPrcbls;
+    }
+
+    public void setOrdrDocsPrcbls(ArrayList<Notif_EtDocs_Parcelable> ordrDocsPrcbls) {
+        this.ordrDocsPrcbls = ordrDocsPrcbls;
     }
 
     @Override
@@ -396,6 +402,7 @@ public class OrdrHeaderPrcbl implements Parcelable {
         dest.writeString(this.statusALL);
         dest.writeString(this.ordrTypId);
         dest.writeString(this.ordrTypName);
+        dest.writeString(this.opera);
         dest.writeString(this.ordrShrtTxt);
         dest.writeString(this.ordrLngTxt);
         dest.writeString(this.notifId);
@@ -433,6 +440,9 @@ public class OrdrHeaderPrcbl implements Parcelable {
         dest.writeTypedList(this.ordrDocsPrcbls);
     }
 
+    public OrdrHeaderPrcbl() {
+    }
+
     protected OrdrHeaderPrcbl(Parcel in) {
         this.ordrId = in.readString();
         this.ordrUUId = in.readString();
@@ -440,6 +450,7 @@ public class OrdrHeaderPrcbl implements Parcelable {
         this.statusALL = in.readString();
         this.ordrTypId = in.readString();
         this.ordrTypName = in.readString();
+        this.opera = in.readString();
         this.ordrShrtTxt = in.readString();
         this.ordrLngTxt = in.readString();
         this.notifId = in.readString();

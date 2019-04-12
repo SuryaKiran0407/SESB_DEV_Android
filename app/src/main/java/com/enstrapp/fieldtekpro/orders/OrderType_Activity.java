@@ -135,6 +135,7 @@ public class OrderType_Activity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("ordrTypId", ordrTyp_list.get(position).get("ordrTypId"));
                     intent.putExtra("ordrTypTxt", ordrTyp_list.get(position).get("ordrTypTxt"));
+                    intent.putExtra("ordrOpTyp", ordrTyp_list.get(position).get("ordrOpTyp"));
                     setResult(RESULT_OK, intent);
                     OrderType_Activity.this.finish();
                 }
@@ -158,6 +159,7 @@ public class OrderType_Activity extends AppCompatActivity {
                         HashMap<String, String> map = new HashMap<String, String>();
                         map.put("ordrTypId", cursor.getString(1));//id
                         map.put("ordrTypTxt", cursor.getString(2));//text
+                        map.put("ordrOpTyp", cursor.getString(3));//optyp
                         ordrTypList.add(map);
                     }
                     while (cursor.moveToNext());

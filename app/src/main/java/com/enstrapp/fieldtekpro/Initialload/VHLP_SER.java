@@ -1494,6 +1494,17 @@ public class VHLP_SER {
         @SerializedName("Txt")
         @Expose
         private String Txt;
+        @SerializedName("Opera")
+        @Expose
+        private String Opera;
+
+        public String getOpert() {
+            return Opera;
+        }
+
+        public void setOpert(String opert) {
+            Opera = opert;
+        }
 
         public String getAuart() {
             return Auart;

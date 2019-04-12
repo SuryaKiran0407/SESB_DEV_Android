@@ -256,6 +256,7 @@ public class VHLP {
     private static final String KEY_GET_ORDER__TYPES_ID = "id";
     private static final String KEY_GET_ORDER_TYPES_Auart = "Auart";
     private static final String KEY_GET_ORDER_TYPES_Txt = "Txt";
+    private static final String KEY_GET_ORDER_TYPES_Opert = "Opert";
     /* GET_ORDER_TYPES Table and Fields Names */
 
     /* GET_PLANTS Table and Fields Names */
@@ -643,7 +644,8 @@ public class VHLP {
                         + "( "
                         + KEY_GET_ORDER__TYPES_ID + " INTEGER PRIMARY KEY,"
                         + KEY_GET_ORDER_TYPES_Auart + " TEXT,"
-                        + KEY_GET_ORDER_TYPES_Txt + " TEXT"
+                        + KEY_GET_ORDER_TYPES_Txt + " TEXT,"
+                        + KEY_GET_ORDER_TYPES_Opert + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_GET_ORDER_TYPES_TABLE);
                 /* Creating GET_ORDER_TYPES Table with Fields */
@@ -1159,6 +1161,7 @@ public class VHLP {
                                                 .get(0).getEtOrdTypes().getResults()) {
                                             values.put("Auart", etOrdTypes_result.getAuart());
                                             values.put("Txt", etOrdTypes_result.getTxt());
+                                            values.put("Opert", etOrdTypes_result.getOpert());
                                             App_db.insert("GET_ORDER_TYPES", null, values);
                                         }
                                     }

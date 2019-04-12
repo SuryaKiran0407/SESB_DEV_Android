@@ -59,6 +59,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
         operations_rv = rootView.findViewById(R.id.recyclerView);
         ma = (Orders_Create_Activity) this.getActivity();
 
+
         return rootView;
     }
 
@@ -75,6 +76,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
 
         if (!getUserVisibleHint())
             return;
+        if(ma.empty) {
         if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
             if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
                 if (ma.ohp.getOrdrOprtnPrcbls() != null) {
@@ -108,9 +110,13 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                         operations_rv.setLayoutManager(layoutManager);
                         operations_rv.setItemAnimator(new DefaultItemAnimator());
                         operations_rv.setAdapter(operationsAdapter);
+                        operationsAdapter.notifyDataSetChanged();
+                    }
                     }
                 }
             }
+        }else {
+            operationsAdapter.notifyDataSetChanged();
         }
         ma.updateTabDataCount();
         ma.fab.show();
