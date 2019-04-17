@@ -255,20 +255,10 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                     cd = new ConnectionDetector(Orders_Create_Activity.this);
                                                     isInternetPresent = cd.isConnectingToInternet();
                                                     if (isInternetPresent) {
-                                                        if(ohp.getOpera().equals("")) {
-                                                            empty =true;
-                                                            addOprtn();
-                                                        }else {
-                                                            empty =false;
-                                                        }
+                                                        addOprtn();
                                                         confirmationDialog(getString(R.string.create_order_msg));
                                                     } else {
-                                                        if(ohp.getOpera().equals("")) {
-                                                            empty =true;
-                                                            addOprtn();
-                                                        }else {
-                                                            empty =false;
-                                                        }
+                                                        addOprtn();
                                                         if (ohp.getOrdrPermitPrcbls() != null) {
                                                             if (ohp.getOrdrPermitPrcbls().size() > 0) {
                                                                 network_connection_dialog.show_network_connection_dialog(Orders_Create_Activity.this);
@@ -280,12 +270,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                                     ohp.setRevnr("");
                                                                     ohp.setOrdrMatrlPrcbls(null);
                                                                 }
-                                                                if(ohp.getOpera().equals("")) {
-                                                                    empty =true;
-                                                                    addOprtn();
-                                                                }else {
-                                                                    empty =false;
-                                                                }
+                                                                addOprtn();
                                                                 Insert_Offline_Data();
                                                             }
                                                         } else {
@@ -296,12 +281,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                                 ohp.setRevnr("");
                                                                 ohp.setOrdrMatrlPrcbls(null);
                                                             }
-                                                            if(ohp.getOpera().equals("")) {
-                                                                empty =true;
-                                                                addOprtn();
-                                                            }else {
-                                                                empty =false;
-                                                            }
+                                                            addOprtn();
                                                             Insert_Offline_Data();
                                                         }
                                                     }
@@ -324,12 +304,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                     ohp.setRevnr("");
                                                     ohp.setOrdrMatrlPrcbls(null);
                                                 }
-                                                if(ohp.getOpera().equals("")) {
-                                                    empty =true;
-                                                    addOprtn();
-                                                }else {
-                                                    empty =false;
-                                                }
+                                                addOprtn();
                                                 confirmationDialog(getString(R.string.create_order_msg));
                                             } else {
                                                 if (ohp.getOrdrPermitPrcbls() != null) {
@@ -343,12 +318,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                             ohp.setRevnr("");
                                                             ohp.setOrdrMatrlPrcbls(null);
                                                         }
-                                                        if(ohp.getOpera().equals("")) {
-                                                            empty =true;
-                                                            addOprtn();
-                                                        }else {
-                                                            empty =false;
-                                                        }
+                                                        addOprtn();
                                                         Insert_Offline_Data();
                                                     }
                                                 } else {
@@ -359,12 +329,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                                         ohp.setRevnr("");
                                                         ohp.setOrdrMatrlPrcbls(null);
                                                     }
-                                                    if(ohp.getOpera().equals("")) {
-                                                        empty =true;
-                                                        addOprtn();
-                                                    }else {
-                                                        empty =false;
-                                                    }
+                                                    addOprtn();
                                                     Insert_Offline_Data();
                                                 }
                                             }
@@ -414,6 +379,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                         onBackPressed();
                     }
                 });
+
     }
 
     @Override
@@ -1044,13 +1010,13 @@ public class Orders_Create_Activity extends AppCompatActivity {
     }
 
     protected void addOprtn() {
+        if(empty)
         if (ohp.getOrdrOprtnPrcbls() != null) {
 
         } else {
             ohp.setOrdrOprtnPrcbls(oop_al);
             if (!(ohp.getOrdrOprtnPrcbls().size() > 0)) {
-                if(ohp.getOpera().equals("")) {
-                    OrdrOprtnPrcbl oop = new OrdrOprtnPrcbl();
+                OrdrOprtnPrcbl oop = new OrdrOprtnPrcbl();
                     oop.setSelected(false);
                     oop.setOrdrId("");
                     oop.setOrdrSatus("");
@@ -1070,9 +1036,6 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     oop.setStatus("I");
                     oop_al.add(oop);
                     ohp.setOrdrOprtnPrcbls(oop_al);
-                }else{
-
-                }
             }
         }
     }
