@@ -210,7 +210,15 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
                 @Override
                 public void onClick(View v) {
                     submit_decision_dialog.dismiss();
-                    new Get_Token().execute();
+                    String webservice_type = getString(R.string.webservice_type);
+                    if(webservice_type.equalsIgnoreCase("odata"))
+                    {
+                        new Get_Token().execute();
+                    }
+                    else
+                    {
+                        new POST_BOM_Reservation_REST().execute();
+                    }
                 }
             });
             cancel_button.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +227,9 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
                     submit_decision_dialog.dismiss();
                 }
             });
-        } else {
+        }
+        else
+        {
             decision_dialog = new Dialog(BOM_Reservation_Activity.this);
             decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -476,6 +486,85 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
                     error_dialog.show_error_dialog(BOM_Reservation_Activity.this, "Unable to process BOM Reservation. Please try again.");
                 }
             } else {
+                custom_progress_dialog.dismiss_progress_dialog();
+                error_dialog.show_error_dialog(BOM_Reservation_Activity.this, "Unable to process BOM Reservation. Please try again.");
+            }
+        }
+    }
+
+
+
+
+    private class POST_BOM_Reservation_REST extends AsyncTask<Void, Integer, Void>
+    {
+        String bom_reservation_status = "";
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            custom_progress_dialog.show_progress_dialog(BOM_Reservation_Activity.this, getResources().getString(R.string.bom_reservation_inprogress));
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                bom_reservation_status = BOM_Reservation_REST.post_bom_reservation(BOM_Reservation_Activity.this, BOM, Component, Component_text, quantity_edittext.getText().toString(), Unit, Plant, storage_location, Requirement_date, movement_type_id, costcenter_id, ordernumber_edittext.getText().toString());
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if (bom_reservation_status != null && !bom_reservation_status.equals(""))
+            {
+                if (bom_reservation_status.startsWith("S"))
+                {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    final Dialog success_dialog = new Dialog(BOM_Reservation_Activity.this);
+                    success_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    success_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    success_dialog.setCancelable(false);
+                    success_dialog.setCanceledOnTouchOutside(false);
+                    success_dialog.setContentView(R.layout.error_dialog);
+                    ImageView imageview = (ImageView) success_dialog.findViewById(R.id.imageView1);
+                    TextView description_textview = (TextView) success_dialog.findViewById(R.id.description_textview);
+                    Button ok_button = (Button) success_dialog.findViewById(R.id.ok_button);
+                    description_textview.setText(bom_reservation_status.substring(1));
+                    Glide.with(BOM_Reservation_Activity.this).load(R.drawable.success_checkmark).into(imageview);
+                    success_dialog.show();
+                    ok_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            success_dialog.dismiss();
+                        }
+                    });
+                }
+                else if (bom_reservation_status.startsWith("E"))
+                {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(BOM_Reservation_Activity.this, bom_reservation_status.substring(1).toString());
+                }
+                else
+                {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(BOM_Reservation_Activity.this, "Unable to process BOM Reservation. Please try again.");
+                }
+            }
+            else
+            {
                 custom_progress_dialog.dismiss_progress_dialog();
                 error_dialog.show_error_dialog(BOM_Reservation_Activity.this, "Unable to process BOM Reservation. Please try again.");
             }

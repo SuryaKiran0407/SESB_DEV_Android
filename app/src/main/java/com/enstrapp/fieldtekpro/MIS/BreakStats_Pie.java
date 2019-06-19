@@ -29,9 +29,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
+import com.enstrapp.fieldtekpro.Interface.REST_Interface;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.equipment_inspection.Mis_Break_Stat_Object;
 import com.enstrapp.fieldtekpro.equipment_inspection.MyMarkerView;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
@@ -96,6 +99,7 @@ public class BreakStats_Pie extends Activity {
     BarData barData;
     LineData lineData_c, lineData_t;
     Breakdown_Statistics breakdown_statistics;
+    Breakdown_Statistics_REST breakdown_statistics_rest;
     Dialog errordialog, area_dialog, plant_area_dialog, plant_dialog, network_error_dialog;
     ListView listview;
     AREA_ADAPTER area_adapter;
@@ -176,10 +180,13 @@ public class BreakStats_Pie extends Activity {
         int day = calendar.get(Calendar.DATE);
         int year = calendar.get(Calendar.YEAR);
 
-        if (month > 3) {
+        if (month > 3)
+        {
             String fyl = String.valueOf(year + 1);
             fy = fyl.substring(2, 4);
-        } else {
+        }
+        else
+        {
             String fyl = String.valueOf(year);
             fy = fyl.substring(2, 4);
         }
@@ -929,9 +936,24 @@ public class BreakStats_Pie extends Activity {
             }
         });
 
-        breakdown_statistics = new Breakdown_Statistics();
-        breakdown_statistics.execute();
+
+        String webservice_type = getString(R.string.webservice_type);
+        if(webservice_type.equalsIgnoreCase("odata"))
+        {
+            breakdown_statistics = new Breakdown_Statistics();
+            breakdown_statistics.execute();
+        }
+        else
+        {
+            breakdown_statistics_rest = new Breakdown_Statistics_REST();
+            breakdown_statistics_rest.execute();
+        }
+
+
     }
+
+
+
 
     private class Breakdown_Statistics extends AsyncTask<Void, Integer, Void> {
 
@@ -963,7 +985,6 @@ public class BreakStats_Pie extends Activity {
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
-                } else {
                 }
                 /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
                 device_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -1749,167 +1770,764 @@ CombinedChart.DrawOrder.LINE});
     }
 
 
-/*
-    private class Breakdown_Statistics extends AsyncTask<Void, Integer, Void> {
+
+
+
+    private class Breakdown_Statistics_REST extends AsyncTask<Void, Integer, Void>
+    {
+
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
-            progressdialog = new ProgressDialog(Mis_Break_Stats_Pie.this, ProgressDialog.THEME_HOLO_LIGHT);
+            progressdialog = new ProgressDialog(BreakStats_Pie.this, ProgressDialog.THEME_HOLO_LIGHT);
             progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressdialog.setMessage(getResources().getString(
-                    R.string.loading));
+            progressdialog.setMessage(getResources().getString(R.string.loading));
             progressdialog.setCancelable(false);
             progressdialog.setCanceledOnTouchOutside(false);
             progressdialog.show();
         }
-
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+
+                /* Initializing Shared Preferences */
+                FieldTekPro_SharedPref = getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+                FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
+                username = FieldTekPro_SharedPref.getString("Username", null);
+                password = FieldTekPro_SharedPref.getString("Password", null);
+                String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
+                /* Initializing Shared Preferences */
+                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"R1", "RD", webservice_type});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    cursor.moveToNext();
+                    url_link = cursor.getString(5);
+                }
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                device_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                device_serial_number = Build.SERIAL;
+                String androidId = "" + Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+                device_uuid = deviceUuid.toString();
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                String URL = getString(R.string.ip_address);
+
+
+                Rest_Model_Login_Device modelLoginDeviceRest = new Rest_Model_Login_Device();
+                modelLoginDeviceRest.setMUSER(username.toUpperCase().toString());
+                modelLoginDeviceRest.setDEVICEID(device_id);
+                modelLoginDeviceRest.setDEVICESNO(device_serial_number);
+                modelLoginDeviceRest.setUDID(device_uuid);
+                modelLoginDeviceRest.setiVTRANSMITTYPE("MISR");
+                modelLoginDeviceRest.setiVCOMMIT("X");
+                modelLoginDeviceRest.seteRROR("");
+
+
+                Rest_Model_Login modelLoginRest = new Rest_Model_Login();
+                modelLoginRest.setIv_transmit_type("MISR");
+                modelLoginRest.setIv_user(username);
+                modelLoginRest.setIs_device(modelLoginDeviceRest);
+
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+                REST_Interface service = retrofit.create(REST_Interface.class);
+                String credentials = username + ":" + password;
+                final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                Call<BreakStatsPie_SER_REST> call = service.postBreakStatsPieAnalysis(url_link, basic, modelLoginRest);
+                Response<BreakStatsPie_SER_REST> response = call.execute();
+                int response_status_code = response.code();
+                Log.v("kiran_BreakStatsPie", response_status_code + "...");
+
+                if (response_status_code == 200)
+                {
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+
+                        try
+                        {
+                            String EtBkdnMonthTotal_response_data = new Gson().toJson(response.body().getEtBkdnMonthTotal());
+                            JSONArray jsonArray = new JSONArray(EtBkdnMonthTotal_response_data);
+                            if (jsonArray.length() > 0)
+                            {
+                                bmt.clear();
+                                for (int j = 0; j < jsonArray.length(); j++)
+                                {
+                                    Mis_Break_Stat_Object bpt_o = new Mis_Break_Stat_Object();
+                                    bpt_o.setIwerk(jsonArray.getJSONObject(j).optString("IWERK"));
+                                    bpt_o.setArbpl(jsonArray.getJSONObject(j).optString("ARBPL"));
+                                    bpt_o.setSpmon(jsonArray.getJSONObject(j).optString("SPMON"));
+                                    bpt_o.setSunit(jsonArray.getJSONObject(j).optString("SUNIT"));
+                                    bpt_o.setSmsaus(jsonArray.getJSONObject(j).optString("SMSAUS"));
+                                    bpt_o.setCount(jsonArray.getJSONObject(j).optString("COUNT"));
+                                    bpt_o.setTotM2(jsonArray.getJSONObject(j).optString("TOT_M2"));
+                                    bpt_o.setTotM3(jsonArray.getJSONObject(j).optString("TOT_M3"));
+                                    bpt_o.setBdpmrat(jsonArray.getJSONObject(j).optString("BDPMRAT"));
+                                    bpt_o.setWitHrs(jsonArray.getJSONObject(j).optString("WIT_HRS"));
+                                    bpt_o.setWitoutHrs(jsonArray.getJSONObject(j).optString("WITOUT_HRS"));
+                                    bpt_o.setMttrHours(jsonArray.getJSONObject(j).optString("MTTR_HOURS"));
+                                    bpt_o.setMtbrHours(jsonArray.getJSONObject(j).optString("MTBR_HOURS"));
+                                    bpt_o.setName(jsonArray.getJSONObject(j).optString("NAME"));
+                                    bmt.add(bpt_o);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+
+
+
+                        try
+                        {
+                            String EtBkdnPlantTotal_response_data = new Gson().toJson(response.body().getEtBkdnPlantTotal());
+                            JSONArray jsonArray = new JSONArray(EtBkdnPlantTotal_response_data);
+                            if (jsonArray.length() > 0)
+                            {
+                                bpt.clear();
+                                for (int j = 0; j < jsonArray.length(); j++)
+                                {
+                                    Mis_Break_Stat_Object bpt_o = new Mis_Break_Stat_Object();
+                                    bpt_o.setIwerk(jsonArray.getJSONObject(j).optString("IWERK"));
+                                    bpt_o.setArbpl(jsonArray.getJSONObject(j).optString("ARBPL"));
+                                    bpt_o.setSpmon(jsonArray.getJSONObject(j).optString("SPMON"));
+                                    bpt_o.setSunit(jsonArray.getJSONObject(j).optString("SUNIT"));
+                                    bpt_o.setSmsaus(jsonArray.getJSONObject(j).optString("SMSAUS"));
+                                    bpt_o.setCount(jsonArray.getJSONObject(j).optString("COUNT"));
+                                    bpt_o.setTotM2(jsonArray.getJSONObject(j).optString("TOT_M2"));
+                                    bpt_o.setTotM3(jsonArray.getJSONObject(j).optString("TOT_M3"));
+                                    bpt_o.setBdpmrat(jsonArray.getJSONObject(j).optString("BDPMRAT"));
+                                    bpt_o.setWitHrs(jsonArray.getJSONObject(j).optString("WIT_HRS"));
+                                    bpt_o.setWitoutHrs(jsonArray.getJSONObject(j).optString("WITOUT_HRS"));
+                                    bpt_o.setMttrHours(jsonArray.getJSONObject(j).optString("MTTR_HOURS"));
+                                    bpt_o.setMtbrHours(jsonArray.getJSONObject(j).optString("MTBR_HOURS"));
+                                    bpt_o.setName(jsonArray.getJSONObject(j).optString("NAME"));
+                                    bpt.add(bpt_o);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+
+
+
+
+                        try
+                        {
+                            String EtBkdnPmonthTotal_response_data = new Gson().toJson(response.body().getEtBkdnPmonthTotal());
+                            JSONArray jsonArray = new JSONArray(EtBkdnPmonthTotal_response_data);
+                            if (jsonArray.length() > 0)
+                            {
+                                bpmt.clear();
+                                for (int j = 0; j < jsonArray.length(); j++)
+                                {
+                                    Mis_Break_Stat_Object bpt_o = new Mis_Break_Stat_Object();
+                                    bpt_o.setIwerk(jsonArray.getJSONObject(j).optString("IWERK"));
+                                    bpt_o.setArbpl(jsonArray.getJSONObject(j).optString("ARBPL"));
+                                    bpt_o.setSpmon(jsonArray.getJSONObject(j).optString("SPMON"));
+                                    bpt_o.setSunit(jsonArray.getJSONObject(j).optString("SUNIT"));
+                                    bpt_o.setSmsaus(jsonArray.getJSONObject(j).optString("SMSAUS"));
+                                    bpt_o.setCount(jsonArray.getJSONObject(j).optString("COUNT"));
+                                    bpt_o.setTotM2(jsonArray.getJSONObject(j).optString("TOT_M2"));
+                                    bpt_o.setTotM3(jsonArray.getJSONObject(j).optString("TOT_M3"));
+                                    bpt_o.setBdpmrat(jsonArray.getJSONObject(j).optString("BDPMRAT"));
+                                    bpt_o.setWitHrs(jsonArray.getJSONObject(j).optString("WIT_HRS"));
+                                    bpt_o.setWitoutHrs(jsonArray.getJSONObject(j).optString("WITOUT_HRS"));
+                                    bpt_o.setMttrHours(jsonArray.getJSONObject(j).optString("MTTR_HOURS"));
+                                    bpt_o.setMtbrHours(jsonArray.getJSONObject(j).optString("MTBR_HOURS"));
+                                    bpt_o.setName(jsonArray.getJSONObject(j).optString("NAME"));
+                                    bpmt.add(bpt_o);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+
+
+
+
+                        try
+                        {
+                            String EtBkdnWareaTotal_response_data = new Gson().toJson(response.body().getEtBkdnWareaTotal());
+                            JSONArray jsonArray = new JSONArray(EtBkdnWareaTotal_response_data);
+                            if (jsonArray.length() > 0)
+                            {
+                                bwt.clear();
+                                for (int j = 0; j < jsonArray.length(); j++)
+                                {
+                                    Mis_Break_Stat_Object bpt_o = new Mis_Break_Stat_Object();
+                                    bpt_o.setIwerk(jsonArray.getJSONObject(j).optString("IWERK"));
+                                    bpt_o.setArbpl(jsonArray.getJSONObject(j).optString("ARBPL"));
+                                    bpt_o.setSpmon(jsonArray.getJSONObject(j).optString("SPMON"));
+                                    bpt_o.setSunit(jsonArray.getJSONObject(j).optString("SUNIT"));
+                                    bpt_o.setSmsaus(jsonArray.getJSONObject(j).optString("SMSAUS"));
+                                    bpt_o.setCount(jsonArray.getJSONObject(j).optString("COUNT"));
+                                    bpt_o.setTotM2(jsonArray.getJSONObject(j).optString("TOT_M2"));
+                                    bpt_o.setTotM3(jsonArray.getJSONObject(j).optString("TOT_M3"));
+                                    bpt_o.setBdpmrat(jsonArray.getJSONObject(j).optString("BDPMRAT"));
+                                    bpt_o.setWitHrs(jsonArray.getJSONObject(j).optString("WIT_HRS"));
+                                    bpt_o.setWitoutHrs(jsonArray.getJSONObject(j).optString("WITOUT_HRS"));
+                                    bpt_o.setMttrHours(jsonArray.getJSONObject(j).optString("MTTR_HOURS"));
+                                    bpt_o.setMtbrHours(jsonArray.getJSONObject(j).optString("MTBR_HOURS"));
+                                    bpt_o.setName(jsonArray.getJSONObject(j).optString("NAME"));
+                                    bwt.add(bpt_o);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                }
+                status = "success";
+
+            } catch (Exception e) {
+                status = "exception";
+                Log.v("sashi_exception", "" + e.getMessage());
+            }
+
             return null;
         }
 
-        @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (status != null && !status.equals("")) {
+                if (!status.equals("success")) {
+                    mChart.setVisibility(View.GONE);
+                    no_data.setVisibility(View.VISIBLE);
+                    progressdialog.dismiss();
+                } else {
+                    mChart.setVisibility(View.VISIBLE);
+                    no_data.setVisibility(View.GONE);
+                    // pfy_imageview.setVisibility(View.GONE);
 
-            if (iwerk.equals("") || bpmt.size() <= 0 || iwerk == null) {
-                mChart.setVisibility(View.GONE);
-                no_data.setVisibility(View.VISIBLE);
-                progressdialog.dismiss();
-            } else {
-                mChart.setVisibility(View.VISIBLE);
-                no_data.setVisibility(View.GONE);
-                try {
-                    ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-                    ArrayList<Entry> line_c = new ArrayList<Entry>();
-                    ArrayList<Entry> line_t = new ArrayList<Entry>();
-                    String outputPattern = "MMM yyyy";
-                    String inputPattern = "yyyyMM";
-                    SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-                    SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                    SpmonS.clear();
-                    bpmt_c.clear();
-
-                    for (int l = 0; l < bpmt.size(); l++) {
-                        if (bpmt.get(l).getIwerk().equals(iwerk)) {
-                            Mis_Break_Stat_Object bmpt_o = new Mis_Break_Stat_Object();
-                            bmpt_o.setName(bpmt.get(l).getName());
-                            bmpt_o.setMttrHours(bpmt.get(l).getMttrHours());
-                            bmpt_o.setTotM2(bpmt.get(l).getTotM2());
-                            bmpt_o.setCount(bpmt.get(l).getCount());
-                            bmpt_o.setIwerk(bpmt.get(l).getIwerk());
-                            bmpt_o.setSpmon(bpmt.get(l).getSpmon());
-                            bpmt_c.add(bmpt_o);
-                            Log.v("break_pie", "" + bpmt.get(l).getSpmon());
-                        }
-                    }
-
-                    mttr = new float[bpmt_c.size()];
-                    count_m = new float[bpmt_c.size()];
-                    tot_m2 = new float[bpmt_c.size()];
-
-                    SpmonSS = new String[bpmt_c.size()];
-                    for (int j = 0; j < bpmt_c.size(); j++) {
+                    if (bpt.size() <= 0) {
+                        mChart.setVisibility(View.GONE);
+                        no_data.setVisibility(View.VISIBLE);
+                        progressdialog.dismiss();
+                    } else {
+                        mChart.setVisibility(View.VISIBLE);
+                        no_data.setVisibility(View.GONE);
                         try {
-                            if (bpmt_c.get(j).getCount() != null && !bpmt_c.get(j).getCount().equals("")) {
-                                count_m[j] = Float.parseFloat(bpmt_c.get(j).getCount());
-                            } else {
-                                count_m[j] = 0;
-                            }
-                            if (bpmt_c.get(j).getMttrHours() != null && !bpmt_c.get(j).getMttrHours().equals("")) {
-                                mttr[j] = Float.parseFloat(bpmt_c.get(j).getMttrHours());
-                            } else {
-                                mttr[j] = 0;
-                            }
-                            if (bpmt_c.get(j).getTotM2() != null && !bpmt_c.get(j).getTotM2().equals("")) {
-                                tot_m2[j] = Float.parseFloat(bpmt_c.get(j).getTotM2());
-                            } else {
-                                tot_m2[j] = 0;
-                            }
-                            if (bpmt_c.get(j).getSpmon() != null && !bpmt_c.get(j).getSpmon().equals("")) {
-                                try {
-                                    date = inputFormat.parse(bpmt_c.get(j).getSpmon());
-                                    String dateS = outputFormat.format(date);
-                                    SpmonS.add(dateS);
-                                    SpmonSS[j] = "" + dateS;
-                                } catch (ParseException e) {
+                            ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+                            ArrayList<Entry> line_c = new ArrayList<Entry>();
+                            ArrayList<Entry> line_t = new ArrayList<Entry>();
+                            String outputPattern = "MMM yyyy";
+                            String inputPattern = "yyyyMM";
+                            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+                            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+                            SpmonS.clear();
+                            bpmt_c.clear();
+                                /*if (area.equals("")) {
+                                    for (int l = 0; l < bpmt.size(); l++) {
+                                        if (bpmt.get(l).getIwerk().equals(iwerk)) {
+                                            Mis_Break_Stat_Object bmpt_o = new Mis_Break_Stat_Object();
+                                            bmpt_o.setName(bpmt.get(l).getName());
+                                            bmpt_o.setMttrHours(bpmt.get(l).getMttrHours());
+                                            bmpt_o.setTotM2(bpmt.get(l).getTotM2());
+                                            bmpt_o.setCount(bpmt.get(l).getCount());
+                                            bmpt_o.setIwerk(bpmt.get(l).getIwerk());
+                                            bmpt_o.setSpmon(bpmt.get(l).getSpmon());
+                                            bpmt_c.add(bmpt_o);
+                                            Log.v("break_pie", "" + bpmt.get(l).getSpmon());
+                                        }
+                                    }
 
+                                } else {
+                                    for (int l = 0; l < bpmt.size(); l++) {
+                                        if (bpmt.get(l).getIwerk().equals(iwerk) && bpmt.get(l).getWarea().equals(area)) {
+                                            Mis_Break_Stat_Object bmpt_o = new Mis_Break_Stat_Object();
+                                            bmpt_o.setName(bpmt.get(l).getName());
+                                            bmpt_o.setMttrHours(bpmt.get(l).getMttrHours());
+                                            bmpt_o.setTotM2(bpmt.get(l).getTotM2());
+                                            bmpt_o.setCount(bpmt.get(l).getCount());
+                                            bmpt_o.setIwerk(bpmt.get(l).getIwerk());
+                                            bmpt_o.setSpmon(bpmt.get(l).getSpmon());
+                                            bpmt_c.add(bmpt_o);
+                                            Log.v("break_pie", "" + bpmt.get(l).getSpmon());
+                                        }
+                                    }
+                                }*/
+
+                            String work_iwerk = bpmt.get(0).getIwerk();
+                            for (int l = 0; l < bpmt.size(); l++) {
+                                if (bpmt.get(l).getIwerk().equals(work_iwerk)) {
+
+                                    Mis_Break_Stat_Object bmpt_o = new Mis_Break_Stat_Object();
+                                    bmpt_o.setName(bpmt.get(l).getName());
+                                    bmpt_o.setMttrHours(bpmt.get(l).getMttrHours());
+                                    //bmpt_o.setTotM2(bpmt.get(l).getMtbrHours());
+                                    iwerk = bpmt.get(l).getIwerk();
+
+
+                                    bmpt_o.setCount(bpmt.get(l).getCount());
+                                    bmpt_o.setIwerk(bpmt.get(l).getIwerk());
+                                    bmpt_o.setSpmon(bpmt.get(l).getSpmon());
+                                    bpmt_c.add(bmpt_o);
+                                    Log.v("break_pie", "" + bpmt.get(l).getSpmon());
+                                    /*  }*/
                                 }
                             }
+                            for (int k = 0; k < bpt.size(); k++) {
+                                if (bpt.get(k).getIwerk().equals(iwerk)) {
+                                    plant_name = bpt.get(k).getName();
+                                }
+                            }
+
+                            mttr = new float[bpmt_c.size()];
+                            count_m = new float[bpmt_c.size()];
+                            //tot_m2 = new float[bpmt_c.size()];
+
+                            SpmonSS = new String[bpmt_c.size()];
+                            for (int j = 0; j < bpmt_c.size(); j++) {
+                                try {
+                                    if (bpmt_c.get(j).getCount() != null && !bpmt_c.get(j).getCount().equals("")) {
+                                        count_m[j] = Float.parseFloat(bpmt_c.get(j).getCount());
+                                    } else {
+                                        count_m[j] = 0;
+                                    }
+                                    if (bpmt_c.get(j).getMttrHours() != null && !bpmt_c.get(j).getMttrHours().equals("")) {
+                                        mttr[j] = Float.parseFloat(bpmt_c.get(j).getMttrHours());
+                                    } else {
+                                        mttr[j] = 0;
+                                    }
+                                        /*if (bpmt_c.get(j).getTotM2() != null && !bpmt_c.get(j).getTotM2().equals("")) {
+                                            tot_m2[j] = Float.parseFloat(bpmt_c.get(j).getTotM2());
+                                        } else {
+                                            tot_m2[j] = 0;
+                                        }*/
+                                    if (bpmt_c.get(j).getSpmon() != null && !bpmt_c.get(j).getSpmon().equals("")) {
+                                        try {
+                                            date = inputFormat.parse(bpmt_c.get(j).getSpmon().substring(1));
+                                            String dateS = outputFormat.format(date);
+                                            SpmonS.add(dateS);
+                                            SpmonSS[j] = "" + dateS;
+                                        } catch (ParseException e) {
+
+                                        }
+                                    }
+                                } catch (NumberFormatException nfe) {
+                                    Log.v("Sashi_int", "Could not parse " + nfe);
+                                }
+                                entries.add(new BarEntry(j, mttr[j]));
+                                line_c.add(new Entry(j, count_m[j]));
+                                // line_t.add(new Entry(j, tot_m2[j]));
+                            }
+                                /*barDataSet = new BarDataSet(entries, "MTTR");
+                                lineDataSet_c = new LineDataSet(line_c, "No# of BD");
+                                *//*Drawable drawable = ContextCompat.getDrawable(Mis_Break_Stats_Pie.this, R.drawable.fade_blue);
+                                lineDataSet_c.setFillDrawable(drawable);
+                                lineDataSet_c.setDrawFilled(true);*//*
+                                lineDataSet_c.setColor(Color.rgb(201, 26, 41));
+                                if (line_c.size() == 1) {
+                                    lineDataSet_c.setDrawCircles(true);
+                                    lineDataSet_c.setCircleColor(Color.WHITE);
+                                    lineDataSet_c.setCircleColorHole(Color.rgb(201, 26, 41));
+                                } else {
+                                    lineDataSet_c.setDrawCircles(false);
+                                }
+                                lineDataSet_c.setLineWidth(2);
+                                lineDataSet_c.setDrawValues(false);
+                                lineDataSet_c.setValueFormatter(new MyValueFormatter());
+                                lineDataSet_t = new LineDataSet(line_t, "BD Hrs");
+                                lineDataSet_t.setColor(Color.BLACK);
+                                if (line_t.size() == 1) {
+                                    lineDataSet_t.setDrawCircles(true);
+                                    lineDataSet_t.setCircleColor(Color.WHITE);
+                                    lineDataSet_t.setCircleColorHole(Color.BLACK);
+                                } else {
+                                    lineDataSet_t.setDrawCircles(false);
+                                }
+                                lineDataSet_t.setLineWidth(2);
+                                lineDataSet_t.setValueFormatter(new MyValueFormatter());
+                                lineDataSet_t.setDrawValues(false);
+
+                                final ArrayList<Integer> colors = new ArrayList<Integer>();
+
+                                for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.COLORFUL_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.JOYFUL_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.LIBERTY_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.PASTEL_COLORS)
+                                    colors.add(c);
+
+                                barDataSet.setColors(Color.rgb(49, 84, 154));
+                                barDataSet.setValueFormatter(new MyValueFormatter());
+
+                                barData = new BarData(barDataSet);
+                                if (entries.size() == 1) {
+                                    barData.setBarWidth(0.1f);
+                                } else if (entries.size() == 2) {
+                                    barData.setBarWidth(0.2f);
+                                } else if (entries.size() == 3) {
+                                    barData.setBarWidth(0.3f);
+                                };
+                                barData.setValueTextSize(12);
+                                lineData_c = new LineData();
+                                lineData_c.addDataSet(lineDataSet_c);
+                                lineData_c.addDataSet(lineDataSet_t);
+//                                lineData_c.setHighlightEnabled(true);
+//                                lineData_c.setDrawValues(false);
+                                lineDataSet_c.setDrawHighlightIndicators(false);
+                                lineDataSet_c.setDrawHorizontalHighlightIndicator(false);
+
+                                CombinedData data = new CombinedData();
+
+                                data.setData(lineData_c);
+                                data.setData(barData);
+
+                                MyMarkerView mv = new MyMarkerView(Mis_Break_Stats_Pie.this, R.layout.markerview);
+                                mv.setChartView(mChart);
+                                mChart.setMarker(mv);
+
+                                Legend l = mChart.getLegend();
+                                l.setWordWrapEnabled(true);
+                                l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+                                l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+                                l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+                                l.setDrawInside(true);
+                                l.setTextSize(12);
+
+
+                                XAxis xAxis = mChart.getXAxis();
+                                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                                xAxis.setDrawGridLines(false);
+                                xAxis.setGranularity(1f); // only intervals of 1 day
+                                xAxis.setValueFormatter(new MyXAxisValueFormatter(SpmonSS));
+                                xAxis.setAxisMaximum(data.getXMax()+0.5f);
+                                xAxis.setAxisMinimum(data.getXMin()-0.5f);
+//                                xAxis.setSpaceMin(barData.getBarWidth() / 2f);
+//                                xAxis.setSpaceMax(barData.getBarWidth() / 2f);
+                                YAxis rightAxis = mChart.getAxisRight();
+                                rightAxis.setDrawLabels(false);
+
+                                mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.BAR,
+*//*CombinedChart.DrawOrder.LINE, *//*
+                                        CombinedChart.DrawOrder.LINE});
+                                mChart.getDescription().setEnabled(false);
+                                mChart.setExtraOffsets(2, 2, 2, 2);
+                                mChart.setMinOffset(15.f);
+//                                mChart.setVisibleXRange(-1,entries.size()+1);
+//                    mChart.getXAxis().setAxisMinimum(-1);
+//                    mChart.getXAxis().setAxisMaximum(mttr.length+1);
+                                mChart.getAxisLeft().setAxisMinimum(0);
+                                mChart.getAxisLeft().setDrawLabels(true);
+                                mChart.getAxisLeft().setDrawGridLines(true);
+                                mChart.getAxisRight().setDrawGridLines(false);
+                                mChart.getAxisLeft().setDrawAxisLine(true);
+                                mChart.getAxisRight().setDrawAxisLine(false);
+                                mChart.getXAxis().setLabelRotationAngle(90);
+                                mChart.getLegend().setEnabled(true);
+                                mChart.animateY(1000);
+                                mChart.getXAxis().setLabelCount(bpmt_c.size(), false);
+                                mChart.notifyDataSetChanged();//Required if changes are made to pie value
+                                mChart.setData(data);
+                                mChart.invalidate();// for refreshing the chart
+                                plant_head.setText(plant_name);
+                                heading.setText("MTTR Monthly Trend - FY" + fy);
+                                progressdialog.dismiss();
+                                if (area.equals("")) {
+                                    plant_head.setText(plant_name);
+                                } else {
+                                    plant_head.setText(plant_name + " - " + area);
+                                }*/
+
+                            barDataSet = new BarDataSet(entries, "MTTR");
+                            lineDataSet_c = new LineDataSet(line_c, "No# of BD");
+                            lineDataSet_c.setColor(Color.rgb(201, 26, 41));
+                            if (line_c.size() == 1) {
+                                lineDataSet_c.setDrawCircles(true);
+                                lineDataSet_c.setCircleColor(Color.WHITE);
+                                lineDataSet_c.setCircleColorHole(Color.rgb(201, 26, 41));
+                            } else {
+                                lineDataSet_c.setDrawCircles(false);
+                            }
+                            lineDataSet_c.setLineWidth(2);
+                            lineDataSet_c.setValueFormatter(new MyValueFormatter());
+                            lineDataSet_c.setDrawValues(false);
+                              /*  lineDataSet_t = new LineDataSet(line_t, "BD Hrs");
+                                lineDataSet_t.setColor(Color.BLACK);
+                                if (line_t.size() == 1) {
+                                    lineDataSet_t.setDrawCircles(true);
+                                    lineDataSet_t.setCircleColor(Color.WHITE);
+                                    lineDataSet_t.setCircleColorHole(Color.BLACK);
+                                } else {
+                                    lineDataSet_t.setDrawCircles(false);
+                                }
+                                lineDataSet_t.setLineWidth(2);
+                                lineDataSet_t.setValueFormatter(new MyValueFormatter());
+                                lineDataSet_t.setDrawValues(false);*/
+
+                            final ArrayList<Integer> colors = new ArrayList<Integer>();
+
+                            for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                                colors.add(c);
+
+                            for (int c : ColorTemplate.COLORFUL_COLORS)
+                                colors.add(c);
+
+                            for (int c : ColorTemplate.JOYFUL_COLORS)
+                                colors.add(c);
+
+                            for (int c : ColorTemplate.LIBERTY_COLORS)
+                                colors.add(c);
+
+                            for (int c : ColorTemplate.PASTEL_COLORS)
+                                colors.add(c);
+
+                            barDataSet.setColors(Color.rgb(49, 84, 154));
+                            barDataSet.setValueFormatter(new MyValueFormatter());
+
+                            barData = new BarData(barDataSet);
+                            if (entries.size() == 1) {
+                                barData.setBarWidth(0.1f);
+                            } else if (entries.size() == 2) {
+                                barData.setBarWidth(0.2f);
+                            } else if (entries.size() == 3) {
+                                barData.setBarWidth(0.3f);
+                            }
+                            ;
+                            barData.setValueTextSize(12);
+                            lineData_c = new LineData();
+                            lineData_c.addDataSet(lineDataSet_c);
+                            // lineData_c.addDataSet(lineDataSet_t);
+//                        lineData_c.setHighlightEnabled(true);
+                            lineDataSet_c.setDrawHighlightIndicators(false);
+                            lineDataSet_c.setDrawHorizontalHighlightIndicator(false);
+
+                            CombinedData data = new CombinedData();
+
+                            data.setData(lineData_c);
+                            data.setData(barData);
+
+                            MyMarkerView mv = new MyMarkerView(BreakStats_Pie.this, R.layout.markerview);
+                            mv.setChartView(mChart);
+                            mChart.setMarker(mv);
+
+                            Legend l = mChart.getLegend();
+                            l.setWordWrapEnabled(true);
+                            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+                            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+                            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+                            l.setDrawInside(true);
+                            l.setTextSize(12);
+
+
+                            XAxis xAxis = mChart.getXAxis();
+                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                            xAxis.setDrawGridLines(false);
+                            xAxis.setGranularity(1f); // only intervals of 1 day
+                        /*if (entries.size()==1){
+                            xAxis.setAxisMaximum(data.getXMax()+0.5f);
+                            xAxis.setAxisMinimum(data.getXMin()-0.5f);
+                        }else{
+                            xAxis.setAxisMaximum(data.getXMax()+0.25f);
+                            xAxis.setAxisMinimum(data.getXMin()-0.25f);
+                        }*/
+                            xAxis.setAxisMaximum(data.getXMax() + 0.25f);
+                            xAxis.setAxisMinimum(data.getXMin() - 0.25f);
+
+//                        xAxis.setXOffset(.25f);
+                            xAxis.setValueFormatter(new MyXAxisValueFormatter(SpmonSS));
+//                        xAxis.setSpaceMin(barData.getBarWidth() / 2f);
+//                        xAxis.setSpaceMax(barData.getBarWidth() / 2f);
+                            YAxis rightAxis = mChart.getAxisRight();
+                            rightAxis.setDrawLabels(false);
+
+                            mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.BAR,
+/*CombinedChart.DrawOrder.LINE, */
+                                    CombinedChart.DrawOrder.LINE});
+                            mChart.getDescription().setEnabled(false);
+                            mChart.setExtraOffsets(2, 2, 2, 2);
+//                        mChart.setViewPortOffsets(3,0,3,0);
+//                        mChart.setMinOffset(15.f);
+//                        mChart.setVisibleXRangeMaximum(entries.size()+1);
+//                    mChart.getXAxis().setAxisMinimum(0);
+//                    mChart.getXAxis().setAxisMaximum(mttr.length+1);
+                            mChart.getAxisLeft().setAxisMinimum(0);
+                            mChart.getAxisLeft().setDrawLabels(true);
+                            mChart.getAxisLeft().setDrawGridLines(true);
+                            mChart.getAxisRight().setDrawGridLines(false);
+                            mChart.getAxisLeft().setDrawAxisLine(true);
+                            mChart.getAxisRight().setDrawAxisLine(false);
+                            mChart.getXAxis().setLabelRotationAngle(90);
+                            mChart.getLegend().setEnabled(true);
+                            mChart.animateY(1000);
+//                        mChart.getXAxis().setLabelCount(bpmt_c.size(), false);
+                            mChart.notifyDataSetChanged();//Required if changes are made to pie value
+                            mChart.invalidate();// for refreshing the chart
+                            if (area.equals("")) {
+                                plant_head.setText(plant_name);
+                            } else {
+                                plant_head.setText(plant_name + " - " + area);
+                            }
+                            heading.setText(getString(R.string.monthly_mttrfy, fy));
+                            progressdialog.dismiss();
+                            mChart.setData(data);
                         } catch (NumberFormatException nfe) {
                             Log.v("Sashi_int", "Could not parse " + nfe);
                         }
-                        entries.add(new BarEntry(j, mttr[j]));
-                        line_c.add(new Entry(j, count_m[j]));
-                        line_t.add(new Entry(j, tot_m2[j]));
                     }
-                    barDataSet = new BarDataSet(entries, "MTTR");
-                    lineDataSet_c = new LineDataSet(line_c, "No# of BD");
-                    lineDataSet_c.setColor(Color.rgb(201, 26, 41));
-                    lineDataSet_c.setDrawCircles(false);
-                    lineDataSet_c.setLineWidth(2);
-                    lineDataSet_c.setDrawValues(false);
-                    lineDataSet_t = new LineDataSet(line_t, "BD Hrs");
-                    lineDataSet_t.setColor(Color.BLACK);
-                    lineDataSet_t.setDrawCircles(false);
-                    lineDataSet_t.setLineWidth(2);
-                    lineDataSet_t.setDrawValues(false);
 
-                    final ArrayList<Integer> colors = new ArrayList<Integer>();
+                }
+            }
+        }
+           /* if (status != null && !status.equals("")) {
+                if (!status.equals("success")) {
+                    barChart.setVisibility(View.GONE);
+                    no_data.setVisibility(View.VISIBLE);
+                    progressdialog.dismiss();
+                } else {
+                    if (iwerk.equals("") || bpmt.size() <= 0 || iwerk == null) {
+                        mChart.setVisibility(View.GONE);
+                        no_data.setVisibility(View.VISIBLE);
+                        progressdialog.dismiss();
+                    } else {
+                        mChart.setVisibility(View.VISIBLE);
+                        no_data.setVisibility(View.GONE);
+                        try {
+                            ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+                            ArrayList<Entry> line_c = new ArrayList<Entry>();
+                            ArrayList<Entry> line_t = new ArrayList<Entry>();
+                            String outputPattern = "MMM yyyy";
+                            String inputPattern = "yyyyMM";
+                            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+                            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+                            SpmonS.clear();
+                            bpmt_c.clear();
 
-                    for (int c : ColorTemplate.VORDIPLOM_COLORS)
-                        colors.add(c);
+                            for (int l = 0; l < bpmt.size(); l++) {
+                                if (bpmt.get(l).getIwerk().equals(iwerk)) {
+                                    Mis_Break_Stat_Object bmpt_o = new Mis_Break_Stat_Object();
+                                    bmpt_o.setName(bpmt.get(l).getName());
+                                    bmpt_o.setMttrHours(bpmt.get(l).getMttrHours());
+                                    bmpt_o.setTotM2(bpmt.get(l).getTotM2());
+                                    bmpt_o.setCount(bpmt.get(l).getCount());
+                                    bmpt_o.setIwerk(bpmt.get(l).getIwerk());
+                                    bmpt_o.setSpmon(bpmt.get(l).getSpmon());
+                                    bpmt_c.add(bmpt_o);
+                                    Log.v("break_pie", "" + bpmt.get(l).getSpmon());
+                                }
+                            }
 
-                    for (int c : ColorTemplate.COLORFUL_COLORS)
-                        colors.add(c);
+                            mttr = new float[bpmt_c.size()];
+                            count_m = new float[bpmt_c.size()];
+                            tot_m2 = new float[bpmt_c.size()];
 
-                    for (int c : ColorTemplate.JOYFUL_COLORS)
-                        colors.add(c);
+                            SpmonSS = new String[bpmt_c.size()];
+                            for (int j = 0; j < bpmt_c.size(); j++) {
+                                try {
+                                    if (bpmt_c.get(j).getCount() != null && !bpmt_c.get(j).getCount().equals("")) {
+                                        count_m[j] = Float.parseFloat(bpmt_c.get(j).getCount());
+                                    } else {
+                                        count_m[j] = 0;
+                                    }
+                                    if (bpmt_c.get(j).getMttrHours() != null && !bpmt_c.get(j).getMttrHours().equals("")) {
+                                        mttr[j] = Float.parseFloat(bpmt_c.get(j).getMttrHours());
+                                    } else {
+                                        mttr[j] = 0;
+                                    }
+                                    if (bpmt_c.get(j).getTotM2() != null && !bpmt_c.get(j).getTotM2().equals("")) {
+                                        tot_m2[j] = Float.parseFloat(bpmt_c.get(j).getTotM2());
+                                    } else {
+                                        tot_m2[j] = 0;
+                                    }
+                                    if (bpmt_c.get(j).getSpmon() != null && !bpmt_c.get(j).getSpmon().equals("")) {
+                                        try {
+                                            date = inputFormat.parse(bpmt_c.get(j).getSpmon());
+                                            String dateS = outputFormat.format(date);
+                                            SpmonS.add(dateS);
+                                            SpmonSS[j] = "" + dateS;
+                                        } catch (ParseException e) {
 
-                    for (int c : ColorTemplate.LIBERTY_COLORS)
-                        colors.add(c);
+                                        }
+                                    }
+                                } catch (NumberFormatException nfe) {
+                                    Log.v("Sashi_int", "Could not parse " + nfe);
+                                }
+                                entries.add(new BarEntry(j, mttr[j]));
+                                line_c.add(new Entry(j, count_m[j]));
+                                line_t.add(new Entry(j, tot_m2[j]));
+                            }
+                            barDataSet = new BarDataSet(entries, "MTTR");
+                            lineDataSet_c = new LineDataSet(line_c, "No# of BD");
+                            lineDataSet_c.setColor(Color.rgb(201, 26, 41));
+                            lineDataSet_c.setDrawCircles(false);
+                            lineDataSet_c.setLineWidth(2);
+                            lineDataSet_c.setDrawValues(false);
+                            lineDataSet_t = new LineDataSet(line_t, "BD Hrs");
+                            lineDataSet_t.setColor(Color.BLACK);
+                            lineDataSet_t.setDrawCircles(false);
+                            lineDataSet_t.setLineWidth(2);
+                            lineDataSet_t.setDrawValues(false);
 
-                    for (int c : ColorTemplate.PASTEL_COLORS)
-                        colors.add(c);
+                            final ArrayList<Integer> colors = new ArrayList<Integer>();
 
-                    barDataSet.setColors(Color.rgb(49, 84, 154));
-                    barDataSet.setValueFormatter(new MyValueFormatter());
+                            for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                                colors.add(c);
 
-                    barData = new BarData(barDataSet);
-                    barData.setBarWidth(0.5f);
-                    barData.setValueTextSize(12);
-                    lineData_c = new LineData();
-                    lineData_c.addDataSet(lineDataSet_c);
-                    lineData_c.addDataSet(lineDataSet_t);
-                    lineDataSet_c.setDrawHighlightIndicators(true);
-                    lineDataSet_c.setDrawHorizontalHighlightIndicator(true);
+                            for (int c : ColorTemplate.COLORFUL_COLORS)
+                                colors.add(c);
 
-                    CombinedData data = new CombinedData();
+                            for (int c : ColorTemplate.JOYFUL_COLORS)
+                                colors.add(c);
 
-                    data.setData(lineData_c);
-                    data.setData(barData);
+                            for (int c : ColorTemplate.LIBERTY_COLORS)
+                                colors.add(c);
 
-                    Legend l = mChart.getLegend();
-                    l.setWordWrapEnabled(true);
-                    l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-                    l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-                    l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-                    l.setDrawInside(true);
-                    l.setTextSize(12);
+                            for (int c : ColorTemplate.PASTEL_COLORS)
+                                colors.add(c);
+
+                            barDataSet.setColors(Color.rgb(49, 84, 154));
+                            barDataSet.setValueFormatter(new MyValueFormatter());
+
+                            barData = new BarData(barDataSet);
+                            barData.setBarWidth(0.5f);
+                            barData.setValueTextSize(12);
+                            lineData_c = new LineData();
+                            lineData_c.addDataSet(lineDataSet_c);
+                            lineData_c.addDataSet(lineDataSet_t);
+                            lineDataSet_c.setDrawHighlightIndicators(true);
+                            lineDataSet_c.setDrawHorizontalHighlightIndicator(true);
+
+                            CombinedData data = new CombinedData();
+
+                            data.setData(lineData_c);
+                            data.setData(barData);
+
+                            Legend l = mChart.getLegend();
+                            l.setWordWrapEnabled(true);
+                            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+                            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+                            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+                            l.setDrawInside(true);
+                            l.setTextSize(12);
 
 
-                    XAxis xAxis = mChart.getXAxis();
-                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                    xAxis.setDrawGridLines(false);
-                    xAxis.setGranularity(1f); // only intervals of 1 day
-                    xAxis.setValueFormatter(new MyXAxisValueFormatter(SpmonSS));
-                    xAxis.setSpaceMin(barData.getBarWidth() / 2f);
-                    xAxis.setSpaceMax(barData.getBarWidth() / 2f);
-                    YAxis rightAxis = mChart.getAxisRight();
-                    rightAxis.setDrawLabels(false);
+                            XAxis xAxis = mChart.getXAxis();
+                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                            xAxis.setDrawGridLines(false);
+                            xAxis.setGranularity(1f); // only intervals of 1 day
+                            xAxis.setValueFormatter(new MyXAxisValueFormatter(SpmonSS));
+                            xAxis.setSpaceMin(barData.getBarWidth() / 2f);
+                            xAxis.setSpaceMax(barData.getBarWidth() / 2f);
+                            YAxis rightAxis = mChart.getAxisRight();
+                            rightAxis.setDrawLabels(false);
 
-                    mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.BAR, */
-    /*CombinedChart.DrawOrder.LINE, *//*
+                            mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.BAR,
+*//*CombinedChart.DrawOrder.LINE, *//*
 CombinedChart.DrawOrder.LINE});
                     mChart.getDescription().setEnabled(false);
                     mChart.setExtraOffsets(2, 2, 2, 2);
@@ -1934,7 +2552,18 @@ CombinedChart.DrawOrder.LINE});
                     Log.v("Sashi_int", "Could not parse " + nfe);
                 }
             }
-        }*/
+                    }
+                }
+
+            } else {
+                barChart.setVisibility(View.GONE);
+                no_data.setVisibility(View.VISIBLE);
+                progressdialog.dismiss();
+            }*/
+    }
+
+
+
 
     public void wAreas(String iwerk, String warea) {
         try {
@@ -2161,6 +2790,8 @@ CombinedChart.DrawOrder.LINE});
         }
     }
 
+
+
     public String checkempty(String string) {
         if (string.equalsIgnoreCase("anyType{}")) {
             String ss = "";
@@ -2169,6 +2800,8 @@ CombinedChart.DrawOrder.LINE});
             return string;
         }
     }
+
+
 
     public void noInternet() {
         network_error_dialog = new Dialog(BreakStats_Pie.this);
@@ -2207,6 +2840,7 @@ CombinedChart.DrawOrder.LINE});
     }
 
 
+
     protected void show_error_dialog(String string) {
         errordialog = new Dialog(BreakStats_Pie.this);
         errordialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -2225,6 +2859,8 @@ CombinedChart.DrawOrder.LINE});
             }
         });
     }
+
+
 
     public class AREA_ADAPTER extends BaseAdapter {
         Context mContext;
@@ -2360,6 +2996,8 @@ CombinedChart.DrawOrder.LINE});
         }
     }
 
+
+
     public class FILTER_PLANT_TYPE_Adapter extends BaseAdapter {
         Context mContext;
         LayoutInflater inflater;
@@ -2493,6 +3131,8 @@ CombinedChart.DrawOrder.LINE});
         }
     }
 
+
+
     protected void show_confirmation_dialg(String string) {
         final Dialog aa = new Dialog(BreakStats_Pie.this);
         aa.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -2523,8 +3163,17 @@ CombinedChart.DrawOrder.LINE});
                 bt = "";
                 isDevice_HighMonth = "";
                 isDevice_LowMonth = "";
-                breakdown_statistics = new Breakdown_Statistics();
-                breakdown_statistics.execute();
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    breakdown_statistics = new Breakdown_Statistics();
+                    breakdown_statistics.execute();
+                }
+                else
+                {
+                    breakdown_statistics_rest = new Breakdown_Statistics_REST();
+                    breakdown_statistics_rest.execute();
+                }
                 pfy_imageview.setVisibility(View.GONE);
                 aa.dismiss();
             }

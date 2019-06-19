@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.BarcodeScanner.Barcode_Scanner_Activity;
+import com.enstrapp.fieldtekpro.InitialLoad_Rest.REST_BOM;
 import com.enstrapp.fieldtekpro.Initialload.BOM;
 import com.enstrapp.fieldtekpro.Initialload.LoadSettings;
 import com.enstrapp.fieldtekpro.R;
@@ -164,10 +165,20 @@ public class BOM_List_Activity extends Fragment {
                         @Override
                         public void onClick(View v) {
                             decision_dialog.dismiss();
-                            new Get_LoadSettings_Data().execute();
+                            String webservice_type = getString(R.string.webservice_type);
+                            if(webservice_type.equalsIgnoreCase("odata"))
+                            {
+                                new Get_LoadSettings_Data().execute();
+                            }
+                            else
+                            {
+                                new Get_BOM_REST_Data().execute();
+                            }
                         }
                     });
-                } else {
+                }
+                else
+                {
                     //showing network error and navigating to wifi settings.
                     swiperefreshlayout.setRefreshing(false);
                     network_connection_dialog.show_network_connection_dialog(getActivity());
@@ -220,10 +231,20 @@ public class BOM_List_Activity extends Fragment {
                         @Override
                         public void onClick(View v) {
                             decision_dialog.dismiss();
-                            new Get_LoadSettings_Data().execute();
+                            String webservice_type = getString(R.string.webservice_type);
+                            if(webservice_type.equalsIgnoreCase("odata"))
+                            {
+                                new Get_LoadSettings_Data().execute();
+                            }
+                            else
+                            {
+                                new Get_BOM_REST_Data().execute();
+                            }
                         }
                     });
-                } else {
+                }
+                else
+                {
                     //showing network error and navigating to wifi settings.
                     network_connection_dialog.show_network_connection_dialog(getActivity());
                 }
@@ -427,11 +448,13 @@ public class BOM_List_Activity extends Fragment {
             public void onClick(View v) {
                 cd = new ConnectionDetector(getActivity());
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
+                if (isInternetPresent)
+                {
                     cloud_search_status = "cloud_search";
                     new Get_BOM_CloudSearch_Data().execute();
-                } else {
-                    //showing network error and navigating to wifi settings.
+                }
+                else
+                {
                     network_connection_dialog.show_network_connection_dialog(getActivity());
                 }
             }
@@ -739,28 +762,89 @@ public class BOM_List_Activity extends Fragment {
     }
 
 
-    public class Get_BOM_CloudSearch_Data extends AsyncTask<Void, Integer, Void> {
-        String bom_id = "";
 
+
+    public class Get_BOM_REST_Data extends AsyncTask<Void, Integer, Void>
+    {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (cloud_search_status.equalsIgnoreCase("cloud_search")) {
+            custom_progress_dialog.show_progress_dialog(getActivity(), getResources().getString(R.string.refresh_bom));
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                BOM_status = REST_BOM.Get_BOM_Data(getActivity(), "", "");
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            super.onPostExecute(result);
+            custom_progress_dialog.dismiss_progress_dialog();
+            swiperefreshlayout.setRefreshing(false);
+            search.setQuery("", false);
+            search.clearFocus();
+            new Get_BOM_List_Data().execute();
+        }
+    }
+
+
+
+
+    public class Get_BOM_CloudSearch_Data extends AsyncTask<Void, Integer, Void>
+    {
+        String bom_id = "";
+        String webservice_type = "rest";
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            if (cloud_search_status.equalsIgnoreCase("cloud_search"))
+            {
                 custom_progress_dialog.show_progress_dialog(getActivity(),
                         getString(R.string.search_for, searchview_textview.getText().toString()));
                 bom_id = searchview_textview.getText().toString();
-            } else {
+            }
+            else
+            {
                 custom_progress_dialog.show_progress_dialog(getActivity(),
                         getString(R.string.loading_bomno, bom_header_id));
                 bom_id = bom_header_id;
             }
+            webservice_type = getString(R.string.webservice_type);
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                BOMITEM_status = BOM.Get_BOM_Data(getActivity(), "", bom_id);
-            } catch (Exception e) {
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    BOMITEM_status = BOM.Get_BOM_Data(getActivity(), "", bom_id);
+                }
+                else
+                {
+                    BOMITEM_status = REST_BOM.Get_BOM_Data(getActivity(), "", bom_id);
+                }
+            }
+            catch (Exception e)
+            {
             }
             return null;
         }
@@ -774,9 +858,12 @@ public class BOM_List_Activity extends Fragment {
             super.onPostExecute(result);
             ((Utilities_Activity) getActivity()).refreshMyData();
             custom_progress_dialog.dismiss_progress_dialog();
-            if (cloud_search_status.equalsIgnoreCase("cloud_search")) {
+            if (cloud_search_status.equalsIgnoreCase("cloud_search"))
+            {
                 new Get_BOM_List_Data().execute();
-            } else {
+            }
+            else
+            {
                 Intent bom_detailed_intent = new Intent(getActivity(), BOM_List_DetailedView_Activity.class);
                 bom_detailed_intent.putExtra("bom_id", bom_header_id);
                 bom_detailed_intent.putExtra("bom_desc", bom_header_desc);
@@ -785,6 +872,7 @@ public class BOM_List_Activity extends Fragment {
             }
         }
     }
+
 
 
     public class BOM_List_Object {

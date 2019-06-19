@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.DateTime.MonthYearPickerDialog;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.login.Login_Activity;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -127,7 +128,19 @@ public class PieFragment extends Fragment {
             }
         });
 
-        new Get_NotifAnalysis_Data_().execute(selected_month, selected_year);
+
+
+        String webservice_type = getString(R.string.webservice_type);
+        if(webservice_type.equalsIgnoreCase("odata"))
+        {
+            new Get_NotifAnalysis_Data_().execute(selected_month, selected_year);
+        }
+        else
+        {
+            new Get_NotifAnalysis_Data_REST().execute(selected_month, selected_year);
+        }
+
+
 
         return rootView;
     }
@@ -2180,7 +2193,15 @@ public class PieFragment extends Fragment {
                 selected_year = data.getStringExtra("selected_year");
                 String selected_month_formatted = data.getStringExtra("selected_month_formatted");
                 monthYear_bt.setText(selected_month_formatted + "," + " " + selected_year);
-                new Get_NotifAnalysis_Data_().execute(selected_month, selected_year);
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    new Get_NotifAnalysis_Data_().execute(selected_month, selected_year);
+                }
+                else
+                {
+                    new Get_NotifAnalysis_Data_REST().execute(selected_month, selected_year);
+                }
             }
         }
     }
@@ -2297,5 +2318,330 @@ public class PieFragment extends Fragment {
     public String getMonth_year() {
         return selected_year;
     }
+
+
+
+
+
+    public class Get_NotifAnalysis_Data_REST extends AsyncTask<String, Integer, Void>
+    {
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            progressdialog = new ProgressDialog(getContext(), ProgressDialog.THEME_HOLO_LIGHT);
+            progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressdialog.setMessage(getResources().getString(R.string.loading));
+            progressdialog.setCancelable(false);
+            progressdialog.setCanceledOnTouchOutside(false);
+            progressdialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String... params)
+        {
+            try
+            {
+                String month = params[0];
+                String year = params[1];
+                NotifAnalysis_Status = NotifAnalysis_REST.Get_NotifAnalysis_Data(getActivity(), "MISR", month, year);
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.v("kiran_NotifAnalysis", NotifAnalysis_Status + "...");
+            {
+                if (NotifAnalysis_Status.equals("success")) {
+                    Cursor cursor1 = FieldTekPro_db.rawQuery("select * from EsNotifTotal", null);
+                    if (cursor1 != null && cursor1.getCount() > 0) {
+                        if (cursor1.moveToFirst()) {
+                            do {
+                                out_s = cursor1.getString(2);
+                                inpr_s = cursor1.getString(3);
+                                comp_s = cursor1.getString(4);
+                                dele_s = cursor1.getString(5);
+                            }
+                            while (cursor1.moveToNext());
+                        }
+                    } else {
+                        cursor1.close();
+                    }
+                    pieChart.setVisibility(View.VISIBLE);
+                    noData_tv.setVisibility(View.GONE);
+                    plantAll_b = true;
+                    pt_o.clear();
+                    art_o.clear();
+                    tt_o.clear();
+                    try {
+                        Cursor cursor = FieldTekPro_db.rawQuery("select * from EtNotifPlantTotal", null);
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
+                                    Mis_EtNotifPlantTotal_Object cp = new Mis_EtNotifPlantTotal_Object();
+                                    cp.setmTotal_pt(cursor.getString(1));
+                                    cp.setmSwerk_pt(cursor.getString(2));
+                                    cp.setmName_pt(cursor.getString(3));
+                                    cp.setmQmart_pt(cursor.getString(4));
+                                    cp.setmQmartx_pt(cursor.getString(5));
+                                    cp.setmOuts_pt(cursor.getString(6));
+                                    cp.setmInpr_pt(cursor.getString(7));
+                                    cp.setmComp_pt(cursor.getString(8));
+                                    cp.setmDele_pt(cursor.getString(9));
+                                    cp.setmChecked("n");
+                                    pt_o.add(cp);
+                                }
+                                while (cursor.moveToNext());
+                            }
+                        } else {
+                            cursor.close();
+                        }
+                    } catch (Exception e) {
+                        Log.v("EtNotifPlantTotal_exce", "" + e.getMessage());
+                        pieChart.setVisibility(View.GONE);
+                        noData_tv.setVisibility(View.VISIBLE);
+                        llo.clear();
+                        progressdialog.dismiss();
+                    }
+
+                    try {
+                        Cursor cursor = FieldTekPro_db.rawQuery("select * from EtNotifArbplTotal", null);
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
+                                    Mis_EtNotifArbplTotal_Object cp = new Mis_EtNotifArbplTotal_Object();
+                                    cp.setmTotal_art(cursor.getString(1));
+                                    cp.setmSwerk_art(cursor.getString(2));
+                                    cp.setmArbpl_art(cursor.getString(3));
+                                    cp.setmName_art(cursor.getString(4));
+                                    cp.setmQmart_art(cursor.getString(5));
+                                    cp.setmQmartx_art(cursor.getString(6));
+                                    cp.setmOuts_art(cursor.getString(7));
+                                    cp.setmInpr_art(cursor.getString(8));
+                                    cp.setmComp_art(cursor.getString(9));
+                                    cp.setmDele_art(cursor.getString(10));
+                                    cp.setmChecked("n");
+                                    art_o.add(cp);
+                                }
+                                while (cursor.moveToNext());
+                            }
+                        } else {
+                            cursor.close();
+                        }
+                    } catch (Exception e) {
+                        Log.v("EtNotifArbplTotal_exce", "" + e.getMessage());
+                        pieChart.setVisibility(View.GONE);
+                        noData_tv.setVisibility(View.VISIBLE);
+                        llo.clear();
+                        progressdialog.dismiss();
+                    }
+
+                    try {
+                        Cursor cursor = FieldTekPro_db.rawQuery("select * from EtNotifTypeTotal", null);
+                        if (cursor != null && cursor.getCount() > 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
+                                    Mis_EtNotifTypeTotal_Object cp = new Mis_EtNotifTypeTotal_Object();
+                                    cp.setmTotal_tt(cursor.getString(1));
+                                    cp.setmSwerk_tt(cursor.getString(2));
+
+                                    cp.setmArbpl_tt(cursor.getString(3));
+                                    cp.setmQmart_tt(cursor.getString(4));
+                                    cp.setmQmartx_tt(cursor.getString(5));
+                                    cp.setmOuts_tt(cursor.getString(6));
+                                    cp.setmInpr_tt(cursor.getString(7));
+                                    cp.setmComp_tt(cursor.getString(8));
+                                    cp.setmDele_tt(cursor.getString(9));
+                                    tt_o.add(cp);
+                                }
+                                while (cursor.moveToNext());
+                            }
+                        } else {
+                            cursor.close();
+                        }
+                    } catch (Exception e) {
+                        Log.v("Notif_pie_typetotal_db", "" + e.getMessage());
+                        pieChart.setVisibility(View.GONE);
+                        noData_tv.setVisibility(View.VISIBLE);
+                        progressdialog.dismiss();
+                    }
+
+                    try {
+                        if (out_s != null && !out_s.equals("")) {
+                            out_f = Float.parseFloat(out_s.trim());
+                        } else {
+                            out_f = 0;
+                        }
+                        if (inpr_s != null && !inpr_s.equals("")) {
+                            inpr_f = Float.parseFloat(inpr_s.trim());
+                        } else {
+                            inpr_f = 0;
+                        }
+                        if (comp_s != null && !comp_s.equals("")) {
+                            comp_f = Float.parseFloat(comp_s.trim());
+                        } else {
+                            comp_f = 0;
+                        }
+                    } catch (NumberFormatException nfe) {
+                        Log.v("String_to_ Float", "" + nfe.getMessage());
+                        pieChart.setVisibility(View.GONE);
+                        noData_tv.setVisibility(View.VISIBLE);
+                        llo.clear();
+                        progressdialog.dismiss();
+                    }
+
+                    llo.clear();
+                    final List<PieEntry> entries = new ArrayList<>();
+                    if (out_f == 0) {
+
+                    } else {
+                        entries.add(new PieEntry(out_f, getString(R.string.outstanding)));
+                        Label_List_Object llo_o = new Label_List_Object();
+                        llo_o.setLabel(getString(R.string.outstanding));
+                        llo.add(llo_o);
+                    }
+                    if (inpr_f == 0) {
+
+                    } else {
+                        entries.add(new PieEntry(inpr_f, getString(R.string.inprgs)));
+                        Label_List_Object llo_o = new Label_List_Object();
+                        llo_o.setLabel(getString(R.string.inprgs));
+                        llo.add(llo_o);
+                    }
+                    if (comp_f == 0) {
+
+                    } else {
+                        entries.add(new PieEntry(comp_f, getString(R.string.compltd)));
+                        Label_List_Object llo_o = new Label_List_Object();
+                        llo_o.setLabel(getString(R.string.compltd));
+                        llo.add(llo_o);
+                    }
+
+                    pieDataSet = new PieDataSet(entries, "");
+
+                    final int[] MY_COLORS = new int[entries.size()];
+
+                    for (int j = 0; j < entries.size(); j++) {
+                        if (entries.get(j).getLabel().equals(getString(R.string.outstanding))) {
+                            MY_COLORS[j] = Color.rgb(255, 255, 0);                  //yellow
+                            llo.get(j).setColor(Color.rgb(255, 255, 0));
+                        } else if (entries.get(j).getLabel().equals(getString(R.string.inprgs))) {
+                            MY_COLORS[j] = Color.rgb(51, 51, 255);                  //blue
+                            llo.get(j).setColor(Color.rgb(51, 51, 255));
+                        } else if (entries.get(j).getLabel().equals(getString(R.string.compltd))) {
+                            MY_COLORS[j] = Color.rgb(50, 205, 50);                 //green
+                            llo.get(j).setColor(Color.rgb(50, 205, 50));
+                        }
+                    }
+
+                    ArrayList<Integer> colors = new ArrayList<Integer>();
+                    for (int c : MY_COLORS) colors.add(c);
+
+                    pieDataSet.setColors(colors);
+                    pieDataSet.setSliceSpace(2f);
+                    pieDataSet.setValueLinePart1OffsetPercentage(80.f);
+                    pieDataSet.setSelectionShift(5f);
+                    pieDataSet.setValueLinePart1Length(0.2f);
+                    pieDataSet.setValueLinePart2Length(0.4f);
+                    pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+                    pieDataSet.setValueFormatter(new MyValueFormatter());
+
+                    pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                        @Override
+                        public void onValueSelected(Entry e, Highlight h) {
+                            int index = (int) h.getX();
+                            String label = entries.get(index).getLabel();
+
+                            if (label.equals(getString(R.string.outstanding))) {
+                                String value = getString(R.string.outstanding);
+                                String phase = "1";
+                                Intent intent = new Intent(getActivity(), StatusPieActivity.class);
+                                intent.putExtra("value", value);
+                                intent.putExtra("phase", phase);
+                                intent.putExtra("iwerk", "");
+                                intent.putExtra("wrkcntr_s", "");
+                                startActivity(intent);
+                            } else if (label.equals(getString(R.string.inprgs))) {
+                                String value = getString(R.string.inprgs);
+                                String phase = "3";
+                                Intent intent = new Intent(getActivity(), StatusPieActivity.class);
+                                intent.putExtra("value", value);
+                                intent.putExtra("phase", phase);
+                                intent.putExtra("iwerk", "");
+                                intent.putExtra("wrkcntr_s", "");
+                                startActivity(intent);
+                            } else if (label.equals(getString(R.string.compltd))) {
+                                String value = getString(R.string.compltd);
+                                String phase = "4";
+                                Intent intent = new Intent(getActivity(), StatusPieActivity.class);
+                                intent.putExtra("value", value);
+                                intent.putExtra("phase", phase);
+                                intent.putExtra("iwerk", "");
+                                intent.putExtra("wrkcntr_s", "");
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected() {
+
+                        }
+                    });
+
+                    Legend legend = pieChart.getLegend();
+                    legend.setTextSize(14);
+                    legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+                    legend.setWordWrapEnabled(true);
+                    legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                    legend.setEnabled(false);
+
+                    pieData = new PieData(pieDataSet);
+                    pieData.setValueTextSize(14);
+                    pieChart.setUsePercentValues(false);
+
+
+                    Label_Adapter ll_a = new Label_Adapter(getActivity(), llo);
+                    label_list.setAdapter(ll_a);
+
+                    pieChart.setExtraOffsets(5, 5, 5, 5);
+                    pieChart.highlightValues(null);
+                    pieChart.animateY(1000);
+                    pieChart.setScrollContainer(true);
+                    pieChart.setVerticalScrollBarEnabled(true);
+                    pieChart.getDescription().setEnabled(false);
+                    pieChart.setDrawHoleEnabled(true);
+                    pieChart.setRotationEnabled(true);
+                    pieChart.setDrawEntryLabels(false);
+                    pieChart.setDragDecelerationFrictionCoef(0.95f);
+                    pieChart.setCenterText(getString(R.string.mis_notif_analysis));
+                    pieChart.setHoleColor(Color.LTGRAY);
+                    pieChart.setTransparentCircleColor(Color.LTGRAY);
+                    pieChart.setCenterTextSize(14);
+                    pieChart.notifyDataSetChanged();//Required if changes are made to pie value
+                    pieChart.invalidate();// for refreshing the chart
+                    progressdialog.dismiss();
+                    pieChart.setData(pieData);
+                    label_list.setVisibility(View.VISIBLE);
+                } else {
+                    pieChart.setVisibility(View.GONE);
+                    label_list.setVisibility(View.GONE);
+                    noData_tv.setVisibility(View.VISIBLE);
+                    progressdialog.dismiss();
+                }
+            }
+        }
+    }
+
+
+
 
 }

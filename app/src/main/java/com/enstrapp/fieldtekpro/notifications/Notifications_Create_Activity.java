@@ -96,7 +96,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         setContentView(R.layout.notifications_orders_create_change_activity);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             equipment_id = extras.getString("equipment_id");
             equipment_text = extras.getString("equipment_text");
             functionlocation_id = extras.getString("functionlocation_id");
@@ -649,7 +650,8 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                             req_st_time != null && !req_st_time.equals("")) {
                                         cd = new ConnectionDetector(Notifications_Create_Activity.this);
                                         isInternetPresent = cd.isConnectingToInternet();
-                                        if (isInternetPresent) {
+                                        if (isInternetPresent)
+                                        {
                                             submit_decision_dialog =
                                                     new Dialog(Notifications_Create_Activity.this);
                                             submit_decision_dialog.getWindow()
@@ -671,11 +673,21 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                             Button cancel_button = submit_decision_dialog
                                                     .findViewById(R.id.no_button);
                                             submit_decision_dialog.show();
-                                            ok_button.setOnClickListener(new View.OnClickListener() {
+                                            ok_button.setOnClickListener(new View.OnClickListener()
+                                            {
                                                 @Override
-                                                public void onClick(View v) {
+                                                public void onClick(View v)
+                                                {
                                                     submit_decision_dialog.dismiss();
-                                                    new Get_Token().execute();
+                                                    String webservice_type = getString(R.string.webservice_type);
+                                                    if(webservice_type.equalsIgnoreCase("odata"))
+                                                    {
+                                                        new Get_Token().execute();
+                                                    }
+                                                    else
+                                                    {
+                                                        new Post_Create_Notification_REST().execute("");
+                                                    }
                                                 }
                                             });
                                             cancel_button.setOnClickListener(new View.OnClickListener() {
@@ -684,7 +696,9 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                     submit_decision_dialog.dismiss();
                                                 }
                                             });
-                                        } else {
+                                        }
+                                        else
+                                        {
                                             decision_dialog =
                                                     new Dialog(Notifications_Create_Activity.this);
                                             decision_dialog.getWindow()
@@ -1165,16 +1179,20 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (token_status.equalsIgnoreCase("success")) {
+            if (token_status.equalsIgnoreCase("success"))
+            {
                 custom_progress_dialog.dismiss_progress_dialog();
                 new Post_Create_Notification().execute("");
-            } else {
+            }
+            else
+            {
                 custom_progress_dialog.dismiss_progress_dialog();
-                error_dialog.show_error_dialog(Notifications_Create_Activity.this,
-                        getString(R.string.notification_unabletocreate));
+                error_dialog.show_error_dialog(Notifications_Create_Activity.this,getString(R.string.notification_unabletocreate));
             }
         }
     }
+
+
 
     /*Posting Notification Create to Backend Server*/
     private class Post_Create_Notification extends AsyncTask<String, Integer, Void> {
@@ -1340,6 +1358,203 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
         }
     }
     /*Posting Notification Create to Backend Server*/
+
+
+
+
+    /*Posting Notification Create to Backend Server REST*/
+    private class Post_Create_Notification_REST extends AsyncTask<String, Integer, Void>
+    {
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            custom_progress_dialog.show_progress_dialog(Notifications_Create_Activity.this,getResources().getString(R.string.create_notif_inprogress));
+        }
+        @Override
+        protected Void doInBackground(String... params)
+        {
+            try
+            {
+                String transmit_type = params[0];
+                notif_create_status = Notifications_Create_REST
+                        .Post_NotifCreate_Data(Notifications_Create_Activity.this,
+                                transmit_type, notification_type_id, notif_text, functionlocation_id,
+                                equipment_id, equipment_text, priority_type_id, priority_type_text,
+                                plannergroup_id, plannergroup_text, Reported_by, personresponsible_id,
+                                personresponsible_text, req_st_date, req_st_time, req_end_date,
+                                req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time,
+                                effect_id, effect_text, plant_id, workcenter_id, primary_user_resp,
+                                causecodeArrayList, ActivityArrayList, AttachmentsArrayList,
+                                LongtextsArrayList, TasksArrayList, header_custominfo);
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            super.onPostExecute(result);
+            if (notif_create_status.get("response_status") != null && !notif_create_status.get("response_status").equals(""))
+            {
+                if (notif_create_status.get("response_status").equalsIgnoreCase("Duplicate"))
+                {
+                    String duplicate_data = notif_create_status.get("response_data");
+                    if (duplicate_data != null && !duplicate_data.equals(""))
+                    {
+                        try
+                        {
+                            notification_duplicate_list.clear();
+                            JSONArray jsonArray = new JSONArray(duplicate_data);
+                            for (int i = 0; i < jsonArray.length(); i++)
+                            {
+                                String Priok = jsonArray.getJSONObject(i).optString("PRIOK");
+                                String Priok_text = "";
+                                if (Priok != null && !Priok.equals(""))
+                                {
+                                    try
+                                    {
+                                        Cursor cursor = App_db.rawQuery("select *" +" from GET_NOTIFICATION_PRIORITY where Priok = ?",new String[]{Priok});
+                                        if (cursor != null && cursor.getCount() > 0)
+                                        {
+                                            if (cursor.moveToFirst())
+                                            {
+                                                do
+                                                {
+                                                    Priok_text = Priok + " - " + cursor.getString(2);
+                                                }
+                                                while (cursor.moveToNext());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            cursor.close();
+                                            Priok_text = "";
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Priok_text = "";
+                                    }
+                                }
+                                else
+                                {
+                                    Priok_text = "";
+                                }
+                                Notif_Dup_List_Object olo = new Notif_Dup_List_Object(Priok_text,
+                                        jsonArray.getJSONObject(i).optString("QMNUM"),
+                                        jsonArray.getJSONObject(i).optString("QMTXT"));
+                                notification_duplicate_list.add(olo);
+                            }
+                            if (notification_duplicate_list.size() > 0)
+                            {
+                                Collections.sort(notification_duplicate_list, new Comparator<Notif_Dup_List_Object>() {
+                                    public int compare(Notif_Dup_List_Object o1, Notif_Dup_List_Object o2) {
+                                        return o2.getQMNUM().compareTo(o1.getQMNUM());
+                                    }
+                                });
+                            }
+                            custom_progress_dialog.dismiss_progress_dialog();
+                            final Dialog aa = new Dialog(Notifications_Create_Activity.this,
+                                    R.style.AppThemeDialog_Dark);
+                            aa.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            aa.setCancelable(false);
+                            aa.setCanceledOnTouchOutside(false);
+                            aa.setContentView(R.layout.notifications_duplicate_dialog);
+                            Button yes_button = (Button) aa.findViewById(R.id.yes_button);
+                            Button no_button = (Button) aa.findViewById(R.id.no_button);
+                            TextView title_textView = (TextView) aa.findViewById(R.id.title_textview);
+                            RecyclerView recyclerview = (RecyclerView) aa.findViewById(R.id.recyclerview);
+                            notification_duplicate_adapter =
+                                    new Notification_Duplicate_Adapter(Notifications_Create_Activity.this,
+                                            notification_duplicate_list);
+                            recyclerview.setHasFixedSize(true);
+                            RecyclerView.LayoutManager layoutManager =
+                                    new LinearLayoutManager(Notifications_Create_Activity.this);
+                            recyclerview.setLayoutManager(layoutManager);
+                            recyclerview.setItemAnimator(new DefaultItemAnimator());
+                            recyclerview.setAdapter(notification_duplicate_adapter);
+                            title_textView.setText(getString(R.string.dup_notif)
+                                    + " (" + notification_duplicate_list.size() + ")");
+                            aa.show();
+                            no_button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    aa.dismiss();
+                                }
+                            });
+                            yes_button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    aa.dismiss();
+                                    new Post_Create_Notification_REST().execute("FUNC");
+                                }
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                    else
+                    {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                                getString(R.string.notification_dupnotfound));
+                    }
+                }
+                else if (notif_create_status.get("response_status").equalsIgnoreCase("success"))
+                {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    final Dialog success_dialog = new Dialog(Notifications_Create_Activity.this);
+                    success_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    success_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    success_dialog.setCancelable(false);
+                    success_dialog.setCanceledOnTouchOutside(false);
+                    success_dialog.setContentView(R.layout.error_dialog);
+                    ImageView imageview = success_dialog.findViewById(R.id.imageView1);
+                    TextView description_textview = success_dialog.findViewById(R.id.description_textview);
+                    Button ok_button = success_dialog.findViewById(R.id.ok_button);
+                    description_textview.setText(getString(R.string.notification_createsuccess,
+                            notif_create_status.get("response_data")));
+                    Glide.with(Notifications_Create_Activity.this)
+                            .load(R.drawable.success_checkmark).into(imageview);
+                    success_dialog.show();
+                    ok_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            success_dialog.dismiss();
+                            Notifications_Create_Activity.this.finish();
+                        }
+                    });
+                }
+                else if (notif_create_status.get("response_status").startsWith("E"))
+                {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Notifications_Create_Activity.this,notif_create_status.get("response_status").substring(1));
+                }
+                else
+                {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Notifications_Create_Activity.this, getString(R.string.notification_unabletocreate));
+                }
+            }
+            else
+            {
+                custom_progress_dialog.dismiss_progress_dialog();
+                error_dialog.show_error_dialog(Notifications_Create_Activity.this,
+                        getString(R.string.notification_unabletocreate));
+            }
+        }
+    }
+    /*Posting Notification Create to Backend Server REST*/
+
+
 
     /*RecyclerView Adapter Duplicate Notification Create*/
     public class Notification_Duplicate_Adapter extends

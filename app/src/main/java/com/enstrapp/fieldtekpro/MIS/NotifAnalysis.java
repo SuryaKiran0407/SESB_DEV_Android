@@ -226,10 +226,10 @@ public class NotifAnalysis {
             String webservice_type = FieldTekPro_SharedPref.getString("webservice_type", null);
             /* Initializing Shared Preferences */
             Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"R2", "RD", webservice_type});
-            if (cursor != null && cursor.getCount() > 0) {
+            if (cursor != null && cursor.getCount() > 0)
+            {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
-            } else {
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -248,7 +248,6 @@ public class NotifAnalysis {
             map.put("IvIwerk", "");
             map.put("IvMonth", month);
             map.put("IvYear", year);
-            Log.v("kiran_sss",""+month+"---"+year);
             map.put("IvDays", "");
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
             Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();

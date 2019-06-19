@@ -29,7 +29,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Interface.Interface;
+import com.enstrapp.fieldtekpro.Interface.REST_Interface;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.Utilities.is_device;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -55,7 +59,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class History_Activity extends AppCompatActivity {
+public class History_Activity extends AppCompatActivity
+{
 
     SearchView search;
     RecyclerView history_list_recycleview;
@@ -76,6 +81,7 @@ public class History_Activity extends AppCompatActivity {
     History_Adapter history_adapter;
     int response_status_code = 0;
     Response<History_SER> response;
+    Response<History_SER_REST> response_rest;
     ImageView back_imageview;
     Dialog decision_dialog;
 
@@ -105,11 +111,20 @@ public class History_Activity extends AppCompatActivity {
 
         cd = new ConnectionDetector(getApplicationContext());
         isInternetPresent = cd.isConnectingToInternet();
-        if (isInternetPresent) {
-            //If Internet is available, call Get History Asynctask
-            new Get_History_Data().execute();
-        } else {
-            //showing network error and navigating to wifi settings.
+        if (isInternetPresent)
+        {
+            String webservice_type = getString(R.string.webservice_type);
+            if(webservice_type.equalsIgnoreCase("odata"))
+            {
+                new Get_History_Data().execute();
+            }
+            else
+            {
+                new POST_History_REST().execute();
+            }
+        }
+        else
+        {
             network_connection_dialog.show_network_connection_dialog(History_Activity.this);
         }
 
@@ -168,11 +183,20 @@ public class History_Activity extends AppCompatActivity {
                 public void onClick(View v) {
                     decision_dialog.dismiss();
                     swiperefreshlayout.setRefreshing(false);
-                    new Get_History_Data().execute();
+                    String webservice_type = getString(R.string.webservice_type);
+                    if(webservice_type.equalsIgnoreCase("odata"))
+                    {
+                        new Get_History_Data().execute();
+                    }
+                    else
+                    {
+                        new POST_History_REST().execute();
+                    }
                 }
             });
-        } else {
-            //showing network error and navigating to wifi settings.
+        }
+        else
+        {
             swiperefreshlayout.setRefreshing(false);
             network_connection_dialog.show_network_connection_dialog(History_Activity.this);
         }
@@ -477,6 +501,174 @@ public class History_Activity extends AppCompatActivity {
         }
 
     }
+
+
+
+
+    public class POST_History_REST extends AsyncTask<Void, Integer, Void>
+    {
+        String url_link = "";
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            progressDialog.show_progress_dialog(History_Activity.this, getResources().getString(R.string.loading_history));
+            history_list.clear();
+        }
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                /* Initializing Shared Preferences */
+                app_sharedpreferences = History_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+                app_editor = app_sharedpreferences.edit();
+                username = app_sharedpreferences.getString("Username", null);
+                password = app_sharedpreferences.getString("Password", null);
+                String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+                /* Initializing Shared Preferences */
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                device_id = Settings.Secure.getString(History_Activity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+                device_serial_number = Build.SERIAL;
+                String androidId = "" + Settings.Secure.getString(History_Activity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+                UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+                device_uuid = deviceUuid.toString();
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D2", "F4", webservice_type});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    cursor.moveToNext();
+                    url_link = cursor.getString(5);
+                }
+                String URL = History_Activity.this.getString(R.string.ip_address);
+
+                Rest_Model_Login_Device modelLoginDeviceRest = new Rest_Model_Login_Device();
+                modelLoginDeviceRest.setMUSER(username.toUpperCase().toString());
+                modelLoginDeviceRest.setDEVICEID(device_id);
+                modelLoginDeviceRest.setDEVICESNO(device_serial_number);
+                modelLoginDeviceRest.setUDID(device_uuid);
+                modelLoginDeviceRest.setiVTRANSMITTYPE("LOAD");
+                modelLoginDeviceRest.setiVCOMMIT("X");
+                modelLoginDeviceRest.seteRROR("");
+
+
+                Rest_Model_Login modelLoginRest = new Rest_Model_Login();
+                modelLoginRest.setIv_transmit_type("LOAD");
+                modelLoginRest.setIv_user(username);
+                modelLoginRest.setIs_device(modelLoginDeviceRest);
+
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+                REST_Interface service = retrofit.create(REST_Interface.class);
+                String credentials = username + ":" + password;
+                final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                Call<History_SER_REST> call = service.getHistoryData(url_link, basic, modelLoginRest);
+                response_rest = call.execute();
+                response_status_code = response_rest.code();
+                if (response_status_code == 200)
+                {
+                    if (response_rest.isSuccessful() && response_rest.body() != null)
+                    {
+                        try
+                        {
+                            String response_data = new Gson().toJson(response_rest.body().getResults());
+                            JSONArray response_data_jsonArray = new JSONArray(response_data);
+                            if (response_data_jsonArray.length() > 0) {
+                                for (int i = 0; i < response_data_jsonArray.length(); i++) {
+                                    JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
+                                    String date = jsonObject.optString("ZDATE");
+                                    String date_formateed = "";
+                                    if (date != null && !date.equals("")) {
+                                        if (date.equals("00000000")) {
+                                            date_formateed = "";
+                                        } else {
+                                            DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                                            DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                                            Date date1;
+                                            try {
+                                                date1 = inputFormat.parse(date);
+                                                String outputDateStr = outputFormat.format(date1);
+                                                date_formateed = outputDateStr;
+                                            } catch (ParseException e) {
+                                                date_formateed = "";
+                                            }
+                                        }
+                                    } else {
+                                        date_formateed = "";
+                                    }
+                                    String time = jsonObject.optString("TIME");
+                                    String time_formatted = "";
+                                    if (time != null && !time.equals("")) {
+                                        if (time.equals("000000")) {
+                                            time_formatted = "";
+                                        } else {
+                                            DateFormat inputFormat = new SimpleDateFormat("HHmmss");
+                                            DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
+                                            Date date1;
+                                            try {
+                                                date1 = inputFormat.parse(time);
+                                                String outputDateStr = outputFormat.format(date1);
+                                                time_formatted = outputDateStr;
+                                            } catch (ParseException e) {
+                                                time_formatted = "";
+                                            }
+                                        }
+                                    } else {
+                                        time_formatted = "";
+                                    }
+                                    History_List_Object olo = new History_List_Object(jsonObject.optString("ZDOCTYPE_TEXT"), jsonObject.optString("ZACTIVITY_TEXT"), date_formateed, time_formatted, jsonObject.optString("ZOBJID"));
+                                    history_list.add(olo);
+                                }
+
+                            }
+                            else
+                            {
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if (history_list.size() > 0) {
+                history_adapter = new History_Adapter(History_Activity.this, history_list);
+                history_list_recycleview.setHasFixedSize(true);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(History_Activity.this);
+                history_list_recycleview.setLayoutManager(layoutManager);
+                history_list_recycleview.setItemAnimator(new DefaultItemAnimator());
+                history_list_recycleview.setAdapter(history_adapter);
+                search.setOnQueryTextListener(listener);
+                no_data_layout.setVisibility(View.GONE);
+                search.setVisibility(View.VISIBLE);
+                swiperefreshlayout.setVisibility(View.VISIBLE);
+                title_textview.setText(getString(R.string.user_log) + " (" + history_list.size() + ")");
+                progressDialog.dismiss_progress_dialog();
+            }
+            else
+            {
+                title_textview.setText(getString(R.string.user_log) + " (0)");
+                no_data_layout.setVisibility(View.VISIBLE);
+                search.setVisibility(View.GONE);
+                swiperefreshlayout.setVisibility(View.GONE);
+                progressDialog.dismiss_progress_dialog();
+            }
+        }
+    }
+
 
 
 }

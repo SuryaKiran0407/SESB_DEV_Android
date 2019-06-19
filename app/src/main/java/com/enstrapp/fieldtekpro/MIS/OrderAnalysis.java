@@ -229,7 +229,6 @@ public class OrderAnalysis {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToNext();
                 url_link = cursor.getString(5);
-            } else {
             }
             /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);

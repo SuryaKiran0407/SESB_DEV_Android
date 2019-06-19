@@ -32,12 +32,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.enstrapp.fieldtekpro.GPS.GPSTracker;
 import com.enstrapp.fieldtekpro.GPS.Location_Checker;
 import com.enstrapp.fieldtekpro.Initialload.Auth_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
+import com.enstrapp.fieldtekpro.Interface.REST_Interface;
 import com.enstrapp.fieldtekpro.Passcode.Passcode_Fragment;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.Settings.Settings_Activity;
@@ -49,9 +49,6 @@ import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,14 +59,14 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Login_Activity extends AppCompatActivity implements View.OnClickListener {
+public class Login_Activity extends AppCompatActivity implements View.OnClickListener
+{
 
     ImageView imageView, settings_iv;
     TextView copyright_textview;
@@ -98,13 +95,43 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
     private String DATABASE_NAME = "";
     private Check_Empty c_e = new Check_Empty();
 
+
+    /* Get_User_Data Table and Fields Names */
+    private final String TABLE_GET_USER_DATA = "GET_USER_DATA";
+    private static final String KEY_GET_USER_DATA_ID = "id";
+    private static final String KEY_SAPUSER = "Sapuser";
+    private static final String KEY_MUSER = "Muser";
+    private static final String KEY_FNAME = "Fname";
+    private static final String KEY_LNAME = "Lname";
+    private static final String KEY_KOSTL = "Kostl";
+    private static final String KEY_ARBPL = "Arbpl";
+    private static final String KEY_IWERK = "Iwerk";
+    private static final String KEY_OUNIT = "Ounit";
+    private static final String KEY_PERNR = "Pernr";
+    private static final String KEY_INGRP = "Ingrp";
+    private static final String KEY_PARVW = "Parvw";
+    private static final String KEY_PARNR = "Parnr";
+    private static final String KEY_SUSER = "Suser";
+    private static final String KEY_USTYP = "Ustyp";
+    private static final String KEY_USGRP = "Usgrp";
+    private static final String KEY_Datfm = "Datfm";
+    private static final String KEY_Dcpfm = "Dcpfm";
+    /* Get_User_Data Table and Fields Names */
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+
+        DATABASE_NAME = getString(R.string.database_name);
+        App_db = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+
 
         /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
         device_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -134,15 +161,19 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
 
         displayFirebaseRegId();
 
-        if (checkPermissions()) {
+        if (checkPermissions())
+        {
             //  permissions  granted.
         }
 
         gps = new GPSTracker(Login_Activity.this);
-        if (gps.canGetLocation()) {
+        if (gps.canGetLocation())
+        {
             //double latitude = gps.getLatitude();
             //double longitude = gps.getLongitude();
-        } else {
+        }
+        else
+        {
             Location_Checker lc = new Location_Checker();
             lc.location_checker(Login_Activity.this);
         }
@@ -163,13 +194,16 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         imageView.startAnimation(animation);
 
         /* getting current year and application version */
-        try {
+        try
+        {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
             copyright_textview.setText("© " + year + " | " + getResources().getString(R.string.enst) + ". All rights reserved.");
-        } catch (PackageManager.NameNotFoundException e) {
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
         }
         /* getting current year and application version */
 
@@ -182,10 +216,14 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         fieldtekpro_login_password = FieldTekPro_SharedPref.getString("Password", null);
         user_remember_me = FieldTekPro_SharedPref.getString("FieldTekPro_Remember_Me", null);
 
-        if (user_remember_me == null || user_remember_me.equals("")) {
+        if (user_remember_me == null || user_remember_me.equals(""))
+        {
             rememberme_checkbox.setChecked(false);
-        } else {
-            if (user_remember_me.equals("X")) {
+        }
+        else
+        {
+            if (user_remember_me.equals("X"))
+            {
                 rememberme_checkbox.setChecked(true);
                 username_edittext.setText(fieldtekpro_login_username);
                 password_edittext.setText(fieldtekpro_login_password);
@@ -297,73 +335,122 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         if (v == login_button)// if login button is clicked
         {
             // checking whether username is entered or not
-            if (username_edittext.getText().toString() != null && !username_edittext.getText().toString().equals("")) {
+            if (username_edittext.getText().toString() != null && !username_edittext.getText().toString().equals(""))
+            {
                 // checking whether password is entered or not
-                if (password_edittext.getText().toString() != null && !password_edittext.getText().toString().equals("")) {
+                if (password_edittext.getText().toString() != null && !password_edittext.getText().toString().equals(""))
+                {
                     fieldtekpro_login_username = FieldTekPro_SharedPref.getString("Username", null);
                     fieldtekpro_login_password = FieldTekPro_SharedPref.getString("Password", null);
                     // checking earlier login is done or not. If done, directly navigating to Dashboard Activity, or else performing login and sending username and password to backend server.
                     String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
-                    if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
+                    if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals(""))
+                    {
                         cd = new ConnectionDetector(getApplicationContext());
                         isInternetPresent = cd.isConnectingToInternet();
-                        if (isInternetPresent) {
+                        if (isInternetPresent)
+                        {
                             FieldTekPro_SharedPrefeditor.putString("Username", fieldtekpro_login_username);
                             FieldTekPro_SharedPrefeditor.putString("Password", fieldtekpro_login_password);
                             FieldTekPro_SharedPrefeditor.putString("header_credentials", header_username + ":" + header_password);
                             FieldTekPro_SharedPrefeditor.commit();
-                            if (fieldtekpro_login_username.equals(username_edittext.getText().toString())) {
+                            if (fieldtekpro_login_username.equals(username_edittext.getText().toString()))
+                            {
                                 FieldTekPro_SharedPrefeditor.putString("same_user", "X");
                                 FieldTekPro_SharedPrefeditor.commit();
-                                new Login().execute();
-                            } else {
+                                String webservice_type = getString(R.string.webservice_type);
+                                if(webservice_type.equalsIgnoreCase("odata"))
+                                {
+                                    new Login().execute();
+                                }
+                                else
+                                {
+                                    new POST_LOGIN_REST().execute();
+                                }
+                            }
+                            else
+                            {
                                 FieldTekPro_SharedPrefeditor.putString("same_user", "");
                                 FieldTekPro_SharedPrefeditor.commit();
-                                new Login().execute();
+                                String webservice_type = getString(R.string.webservice_type);
+                                if(webservice_type.equalsIgnoreCase("odata"))
+                                {
+                                    new Login().execute();
+                                }
+                                else
+                                {
+                                    new POST_LOGIN_REST().execute();
+                                }
                             }
 
-                        } else {
-                            if (username_edittext.getText().toString().equals(fieldtekpro_login_username) &&
-                                    password_edittext.getText().toString().equals(fieldtekpro_login_password)) {
+                        }
+                        else
+                        {
+                            if (username_edittext.getText().toString().equals(fieldtekpro_login_username) && password_edittext.getText().toString().equals(fieldtekpro_login_password))
+                            {
                                 offlineConfirmationDialog(getString(R.string.offline_confirmation));
-                            } else {
+                            }
+                            else
+                            {
                                 loginNetworkError();
                             }
                         }
-                    } else {
+                    }
+                    else
+                    {
                         cd = new ConnectionDetector(getApplicationContext());
                         isInternetPresent = cd.isConnectingToInternet();
-                        if (isInternetPresent) {
+                        if (isInternetPresent)
+                        {
                             //Performing login asynctask and sending data to backend server.
-                            new Login().execute();
-                        } else {
+                            String webservice_type = getString(R.string.webservice_type);
+                            if(webservice_type.equalsIgnoreCase("odata"))
+                            {
+                                new Login().execute();
+                            }
+                            else
+                            {
+                                new POST_LOGIN_REST().execute();
+                            }
+                        }
+                        else
+                        {
                             //showing network error and navigating to wifi settings.
                             network_connection_dialog.show_network_connection_dialog(Login_Activity.this);
                         }
                     }
 
-                } else {
+                }
+                else
+                {
                     //showing alert message if password is not entered.
                     error_dialog.show_error_dialog(Login_Activity.this,
                             getString(R.string.pls_entpass));
                 }
 
-            } else {
+            }
+            else
+            {
                 //showing alert message if username is not entered.
                 error_dialog.show_error_dialog(Login_Activity.this,
                         getString(R.string.pls_entusr));
             }
-        } else if (v == settings_iv) {
+        }
+        else if (v == settings_iv)
+        {
             Intent settings_intent = new Intent(Login_Activity.this, Settings_Activity.class);
 //            settings_intent.putExtra("Came_From", "Login_Activity");
             startActivity(settings_intent);
         }
 
     }
+
+
 
     /*Performing Login Asynctask*/
     private class Login extends AsyncTask<Void, Integer, Void> {
@@ -438,8 +525,6 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                             }
                             if (response.isSuccessful() && response.body() != null) {
                                 try {
-                                    DATABASE_NAME = getString(R.string.database_name);
-                                    App_db = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
                                     /* Creating GET_USER_DATA Table with Fields */
                                     App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_USER_DATA);
@@ -645,4 +730,165 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+
+
+
+    /*For REST Service*/
+    private class POST_LOGIN_REST extends AsyncTask<Void, Integer, Void>
+    {
+
+        int response_status_code = 0;
+        @Override
+        protected void onPreExecute()
+        {
+            progressDialog.show_progress_dialog(Login_Activity.this, getString(R.string.signing_in));
+            App_db.execSQL("DROP TABLE IF EXISTS " + TABLE_GET_USER_DATA);
+            String CREATE_GET_USER_DATA_TABLE = "CREATE TABLE IF NOT EXISTS "
+                    + TABLE_GET_USER_DATA + ""
+                    + "( "
+                    + KEY_GET_USER_DATA_ID + " INTEGER PRIMARY KEY,"
+                    + KEY_SAPUSER + " TEXT,"
+                    + KEY_MUSER + " TEXT,"
+                    + KEY_FNAME + " TEXT,"
+                    + KEY_LNAME + " TEXT,"
+                    + KEY_KOSTL + " TEXT,"
+                    + KEY_ARBPL + " TEXT,"
+                    + KEY_IWERK + " TEXT,"
+                    + KEY_OUNIT + " TEXT,"
+                    + KEY_PERNR + " TEXT,"
+                    + KEY_INGRP + " TEXT,"
+                    + KEY_PARVW + " TEXT,"
+                    + KEY_PARNR + " TEXT,"
+                    + KEY_SUSER + " TEXT,"
+                    + KEY_USTYP + " TEXT,"
+                    + KEY_USGRP + " TEXT,"
+                    + KEY_Datfm + " TEXT,"
+                    + KEY_Dcpfm + " TEXT"
+                    + ")";
+            App_db.execSQL(CREATE_GET_USER_DATA_TABLE);
+        }
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                String login_ip_address = getResources().getString(R.string.ip_address);
+                String login_endpoint = getResources().getString(R.string.login_url);
+
+
+                Rest_Model_Login_Device modelLoginDeviceRest = new Rest_Model_Login_Device();
+                modelLoginDeviceRest.setMUSER(username_edittext.getText().toString().toUpperCase());
+                modelLoginDeviceRest.setDEVICEID(device_id);
+                modelLoginDeviceRest.setDEVICESNO(device_serial_number);
+                modelLoginDeviceRest.setUDID(device_uuid);
+
+                byte[] password_data = null;
+                try
+                {
+                    password_data = password_edittext.getText().toString().getBytes("UTF-8");
+                }
+                catch (Exception e)
+                {
+                }
+                String password_base64 = Base64.encodeToString(password_data,Base64.DEFAULT);
+                if(password_base64.contains("\n"))
+                {
+                    password_base64 = password_base64.replace("\n","");
+                }
+
+                Rest_Model_Login modelLoginRest = new Rest_Model_Login();
+                modelLoginRest.setIv_username(username_edittext.getText().toString());
+                modelLoginRest.setIv_password(password_base64);
+                modelLoginRest.setIv_language("EN");
+                modelLoginRest.setIs_device(modelLoginDeviceRest);
+
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(login_ip_address).client(client).build();
+                REST_Interface service = retrofit.create(REST_Interface.class);
+
+                String credentials = username_edittext.getText().toString() + ":" + password_edittext.getText().toString();
+                final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                Call<REST_SER_Login> call = service.postLoginDetails(login_endpoint, basic, modelLoginRest);
+                Response<REST_SER_Login> response = call.execute();
+                response_status_code = response.code();
+                if (response.isSuccessful() && response.body() != null)
+                {
+                    REST_SER_Login.ESUSER esuser = response.body().getESUSER();
+                    if (esuser != null && !esuser.equals(""))
+                    {
+                        App_db.beginTransaction();
+                        String sql = "Insert into GET_USER_DATA (Sapuser,Muser,Fname,Lname,Kostl,Arbpl,Iwerk,Ounit,Pernr,Ingrp,Parvw,Parnr,Suser,Ustyp,Usgrp,Datfm,Dcpfm) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                        SQLiteStatement statement = App_db.compileStatement(sql);
+                        statement.clearBindings();
+                        statement.bindString(1, "");
+                        statement.bindString(2, c_e.check_empty(esuser.getMUSER()));
+                        statement.bindString(3, c_e.check_empty(esuser.getFNAME()));
+                        statement.bindString(4, c_e.check_empty(esuser.getLNAME()));
+                        statement.bindString(5, c_e.check_empty(esuser.getKOSTL()));
+                        statement.bindString(6, c_e.check_empty(esuser.getARBPL()));
+                        statement.bindString(7, c_e.check_empty(esuser.getIWERK()));
+                        statement.bindString(8, c_e.check_empty(esuser.getOUNIT()));
+                        statement.bindString(9, c_e.check_empty(esuser.getPERNR()));
+                        statement.bindString(10, "");
+                        statement.bindString(11, c_e.check_empty(esuser.getPARVW()));
+                        statement.bindString(12, "");
+                        statement.bindString(13, "");
+                        statement.bindString(14, "");
+                        statement.bindString(15, c_e.check_empty(esuser.getUSGRP()));
+                        statement.bindString(16, "");
+                        statement.bindString(17, "");
+                        statement.execute();
+                        App_db.setTransactionSuccessful();
+                        App_db.endTransaction();
+                    }
+                }
+                Log.v("kiran_Login_code",response_status_code+"...");
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            super.onPostExecute(result);
+            if(response_status_code == 200)
+            {
+                FieldTekPro_SharedPrefeditor.putString("Username",username_edittext.getText().toString().trim());
+                FieldTekPro_SharedPrefeditor.putString("Password",password_edittext.getText().toString());
+                FieldTekPro_SharedPrefeditor.putString("header_credentials",username_edittext.getText().toString() + ":" +password_edittext.getText().toString());
+                FieldTekPro_SharedPrefeditor.putString("token", "");
+                FieldTekPro_SharedPrefeditor.putString("webservice_type", "REST");
+                FieldTekPro_SharedPrefeditor.putString("offline", "");
+                FieldTekPro_SharedPrefeditor.commit();
+                progressDialog.dismiss_progress_dialog();
+                Login_Activity.this.getSupportFragmentManager().beginTransaction().add(R.id.main_frag, new Passcode_Fragment()).commit();
+            }
+            else if (response_status_code == 400)
+            {
+                progressDialog.dismiss_progress_dialog();
+                error_dialog.show_error_dialog(Login_Activity.this,getString(R.string.usr_notrgstrd));
+            }
+            else if (response_status_code == 401)
+            {
+                progressDialog.dismiss_progress_dialog();
+                error_dialog.show_error_dialog(Login_Activity.this,getString(R.string.auth_fail));
+            }
+            else
+            {
+                progressDialog.dismiss_progress_dialog();
+                error_dialog.show_error_dialog(Login_Activity.this,getString(R.string.lgn_fail));
+            }
+        }
+    }
+    /*For REST Service*/
+
+
+
+
 }

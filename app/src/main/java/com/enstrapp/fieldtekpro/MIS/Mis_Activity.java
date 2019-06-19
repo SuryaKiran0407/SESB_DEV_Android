@@ -14,7 +14,7 @@ import com.enstrapp.fieldtekpro.R;
 public class Mis_Activity extends AppCompatActivity {
     GridView grid;
     String[] web;
-    int[] imageId = {R.drawable.permit_mis_icon, R.drawable.notif_analysis_mis_icon, R.drawable.breakdown_mis_icon, R.drawable.order_analysis_ico};
+    int[] imageId = {R.drawable.notif_analysis_mis_icon, R.drawable.breakdown_mis_icon, R.drawable.order_analysis_ico};
     ImageView back_imageview;
 
     @Override
@@ -22,7 +22,7 @@ public class Mis_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mis_home);
 
-        web = new String[] {getString(R.string.mis_permitrep_analysis),
+        web = new String[] {
                 getString(R.string.mis_notif_analysis), getString(R.string.mis_break),
                 getString(R.string.order_analysis)};
 

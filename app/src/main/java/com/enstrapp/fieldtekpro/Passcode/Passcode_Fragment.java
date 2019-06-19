@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.DashBoard.DashBoard_Activity;
+import com.enstrapp.fieldtekpro.InitialLoad_Rest.InitialLoad_REST_Activity;
 import com.enstrapp.fieldtekpro.Initialload.InitialLoad_Activity;
 import com.enstrapp.fieldtekpro.R;
 import com.enstrapp.fieldtekpro.login.Login_Activity;
@@ -141,7 +142,8 @@ public class Passcode_Fragment extends Fragment {
         return mRootView;
     }
 
-    private void bindEvents(String text) {
+    private void bindEvents(String text)
+    {
         click_status = "clicked";
         String fieldtekpro_login_status = FieldTekPro_SharedPref.getString("App_Login_Status", null);
 
@@ -149,50 +151,109 @@ public class Passcode_Fragment extends Fragment {
         String InitialLoad = FieldTekPro_SharedPref.getString("FieldTekPro_InitialLoad", null);
         String Refresh = FieldTekPro_SharedPref.getString("FieldTekPro_Refresh", null);
         String offline = FieldTekPro_SharedPref.getString("offline", null);
-        if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals("")) {
-            if (text.equals(passcode_text)) {
-                if (offline != null && offline.equals("X")) {
+        if (fieldtekpro_login_status != null && !fieldtekpro_login_status.equals(""))
+        {
+            if (text.equals(passcode_text))
+            {
+                if (offline != null && offline.equals("X"))
+                {
                     getActivity().finish();
                     Intent notification_intent = new Intent(getActivity(), DashBoard_Activity.class);
                     startActivity(notification_intent);
                     FieldTekPro_SharedPrefeditor.putString("offline", "");
                     FieldTekPro_SharedPrefeditor.commit();
-                } else {
-                    if (InitialLoad != null && !InitialLoad.equals("")) {
+                }
+                else
+                {
+                    if (InitialLoad != null && !InitialLoad.equals(""))
+                    {
                         getActivity().finish();
-                        Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-                        intialload_intent.putExtra("From", "LOAD");
-                        startActivity(intialload_intent);
-                    } else if (Refresh != null && !Refresh.equals("")) {
+                        String webservice_type = getString(R.string.webservice_type);
+                        if(webservice_type.equalsIgnoreCase("odata"))
+                        {
+                            Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
+                            intialload_intent.putExtra("From", "LOAD");
+                            startActivity(intialload_intent);
+                        }
+                        else  if(webservice_type.equalsIgnoreCase("rest"))
+                        {
+                            Intent intialload_intent = new Intent(getActivity(), InitialLoad_REST_Activity.class);
+                            intialload_intent.putExtra("From","LOAD");
+                            startActivity(intialload_intent);
+                        }
+                    }
+                    else if (Refresh != null && !Refresh.equals(""))
+                    {
                         getActivity().finish();
-                        Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-                        intialload_intent.putExtra("From", "REFR");
-                        startActivity(intialload_intent);
-                    } else {
+                        String webservice_type = getString(R.string.webservice_type);
+                        if(webservice_type.equalsIgnoreCase("odata"))
+                        {
+                            Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
+                            intialload_intent.putExtra("From", "REFR");
+                            startActivity(intialload_intent);
+                        }
+                        else  if(webservice_type.equalsIgnoreCase("rest"))
+                        {
+                            Intent intialload_intent = new Intent(getActivity(), InitialLoad_REST_Activity.class);
+                            intialload_intent.putExtra("From","REFR");
+                            startActivity(intialload_intent);
+                        }
+                    }
+                    else
+                    {
                         getActivity().finish();
                         Intent notification_intent = new Intent(getActivity(), DashBoard_Activity.class);
                         startActivity(notification_intent);
                     }
                 }
-            } else {
+            }
+            else
+            {
                 click_status = "";
                 passCodeView.setError(true);
                 Toast.makeText(getActivity(), getString(R.string.wrong_passcode), Toast.LENGTH_LONG).show();
             }
-        } else {
-            if (text.equals(passcode_text)) {
+        }
+        else
+        {
+            if (text.equals(passcode_text))
+            {
                 getActivity().finish();
-                Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-                intialload_intent.putExtra("From", "LOAD");
-                startActivity(intialload_intent);
-            } else if (passcode_text == null || passcode_text.equals("")) {
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
+                    intialload_intent.putExtra("From", "LOAD");
+                    startActivity(intialload_intent);
+                }
+                else  if(webservice_type.equalsIgnoreCase("rest"))
+                {
+                    Intent intialload_intent = new Intent(getActivity(), InitialLoad_REST_Activity.class);
+                    intialload_intent.putExtra("From","LOAD");
+                    startActivity(intialload_intent);
+                }
+            }
+            else if (passcode_text == null || passcode_text.equals(""))
+            {
                 FieldTekPro_SharedPrefeditor.putString("passcode_text", text);
                 FieldTekPro_SharedPrefeditor.commit();
                 getActivity().finish();
-                Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
-                intialload_intent.putExtra("From", "LOAD");
-                startActivity(intialload_intent);
-            } else {
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    Intent intialload_intent = new Intent(getActivity(), InitialLoad_Activity.class);
+                    intialload_intent.putExtra("From", "LOAD");
+                    startActivity(intialload_intent);
+                }
+                else  if(webservice_type.equalsIgnoreCase("rest"))
+                {
+                    Intent intialload_intent = new Intent(getActivity(), InitialLoad_REST_Activity.class);
+                    intialload_intent.putExtra("From","LOAD");
+                    startActivity(intialload_intent);
+                }
+            }
+            else
+            {
                 click_status = "";
                 passCodeView.setError(true);
                 Toast.makeText(getActivity(), "You have entered wrong passcode", Toast.LENGTH_LONG).show();
