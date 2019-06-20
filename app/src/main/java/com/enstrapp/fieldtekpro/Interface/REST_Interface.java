@@ -17,6 +17,8 @@ import com.enstrapp.fieldtekpro.MIS.BreakStatsPie_SER;
 import com.enstrapp.fieldtekpro.MIS.BreakStatsPie_SER_REST;
 import com.enstrapp.fieldtekpro.MIS.NotifAnalysis_REST_SER;
 import com.enstrapp.fieldtekpro.MIS.NotifAnalysis_SER;
+import com.enstrapp.fieldtekpro.MIS.OrderAnalysis_SER;
+import com.enstrapp.fieldtekpro.MIS.OrderAnalysis_SER_REST;
 import com.enstrapp.fieldtekpro.Utilities.Model_BOM_RESV_REST;
 import com.enstrapp.fieldtekpro.Utilities.SER_BOM_Reservation;
 import com.enstrapp.fieldtekpro.Utilities.SER_BOM_Reservation_REST;
@@ -140,4 +142,9 @@ public interface REST_Interface
 
     @POST
     Call<BreakStatsPie_SER_REST> postBreakStatsPieAnalysis(@Url String anEmptyString, @Header("Authorization") String authHeader, @Body Rest_Model_Login body);
+
+
+
+    @POST
+    Call<OrderAnalysis_SER_REST> postOrderAnalysis(@Url String anEmptyString, @Header("Authorization") String authHeader, @Body Rest_Model_Login body);
 }
