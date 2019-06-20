@@ -22,6 +22,8 @@ import com.enstrapp.fieldtekpro.MIS.OrderAnalysis_SER_REST;
 import com.enstrapp.fieldtekpro.Utilities.Model_BOM_RESV_REST;
 import com.enstrapp.fieldtekpro.Utilities.SER_BOM_Reservation;
 import com.enstrapp.fieldtekpro.Utilities.SER_BOM_Reservation_REST;
+import com.enstrapp.fieldtekpro.equipment_inspection.EquipmentInspection_BreakStatics_SER;
+import com.enstrapp.fieldtekpro.equipment_inspection.EquipmentInspection_BreakStatics_SER_REST;
 import com.enstrapp.fieldtekpro.history.History_SER;
 import com.enstrapp.fieldtekpro.history.History_SER_REST;
 import com.enstrapp.fieldtekpro.login.REST_SER_Login;
@@ -147,4 +149,8 @@ public interface REST_Interface
 
     @POST
     Call<OrderAnalysis_SER_REST> postOrderAnalysis(@Url String anEmptyString, @Header("Authorization") String authHeader, @Body Rest_Model_Login body);
+
+
+    @POST
+    Call<EquipmentInspection_BreakStatics_SER_REST> postEquipmentInspectionAnalysis(@Url String anEmptyString, @Header("Authorization") String authHeader, @Body Rest_Model_Login body);
 }

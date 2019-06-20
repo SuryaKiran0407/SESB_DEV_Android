@@ -21,6 +21,9 @@ public class Rest_Model_Login
     @SerializedName("iv_user")
     @Expose
     private String iv_user;
+    @SerializedName("iv_equnr")
+    @Expose
+    private String iv_equnr;
     @SerializedName("is_device")
     @Expose
     private Rest_Model_Login_Device is_device = null;
@@ -36,6 +39,14 @@ public class Rest_Model_Login
     @SerializedName("iv_eq_no")
     @Expose
     private String iv_eqno;
+
+    public String getIv_equnr() {
+        return iv_equnr;
+    }
+
+    public void setIv_equnr(String iv_equnr) {
+        this.iv_equnr = iv_equnr;
+    }
 
     public String getIv_eqno() {
         return iv_eqno;
