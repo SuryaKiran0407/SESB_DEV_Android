@@ -28,7 +28,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Interface.Interface;
+import com.enstrapp.fieldtekpro.Interface.REST_Interface;
 import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -74,6 +77,7 @@ public class Equipment_History_Activity extends AppCompatActivity implements Vie
     History_Adapter history_adapter;
     int response_status_code = 0;
     Response<EquipmentHistory_SER> response;
+    Response<EquipmentHistory_SER_REST> response_REST;
     LinearLayout no_data_layout;
     Dialog decision_dialog;
 
@@ -84,7 +88,8 @@ public class Equipment_History_Activity extends AppCompatActivity implements Vie
 
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             equipment_id = extras.getString("equipment_id");
         }
 
@@ -117,9 +122,20 @@ public class Equipment_History_Activity extends AppCompatActivity implements Vie
 
         cd = new ConnectionDetector(getApplicationContext());
         isInternetPresent = cd.isConnectingToInternet();
-        if (isInternetPresent) {
-            new Get_History_Data().execute();
-        } else {
+        if (isInternetPresent)
+        {
+            String webservice_type = getString(R.string.webservice_type);
+            if(webservice_type.equalsIgnoreCase("odata"))
+            {
+                new Get_History_Data().execute();
+            }
+            else
+            {
+                new Get_History_Data_REST().execute();
+            }
+        }
+        else
+        {
             network_connection_dialog.show_network_connection_dialog(Equipment_History_Activity.this);
         }
 
@@ -177,14 +193,25 @@ public class Equipment_History_Activity extends AppCompatActivity implements Vie
                 public void onClick(View v) {
                     decision_dialog.dismiss();
                     swiperefreshlayout.setRefreshing(false);
-                    new Get_History_Data().execute();
+                    String webservice_type = getString(R.string.webservice_type);
+                    if(webservice_type.equalsIgnoreCase("odata"))
+                    {
+                        new Get_History_Data().execute();
+                    }
+                    else
+                    {
+                        new Get_History_Data_REST().execute();
+                    }
                 }
             });
-        } else {
+        }
+        else
+        {
             swiperefreshlayout.setRefreshing(false);
             network_connection_dialog.show_network_connection_dialog(Equipment_History_Activity.this);
         }
     }
+
 
 
     public class Get_History_Data extends AsyncTask<Void, Integer, Void> {
@@ -208,7 +235,8 @@ public class Equipment_History_Activity extends AppCompatActivity implements Vie
                 String webservice_type = app_sharedpreferences.getString("webservice_type", null);
                 /* Initializing Shared Preferences */
                 Cursor cursor = FieldTekPro_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"EH", "RD", webservice_type});
-                if (cursor != null && cursor.getCount() > 0) {
+                if (cursor != null && cursor.getCount() > 0)
+                {
                     cursor.moveToNext();
                     url_link = cursor.getString(5);
                 }
@@ -399,6 +427,271 @@ public class Equipment_History_Activity extends AppCompatActivity implements Vie
             }
         }
     }
+
+
+
+
+
+    public class Get_History_Data_REST extends AsyncTask<Void, Integer, Void>
+    {
+        String url_link = "";
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            progressDialog.show_progress_dialog(Equipment_History_Activity.this, getResources().getString(R.string.loading_history));
+            history_list.clear();
+        }
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                /* Initializing Shared Preferences */
+                app_sharedpreferences = Equipment_History_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+                app_editor = app_sharedpreferences.edit();
+                username = app_sharedpreferences.getString("Username", null);
+                password = app_sharedpreferences.getString("Password", null);
+                String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+                /* Initializing Shared Preferences */
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"EH", "RD", webservice_type});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    cursor.moveToNext();
+                    url_link = cursor.getString(5);
+                }
+                String URL = Equipment_History_Activity.this.getString(R.string.ip_address);
+
+                Rest_Model_Login_Device modelLoginDeviceRest = new Rest_Model_Login_Device();
+                modelLoginDeviceRest.setMUSER(username.toUpperCase().toString());
+                modelLoginDeviceRest.setDEVICEID(device_id);
+                modelLoginDeviceRest.setDEVICESNO(device_serial_number);
+                modelLoginDeviceRest.setUDID(device_uuid);
+                modelLoginDeviceRest.setiVTRANSMITTYPE("MISR");
+                modelLoginDeviceRest.setiVCOMMIT("X");
+                modelLoginDeviceRest.seteRROR("");
+
+                Rest_Model_Login modelLoginRest = new Rest_Model_Login();
+                modelLoginRest.setIv_transmit_type("LOAD");
+                modelLoginRest.setIv_user(username);
+                modelLoginRest.setIv_equnr(equipment_id);
+                modelLoginRest.setIs_device(modelLoginDeviceRest);
+
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+                REST_Interface service = retrofit.create(REST_Interface.class);
+                String credentials = username + ":" + password;
+                final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                Call<EquipmentHistory_SER_REST> call = service.postEQUIPHistoryData(url_link, basic, modelLoginRest);
+                response_REST = call.execute();
+                response_status_code = response_REST.code();
+                if (response_status_code == 200)
+                {
+                    if (response_REST.isSuccessful() && response_REST.body() != null)
+                    {
+                        try
+                        {
+                            EquipmentHistory_SER_REST rs = response_REST.body();
+                            String response_data = new Gson().toJson(response_REST.body().getET_EQUI_NOTIF());
+                            JSONArray response_data_jsonArray = new JSONArray(response_data);
+                            if (response_data_jsonArray.length() > 0)
+                            {
+                                for (int i = 0; i < response_data_jsonArray.length(); i++)
+                                {
+                                    JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
+                                    String date = jsonObject.optString("AUSVN");
+                                    String date_formateed = "";
+                                    if (date != null && !date.equals(""))
+                                    {
+                                        if (date.equals("00000000"))
+                                        {
+                                            date_formateed = "";
+                                        }
+                                        else
+                                        {
+                                            DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                                            DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                                            Date date1;
+                                            try
+                                            {
+                                                date1 = inputFormat.parse(date);
+                                                String outputDateStr = outputFormat.format(date1);
+                                                date_formateed = outputDateStr;
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                date_formateed = "";
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        date_formateed = "";
+                                    }
+                                    String Ausbs_date = jsonObject.optString("AUSBS");
+                                    String Ausbs_date_formateed = "";
+                                    if (Ausbs_date != null && !Ausbs_date.equals(""))
+                                    {
+                                        if (Ausbs_date.equals("00000000"))
+                                        {
+                                            Ausbs_date_formateed = "";
+                                        }
+                                        else
+                                        {
+                                            DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                                            DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                                            Date date1;
+                                            try
+                                            {
+                                                date1 = inputFormat.parse(Ausbs_date);
+                                                String outputDateStr = outputFormat.format(date1);
+                                                Ausbs_date_formateed = outputDateStr;
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Ausbs_date_formateed = "";
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Ausbs_date_formateed = "";
+                                    }
+                                    String Qmdab_date = jsonObject.optString("QMDAB");
+                                    String Qmdab_date_formateed = "";
+                                    if (Qmdab_date != null && !Qmdab_date.equals(""))
+                                    {
+                                        if (Qmdab_date.equals("00000000"))
+                                        {
+                                            Qmdab_date_formateed = "";
+                                        }
+                                        else
+                                        {
+                                            DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                                            DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                                            Date date1;
+                                            try
+                                            {
+                                                date1 = inputFormat.parse(Qmdab_date);
+                                                String outputDateStr = outputFormat.format(date1);
+                                                Qmdab_date_formateed = outputDateStr;
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Qmdab_date_formateed = "";
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Qmdab_date_formateed = "";
+                                    }
+                                    String Qmart = jsonObject.optString("QMART");
+                                    String Qmartx = "";
+                                    try
+                                    {
+                                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_NOTIFICATION_TYPES where Qmart = ?", new String[]{Qmart});
+                                        if (cursor1 != null && cursor1.getCount() > 0)
+                                        {
+                                            if (cursor1.moveToFirst())
+                                            {
+                                                do
+                                                {
+                                                    Qmartx = cursor1.getString(2);
+                                                }
+                                                while (cursor1.moveToNext());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            cursor1.close();
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                    }
+                                    String Priok = jsonObject.optString("PRIOK");
+                                    String Priokx = "";
+                                    try
+                                    {
+                                        Cursor cursor1 = FieldTekPro_db.rawQuery("select * from GET_NOTIFICATION_PRIORITY where Priok = ?", new String[]{Priok});
+                                        if (cursor1 != null && cursor1.getCount() > 0)
+                                        {
+                                            if (cursor1.moveToFirst())
+                                            {
+                                                do
+                                                {
+                                                    Priokx = cursor1.getString(2);
+                                                }
+                                                while (cursor1.moveToNext());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            cursor1.close();
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                    }
+                                    History_List_Object olo = new History_List_Object(Qmart + " - " + Qmartx, jsonObject.optString("QMNUM"), date_formateed, Ausbs_date_formateed, jsonObject.optString("AUFNR"), Priok + " - " + Priokx, jsonObject.optString("QMTXT"), Qmdab_date_formateed);
+                                    history_list.add(olo);
+                                }
+
+                            }
+                            else
+                            {
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            super.onPostExecute(result);
+            if (history_list.size() > 0)
+            {
+                history_adapter = new History_Adapter(Equipment_History_Activity.this, history_list);
+                list_recycleview.setHasFixedSize(true);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Equipment_History_Activity.this);
+                list_recycleview.setLayoutManager(layoutManager);
+                list_recycleview.setItemAnimator(new DefaultItemAnimator());
+                list_recycleview.setAdapter(history_adapter);
+                search.setOnQueryTextListener(listener);
+                no_data_textview.setVisibility(View.GONE);
+                search.setVisibility(View.VISIBLE);
+                swiperefreshlayout.setVisibility(View.VISIBLE);
+                title_textview.setText(getString(R.string.equip_history1) + " : " + equipment_id + " (" + history_list.size() + ")");
+                progressDialog.dismiss_progress_dialog();
+                no_data_layout.setVisibility(View.GONE);
+            }
+            else
+            {
+                title_textview.setText(getString(R.string.equip_history1) + " : " + equipment_id + " (0)");
+                no_data_textview.setVisibility(View.VISIBLE);
+                search.setVisibility(View.GONE);
+                swiperefreshlayout.setVisibility(View.GONE);
+                progressDialog.dismiss_progress_dialog();
+                no_data_layout.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
 
 
     public class History_Adapter extends RecyclerView.Adapter<History_Adapter.MyViewHolder> {

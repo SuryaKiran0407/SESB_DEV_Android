@@ -43,7 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Equipment_StartInspection_Activity extends AppCompatActivity implements View.OnClickListener {
+public class Equipment_StartInspection_Activity extends AppCompatActivity implements View.OnClickListener
+{
 
     String equipment_id = "", valuation_type_id = "", valuation_type_text = "", date_formatted = "", time_formatted = "";
     ImageView datetime_imageview, back_imageview;
@@ -68,13 +69,15 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
     Dialog submit_decision_dialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.equipment_start_inspection_activity);
 
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             equipment_id = extras.getString("equipment_id");
         }
 
@@ -157,25 +160,31 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
             Equipment_StartInspection_Activity.this.finish();
         } else if (v == back_imageview) {
             Equipment_StartInspection_Activity.this.finish();
-        } else if (v == submit_button) {
+        } else if (v == submit_button)
+        {
             cd = new ConnectionDetector(getApplicationContext());
             isInternetPresent = cd.isConnectingToInternet();
-            if (isInternetPresent) {
+            if (isInternetPresent)
+            {
                 ArrayList reading_count = new ArrayList();
                 ArrayList result_count = new ArrayList();
-                for (int i = 0; i < inspdata_list.size(); i++) {
+                for (int i = 0; i < inspdata_list.size(); i++)
+                {
                     String reading = inspdata_list.get(i).getReading();
                     boolean normal_result = inspdata_list.get(i).isNormal();
                     boolean alarm_result = inspdata_list.get(i).isAlarm();
                     boolean critical_result = inspdata_list.get(i).isCritical();
-                    if (reading != null && !reading.equals("")) {
+                    if (reading != null && !reading.equals(""))
+                    {
                         reading_count.add(reading);
                     }
-                    if (normal_result == true || alarm_result == true || critical_result == true) {
+                    if (normal_result == true || alarm_result == true || critical_result == true)
+                    {
                         result_count.add("true");
                     }
                 }
-                if (reading_count.size() > 0 || result_count.size() > 0) {
+                if (reading_count.size() > 0 || result_count.size() > 0)
+                {
                     submit_decision_dialog = new Dialog(Equipment_StartInspection_Activity.this);
                     submit_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     submit_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -193,7 +202,15 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
                         @Override
                         public void onClick(View v) {
                             submit_decision_dialog.dismiss();
-                            new Get_Token().execute();
+                            String webservice_type = getString(R.string.webservice_type);
+                            if(webservice_type.equalsIgnoreCase("odata"))
+                            {
+                                new Get_Token().execute();
+                            }
+                            else
+                            {
+                                new Post_Inspection_Checklist_REST().execute();
+                            }
                         }
                     });
                     cancel_button.setOnClickListener(new View.OnClickListener() {
@@ -202,11 +219,15 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
                             submit_decision_dialog.dismiss();
                         }
                     });
-                } else {
+                }
+                else
+                {
                     error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this,
                             getString(R.string.provide_readin));
                 }
-            } else {
+            }
+            else
+            {
                 network_connection_dialog.show_network_connection_dialog(Equipment_StartInspection_Activity.this);
             }
         }
@@ -628,6 +649,7 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
     }
 
 
+
     private class Post_Inspection_Checklist extends AsyncTask<String, Integer, Void> {
         Map<String, String> post_insp_check_status;
 
@@ -641,6 +663,80 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
             try {
                 post_insp_check_status = Post_InspectionChecklist.post_inspection_data(Equipment_StartInspection_Activity.this, inspdata_list, equipment_id, date_formatted, time_formatted);
             } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if (post_insp_check_status.get("response_status") != null && !post_insp_check_status.get("response_status").equals("")) {
+                if (post_insp_check_status.get("response_status").equalsIgnoreCase("success")) {
+                    String response_data = post_insp_check_status.get("response_data");
+                    if (response_data.startsWith("S")) {
+                        final Dialog success_dialog = new Dialog(Equipment_StartInspection_Activity.this);
+                        success_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        success_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        success_dialog.setCancelable(false);
+                        success_dialog.setCanceledOnTouchOutside(false);
+                        success_dialog.setContentView(R.layout.error_dialog);
+                        ImageView imageview = (ImageView) success_dialog.findViewById(R.id.imageView1);
+                        TextView description_textview = (TextView) success_dialog.findViewById(R.id.description_textview);
+                        Button ok_button = (Button) success_dialog.findViewById(R.id.ok_button);
+                        description_textview.setText(response_data.substring(1));
+                        Glide.with(Equipment_StartInspection_Activity.this).load(R.drawable.success_checkmark).into(imageview);
+                        success_dialog.show();
+                        ok_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                success_dialog.dismiss();
+                                Equipment_StartInspection_Activity.this.finish();
+                            }
+                        });
+                    } else if (response_data.startsWith("E")) {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this, response_data.substring(1).toString());
+                    } else {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this, response_data);
+                    }
+                } else {
+                    custom_progress_dialog.dismiss_progress_dialog();
+                    error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this,
+                            getString(R.string.unable_inspchklst));
+                }
+            } else {
+                custom_progress_dialog.dismiss_progress_dialog();
+                error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this,
+                        getString(R.string.unable_inspchklst));
+            }
+        }
+    }
+
+
+
+
+    private class Post_Inspection_Checklist_REST extends AsyncTask<String, Integer, Void>
+    {
+        Map<String, String> post_insp_check_status;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(String... params)
+        {
+            try
+            {
+                post_insp_check_status = Post_InspectionChecklist_REST.post_inspection_data(Equipment_StartInspection_Activity.this, inspdata_list, equipment_id, date_formatted, time_formatted);
+            }
+            catch (Exception e)
+            {
             }
             return null;
         }

@@ -458,17 +458,6 @@ public class Equipment_Inspection_Breakdown_Statics_Activity extends AppCompatAc
                 /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
                 String URL = getString(R.string.ip_address);
 
-                /*Map<String, String> map = new HashMap<>();
-                map.put("Muser", username.toUpperCase().toString());
-                map.put("DEVICESNO", device_serial_number);
-                map.put("UDID", device_uuid);
-                map.put("Ivequnr", equip_id);
-                map.put("ivyear", "");
-                map.put("LOW", "");
-                map.put("HIGH", "");
-                map.put("DeviceId", device_id);
-                map.put("ivtransmittype", "MISR");*/
-
 
                 Rest_Model_Login_Device modelLoginDeviceRest = new Rest_Model_Login_Device();
                 modelLoginDeviceRest.setMUSER(username.toUpperCase().toString());

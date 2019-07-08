@@ -29,7 +29,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Post_InspectionChecklist {
+public class Post_InspectionChecklist_REST
+{
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     private static SharedPreferences app_sharedpreferences;
@@ -38,7 +39,8 @@ public class Post_InspectionChecklist {
     private static Map<String, String> response = new HashMap<String, String>();
 
     public static Map<String, String> post_inspection_data(Activity activity, List<Equipment_StartInspection_Activity.INSP_Object> inspdata_list, String equipment_id, String date, String time) {
-        try {
+        try
+        {
             Get_Response = "";
             Get_Data = "";
             DATABASE_NAME = activity.getString(R.string.database_name);
@@ -80,7 +82,8 @@ public class Post_InspectionChecklist {
 
 
             ArrayList<Model_INSP_Imrg> headerArrayList = new ArrayList<>();
-            for (int i = 0; i < inspdata_list.size(); i++) {
+            for (int i = 0; i < inspdata_list.size(); i++)
+            {
                 Model_INSP_Imrg model_insp_imrg = new Model_INSP_Imrg();
                 model_insp_imrg.setQmnum("");
                 model_insp_imrg.setAufnr("");
@@ -100,13 +103,20 @@ public class Post_InspectionChecklist {
                 boolean normal_result = inspdata_list.get(i).isNormal();
                 boolean alarm_result = inspdata_list.get(i).isAlarm();
                 boolean critical_result = inspdata_list.get(i).isCritical();
-                if (normal_result == true) {
+                if (normal_result == true)
+                {
                     model_insp_imrg.setAtbez("OK");
-                } else if (alarm_result == true) {
+                }
+                else if (alarm_result == true)
+                {
                     model_insp_imrg.setAtbez("POK");
-                } else if (critical_result == true) {
+                }
+                else if (critical_result == true)
+                {
                     model_insp_imrg.setAtbez("NOK");
-                } else {
+                }
+                else
+                {
                     model_insp_imrg.setAtbez("");
                 }
                 model_insp_imrg.setMsehi("");
@@ -115,9 +125,12 @@ public class Post_InspectionChecklist {
                 model_insp_imrg.setDesic("");
                 model_insp_imrg.setPrest("");
                 boolean cat = inspdata_list.get(i).isCreated_after_task();
-                if (cat == true) {
+                if (cat == true)
+                {
                     model_insp_imrg.setDocaf("X");
-                } else {
+                }
+                else
+                {
                     model_insp_imrg.setDocaf("");
                 }
                 model_insp_imrg.setCodct("");
@@ -150,15 +163,19 @@ public class Post_InspectionChecklist {
             Call<INSPCHK_SER> call = service.postINSPCHK(url_link, model_notif_create, basic, map);
             Response<INSPCHK_SER> response = call.execute();
             int response_status_code = response.code();
-            if (response_status_code == 201) {
-                if (response.isSuccessful() && response.body() != null) {
+            if (response_status_code == 200)
+            {
+                if (response.isSuccessful() && response.body() != null)
+                {
                     /*Reading Response Data and Parsing to Serializable*/
                     INSPCHK_SER rs = response.body();
                     StringBuilder Message_stringbuilder = new StringBuilder();
                     String response_data = new Gson().toJson(rs.getD().getEtMsg().getResults());
-                    if (response_data != null && !response_data.equals("")) {
+                    if (response_data != null && !response_data.equals(""))
+                    {
                         JSONArray jsonObject = new JSONArray(response_data);
-                        for (int i = 0; i < jsonObject.length(); i++) {
+                        for (int i = 0; i < jsonObject.length(); i++)
+                        {
                             String Message = jsonObject.getJSONObject(i).optString("Message");
                             Message_stringbuilder.append(Message);
                         }
@@ -166,12 +183,18 @@ public class Post_InspectionChecklist {
                     Get_Response = "success";
                     Get_Data = Message_stringbuilder.toString();
                 }
-            } else {
             }
-        } catch (Exception e) {
+            else
+            {
+            }
+        }
+        catch (Exception e)
+        {
             Get_Response = activity.getString(R.string.unable_inspchklst);
             Get_Data = "";
-        } finally {
+        }
+        finally
+        {
         }
         response.put("response_status", Get_Response);
         response.put("response_data", Get_Data);
