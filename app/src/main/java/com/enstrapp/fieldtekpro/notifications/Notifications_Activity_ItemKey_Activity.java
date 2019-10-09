@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.util.ArrayList;
@@ -178,14 +178,23 @@ public class Notifications_Activity_ItemKey_Activity extends AppCompatActivity i
         private List<Type_Object> notification_type_details_list;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView id_textview, value_textview;
-            LinearLayout data_layout;
+            public TextView post1id_tv, post1_txt, pspnr_txt, id_txt, id_textview, value_textview;
+            LinearLayout data_layout, post1_ll;
 
             public MyViewHolder(View view) {
                 super(view);
                 id_textview = (TextView) view.findViewById(R.id.id_textview);
+                id_txt = (TextView) view.findViewById(R.id.id_txt);
+                pspnr_txt = (TextView) view.findViewById(R.id.pspnr_txt);
+                id_txt.setText("Item #");
+                pspnr_txt.setText("Damage");
                 value_textview = (TextView) view.findViewById(R.id.text_textview);
+                post1_txt = (TextView) view.findViewById(R.id.post1_txt);
+                post1id_tv = (TextView) view.findViewById(R.id.post1id_tv);
+                post1_txt.setText("Damage Text");
                 data_layout = (LinearLayout) view.findViewById(R.id.data_layout);
+                post1_ll = (LinearLayout) view.findViewById(R.id.post1_ll);
+                post1_ll.setVisibility(View.VISIBLE);
             }
         }
 
@@ -196,7 +205,7 @@ public class Notifications_Activity_ItemKey_Activity extends AppCompatActivity i
 
         @Override
         public TYPE_ADAPTER.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data,
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data1,
                     parent, false);
             return new TYPE_ADAPTER.MyViewHolder(itemView);
         }
@@ -205,7 +214,8 @@ public class Notifications_Activity_ItemKey_Activity extends AppCompatActivity i
         public void onBindViewHolder(final TYPE_ADAPTER.MyViewHolder holder, int position) {
             final Type_Object nto = notification_type_details_list.get(position);
             holder.id_textview.setText(nto.getId());
-            holder.value_textview.setText(nto.getText());
+            holder.value_textview.setText(nto.getEvent_id());
+            holder.post1id_tv.setText(nto.getText());
 
             holder.data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override

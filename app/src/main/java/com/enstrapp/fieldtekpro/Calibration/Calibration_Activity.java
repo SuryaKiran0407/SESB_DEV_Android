@@ -10,7 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.equipment.Equipment_Activity;
 
 public class Calibration_Activity extends AppCompatActivity {

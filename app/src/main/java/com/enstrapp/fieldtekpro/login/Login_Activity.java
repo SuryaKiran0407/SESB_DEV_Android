@@ -39,7 +39,7 @@ import com.enstrapp.fieldtekpro.Initialload.Auth_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
 import com.enstrapp.fieldtekpro.Passcode.Passcode_Fragment;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.Settings.Settings_Activity;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
@@ -78,15 +78,9 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
     Boolean isInternetPresent = false;
     ConnectionDetector cd;
     Network_Connection_Dialog network_connection_dialog = new Network_Connection_Dialog();
-    String device_id = "", device_serial_number = "", device_uuid = "", header_username = "",
-            header_password = "", fieldtekpro_login_username = "", fieldtekpro_login_password = "",
-            user_remember_me = "";
+    String device_id = "", device_serial_number = "", device_uuid = "", header_username = "", header_password = "", fieldtekpro_login_username = "", fieldtekpro_login_password = "", user_remember_me = "";
     public static final int MULTIPLE_PERMISSIONS = 10;
-    String[] permissions = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION};
+    String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     Custom_Progress_Dialog progressDialog = new Custom_Progress_Dialog();
     Error_Dialog error_dialog = new Error_Dialog();
@@ -141,16 +135,22 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         device_uuid = deviceUuid.toString();
         /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver()
+        {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(Context context, Intent intent)
+            {
                 // checking for type intent filter
-                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE))
+                {
                     // gcm successfully registered
                     // now subscribe to `global` topic to receive app wide notifications
                     FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
                     displayFirebaseRegId();
-                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                }
+                else if (intent.getAction().equals(Config.PUSH_NOTIFICATION))
+                {
                     // new push notification is received
                     String message = intent.getStringExtra("message");
                     //Toast.makeText(getApplicationContext(), "Got Push notification: " + message, Toast.LENGTH_LONG).show();
@@ -159,12 +159,15 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             }
         };
 
+
         displayFirebaseRegId();
+
 
         if (checkPermissions())
         {
             //  permissions  granted.
         }
+
 
         gps = new GPSTracker(Login_Activity.this);
         if (gps.canGetLocation())
@@ -177,6 +180,7 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             Location_Checker lc = new Location_Checker();
             lc.location_checker(Login_Activity.this);
         }
+
 
         settings_iv = findViewById(R.id.settings_iv);
         imageView = (ImageView) findViewById(R.id.imageView);
@@ -193,6 +197,7 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         animation.setFillAfter(true);
         imageView.startAnimation(animation);
 
+
         /* getting current year and application version */
         try
         {
@@ -207,14 +212,17 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         }
         /* getting current year and application version */
 
+
         /* Initializing Shared Preferences */
         FieldTekPro_SharedPref = getApplicationContext().getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
         /* Initializing Shared Preferences */
 
+
         fieldtekpro_login_username = FieldTekPro_SharedPref.getString("Username", null);
         fieldtekpro_login_password = FieldTekPro_SharedPref.getString("Password", null);
         user_remember_me = FieldTekPro_SharedPref.getString("FieldTekPro_Remember_Me", null);
+
 
         if (user_remember_me == null || user_remember_me.equals(""))
         {
@@ -230,28 +238,40 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             }
         }
 
-        rememberme_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        rememberme_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if (isChecked)
+                {
                     FieldTekPro_SharedPrefeditor.putString("FieldTekPro_Remember_Me", "X");
                     FieldTekPro_SharedPrefeditor.commit();
-                } else {
+                }
+                else
+                {
                     FieldTekPro_SharedPrefeditor.putString("FieldTekPro_Remember_Me", "");
                     FieldTekPro_SharedPrefeditor.commit();
                 }
             }
         });
 
+
         /* Fetching Push Interval From Shared Preferences */
         String PushInterval = FieldTekPro_SharedPref.getString("FieldTekPro_PushInterval", null);
-        if (PushInterval != null && !PushInterval.equals("")) {
-        } else {
+        if (PushInterval != null && !PushInterval.equals(""))
+        {
+        }
+        else
+        {
             FieldTekPro_SharedPrefeditor.putString("FieldTekPro_PushInterval", "30");
         }
         /* Fetching Push Interval From Shared Preferences */
 
+
         FieldTekPro_SharedPrefeditor.commit();
+
 
         login_button.setOnClickListener(this);
         settings_iv.setOnClickListener(this);
@@ -259,16 +279,20 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    private boolean checkPermissions() {
+    private boolean checkPermissions()
+    {
         int result;
         List<String> listPermissionsNeeded = new ArrayList<>();
-        for (String p : permissions) {
+        for (String p : permissions)
+        {
             result = ContextCompat.checkSelfPermission(Login_Activity.this, p);
-            if (result != PackageManager.PERMISSION_GRANTED) {
+            if (result != PackageManager.PERMISSION_GRANTED)
+            {
                 listPermissionsNeeded.add(p);
             }
         }
-        if (!listPermissionsNeeded.isEmpty()) {
+        if (!listPermissionsNeeded.isEmpty())
+        {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), MULTIPLE_PERMISSIONS);
             return false;
         }
@@ -277,14 +301,21 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MULTIPLE_PERMISSIONS: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case MULTIPLE_PERMISSIONS:
+            {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
                     // permissions granted.
-                } else {
+                }
+                else
+                {
                     String permissionss = "";
-                    for (String per : permissions) {
+                    for (String per : permissions)
+                    {
                         permissionss += "\n" + per;
                     }
                     // permissions list of don't granted permission
@@ -296,9 +327,9 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
 
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
-
         // register GCM registration complete receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(Config.REGISTRATION_COMPLETE));
         // register new push message receiver
@@ -311,24 +342,17 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
 
     // Fetches reg id from shared preferences
     // and displays on the screen
-    private void displayFirebaseRegId() {
+    private void displayFirebaseRegId()
+    {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
-
         Log.v("kiran_fcm1", "Firebase reg id: " + regId);
-
-        if (!TextUtils.isEmpty(regId)) {
-            //txtRegId.setText("Firebase Reg Id: " + regId);
-            //Log.v("kiran_fcm2", "Firebase reg id: " + regId);
-        } else {
-            //txtRegId.setText("Firebase Reg Id is not received yet!");
-            //Log.v("kiran_fcm3", "Firebase Reg Id is not received yet!");
-        }
     }
 
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
     }
@@ -424,38 +448,33 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
                             network_connection_dialog.show_network_connection_dialog(Login_Activity.this);
                         }
                     }
-
                 }
                 else
                 {
                     //showing alert message if password is not entered.
-                    error_dialog.show_error_dialog(Login_Activity.this,
-                            getString(R.string.pls_entpass));
+                    error_dialog.show_error_dialog(Login_Activity.this, getString(R.string.pls_entpass));
                 }
-
             }
             else
             {
                 //showing alert message if username is not entered.
-                error_dialog.show_error_dialog(Login_Activity.this,
-                        getString(R.string.pls_entusr));
+                error_dialog.show_error_dialog(Login_Activity.this,getString(R.string.pls_entusr));
             }
         }
         else if (v == settings_iv)
         {
             Intent settings_intent = new Intent(Login_Activity.this, Settings_Activity.class);
-//            settings_intent.putExtra("Came_From", "Login_Activity");
             startActivity(settings_intent);
         }
 
     }
 
 
-
     /*Performing Login Asynctask*/
-    private class Login extends AsyncTask<Void, Integer, Void> {
+    /*Performing Login Asynctask*/
+    private class Login extends AsyncTask<Void, Integer, Void>
+    {
         /* Get_User_Data Table and Fields Names */
-
         private static final String TABLE_GET_USER_DATA = "GET_USER_DATA";
         private static final String KEY_GET_USER_DATA_ID = "id";
         private static final String KEY_SAPUSER = "Sapuser";
@@ -474,19 +493,21 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
         private static final String KEY_USTYP = "Ustyp";
         private static final String KEY_USGRP = "Usgrp";
         /* Get_User_Data Table and Fields Names */
-
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
             progressDialog.show_progress_dialog(Login_Activity.this, getResources().getString(R.string.signing_in));
         }
-
         @Override
-        protected Void doInBackground(Void... params) {
-            try {
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
                 byte[] password_data = password_edittext.getText().toString().getBytes("UTF-8");
                 String password_base64 = Base64.encodeToString(password_data, Base64.DEFAULT);
-                if (password_base64.contains("\n")) {
+                if (password_base64.contains("\n"))
+                {
                     password_base64 = password_base64.replace("\n", "");
                 }
                 String username_cap = username_edittext.getText().toString().toUpperCase();
@@ -846,6 +867,7 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
             }
             catch (Exception e)
             {
+                Log.v("kiran_EEE",e.getMessage()+"...");
             }
             return null;
         }

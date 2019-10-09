@@ -143,8 +143,8 @@
     </style>
 
     <style name="CheckBox" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/dark_green</item>
+        <item name="colorControlActivated">@color/dark_green</item>
     </style>
 
     <style name="CheckBox_green" parent="Theme.AppCompat.Light">

@@ -17,7 +17,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 import java.util.ArrayList;
@@ -25,7 +25,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Notifications_Create_Causecode_Fragment extends Fragment {
+public class Notifications_Create_Causecode_Fragment extends Fragment
+{
 
     private List<Cause_Code_Object> causecode_list = new ArrayList<>();
     List cc_list = new ArrayList();
@@ -502,7 +503,7 @@ public class Notifications_Create_Causecode_Fragment extends Fragment {
         private List<Cause_Code_Object> type_details_list;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView cause_key, item_key, causecode_text, causecode_desc, causecode_id,
+            public TextView objectpartcode_textview, objectpart_textview, cause_key, item_key, causecode_text, causecode_desc, causecode_id,
                     cause_text, cause_id, event_desc, event_code_text, event_code_id, event_text,
                     event_id, objpart_code_text_tv, objpart_code_id_tv, objpart_text_tv,
                     objpart_id_tv, cause_code_textview, cause_textview, event_textview,
@@ -535,6 +536,8 @@ public class Notifications_Create_Causecode_Fragment extends Fragment {
                 cause_key = view.findViewById(R.id.cause_key);
                 data_layout = view.findViewById(R.id.data_layout);
                 checkbox = view.findViewById(R.id.checkbox);
+                objectpart_textview = view.findViewById(R.id.objectpart_textview);
+                objectpartcode_textview = view.findViewById(R.id.objectpartcode_textview);
             }
         }
 
@@ -553,6 +556,8 @@ public class Notifications_Create_Causecode_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(final CAUSE_CODE_ADAPTER.MyViewHolder holder, final int position) {
             final Cause_Code_Object nto = type_details_list.get(position);
+            holder.objectpart_textview.setText(nto.getobject_part_id()+" - "+nto.getobject_part_text());
+            holder.objectpartcode_textview.setText(nto.getobjectcode_id()+" - "+nto.getobject_code_text());
             holder.event_textview.setText(nto.getevent_text());
             holder.event_code_textview.setText(nto.geteventcode_text());
             holder.event_description_textview.setText(nto.getevent_desc());

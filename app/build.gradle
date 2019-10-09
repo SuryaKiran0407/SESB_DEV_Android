@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.enstrapp.fieldtekpro"
+        applicationId "com.enstrapp.fieldtekpro_sesb_dev"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 5

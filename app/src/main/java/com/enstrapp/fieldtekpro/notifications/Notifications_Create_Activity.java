@@ -33,7 +33,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
 import com.enstrapp.fieldtekpro.Initialload.Token;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -62,7 +62,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
     Notifications_Tab_Adapter orders_ta;
     Button cancel_button, submit_button;
     Map<String, String> notif_create_status;
-    String longtext = "", primary_user_resp = "", workcenter_id = "", workcenter_text = "",
+    String Breakdown_status = "", longtext = "", primary_user_resp = "", workcenter_id = "", workcenter_text = "",
             notification_type_id = "", notification_type_text = "", notif_text = "",
             functionlocation_id = "", functionlocation_text = "", equipment_id = "",
             equipment_text = "", priority_type_id = "", priority_type_text = "",
@@ -123,9 +123,9 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
 
         orders_ta = new Notifications_Tab_Adapter(this, getSupportFragmentManager());
         orders_ta.addFragment(new Notifications_Create_Header_Fragment(), getResources().getString(R.string.header));
-        orders_ta.addFragment(new Notifications_Create_Causecode_Fragment(), getResources().getString(R.string.causecode));
-        orders_ta.addFragment(new Notifications_Create_Activity_Fragment(), getResources().getString(R.string.activity));
-        orders_ta.addFragment(new Notifications_Create_Task_Fragment(), getResources().getString(R.string.task));
+        orders_ta.addFragment(new Notifications_Create_Causecode_Fragment(), "Items");
+        //orders_ta.addFragment(new Notifications_Create_Activity_Fragment(), getResources().getString(R.string.activity));
+        //orders_ta.addFragment(new Notifications_Create_Task_Fragment(), getResources().getString(R.string.task));
         orders_ta.addFragment(new Notifications_Create_Attachments_Fragment(), getResources().getString(R.string.attachments));
         viewpager.setOffscreenPageLimit(5);
         viewpager.setAdapter(orders_ta);
@@ -193,10 +193,15 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
     @Override
     public void onClick(View v) {
         if (v == cancel_button) {
-            Notifications_Create_Activity.this.finish();
-        } else if (v == back_iv) {
-            Notifications_Create_Activity.this.finish();
-        } else if (v == submit_button) {
+            //Notifications_Create_Activity.this.finish();
+            onBackButtonPressed();
+        } else if (v == back_iv)
+        {
+            //Notifications_Create_Activity.this.finish();
+            onBackButtonPressed();
+        }
+        else if (v == submit_button)
+        {
             /*Fetching Header Data*/
             Notifications_Create_Header_Fragment header_tab =
                     (Notifications_Create_Header_Fragment) getSupportFragmentManager()
@@ -231,6 +236,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             effect_id = header_data.getEffect_id();
             effect_text = header_data.getEffect_text();
             longtext = header_data.getLongtext_text();
+            Breakdown_status = header_data.getBreakdown_status();
 
             header_custominfo.clear();
             header_custom_info_arraylist = header_data.getCustom_info_arraylist();
@@ -440,188 +446,12 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             }
             /*Fetching Cause Code Data*/
 
-            /*Fetching Activity Data*/
-            ActivityArrayList = new ArrayList<>();
-            Notifications_Create_Activity_Fragment activity_fragment =
-                    (Notifications_Create_Activity_Fragment) getSupportFragmentManager()
-                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
-            List<Notifications_Create_Activity_Fragment.Activity_Object> activity_list =
-                    activity_fragment.getActivityData();
-            for (int i = 0; i < activity_list.size(); i++) {
-                Model_Notif_Activity mnc = new Model_Notif_Activity();
-                mnc.setQmnum("");
-                mnc.setActvKey(activity_list.get(i).getActivity_itemkey());
-                mnc.setItemKey(activity_list.get(i).getCause_itemkey());
-                mnc.setActvGrp(activity_list.get(i).getCodegroup_id());
-                mnc.setActvCod(activity_list.get(i).getCode_id());
-                mnc.setActcodetext(activity_list.get(i).getCode_text());
-                mnc.setActvShtxt(activity_list.get(i).getActivity_shtxt());
-                mnc.setStartDate(activity_list.get(i).getSt_date());
-                mnc.setEndDate(activity_list.get(i).getEnd_date());
-                mnc.setStartTime(activity_list.get(i).getSt_time());
-                mnc.setEndTime(activity_list.get(i).getEnd_time());
-                mnc.setUsr05("");
-                mnc.setAction("I");
-
-                activity_custominfo.clear();
-                /*Fetching Activity Custom Fields*/
-                ArrayList<HashMap<String, String>> selected_activity_custominfo =
-                        activity_list.get(i).getSelected_activity_custom_info_arraylist();
-                if (selected_activity_custominfo.size() > 0) {
-                    for (int j = 0; j < selected_activity_custominfo.size(); j++) {
-                        Model_CustomInfo model_customInfo = new Model_CustomInfo();
-                        model_customInfo.setZdoctype(selected_activity_custominfo.get(j).get("Zdoctype"));
-                        model_customInfo.setZdoctypeItem(selected_activity_custominfo.get(j).get("ZdoctypeItem"));
-                        model_customInfo.setTabname(selected_activity_custominfo.get(j).get("Tabname"));
-                        model_customInfo.setFieldname(selected_activity_custominfo.get(j).get("Fieldname"));
-                        model_customInfo.setDatatype(selected_activity_custominfo.get(j).get("Datatype"));
-                        String datatype = selected_activity_custominfo.get(j).get("Datatype");
-                        if (datatype.equalsIgnoreCase("DATS")) {
-                            String value = selected_activity_custominfo.get(j).get("Value");
-                            String inputPattern = "MMM dd, yyyy";
-                            String outputPattern = "yyyyMMdd";
-                            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-                            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                            try {
-                                Date date = inputFormat.parse(value);
-                                String formatted_date = outputFormat.format(date);
-                                model_customInfo.setValue(formatted_date);
-                            } catch (Exception e) {
-                                model_customInfo.setValue("");
-                            }
-                        } else if (datatype.equalsIgnoreCase("TIMS")) {
-                            String value = selected_activity_custominfo.get(j).get("Value");
-                            String inputPattern = "HH:mm:ss";
-                            String outputPattern = "HHmmss";
-                            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-                            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                            try {
-                                Date date = inputFormat.parse(value);
-                                String formatted_date = outputFormat.format(date);
-                                model_customInfo.setValue(formatted_date);
-                            } catch (Exception e) {
-                                model_customInfo.setValue("");
-                            }
-                        } else {
-                            model_customInfo.setValue(selected_activity_custominfo.get(j).get("Value"));
-                        }
-                        model_customInfo.setFlabel(selected_activity_custominfo.get(j).get("Flabel"));
-                        model_customInfo.setSequence(selected_activity_custominfo.get(j).get("Sequence"));
-                        model_customInfo.setLength(selected_activity_custominfo.get(j).get("Length"));
-                        activity_custominfo.add(model_customInfo);
-                    }
-                }
-                mnc.setItNotifActvsFields(activity_custominfo);
-                ActivityArrayList.add(mnc);
-                /*Fetching Activity Custom Fields*/
-            }
-            /*Fetching Activity Data*/
-
-            /*Fetching Task Data*/
-            TasksArrayList = new ArrayList<>();
-            Notifications_Create_Task_Fragment task_fragment =
-                    (Notifications_Create_Task_Fragment) getSupportFragmentManager()
-                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
-            List<Notifications_Create_Task_Fragment.Task_Object> task_list = task_fragment.getTaskData();
-            for (int i = 0; i < task_list.size(); i++) {
-                Model_Notif_Task mnc = new Model_Notif_Task();
-                mnc.setQmnum("");
-                mnc.setItemKey(task_list.get(i).getItem_key());
-                mnc.setTaskKey(task_list.get(i).getItem_key());
-                mnc.setTaskGrp(task_list.get(i).getTaskcodegroup_id());
-                mnc.setTaskgrptext(task_list.get(i).getTaskcodegroup_text());
-                mnc.setTaskCod(task_list.get(i).getTaskcode_id());
-                mnc.setTaskcodetext(task_list.get(i).getTaskcode_text());
-                mnc.setTaskShtxt(task_list.get(i).getTask_text());
-                mnc.setPster(task_list.get(i).getPlanned_st_date_formatted());
-                mnc.setPeter(task_list.get(i).getPlanned_end_date_formatted());
-                mnc.setPstur(task_list.get(i).getPlanned_st_time_formatted());
-                mnc.setPetur(task_list.get(i).getPlanned_end_time_formatted());
-                mnc.setParvw(task_list.get(i).getTaskprocessor_id());
-                mnc.setParnr(task_list.get(i).getTask_responsible());
-                mnc.setErlnam(task_list.get(i).getCompletedby());
-                mnc.setErldat(task_list.get(i).getCompletion_date_formatted());
-                mnc.setErlzeit(task_list.get(i).getCompletion_time_formatted());
-                String release = task_list.get(i).getRelease_status();
-                if (release.equalsIgnoreCase("X")) {
-                    mnc.setRelease("X");
-                } else {
-                    mnc.setRelease("");
-                }
-                String Complete = task_list.get(i).getCompleted_status();
-                if (Complete.equalsIgnoreCase("X")) {
-                    mnc.setComplete("X");
-                } else {
-                    mnc.setComplete("");
-                }
-                String Success = task_list.get(i).getSuccess_status();
-                if (Success.equalsIgnoreCase("X")) {
-                    mnc.setSuccess("X");
-                } else {
-                    mnc.setSuccess("");
-                }
-                mnc.setAction("I");
-
-                task_custominfo = new ArrayList<>();
-                /*Fetching Task Custom Fields*/
-                ArrayList<HashMap<String, String>> selected_task_custominfo =
-                        task_list.get(i).getSelected_tasks_custom_info_arraylist();
-                if(selected_task_custominfo!=null) {
-                    if (selected_task_custominfo.size() > 0) {
-                        for (int j = 0; j < selected_task_custominfo.size(); j++) {
-                            Model_CustomInfo model_customInfo = new Model_CustomInfo();
-                            model_customInfo.setZdoctype(selected_task_custominfo.get(j).get("Zdoctype"));
-                            model_customInfo.setZdoctypeItem(selected_task_custominfo.get(j).get("ZdoctypeItem"));
-                            model_customInfo.setTabname(selected_task_custominfo.get(j).get("Tabname"));
-                            model_customInfo.setFieldname(selected_task_custominfo.get(j).get("Fieldname"));
-                            model_customInfo.setDatatype(selected_task_custominfo.get(j).get("Datatype"));
-                            String datatype = selected_task_custominfo.get(j).get("Datatype");
-                            if (datatype.equalsIgnoreCase("DATS")) {
-                                String value = selected_task_custominfo.get(j).get("Value");
-                                String inputPattern = "MMM dd, yyyy";
-                                String outputPattern = "yyyyMMdd";
-                                SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-                                SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                try {
-                                    Date date = inputFormat.parse(value);
-                                    String formatted_date = outputFormat.format(date);
-                                    model_customInfo.setValue(formatted_date);
-                                } catch (Exception e) {
-                                    model_customInfo.setValue("");
-                                }
-                            } else if (datatype.equalsIgnoreCase("TIMS")) {
-                                String value = selected_task_custominfo.get(j).get("Value");
-                                String inputPattern = "HH:mm:ss";
-                                String outputPattern = "HHmmss";
-                                SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-                                SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-                                try {
-                                    Date date = inputFormat.parse(value);
-                                    String formatted_date = outputFormat.format(date);
-                                    model_customInfo.setValue(formatted_date);
-                                } catch (Exception e) {
-                                    model_customInfo.setValue("");
-                                }
-                            } else {
-                                model_customInfo.setValue(selected_task_custominfo.get(j).get("Value"));
-                            }
-                            model_customInfo.setFlabel(selected_task_custominfo.get(j).get("Flabel"));
-                            model_customInfo.setSequence(selected_task_custominfo.get(j).get("Sequence"));
-                            model_customInfo.setLength(selected_task_custominfo.get(j).get("Length"));
-                            task_custominfo.add(model_customInfo);
-                        }
-                    }
-                    mnc.setItNotfTaskFields(task_custominfo);
-                    TasksArrayList.add(mnc);
-                }  /*Fetching Task Custom Fields*/
-            }
-            /*Fetching Task Data*/
 
             /*Fetching Attachments Data*/
             AttachmentsArrayList = new ArrayList<>();
             Notifications_Create_Attachments_Fragment attachment_fragment =
                     (Notifications_Create_Attachments_Fragment) getSupportFragmentManager()
-                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
+                            .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
             List<Notif_EtDocs_Parcelable> attachment_list = attachment_fragment.getAttachmentsData();
             for (int i = 0; i < attachment_list.size(); i++) {
                 Model_Notif_Attachments mnc = new Model_Notif_Attachments();
@@ -907,132 +737,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                     } catch (Exception e) {
                                                     }
 
-                                                    try {
-                                                        String EtNotifActvs_sql =
-                                                                "Insert into DUE_NOTIFICATION_EtNotifActvs" +
-                                                                        " (UUID, Qmnum, ItemKey, ItempartGrp," +
-                                                                        " Partgrptext, ItempartCod, Partcodetext," +
-                                                                        " ItemdefectGrp, Defectgrptext, ItemdefectCod," +
-                                                                        " Defectcodetext, ItemdefectShtxt, CauseKey," +
-                                                                        " ActvKey, ActvGrp, Actgrptext, ActvCod, Actcodetext," +
-                                                                        " ActvShtxt, Usr01, Usr02, Usr03, Usr04, Usr05," +
-                                                                        " Fields, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
-                                                                        "?,?,?,?,?,?,?,?,?,?,?,?);";
-                                                        SQLiteStatement EtNotifActvs_statement = App_db
-                                                                .compileStatement(EtNotifActvs_sql);
-                                                        EtNotifActvs_statement.clearBindings();
-                                                        Notifications_Create_Activity_Fragment activity_fragment =
-                                                                (Notifications_Create_Activity_Fragment) getSupportFragmentManager()
-                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
-                                                        List<Notifications_Create_Activity_Fragment.Activity_Object> activity_list =
-                                                                activity_fragment.getActivityData();
-                                                        if (activity_list.size() > 0) {
-                                                            App_db.beginTransaction();
-                                                            for (int i = 0; i < activity_list.size(); i++) {
-                                                                EtNotifActvs_statement.bindString(1, uniqueKey.toString());
-                                                                EtNotifActvs_statement.bindString(2, "NOT_" + timeStamp);
-                                                                EtNotifActvs_statement.bindString(3, activity_list.get(i).getCause_itemkey());
-                                                                EtNotifActvs_statement.bindString(4, "");
-                                                                EtNotifActvs_statement.bindString(5, "");
-                                                                EtNotifActvs_statement.bindString(6, "");
-                                                                EtNotifActvs_statement.bindString(7, "");
-                                                                EtNotifActvs_statement.bindString(8, "");
-                                                                EtNotifActvs_statement.bindString(9, "");
-                                                                EtNotifActvs_statement.bindString(10, "");
-                                                                EtNotifActvs_statement.bindString(11, "");
-                                                                EtNotifActvs_statement.bindString(12, "");
-                                                                EtNotifActvs_statement.bindString(13, "");
-                                                                EtNotifActvs_statement.bindString(14, activity_list.get(i).getActivity_itemkey());
-                                                                EtNotifActvs_statement.bindString(15, activity_list.get(i).getCodegroup_id());
-                                                                EtNotifActvs_statement.bindString(16, "");
-                                                                EtNotifActvs_statement.bindString(17, activity_list.get(i).getCode_id());
-                                                                EtNotifActvs_statement.bindString(18, activity_list.get(i).getCode_text());
-                                                                EtNotifActvs_statement.bindString(19, activity_list.get(i).getActivity_shtxt());
-                                                                EtNotifActvs_statement.bindString(20, activity_list.get(i).getSt_date());
-                                                                EtNotifActvs_statement.bindString(21, activity_list.get(i).getEnd_date());
-                                                                EtNotifActvs_statement.bindString(22, activity_list.get(i).getSt_time());
-                                                                EtNotifActvs_statement.bindString(23, activity_list.get(i).getEnd_time());
-                                                                EtNotifActvs_statement.bindString(24, "");
-                                                                EtNotifActvs_statement.bindString(25, "");
-                                                                EtNotifActvs_statement.bindString(26, "I");
-                                                                EtNotifActvs_statement.execute();
-                                                            }
-                                                            App_db.setTransactionSuccessful();
-                                                            App_db.endTransaction();
-                                                        }
-                                                    } catch (Exception e) {
-                                                    }
 
-                                                    try {
-                                                        String EgtNotifTAsk_sql = "Insert into DUE_NOTIFICATION_EtNotifTasks" +
-                                                                "(UUID, Qmnum, ItemKey, ItempartGrp,Partgrptext, ItempartCod, Partcodetext, " +
-                                                                "ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, " +
-                                                                "ItemdefectShtxt, TaskKey, TaskGrp, Taskgrptext, TaskCod, Taskcodetext," +
-                                                                "TaskShtxt, Pster, Peter, Pstur, Petur, Parvw, Parnr, Erlnam, Erldat, " +
-                                                                "Erlzeit, Release, Complete, Success, UserStatus, SysStatus, Smsttxt, " +
-                                                                "Smastxt, Usr01, Usr02, Usr03, Usr04, Usr05, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-
-                                                        SQLiteStatement EtTasks_statement = App_db.compileStatement(EgtNotifTAsk_sql);
-                                                        EtTasks_statement.clearBindings();
-                                                        Notifications_Create_Task_Fragment task_fragment =
-                                                                (Notifications_Create_Task_Fragment) getSupportFragmentManager()
-                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
-                                                        List<Notifications_Create_Task_Fragment.Task_Object> task_list =
-                                                                task_fragment.getTaskData();
-                                                        if (task_list.size() > 0) {
-                                                            App_db.beginTransaction();
-                                                            for (int i = 0; i < task_list.size(); i++) {
-                                                                EtTasks_statement.bindString(1, uniqueKey.toString());
-                                                                EtTasks_statement.bindString(2,"NOT_" + timeStamp );
-                                                                EtTasks_statement.bindString(3, task_list.get(i).getItem_key());
-                                                                EtTasks_statement.bindString(4, " ");
-                                                                EtTasks_statement.bindString(5, " ");
-                                                                EtTasks_statement.bindString(6, " ");
-                                                                EtTasks_statement.bindString(7, " ");
-                                                                EtTasks_statement.bindString(8, " ");
-                                                                EtTasks_statement.bindString(9, " ");
-                                                                EtTasks_statement.bindString(10, " ");
-                                                                EtTasks_statement.bindString(11, " ");
-                                                                EtTasks_statement.bindString(12, " ");
-                                                                EtTasks_statement.bindString(13, task_list.get(i).getItem_key());
-                                                                EtTasks_statement.bindString(14, task_list.get(i).getTaskcodegroup_id());
-                                                                EtTasks_statement.bindString(15, task_list.get(i).getTaskcodegroup_text());
-                                                                EtTasks_statement.bindString(16, task_list.get(i).getTaskcode_id());
-                                                                EtTasks_statement.bindString(17, task_list.get(i).getTaskcode_text());
-                                                                EtTasks_statement.bindString(18, task_list.get(i).getTask_text());
-                                                                EtTasks_statement.bindString(19, task_list.get(i).getPlanned_st_date_formatted());
-                                                                EtTasks_statement.bindString(20, task_list.get(i).getPlanned_end_date_formatted());
-                                                                EtTasks_statement.bindString(21, task_list.get(i).getPlanned_st_time_formatted());
-                                                                EtTasks_statement.bindString(22, task_list.get(i).getPlanned_end_time_formatted());
-                                                                EtTasks_statement.bindString(23, task_list.get(i).getTaskprocessor_id());
-                                                                EtTasks_statement.bindString(24, task_list.get(i).getTask_responsible());
-                                                                EtTasks_statement.bindString(25, task_list.get(i).getCompletedby());
-                                                                EtTasks_statement.bindString(26, task_list.get(i).getCompletion_date_formatted());
-                                                                EtTasks_statement.bindString(27, task_list.get(i).getCompletion_time_formatted());
-                                                                EtTasks_statement.bindString(28, " ");
-                                                                EtTasks_statement.bindString(29, " ");
-                                                                EtTasks_statement.bindString(30, task_list.get(i).getRelease_status());
-                                                                EtTasks_statement.bindString(31, task_list.get(i).getCompleted_status());
-                                                                EtTasks_statement.bindString(32, task_list.get(i).getSuccess_status());
-                                                                EtTasks_statement.bindString(33, " ");
-                                                                EtTasks_statement.bindString(34, " ");
-                                                                EtTasks_statement.bindString(35, " ");
-                                                                EtTasks_statement.bindString(36, " ");
-                                                                EtTasks_statement.bindString(37, " ");
-                                                                EtTasks_statement.bindString(38, " ");
-                                                                EtTasks_statement.bindString(39, " ");
-                                                                EtTasks_statement.bindString(40, " ");
-                                                                EtTasks_statement.execute();
-                                                            }
-                                                            App_db.setTransactionSuccessful();
-                                                            App_db.endTransaction();
-                                                        }
-                                                    }
-                                                    catch (Exception e)
-                                                    {
-                                                        Log.v("task response",""+e.getMessage());
-
-                                                    }
                                                     try {
                                                         String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs" +
                                                                 "(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, " +
@@ -1042,7 +747,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                                         EtDocs_statement.clearBindings();
                                                         Notifications_Create_Attachments_Fragment attachment_fragment =
                                                                 (Notifications_Create_Attachments_Fragment) getSupportFragmentManager()
-                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
+                                                                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
                                                         List<Notif_EtDocs_Parcelable> attachment_list =
                                                                 attachment_fragment.getAttachmentsData();
                                                         if (attachment_list.size() > 0) {
@@ -1151,6 +856,50 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
             }
         }
     }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        onBackButtonPressed();
+    }
+
+
+    private void onBackButtonPressed()
+    {
+        final Dialog network_connect_dialog = new Dialog(Notifications_Create_Activity.this);
+        network_connect_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        network_connect_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        network_connect_dialog.setCancelable(false);
+        network_connect_dialog.setCanceledOnTouchOutside(false);
+        network_connect_dialog.setContentView(R.layout.network_connection_dialog);
+        ImageView imageview = (ImageView) network_connect_dialog.findViewById(R.id.imageView1);
+        TextView description_textview = (TextView) network_connect_dialog.findViewById(R.id.description_textview);
+        description_textview.setText("Do you want to exit without save?");
+        Button connect_button = (Button) network_connect_dialog.findViewById(R.id.connect_button);
+        connect_button.setText("Yes");
+        Button cancel_button = (Button) network_connect_dialog.findViewById(R.id.cancel_button);
+        cancel_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                network_connect_dialog.dismiss();
+            }
+        });
+        connect_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                network_connect_dialog.dismiss();
+                Notifications_Create_Activity.this.finish();
+            }
+        });
+        Glide.with(Notifications_Create_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
+        network_connect_dialog.show();
+    }
+
 
     private class Get_Token extends AsyncTask<Void, Integer, Void> {
         String token_status = "";
@@ -1386,7 +1135,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                                 req_end_time, mal_st_date, mal_st_time, mal_end_date, mal_end_time,
                                 effect_id, effect_text, plant_id, workcenter_id, primary_user_resp,
                                 causecodeArrayList, ActivityArrayList, AttachmentsArrayList,
-                                LongtextsArrayList, TasksArrayList, header_custominfo);
+                                LongtextsArrayList, TasksArrayList, header_custominfo, Breakdown_status);
             }
             catch (Exception e)
             {
@@ -1536,7 +1285,7 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                 else if (notif_create_status.get("response_status").startsWith("E"))
                 {
                     custom_progress_dialog.dismiss_progress_dialog();
-                    error_dialog.show_error_dialog(Notifications_Create_Activity.this,notif_create_status.get("response_status").substring(1));
+                    error_dialog.show_error_dialog(Notifications_Create_Activity.this,notif_create_status.get("response_data").substring(1));
                 }
                 else
                 {
@@ -1679,36 +1428,19 @@ public class Notifications_Create_Activity extends AppCompatActivity implements 
                 (Notifications_Create_Causecode_Fragment) getSupportFragmentManager()
                         .findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
         if (causecode_fragment.causeSize() > 0) {
-            tablayout.getTabAt(1).setText(getString(R.string.causecode_p, causecode_fragment.causeSize()));
+            tablayout.getTabAt(1).setText("Items ("+causecode_fragment.causeSize()+")");
         } else {
-            tablayout.getTabAt(1).setText(getResources().getString(R.string.cause_code1));
+            tablayout.getTabAt(1).setText("Items");
         }
 
-        Notifications_Create_Activity_Fragment activity_fragment =
-                (Notifications_Create_Activity_Fragment) getSupportFragmentManager()
-                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
-        if (activity_fragment.activitySize() > 0) {
-            tablayout.getTabAt(2).setText(getString(R.string.activity_p, activity_fragment.activitySize()));
-        } else {
-            tablayout.getTabAt(2).setText(getResources().getString(R.string.activity));
-        }
-
-        Notifications_Create_Task_Fragment task_fragment =
-                (Notifications_Create_Task_Fragment) getSupportFragmentManager()
-                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 3));
-        if (task_fragment.taskSize() > 0) {
-            tablayout.getTabAt(3).setText(getString(R.string.task_p, task_fragment.taskSize()));
-        } else {
-            tablayout.getTabAt(3).setText(getResources().getString(R.string.task));
-        }
 
         Notifications_Create_Attachments_Fragment attachment_fragment =
                 (Notifications_Create_Attachments_Fragment) getSupportFragmentManager()
-                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 4));
+                        .findFragmentByTag(makeFragmentName(R.id.viewpager, 2));
         if (attachment_fragment.AttachmentSize() > 0) {
-            tablayout.getTabAt(4).setText(getString(R.string.attachment_p, attachment_fragment.AttachmentSize()));
+            tablayout.getTabAt(2).setText(getString(R.string.attachment_p, attachment_fragment.AttachmentSize()));
         } else {
-            tablayout.getTabAt(4).setText(getResources().getString(R.string.attachments));
+            tablayout.getTabAt(2).setText(getResources().getString(R.string.attachments));
         }
         setCustomFont();
     }

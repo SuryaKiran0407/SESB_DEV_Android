@@ -14,7 +14,7 @@ import android.util.Log;
 import com.enstrapp.fieldtekpro.Initialload.BOM_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
@@ -78,6 +78,9 @@ public class REST_BOM {
     private static final String KEY_GET_LIST_OF_EQBOMS_EtBomItem_Quantity = "Quantity";
     private static final String KEY_GET_LIST_OF_EQBOMS_EtBomItem_Unit = "Unit";
     private static final String KEY_GET_LIST_OF_EQBOMS_EtBomItem_Stlkz = "Stlkz";
+    private static final String KEY_GET_LIST_OF_EQBOMS_EtBomItem_LABST = "LABST";
+    private static final String KEY_GET_LIST_OF_EQBOMS_EtBomItem_BWTAR = "BWTAR";
+    private static final String KEY_GET_LIST_OF_EQBOMS_EtBomItem_CHARG = "CHARG";
     /* GET_LIST_OF_EQBOMS_EtBomItem and Fields Names */
 
     /* GET_STOCK_DATA and Fields Names */
@@ -92,12 +95,14 @@ public class REST_BOM {
     private static final String KEY_GET_STOCK_DATA_Lgpbe = "Lgpbe";
     private static final String KEY_GET_STOCK_DATA_Bwtar = "Bwtar";
     private static final String KEY_GET_STOCK_DATA_Ekgrp = "Ekgrp";
+    private static final String KEY_GET_STOCK_DATA_CHARG = "CHARG";
     /* GET_STOCK_DATA and Fields Names */
 
     public static String Get_BOM_Data(Activity activity, String transmit_type, String bom_id)
     {
         try
         {
+            long startTime1 = System.currentTimeMillis();
             DATABASE_NAME = activity.getString(R.string.database_name);
             App_db = activity.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
             if (transmit_type.equals("LOAD"))
@@ -126,7 +131,10 @@ public class REST_BOM {
                         + KEY_GET_LIST_OF_EQBOMS_EtBomItem_CompText + " TEXT,"
                         + KEY_GET_LIST_OF_EQBOMS_EtBomItem_Quantity + " TEXT,"
                         + KEY_GET_LIST_OF_EQBOMS_EtBomItem_Unit + " TEXT,"
-                        + KEY_GET_LIST_OF_EQBOMS_EtBomItem_Stlkz + " TEXT"
+                        + KEY_GET_LIST_OF_EQBOMS_EtBomItem_Stlkz + " TEXT,"
+                        + KEY_GET_LIST_OF_EQBOMS_EtBomItem_LABST + " TEXT,"
+                        + KEY_GET_LIST_OF_EQBOMS_EtBomItem_BWTAR + " TEXT,"
+                        + KEY_GET_LIST_OF_EQBOMS_EtBomItem_CHARG + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_GET_LIST_OF_EQBOMS_EtBomItem_TABLE);
                 /* Creating GET_LIST_OF_EQBOMS_EtBomItem Table with Fields */
@@ -144,7 +152,8 @@ public class REST_BOM {
                         + KEY_GET_STOCK_DATA_Speme + " TEXT,"
                         + KEY_GET_STOCK_DATA_Bwtar + " TEXT,"
                         + KEY_GET_STOCK_DATA_Lgpbe + " TEXT,"
-                        + KEY_GET_STOCK_DATA_Ekgrp + " TEXT"
+                        + KEY_GET_STOCK_DATA_Ekgrp + " TEXT,"
+                        + KEY_GET_STOCK_DATA_CHARG + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_GET_STOCK_DATA_TABLE);
                 /* Creating GET_STOCK_DATA Table with Fields */
@@ -181,9 +190,9 @@ public class REST_BOM {
                 }
                 else
                 {
-                    App_db.execSQL("delete from EtBomHeader");
+                    /*App_db.execSQL("delete from EtBomHeader");
                     App_db.execSQL("delete from EtBomItem");
-                    App_db.execSQL("delete from GET_STOCK_DATA");
+                    App_db.execSQL("delete from GET_STOCK_DATA");*/
                 }
             }
             /* Initializing Shared Preferences */
@@ -222,7 +231,7 @@ public class REST_BOM {
             modelLoginDeviceRest.setUDID(device_uuid);
 
             Rest_Model_Login modelLoginRest = new Rest_Model_Login();
-            modelLoginRest.setIv_transmit_type("LOAD");
+            modelLoginRest.setIv_transmit_type(transmit_type);
             modelLoginRest.setIv_user(username);
             modelLoginRest.setIs_device(modelLoginDeviceRest);
             modelLoginRest.setIv_eqno(bom_id);
@@ -242,6 +251,9 @@ public class REST_BOM {
             Response<REST_BOM_SER> response = call.execute();
             int response_status_code = response.code();
             Log.v("kiran_BOM_code", response_status_code + "...");
+            long startTime2 = System.currentTimeMillis();
+            final long endtime = System.currentTimeMillis();
+            Log.v("kiran_BOM_RESP", String.valueOf(endtime - startTime2)+" Milliseconds");
             if (response_status_code == 200)
             {
                 if (response.isSuccessful() && response.body() != null)
@@ -258,6 +270,7 @@ public class REST_BOM {
                         List<REST_BOM_SER.ETBOMHEADER> ETBOMHEADER_results = response.body().getETBOMHEADER();
                         if (ETBOMHEADER_results != null && ETBOMHEADER_results.size() > 0)
                         {
+                            App_db.execSQL("delete from EtBomHeader");
                             String sql = "Insert into EtBomHeader (Bom,BomDesc,Plant) values (?,?,?);";
                             SQLiteStatement statement = App_db.compileStatement(sql);
                             statement.clearBindings();
@@ -286,7 +299,8 @@ public class REST_BOM {
                         List<REST_BOM_SER.ETBOMITEM> ETBOMITEM_results = response.body().geteTBOMITEM();
                         if (ETBOMITEM_results != null && ETBOMITEM_results.size() > 0)
                         {
-                            String sql = "Insert into EtBomItem (Bom, BomComponent, CompText, Quantity, Unit, Stlkz) values(?,?,?,?,?,?);";
+                            App_db.execSQL("delete from EtBomItem");
+                            String sql = "Insert into EtBomItem (Bom, BomComponent, CompText, Quantity, Unit, Stlkz, LABST, BWTAR, CHARG) values(?,?,?,?,?,?,?,?,?);";
                             SQLiteStatement statement = App_db.compileStatement(sql);
                             statement.clearBindings();
                             for (REST_BOM_SER.ETBOMITEM etBomItemResult : ETBOMITEM_results)
@@ -297,6 +311,9 @@ public class REST_BOM {
                                 statement.bindString(4, c_e.check_empty(etBomItemResult.getQuantity()));
                                 statement.bindString(5, c_e.check_empty(etBomItemResult.getUnit()));
                                 statement.bindString(6, c_e.check_empty(etBomItemResult.getStlkz()));
+                                statement.bindString(7, c_e.check_empty(etBomItemResult.getLABST()));
+                                statement.bindString(8, c_e.check_empty(etBomItemResult.getBWTAR()));
+                                statement.bindString(9, c_e.check_empty(etBomItemResult.getCHARG()));
                                 statement.execute();
                             }
                         }
@@ -315,7 +332,8 @@ public class REST_BOM {
                         List<REST_BOM_SER.ETSTOCK> ETSTOCK_results = response.body().getETSTOCK();
                         if (ETSTOCK_results != null && ETSTOCK_results.size() > 0)
                         {
-                            String sql = "Insert into GET_STOCK_DATA (Matnr,Werks,Maktx,Lgort,Labst,Speme,Bwtar,Lgpbe, Ekgrp) values (?,?,?,?,?,?,?,?,?);";
+                            App_db.execSQL("delete from GET_STOCK_DATA");
+                            String sql = "Insert into GET_STOCK_DATA (Matnr,Werks,Maktx,Lgort,Labst,Speme,Bwtar,Lgpbe, Ekgrp, CHARG) values (?,?,?,?,?,?,?,?,?,?);";
                             SQLiteStatement statement = App_db.compileStatement(sql);
                             statement.clearBindings();
                             for (REST_BOM_SER.ETSTOCK etStockResult : ETSTOCK_results)
@@ -329,6 +347,7 @@ public class REST_BOM {
                                 statement.bindString(7, c_e.check_empty(etStockResult.getBwtar()));
                                 statement.bindString(8, c_e.check_empty(etStockResult.getLgpbe()));
                                 statement.bindString(9, c_e.check_empty(etStockResult.getEkgrp()));
+                                statement.bindString(10, c_e.check_empty(etStockResult.getCHARG()));
                                 statement.execute();
                             }
                         }

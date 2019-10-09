@@ -6,7 +6,8 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Initialload.Notifications_SER;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty1;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class REST_Insert_Notifications_Data
     private static String aufnr = "";
     private static long startTime = 0;
     private static Check_Empty checkempty = new Check_Empty();
+    private static Check_Empty1 checkempty1 = new Check_Empty1();
 
 
 
@@ -88,17 +90,17 @@ public class REST_Insert_Notifications_Data
                         EtNotifHeader_statement.bindString(6,checkempty.check_empty(etNotifHeaderResult.getEQUIPMENT()));
                         EtNotifHeader_statement.bindString(7,checkempty.check_empty(etNotifHeaderResult.getBAUTL()));
                         EtNotifHeader_statement.bindString(8,checkempty.check_empty(etNotifHeaderResult.getREPORTEDBY()));
-                        EtNotifHeader_statement.bindString(9,etNotifHeaderResult.getMALFUNCSTDATE());
-                        EtNotifHeader_statement.bindString(10,etNotifHeaderResult.getMALFUNCEDDATE());
-                        EtNotifHeader_statement.bindString(11,etNotifHeaderResult.getMALFUNCSTTIME());
-                        EtNotifHeader_statement.bindString(12,etNotifHeaderResult.getMALFUNCEDTIME());
+                        EtNotifHeader_statement.bindString(9,checkempty.check_empty(etNotifHeaderResult.getMALFUNCSTDATE()));
+                        EtNotifHeader_statement.bindString(10,checkempty.check_empty(etNotifHeaderResult.getMALFUNCEDDATE()));
+                        EtNotifHeader_statement.bindString(11,checkempty.check_empty(etNotifHeaderResult.getMALFUNCSTTIME()));
+                        EtNotifHeader_statement.bindString(12,checkempty.check_empty(etNotifHeaderResult.getMALFUNCEDTIME()));
                         EtNotifHeader_statement.bindString(13,checkempty.check_empty(etNotifHeaderResult.getBREAKDOWNIND()));
                         EtNotifHeader_statement.bindString(14,checkempty.check_empty(etNotifHeaderResult.getPRIORITY()));
                         EtNotifHeader_statement.bindString(15,checkempty.check_empty(etNotifHeaderResult.getINGRP()));
                         EtNotifHeader_statement.bindString(16,checkempty.check_empty(etNotifHeaderResult.getARBPL()));
                         EtNotifHeader_statement.bindString(17,checkempty.check_empty(etNotifHeaderResult.getWERKS()));
-                        EtNotifHeader_statement.bindString(18,etNotifHeaderResult.getSTRMN());
-                        EtNotifHeader_statement.bindString(19,etNotifHeaderResult.getLTRMN());
+                        EtNotifHeader_statement.bindString(18,checkempty.check_empty(etNotifHeaderResult.getSTRMN()));
+                        EtNotifHeader_statement.bindString(19,checkempty.check_empty(etNotifHeaderResult.getLTRMN()));
                         EtNotifHeader_statement.bindString(20,checkempty.check_empty(etNotifHeaderResult.getAUFNR()));
                         aufnr = checkempty.check_empty(etNotifHeaderResult.getAUFNR());
                         EtNotifHeader_statement.bindString(21,checkempty.check_empty(etNotifHeaderResult.getDOCS()));
@@ -131,10 +133,10 @@ public class REST_Insert_Notifications_Data
                         EtNotifHeader_statement.bindString(48,checkempty.check_empty(etNotifHeaderResult.getSHIFT()));
                         EtNotifHeader_statement.bindString(49,checkempty.check_empty(etNotifHeaderResult.getNOOFPERSON()));
                         EtNotifHeader_statement.bindString(50,checkempty.check_empty(etNotifHeaderResult.getAUSWKT()));
-                        EtNotifHeader_statement.bindString(51,etNotifHeaderResult.getSTRUR());
+                        EtNotifHeader_statement.bindString(51,checkempty.check_empty(etNotifHeaderResult.getSTRUR()));
                         EtNotifHeader_statement.bindString(52,etNotifHeaderResult.getLTRUR());
                         EtNotifHeader_statement.bindString(53,checkempty.check_empty(etNotifHeaderResult.getMALFUNCSTDATE())+" "+checkempty.check_empty(etNotifHeaderResult.getMALFUNCSTTIME()));
-                        EtNotifHeader_statement.bindString(54,etNotifHeaderResult.getQMDAT());
+                        EtNotifHeader_statement.bindString(54,checkempty.check_empty(etNotifHeaderResult.getQMDAT()));
                         EtNotifHeader_statement.execute();
                     }
                 }
@@ -168,20 +170,20 @@ public class REST_Insert_Notifications_Data
                     {
                         EtNotifItems_statement.bindString(1,checkempty.check_empty(etNotifItemsResult.getQMNUM()));
                         EtNotifItems_statement.bindString(2,checkempty.check_empty(etNotifItemsResult.getQMNUM()));
-                        EtNotifItems_statement.bindString(3,etNotifItemsResult.getITEMKEY());
+                        EtNotifItems_statement.bindString(3,checkempty1.check_empty(etNotifItemsResult.getITEMKEY()));
                         EtNotifItems_statement.bindString(4,checkempty.check_empty(etNotifItemsResult.getITEMPARTGRP()));
                         EtNotifItems_statement.bindString(5,checkempty.check_empty(etNotifItemsResult.getPARTGRPTEXT()));
-                        EtNotifItems_statement.bindString(6,etNotifItemsResult.getITEMPARTCOD());
+                        EtNotifItems_statement.bindString(6,checkempty1.check_empty(etNotifItemsResult.getITEMPARTCOD()));
                         EtNotifItems_statement.bindString(7,checkempty.check_empty(etNotifItemsResult.getPARTCODETEXT()));
                         EtNotifItems_statement.bindString(8,checkempty.check_empty(etNotifItemsResult.getITEMDEFECTGRP()));
                         EtNotifItems_statement.bindString(9,checkempty.check_empty(etNotifItemsResult.getDEFECTGRPTEXT()));
-                        EtNotifItems_statement.bindString(10,etNotifItemsResult.getITEMDEFECTCOD());
+                        EtNotifItems_statement.bindString(10,checkempty1.check_empty(etNotifItemsResult.getITEMDEFECTCOD()));
                         EtNotifItems_statement.bindString(11,checkempty.check_empty(etNotifItemsResult.getDEFECTCODETEXT()));
                         EtNotifItems_statement.bindString(12,checkempty.check_empty(etNotifItemsResult.getITEMDEFECTSHTXT()));
-                        EtNotifItems_statement.bindString(13,etNotifItemsResult.getCAUSEKEY());
+                        EtNotifItems_statement.bindString(13,checkempty1.check_empty(etNotifItemsResult.getCAUSEKEY()));
                         EtNotifItems_statement.bindString(14,checkempty.check_empty(etNotifItemsResult.getCAUSEGRP()));
                         EtNotifItems_statement.bindString(15,checkempty.check_empty(etNotifItemsResult.getCAUSEGRPTEXT()));
-                        EtNotifItems_statement.bindString(16,etNotifItemsResult.getCAUSECOD());
+                        EtNotifItems_statement.bindString(16,checkempty1.check_empty(etNotifItemsResult.getCAUSECOD()));
                         EtNotifItems_statement.bindString(17,checkempty.check_empty(etNotifItemsResult.getCAUSECODETEXT()));
                         EtNotifItems_statement.bindString(18,checkempty.check_empty(etNotifItemsResult.getCAUSESHTXT()));
                         EtNotifItems_statement.bindString(19,"");
@@ -202,139 +204,131 @@ public class REST_Insert_Notifications_Data
 
 
             /*Reading and Inserting Data into Database Table for EtNotifActvs*/
-            /*try
+            try
             {
-                Notifications_SER.EtNotifActvs etNotifActvs = null;
+                List<REST_Notifications_SER.ETNOTIFACTVS> etNotifActvs = null;
                 if(type.equalsIgnoreCase("DUNOT"))
                 {
-                    etNotifActvs = notification_response.getD().getResults().get(0).getEtNotifActvs();
+                    etNotifActvs = notification_response.getEtnotifactvs();
                 }
                 else if(type.equalsIgnoreCase("CRNOT"))
                 {
-                    etNotifActvs = notification_response.getD().getEtNotifActvs();
+                    etNotifActvs = notification_response.getEtnotifactvs();
                 }
-                if (etNotifActvs != null)
+                if (etNotifActvs != null && etNotifActvs.size() > 0)
                 {
-                    List<Notifications_SER.EtNotifActvs_Result> etNotifActvs_results = etNotifActvs.getResults();
-                    if (etNotifActvs_results != null && etNotifActvs_results.size() > 0)
+                    String EtNotifActvs_sql = "Insert into DUE_NOTIFICATION_EtNotifActvs (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt, CauseKey, ActvKey, ActvGrp, Actgrptext, ActvCod, Actcodetext, ActvShtxt, StartDate, StartTime, EndDate, EndTime, Usr01, Usr02, Usr03, Usr04, Usr05, Fields, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    SQLiteStatement EtNotifActvs_statement = App_db.compileStatement(EtNotifActvs_sql);
+                    EtNotifActvs_statement.clearBindings();
+                    for (REST_Notifications_SER.ETNOTIFACTVS etNotifActvsResult : etNotifActvs)
                     {
-                        String EtNotifActvs_sql = "Insert into DUE_NOTIFICATION_EtNotifActvs (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt, CauseKey, ActvKey, ActvGrp, Actgrptext, ActvCod, Actcodetext, ActvShtxt, StartDate, StartTime, EndDate, EndTime, Usr01, Usr02, Usr03, Usr04, Usr05, Fields, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                        SQLiteStatement EtNotifActvs_statement = App_db.compileStatement(EtNotifActvs_sql);
-                        EtNotifActvs_statement.clearBindings();
-                        for (Notifications_SER.EtNotifActvs_Result etNotifActvsResult : etNotifActvs_results)
-                        {
-                            EtNotifActvs_statement.bindString(1,checkempty.check_empty(etNotifActvsResult.getQmnum()));
-                            EtNotifActvs_statement.bindString(2,checkempty.check_empty(etNotifActvsResult.getQmnum()));
-                            EtNotifActvs_statement.bindString(3,etNotifActvsResult.getItemKey());
-                            EtNotifActvs_statement.bindString(4,checkempty.check_empty(etNotifActvsResult.getItempartGrp()));
-                            EtNotifActvs_statement.bindString(5,checkempty.check_empty(etNotifActvsResult.getPartgrptext()));
-                            EtNotifActvs_statement.bindString(6,checkempty.check_empty(etNotifActvsResult.getItempartCod()));
-                            EtNotifActvs_statement.bindString(7,checkempty.check_empty(etNotifActvsResult.getPartcodetext()));
-                            EtNotifActvs_statement.bindString(8,checkempty.check_empty(etNotifActvsResult.getItemdefectGrp()));
-                            EtNotifActvs_statement.bindString(9,checkempty.check_empty(etNotifActvsResult.getDefectgrptext()));
-                            EtNotifActvs_statement.bindString(10,checkempty.check_empty(etNotifActvsResult.getItemdefectCod()));
-                            EtNotifActvs_statement.bindString(11,checkempty.check_empty(etNotifActvsResult.getDefectcodetext()));
-                            EtNotifActvs_statement.bindString(12,checkempty.check_empty(etNotifActvsResult.getItemdefectShtxt()));
-                            EtNotifActvs_statement.bindString(13,etNotifActvsResult.getCauseKey());
-                            EtNotifActvs_statement.bindString(14,etNotifActvsResult.getActvKey());
-                            EtNotifActvs_statement.bindString(15,checkempty.check_empty(etNotifActvsResult.getActvGrp()));
-                            EtNotifActvs_statement.bindString(16,checkempty.check_empty(etNotifActvsResult.getActgrptext()));
-                            EtNotifActvs_statement.bindString(17,etNotifActvsResult.getActvCod());
-                            EtNotifActvs_statement.bindString(18,checkempty.check_empty(etNotifActvsResult.getActcodetext()));
-                            EtNotifActvs_statement.bindString(19,checkempty.check_empty(etNotifActvsResult.getActvShtxt()));
-                            EtNotifActvs_statement.bindString(20,etNotifActvsResult.getStartDate());
-                            EtNotifActvs_statement.bindString(21,etNotifActvsResult.getStartTime());
-                            EtNotifActvs_statement.bindString(22,etNotifActvsResult.getEndDate());
-                            EtNotifActvs_statement.bindString(23,etNotifActvsResult.getEndTime());
-                            EtNotifActvs_statement.bindString(24,checkempty.check_empty(etNotifActvsResult.getUsr01()));
-                            EtNotifActvs_statement.bindString(25,checkempty.check_empty(etNotifActvsResult.getUsr02()));
-                            EtNotifActvs_statement.bindString(26,checkempty.check_empty(etNotifActvsResult.getUsr03()));
-                            EtNotifActvs_statement.bindString(27,checkempty.check_empty(etNotifActvsResult.getUsr04()));
-                            EtNotifActvs_statement.bindString(28,checkempty.check_empty(etNotifActvsResult.getUsr05()));
-                            EtNotifActvs_statement.bindString(24,"U");
-                            EtNotifActvs_statement.execute();
-                        }
+                        EtNotifActvs_statement.bindString(1,checkempty.check_empty(etNotifActvsResult.getQMNUM()));
+                        EtNotifActvs_statement.bindString(2,checkempty.check_empty(etNotifActvsResult.getQMNUM()));
+                        EtNotifActvs_statement.bindString(3,checkempty1.check_empty(etNotifActvsResult.getITEMKEY()));
+                        EtNotifActvs_statement.bindString(4,checkempty.check_empty(etNotifActvsResult.getITEMPARTCOD()));
+                        EtNotifActvs_statement.bindString(5,checkempty.check_empty(etNotifActvsResult.getPARTGRPTEXT()));
+                        EtNotifActvs_statement.bindString(6,checkempty.check_empty(etNotifActvsResult.getITEMPARTCOD()));
+                        EtNotifActvs_statement.bindString(7,checkempty.check_empty(etNotifActvsResult.getPARTGRPTEXT()));
+                        EtNotifActvs_statement.bindString(8,checkempty.check_empty(etNotifActvsResult.getITEMDEFECTGRP()));
+                        EtNotifActvs_statement.bindString(9,checkempty.check_empty(etNotifActvsResult.getDEFECTGRPTEXT()));
+                        EtNotifActvs_statement.bindString(10,checkempty.check_empty(etNotifActvsResult.getITEMDEFECTCOD()));
+                        EtNotifActvs_statement.bindString(11,checkempty.check_empty(etNotifActvsResult.getDEFECTCODETEXT()));
+                        EtNotifActvs_statement.bindString(12,checkempty.check_empty(etNotifActvsResult.getITEMDEFECTSHTXT()));
+                        EtNotifActvs_statement.bindString(13,checkempty1.check_empty(etNotifActvsResult.getCAUSEKEY()));
+                        EtNotifActvs_statement.bindString(14,checkempty1.check_empty(etNotifActvsResult.getACTKEY()));
+                        EtNotifActvs_statement.bindString(15,checkempty.check_empty(etNotifActvsResult.getACTVGRP()));
+                        EtNotifActvs_statement.bindString(16,checkempty.check_empty(etNotifActvsResult.getACTGRPTEXT()));
+                        EtNotifActvs_statement.bindString(17,checkempty1.check_empty(etNotifActvsResult.getACTVCOD()));
+                        EtNotifActvs_statement.bindString(18,checkempty.check_empty(etNotifActvsResult.getACTCODETEXT()));
+                        EtNotifActvs_statement.bindString(19,checkempty.check_empty(etNotifActvsResult.getACTVSHTXT()));
+                        EtNotifActvs_statement.bindString(20,checkempty.check_empty(etNotifActvsResult.getSTARTDATE()));
+                        EtNotifActvs_statement.bindString(21,checkempty.check_empty(etNotifActvsResult.getSTARTTIME()));
+                        EtNotifActvs_statement.bindString(22,checkempty.check_empty(etNotifActvsResult.getENDDATE()));
+                        EtNotifActvs_statement.bindString(23,checkempty.check_empty(etNotifActvsResult.getENDTIME()));
+                        EtNotifActvs_statement.bindString(24,checkempty.check_empty(etNotifActvsResult.getUSR01()));
+                        EtNotifActvs_statement.bindString(25,checkempty.check_empty(etNotifActvsResult.getUSR02()));
+                        EtNotifActvs_statement.bindString(26,checkempty.check_empty(etNotifActvsResult.getUSR03()));
+                        EtNotifActvs_statement.bindString(27,checkempty.check_empty(etNotifActvsResult.getUSR04()));
+                        EtNotifActvs_statement.bindString(28,checkempty.check_empty(etNotifActvsResult.getUSR05()));
+                        EtNotifActvs_statement.bindString(24,"U");
+                        EtNotifActvs_statement.execute();
                     }
                 }
             }
             catch (Exception e)
             {
-            }*/
+            }
             /*Reading and Inserting Data into Database Table for EtNotifActvs*/
 
 
 
 
             /*Reading and Inserting Data into Database Table for EtNotifTasks*/
-            /*try
+            try
             {
-                Notifications_SER.EtNotifTasks etNotifTasks = null;
+                List<REST_Notifications_SER.ET_NOTIF_TASKS> etNotifTasks = null;
                 if(type.equalsIgnoreCase("DUNOT"))
                 {
-                    etNotifTasks = notification_response.getD().getResults().get(0).getEtNotifTasks();
+                    etNotifTasks = notification_response.getEt_notif_tasks();
                 }
                 else if(type.equalsIgnoreCase("CRNOT"))
                 {
-                    etNotifTasks = notification_response.getD().getEtNotifTasks();
+                    etNotifTasks = notification_response.getEt_notif_tasks();
                 }
-                if (etNotifTasks != null)
+                if (etNotifTasks != null && etNotifTasks.size() > 0)
                 {
-                    List<Notifications_SER.EtNotifTasks_Result> etNotifTasks_results = etNotifTasks.getResults();
-                    if (etNotifTasks_results != null && etNotifTasks_results.size() > 0)
+                    String EtNotifTasks_sql = "Insert into DUE_NOTIFICATION_EtNotifTasks (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt,TaskKey, TaskGrp, Taskgrptext, TaskCod, Taskcodetext, TaskShtxt, Pster, Peter, Pstur, Petur, Parvw, Parnr,Erlnam, Erldat, Erlzeit, Release,Complete,Success,UserStatus, SysStatus, Smsttxt, Smastxt, Usr01, Usr02, Usr03, Usr04, Usr05, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    SQLiteStatement EtNotifTasks_statement = App_db.compileStatement(EtNotifTasks_sql);
+                    EtNotifTasks_statement.clearBindings();
+                    for (REST_Notifications_SER.ET_NOTIF_TASKS etNotifTasksResult : etNotifTasks)
                     {
-                        String EtNotifTasks_sql = "Insert into DUE_NOTIFICATION_EtNotifTasks (UUID, Qmnum, ItemKey, ItempartGrp, Partgrptext, ItempartCod, Partcodetext, ItemdefectGrp, Defectgrptext, ItemdefectCod, Defectcodetext, ItemdefectShtxt,TaskKey, TaskGrp, Taskgrptext, TaskCod, Taskcodetext, TaskShtxt, Pster, Peter, Pstur, Petur, Parvw, Parnr,Erlnam, Erldat, Erlzeit, Release,Complete,Success,UserStatus, SysStatus, Smsttxt, Smastxt, Usr01, Usr02, Usr03, Usr04, Usr05, Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                        SQLiteStatement EtNotifTasks_statement = App_db.compileStatement(EtNotifTasks_sql);
-                        EtNotifTasks_statement.clearBindings();
-                        for (Notifications_SER.EtNotifTasks_Result etNotifTasksResult : etNotifTasks_results)
-                        {
-                            EtNotifTasks_statement.bindString(1,checkempty.check_empty(etNotifTasksResult.getQmnum()));
-                            EtNotifTasks_statement.bindString(2,checkempty.check_empty(etNotifTasksResult.getQmnum()));
-                            EtNotifTasks_statement.bindString(3,etNotifTasksResult.getItemKey());
-                            EtNotifTasks_statement.bindString(4,checkempty.check_empty(etNotifTasksResult.getItempartGrp()));
-                            EtNotifTasks_statement.bindString(5,checkempty.check_empty(etNotifTasksResult.getPartgrptext()));
-                            EtNotifTasks_statement.bindString(6,checkempty.check_empty(etNotifTasksResult.getItempartCod()));
-                            EtNotifTasks_statement.bindString(7,checkempty.check_empty(etNotifTasksResult.getPartcodetext()));
-                            EtNotifTasks_statement.bindString(8,checkempty.check_empty(etNotifTasksResult.getItemdefectGrp()));
-                            EtNotifTasks_statement.bindString(9,checkempty.check_empty(etNotifTasksResult.getDefectgrptext()));
-                            EtNotifTasks_statement.bindString(10,checkempty.check_empty(etNotifTasksResult.getItemdefectCod()));
-                            EtNotifTasks_statement.bindString(11,checkempty.check_empty(etNotifTasksResult.getDefectcodetext()));
-                            EtNotifTasks_statement.bindString(12,checkempty.check_empty(etNotifTasksResult.getItemdefectShtxt()));
-                            EtNotifTasks_statement.bindString(13,etNotifTasksResult.getTaskKey());
-                            EtNotifTasks_statement.bindString(14,checkempty.check_empty(etNotifTasksResult.getTaskGrp()));
-                            EtNotifTasks_statement.bindString(15,checkempty.check_empty(etNotifTasksResult.getTaskgrptext()));
-                            EtNotifTasks_statement.bindString(16,etNotifTasksResult.getTaskCod());
-                            EtNotifTasks_statement.bindString(17,checkempty.check_empty(etNotifTasksResult.getTaskcodetext()));
-                            EtNotifTasks_statement.bindString(18,checkempty.check_empty(etNotifTasksResult.getTaskShtxt()));
-                            EtNotifTasks_statement.bindString(19,checkempty.check_empty(etNotifTasksResult.getPster()));
-                            EtNotifTasks_statement.bindString(20,checkempty.check_empty(etNotifTasksResult.getPeter()));
-                            EtNotifTasks_statement.bindString(21,checkempty.check_empty(etNotifTasksResult.getPstur()));
-                            EtNotifTasks_statement.bindString(22,checkempty.check_empty(etNotifTasksResult.getPetur()));
-                            EtNotifTasks_statement.bindString(23,checkempty.check_empty(etNotifTasksResult.getParvw()));
-                            EtNotifTasks_statement.bindString(24,checkempty.check_empty(etNotifTasksResult.getParnr()));
-                            EtNotifTasks_statement.bindString(25,checkempty.check_empty(etNotifTasksResult.getErlnam()));
-                            EtNotifTasks_statement.bindString(26,checkempty.check_empty(etNotifTasksResult.getErldat()));
-                            EtNotifTasks_statement.bindString(27,checkempty.check_empty(etNotifTasksResult.getErlzeit()));
-                            EtNotifTasks_statement.bindString(28,checkempty.check_empty(etNotifTasksResult.getRelease()));
-                            EtNotifTasks_statement.bindString(29,checkempty.check_empty(etNotifTasksResult.getComplete()));
-                            EtNotifTasks_statement.bindString(30,checkempty.check_empty(etNotifTasksResult.getSuccess()));
-                            EtNotifTasks_statement.bindString(31,checkempty.check_empty(etNotifTasksResult.getUserStatus()));
-                            EtNotifTasks_statement.bindString(32,checkempty.check_empty(etNotifTasksResult.getSysStatus()));
-                            EtNotifTasks_statement.bindString(33,checkempty.check_empty(etNotifTasksResult.getSmsttxt()));
-                            EtNotifTasks_statement.bindString(34,checkempty.check_empty(etNotifTasksResult.getSmastxt()));
-                            EtNotifTasks_statement.bindString(35,checkempty.check_empty(etNotifTasksResult.getUsr01()));
-                            EtNotifTasks_statement.bindString(36,checkempty.check_empty(etNotifTasksResult.getUsr02()));
-                            EtNotifTasks_statement.bindString(37,checkempty.check_empty(etNotifTasksResult.getUsr03()));
-                            EtNotifTasks_statement.bindString(38,checkempty.check_empty(etNotifTasksResult.getUsr04()));
-                            EtNotifTasks_statement.bindString(39,checkempty.check_empty(etNotifTasksResult.getUsr05()));
-                            EtNotifTasks_statement.bindString(40,"U");
-                            EtNotifTasks_statement.execute();
-                        }
+                        EtNotifTasks_statement.bindString(1,checkempty.check_empty(etNotifTasksResult.getQMNUM()));
+                        EtNotifTasks_statement.bindString(2,checkempty.check_empty(etNotifTasksResult.getQMNUM()));
+                        EtNotifTasks_statement.bindString(3,checkempty1.check_empty(etNotifTasksResult.getITEMKEY()));
+                        EtNotifTasks_statement.bindString(4,checkempty.check_empty(etNotifTasksResult.getITEMPARTGRP()));
+                        EtNotifTasks_statement.bindString(5,checkempty.check_empty(etNotifTasksResult.getPARTGRPTEXT()));
+                        EtNotifTasks_statement.bindString(6,checkempty.check_empty(etNotifTasksResult.getITEMDEFECTCOD()));
+                        EtNotifTasks_statement.bindString(7,checkempty.check_empty(etNotifTasksResult.getPARTCODETEXT()));
+                        EtNotifTasks_statement.bindString(8,checkempty.check_empty(etNotifTasksResult.getITEMDEFECTGRP()));
+                        EtNotifTasks_statement.bindString(9,checkempty.check_empty(etNotifTasksResult.getDEFECTGRPTEXT()));
+                        EtNotifTasks_statement.bindString(10,checkempty.check_empty(etNotifTasksResult.getITEMDEFECTCOD()));
+                        EtNotifTasks_statement.bindString(11,checkempty.check_empty(etNotifTasksResult.getDEFECTCODETEXT()));
+                        EtNotifTasks_statement.bindString(12,checkempty.check_empty(etNotifTasksResult.getITEMDEFECTSHTXT()));
+                        EtNotifTasks_statement.bindString(13,checkempty1.check_empty(etNotifTasksResult.getTASKKEY()));
+                        EtNotifTasks_statement.bindString(14,checkempty.check_empty(etNotifTasksResult.getTASKGRP()));
+                        EtNotifTasks_statement.bindString(15,checkempty.check_empty(etNotifTasksResult.getTASKGRPTEXT()));
+                        EtNotifTasks_statement.bindString(16,checkempty1.check_empty(etNotifTasksResult.getTASKCOD()));
+                        EtNotifTasks_statement.bindString(17,checkempty.check_empty(etNotifTasksResult.getTASKCODETEXT()));
+                        EtNotifTasks_statement.bindString(18,checkempty.check_empty(etNotifTasksResult.getTASKSHTXT()));
+                        EtNotifTasks_statement.bindString(19,checkempty.check_empty(etNotifTasksResult.getPSTER()));
+                        EtNotifTasks_statement.bindString(20,checkempty.check_empty(etNotifTasksResult.getPETER()));
+                        EtNotifTasks_statement.bindString(21,checkempty.check_empty(etNotifTasksResult.getPSTUR()));
+                        EtNotifTasks_statement.bindString(22,checkempty.check_empty(etNotifTasksResult.getPETUR()));
+                        EtNotifTasks_statement.bindString(23,checkempty.check_empty(etNotifTasksResult.getPARVW()));
+                        EtNotifTasks_statement.bindString(24,checkempty.check_empty(etNotifTasksResult.getPARNR()));
+                        EtNotifTasks_statement.bindString(25,checkempty.check_empty(etNotifTasksResult.getERLNAM()));
+                        EtNotifTasks_statement.bindString(26,checkempty.check_empty(etNotifTasksResult.getERLDAT()));
+                        EtNotifTasks_statement.bindString(27,checkempty.check_empty(etNotifTasksResult.getERLZEIT()));
+                        EtNotifTasks_statement.bindString(28,checkempty.check_empty(etNotifTasksResult.getRELEASE()));
+                        EtNotifTasks_statement.bindString(29,checkempty.check_empty(etNotifTasksResult.getCOMPLETE()));
+                        EtNotifTasks_statement.bindString(30,checkempty.check_empty(etNotifTasksResult.getSUCCESS()));
+                        EtNotifTasks_statement.bindString(31,checkempty.check_empty(etNotifTasksResult.getUSERSTATUS()));
+                        EtNotifTasks_statement.bindString(32,checkempty.check_empty(etNotifTasksResult.getSYSSTATUS()));
+                        EtNotifTasks_statement.bindString(33,checkempty.check_empty(etNotifTasksResult.getSMSTTXT()));
+                        EtNotifTasks_statement.bindString(34,checkempty.check_empty(etNotifTasksResult.getSMASTXT()));
+                        EtNotifTasks_statement.bindString(35,checkempty.check_empty(etNotifTasksResult.getUSR01()));
+                        EtNotifTasks_statement.bindString(36,checkempty.check_empty(etNotifTasksResult.getUSR02()));
+                        EtNotifTasks_statement.bindString(37,checkempty.check_empty(etNotifTasksResult.getUSR03()));
+                        EtNotifTasks_statement.bindString(38,checkempty.check_empty(etNotifTasksResult.getUSR04()));
+                        EtNotifTasks_statement.bindString(39,checkempty.check_empty(etNotifTasksResult.getUSR05()));
+                        EtNotifTasks_statement.bindString(40,"U");
+                        EtNotifTasks_statement.execute();
                     }
                 }
             }
             catch (Exception e)
             {
-            }*/
+            }
             /*Reading and Inserting Data into Database Table for EtNotifTasks*/
 
 
@@ -342,90 +336,82 @@ public class REST_Insert_Notifications_Data
 
 
             /*Reading and Inserting Data into Database Table for EtNotifLongtext*/
-            /*try
+            try
             {
-                Notifications_SER.EtNotifLongtext etNotifLongtext = null;
+                List<REST_Notifications_SER.ETNOTIFLONGTEXT> etNotifLongtext = null;
                 if(type.equalsIgnoreCase("DUNOT"))
                 {
-                    etNotifLongtext = notification_response.getD().getResults().get(0).getEtNotifLongtext();
+                    etNotifLongtext = notification_response.geteTNOTIFLONGTEXT();
                 }
                 else if(type.equalsIgnoreCase("CRNOT"))
                 {
-                    etNotifLongtext = notification_response.getD().getEtNotifLongtext();
+                    etNotifLongtext = notification_response.geteTNOTIFLONGTEXT();
                 }
-                if (etNotifLongtext != null)
+                if (etNotifLongtext != null && etNotifLongtext.size() > 0)
                 {
-                    List<Notifications_SER.EtNotifLongtext_Result> etNotifLongtext_results = etNotifLongtext.getResults();
-                    if (etNotifLongtext_results != null && etNotifLongtext_results.size() > 0)
+                    String EtNotifLongtext_sql = "Insert into DUE_NOTIFICATIONS_EtNotifLongtext (UUID, Qmnum, Objtype, TextLine, Objkey) values(?,?,?,?,?);";
+                    SQLiteStatement EtNotifLongtext_statement = App_db.compileStatement(EtNotifLongtext_sql);
+                    EtNotifLongtext_statement.clearBindings();
+                    for (REST_Notifications_SER.ETNOTIFLONGTEXT etNotifLongtextResult : etNotifLongtext)
                     {
-                        String EtNotifLongtext_sql = "Insert into DUE_NOTIFICATIONS_EtNotifLongtext (UUID, Qmnum, Objtype, TextLine, Objkey) values(?,?,?,?,?);";
-                        SQLiteStatement EtNotifLongtext_statement = App_db.compileStatement(EtNotifLongtext_sql);
-                        EtNotifLongtext_statement.clearBindings();
-                        for (Notifications_SER.EtNotifLongtext_Result etNotifLongtextResult : etNotifLongtext_results)
-                        {
-                            EtNotifLongtext_statement.bindString(1,checkempty.check_empty(etNotifLongtextResult.getQmnum()));
-                            EtNotifLongtext_statement.bindString(2,checkempty.check_empty(etNotifLongtextResult.getQmnum()));
-                            EtNotifLongtext_statement.bindString(3,checkempty.check_empty(etNotifLongtextResult.getObjtype()));
-                            EtNotifLongtext_statement.bindString(4,checkempty.check_empty(etNotifLongtextResult.getTextLine()));
-                            EtNotifLongtext_statement.bindString(5,etNotifLongtextResult.getObjkey());
-                            EtNotifLongtext_statement.execute();
-                        }
+                        EtNotifLongtext_statement.bindString(1,checkempty.check_empty(etNotifLongtextResult.getQMNUM()));
+                        EtNotifLongtext_statement.bindString(2,checkempty.check_empty(etNotifLongtextResult.getQMNUM()));
+                        EtNotifLongtext_statement.bindString(3,checkempty.check_empty(etNotifLongtextResult.getOBJTYPE()));
+                        EtNotifLongtext_statement.bindString(4,checkempty.check_empty(etNotifLongtextResult.getTEXTLINE()));
+                        EtNotifLongtext_statement.bindString(5,checkempty.check_empty(etNotifLongtextResult.getOBJKEY()));
+                        EtNotifLongtext_statement.execute();
                     }
                 }
             }
             catch (Exception e)
             {
-            }*/
+            }
             /*Reading and Inserting Data into Database Table for EtNotifLongtext*/
 
 
 
 
             /*Reading and Inserting Data into Database Table for EtNotifStatus*/
-            /*try
+            try
             {
-                Notifications_SER.EtNotifStatus etNotifStatus = null;
+                List<REST_Notifications_SER.ETNOTIFStatus> etNotifStatus = null;
                 if(type.equalsIgnoreCase("DUNOT"))
                 {
-                    etNotifStatus = notification_response.getD().getResults().get(0).getEtNotifStatus();
+                    etNotifStatus = notification_response.geteTNOTIFSTATUS();
                 }
                 else if(type.equalsIgnoreCase("CRNOT"))
                 {
-                    etNotifStatus = notification_response.getD().getEtNotifStatus();
+                    etNotifStatus = notification_response.geteTNOTIFSTATUS();
                 }
-                if (etNotifStatus != null)
+                if (etNotifStatus != null && etNotifStatus.size() > 0)
                 {
-                    List<Notifications_SER.EtNotifStatus_Result> etNotifStatus_results = etNotifStatus.getResults();
-                    if (etNotifStatus_results != null && etNotifStatus_results.size() > 0)
+                    String EtNotifStatus_sql = "Insert into EtNotifStatus (UUID,Qmnum,Aufnr,Objnr,Manum,Stsma,Inist,Stonr,Hsonr,Nsonr,Stat,Act,Txt04,Txt30,Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    SQLiteStatement EtNotifStatus_statement = App_db.compileStatement(EtNotifStatus_sql);
+                    EtNotifStatus_statement.clearBindings();
+                    for (REST_Notifications_SER.ETNOTIFStatus etNotifStatusResult : etNotifStatus)
                     {
-                        String EtNotifStatus_sql = "Insert into EtNotifStatus (UUID,Qmnum,Aufnr,Objnr,Manum,Stsma,Inist,Stonr,Hsonr,Nsonr,Stat,Act,Txt04,Txt30,Action) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                        SQLiteStatement EtNotifStatus_statement = App_db.compileStatement(EtNotifStatus_sql);
-                        EtNotifStatus_statement.clearBindings();
-                        for (Notifications_SER.EtNotifStatus_Result etNotifStatusResult : etNotifStatus_results)
-                        {
-                            EtNotifStatus_statement.bindString(1,checkempty.check_empty(etNotifStatusResult.getQmnum()));
-                            EtNotifStatus_statement.bindString(2,checkempty.check_empty(etNotifStatusResult.getQmnum()));
-                            EtNotifStatus_statement.bindString(3,checkempty.check_empty(etNotifStatusResult.getAufnr()));
-                            EtNotifStatus_statement.bindString(4,checkempty.check_empty(etNotifStatusResult.getObjnr()));
-                            EtNotifStatus_statement.bindString(5,checkempty.check_empty(etNotifStatusResult.getManum()));
-                            EtNotifStatus_statement.bindString(6,checkempty.check_empty(etNotifStatusResult.getStsma()));
-                            EtNotifStatus_statement.bindString(7,checkempty.check_empty(etNotifStatusResult.getInist()));
-                            EtNotifStatus_statement.bindString(8,checkempty.check_empty(etNotifStatusResult.getStonr()));
-                            EtNotifStatus_statement.bindString(9,checkempty.check_empty(etNotifStatusResult.getHsonr()));
-                            EtNotifStatus_statement.bindString(10,checkempty.check_empty(etNotifStatusResult.getNsonr()));
-                            EtNotifStatus_statement.bindString(11,checkempty.check_empty(etNotifStatusResult.getStat()));
-                            EtNotifStatus_statement.bindString(12,checkempty.check_empty(etNotifStatusResult.getAct()));
-                            EtNotifStatus_statement.bindString(13,checkempty.check_empty(etNotifStatusResult.getTxt04()));
-                            EtNotifStatus_statement.bindString(14,checkempty.check_empty(etNotifStatusResult.getTxt30()));
-                            EtNotifStatus_statement.bindString(15,"");
-                            EtNotifStatus_statement.execute();
-                        }
+                        EtNotifStatus_statement.bindString(1,checkempty.check_empty(etNotifStatusResult.getQMNUM()));
+                        EtNotifStatus_statement.bindString(2,checkempty.check_empty(etNotifStatusResult.getQMNUM()));
+                        EtNotifStatus_statement.bindString(3,"");
+                        EtNotifStatus_statement.bindString(4,checkempty.check_empty(etNotifStatusResult.getOBJNR()));
+                        EtNotifStatus_statement.bindString(5,"");
+                        EtNotifStatus_statement.bindString(6,checkempty.check_empty(etNotifStatusResult.getSTSMA()));
+                        EtNotifStatus_statement.bindString(7,checkempty.check_empty(etNotifStatusResult.getINIST()));
+                        EtNotifStatus_statement.bindString(8,checkempty.check_empty(etNotifStatusResult.getSTONR()));
+                        EtNotifStatus_statement.bindString(9,checkempty.check_empty(etNotifStatusResult.getHSONR()));
+                        EtNotifStatus_statement.bindString(10,checkempty.check_empty(etNotifStatusResult.getNSONR()));
+                        EtNotifStatus_statement.bindString(11,checkempty.check_empty(etNotifStatusResult.getSTAT()));
+                        EtNotifStatus_statement.bindString(12,checkempty.check_empty(etNotifStatusResult.getACT()));
+                        EtNotifStatus_statement.bindString(13,checkempty.check_empty(etNotifStatusResult.getTXT04()));
+                        EtNotifStatus_statement.bindString(14,checkempty.check_empty(etNotifStatusResult.getTXT30()));
+                        EtNotifStatus_statement.bindString(15,"");
+                        EtNotifStatus_statement.execute();
                     }
                 }
             }
             catch (Exception e)
             {
-            }*/
+            }
             /*Reading and Inserting Data into Database Table for EtNotifStatus*/
 
 
@@ -433,48 +419,44 @@ public class REST_Insert_Notifications_Data
 
 
             /*Reading and Inserting Data into Database Table for EtDocs*/
-            /*try
+            try
             {
-                Notifications_SER.EtDocs etDocs = null;
+                List<REST_Notifications_SER.ETDOC> etDocs = null;
                 if(type.equalsIgnoreCase("DUNOT"))
                 {
-                    etDocs = notification_response.getD().getResults().get(0).getEtDocs();
+                    etDocs = notification_response.geteTDOCS();
                 }
                 else if(type.equalsIgnoreCase("CRNOT"))
                 {
-                    etDocs = notification_response.getD().getEtDocs();
+                    etDocs = notification_response.geteTDOCS();
                 }
-                if (etDocs != null)
+                if (etDocs != null && etDocs.size() > 0)
                 {
-                    List<Notifications_SER.EtDocs_Result> etDocs_results = etDocs.getResults();
-                    if (etDocs_results != null && etDocs_results.size() > 0)
+                    String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Filepath, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
+                    EtDocs_statement.clearBindings();
+                    for (REST_Notifications_SER.ETDOC etDocsResult : etDocs)
                     {
-                        String EtDocs_sql = "Insert into DUE_NOTIFICATION_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Filepath, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                        SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
-                        EtDocs_statement.clearBindings();
-                        for (Notifications_SER.EtDocs_Result etDocsResult : etDocs_results)
-                        {
-                            EtDocs_statement.bindString(1,checkempty.check_empty(etDocsResult.getZobjid()));
-                            EtDocs_statement.bindString(2,checkempty.check_empty(etDocsResult.getZobjid()));
-                            EtDocs_statement.bindString(3,checkempty.check_empty(etDocsResult.getZdoctype()));
-                            EtDocs_statement.bindString(4,checkempty.check_empty(etDocsResult.getZdoctypeItem()));
-                            EtDocs_statement.bindString(5,checkempty.check_empty(etDocsResult.getFilename()));
-                            EtDocs_statement.bindString(6,checkempty.check_empty(etDocsResult.getFiletype()));
-                            EtDocs_statement.bindString(7,checkempty.check_empty(etDocsResult.getFsize()));
-                            EtDocs_statement.bindString(8,checkempty.check_empty(etDocsResult.getContent()));
-                            EtDocs_statement.bindString(9,checkempty.check_empty(etDocsResult.getDocId()));
-                            EtDocs_statement.bindString(10,checkempty.check_empty(etDocsResult.getDocType()));
-                            EtDocs_statement.bindString(11,checkempty.check_empty(etDocsResult.getObjtype()));
-                            EtDocs_statement.bindString(12,"");
-                            EtDocs_statement.bindString(13,"Old");
-                            EtDocs_statement.execute();
-                        }
+                        EtDocs_statement.bindString(1,checkempty.check_empty(etDocsResult.getZOBJID()));
+                        EtDocs_statement.bindString(2,checkempty.check_empty(etDocsResult.getZOBJID()));
+                        EtDocs_statement.bindString(3,checkempty.check_empty(etDocsResult.getZDOCTYPE()));
+                        EtDocs_statement.bindString(4,checkempty.check_empty(etDocsResult.getZDOCTYPEITEM()));
+                        EtDocs_statement.bindString(5,checkempty.check_empty(etDocsResult.getFILENAME()));
+                        EtDocs_statement.bindString(6,checkempty.check_empty(etDocsResult.getFILETYPE()));
+                        EtDocs_statement.bindString(7,checkempty.check_empty(etDocsResult.getFSIZE()));
+                        EtDocs_statement.bindString(8,checkempty.check_empty(etDocsResult.getCONTENT()));
+                        EtDocs_statement.bindString(9,checkempty.check_empty(etDocsResult.getDOCID()));
+                        EtDocs_statement.bindString(10,checkempty.check_empty(etDocsResult.getDOCTYPE()));
+                        EtDocs_statement.bindString(11,checkempty.check_empty(etDocsResult.getOBJTYPE()));
+                        EtDocs_statement.bindString(12,"");
+                        EtDocs_statement.bindString(13,"Old");
+                        EtDocs_statement.execute();
                     }
                 }
             }
             catch (Exception e)
             {
-            }*/
+            }
             /*Reading and Inserting Data into Database Table for EtDocs*/
 
 

@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Interface.Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.equipment_inspection.Geo_Tag_Details_Model;
 import com.enstrapp.fieldtekpro.equipment_inspection.Geo_Tag_Model;
 import com.enstrapp.fieldtekpro.equipment_inspection.ItGeoData;

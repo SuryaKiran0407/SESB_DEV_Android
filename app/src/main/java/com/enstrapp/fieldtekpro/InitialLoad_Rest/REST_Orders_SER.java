@@ -9,12 +9,27 @@ import java.util.List;
 public class REST_Orders_SER
 {
 
+    @SerializedName("EV_MESSAGE")
+    @Expose
+    private  String eVMESSAGE;
+    @SerializedName("ET_MESSAGE")
+    @Expose
+    private List<EtMessages> EtMessages;
+    @SerializedName("EV_AUFNR")
+    @Expose
+    private  String eVAUFNR;
+    @SerializedName("EV_ORDER_NO")
+    @Expose
+    private  String evorderno;
     @SerializedName("ET_ORDER_HEADER")
     @Expose
     private List<ETORDERHEADER> eTORDERHEADER = null;
     @SerializedName("ET_ORDER_OPERATIONS")
     @Expose
     private List<ETORDEROPERATION> eTORDEROPERATIONS = null;
+    @SerializedName("ET_ORDER_COMPONENTS")
+    @Expose
+    private List<ETORDERCOMPONENTS> eTORDERCOMPONENTS = null;
     @SerializedName("ET_ORDER_LONGTEXT")
     @Expose
     private List<ETORDERLONGTEXT> eTORDERLONGTEXT = null;
@@ -27,6 +42,57 @@ public class REST_Orders_SER
     @SerializedName("ET_NOTIF_HEADER")
     @Expose
     private List<ETNOTIFHEADER> eTNOTIFHEADER = null;
+    @SerializedName("ET_DOCS")
+    @Expose
+    private List<ETDOC> eTDOCS = null;
+
+    public List<ETDOC> geteTDOCS() {
+        return eTDOCS;
+    }
+
+    public void seteTDOCS(List<ETDOC> eTDOCS) {
+        this.eTDOCS = eTDOCS;
+    }
+
+    public String getEvorderno() {
+        return evorderno;
+    }
+
+    public void setEvorderno(String evorderno) {
+        this.evorderno = evorderno;
+    }
+
+    public List<REST_Orders_SER.EtMessages> getEtMessages() {
+        return EtMessages;
+    }
+
+    public void setEtMessages(List<REST_Orders_SER.EtMessages> etMessages) {
+        EtMessages = etMessages;
+    }
+
+    public String geteVAUFNR() {
+        return eVAUFNR;
+    }
+
+    public void seteVAUFNR(String eVAUFNR) {
+        this.eVAUFNR = eVAUFNR;
+    }
+
+    public List<ETORDERCOMPONENTS> geteTORDERCOMPONENTS() {
+        return eTORDERCOMPONENTS;
+    }
+
+    public void seteTORDERCOMPONENTS(List<ETORDERCOMPONENTS> eTORDERCOMPONENTS) {
+        this.eTORDERCOMPONENTS = eTORDERCOMPONENTS;
+    }
+
+    public String geteVMESSAGE() {
+        return eVMESSAGE;
+    }
+
+    public void seteVMESSAGE(String eVMESSAGE) {
+        this.eVMESSAGE = eVMESSAGE;
+    }
 
     public List<ETORDERHEADER> getETORDERHEADER() {
         return eTORDERHEADER;
@@ -79,6 +145,133 @@ public class REST_Orders_SER
 
 
 
+    public class ETDOC {
+
+        @SerializedName("OBJTYPE")
+        @Expose
+        private String oBJTYPE;
+        @SerializedName("ZOBJID")
+        @Expose
+        private String zOBJID;
+        @SerializedName("ZDOCTYPE")
+        @Expose
+        private String zDOCTYPE;
+        @SerializedName("FILENAME")
+        @Expose
+        private String fILENAME;
+        @SerializedName("FILETYPE")
+        @Expose
+        private String fILETYPE;
+        @SerializedName("FSIZE")
+        @Expose
+        private String fSIZE;
+        @SerializedName("CONTENT")
+        @Expose
+        private String cONTENT;
+        @SerializedName("DOC_ID")
+        @Expose
+        private String dOCID;
+        @SerializedName("DOC_TYPE")
+        @Expose
+        private String dOCTYPE;
+        @SerializedName("CONTENTX")
+        @Expose
+        private String cONTENTX;
+        @SerializedName("ZDOCTYPEITEM")
+        @Expose
+        private String ZDOCTYPEITEM;
+
+        public String getZDOCTYPEITEM() {
+            return ZDOCTYPEITEM;
+        }
+
+        public void setZDOCTYPEITEM(String ZDOCTYPEITEM) {
+            this.ZDOCTYPEITEM = ZDOCTYPEITEM;
+        }
+
+        public String getOBJTYPE() {
+            return oBJTYPE;
+        }
+
+        public void setOBJTYPE(String oBJTYPE) {
+            this.oBJTYPE = oBJTYPE;
+        }
+
+        public String getZOBJID() {
+            return zOBJID;
+        }
+
+        public void setZOBJID(String zOBJID) {
+            this.zOBJID = zOBJID;
+        }
+
+        public String getZDOCTYPE() {
+            return zDOCTYPE;
+        }
+
+        public void setZDOCTYPE(String zDOCTYPE) {
+            this.zDOCTYPE = zDOCTYPE;
+        }
+
+        public String getFILENAME() {
+            return fILENAME;
+        }
+
+        public void setFILENAME(String fILENAME) {
+            this.fILENAME = fILENAME;
+        }
+
+        public String getFILETYPE() {
+            return fILETYPE;
+        }
+
+        public void setFILETYPE(String fILETYPE) {
+            this.fILETYPE = fILETYPE;
+        }
+
+        public String getFSIZE() {
+            return fSIZE;
+        }
+
+        public void setFSIZE(String fSIZE) {
+            this.fSIZE = fSIZE;
+        }
+
+        public String getCONTENT() {
+            return cONTENT;
+        }
+
+        public void setCONTENT(String cONTENT) {
+            this.cONTENT = cONTENT;
+        }
+
+        public String getDOCID() {
+            return dOCID;
+        }
+
+        public void setDOCID(String dOCID) {
+            this.dOCID = dOCID;
+        }
+
+        public String getDOCTYPE() {
+            return dOCTYPE;
+        }
+
+        public void setDOCTYPE(String dOCTYPE) {
+            this.dOCTYPE = dOCTYPE;
+        }
+
+        public String getCONTENTX() {
+            return cONTENTX;
+        }
+
+        public void setCONTENTX(String cONTENTX) {
+            this.cONTENTX = cONTENTX;
+        }
+
+    }
+
+
 
 
     public class ETNOTIFHEADER {
@@ -98,6 +291,22 @@ public class REST_Orders_SER
     }
 
 
+
+
+    public class EtMessages
+    {
+        @SerializedName("MESSAGE")
+        @Expose
+        private String Message;
+
+        public String getMessage() {
+            return Message;
+        }
+
+        public void setMessage(String message) {
+            Message = message;
+        }
+    }
 
 
 
@@ -231,8 +440,9 @@ public class REST_Orders_SER
         @SerializedName("USR05")
         @Expose
         private String uSR05;
-
-
+        @SerializedName("POSID")
+        @Expose
+        private String POSID;
         @SerializedName("BEMOT")
         @Expose
         private String BEMOT;
@@ -248,12 +458,12 @@ public class REST_Orders_SER
         @SerializedName("ANLZUX")
         @Expose
         private String ANLZUX;
+        @SerializedName("RSNUM")
+        @Expose
+        private String RSNUM;
         @SerializedName("AUSWK")
         @Expose
         private String AUSWK;
-        @SerializedName("POSID")
-        @Expose
-        private String POSID;
         @SerializedName("REVNR")
         @Expose
         private String REVNR;
@@ -290,10 +500,17 @@ public class REST_Orders_SER
         @SerializedName("PERMITS")
         @Expose
         private String PERMITS;
-
         @SerializedName("FIELDS")
         @Expose
         private List<FIELD> fIELDS = null;
+
+        public String getRSNUM() {
+            return RSNUM;
+        }
+
+        public void setRSNUM(String RSNUM) {
+            this.RSNUM = RSNUM;
+        }
 
         public String getDOCS() {
             return DOCS;
@@ -1112,6 +1329,17 @@ public class REST_Orders_SER
         @SerializedName("ACTUALCOND")
         @Expose
         private String ActualCond;
+        @SerializedName("SAKTO")
+        @Expose
+        private String SAKTO;
+
+        public String getSAKTO() {
+            return SAKTO;
+        }
+
+        public void setSAKTO(String SAKTO) {
+            this.SAKTO = SAKTO;
+        }
 
         public String getUvorn() {
             return Uvorn;
@@ -1384,6 +1612,302 @@ public class REST_Orders_SER
         public void setLARNTTEXT(String lARNTTEXT) {
             this.lARNTTEXT = lARNTTEXT;
         }
+
+    }
+
+
+
+
+    public class ETORDERCOMPONENTS
+    {
+        @SerializedName("AUFNR")
+        @Expose
+        private String aUFNR;
+        @SerializedName("VORNR")
+        @Expose
+        private String vORNR;
+        @SerializedName("UVORN")
+        @Expose
+        private String uVORN;
+        @SerializedName("RSNUM")
+        @Expose
+        private String rSNUM;
+        @SerializedName("RSPOS")
+        @Expose
+        private String rSPOS;
+        @SerializedName("MATNR")
+        @Expose
+        private String mATNR;
+        @SerializedName("WERKS")
+        @Expose
+        private String wERKS;
+        @SerializedName("LGORT")
+        @Expose
+        private String lGORT;
+        @SerializedName("POSNR")
+        @Expose
+        private String pOSNR;
+        @SerializedName("BDMNG")
+        @Expose
+        private String bDMNG;
+        @SerializedName("MEINS")
+        @Expose
+        private String mEINS;
+        @SerializedName("POSTP")
+        @Expose
+        private String pOSTP;
+        @SerializedName("WEMPF")
+        @Expose
+        private String wEMPF;
+        @SerializedName("ABLAD")
+        @Expose
+        private String aBLAD;
+        @SerializedName("MFRNR")
+        @Expose
+        private String mFRNR;
+        @SerializedName("MFRPN")
+        @Expose
+        private String mFRPN;
+        @SerializedName("MATNR_TEXT")
+        @Expose
+        private String mATNRTEXT;
+        @SerializedName("WERKS_TEXT")
+        @Expose
+        private String wERKSTEXT;
+        @SerializedName("LGORT_TEXT")
+        @Expose
+        private String lGORTTEXT;
+        @SerializedName("POSTP_TEXT")
+        @Expose
+        private String pOSTPTEXT;
+        @SerializedName("USR01")
+        @Expose
+        private String uSR01;
+        @SerializedName("USR02")
+        @Expose
+        private String uSR02;
+        @SerializedName("USR03")
+        @Expose
+        private String uSR03;
+        @SerializedName("USR04")
+        @Expose
+        private String uSR04;
+        @SerializedName("USR05")
+        @Expose
+        private String uSR05;
+        @SerializedName("CHARG")
+        @Expose
+        private String charg;
+
+        public String getCharg() {
+            return charg;
+        }
+
+        public void setCharg(String charg) {
+            this.charg = charg;
+        }
+
+        public String getAUFNR() {
+            return aUFNR;
+        }
+
+        public void setAUFNR(String aUFNR) {
+            this.aUFNR = aUFNR;
+        }
+
+        public String getVORNR() {
+            return vORNR;
+        }
+
+        public void setVORNR(String vORNR) {
+            this.vORNR = vORNR;
+        }
+
+        public String getUVORN() {
+            return uVORN;
+        }
+
+        public void setUVORN(String uVORN) {
+            this.uVORN = uVORN;
+        }
+
+        public String getRSNUM() {
+            return rSNUM;
+        }
+
+        public void setRSNUM(String rSNUM) {
+            this.rSNUM = rSNUM;
+        }
+
+        public String getRSPOS() {
+            return rSPOS;
+        }
+
+        public void setRSPOS(String rSPOS) {
+            this.rSPOS = rSPOS;
+        }
+
+        public String getMATNR() {
+            return mATNR;
+        }
+
+        public void setMATNR(String mATNR) {
+            this.mATNR = mATNR;
+        }
+
+        public String getWERKS() {
+            return wERKS;
+        }
+
+        public void setWERKS(String wERKS) {
+            this.wERKS = wERKS;
+        }
+
+        public String getLGORT() {
+            return lGORT;
+        }
+
+        public void setLGORT(String lGORT) {
+            this.lGORT = lGORT;
+        }
+
+        public String getPOSNR() {
+            return pOSNR;
+        }
+
+        public void setPOSNR(String pOSNR) {
+            this.pOSNR = pOSNR;
+        }
+
+        public String getBDMNG() {
+            return bDMNG;
+        }
+
+        public void setBDMNG(String bDMNG) {
+            this.bDMNG = bDMNG;
+        }
+
+        public String getMEINS() {
+            return mEINS;
+        }
+
+        public void setMEINS(String mEINS) {
+            this.mEINS = mEINS;
+        }
+
+        public String getPOSTP() {
+            return pOSTP;
+        }
+
+        public void setPOSTP(String pOSTP) {
+            this.pOSTP = pOSTP;
+        }
+
+        public String getWEMPF() {
+            return wEMPF;
+        }
+
+        public void setWEMPF(String wEMPF) {
+            this.wEMPF = wEMPF;
+        }
+
+        public String getABLAD() {
+            return aBLAD;
+        }
+
+        public void setABLAD(String aBLAD) {
+            this.aBLAD = aBLAD;
+        }
+
+        public String getMFRNR() {
+            return mFRNR;
+        }
+
+        public void setMFRNR(String mFRNR) {
+            this.mFRNR = mFRNR;
+        }
+
+        public String getMFRPN() {
+            return mFRPN;
+        }
+
+        public void setMFRPN(String mFRPN) {
+            this.mFRPN = mFRPN;
+        }
+
+        public String getMATNRTEXT() {
+            return mATNRTEXT;
+        }
+
+        public void setMATNRTEXT(String mATNRTEXT) {
+            this.mATNRTEXT = mATNRTEXT;
+        }
+
+        public String getWERKSTEXT() {
+            return wERKSTEXT;
+        }
+
+        public void setWERKSTEXT(String wERKSTEXT) {
+            this.wERKSTEXT = wERKSTEXT;
+        }
+
+        public String getLGORTTEXT() {
+            return lGORTTEXT;
+        }
+
+        public void setLGORTTEXT(String lGORTTEXT) {
+            this.lGORTTEXT = lGORTTEXT;
+        }
+
+        public String getPOSTPTEXT() {
+            return pOSTPTEXT;
+        }
+
+        public void setPOSTPTEXT(String pOSTPTEXT) {
+            this.pOSTPTEXT = pOSTPTEXT;
+        }
+
+        public String getUSR01() {
+            return uSR01;
+        }
+
+        public void setUSR01(String uSR01) {
+            this.uSR01 = uSR01;
+        }
+
+        public String getUSR02() {
+            return uSR02;
+        }
+
+        public void setUSR02(String uSR02) {
+            this.uSR02 = uSR02;
+        }
+
+        public String getUSR03() {
+            return uSR03;
+        }
+
+        public void setUSR03(String uSR03) {
+            this.uSR03 = uSR03;
+        }
+
+        public String getUSR04() {
+            return uSR04;
+        }
+
+        public void setUSR04(String uSR04) {
+            this.uSR04 = uSR04;
+        }
+
+        public String getUSR05() {
+            return uSR05;
+        }
+
+        public void setUSR05(String uSR05) {
+            this.uSR05 = uSR05;
+        }
+
+
 
     }
 

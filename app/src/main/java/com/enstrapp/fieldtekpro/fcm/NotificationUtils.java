@@ -20,7 +20,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 import java.io.IOException;
 import java.io.InputStream;

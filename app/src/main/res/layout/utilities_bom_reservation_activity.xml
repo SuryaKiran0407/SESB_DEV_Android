@@ -223,7 +223,8 @@
                             android:hint="@string/order_num_star"
                             android:inputType="text"
                             android:maxLines="1"
-                            android:textSize="@dimen/textSize" />
+                            android:textSize="@dimen/textSize"
+                            android:maxLength="12"/>
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
@@ -239,7 +240,8 @@
                     android:orientation="horizontal"
                     android:weightSum="1"
                     android:id="@+id/costcenter_layout"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone">
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

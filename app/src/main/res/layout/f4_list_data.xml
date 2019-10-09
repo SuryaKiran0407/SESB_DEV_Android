@@ -84,7 +84,6 @@
             android:layout_width="fill_parent"
             android:visibility="gone"
             android:layout_height="wrap_content">
-
             <com.enstrapp.fieldtekpro.customfont.Font_TextView
                 android:id="@+id/post1_txt"
                 android:layout_width="45dp"
@@ -93,7 +92,6 @@
                 android:text="@string/text"
                 android:textColor="@color/light_grey2"
                 android:textSize="14sp" />
-
             <com.enstrapp.fieldtekpro.customfont.Font_TextView
                 android:layout_width="20dp"
                 android:layout_height="fill_parent"
@@ -101,7 +99,6 @@
                 android:text="@string/colon"
                 android:textColor="@color/light_grey2"
                 android:textSize="14sp" />
-
             <com.enstrapp.fieldtekpro.customfont.Font_TextView
                 android:id="@+id/post1id_tv"
                 android:layout_width="wrap_content"

@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@color/light_grey1">
 
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,6 +26,7 @@
                 android:clipToPadding="false"/>
         </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.v4.widget.NestedScrollView>
+
 
     <LinearLayout
         android:id="@+id/no_data_layout"
@@ -45,50 +47,46 @@
             android:drawableTop="@drawable/ic_no_data_icon"/>
     </LinearLayout>
 
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="4dp">
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways">
-            <RelativeLayout
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/back_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_arrow_back_white_24px"
+                android:background="@color/colorPrimary"
+                android:contentDescription="@string/home_button"
+                android:padding="7dp"/>
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/title_textview"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
-                <ImageView
-                    android:id="@+id/back_imageview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:src="@drawable/ic_arrow_back_white_24px"
-                    android:background="@color/colorPrimary"
-                    android:contentDescription="@string/home_button"
-                    android:padding="7dp"/>
-                <com.enstrapp.fieldtekpro.customfont.Font_TextView
-                    android:id="@+id/title_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="17sp"/>
-            </RelativeLayout>
-            <SearchView
-                android:id="@+id/search"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
                 android:textSize="15sp"
-                android:iconifiedByDefault="false"
-                android:background="@drawable/round_borders"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="50dp"
-                android:hint="Search...."
-                android:textColorHint="@color/light_grey"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
+                android:layout_marginTop="10dp"/>
+        </RelativeLayout>
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:textSize="15sp"
+            android:iconifiedByDefault="false"
+            android:background="@drawable/round_borders"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Search...."
+            android:textColorHint="@color/light_grey"/>
     </android.support.design.widget.AppBarLayout>
+
 
     <LinearLayout
         android:id="@+id/bottom_panel"
@@ -165,7 +163,8 @@
                 android:src="@drawable/ic_sort_arrow_icons"
                 fab:fab_label="@string/sort"
                 fab:fab_size="mini"
-                fab:fab_colorNormal="#003333"/>
+                fab:fab_colorNormal="#003333"
+                android:visibility="gone"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/scan_fab_button"

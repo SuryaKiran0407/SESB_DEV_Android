@@ -1,18 +1,27 @@
 <resources>
-    <string name="app_name">FTekP ED9</string>
+    <string name="app_name">SESB EHQ</string>
     <string name="application">FieldTekPro</string>
 
 
-
-
-    <!--REST WEBSERVICE-->
-    <string name="ip_address">http://103.6.157.25:8200/</string>
-    <string name="ip_address_port">103.6.157.25:8200</string>
+    <!--Quality-->
+    <!--<string name="ip_address">http://dc2vufehq077.sesb.com.my/</string>
+    <string name="ip_address_port">dc2vufehq077.sesb.com.my</string>
     <string name="webservice_type">rest</string>
-    <string name="login_url">sap/bc/zemt_pm_rest/Authenticate?sap-client=800Location?sap-client=800</string>
+    <string name="login_url">sap/bc/zemt_pm_rest/Authenticate?sap-client=001Location?sap-client=001</string>
     <string name="syncmap_url">sap/bc/zemt_pm_rest/SyncMapGetData?sap-client</string>
-    <string name="ip_address_port_attach">http://103.6.157.25:8200%1s</string>
-    <!--REST WEBSERVICE-->
+    <string name="ip_address_port_attach">http://dc2vufehq077.sesb.com.my%1s</string>-->
+    <!--Quality-->
+
+
+
+    <!--DEV-->
+    <string name="ip_address">http://dc2vdfehd083.sesb.com.my/</string>
+    <string name="ip_address_port">dc2vdfehd083.sesb.com.my</string>
+    <string name="webservice_type">rest</string>
+    <string name="login_url">sap/bc/zemt_pm_rest/Authenticate?sap-client=100Location?sap-client=100</string>
+    <string name="syncmap_url">sap/bc/zemt_pm_rest/SyncMapGetData?sap-client</string>
+    <string name="ip_address_port_attach">http://dc2vdfehd083.sesb.com.my%1s</string>
+    <!--DEV-->
 
 
 
@@ -30,17 +39,18 @@
 
 
 
-    <string name="database_name">FIELDTEKPRO_ED9.db</string>
+    <string name="database_name">FIELDTEKPRO_SESB_DEV.db</string>
     <string name="orders">Orders</string>
     <string name="home_button">Home Button</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="equip">Equipment</string>
-    <string name="priority_star">*  Priority</string>
+    <string name="priority_star">Priority</string>
     <string name="work_center">Work Center</string>
     <string name="remember_me">Remember Me</string>
     <string name="login">Login</string>
     <string name="ok">Ok</string>
+    <string name="file_not_supported">File is not Supported</string>
     <string name="network_connection_dialog_text">No Network Available. Please Check your Internet Connection</string>
     <string name="signing_in">Signing In...</string>
     <string name="connect">Connect</string>
@@ -55,7 +65,7 @@
     <string name="maintaince_strategy">Maint. strategy</string>
     <string name="maintaince_plan_type">Maint. Type</string>
     <string name="loading_maintenanceplan">Loading Maintenance Plan...</string>
-    <string name="loading_insp_checklist">Loading Inspection Checklist...</string>
+    <string name="loading_insp_checklist">Loading Measurement Readings...</string>
     <string name="refresh">Refresh</string>
     <string name="sort">Sort</string>
     <string name="filter">Filter</string>
@@ -127,15 +137,15 @@
     <string name="defects">Defects</string>
     <string name="notification_type">Notification Type</string>
     <string name="notif_type">Notif Type</string>
-    <string name="notification_type_star">*  Notification Type</string>
-    <string name="notification_text_star">*  Notification Short Text</string>
+    <string name="notification_type_star">Notification Type</string>
+    <string name="notification_text_star">Notification Short Text</string>
     <string name="notification_text">Notification Text</string>
     <string name="reported_by">Reported By</string>
     <string name="planning_plant">Planning Plant</string>
     <string name="maintenance_plant">Maintenance Plant</string>
     <string name="responsible">Responsible</string>
     <string name="user_responsible"> Primary User Responsible</string>
-    <string name="equipment_inspection">Equipment Inspection</string>
+    <string name="equipment_inspection">Measurement Readings</string>
     <string name="calibration">Calibration</string>
     <string name="object_id">Object ID</string>
     <string name="msg">Message</string>
@@ -146,7 +156,7 @@
     <string name="loading_equip">Loading Equipments...</string>
     <string name="loading_notif_types">Loading Notification Types...</string>
     <string name="planner_group">Planner Group</string>
-    <string name="req_stdate_star">*  Required Start Date &amp; Time</string>
+    <string name="req_stdate_star">Required Start Date &amp; Time</string>
     <string name="req_enddate">Required End Date &amp; Time</string>
     <string name="mal_func_stdate_star">Malfunction Start Date &amp; Time</string>
     <string name="mal_func_enddate">Malfunction End Date &amp; Time</string>
@@ -156,24 +166,24 @@
     <string name="no_task_add">No Tasks Found. Please add Task.</string>
     <string name="add_text">Add</string>
     <string name="remove_text">Remove</string>
-    <string name="obj_part">*  Object Part</string>
+    <string name="obj_part">Object Part</string>
     <string name="obj_part1">Object Part</string>
     <string name="defect_desc">Defect Description</string>
     <string name="no_of_defects">No. of Defects</string>
     <string name="defect_code">Defect Code</string>
-    <string name="defect_code_star">* Defect Code</string>
+    <string name="defect_code_star">Defect Code</string>
     <string name="defect_grp">Defect Group</string>
-    <string name="defect_grp_star">* Defect Group</string>
-    <string name="obj_part_code">*  Object Part Code</string>
+    <string name="defect_grp_star">Defect Group</string>
+    <string name="obj_part_code">Object Part Code</string>
     <string name="obj_part_code1">Object Part Code</string>
-    <string name="event">* Damage</string>
+    <string name="event">Damage</string>
     <string name="event1">Damage</string>
-    <string name="event_code">*  Damage Code</string>
+    <string name="event_code">Damage Code</string>
     <string name="event_code1">Damage Code</string>
     <string name="event_des">Damage Description</string>
-    <string name="cause">*  Cause</string>
+    <string name="cause">Cause</string>
     <string name="cause1">Cause</string>
-    <string name="cause_code">*  Cause Code</string>
+    <string name="cause_code">Cause Code</string>
     <string name="cause_code1">Cause Code</string>
     <string name="cause_des">Cause Descrption</string>
     <string name="code">Code</string>
@@ -247,6 +257,7 @@
     <string name="with_status_num">With Status No.</string>
     <string name="without_status_num">Without Status No.</string>
     <string name="bom_reservation_inprogress">Reservation in progress...</string>
+    <string name="equip_update">Equipment Update in progress...</string>
     <string name="perform_reservation">Do you want to perform Reservation ?</string>
     <string name="no_stock_found">No Stock Found</string>
     <string name="material">Material</string>
@@ -258,6 +269,7 @@
     <string name="storage_bin">Storage Bin</string>
     <string name="reserve">Reserve</string>
     <string name="reservation">Reservation</string>
+    <string name="reservation_no">Reservation #</string>
     <string name="equipFunc_mandate">Please select Equipment /\n Function Location</string>
     <string name="dup_notif">Open Notification for Selected Object</string>
     <string name="mal_stdate">Mal. Start Date</string>
@@ -279,7 +291,7 @@
     <string name="start_insp">Start Inspection</string>
     <string name="inspection">Inspection</string>
     <string name="created_after_task">Created After Task</string>
-    <string name="insp_chk_submit">Inspection Checklist in progress...</string>
+    <string name="insp_chk_submit">Measurement Reading in progress...</string>
     <string name="permit_list">Permit List</string>
     <string name="malfuncStDt">Malfunction Start Date</string>
     <string name="orders_count">Orders (%1s)</string>
@@ -358,22 +370,23 @@
     <string name="no_measurment">Please Select Measurement Document</string>
     <string name="status">Status</string>
     <string name="order_type">Order Type</string>
-    <string name="or_order_type">* Order Type</string>
-    <string name="or_order_text">* Order Text</string>
+    <string name="or_order_type">Order Type</string>
+    <string name="or_order_text">Order Text</string>
     <string name="floc_id">FLoc ID</string>
     <string name="func_loc_id">Function Location Id</string>
-    <string name="func_loc_name">Function Location Name</string>
+    <string name="func_loc_name">Functional Location Name</string>
     <string name="equip_numb">Equipment Number</string>
     <string name="equip_name">Equipment Name</string>
     <string name="priority">Priority</string>
-    <string name="or_planner_group">* Planner Group</string>
+    <string name="or_planner_group">Planner Group</string>
     <string name="wbs">WBS Element</string>
+    <string name="wbs1">* WBS Element</string>
     <string name="revision">Revision</string>
     <string name="person_resp">Person Responsible</string>
     <string name="sys_cond">System Conditions</string>
-    <string name="or_basic_start_date">* Basic Start Date</string>
-    <string name="or_basic_end_date">* Basic End Date</string>
-    <string name="or_work_center">* Work Center</string>
+    <string name="or_basic_start_date">Basic Start Date</string>
+    <string name="or_basic_end_date">Basic End Date</string>
+    <string name="or_work_center">Work Center</string>
     <string name="or_res_cost_cent">* Responsible Cost Center</string>
     <string name="system_cond">System Conditions</string>
     <string name="or_notifNo">Notification No : </string>
@@ -391,6 +404,7 @@
     <string name="ctrl_key">Control Key</string>
     <string name="wrk_cntr">Work Center</string>
     <string name="activity_typ">Activity Type</string>
+    <string name="pm_activity_typ">PM Act Type</string>
     <string name="plnd_wrk_unt">Planned Work/Unit</string>
     <string name="cnfd_wrk_unt">Confirmed Work/Unit</string>
     <string name="start">Start</string>
@@ -400,11 +414,13 @@
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
     <string name="confirm_text">Confirmation Text</string>
+    <string name="confirm_text1">* Confirmation Text</string>
     <string name="confirm_long_text">Confirmation Long Text</string>
     <string name="no_remaining_work">No Remaining Work :</string>
     <string name="final_confirmation">Final Confirmation :</string>
     <string name="time_confirmation">Time Confirmation</string>
     <string name="reason">Reason</string>
+    <string name="reason1">* Reason</string>
     <string name="oprtn_shrt_start">* Operation Text</string>
     <string name="update">Update</string>
     <string name="part_id">Part Id</string>
@@ -413,9 +429,9 @@
     <string name="duaration_unit">Duration</string>
     <string name="oprtn_start">Please start the operation</string>
     <string name="oprtn_cnfrm_msg">Do you want to submit for Confirmation ?</string>
-    <string name="func_loc">Function Location</string>
+    <string name="func_loc">Functional Location</string>
     <string name="sys_condition">Sys Condition</string>
-    <string name="function_location">Function Location</string>
+    <string name="function_location">Functional Location</string>
     <string name="plant_id">Plant Id</string>
     <string name="plant_txt">Plant Text</string>
     <string name="wrkcntr_id">Work Id</string>
@@ -427,19 +443,20 @@
     <string name="component_star">* Component</string>
     <string name="location">Location</string>
     <string name="receipt">Receipt</string>
-    <string name="receipt1">Goods Recipient</string>
+    <string name="receipt1">* Goods Recipient</string>
     <string name="unloading">Unloading Point</string>
     <string name="operation_mandate">Please select Operation ID</string>
     <string name="component_mandate">Please select Component</string>
-    <string name="quantity_mandate">Please Enter Quatntity</string>
+    <string name="quantity_mandate">Please Enter Quantity</string>
     <string name="zero_checker">Zero quantity is not allowed for availability check. Please enter quantity</string>
     <string name="material_id">Material Id</string>
     <string name="material_name">Material Name</string>
     <string name="availabilty">Availability Check in progress</string>
+    <string name="available">Available</string>
     <string name="unable_avail">Unable to check Availabilty</string>
     <string name="add_another_comp">Would you like to add another component for this Operation?</string>
     <string name="general">General</string>
-    <string name="object">Object</string>
+    <string name="object">Object List</string>
     <string name="object_notif_no">Notification No.</string>
     <string name="equipment_description">Equipment Description</string>
     <string name="function_location_desc">Func. Location Description</string>
@@ -875,4 +892,6 @@
     <string name="chars_left">You have 300 characters left</string>
     <string name="enst">Enstrapp</string>
     <string name="notifrel_success">Notification %1s is released successfully.</string>
+
+
 </resources>

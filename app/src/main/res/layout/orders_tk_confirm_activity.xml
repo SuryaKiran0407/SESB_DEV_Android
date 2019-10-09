@@ -118,7 +118,8 @@
             android:layout_height="24dp"
             android:layout_marginTop="12dp"
             android:layout_weight=".01"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:visibility="gone"/>
 
         <com.enstrapp.fieldtekpro.customfont.Font_Button
             android:id="@+id/mDoc_bt"
@@ -129,7 +130,8 @@
             android:text="@string/m_doc"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/orderStatus_view"

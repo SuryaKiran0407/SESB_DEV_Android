@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
 import com.enstrapp.fieldtekpro.DateTime.DatePickerDialog;
 import com.enstrapp.fieldtekpro.Initialload.Token;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class BOM_Reservation_Activity extends Activity implements View.OnClickListener {
 
-    String Lgort = "", storage_location = "", costcenter_id = "", costcenter_text = "", Requirement_date = "", movement_type_id = "", movement_type_text = "", Plant = "", BOM = "", Component = "", Component_text = "", Quantity = "", Unit = "", req_date = "";
+    String Lgort = "", storage_location = "", costcenter_id = "", costcenter_text = "", Requirement_date = "", movement_type_id = "", movement_type_text = "", Batch = "", Val_type = "", Plant = "", BOM = "", Component = "", Component_text = "", Quantity = "", Unit = "", req_date = "";
     ImageView back_imageview;
     Button reserve_button,cancel_button;
     LinearLayout ordernumber_layout, movement_type_layout, requirement_date_layout, costcenter_layout;
@@ -67,9 +67,38 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
             Quantity = extras.getString("Quantity");
             Unit = extras.getString("Unit");
             Plant = extras.getString("Plant");
+            Val_type = extras.getString("Val_type");
+            Batch = extras.getString("Batch");
             Lgort = extras.getString("Lgort");
-            if (Lgort != null && !Lgort.equals("")) {
+            if (Lgort != null && !Lgort.equals(""))
+            {
                 storage_location = Lgort;
+            }
+            else
+            {
+                try
+                {
+                    Cursor cursor = null;
+                    cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Matnr = ?", new String[]{Component});
+                    if (cursor != null && cursor.getCount() > 0)
+                    {
+                        if (cursor.moveToFirst())
+                        {
+                            do
+                            {
+                                storage_location = cursor.getString(4);
+                            }
+                            while (cursor.moveToNext());
+                        }
+                    }
+                    else
+                    {
+                        cursor.close();
+                    }
+                }
+                catch (Exception e)
+                {
+                }
             }
         }
 
@@ -79,21 +108,7 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
         FieldTekPro_SharedPref = BOM_Reservation_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
         FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
 
-        try {
-            Cursor cursor = null;
-            cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Matnr = ?", new String[]{Component});
-            if (cursor != null && cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        storage_location = cursor.getString(4);
-                    }
-                    while (cursor.moveToNext());
-                }
-            } else {
-                cursor.close();
-            }
-        } catch (Exception e) {
-        }
+
 
         plant_edittext = (EditText) findViewById(R.id.plant_edittext);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
@@ -160,8 +175,11 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
                     if (quantity_value == 0) {
                         error_dialog.show_error_dialog(BOM_Reservation_Activity.this,
                                 getString(R.string.qunt_morezero));
-                    } else {
-                        if (movement_type_id.equalsIgnoreCase("261")) {
+                    }
+                    else
+                    {
+                        if (movement_type_id.equalsIgnoreCase("261"))
+                        {
                             if (ordernumber_edittext.getText().toString() != null && !ordernumber_edittext.getText().toString().equals("")) {
                                 post_bom_reservation();
                             } else {
@@ -169,12 +187,7 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
                                         getString(R.string.ordr_noenter));
                             }
                         } else {
-                            if (costcenter_id != null && !costcenter_id.equals("")) {
-                                post_bom_reservation();
-                            } else {
-                                error_dialog.show_error_dialog(BOM_Reservation_Activity.this,
-                                        getString(R.string.slct_cstcntr));
-                            }
+                            post_bom_reservation();
                         }
                     }
                 } else {
@@ -511,7 +524,7 @@ public class BOM_Reservation_Activity extends Activity implements View.OnClickLi
         {
             try
             {
-                bom_reservation_status = BOM_Reservation_REST.post_bom_reservation(BOM_Reservation_Activity.this, BOM, Component, Component_text, quantity_edittext.getText().toString(), Unit, Plant, storage_location, Requirement_date, movement_type_id, costcenter_id, ordernumber_edittext.getText().toString());
+                bom_reservation_status = BOM_Reservation_REST.post_bom_reservation(BOM_Reservation_Activity.this, BOM, Component, Component_text, quantity_edittext.getText().toString(), Unit, Plant, storage_location, Requirement_date, movement_type_id, costcenter_id, ordernumber_edittext.getText().toString(), Val_type, Batch);
             }
             catch (Exception e)
             {

@@ -25,6 +25,33 @@ public class OrdrMatrlPrcbl implements Parcelable {
     private boolean selected;
     private String unloading;
     private String receipt;
+    private String stockcat_id;
+    private String stockcat_text;
+    private String batch;
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public String getStockcat_id() {
+        return stockcat_id;
+    }
+
+    public void setStockcat_id(String stockcat_id) {
+        this.stockcat_id = stockcat_id;
+    }
+
+    public String getStockcat_text() {
+        return stockcat_text;
+    }
+
+    public void setStockcat_text(String stockcat_text) {
+        this.stockcat_text = stockcat_text;
+    }
 
     public String getAufnr() {
         return aufnr;
@@ -218,6 +245,9 @@ public class OrdrMatrlPrcbl implements Parcelable {
         dest.writeByte(this.selected ? (byte) 1 : (byte) 0);
         dest.writeString(this.unloading);
         dest.writeString(this.receipt);
+        dest.writeString(this.stockcat_id);
+        dest.writeString(this.stockcat_text);
+        dest.writeString(this.batch);
     }
 
     protected OrdrMatrlPrcbl(Parcel in) {
@@ -241,6 +271,9 @@ public class OrdrMatrlPrcbl implements Parcelable {
         this.selected = in.readByte() != 0;
         this.unloading = in.readString();
         this.receipt = in.readString();
+        this.stockcat_id = in.readString();
+        this.stockcat_text = in.readString();
+        this.batch = in.readString();
     }
 
     public static final Creator<OrdrMatrlPrcbl> CREATOR = new Creator<OrdrMatrlPrcbl>() {

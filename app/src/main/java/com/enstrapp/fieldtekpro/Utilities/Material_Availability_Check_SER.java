@@ -21,6 +21,18 @@ public class Material_Availability_Check_SER
         this.d = d;
     }
 
+    @SerializedName("ET_MESSAGE")
+    @Expose
+    private List<ETMESSAGE> eTMESSAGE = null;
+
+    public List<ETMESSAGE> geteTMESSAGE() {
+        return eTMESSAGE;
+    }
+
+    public void seteTMESSAGE(List<ETMESSAGE> eTMESSAGE) {
+        this.eTMESSAGE = eTMESSAGE;
+    }
+
 
     public class D
     {
@@ -34,6 +46,34 @@ public class Material_Availability_Check_SER
         public void setEvAvailable(EvAvailable evAvailable)
         {
             this.evAvailable = evAvailable;
+        }
+
+        @SerializedName("EV_AVAILABLE")
+        @Expose
+        private EvAvailable evAvailable1;
+
+        public EvAvailable getEvAvailable1() {
+            return evAvailable1;
+        }
+
+        public void setEvAvailable1(EvAvailable evAvailable1) {
+            this.evAvailable1 = evAvailable1;
+        }
+    }
+
+
+
+    public class ETMESSAGE {
+        @SerializedName("MESSAGE")
+        @Expose
+        private String mESSAGE;
+
+        public String getMESSAGE() {
+            return mESSAGE;
+        }
+
+        public void setMESSAGE(String mESSAGE) {
+            this.mESSAGE = mESSAGE;
         }
     }
 
@@ -50,6 +90,18 @@ public class Material_Availability_Check_SER
         public void setResults(List<EvAvailable_Result> results)
         {
             this.results = results;
+        }
+
+        @SerializedName("MESSAGE")
+        @Expose
+        private String message;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
         }
     }
 

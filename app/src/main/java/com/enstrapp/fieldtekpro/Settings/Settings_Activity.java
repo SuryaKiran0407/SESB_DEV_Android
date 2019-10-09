@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Auto_Sync.Auto_Sync_BackgroundService;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.login.Login_Activity;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;

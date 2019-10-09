@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.util.ArrayList;
@@ -47,10 +47,12 @@ public class Notifications_ObjectPart_Activity extends AppCompatActivity impleme
         setContentView(R.layout.f4_list_activity);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             catelog_profile = extras.getString("catelog_profile");
             String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals("")) {
+            if (request_ids != null && !request_ids.equals(""))
+            {
                 request_id = Integer.parseInt(request_ids);
             }
         }

@@ -115,7 +115,9 @@
                     android:hint="@string/equip_numb"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="@dimen/textSize" />
+                    android:textSize="@dimen/textSize"
+                    android:cursorVisible="false"
+                    android:focusable="false"/>
             </android.support.design.widget.TextInputLayout>
             <ImageView
                 android:id="@+id/equipmentsearch_imageview"

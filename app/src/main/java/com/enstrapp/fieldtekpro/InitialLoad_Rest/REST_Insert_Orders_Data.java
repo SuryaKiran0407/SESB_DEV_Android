@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.checkempty.Check_Empty1;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class REST_Insert_Orders_Data
     private static String DATABASE_NAME = "";
     private static String Get_Response = "";
     private static Check_Empty checkempty = new Check_Empty();
+    private static Check_Empty1 checkempty1 = new Check_Empty1();
     private static long startTime = 0;
 
 
@@ -41,81 +43,8 @@ public class REST_Insert_Orders_Data
                 App_db.execSQL("delete from DUE_ORDERS_Longtext where Aufnr = ?", new String[]{Aufnr});
                 App_db.execSQL("delete from EtOrderOlist where Aufnr = ?", new String[]{Aufnr});
                 App_db.execSQL("delete from EtOrderStatus where Aufnr = ?", new String[]{Aufnr});
-                App_db.execSQL("delete from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{Aufnr});
-                App_db.execSQL("delete from EtOrderCost where Aufnr = ?", new String[]{Aufnr});
-                App_db.execSQL("delete from EtWcmWwData where Aufnr = ?", new String[]{Aufnr});
-
-                Cursor cursor = null;
-                try
-                {
-                    cursor = App_db.rawQuery("select * from EtWcmWaData where Aufnr = ? ", new String[]{Aufnr});
-                    if (cursor != null && cursor.getCount() > 0)
-                    {
-                        if (cursor.moveToFirst())
-                        {
-                            do
-                            {
-                                String wapinr = cursor.getString(4);
-                                App_db.execSQL("delete from EtWcmWaChkReq where Wapinr = ?", new String[]{wapinr});
-                                App_db.execSQL("delete from OrdrWcmWAHDR where Wapinr = ?", new String[]{wapinr});
-                            }
-                            while (cursor.moveToNext());
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    if (cursor != null)
-                    {
-                        cursor.close();
-                    }
-                }
-                finally
-                {
-                    if (cursor != null)
-                    {
-                        cursor.close();
-                    }
-                }
-                App_db.execSQL("delete from EtWcmWaData where Aufnr = ?", new String[]{Aufnr});
-
-
-                Cursor cursor1 = null;
-                try
-                {
-                    cursor1 = App_db.rawQuery("select * from EtWcmWdData where Aufnr = ? ", new String[]{Aufnr});
-                    if (cursor1 != null && cursor1.getCount() > 0)
-                    {
-                        if (cursor1.moveToFirst())
-                        {
-                            do
-                            {
-                                String wcnr = cursor1.getString(3);
-                                App_db.execSQL("delete from EtWcmWdItemData where Wapinr = ?", new String[]{wcnr});
-                            }
-                            while (cursor1.moveToNext());
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    if (cursor1 != null)
-                    {
-                        cursor1.close();
-                    }
-                }
-                finally
-                {
-                    if (cursor1 != null)
-                    {
-                        cursor1.close();
-                    }
-                }
-                App_db.execSQL("delete from EtWcmWdData where Aufnr = ?", new String[]{Aufnr});
-
-                App_db.execSQL("delete from EtWcmWcagns where Aufnr = ?", new String[]{Aufnr});
                 App_db.execSQL("delete from EtOrderComponents where Aufnr = ?", new String[]{Aufnr});
-                App_db.execSQL("delete from EtOrderCatalog where Aufnr = ?", new String[]{Aufnr});
+                App_db.execSQL("delete from DUE_ORDERS_EtDocs where Zobjid = ?", new String[]{Aufnr});
             }
 
 
@@ -139,7 +68,7 @@ public class REST_Insert_Orders_Data
                 }
                 if (etOrderHeader != null && etOrderHeader.size() > 0)
                 {
-                    String EtOrderHeader_sql = "Insert into DUE_ORDERS_EtOrderHeader (UUID, Aufnr, Auart, Ktext, Ilart, Ernam, Erdat, Priok, Equnr, Strno, TplnrInt, Bautl, Gltrp, Gstrp, Docs, Permits, Altitude, Latitude, Longitude, Qmnum, Closed, Completed, Ingrp, Arbpl, Werks, Bemot, Aueru, Auarttext, Qmartx, Qmtxt, Pltxt, Eqktx, Priokx , Ilatx, Plantname, Wkctrname, Ingrpname, Maktx, Xstatus, Usr01, Usr02, Usr03, Usr04, Usr05, Kokrs, Kostl, Anlzu, Anlzux, Ausvn, Ausbs, Auswk, Qmnam, ParnrVw, NameVw, Posid, Revnr, Fistl, Zzpermit, Zzpmistdt, Zzpmisttm, Zzpmiendt, Zzpmientm, Zzpmihr1, IdealHours) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    String EtOrderHeader_sql = "Insert into DUE_ORDERS_EtOrderHeader (UUID, Aufnr, Auart, Ktext, Ilart, Ernam, Erdat, Priok, Equnr, Strno, TplnrInt, Bautl, Gltrp, Gstrp, Docs, Permits, Altitude, Latitude, Longitude, Qmnum, Closed, Completed, Ingrp, Arbpl, Werks, Bemot, Aueru, Auarttext, Qmartx, Qmtxt, Pltxt, Eqktx, Priokx , Ilatx, Plantname, Wkctrname, Ingrpname, Maktx, Xstatus, Usr01, Usr02, Usr03, Usr04, Usr05, Kokrs, Kostl, Anlzu, Anlzux, Ausvn, Ausbs, Auswk, Qmnam, ParnrVw, NameVw, Posid, Revnr, Fistl, Zzpermit, Zzpmistdt, Zzpmisttm, Zzpmiendt, Zzpmientm, Zzpmihr1, IdealHours,RSNUM) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                     SQLiteStatement EtOrderHeader_statement = App_db.compileStatement(EtOrderHeader_sql);
                     EtOrderHeader_statement.clearBindings();
                     for (REST_Orders_SER.ETORDERHEADER etOrderHeader_result : etOrderHeader)
@@ -208,6 +137,7 @@ public class REST_Insert_Orders_Data
                         EtOrderHeader_statement.bindString(62, checkempty.check_empty(etOrderHeader_result.getZZPMIENTM()));
                         EtOrderHeader_statement.bindString(63, checkempty.check_empty(etOrderHeader_result.getZZPMIHR1()));
                         EtOrderHeader_statement.bindString(64, checkempty.check_empty(etOrderHeader_result.getIDEALHOURS()));
+                        EtOrderHeader_statement.bindString(65, checkempty.check_empty(etOrderHeader_result.getRSNUM()));
                         EtOrderHeader_statement.execute();
                     }
                 }
@@ -234,7 +164,7 @@ public class REST_Insert_Orders_Data
                 }
                 if (etOrderOperations != null && etOrderOperations.size() > 0)
                 {
-                    String EtOrderOperations_sql = "Insert into DUE_ORDERS_EtOrderOperations (UUID,Aufnr,Vornr,Uvorn,Ltxa1,Arbpl,Werks,Steus,Larnt,Dauno,Daune,Fsavd,Ssedd,Pernr,Asnum,Plnty,Plnal,Plnnr,Rueck,Aueru,ArbplText,WerksText,SteusText,LarntText,Usr01,Usr02,Usr03,Usr04,Usr05,Action, Anlzu, Sortl, IdealCond, ActualCond) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    String EtOrderOperations_sql = "Insert into DUE_ORDERS_EtOrderOperations (UUID,Aufnr,Vornr,Uvorn,Ltxa1,Arbpl,Werks,Steus,Larnt,Dauno,Daune,Fsavd,Ssedd,Pernr,Asnum,Plnty,Plnal,Plnnr,Rueck,Aueru,ArbplText,WerksText,SteusText,LarntText,Usr01,Usr02,Usr03,Usr04,Usr05,Action, Anlzu, Sortl, IdealCond, ActualCond, SAKTO) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                     SQLiteStatement EtOrderOperations_statement = App_db.compileStatement(EtOrderOperations_sql);
                     EtOrderOperations_statement.clearBindings();
                     for (REST_Orders_SER.ETORDEROPERATION etOrderOperations_result : etOrderOperations)
@@ -264,8 +194,8 @@ public class REST_Insert_Orders_Data
                         EtOrderOperations_statement.bindString(23, checkempty.check_empty(etOrderOperations_result.getSTEUSTEXT()));
                         EtOrderOperations_statement.bindString(24, checkempty.check_empty(etOrderOperations_result.getLARNTTEXT()));
                         EtOrderOperations_statement.bindString(25, checkempty.check_empty(etOrderOperations_result.getUSR01()));
-                        EtOrderOperations_statement.bindString(26, checkempty.check_empty(etOrderOperations_result.getUSR02()));
-                        EtOrderOperations_statement.bindString(27, checkempty.check_empty(etOrderOperations_result.getUSR03()));
+                        EtOrderOperations_statement.bindString(26, checkempty1.check_empty(etOrderOperations_result.getUSR02()));
+                        EtOrderOperations_statement.bindString(27, checkempty1.check_empty(etOrderOperations_result.getUSR03()));
                         EtOrderOperations_statement.bindString(28, checkempty.check_empty(etOrderOperations_result.getUSR04()));
                         EtOrderOperations_statement.bindString(29, checkempty.check_empty(etOrderOperations_result.getUSR05()));
                         EtOrderOperations_statement.bindString(30, checkempty.check_empty(etOrderOperations_result.getAction()));
@@ -273,6 +203,7 @@ public class REST_Insert_Orders_Data
                         EtOrderOperations_statement.bindString(32, checkempty.check_empty(etOrderOperations_result.getSortl()));
                         EtOrderOperations_statement.bindString(33, checkempty.check_empty(etOrderOperations_result.getIdealCond()));
                         EtOrderOperations_statement.bindString(34, checkempty.check_empty(etOrderOperations_result.getActualCond()));
+                        EtOrderOperations_statement.bindString(35, checkempty1.check_empty(etOrderOperations_result.getSAKTO()));
                         EtOrderOperations_statement.execute();
                     }
                 }
@@ -318,51 +249,6 @@ public class REST_Insert_Orders_Data
             {
             }
             /*Reading and Inserting Data into Database Table for EtOrderLongtext*/
-
-
-
-
-
-            /*Reading and Inserting Data into Database Table for EtOrderCost*/
-            /*try
-            {
-                Orders_SER.EtOrderCost etOrderCost = null;
-                if(type.equalsIgnoreCase("DUORD"))
-                {
-                    etOrderCost = orders_response.getD().getResults().get(0).getEtOrderCost();
-                }
-                else if(type.equalsIgnoreCase("CRORD"))
-                {
-                    etOrderCost = orders_response.getD().getEtOrderCost();
-                }
-                if (etOrderCost != null)
-                {
-                    List<Orders_SER.EtOrderCost_Result> etOrderCost_results = etOrderCost.getResults();
-                    if (etOrderCost_results != null && etOrderCost_results.size() > 0)
-                    {
-                        String EtOrderCost_sql = "Insert into EtOrderCost (UUID, Aufnr, Text, Estcost, Plancost, Actcost, Currency) values(?,?,?,?,?,?,?);";
-                        SQLiteStatement EtOrderCost_statement = App_db.compileStatement(EtOrderCost_sql);
-                        EtOrderCost_statement.clearBindings();
-                        for (Orders_SER.EtOrderCost_Result etOrderCostResult : etOrderCost_results)
-                        {
-                            EtOrderCost_statement.bindString(1, checkempty.check_empty(etOrderCostResult.getAufnr()));
-                            EtOrderCost_statement.bindString(2, checkempty.check_empty(etOrderCostResult.getAufnr()));
-                            EtOrderCost_statement.bindString(3, checkempty.check_empty(etOrderCostResult.getText()));
-                            EtOrderCost_statement.bindString(4, checkempty.check_empty(etOrderCostResult.getEstcost()));
-                            EtOrderCost_statement.bindString(5, checkempty.check_empty(etOrderCostResult.getPlancost()));
-                            EtOrderCost_statement.bindString(6, checkempty.check_empty(etOrderCostResult.getActcost()));
-                            EtOrderCost_statement.bindString(7, checkempty.check_empty(etOrderCostResult.getCurrency()));
-                            EtOrderCost_statement.execute();
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }*/
-            /*Reading and Inserting Data into Database Table for EtOrderCost*/
-
-
 
 
 
@@ -432,7 +318,7 @@ public class REST_Insert_Orders_Data
                     {
                         EtOrderStatus_statement.bindString(1, checkempty.check_empty(etOrderStatusResult.getAUFNR()));
                         EtOrderStatus_statement.bindString(2, checkempty.check_empty(etOrderStatusResult.getAUFNR()));
-                        EtOrderStatus_statement.bindString(3, etOrderStatusResult.getVornr());
+                        EtOrderStatus_statement.bindString(3, checkempty.check_empty(etOrderStatusResult.getVornr()));
                         EtOrderStatus_statement.bindString(4, checkempty.check_empty(etOrderStatusResult.getOBJNR()));
                         EtOrderStatus_statement.bindString(5, checkempty.check_empty(etOrderStatusResult.getSTSMA()));
                         EtOrderStatus_statement.bindString(6, checkempty.check_empty(etOrderStatusResult.getINIST()));
@@ -456,171 +342,104 @@ public class REST_Insert_Orders_Data
 
 
 
-            /*Reading and Inserting Data into Database Table for EtDocs*/
-            /*try
-            {
-                Orders_SER.EtDocs etDocs = null;
-                if(type.equalsIgnoreCase("DUORD"))
-                {
-                    etDocs = orders_response.getD().getResults().get(0).getEtDocs();
-                }
-                else if(type.equalsIgnoreCase("CRORD"))
-                {
-                    etDocs = orders_response.getD().getEtDocs();
-                }
-                if (etDocs != null)
-                {
-                    List<Orders_SER.EtDocs_Result> etDocs_results = etDocs.getResults();
-                    if (etDocs_results != null && etDocs_results.size() > 0)
-                    {
-                        String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype) values(?,?,?,?,?,?,?,?,?,?,?);";
-                        SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
-                        EtDocs_statement.clearBindings();
-                        for (Orders_SER.EtDocs_Result etOrderStatusResult : etDocs_results)
-                        {
-                            EtDocs_statement.bindString(1, checkempty.check_empty(etOrderStatusResult.getZobjid()));
-                            EtDocs_statement.bindString(2, checkempty.check_empty(etOrderStatusResult.getZobjid()));
-                            EtDocs_statement.bindString(3, checkempty.check_empty(etOrderStatusResult.getZdoctype()));
-                            EtDocs_statement.bindString(4, checkempty.check_empty(etOrderStatusResult.getZdoctypeItem()));
-                            EtDocs_statement.bindString(5, checkempty.check_empty(etOrderStatusResult.getFilename()));
-                            EtDocs_statement.bindString(6, checkempty.check_empty(etOrderStatusResult.getFiletype()));
-                            EtDocs_statement.bindString(7, checkempty.check_empty(etOrderStatusResult.getFsize()));
-                            EtDocs_statement.bindString(8, checkempty.check_empty(etOrderStatusResult.getContent()));
-                            EtDocs_statement.bindString(9, checkempty.check_empty(etOrderStatusResult.getDocID()));
-                            EtDocs_statement.bindString(10, checkempty.check_empty(etOrderStatusResult.getDocType()));
-                            EtDocs_statement.bindString(11, checkempty.check_empty(etOrderStatusResult.getObjtype()));
-                            EtDocs_statement.execute();
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }*/
-            /*Reading and Inserting Data into Database Table for EtDocs*/
-
-
-
 
             /*Reading and Inserting Data into Database Table for EtOrderComponents*/
-            /*try
+            try
             {
-                Orders_SER.EtOrderComponents etOrderComponents = null;
+                List<REST_Orders_SER.ETORDERCOMPONENTS> etOrderComponents = null;
                 if(type.equalsIgnoreCase("DUORD"))
                 {
-                    etOrderComponents = orders_response.getD().getResults().get(0).getEtOrderComponents();
+                    etOrderComponents = orders_response.geteTORDERCOMPONENTS();
                 }
                 else if(type.equalsIgnoreCase("CRORD"))
                 {
-                    etOrderComponents = orders_response.getD().getEtOrderComponents();
+                    etOrderComponents = orders_response.geteTORDERCOMPONENTS();
                 }
-                if (etOrderComponents != null)
+                if (etOrderComponents != null && etOrderComponents.size() > 0)
                 {
-                    List<Orders_SER.EtOrderComponents_Result> etOrderComponents_results = etOrderComponents.getResults();
-                    if (etOrderComponents_results != null && etOrderComponents_results.size() > 0)
+                    String EtOrderComponents_sql = "Insert into EtOrderComponents (UUID, Aufnr, Vornr, Uvorn, Rsnum, Rspos, Matnr, Werks, Lgort, Posnr, Bdmng, Meins, Postp, MatnrText, WerksText, LgortText, PostpText, Usr01, Usr02, Usr03, Usr04, Usr05, Action, Wempf, Ablad, Charg) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    SQLiteStatement EtOrderComponents_statement = App_db.compileStatement(EtOrderComponents_sql);
+                    EtOrderComponents_statement.clearBindings();
+                    for (REST_Orders_SER.ETORDERCOMPONENTS etOrderComponents_result : etOrderComponents)
                     {
-                        String EtOrderComponents_sql = "Insert into EtOrderComponents (UUID, Aufnr, Vornr, Uvorn, Rsnum, Rspos, Matnr, Werks, Lgort, Posnr, Bdmng, Meins, Postp, MatnrText, WerksText, LgortText, PostpText, Usr01, Usr02, Usr03, Usr04, Usr05, Action, Wempf, Ablad, Charg) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                        SQLiteStatement EtOrderComponents_statement = App_db.compileStatement(EtOrderComponents_sql);
-                        EtOrderComponents_statement.clearBindings();
-                        for (Orders_SER.EtOrderComponents_Result etOrderComponents_result : etOrderComponents_results)
-                        {
-                            EtOrderComponents_statement.bindString(1, checkempty.check_empty(etOrderComponents_result.getAufnr()));
-                            EtOrderComponents_statement.bindString(2, checkempty.check_empty(etOrderComponents_result.getAufnr()));
-                            EtOrderComponents_statement.bindString(3, etOrderComponents_result.getVornr());
-                            EtOrderComponents_statement.bindString(4, checkempty.check_empty(etOrderComponents_result.getUvorn()));
-                            EtOrderComponents_statement.bindString(5, checkempty.check_empty(etOrderComponents_result.getRsnum()));
-                            EtOrderComponents_statement.bindString(6, checkempty.check_empty(etOrderComponents_result.getRspos()));
-                            EtOrderComponents_statement.bindString(7, checkempty.check_empty(etOrderComponents_result.getMatnr()));
-                            EtOrderComponents_statement.bindString(8, checkempty.check_empty(etOrderComponents_result.getWerks()));
-                            EtOrderComponents_statement.bindString(9, checkempty.check_empty(etOrderComponents_result.getLgort()));
-                            EtOrderComponents_statement.bindString(10, checkempty.check_empty(etOrderComponents_result.getPosnr()));
-                            EtOrderComponents_statement.bindString(11, checkempty.check_empty(etOrderComponents_result.getBdmng()));
-                            EtOrderComponents_statement.bindString(12, checkempty.check_empty(etOrderComponents_result.getMeins()));
-                            EtOrderComponents_statement.bindString(13, checkempty.check_empty(etOrderComponents_result.getPostp()));
-                            EtOrderComponents_statement.bindString(14, checkempty.check_empty(etOrderComponents_result.getMatnrText()));
-                            EtOrderComponents_statement.bindString(15, checkempty.check_empty(etOrderComponents_result.getWerksText()));
-                            EtOrderComponents_statement.bindString(16, checkempty.check_empty(etOrderComponents_result.getLgortText()));
-                            EtOrderComponents_statement.bindString(17, checkempty.check_empty(etOrderComponents_result.getPostpText()));
-                            EtOrderComponents_statement.bindString(18, checkempty.check_empty(etOrderComponents_result.getUsr01()));
-                            EtOrderComponents_statement.bindString(19, checkempty.check_empty(etOrderComponents_result.getUsr02()));
-                            EtOrderComponents_statement.bindString(20, checkempty.check_empty(etOrderComponents_result.getUsr03()));
-                            EtOrderComponents_statement.bindString(21, checkempty.check_empty(etOrderComponents_result.getUsr04()));
-                            EtOrderComponents_statement.bindString(22, checkempty.check_empty(etOrderComponents_result.getUsr05()));
-                            EtOrderComponents_statement.bindString(23, checkempty.check_empty(etOrderComponents_result.getAction()));
-                            EtOrderComponents_statement.bindString(24, checkempty.check_empty(etOrderComponents_result.getWempf()));
-                            EtOrderComponents_statement.bindString(25, checkempty.check_empty(etOrderComponents_result.getAblad()));
-                            EtOrderComponents_statement.bindString(26, checkempty.check_empty(etOrderComponents_result.getCharg()));
-                            EtOrderComponents_statement.execute();
-                        }
+                        EtOrderComponents_statement.bindString(1, checkempty.check_empty(etOrderComponents_result.getAUFNR()));
+                        EtOrderComponents_statement.bindString(2, checkempty.check_empty(etOrderComponents_result.getAUFNR()));
+                        EtOrderComponents_statement.bindString(3, etOrderComponents_result.getVORNR());
+                        EtOrderComponents_statement.bindString(4, checkempty.check_empty(etOrderComponents_result.getUVORN()));
+                        EtOrderComponents_statement.bindString(5, checkempty.check_empty(etOrderComponents_result.getRSNUM()));
+                        EtOrderComponents_statement.bindString(6, checkempty.check_empty(etOrderComponents_result.getRSPOS()));
+                        EtOrderComponents_statement.bindString(7, checkempty.check_empty(etOrderComponents_result.getMATNR()));
+                        EtOrderComponents_statement.bindString(8, checkempty.check_empty(etOrderComponents_result.getWERKS()));
+                        EtOrderComponents_statement.bindString(9, checkempty.check_empty(etOrderComponents_result.getLGORT()));
+                        EtOrderComponents_statement.bindString(10, checkempty.check_empty(etOrderComponents_result.getPOSNR()));
+                        EtOrderComponents_statement.bindString(11, checkempty.check_empty(etOrderComponents_result.getBDMNG()));
+                        EtOrderComponents_statement.bindString(12, checkempty.check_empty(etOrderComponents_result.getMEINS()));
+                        EtOrderComponents_statement.bindString(13, checkempty.check_empty(etOrderComponents_result.getPOSTP()));
+                        EtOrderComponents_statement.bindString(14, checkempty.check_empty(etOrderComponents_result.getMATNRTEXT()));
+                        EtOrderComponents_statement.bindString(15, checkempty.check_empty(etOrderComponents_result.getWERKSTEXT()));
+                        EtOrderComponents_statement.bindString(16, checkempty.check_empty(etOrderComponents_result.getLGORTTEXT()));
+                        EtOrderComponents_statement.bindString(17, checkempty.check_empty(etOrderComponents_result.getPOSTPTEXT()));
+                        EtOrderComponents_statement.bindString(18, checkempty.check_empty(etOrderComponents_result.getUSR01()));
+                        EtOrderComponents_statement.bindString(19, checkempty.check_empty(etOrderComponents_result.getUSR02()));
+                        EtOrderComponents_statement.bindString(20, checkempty.check_empty(etOrderComponents_result.getUSR03()));
+                        EtOrderComponents_statement.bindString(21, checkempty.check_empty(etOrderComponents_result.getUSR04()));
+                        EtOrderComponents_statement.bindString(22, checkempty.check_empty(etOrderComponents_result.getUSR05()));
+                        EtOrderComponents_statement.bindString(23, "");
+                        EtOrderComponents_statement.bindString(24, checkempty.check_empty(etOrderComponents_result.getWEMPF()));
+                        EtOrderComponents_statement.bindString(25, checkempty.check_empty(etOrderComponents_result.getABLAD()));
+                        EtOrderComponents_statement.bindString(26, checkempty.check_empty(etOrderComponents_result.getCharg()));
+                        EtOrderComponents_statement.execute();
                     }
                 }
             }
             catch (Exception e)
             {
-            }*/
+            }
             /*Reading and Inserting Data into Database Table for EtOrderComponents*/
 
 
 
 
-            /*Reading and Inserting Data into Database Table for EtImrg*/
-           /* try
+            /*Reading and Inserting Data into Database Table for EtDocs*/
+            try
             {
-                Orders_SER.EtImrg etImrg = null;
+                List<REST_Orders_SER.ETDOC> etDocs = null;
                 if(type.equalsIgnoreCase("DUORD"))
                 {
-                    etImrg = orders_response.getD().getResults().get(0).getEtImrg();
+                    etDocs = orders_response.geteTDOCS();
                 }
                 else if(type.equalsIgnoreCase("CRORD"))
                 {
-                    etImrg = orders_response.getD().getEtImrg();
+                    etDocs = orders_response.geteTDOCS();
                 }
-                if (etImrg != null)
+                if (etDocs != null && etDocs.size() > 0)
                 {
-                    List<Orders_SER.EtImrg_Result> etImrg_results = etImrg.getResults();
-                    if (etImrg_results != null && etImrg_results.size() > 0)
+                    String EtDocs_sql = "Insert into DUE_ORDERS_EtDocs(UUID, Zobjid, Zdoctype, ZdoctypeItem, Filename, Filetype, Fsize, Content, DocId, DocType, Objtype, Filepath, Status) values(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    SQLiteStatement EtDocs_statement = App_db.compileStatement(EtDocs_sql);
+                    EtDocs_statement.clearBindings();
+                    for (REST_Orders_SER.ETDOC etDocsResult : etDocs)
                     {
-                        String EtImrg_sql = "Insert into Orders_EtImrg (UUID,Qmnum, Aufnr, Vornr, Mdocm, Point, Mpobj, Mpobt, Psort,Pttxt, Atinn, Idate, Itime, Mdtxt,Readr,Atbez,Msehi,Msehl,Readc,Desic,Prest,Docaf, Codct, Codgr, Vlcod, Action, Equnr) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                        SQLiteStatement EtImrg_statement = App_db.compileStatement(EtImrg_sql);
-                        EtImrg_statement.clearBindings();
-                        for (Orders_SER.EtImrg_Result etImrgResult : etImrg_results)
-                        {
-                            EtImrg_statement.bindString(1, checkempty.check_empty(etImrgResult.getAufnr()));
-                            EtImrg_statement.bindString(2, checkempty.check_empty(etImrgResult.getQmnum()));
-                            EtImrg_statement.bindString(3, checkempty.check_empty(etImrgResult.getAufnr()));
-                            EtImrg_statement.bindString(4, checkempty.check_empty(etImrgResult.getVornr()));
-                            EtImrg_statement.bindString(5, checkempty.check_empty(etImrgResult.getMdocm()));
-                            EtImrg_statement.bindString(6, checkempty.check_empty(etImrgResult.getPoint()));
-                            EtImrg_statement.bindString(7, checkempty.check_empty(etImrgResult.getMpobj()));
-                            EtImrg_statement.bindString(8, checkempty.check_empty(etImrgResult.getMpobt()));
-                            EtImrg_statement.bindString(9, checkempty.check_empty(etImrgResult.getPsort()));
-                            EtImrg_statement.bindString(10, checkempty.check_empty(etImrgResult.getPttxt()));
-                            EtImrg_statement.bindString(11, checkempty.check_empty(etImrgResult.getAtinn()));
-                            EtImrg_statement.bindString(12, checkempty.check_empty(etImrgResult.getIdate()));
-                            EtImrg_statement.bindString(13, checkempty.check_empty(etImrgResult.getItime()));
-                            EtImrg_statement.bindString(14, checkempty.check_empty(etImrgResult.getMdtxt()));
-                            EtImrg_statement.bindString(15, checkempty.check_empty(etImrgResult.getReadr()));
-                            EtImrg_statement.bindString(16, checkempty.check_empty(etImrgResult.getAtbez()));
-                            EtImrg_statement.bindString(17, checkempty.check_empty(etImrgResult.getMsehi()));
-                            EtImrg_statement.bindString(18, checkempty.check_empty(etImrgResult.getMsehl()));
-                            EtImrg_statement.bindString(19, checkempty.check_empty(etImrgResult.getReadc()));
-                            EtImrg_statement.bindString(20, checkempty.check_empty(etImrgResult.getDesic()));
-                            EtImrg_statement.bindString(21, checkempty.check_empty(etImrgResult.getPrest()));
-                            EtImrg_statement.bindString(22, checkempty.check_empty(etImrgResult.getDocaf()));
-                            EtImrg_statement.bindString(23, checkempty.check_empty(etImrgResult.getCodct()));
-                            EtImrg_statement.bindString(24, checkempty.check_empty(etImrgResult.getCodgr()));
-                            EtImrg_statement.bindString(25, checkempty.check_empty(etImrgResult.getVlcod()));
-                            EtImrg_statement.bindString(26, checkempty.check_empty(etImrgResult.getAction()));
-                            EtImrg_statement.bindString(27, checkempty.check_empty(etImrgResult.getEqunr()));
-                            EtImrg_statement.execute();
-                        }
+                        EtDocs_statement.bindString(1,checkempty.check_empty(etDocsResult.getZOBJID()));
+                        EtDocs_statement.bindString(2,checkempty.check_empty(etDocsResult.getZOBJID()));
+                        EtDocs_statement.bindString(3,checkempty.check_empty(etDocsResult.getZDOCTYPE()));
+                        EtDocs_statement.bindString(4,checkempty.check_empty(etDocsResult.getZDOCTYPEITEM()));
+                        EtDocs_statement.bindString(5,checkempty.check_empty(etDocsResult.getFILENAME()));
+                        EtDocs_statement.bindString(6,checkempty.check_empty(etDocsResult.getFILETYPE()));
+                        EtDocs_statement.bindString(7,checkempty.check_empty(etDocsResult.getFSIZE()));
+                        EtDocs_statement.bindString(8,checkempty.check_empty(etDocsResult.getCONTENT()));
+                        EtDocs_statement.bindString(9,checkempty.check_empty(etDocsResult.getDOCID()));
+                        EtDocs_statement.bindString(10,checkempty.check_empty(etDocsResult.getDOCTYPE()));
+                        EtDocs_statement.bindString(11,checkempty.check_empty(etDocsResult.getOBJTYPE()));
+                        EtDocs_statement.bindString(12,"");
+                        EtDocs_statement.bindString(13,"Old");
+                        EtDocs_statement.execute();
                     }
                 }
             }
             catch (Exception e)
             {
-            }*/
-            /*Reading and Inserting Data into Database Table for EtImrg*/
+            }
+            /*Reading and Inserting Data into Database Table for EtDocs*/
 
 
             App_db.setTransactionSuccessful();

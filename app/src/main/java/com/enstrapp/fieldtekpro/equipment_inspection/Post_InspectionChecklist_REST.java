@@ -9,7 +9,9 @@ import android.provider.Settings;
 import android.util.Base64;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.Interface.REST_Interface;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
+import com.enstrapp.fieldtekpro.notifications.Model_Notif_Create_REST;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -70,21 +72,19 @@ public class Post_InspectionChecklist_REST
             String URL = activity.getString(R.string.ip_address);
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
             Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
-            Interface service = retrofit.create(Interface.class);
+            REST_Interface service = retrofit.create(REST_Interface.class);
 
             /*For Send Data in POST Header*/
             Map<String, String> map = new HashMap<>();
-            map.put("x-csrf-token", token);
-            map.put("Cookie", cookie);
             map.put("Accept", "application/json;odata=verbose");
             map.put("Content-Type", "application/json");
             /*For Send Data in POST Header*/
 
 
-            ArrayList<Model_INSP_Imrg> headerArrayList = new ArrayList<>();
+            ArrayList<Model_INSP_Imrg_REST> headerArrayList = new ArrayList<>();
             for (int i = 0; i < inspdata_list.size(); i++)
             {
-                Model_INSP_Imrg model_insp_imrg = new Model_INSP_Imrg();
+                Model_INSP_Imrg_REST model_insp_imrg = new Model_INSP_Imrg_REST();
                 model_insp_imrg.setQmnum("");
                 model_insp_imrg.setAufnr("");
                 model_insp_imrg.setVornr("");
@@ -141,47 +141,33 @@ public class Post_InspectionChecklist_REST
             }
 
 
-            /*Adding EtMsg to Arraylist*/
-            ArrayList EtMsg_ArrayList = new ArrayList<>();
-            /*Adding EtMsg to Arraylist*/
-
+            Model_Notif_Create_REST.IsDevice isDevice = new Model_Notif_Create_REST.IsDevice();
+            isDevice.setMUSER(username.toUpperCase().toString());
+            isDevice.setDEVICEID(device_id);
+            isDevice.setDEVICESNO(device_serial_number);
+            isDevice.setUDID(device_uuid);
 
             /*Calling Model_INSP_CHK Model with Data*/
-            Model_INSP_CHK model_notif_create = new Model_INSP_CHK();
-            model_notif_create.setMuser(username.toUpperCase().toString());
-            model_notif_create.setDeviceid(device_id);
-            model_notif_create.setDevicesno(device_serial_number);
-            model_notif_create.setUdid(device_uuid);
+            Model_INSP_CHK_REST model_notif_create = new Model_INSP_CHK_REST();
+            model_notif_create.setIsDevice(isDevice);
             model_notif_create.setIvTransmitType("LOAD");
             model_notif_create.setIvCommit(true);
-            model_notif_create.setItMeaImrg(headerArrayList);
-            model_notif_create.setEtMsg(EtMsg_ArrayList);
+            model_notif_create.setIt_imrg(headerArrayList);
             /*Calling Model_INSP_CHK Model with Data*/
 
             String credentials = username + ":" + password;
             final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-            Call<INSPCHK_SER> call = service.postINSPCHK(url_link, model_notif_create, basic, map);
-            Response<INSPCHK_SER> response = call.execute();
+            Call<INSPCHK_SER_REST> call = service.postINSPCHK(url_link, model_notif_create, basic, map);
+            Response<INSPCHK_SER_REST> response = call.execute();
             int response_status_code = response.code();
             if (response_status_code == 200)
             {
                 if (response.isSuccessful() && response.body() != null)
                 {
-                    /*Reading Response Data and Parsing to Serializable*/
-                    INSPCHK_SER rs = response.body();
-                    StringBuilder Message_stringbuilder = new StringBuilder();
-                    String response_data = new Gson().toJson(rs.getD().getEtMsg().getResults());
-                    if (response_data != null && !response_data.equals(""))
-                    {
-                        JSONArray jsonObject = new JSONArray(response_data);
-                        for (int i = 0; i < jsonObject.length(); i++)
-                        {
-                            String Message = jsonObject.getJSONObject(i).optString("Message");
-                            Message_stringbuilder.append(Message);
-                        }
-                    }
+                    INSPCHK_SER_REST rs = response.body();
+                    String response_data = rs.geteVMESSAGE();
                     Get_Response = "success";
-                    Get_Data = Message_stringbuilder.toString();
+                    Get_Data = response_data;
                 }
             }
             else

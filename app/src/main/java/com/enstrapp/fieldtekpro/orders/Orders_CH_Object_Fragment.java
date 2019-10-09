@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 import java.util.ArrayList;
 
@@ -69,7 +69,7 @@ public class Orders_CH_Object_Fragment extends Fragment {
         String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "W",
                 "U");
         if (auth_status.equalsIgnoreCase("true")) {
-            ma.fab.show();
+            ma.fab.hide();
         } else {
             ma.fab.hide();
         }

@@ -19,7 +19,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 public class GPSTracker extends Service implements LocationListener {
 

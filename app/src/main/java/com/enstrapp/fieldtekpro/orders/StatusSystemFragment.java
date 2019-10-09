@@ -16,7 +16,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class StatusSystemFragment extends Fragment {
         private List<NotifOrdrStatusPrcbl> sysStsList;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView txt04_tv, txt30_tv;
+            public TextView txt04_tv, txt30_tv, act_status_textview;
             CheckBox checkBox;
 
             public MyViewHolder(View view) {
@@ -72,6 +72,7 @@ public class StatusSystemFragment extends Fragment {
                 txt04_tv = (TextView) view.findViewById(R.id.txt04_tv);
                 txt30_tv = (TextView) view.findViewById(R.id.txt30_tv);
                 checkBox = view.findViewById(R.id.checkBox);
+                act_status_textview = (TextView) view.findViewById(R.id.act_status_textview);
             }
         }
 
@@ -99,6 +100,14 @@ public class StatusSystemFragment extends Fragment {
                     holder.checkBox.setChecked(true);
                 }
             });
+            holder.act_status_textview.setText(sso.getAct());
+            if (holder.act_status_textview.getText().toString().equalsIgnoreCase("X")) {
+                holder.checkBox.setChecked(true);
+                holder.checkBox.setEnabled(false);
+            } else {
+                holder.checkBox.setChecked(false);
+                holder.checkBox.setEnabled(false);
+            }
         }
 
         @Override

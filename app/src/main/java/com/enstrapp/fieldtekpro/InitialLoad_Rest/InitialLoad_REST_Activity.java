@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.enstrapp.fieldtekpro.DashBoard.DashBoard_Activity;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 
@@ -67,7 +67,8 @@ public class InitialLoad_REST_Activity extends AppCompatActivity
                 cursor.close();
         }
 
-        if (From != null && !From.equals(""))
+
+        if (From.equalsIgnoreCase("LOAD"))
         {
             progressDialog.show_progress_dialog(InitialLoad_REST_Activity.this,"Greetings! "+username+". "+"\n"+getResources().getString(R.string.fetching_data));
             transmit_type = "LOAD";
@@ -409,12 +410,15 @@ public class InitialLoad_REST_Activity extends AppCompatActivity
         @Override
         protected Void doInBackground(Void... params)
         {
-            try
+            if (From.equalsIgnoreCase("LOAD"))
             {
-                Measurementpoint_status = REST_MeasurementPoint.Get_Mpoint_Data(InitialLoad_REST_Activity.this,transmit_type);
-            }
-            catch (Exception e)
-            {
+                try
+                {
+                    Measurementpoint_status = REST_MeasurementPoint.Get_Mpoint_Data(InitialLoad_REST_Activity.this,transmit_type);
+                }
+                catch (Exception e)
+                {
+                }
             }
             return null;
         }
@@ -427,7 +431,15 @@ public class InitialLoad_REST_Activity extends AppCompatActivity
         {
             super.onPostExecute(result);
             Log.v("kiran_MPOINT_Status",Measurementpoint_status+"...");
-            new Set_DeviceToken_Data().execute();
+            //new Set_DeviceToken_Data().execute();
+
+            FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "LoggedIn");
+            FieldTekPro_SharedPrefeditor.putString("FieldTekPro_InitialLoad", "");
+            FieldTekPro_SharedPrefeditor.commit();
+            InitialLoad_REST_Activity.this.finish();
+            progressDialog.dismiss_progress_dialog();
+            Intent dashboard_intent = new Intent(InitialLoad_REST_Activity.this, DashBoard_Activity.class);
+            startActivity(dashboard_intent);
         }
     }
 
@@ -462,7 +474,15 @@ public class InitialLoad_REST_Activity extends AppCompatActivity
         {
             super.onPostExecute(result);
             Log.v("kiran_DeviceToken_status",DeviceToken_status+"...");
-            new Get_Calibration_Data().execute();
+            //new Get_Calibration_Data().execute();
+
+            FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "LoggedIn");
+            FieldTekPro_SharedPrefeditor.putString("FieldTekPro_InitialLoad", "");
+            FieldTekPro_SharedPrefeditor.commit();
+            InitialLoad_REST_Activity.this.finish();
+            progressDialog.dismiss_progress_dialog();
+            Intent dashboard_intent = new Intent(InitialLoad_REST_Activity.this, DashBoard_Activity.class);
+            startActivity(dashboard_intent);
         }
     }
 
@@ -498,12 +518,6 @@ public class InitialLoad_REST_Activity extends AppCompatActivity
         {
             super.onPostExecute(result);
             Log.v("kiran_CALIB_status",Calibration_Status+"...");
-            FieldTekPro_SharedPrefeditor.putString("App_Login_Status", "LoggedIn");
-            FieldTekPro_SharedPrefeditor.commit();
-            InitialLoad_REST_Activity.this.finish();
-            progressDialog.dismiss_progress_dialog();
-            Intent dashboard_intent = new Intent(InitialLoad_REST_Activity.this, DashBoard_Activity.class);
-            startActivity(dashboard_intent);
         }
     }
 

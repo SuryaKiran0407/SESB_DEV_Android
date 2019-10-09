@@ -21,12 +21,34 @@ public class is_reserv_comp
     @SerializedName("STORE_LOC")
     @Expose
     private String sTORELOC;
+    @SerializedName("BWTAR")
+    @Expose
+    private String Bwtar;
+    @SerializedName("CHARG")
+    @Expose
+    private String Charg;
     @SerializedName("FIELDS")
     @Expose
     private String fIELDS;
     @SerializedName("UDID")
     @Expose
     private String uDID;
+
+    public String getBwtar() {
+        return Bwtar;
+    }
+
+    public void setBwtar(String bwtar) {
+        Bwtar = bwtar;
+    }
+
+    public String getCharg() {
+        return Charg;
+    }
+
+    public void setCharg(String charg) {
+        Charg = charg;
+    }
 
     public String getBOMCOMPONENT() {
         return bOMCOMPONENT;

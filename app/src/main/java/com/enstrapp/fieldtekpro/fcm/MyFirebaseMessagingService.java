@@ -11,7 +11,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.splashscreen.SplashScreen_Activity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

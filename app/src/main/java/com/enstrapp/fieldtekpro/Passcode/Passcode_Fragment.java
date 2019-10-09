@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.DashBoard.DashBoard_Activity;
 import com.enstrapp.fieldtekpro.InitialLoad_Rest.InitialLoad_REST_Activity;
 import com.enstrapp.fieldtekpro.Initialload.InitialLoad_Activity;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.login.Login_Activity;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 

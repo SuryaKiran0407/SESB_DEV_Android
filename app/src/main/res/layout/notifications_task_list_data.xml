@@ -144,49 +144,6 @@
 					</LinearLayout>
 
 
-					<RadioGroup
-						android:id="@+id/status_radiogroup"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:orientation="horizontal">
-						<com.enstrapp.fieldtekpro.customfont.Font_RadioButton
-							android:id="@+id/release_radiobutton"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="start"
-							android:tag="1"
-							android:text="@string/release"
-							android:textColor="@color/light_grey1"
-							android:textSize="13sp"
-							android:theme="@style/CheckBox"
-							android:enabled="false"/>
-						<com.enstrapp.fieldtekpro.customfont.Font_RadioButton
-							android:id="@+id/completed_radiobutton"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="start"
-							android:tag="2"
-							android:text="@string/compltd"
-							android:textColor="@color/light_grey1"
-							android:textSize="13sp"
-							android:theme="@style/CheckBox"
-							android:layout_marginLeft="5dp"
-							android:enabled="false"/>
-						<com.enstrapp.fieldtekpro.customfont.Font_RadioButton
-							android:id="@+id/success_radiobutton"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="start"
-							android:tag="3"
-							android:text="@string/success"
-							android:textColor="@color/light_grey1"
-							android:textSize="13sp"
-							android:theme="@style/CheckBox"
-							android:layout_marginLeft="5dp"
-							android:enabled="false"/>
-					</RadioGroup>
-
-
 		        </LinearLayout>
 
 		        <LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:orientation="vertical">
@@ -196,6 +153,50 @@
 		        </LinearLayout>
 
 		    </LinearLayout>
+
+
+			<RadioGroup
+				android:id="@+id/status_radiogroup"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+				<com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+					android:id="@+id/release_radiobutton"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="start"
+					android:tag="1"
+					android:text="@string/release"
+					android:textColor="@color/light_grey2"
+					android:textSize="12sp"
+					android:theme="@style/CheckBox"
+					android:enabled="false"/>
+				<com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+					android:id="@+id/completed_radiobutton"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="start"
+					android:tag="2"
+					android:text="@string/compltd"
+					android:textColor="@color/light_grey2"
+					android:textSize="12sp"
+					android:theme="@style/CheckBox"
+					android:layout_marginLeft="5dp"
+					android:enabled="false"/>
+				<com.enstrapp.fieldtekpro.customfont.Font_RadioButton
+					android:id="@+id/success_radiobutton"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="start"
+					android:tag="3"
+					android:text="@string/success"
+					android:textColor="@color/light_grey2"
+					android:textSize="12sp"
+					android:theme="@style/CheckBox"
+					android:layout_marginLeft="5dp"
+					android:enabled="false"/>
+			</RadioGroup>
+
 
 
 			<TextView

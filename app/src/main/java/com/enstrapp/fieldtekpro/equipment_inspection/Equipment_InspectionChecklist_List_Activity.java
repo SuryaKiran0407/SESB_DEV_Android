@@ -30,7 +30,7 @@ import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
@@ -171,15 +171,7 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
         });
 
 
-        back_imageview.setOnClickListener(this);
 
-    }
-
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
         cd = new ConnectionDetector(getApplicationContext());
         isInternetPresent = cd.isConnectingToInternet();
         if (isInternetPresent)
@@ -198,6 +190,35 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
         {
             network_connection_dialog.show_network_connection_dialog(Equipment_InspectionChecklist_List_Activity.this);
         }
+
+
+        back_imageview.setOnClickListener(this);
+
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        /*cd = new ConnectionDetector(getApplicationContext());
+        isInternetPresent = cd.isConnectingToInternet();
+        if (isInternetPresent)
+        {
+            String webservice_type = getString(R.string.webservice_type);
+            if(webservice_type.equalsIgnoreCase("odata"))
+            {
+                new Get_History_Data().execute();
+            }
+            else
+            {
+                new Get_History_Data_REST().execute();
+            }
+        }
+        else
+        {
+            network_connection_dialog.show_network_connection_dialog(Equipment_InspectionChecklist_List_Activity.this);
+        }*/
     }
 
 
@@ -530,13 +551,13 @@ public class Equipment_InspectionChecklist_List_Activity extends AppCompatActivi
                 no_data_textview.setVisibility(View.GONE);
                 search.setVisibility(View.VISIBLE);
                 swiperefreshlayout.setVisibility(View.VISIBLE);
-                title_textview.setText(getString(R.string.insp_clist) + " : " + equipment_id + " (" + history_list.size() + ")");
+                title_textview.setText("M. Readings"+ " : " + equipment_id + " (" + history_list.size() + ")");
                 custom_progress_dialog.dismiss_progress_dialog();
                 no_data_layout.setVisibility(View.GONE);
             }
             else
             {
-                title_textview.setText(getString(R.string.insp_clist) + " : " + equipment_id + " (0)");
+                title_textview.setText("M. Readings" + " : " + equipment_id + " (0)");
                 no_data_textview.setVisibility(View.VISIBLE);
                 search.setVisibility(View.GONE);
                 swiperefreshlayout.setVisibility(View.GONE);

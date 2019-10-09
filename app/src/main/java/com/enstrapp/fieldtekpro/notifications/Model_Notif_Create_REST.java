@@ -38,24 +38,24 @@ public class Model_Notif_Create_REST
     @SerializedName("it_notif_header")
     @Expose
     private ArrayList<Model_Notif_Header_REST> ItNotifHeader;
-    @SerializedName("ItNotifItems")
+    @SerializedName("it_notif_items")
     @Expose
-    private ArrayList<Model_Notif_Causecode> ItNotifItems;
-    @SerializedName("ItNotifActvs")
+    private ArrayList<Model_Notif_Causecode_REST> ItNotifItems;
+    @SerializedName("it_notif_actvs")
     @Expose
-    private ArrayList<Model_Notif_Activity> ItNotifActvs;
-    @SerializedName("ItDocs")
+    private ArrayList<Model_Notif_Activity_REST> ItNotifActvs;
+    @SerializedName("it_docs")
     @Expose
-    private ArrayList<Model_Notif_Attachments> ItDocs;
-    @SerializedName("ItNotifLongtext")
+    private ArrayList<Model_Notif_Attachments_REST> ItDocs;
+    @SerializedName("it_notif_longtext")
     @Expose
-    private ArrayList<Model_Notif_Longtext> ItNotifLongtext;
+    private ArrayList<Model_Notif_Longtext_REST> ItNotifLongtext;
     @SerializedName("ItNotifStatus")
     @Expose
-    private ArrayList<Model_Notif_Status> ItNotifStatus;
-    @SerializedName("ItNotifTasks")
+    private ArrayList<Model_Notif_Status_REST> ItNotifStatus;
+    @SerializedName("it_notif_tasks")
     @Expose
-    private ArrayList<Model_Notif_Task> ItNotifTasks;
+    private ArrayList<Model_Notif_Task_REST> ItNotifTasks;
     @SerializedName("EvMessage")
     @Expose
     private List EvMessage = null;
@@ -100,11 +100,11 @@ public class Model_Notif_Create_REST
         this.etNotifHeader = etNotifHeader;
     }
 
-    public ArrayList<Model_Notif_Task> getItNotifTasks() {
+    public ArrayList<Model_Notif_Task_REST> getItNotifTasks() {
         return ItNotifTasks;
     }
 
-    public void setItNotifTasks(ArrayList<Model_Notif_Task> itNotifTasks) {
+    public void setItNotifTasks(ArrayList<Model_Notif_Task_REST> itNotifTasks) {
         ItNotifTasks = itNotifTasks;
     }
 
@@ -116,10 +116,10 @@ public class Model_Notif_Create_REST
         EtNotifTasks = etNotifTasks;
     }
 
-    public ArrayList<Model_Notif_Status> getItNotifStatus() {
+    public ArrayList<Model_Notif_Status_REST> getItNotifStatus() {
         return ItNotifStatus;
     }
-    public void setItNotifStatus(ArrayList<Model_Notif_Status> itNotifStatus) {
+    public void setItNotifStatus(ArrayList<Model_Notif_Status_REST> itNotifStatus) {
         ItNotifStatus = itNotifStatus;
     }
     public List getEtNotifDup() {
@@ -134,10 +134,10 @@ public class Model_Notif_Create_REST
     public void setEtNotifLongtext(List etNotifLongtext) {
         EtNotifLongtext = etNotifLongtext;
     }
-    public ArrayList<Model_Notif_Longtext> getItNotifLongtext() {
+    public ArrayList<Model_Notif_Longtext_REST> getItNotifLongtext() {
         return ItNotifLongtext;
     }
-    public void setItNotifLongtext(ArrayList<Model_Notif_Longtext> itNotifLongtext) {
+    public void setItNotifLongtext(ArrayList<Model_Notif_Longtext_REST> itNotifLongtext) {
         ItNotifLongtext = itNotifLongtext;
     }
     public List getEtNotifStatus() {
@@ -146,10 +146,10 @@ public class Model_Notif_Create_REST
     public void setEtNotifStatus(List etNotifStatus) {
         EtNotifStatus = etNotifStatus;
     }
-    public ArrayList<Model_Notif_Attachments> getItDocs() {
+    public ArrayList<Model_Notif_Attachments_REST> getItDocs() {
         return ItDocs;
     }
-    public void setItDocs(ArrayList<Model_Notif_Attachments> itDocs) {
+    public void setItDocs(ArrayList<Model_Notif_Attachments_REST> itDocs) {
         ItDocs = itDocs;
     }
     public List getEtDocs() {
@@ -158,10 +158,10 @@ public class Model_Notif_Create_REST
     public void setEtDocs(List etDocs) {
         EtDocs = etDocs;
     }
-    public ArrayList<Model_Notif_Activity> getItNotifActvs() {
+    public ArrayList<Model_Notif_Activity_REST> getItNotifActvs() {
         return ItNotifActvs;
     }
-    public void setItNotifActvs(ArrayList<Model_Notif_Activity> itNotifActvs) {
+    public void setItNotifActvs(ArrayList<Model_Notif_Activity_REST> itNotifActvs) {
         ItNotifActvs = itNotifActvs;
     }
     public List getEtNotifActvs() {
@@ -170,10 +170,10 @@ public class Model_Notif_Create_REST
     public void setEtNotifActvs(List etNotifActvs) {
         EtNotifActvs = etNotifActvs;
     }
-    public ArrayList<Model_Notif_Causecode> getItNotifItems() {
+    public ArrayList<Model_Notif_Causecode_REST> getItNotifItems() {
         return ItNotifItems;
     }
-    public void setItNotifItems(ArrayList<Model_Notif_Causecode> itNotifItems) {
+    public void setItNotifItems(ArrayList<Model_Notif_Causecode_REST> itNotifItems) {
         ItNotifItems = itNotifItems;
     }
     public List getEtNotifItems() {

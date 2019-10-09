@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Initialload.BOM;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -170,7 +170,7 @@ public class BOM_List_DetailedView_Activity extends AppCompatActivity {
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            Bom_List_Detailview_Object blo = new Bom_List_Detailview_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+                            Bom_List_Detailview_Object blo = new Bom_List_Detailview_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7));
                             bom_details_list.add(blo);
                         }
                         while (cursor.moveToNext());
@@ -225,7 +225,7 @@ public class BOM_List_DetailedView_Activity extends AppCompatActivity {
                 String Quantity = bom_details_list.get(i).getQuantity().toLowerCase();
                 String Unit = bom_details_list.get(i).getUnit().toLowerCase();
                 if (bom.contains(query) || Component.contains(query) || Component_test.contains(query) || Quantity.contains(query) || Unit.contains(query)) {
-                    Bom_List_Detailview_Object blo = new Bom_List_Detailview_Object(bom_details_list.get(i).getBom().toString(), bom_details_list.get(i).getComponent().toString(), bom_details_list.get(i).getComponent_test().toString(), bom_details_list.get(i).getQuantity().toString(), bom_details_list.get(i).getUnit().toString(), bom_details_list.get(i).gethierarchy().toString());
+                    Bom_List_Detailview_Object blo = new Bom_List_Detailview_Object(bom_details_list.get(i).getBom().toString(), bom_details_list.get(i).getComponent().toString(), bom_details_list.get(i).getComponent_test().toString(), bom_details_list.get(i).getQuantity().toString(), bom_details_list.get(i).getUnit().toString(), bom_details_list.get(i).gethierarchy().toString(), bom_details_list.get(i).getLabst());
                     filteredList.add(blo);
                 }
             }
@@ -255,7 +255,7 @@ public class BOM_List_DetailedView_Activity extends AppCompatActivity {
         private List<Bom_List_Detailview_Object> bom_details_list;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView components_textview, components_text_textview, quantity_textview, unit_textview, bom_textview, hierarchy_textview;
+            public TextView avail_stock_textview, components_textview, components_text_textview, quantity_textview, unit_textview, bom_textview, hierarchy_textview;
             LinearLayout bom_list_data_layout;
 
             public MyViewHolder(View view) {
@@ -266,6 +266,7 @@ public class BOM_List_DetailedView_Activity extends AppCompatActivity {
                 unit_textview = (TextView) view.findViewById(R.id.unit_textview);
                 bom_textview = (TextView) view.findViewById(R.id.bom_textview);
                 hierarchy_textview = (TextView) view.findViewById(R.id.hierarchy_textview);
+                avail_stock_textview = (TextView) view.findViewById(R.id.avail_stock_textview);
                 bom_list_data_layout = (LinearLayout) view.findViewById(R.id.bom_list_data_layout);
             }
         }
@@ -290,6 +291,7 @@ public class BOM_List_DetailedView_Activity extends AppCompatActivity {
             holder.unit_textview.setText(blo.getUnit());
             holder.bom_textview.setText(blo.getBom());
             holder.hierarchy_textview.setText(blo.gethierarchy());
+            holder.avail_stock_textview.setText(blo.getLabst());
 
             /*if(holder.hierarchy_textview.getText().toString().equalsIgnoreCase("X"))
             {
@@ -329,6 +331,8 @@ public class BOM_List_DetailedView_Activity extends AppCompatActivity {
                     bom_reservation_intent.putExtra("Quantity", holder.quantity_textview.getText().toString());
                     bom_reservation_intent.putExtra("Unit", holder.unit_textview.getText().toString());
                     bom_reservation_intent.putExtra("Plant", bom_plant);
+                    bom_reservation_intent.putExtra("Val_type", "");
+                    bom_reservation_intent.putExtra("Batch", "");
                     startActivity(bom_reservation_intent);
                 }
             });
@@ -387,17 +391,24 @@ public class BOM_List_DetailedView_Activity extends AppCompatActivity {
         private String Quantity;
         private String Unit;
         private String hierarchy;
+        private String labst;
 
-        public Bom_List_Detailview_Object() {
-        }
-
-        public Bom_List_Detailview_Object(String Bom, String Component, String Component_test, String Quantity, String Unit, String hierarchy) {
+        public Bom_List_Detailview_Object(String Bom, String Component, String Component_test, String Quantity, String Unit, String hierarchy, String labst) {
             this.Bom = Bom;
             this.Component = Component;
             this.Component_test = Component_test;
             this.Quantity = Quantity;
             this.Unit = Unit;
             this.hierarchy = hierarchy;
+            this.labst = labst;
+        }
+
+        public String getLabst() {
+            return labst;
+        }
+
+        public void setLabst(String labst) {
+            this.labst = labst;
         }
 
         public String getBom() {

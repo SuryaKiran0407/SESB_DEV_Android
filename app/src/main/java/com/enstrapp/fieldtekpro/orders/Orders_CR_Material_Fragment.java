@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 import java.util.ArrayList;
@@ -148,7 +148,8 @@ public class Orders_CR_Material_Fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (MATRL_CRT):
-                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK)
+                {
 
                     ArrayList<OrdrMatrlPrcbl> omp_al_d = new ArrayList<OrdrMatrlPrcbl>();
                     omp_al_d = data.getParcelableArrayListExtra("omp_prcbl_al");
@@ -156,7 +157,6 @@ public class Orders_CR_Material_Fragment extends Fragment {
                     /*Written By SuryaKiran for Updating Custom Info Data*/
                     String Operation_id = omp_al_d.get(0).getOprtnId();
                     String part_id = gnrtMatrlId(omp_al.size());
-                    Log.v("kiran_part_id", part_id + "....");
                     if (selected_material_custom_info_arraylist.size() > 0) {
                         for (int i = selected_material_custom_info_arraylist.size() - 1; i >= 0; i--) {
                             String op_id = selected_material_custom_info_arraylist.get(i).get("Operation_id");

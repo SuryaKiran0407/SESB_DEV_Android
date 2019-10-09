@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 public class Stock_DetailedView_Activity extends Activity implements OnClickListener {
-    TextView heading_textview, setLgort_textview, setLabst_textview, setSpeme_textview, setLgpbe_textview;
+    TextView batch_textview, valtype_textview, heading_textview, setLgort_textview, setLabst_textview, setSpeme_textview, setLgpbe_textview;
     Button submit_reserve_button;
     TextView stock_desc_textview, plant_textview;
     ImageView back_imageview;
@@ -25,6 +25,8 @@ public class Stock_DetailedView_Activity extends Activity implements OnClickList
         setContentView(R.layout.stock_detailedview_activity);
 
         heading_textview = (TextView) findViewById(R.id.heading_textview);
+        valtype_textview = (TextView) findViewById(R.id.valtype_textview);
+        batch_textview = (TextView) findViewById(R.id.batch_textview);
         setLgort_textview = (TextView) findViewById(R.id.setLgort_textview);
         setLabst_textview = (TextView) findViewById(R.id.setLabst_textview);
         setSpeme_textview = (TextView) findViewById(R.id.setSpeme_textview);
@@ -43,6 +45,8 @@ public class Stock_DetailedView_Activity extends Activity implements OnClickList
             setLabst_textview.setText(extras.getString("Labst"));
             setSpeme_textview.setText(extras.getString("Speme"));
             setLgpbe_textview.setText(extras.getString("Lgpbe"));
+            valtype_textview.setText(extras.getString("Val_type"));
+            batch_textview.setText(extras.getString("Batch"));
         }
 
         back_imageview.setOnClickListener(this);
@@ -66,6 +70,8 @@ public class Stock_DetailedView_Activity extends Activity implements OnClickList
             stock_reservtaion_intent.putExtra("Labst", setLabst_textview.getText().toString());
             stock_reservtaion_intent.putExtra("Speme", setSpeme_textview.getText().toString());
             stock_reservtaion_intent.putExtra("Lgpbe", setLgpbe_textview.getText().toString());
+            stock_reservtaion_intent.putExtra("Val_type", valtype_textview.getText().toString());
+            stock_reservtaion_intent.putExtra("Batch", batch_textview.getText().toString());
             startActivity(stock_reservtaion_intent);
         }
     }

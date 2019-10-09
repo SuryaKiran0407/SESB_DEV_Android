@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Initialload.Notifications_SER;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
@@ -539,18 +539,28 @@ public class REST_Notifications
                 App_db.execSQL("delete from DUE_NOTIFICATION_EtDocs");
                 App_db.execSQL("delete from DUE_NOTIFICATION_EtNotifTasks");
             }
-            /* Initializing Shared Preferences */
             FieldTekPro_SharedPref = activity.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
             FieldTekPro_SharedPrefeditor = FieldTekPro_SharedPref.edit();
             username = FieldTekPro_SharedPref.getString("Username",null);
             password = FieldTekPro_SharedPref.getString("Password",null);
             String webservice_type = FieldTekPro_SharedPref.getString("webservice_type",null);
-		    /* Initializing Shared Preferences */
-            Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"C1", "DN", webservice_type});
-            if (cursor != null && cursor.getCount() > 0)
+            if(transmit_type.equals("Single"))
             {
-                cursor.moveToNext();
-                url_link = cursor.getString(5);
+                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"Q", "RD", webservice_type});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    cursor.moveToNext();
+                    url_link = cursor.getString(5);
+                }
+            }
+            else
+            {
+                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?",new String[]{"C1", "DN", webservice_type});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    cursor.moveToNext();
+                    url_link = cursor.getString(5);
+                }
             }
 		    /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
             device_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -568,7 +578,7 @@ public class REST_Notifications
             modelLoginDeviceRest.setUDID(device_uuid);
 
             Rest_Model_Login modelLoginRest = new Rest_Model_Login();
-            modelLoginRest.setIv_transmit_type("LOAD");
+            modelLoginRest.setIv_transmit_type(transmit_type);
             modelLoginRest.setIv_user(username);
             modelLoginRest.setIs_device(modelLoginDeviceRest);
 

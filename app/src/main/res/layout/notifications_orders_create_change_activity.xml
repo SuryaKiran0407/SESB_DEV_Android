@@ -11,48 +11,40 @@
         android:layout_height="wrap_content"
         android:elevation="4dp">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways">
-
-            <RelativeLayout
+            android:layout_height="37dp">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/back_iv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:padding="7dp"
+                android:src="@drawable/ic_arrow_back_white_24px" />
+            <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                android:id="@+id/title_tv"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:layout_scrollFlags="scroll|enterAlways">
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/back_iv"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:padding="7dp"
-                    android:src="@drawable/ic_arrow_back_white_24px" />
-                <com.enstrapp.fieldtekpro.customfont.Font_TextView
-                    android:id="@+id/title_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/notifications"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/menu_imageview"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_fab_menu_icon"
-                    android:padding="7dp"
-                    android:visibility="gone"/>
-            </RelativeLayout>
-        </android.support.design.widget.CollapsingToolbarLayout>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/notifications"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/menu_imageview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_fab_menu_icon"
+                android:padding="7dp"
+                android:visibility="gone"/>
+        </RelativeLayout>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="25dp"
             android:background="@color/colorPrimary"
             app:tabGravity="center"
             app:tabIndicatorColor="@color/white"
@@ -80,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
+        android:background="@color/footer_color"
         android:orientation="horizontal">
 
         <com.enstrapp.fieldtekpro.customfont.Font_Button
@@ -88,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.995"
-            android:background="@color/colorPrimary"
+            android:background="@color/footer_color"
             android:text="@string/cancel"
             android:textColor="@color/white"
             android:textSize="16sp" />
@@ -105,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.995"
-            android:background="@color/colorPrimary"
+            android:background="@color/footer_color"
             android:text="@string/status"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -125,7 +117,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.995"
-            android:background="@color/colorPrimary"
+            android:background="@color/footer_color"
             android:text="@string/save"
             android:textColor="@color/white"
             android:textSize="16sp"/>

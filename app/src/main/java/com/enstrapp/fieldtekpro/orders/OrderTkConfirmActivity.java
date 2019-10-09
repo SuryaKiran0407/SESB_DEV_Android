@@ -26,7 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Initialload.Token;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -128,9 +128,19 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
                     if (oop.isSelected())
                         oprtnSelected = true;
                 }
-                if (oprtnSelected) {
-                    confirmationDialog(getString(R.string.confirm_msg));
-                } else {
+                if (oprtnSelected)
+                {
+                    if (slctCntrmTxt != null && !slctCntrmTxt.equals(""))
+                    {
+                        confirmationDialog(getString(R.string.confirm_msg));
+                    }
+                    else
+                    {
+                        errorDialog.show_error_dialog(OrderTkConfirmActivity.this,"Please Enter Confirmation Text.");
+                    }
+                }
+                else
+                {
                     errorDialog.show_error_dialog(OrderTkConfirmActivity.this,
                             getString(R.string.select_one));
                 }
@@ -237,6 +247,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         }
     }
 
+
     public class GetToken extends AsyncTask<Void, Integer, Void> {
         String Response = "";
 
@@ -265,6 +276,8 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             }
         }
     }
+
+
 
     private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void> {
 
@@ -356,6 +369,121 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         }
     }
 
+
+
+    private class POST_TK_CONFIRM_REST extends AsyncTask<Void, Integer, Void>
+    {
+        ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(OrderTkConfirmActivity.this,getResources().getString(R.string.confirm_progs));
+            cop_al.clear();
+            for (OrdrOprtnPrcbl oop : oop_al)
+            {
+                if (oop.isSelected())
+                {
+                    ConfirmOrder_Prcbl cop = new ConfirmOrder_Prcbl();
+                    cop.setAufnr(oop.getOrdrId());
+                    cop.setVornr(oop.getOprtnId());
+                    cop.setConfNo("");
+                    if (slctCntrmTxt != null && !slctCntrmTxt.equals(""))
+                        cop.setConfText(slctCntrmTxt);
+                    else
+                        cop.setConfText("");
+                    cop.setActWork("0");
+                    cop.setUnWork("");
+                    cop.setPlanWork("0");
+                    cop.setLearr("");
+                    cop.setBemot("");
+                    cop.setGrund("");
+                    if (slctNoRmWrk != null && !slctNoRmWrk.equals(""))
+                    {
+                        if (slctNoRmWrk.equals("X"))
+                            cop.setLeknw(slctNoRmWrk);
+                    }
+                    else
+                    {
+                        cop.setLeknw("");
+                    }
+                    if (slctFnlCnfrm != null && !slctFnlCnfrm.equals(""))
+                    {
+                        if (slctFnlCnfrm.equals("X"))
+                            cop.setAueru(slctFnlCnfrm);
+                    }
+                    else
+                    {
+                        cop.setAueru("");
+                    }
+                    cop.setAusor("");
+                    cop.setPernr("");
+                    cop.setLoart("");
+                    cop.setStatus("");
+                    cop.setRsnum("");
+                    cop.setPostgDate("");
+                    cop.setPlant("");
+                    cop.setWorkCntr(oop.getWrkCntrId());
+                    if (slctStDt != null && !slctStDt.equals(""))
+                        cop.setExecStartDate(slctStDt);
+                    else
+                        cop.setExecStartDate(dateFormat(ordrStDt));
+                    if (slctStTm != null && !slctStTm.equals(""))
+                        cop.setExecStartTime(slctStTm);
+                    else
+                        cop.setExecStartTime("");
+                    if (slctEdDt != null && !slctEdDt.equals(""))
+                        cop.setExecFinDate(slctEdDt);
+                    else
+                        cop.setExecFinDate(ordrEdDt);
+                    if (slctEdTm != null && !slctEdTm.equals(""))
+                        cop.setExecFinTime(slctEdTm);
+                    else
+                        cop.setExecFinTime("");
+                    if (slctEmply != null && !slctEmply.equals(""))
+                        cop.setPernr(slctEmply);
+                    else
+                        cop.setPernr("");
+                    cop_al.add(cop);
+                }
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Response = new Order_CConfirmation_REST().Get_Data(OrderTkConfirmActivity.this,
+                    cop_al, mpo_al, "", "CCORD", ordrId, "ORCC",
+                    "");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            customProgressDialog.dismiss_progress_dialog();
+            if (Response.startsWith("S"))
+            {
+                successDialog.dismissActivity(OrderTkConfirmActivity.this,
+                        Response.substring(2));
+            }
+            else if (Response.startsWith("Ex"))
+            {
+                errorDialog.show_error_dialog(OrderTkConfirmActivity.this, getString(R.string.cnfrmordr_unable));
+            }
+            else if (Response.startsWith("E"))
+            {
+                errorDialog.show_error_dialog(OrderTkConfirmActivity.this,
+                        Response.substring(2));
+            }
+            else
+            {
+                errorDialog.show_error_dialog(OrderTkConfirmActivity.this, Response);
+            }
+        }
+    }
+
+
+
     private void getOprtnData(String orderUUID) {
         oop_al.clear();
         Cursor cursor = null;
@@ -418,6 +546,7 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             operations_rv.setVisibility(View.GONE);
         }
     }
+
 
     private class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.MyViewHolder> {
         private Context mContext;
@@ -571,9 +700,9 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private void confirmationDialog(String message) {
-        final Dialog cancel_dialog =
-                new Dialog(OrderTkConfirmActivity.this, R.style.PauseDialog);
+    private void confirmationDialog(String message)
+    {
+        final Dialog cancel_dialog = new Dialog(OrderTkConfirmActivity.this, R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
@@ -596,10 +725,21 @@ public class OrderTkConfirmActivity extends AppCompatActivity implements View.On
             public void onClick(View v) {
                 cd = new ConnectionDetector(OrderTkConfirmActivity.this);
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
+                if (isInternetPresent)
+                {
                     cancel_dialog.dismiss();
-                    new GetToken().execute();
-                } else {
+                    String webservice_type = getString(R.string.webservice_type);
+                    if(webservice_type.equalsIgnoreCase("odata"))
+                    {
+                        new GetToken().execute();
+                    }
+                    else
+                    {
+                        new POST_TK_CONFIRM_REST().execute();
+                    }
+                }
+                else
+                {
                     cancel_dialog.dismiss();
                     decision_dialog = new Dialog(OrderTkConfirmActivity.this);
                     decision_dialog.getWindow()

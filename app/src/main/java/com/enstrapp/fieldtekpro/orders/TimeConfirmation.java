@@ -15,7 +15,8 @@ import android.widget.LinearLayout;
 
 import com.enstrapp.fieldtekpro.DateTime.DatePickerDialog;
 import com.enstrapp.fieldtekpro.DateTime.TimePickerDialog;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,7 @@ public class TimeConfirmation extends AppCompatActivity implements View.OnClickL
     static final int STDT = 648;
     static final int EDTM = 748;
     static final int STTM = 588;
+    Error_Dialog error_dialog = new Error_Dialog();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,23 +102,30 @@ public class TimeConfirmation extends AppCompatActivity implements View.OnClickL
                 break;
 
             case (R.id.save_bt):
-                Intent intent = new Intent();
-                intent.putExtra("stDt", dateFormat(strtDt_tiet.getText().toString()));
-                intent.putExtra("edDt", dateFormat(endDt_tiet.getText().toString()));
-                intent.putExtra("stTm", timeFormat(strtTm_tiet.getText().toString()));
-                intent.putExtra("edTm", timeFormat(endTm_tiet.getText().toString()));
-                if (noRmngWrk_Cb.isChecked())
-                    intent.putExtra("noRmWrk", "X");
+                if (cnfrmTxt_tiet.getText().toString() != null && !cnfrmTxt_tiet.getText().toString().equals(""))
+                {
+                    Intent intent = new Intent();
+                    intent.putExtra("stDt", dateFormat(strtDt_tiet.getText().toString()));
+                    intent.putExtra("edDt", dateFormat(endDt_tiet.getText().toString()));
+                    intent.putExtra("stTm", timeFormat(strtTm_tiet.getText().toString()));
+                    intent.putExtra("edTm", timeFormat(endTm_tiet.getText().toString()));
+                    if (noRmngWrk_Cb.isChecked())
+                        intent.putExtra("noRmWrk", "X");
+                    else
+                        intent.putExtra("noRmWrk", "c");
+                    if (fnlCnfrm_Cb.isChecked())
+                        intent.putExtra("fnlCnfrm", "X");
+                    else
+                        intent.putExtra("fnlCnfrm", "c");
+                    intent.putExtra("cntrmTxt", cnfrmTxt_tiet.getText().toString());
+                    intent.putExtra("emply", employee_tiet.getText().toString());
+                    setResult(RESULT_OK, intent);
+                    TimeConfirmation.this.finish();
+                }
                 else
-                    intent.putExtra("noRmWrk", "c");
-                if (fnlCnfrm_Cb.isChecked())
-                    intent.putExtra("fnlCnfrm", "X");
-                else
-                    intent.putExtra("fnlCnfrm", "c");
-                intent.putExtra("cntrmTxt", cnfrmTxt_tiet.getText().toString());
-                intent.putExtra("emply", employee_tiet.getText().toString());
-                setResult(RESULT_OK, intent);
-                TimeConfirmation.this.finish();
+                {
+                    error_dialog.show_error_dialog(TimeConfirmation.this,"Please Enter Confirmation Text.");
+                }
                 break;
 
             case (R.id.endDt_iv):

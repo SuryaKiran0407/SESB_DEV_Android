@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1056969948976:android:43108407f9b4e1b4",
         "android_client_info": {
-          "package_name": "com.enstrapp.fieldtekpro"
+          "package_name": "com.enstrapp.fieldtekpro_sesb_dev"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "1056969948976-ba9qdla4f57fso1fr4v2maq158fsjqrt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.enstrapp.fieldtekpro",
+            "package_name": "com.enstrapp.fieldtekpro_sesb_dev",
             "certificate_hash": "54d131e26ef2ec222ede56adf53de9fb5b56bcc1"
           }
         },

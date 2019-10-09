@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -39,7 +39,7 @@ public class BOM_Reservation_REST {
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
 
-    public static String post_bom_reservation(Context activity, String BOM, String Component, String Component_text, String quantity, String Unit, String Plant, String storage_location, String Date, String movement_type_id, String costcenter_id, String order_number) {
+    public static String post_bom_reservation(Context activity, String BOM, String Component, String Component_text, String quantity, String Unit, String Plant, String storage_location, String Date, String movement_type_id, String costcenter_id, String order_number, String Val_type, String Batch) {
         try
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -89,6 +89,8 @@ public class BOM_Reservation_REST {
             bom_itReservComp.setUNIT(Unit);
             bom_itReservComp.setREQMTDATE(Date);
             bom_itReservComp.setSTORELOC(storage_location);
+            bom_itReservComp.setBwtar(Val_type);
+            bom_itReservComp.setCharg(Batch);
             ArrayList<is_reserv_comp> bom_itReservComps_array = new ArrayList<>();
             bom_itReservComps_array.add(bom_itReservComp);
             /*Adding BOM Components to Arraylist*/
@@ -102,9 +104,6 @@ public class BOM_Reservation_REST {
             is_device.setIVTRANSMITTYPE("LOAD");
             is_device.setIVCOMMIT("X");
             is_device.setERROR("");
-
-            ArrayList EtMessageArrayList = new ArrayList<>();
-
 
             Model_BOM_RESV_REST bom_reservation = new Model_BOM_RESV_REST();
             bom_reservation.setMuser(username.toUpperCase().toString());

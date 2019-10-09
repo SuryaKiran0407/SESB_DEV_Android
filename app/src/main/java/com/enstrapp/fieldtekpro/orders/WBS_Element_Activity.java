@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.util.ArrayList;
@@ -185,6 +185,7 @@ public class WBS_Element_Activity extends AppCompatActivity implements View.OnCl
                 }
             }
             if (filteredList.size() > 0) {
+                title_textview.setText(getResources().getString(R.string.wbs) + " (" + filteredList.size() + ")");
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(WBS_Element_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 adapter = new TYPE_ADAPTER(WBS_Element_Activity.this, filteredList);
@@ -194,6 +195,7 @@ public class WBS_Element_Activity extends AppCompatActivity implements View.OnCl
                 list_recycleview.setVisibility(View.VISIBLE);
                 no_data_layout.setVisibility(GONE);
             } else {
+                title_textview.setText(getResources().getString(R.string.wbs) + " (" + filteredList.size() + ")");
                 no_data_textview.setVisibility(View.VISIBLE);
                 list_recycleview.setVisibility(GONE);
                 no_data_layout.setVisibility(View.VISIBLE);
@@ -235,7 +237,7 @@ public class WBS_Element_Activity extends AppCompatActivity implements View.OnCl
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.f4_list_data, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.wbs_f4_list_data, parent, false);
             return new MyViewHolder(itemView);
         }
 
@@ -244,8 +246,8 @@ public class WBS_Element_Activity extends AppCompatActivity implements View.OnCl
             final Type_Object nto = type_details_list.get(position);
             holder.post1_ll.setVisibility(View.VISIBLE);
             holder.post1id_tv.setText(nto.getPost1());
-            holder.id_txt.setText(getString(R.string.posid));
-            holder.post1_txt.setText(getString(R.string.post1));
+            holder.id_txt.setText("WBS Element");
+            holder.post1_txt.setText("Name");
             holder.pspnr_txt.setText(getString(R.string.pspnr));
             holder.id_textview.setText(nto.getPoski());
             holder.value_textview.setText(nto.getPspnr());

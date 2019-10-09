@@ -12,7 +12,7 @@ import android.util.Log;
 
 
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
@@ -201,7 +201,7 @@ public class REST_Auth
             modelLoginDeviceRest.setUDID(device_uuid);
 
             Rest_Model_Login modelLoginRest = new Rest_Model_Login();
-            modelLoginRest.setIv_transmit_type("LOAD");
+            modelLoginRest.setIv_transmit_type(transmit_type);
             modelLoginRest.setIv_user(username);
             modelLoginRest.setIs_device(modelLoginDeviceRest);
 

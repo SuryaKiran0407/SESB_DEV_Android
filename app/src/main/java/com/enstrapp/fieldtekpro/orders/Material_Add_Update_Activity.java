@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
 import com.enstrapp.fieldtekpro.Initialload.Token;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -34,16 +34,17 @@ import java.util.HashMap;
 public class Material_Add_Update_Activity extends AppCompatActivity implements View.OnClickListener {
 
     TextInputEditText oprtnId_tiet, component_tiet, quantity_tiet, plant_tiet, location_tiet,
-            reservation_tiet, receipt_tiet, unloading_tiet;
+            stock_cat_edittext, reservation_tiet, receipt_tiet, unloading_tiet, batch_edittext;
     Button cancel_bt, submit_bt;
     Toolbar toolBar;
-    ImageView oprtnId_iv, component_iv, quantity_iv;
+    ImageView stock_cat_imageview, oprtnId_iv, component_iv, quantity_iv;
     OrdrMatrlPrcbl omp = new OrdrMatrlPrcbl();
     Error_Dialog errorDialog = new Error_Dialog();
     ArrayList<OrdrOprtnPrcbl> oop_al = new ArrayList<>();
     ArrayList<OrdrMatrlPrcbl> omp_al = new ArrayList<>();
-    String equip = "", iwerk = "", AVAIL_STATUS = "", MatrlId = "", OprtnId = "", OprtnShrtTxt = "";
+    String stockcat_id = "", stockcat_text = "", equip = "", iwerk = "", AVAIL_STATUS = "", MatrlId = "", OprtnId = "", OprtnShrtTxt = "";
     static final int OPRTN_LIST = 300;
+    static final int STOCK_CAT = 303;
     static final int COMPNT_LIST = 301;
     static final int MATERIAL_CUSTOMINFO = 302;
     Custom_Progress_Dialog customProgressDialog = new Custom_Progress_Dialog();
@@ -67,6 +68,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         setContentView(R.layout.order_material_create_change);
 
         oprtnId_tiet = findViewById(R.id.oprtnId_tiet);
+        batch_edittext = findViewById(R.id.batch_edittext);
         component_tiet = findViewById(R.id.component_tiet);
         quantity_tiet = findViewById(R.id.quantity_tiet);
         plant_tiet = findViewById(R.id.plant_tiet);
@@ -80,6 +82,9 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         oprtnId_iv = findViewById(R.id.oprtnId_iv);
         component_iv = findViewById(R.id.component_iv);
         quantity_iv = findViewById(R.id.quantity_iv);
+        stock_cat_imageview = findViewById(R.id.stock_cat_imageview);
+        stock_cat_edittext = findViewById(R.id.stock_cat_edittext);
+
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = Material_Add_Update_Activity.this.openOrCreateDatabase(DATABASE_NAME,
@@ -102,13 +107,17 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
 
         bundle = getIntent().getExtras();
 
-        if (bundle != null) {
-            if (bundle.getString("type_matrl").equalsIgnoreCase("C")) {
+        if (bundle != null)
+        {
+            if (bundle.getString("type_matrl").equalsIgnoreCase("C"))
+            {
                 plant_tiet.setText(bundle.getString("ordrPlant"));
                 oop_al = bundle.getParcelableArrayList("oprtn_list");
                 equip = bundle.getString("ordrEquip");
                 iwerk = bundle.getString("iwerk");
-            } else {
+            }
+            else
+            {
                 omp = bundle.getParcelable("cnfmatrl");
                 equip = bundle.getString("ordrEquip");
                 iwerk = bundle.getString("iwerk");
@@ -137,7 +146,8 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                     }
                 } catch (Exception e) {
                 }
-                plant_tiet.setText(omp.getPlantId() + " - " + plant_text);
+                //plant_tiet.setText(omp.getPlantId() + " - " + plant_text);
+                plant_tiet.setText(omp.getPlantId());
                 plant_id = omp.getPlantId();
 
                 String loc_text = "";
@@ -165,11 +175,33 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 }else
                 {
                     reservation_tiet.setText("");
-
                 }
                 receipt_tiet.setText(omp.getReceipt());
                 unloading_tiet.setText(omp.getUnloading());
                 submit_bt.setText(getResources().getString(R.string.update));
+
+                if(omp.getStockcat_id()!=null && omp.getStockcat_id()!=null)
+                {
+                    stockcat_id = omp.getStockcat_id();
+                    stockcat_text = omp.getStockcat_text();
+                    stock_cat_edittext.setText(omp.getStockcat_id()+" - "+omp.getStockcat_text());
+                }
+                else
+                {
+                    stockcat_id = "";
+                    stockcat_text = "";
+                    stock_cat_edittext.setText("");
+                }
+
+
+                if(omp.getBatch()!=null && omp.getBatch()!=null)
+                {
+                    batch_edittext.setText(omp.getBatch());
+                }
+                else
+                {
+                    batch_edittext.setText("");
+                }
 
                 /*Written By SuryaKiran for Custom Info*/
                 selected_material_custom_info_arraylist =
@@ -184,7 +216,7 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         quantity_iv.setOnClickListener(this);
         submit_bt.setOnClickListener(this);
         cancel_bt.setOnClickListener(this);
-        material_custominfo_button.setOnClickListener(this);
+        stock_cat_imageview.setOnClickListener(this);
     }
 
     @Override
@@ -220,11 +252,18 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 startActivityForResult(oprtnIntent, OPRTN_LIST);
                 break;
 
+
+            case (R.id.stock_cat_imageview):
+                Intent stockcatIntent = new Intent(Material_Add_Update_Activity.this,StockCategory_Type_Activity.class);
+                startActivityForResult(stockcatIntent, STOCK_CAT);
+                break;
+
             case (R.id.component_iv):
                 Intent compIntent = new Intent(Material_Add_Update_Activity.this,
                         Material_Components_Activity.class);
                 compIntent.putExtra("equipment", equip);
                 compIntent.putExtra("iwerk", iwerk);
+                compIntent.putExtra("plant_id", plant_tiet.getText().toString());
                 startActivityForResult(compIntent, COMPNT_LIST);
                 break;
 
@@ -236,8 +275,46 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                         if (quantity_tiet.getText().toString() != null &&
                                 !quantity_tiet.getText().toString().equals("")) {
                             if (!quantity_tiet.getText().toString().equals("0")) {
-                                availSubmit = false;
-                                new GetToken().execute();
+
+                                final Dialog submit_decision_dialog = new Dialog(Material_Add_Update_Activity.this);
+                                submit_decision_dialog.getWindow()
+                                        .setBackgroundDrawableResource(android.R.color.transparent);
+                                submit_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                submit_decision_dialog.setCancelable(false);
+                                submit_decision_dialog.setCanceledOnTouchOutside(false);
+                                submit_decision_dialog.setContentView(R.layout.decision_dialog);
+                                ImageView imageView1 = (ImageView) submit_decision_dialog.findViewById(R.id.imageView1);
+                                Glide.with(Material_Add_Update_Activity.this)
+                                        .load(R.drawable.error_dialog_gif).into(imageView1);
+                                TextView description_textview = submit_decision_dialog
+                                        .findViewById(R.id.description_textview);
+                                description_textview.setText("Do you want to check stock availability?");
+                                Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
+                                Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
+                                submit_decision_dialog.show();
+                                ok_button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        submit_decision_dialog.dismiss();
+                                        availSubmit = false;
+                                        String webservice_type = getString(R.string.webservice_type);
+                                        if(webservice_type.equalsIgnoreCase("odata"))
+                                        {
+                                            new GetToken().execute();
+                                        }
+                                        else
+                                        {
+                                            new AvailabilityCheck_REST().execute();
+                                        }
+                                    }
+                                });
+                                cancel_button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        submit_decision_dialog.dismiss();
+                                    }
+                                });
+
                             } else {
                                 errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
                                         getResources().getString(R.string.zero_checker));
@@ -264,23 +341,47 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                             !component_tiet.getText().toString().equals("")) {
                         if (quantity_tiet.getText().toString() != null &&
                                 !quantity_tiet.getText().toString().equals("")) {
-                            if (!quantity_tiet.getText().toString().equals("0")) {
-                                availSubmit = true;
-                                cd = new ConnectionDetector(Material_Add_Update_Activity.this);
-                                isInternetPresent = cd.isConnectingToInternet();
-                                if (isInternetPresent) {
-                                    //new GetToken().execute();
-                                    if (submit_bt.getText().toString().startsWith("U")) {
-                                        addMatrlObject(true, true);
-                                    } else
-                                        addMatrl();
-                                } else {
-                                    if (submit_bt.getText().toString().startsWith("U")) {
-                                        addMatrlObject(true, true);
-                                    } else
-                                        addMatrl();
+                            if (!quantity_tiet.getText().toString().equals("0"))
+                            {
+                                if (receipt_tiet.getText().toString() != null && !receipt_tiet.getText().toString().equals(""))
+                                {
+
+
+                                    if (stockcat_id != null && !stockcat_id.equals(""))
+                                    {
+                                        availSubmit = true;
+                                        cd = new ConnectionDetector(Material_Add_Update_Activity.this);
+                                        isInternetPresent = cd.isConnectingToInternet();
+                                        if (isInternetPresent) {
+                                            //new GetToken().execute();
+                                            if (submit_bt.getText().toString().startsWith("U")) {
+                                                addMatrlObject(true, true);
+                                            } else
+                                                addMatrl();
+                                        }
+                                        else
+                                        {
+                                            if (submit_bt.getText().toString().startsWith("U")) {
+                                                addMatrlObject(true, true);
+                                            } else {
+                                                addMatrl();
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                                                "Please Select Stock Category.");
+                                    }
+
+
                                 }
-                            } else {
+                                else
+                                {
+                                    errorDialog.show_error_dialog(Material_Add_Update_Activity.this,"Please Enter Goods Recipient.");
+                                }
+                            }
+                            else {
                                 errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
                                         getResources().getString(R.string.zero_checker));
                             }
@@ -309,6 +410,16 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+
+            case (STOCK_CAT):
+                if (resultCode == RESULT_OK)
+                {
+                    stockcat_id = (data.getStringExtra("stockcat_id"));
+                    stockcat_text = (data.getStringExtra("stockcat_text"));
+                    stock_cat_edittext.setText(stockcat_id+" - "+stockcat_text);
+                }
+                break;
+
             case (OPRTN_LIST):
                 if (resultCode == RESULT_OK) {
                     OprtnId = (data.getStringExtra("oprtn_id"));
@@ -341,7 +452,8 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                         }
                     } catch (Exception e) {
                     }
-                    plant_tiet.setText(data.getStringExtra("plant") + " - " + plant_text);
+                    //plant_tiet.setText(data.getStringExtra("plant") + " - " + plant_text);
+                    plant_tiet.setText(data.getStringExtra("plant"));
                     plant_id = data.getStringExtra("plant");
 
 
@@ -365,18 +477,12 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                     location_tiet.setText(data.getStringExtra("location") + " - " + loc_text);
                     loc_id = data.getStringExtra("location");
 
+                    String charg = data.getStringExtra("charg");
+                    batch_edittext.setText(charg);
+
                 }
                 break;
 
-            /*Written By SuryaKiran for Custom Info Added onActivityResult*/
-            case (MATERIAL_CUSTOMINFO):
-                if (resultCode == RESULT_OK) {
-                    selected_material_custom_info_arraylist =
-                            (ArrayList<HashMap<String, String>>) data
-                                    .getSerializableExtra("selected_custom_info_arraylist");
-                }
-                break;
-            /*Written By SuryaKiran for Custom Info Added onActivityResult*/
         }
     }
 
@@ -456,6 +562,57 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         }
     }
 
+
+    public class AvailabilityCheck_REST extends AsyncTask<Void, Integer, Void> {
+        String Date = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(Material_Add_Update_Activity.this,
+                    getResources().getString(R.string.availabilty));
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                Date cDate = new Date();
+                Date = new SimpleDateFormat("yyyyMMdd").format(cDate);
+                AVAIL_STATUS = Material_Availability_Check_REST
+                        .material_availability_check(Material_Add_Update_Activity.this,
+                                "", MatrlId, component_tiet.getText().toString()
+                                , quantity_tiet.getText().toString(), Date, plant_id
+                                , loc_id);
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            customProgressDialog.dismiss_progress_dialog();
+            if (AVAIL_STATUS.startsWith("S")) {
+                if (availSubmit)
+                    if (submit_bt.getText().toString().startsWith("U")) {
+                        addMatrlObject(true, true);
+                    } else
+                        addMatrl();
+                else
+                    successDialog.show_success_dialog(Material_Add_Update_Activity.this,
+                            AVAIL_STATUS.substring(1));
+
+            } else if (AVAIL_STATUS.startsWith("E")) {
+                errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                        AVAIL_STATUS.substring(1));
+            } else {
+                errorDialog.show_error_dialog(Material_Add_Update_Activity.this,
+                        getResources().getString(R.string.unable_avail));
+            }
+        }
+    }
+
+
     public void addMatrl() {
         final Dialog submit_decision_dialog = new Dialog(Material_Add_Update_Activity.this);
         submit_decision_dialog.getWindow()
@@ -495,7 +652,8 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         });
     }
 
-    private void addMatrlObject(boolean submit, boolean update) {
+    private void addMatrlObject(boolean submit, boolean update)
+    {
         OrdrMatrlPrcbl omp_d = new OrdrMatrlPrcbl();
         omp_d.setOprtnId(OprtnId);
         omp_d.setOprtnShrtTxt(OprtnShrtTxt);
@@ -506,9 +664,14 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
         omp_d.setLocation(loc_id);
         omp_d.setReceipt(receipt_tiet.getText().toString());
         omp_d.setUnloading(unloading_tiet.getText().toString());
+        omp_d.setStockcat_id(stockcat_id);
+        omp_d.setStockcat_text(stockcat_text);
+        omp_d.setBatch(batch_edittext.getText().toString());
         omp_al.add(omp_d);
-        if (submit) {
-            if (update) {
+        if (submit)
+        {
+            if (update)
+            {
                 Intent intent = new Intent();
                 omp_d.setPartId(omp.getPartId());
                 omp_d.setStatus(omp.getStatus());
@@ -528,7 +691,9 @@ public class Material_Add_Update_Activity extends AppCompatActivity implements V
                 Material_Add_Update_Activity.this.finish();
                 omp_d = null;
                 omp_al = null;
-            } else {
+            }
+            else
+            {
                 for (OrdrMatrlPrcbl omp : omp_al)
                     omp.setStatus("I");
 

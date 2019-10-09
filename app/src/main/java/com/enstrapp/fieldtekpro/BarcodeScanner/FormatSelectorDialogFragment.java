@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.view.ContextThemeWrapper;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.google.zxing.BarcodeFormat;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 public class Maintainence_Plan_DetailedVIew_Activity extends Activity implements OnClickListener {
 

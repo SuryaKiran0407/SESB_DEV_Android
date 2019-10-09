@@ -27,8 +27,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Interface.Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.Interface.REST_Interface;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
+import com.enstrapp.fieldtekpro.Utilities.Model_BOM_RESV_REST;
+import com.enstrapp.fieldtekpro.Utilities.is_device;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
+import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
 import com.enstrapp.fieldtekpro.maintenance_plan.Maintainence_Plan_DetailedVIew_Activity;
+import com.enstrapp.fieldtekpro.maintenance_plan.MaintenancePlan_SER_REST;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -71,6 +77,7 @@ public class Equipment_Maintenance_Plan_Activity extends AppCompatActivity {
     MaintenancePlan_Adapter maintenancePlan_adapter;
     int response_status_code = 0;
     Response<EQ_MaintenancePlan_SER> response;
+    Response<EQ_MaintenancePlan_SER_REST> response_rest;
     ImageView back_imageview;
     Dialog decision_dialog;
     String function_location_id = "", equip_id = "", equip_name = "";
@@ -97,10 +104,20 @@ public class Equipment_Maintenance_Plan_Activity extends AppCompatActivity {
 
         cd = new ConnectionDetector(getApplicationContext());
         isInternetPresent = cd.isConnectingToInternet();
-        if (isInternetPresent) {
-            new Get_MaintenancePlan_Data().execute();
-        } else {
-            //showing network error and navigating to wifi settings.
+        if (isInternetPresent)
+        {
+            String webservice_type = getString(R.string.webservice_type);
+            if(webservice_type.equalsIgnoreCase("odata"))
+            {
+                new Get_MaintenancePlan_Data().execute();
+            }
+            else
+            {
+                new Get_MaintenancePlan_Data_REST().execute();
+            }
+        }
+        else
+        {
             network_connection_dialog.show_network_connection_dialog(Equipment_Maintenance_Plan_Activity.this);
         }
 
@@ -317,6 +334,217 @@ public class Equipment_Maintenance_Plan_Activity extends AppCompatActivity {
             }
         }
     }
+
+
+
+    public class Get_MaintenancePlan_Data_REST extends AsyncTask<Void, Integer, Void> {
+        String url_link = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show_progress_dialog(Equipment_Maintenance_Plan_Activity.this, getResources().getString(R.string.loading_maintenanceplan));
+            maintenanceplan_list.clear();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                /* Initializing Shared Preferences */
+                app_sharedpreferences = Equipment_Maintenance_Plan_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
+                app_editor = app_sharedpreferences.edit();
+                username = app_sharedpreferences.getString("Username", null);
+                password = app_sharedpreferences.getString("Password", null);
+                String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+                /* Initializing Shared Preferences */
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                device_id = Settings.Secure.getString(Equipment_Maintenance_Plan_Activity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+                device_serial_number = Build.SERIAL;
+                String androidId = "" + Settings.Secure.getString(Equipment_Maintenance_Plan_Activity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+                UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
+                device_uuid = deviceUuid.toString();
+                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
+                Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"C4", "RD", webservice_type});
+                if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToNext();
+                    url_link = cursor.getString(5);
+                }
+                String URL = Equipment_Maintenance_Plan_Activity.this.getString(R.string.ip_address);
+
+
+                is_device is_device= new is_device();
+                is_device.setMUSER(username.toUpperCase().toString());
+                is_device.setDEVICEID(device_id);
+                is_device.setDEVICESNO(device_serial_number);
+                is_device.setUDID(device_uuid);
+                is_device.setIVTRANSMITTYPE("LOAD");
+                is_device.setIVCOMMIT("X");
+                is_device.setERROR("");
+
+                MODEL_EQUIP_MAINT_PLAN bom_reservation = new MODEL_EQUIP_MAINT_PLAN();
+                bom_reservation.setMuser(username.toUpperCase().toString());
+                bom_reservation.setDeviceid(device_id);
+                bom_reservation.setDevicesno(device_serial_number);
+                bom_reservation.setUdid(device_uuid);
+                bom_reservation.setIvTransmitType("LOAD");
+                bom_reservation.setIvCommit("X");
+                bom_reservation.setIs_device(is_device);
+                bom_reservation.setIv_equnr(equip_id);
+
+
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.MILLISECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+                REST_Interface service = retrofit.create(REST_Interface.class);
+                String credentials = username + ":" + password;
+                final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                Call<EQ_MaintenancePlan_SER_REST> call = service.postEQMaintenancePlanData(url_link, basic, bom_reservation);
+                response_rest = call.execute();
+                response_status_code = response_rest.code();
+            }
+            catch (Exception e)
+            {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            super.onPostExecute(result);
+            if (response_status_code == 200)
+            {
+                if (response_rest.isSuccessful() && response_rest.body() != null)
+                {
+                    try
+                    {
+                        /*Reading Response Data and Parsing to Serializable*/
+                        EQ_MaintenancePlan_SER_REST rs = response_rest.body();
+                        /*Reading Response Data and Parsing to Serializable*/
+
+                        /*Converting GSON Response to JSON Data for Parsing*/
+                        String response_data = new Gson().toJson(rs.getEtMsoh());
+                        /*Converting GSON Response to JSON Data for Parsing*/
+
+                        /*Converting Response JSON Data to JSONArray for Reading*/
+                        JSONArray response_data_jsonArray = new JSONArray(response_data);
+                        /*Converting Response JSON Data to JSONArray for Reading*/
+
+                        /*Reading Data by using FOR Loop*/
+                        if (response_data_jsonArray.length() > 0)
+                        {
+                            for (int i = 0; i < response_data_jsonArray.length(); i++)
+                            {
+                                JSONObject jsonObject = new JSONObject(response_data_jsonArray.getJSONObject(i).toString());
+                                String date = jsonObject.optString("GSTRP");
+                                String Gstrpdate_formateed = "";
+                                if (date != null && !date.equals(""))
+                                {
+                                    if (date.equals("00000000"))
+                                    {
+                                        Gstrpdate_formateed = "";
+                                    }
+                                    else
+                                    {
+                                        DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                                        DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                                        Date date1;
+                                        try
+                                        {
+                                            date1 = inputFormat.parse(date);
+                                            String outputDateStr = outputFormat.format(date1);
+                                            Gstrpdate_formateed = outputDateStr;
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Gstrpdate_formateed = "";
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Gstrpdate_formateed = "";
+                                }
+                                String Addat_date = jsonObject.optString("ADDAT");
+                                String Addatdate_formateed = "";
+                                if (Addat_date != null && !Addat_date.equals(""))
+                                {
+                                    if (Addat_date.equals("00000000"))
+                                    {
+                                        Addatdate_formateed = "";
+                                    }
+                                    else
+                                    {
+                                        DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                                        DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
+                                        Date date1;
+                                        try
+                                        {
+                                            date1 = inputFormat.parse(Addat_date);
+                                            String outputDateStr = outputFormat.format(date1);
+                                            Addatdate_formateed = outputDateStr;
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Addatdate_formateed = "";
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Addatdate_formateed = "";
+                                }
+                                MaintenancePlan_List_Object olo = new MaintenancePlan_List_Object(jsonObject.optString("ABNUM"), jsonObject.optString("WARPL"), jsonObject.optString("WPTXT"), jsonObject.optString("WAPOS"), jsonObject.optString("PSTXT"), jsonObject.optString("STRAT"), jsonObject.optString("EQUNR"), jsonObject.optString("MPTYP"), jsonObject.optString("IWERK"), jsonObject.optString("GEWRK"), jsonObject.optString("ARBPL"), jsonObject.optString("QMNUM"), jsonObject.optString("AUFNR"), Gstrpdate_formateed, Addatdate_formateed, jsonObject.optString("STATUS"), jsonObject.optString("MITYP"), jsonObject.optString("STRNO"), jsonObject.optString("EQKTX"), jsonObject.optString("PLTXT"));
+                                maintenanceplan_list.add(olo);
+                            }
+                            if (maintenanceplan_list.size() > 0)
+                            {
+                                maintenancePlan_adapter = new MaintenancePlan_Adapter(Equipment_Maintenance_Plan_Activity.this, maintenanceplan_list);
+                                recyclerview.setHasFixedSize(true);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Equipment_Maintenance_Plan_Activity.this);
+                                recyclerview.setLayoutManager(layoutManager);
+                                recyclerview.setItemAnimator(new DefaultItemAnimator());
+                                recyclerview.setAdapter(maintenancePlan_adapter);
+                                no_data_textView.setVisibility(View.GONE);
+                                swiperefreshlayout.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss_progress_dialog();
+                            }
+                            else
+                            {
+                                no_data_textView.setVisibility(View.VISIBLE);
+                                swiperefreshlayout.setVisibility(View.GONE);
+                                progressDialog.dismiss_progress_dialog();
+                            }
+                        }
+                        else
+                        {
+                            no_data_textView.setVisibility(View.VISIBLE);
+                            swiperefreshlayout.setVisibility(View.GONE);
+                            progressDialog.dismiss_progress_dialog();
+                        }
+                        /*Reading Data by using FOR Loop*/
+                    }
+                    catch (Exception e)
+                    {
+                        no_data_textView.setVisibility(View.VISIBLE);
+                        swiperefreshlayout.setVisibility(View.GONE);
+                        progressDialog.dismiss_progress_dialog();
+                    }
+                }
+            }
+            else
+            {
+                no_data_textView.setVisibility(View.VISIBLE);
+                swiperefreshlayout.setVisibility(View.GONE);
+                progressDialog.dismiss_progress_dialog();
+            }
+        }
+    }
+
 
 
     public class MaintenancePlan_Adapter extends RecyclerView.Adapter<MaintenancePlan_Adapter.MyViewHolder> {

@@ -65,7 +65,7 @@
         android:layout_gravity="center"
         android:drawableTop="@drawable/ic_no_data_icon"
         android:gravity="center"
-        android:text="@string/no_causecode_add"
+        android:text="No Items Found."
         android:textColor="@color/red"
         android:textSize="16sp"
         android:visibility="gone"

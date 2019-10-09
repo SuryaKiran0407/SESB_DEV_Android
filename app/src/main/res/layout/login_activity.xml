@@ -8,9 +8,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="1080dp"
+        android:layout_width="900dp"
         android:layout_height="fill_parent"
-        android:background="@drawable/tata_power"/>
+        android:background="@drawable/image3"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,8 +55,7 @@
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_client_logo1"
-            android:visibility="gone"/>
+            android:src="@drawable/app_logoo"/>
 
         <ImageView
             android:layout_width="80dp"
@@ -123,7 +122,8 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/login_button_bg"
             android:text="@string/login"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 

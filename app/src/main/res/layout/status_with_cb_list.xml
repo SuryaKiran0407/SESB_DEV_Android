@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/checkBox_margin"
-        android:theme="@style/CheckBox" />
+        android:button="@drawable/checkbox1_selector"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,5 +35,13 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/textSize"
             android:typeface="serif" />
+
+        <com.enstrapp.fieldtekpro.customfont.Font_TextView
+            android:id="@+id/act_status_textview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="0sp"
+            android:visibility="gone"/>
+
     </LinearLayout>
 </LinearLayout>

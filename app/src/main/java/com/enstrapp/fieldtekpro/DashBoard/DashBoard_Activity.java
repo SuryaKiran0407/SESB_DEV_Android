@@ -19,11 +19,13 @@ import android.widget.TextView;
 import com.enstrapp.fieldtekpro.Alert_Log.Alert_Log_Activity;
 import com.enstrapp.fieldtekpro.Auto_Sync.Auto_Sync_BackgroundService;
 import com.enstrapp.fieldtekpro.Calibration.Calibration_Activity;
+import com.enstrapp.fieldtekpro.InitialLoad_Rest.InitialLoad_REST_Activity;
 import com.enstrapp.fieldtekpro.Initialload.InitialLoad_Activity;
 import com.enstrapp.fieldtekpro.MIS.Mis_Activity;
 import com.enstrapp.fieldtekpro.PermitList.Isolation_List_Activity;
 import com.enstrapp.fieldtekpro.PermitList.PermitList_Activity;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.equipment_update.Equipment_Update_Activity;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.SendMessage.SendMessage_List_Activity;
 import com.enstrapp.fieldtekpro.Settings.Settings_Activity;
 import com.enstrapp.fieldtekpro.Utilities.Utilities_Activity;
@@ -50,13 +52,13 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                    // R.drawable.ic_permit_list_icon,
                   //  R.drawable.ic_isolation_list_icon,
                     R.drawable.ic_sort_icon,
-                    R.drawable.ic_calibration_icon,
+                    R.drawable.ic_isolation_list_icon,
                     R.drawable.ic_mis_icon,
                     R.drawable.ic_utilities_icon,
                     R.drawable.ic_maintenanceplan_icon,
                     R.drawable.ic_change_log_icon,
                     R.drawable.ic_history_icon,
-                    R.drawable.ic_send_message_icon,
+                    //R.drawable.ic_send_message_icon,
                     R.drawable.ic_settings_icon,
             };
     ImageView logout_imageview, refresh_imageview;
@@ -99,13 +101,13 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                        // getString(R.string.permit_list),
                        // getString(R.string.isolation_list),
                         getString(R.string.equipment_inspection),
-                        getString(R.string.calibration),
+                        "Equipment’s",
                         getString(R.string.mis),
                         getString(R.string.utilities),
                         getString(R.string.maintenanceplan),
                         getString(R.string.alert_log),
                         getString(R.string.user_log),
-                        getString(R.string.send_message),
+                        //getString(R.string.send_message),
                         getString(R.string.settings),
                 };
 
@@ -152,8 +154,15 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (web[+position].equals("Orders")) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (web[+position].equals("Equipment’s"))
+                {
+                    Intent intent = new Intent(DashBoard_Activity.this, Equipment_Update_Activity.class);
+                    startActivity(intent);
+                }
+                else if (web[+position].equals("Orders"))
+                {
                     if (authorization_list.contains("ALL")) {
                         Intent orders_intent = new Intent(DashBoard_Activity.this, Orders_Activity.class);
                         startActivity(orders_intent);
@@ -183,7 +192,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     } else {
                         error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Utilities");
                     }
-                } else if (web[+position].equals("Equipment Inspection")) {
+                } else if (web[+position].equals("Measurement Readings")) {
                     if (authorization_list.contains("ALL")) {
                         Intent intent = new Intent(DashBoard_Activity.this, Equipment_Inspection_Activity.class);
                         startActivity(intent);
@@ -191,7 +200,7 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                         Intent intent = new Intent(DashBoard_Activity.this, Equipment_Inspection_Activity.class);
                         startActivity(intent);
                     } else {
-                        error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Equipment Inspection");
+                        error_dialog.show_error_dialog(DashBoard_Activity.this, "You do not have authorization to access Measurement Readings");
                     }
                 } else if (web[+position].equals("User Log")) {
                     if (authorization_list.contains("ALL")) {
@@ -320,10 +329,21 @@ public class DashBoard_Activity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onClick(View v) {
                         refresh_message_dialog.dismiss();
-                        Intent intialload_intent = new Intent(DashBoard_Activity.this, InitialLoad_Activity.class);
-                        intialload_intent.putExtra("From", "REFR");
-                        startActivity(intialload_intent);
-                        DashBoard_Activity.this.finish();
+                        String webservice_type = getString(R.string.webservice_type);
+                        if(webservice_type.equalsIgnoreCase("odata"))
+                        {
+                            Intent intialload_intent = new Intent(DashBoard_Activity.this, InitialLoad_Activity.class);
+                            intialload_intent.putExtra("From", "REFR");
+                            startActivity(intialload_intent);
+                            DashBoard_Activity.this.finish();
+                        }
+                        else
+                        {
+                            Intent intialload_intent = new Intent(DashBoard_Activity.this, InitialLoad_REST_Activity.class);
+                            intialload_intent.putExtra("From", "REFR");
+                            startActivity(intialload_intent);
+                            DashBoard_Activity.this.finish();
+                        }
                     }
                 });
                 cancel.setOnClickListener(new View.OnClickListener() {

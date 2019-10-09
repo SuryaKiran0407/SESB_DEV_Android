@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.enstrapp.fieldtekpro">
+    package="com.enstrapp.fieldtekpro_sesb_dev">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -26,7 +26,7 @@
         android:required="false" />
 
     <application
-        android:name=".customfont.CustomFont"
+        android:name="com.enstrapp.fieldtekpro.customfont.CustomFont"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_app_icon1"
@@ -35,7 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".splashscreen.SplashScreen_Activity"
+            android:name="com.enstrapp.fieldtekpro.splashscreen.SplashScreen_Activity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +44,19 @@
             </intent-filter>
         </activity>
 
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.enstrapp.fieldtekpro_sesb_dev.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
         <activity
             android:name="com.enstrapp.fieldtekpro.InitialLoad_Rest.InitialLoad_REST_Activity"
             android:screenOrientation="portrait"
@@ -51,514 +64,546 @@
 
 
         <activity
-        android:name=".orders.Orders_Activity"
-        android:screenOrientation="portrait"
-        android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Orders_MapView_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Order_LongText_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.ActivityType_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".login.Login_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.CalculationKey_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_MapView_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Order_LongText_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.login.Login_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Initialload.InitialLoad_Activity"
+            android:name="com.enstrapp.fieldtekpro.Initialload.InitialLoad_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DashBoard.DashBoard_Activity"
+            android:name="com.enstrapp.fieldtekpro.DashBoard.DashBoard_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".notifications.Notifications_List_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_List_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Utilities.Utilities_Activity"
+            android:name="com.enstrapp.fieldtekpro.Utilities.Utilities_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Utilities.BOM_List_DetailedView_Activity"
+            android:name="com.enstrapp.fieldtekpro.Utilities.BOM_List_DetailedView_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Utilities.BOM_Reservation_Activity"
+            android:name="com.enstrapp.fieldtekpro.Utilities.BOM_Reservation_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Utilities.Movement_Type_Activity"
+            android:name="com.enstrapp.fieldtekpro.Utilities.Movement_Type_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Utilities.CostCenter_Type_Activity"
+            android:name="com.enstrapp.fieldtekpro.Utilities.CostCenter_Type_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".BarcodeScanner.Barcode_Scanner_Activity"
+            android:name="com.enstrapp.fieldtekpro.BarcodeScanner.Barcode_Scanner_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".notifications.Notifications_Create_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Create_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DateTime.DatePickerDialog"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".history.History_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_MaintPlant_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".equipment_inspection.Equipment_Inspection_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".functionlocation.FunctionLocation_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".equipment.Equipment_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Type_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.WorkCenter_Type_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Priority_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_PlannerGroup_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Personresponsible_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".DateTime.DateTimePickerDialog"
+            android:name="com.enstrapp.fieldtekpro.DateTime.DatePickerDialog"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DateTime.MonthYearPickerDialog"
+            android:name="com.enstrapp.fieldtekpro.history.History_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_Inspection_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.functionlocation.FunctionLocation_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment.Equipment_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Type_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.WorkCenter_Type_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Priority_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_PlannerGroup_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Personresponsible_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.DateTime.DateTimePickerDialog"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".notifications.Notifications_Effect_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_CauseCode_Add_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_ObjectPart_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_ObjectPart_Code_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Event_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Event_Code_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Cause_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Cause_Code_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Activity_Add_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Activity_ItemKey_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Activity_Codegroup_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Activity_Code_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".Settings.Settings_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Change_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Status_Display_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_LongText_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_View_Attachements_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Status_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".Utilities.Stock_DetailedView_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".equipment_inspection.Equipment_History_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".equipment_inspection.Equipment_InspectionChecklist_List_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".equipment_inspection.Equipment_StartInspection_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".equipment_inspection.Equipment_Inspection_MeasCodes_Types_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".equipment_inspection.Equipment_GEO_Tag_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".PermitList.PermitList_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".SendMessage.SendMessage_List_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Type_Select_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Tasks_Add_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Tasks_TaskCodeGroup_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Tasks_TaskCode_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Tasks_TaskProcessor_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Priority_Select_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_Status_Select_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".notifications.Notifications_WorkCenter_Select_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Revision_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.WBS_Element_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Measurment_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.MeasurmentAdd_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.MeasurementPointList_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.OrdersConfirmAttachment_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Reason_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".CostCenter.CostCenter_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.SystemCondidtions_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Duration_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Orders_StorageLocation_Filter_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Activity_Type_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.WrkCntrPlant_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Material_Components_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Operations_List"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.Order_Status_Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.OrderTkConfirmActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".orders.TimeConfirmation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".DateTime.TimePickerDialog"
+            android:name="com.enstrapp.fieldtekpro.DateTime.MonthYearPickerDialog"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.OrderType_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Effect_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".PlannerGroup.PlannerGroup_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_CauseCode_Add_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Priority_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_ObjectPart_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".WorkCenter.WorkCenter_Type_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_ObjectPart_Code_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Orders_Change_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Event_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Orders_Confirm_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Event_Code_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Orders_ConfirmPartial_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Cause_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Operations_Add_Update_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Cause_Code_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Material_Add_Update_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Activity_Add_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Objects_Add_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Activity_ItemKey_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Orders_Create_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Activity_Codegroup_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".PersonResponsible.Personresponsible_Activity"
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Activity_Code_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DateTime.DatePickerDialog1"
+            android:name="com.enstrapp.fieldtekpro.Settings.Settings_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Change_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Status_Display_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_LongText_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_View_Attachements_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Status_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.Utilities.Stock_DetailedView_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_History_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_InspectionChecklist_List_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_StartInspection_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_Inspection_MeasCodes_Types_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_GEO_Tag_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.PermitList.PermitList_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.SendMessage.SendMessage_List_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Type_Select_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Tasks_Add_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Tasks_TaskCodeGroup_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Tasks_TaskCode_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Tasks_TaskProcessor_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Priority_Select_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_Status_Select_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.notifications.Notifications_WorkCenter_Select_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_update.Equipment_Update_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.equipment_update.Equipment_Update_Data_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Revision_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.WBS_Element_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.ControlKey_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.CostElement_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Measurment_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.MeasurmentAdd_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.MeasurementPointList_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.OrdersConfirmAttachment_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Reason_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.CostCenter.CostCenter_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.SystemCondidtions_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.StockCategory_Type_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Duration_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_StorageLocation_Filter_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Activity_Type_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.WrkCntrPlant_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Material_Components_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Operations_List"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Order_Status_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.OrderTkConfirmActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.TimeConfirmation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.DateTime.TimePickerDialog"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Valuation_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.OrderType_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Orders_Type_Select_Activity"
+            android:name="com.enstrapp.fieldtekpro.PlannerGroup.PlannerGroup_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Orders_Priority_Select_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Priority_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Orders_Status_Select_Activity"
+            android:name="com.enstrapp.fieldtekpro.WorkCenter.WorkCenter_Type_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Isolation_Add_Update_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_Change_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.IsoTagUntagCon_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_Confirm_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.TaggingConditions"
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_ConfirmPartial_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Usage_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Operations_Add_Update_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.PermitIssue_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Material_Add_Update_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Permits_Add_Update_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Objects_Add_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_Create_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.PersonResponsible.Personresponsible_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.DateTime.DatePickerDialog1"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Valuation_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_Type_Select_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_Priority_Select_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Orders_Status_Select_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Isolation_Add_Update_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.IsoTagUntagCon_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.TaggingConditions"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Usage_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.PermitIssue_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.enstrapp.fieldtekpro.orders.Permits_Add_Update_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PermitList.IsolationList_Activity"
+            android:name="com.enstrapp.fieldtekpro.PermitList.IsolationList_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.Authorization_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.Authorization_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.WorkRequirements_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.WorkRequirements_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".equipment_inspection.Equipment_Inspection_Breakdown_Statics_Activity"
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_Inspection_Breakdown_Statics_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".equipment_inspection.Equipment_Maintenance_Plan_Activity"
+            android:name="com.enstrapp.fieldtekpro.equipment_inspection.Equipment_Maintenance_Plan_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.Mis_Activity"
+            android:name="com.enstrapp.fieldtekpro.MIS.Mis_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.Notification_Analysis_Activity"
+            android:name="com.enstrapp.fieldtekpro.MIS.Notification_Analysis_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.StatusPieActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.StatusPieActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.NotifTypeListActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.NotifTypeListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.NotificationDetailActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.NotificationDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.Order_Analysis_Activity"
+            android:name="com.enstrapp.fieldtekpro.MIS.Order_Analysis_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.OrderStatusPieActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.OrderStatusPieActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.OrderTypeListActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.OrderTypeListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.OrderDetailActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.OrderDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Calibration.Calibration_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Calibration.Calibration_Orders_List_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_Orders_List_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Calibration.Calibration_Orders_Operations_List_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_Orders_Operations_List_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Calibration.Calibration_Start_Inspection_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_Start_Inspection_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Calibration.Calibration_Start_Result_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_Start_Result_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Calibration.Calibration_UDCode_List_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_UDCode_List_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".maintenance_plan.Maintenance_Plan_Activity"
+            android:name="com.enstrapp.fieldtekpro.maintenance_plan.Maintenance_Plan_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".maintenance_plan.Maintainence_Plan_DetailedVIew_Activity"
+            android:name="com.enstrapp.fieldtekpro.maintenance_plan.Maintainence_Plan_DetailedVIew_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <!-- Firebase Notifications -->
-        <service android:name=".fcm.MyFirebaseMessagingService">
+        <service android:name="com.enstrapp.fieldtekpro.fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".fcm.MyFirebaseInstanceIDService">
+        <service android:name="com.enstrapp.fieldtekpro.fcm.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -566,111 +611,111 @@
         <!-- ./Firebase Notifications -->
 
         <activity
-            android:name=".orders.JSA_List_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_List_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Add_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Add_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_JobType_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_JobType_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Add_AssessmentTeam_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Add_AssessmentTeam_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_RolesType_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_RolesType_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_OperationalStatus_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_OperationalStatus_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_LocationStructure_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_LocationStructure_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Add_JobSteps_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Add_JobSteps_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Add_Hazards_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Add_Hazards_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Hazards_JobSteps_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Hazards_JobSteps_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Hazards_Categories_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Hazards_Categories_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Hazards_List_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Hazards_List_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Add_ImpactsControls_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Add_ImpactsControls_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_ImpactsControls_Hazards_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_ImpactsControls_Hazards_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Impacts_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Impacts_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Controls_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Controls_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_LocationStr_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_LocationStr_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".orders.JSA_Change_Activity"
+            android:name="com.enstrapp.fieldtekpro.orders.JSA_Change_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.PermitReportMainActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.PermitReportMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.PermitStatusPieActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.PermitStatusPieActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.PermitTypeListActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.PermitTypeListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.PermitDetailActivity"
+            android:name="com.enstrapp.fieldtekpro.MIS.PermitDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MIS.BreakStats_Pie"
+            android:name="com.enstrapp.fieldtekpro.MIS.BreakStats_Pie"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".PermitList.Isolation_List_Activity"
+            android:name="com.enstrapp.fieldtekpro.PermitList.Isolation_List_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".PermitList.Isolation_Filter_Plant_Activity"
+            android:name="com.enstrapp.fieldtekpro.PermitList.Isolation_Filter_Plant_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Calibration.Calibration_Operation_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_Operation_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Alert_Log.Alert_Log_Activity"
+            android:name="com.enstrapp.fieldtekpro.Alert_Log.Alert_Log_Activity"
             android:screenOrientation="portrait" />
 
         <!--<service
@@ -678,7 +723,7 @@
             android:enabled="true"
             android:exported="true" />-->
 
-        <receiver android:name=".Auto_Sync.Auto_Sync_Notif_Dup">
+        <receiver android:name="com.enstrapp.fieldtekpro.Auto_Sync.Auto_Sync_Notif_Dup">
             <intent-filter>
                 <action android:name="YES_ACTION" />
                 <action android:name="STOP_ACTION" />
@@ -698,11 +743,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Calibration.Calibration_Add_Defect_Activity"
+            android:name="com.enstrapp.fieldtekpro.Calibration.Calibration_Add_Defect_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".CustomInfo.CustomInfo_Activity"
+            android:name="com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
     </application>

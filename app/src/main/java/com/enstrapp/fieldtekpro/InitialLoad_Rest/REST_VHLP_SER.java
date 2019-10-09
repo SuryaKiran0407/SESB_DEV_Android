@@ -75,9 +75,15 @@ public class REST_VHLP_SER
     @SerializedName("ET_TQ80")
     @Expose
     private List<ETTQ80> eTTQ80 = null;
+    @SerializedName("ET_POSTP")
+    @Expose
+    private List<ETPOSTP> etpostps = null;
     @SerializedName("ET_USERS")
     @Expose
     private List<ETUSER> eTUSERS = null;
+    @SerializedName("ET_KSTAR")
+    @Expose
+    private List<ET_KSTAR> ETKSTAR = null;
     @SerializedName("ET_REVNR")
     @Expose
     private List<ETREVNR> eTREVNR = null;
@@ -87,6 +93,33 @@ public class REST_VHLP_SER
     @SerializedName("ET_PERNR")
     @Expose
     private List<ETPERNR> eTPERNR = null;
+    @SerializedName("ET_WBS")
+    @Expose
+    private List<ETWBS> etwbs = null;
+
+    public List<ET_KSTAR> getETKSTAR() {
+        return ETKSTAR;
+    }
+
+    public void setETKSTAR(List<ET_KSTAR> ETKSTAR) {
+        this.ETKSTAR = ETKSTAR;
+    }
+
+    public List<ETWBS> getEtwbs() {
+        return etwbs;
+    }
+
+    public void setEtwbs(List<ETWBS> etwbs) {
+        this.etwbs = etwbs;
+    }
+
+    public List<ETPOSTP> getEtpostps() {
+        return etpostps;
+    }
+
+    public void setEtpostps(List<ETPOSTP> etpostps) {
+        this.etpostps = etpostps;
+    }
 
     public List<ETPERNR> geteTPERNR() {
         return eTPERNR;
@@ -859,6 +892,86 @@ public class REST_VHLP_SER
 
 
 
+    public class ETWBS {
+        @SerializedName("WERKS")
+        @Expose
+        private String iwerk;
+        @SerializedName("GSBER")
+        @Expose
+        private String gsber;
+        @SerializedName("POSID")
+        @Expose
+        private String posid;
+        @SerializedName("POSKI")
+        @Expose
+        private String poski;
+        @SerializedName("POST1")
+        @Expose
+        private String post1;
+        @SerializedName("PSPNR")
+        @Expose
+        private String pspnr;
+        @SerializedName("PSPID")
+        @Expose
+        private String pspid;
+
+        public String getIwerk() {
+            return iwerk;
+        }
+
+        public void setIwerk(String iwerk) {
+            this.iwerk = iwerk;
+        }
+
+        public String getGsber() {
+            return gsber;
+        }
+
+        public void setGsber(String gsber) {
+            this.gsber = gsber;
+        }
+
+        public String getPosid() {
+            return posid;
+        }
+
+        public void setPosid(String posid) {
+            this.posid = posid;
+        }
+
+        public String getPoski() {
+            return poski;
+        }
+
+        public void setPoski(String poski) {
+            this.poski = poski;
+        }
+
+        public String getPost1() {
+            return post1;
+        }
+
+        public void setPost1(String post1) {
+            this.post1 = post1;
+        }
+
+        public String getPspnr() {
+            return pspnr;
+        }
+
+        public void setPspnr(String pspnr) {
+            this.pspnr = pspnr;
+        }
+
+        public String getPspid() {
+            return pspid;
+        }
+
+        public void setPspid(String pspid) {
+            this.pspid = pspid;
+        }
+    }
+
 
 
     public class ETILART {
@@ -1257,6 +1370,28 @@ public class REST_VHLP_SER
         @SerializedName("OBJECT_CODES")
         @Expose
         private List<OBJECTCODE> oBJECTCODES = null;
+        @SerializedName("ACT_CODES")
+        @Expose
+        private List<OBJECTCODE> actCODES = null;
+        @SerializedName("TASK_CODES")
+        @Expose
+        private List<OBJECTCODE> taskCODES = null;
+
+        public List<OBJECTCODE> getTaskCODES() {
+            return taskCODES;
+        }
+
+        public void setTaskCODES(List<OBJECTCODE> taskCODES) {
+            this.taskCODES = taskCODES;
+        }
+
+        public List<OBJECTCODE> getActCODES() {
+            return actCODES;
+        }
+
+        public void setActCODES(List<OBJECTCODE> actCODES) {
+            this.actCODES = actCODES;
+        }
 
         public String getNOTIFTYPE() {
             return NOTIFTYPE;
@@ -1687,6 +1822,32 @@ public class REST_VHLP_SER
 
 
 
+    public class ETPOSTP {
+
+        @SerializedName("POSTP")
+        @Expose
+        private String POSTP;
+        @SerializedName("PTEXT")
+        @Expose
+        private String PTEXT;
+
+        public String getPOSTP() {
+            return POSTP;
+        }
+
+        public void setPOSTP(String POSTP) {
+            this.POSTP = POSTP;
+        }
+
+        public String getPTEXT() {
+            return PTEXT;
+        }
+
+        public void setPTEXT(String PTEXT) {
+            this.PTEXT = PTEXT;
+        }
+    }
+
 
 
     public class ETTQ80 {
@@ -1826,6 +1987,65 @@ public class REST_VHLP_SER
 
 
 
+
+    public class ET_KSTAR {
+
+        @SerializedName("KOKRS")
+        @Expose
+        private String KOKRS;
+        @SerializedName("WERKS")
+        @Expose
+        private String WERKS;
+        @SerializedName("KSTAR")
+        @Expose
+        private String KSTAR;
+        @SerializedName("KOSTL")
+        @Expose
+        private String KOSTL;
+        @SerializedName("LTEXT")
+        @Expose
+        private String LTEXT;
+
+        public String getKOKRS() {
+            return KOKRS;
+        }
+
+        public void setKOKRS(String KOKRS) {
+            this.KOKRS = KOKRS;
+        }
+
+        public String getWERKS() {
+            return WERKS;
+        }
+
+        public void setWERKS(String WERKS) {
+            this.WERKS = WERKS;
+        }
+
+        public String getKSTAR() {
+            return KSTAR;
+        }
+
+        public void setKSTAR(String KSTAR) {
+            this.KSTAR = KSTAR;
+        }
+
+        public String getKOSTL() {
+            return KOSTL;
+        }
+
+        public void setKOSTL(String KOSTL) {
+            this.KOSTL = KOSTL;
+        }
+
+        public String getLTEXT() {
+            return LTEXT;
+        }
+
+        public void setLTEXT(String LTEXT) {
+            this.LTEXT = LTEXT;
+        }
+    }
 
 
 

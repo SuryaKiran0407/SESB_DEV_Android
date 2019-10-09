@@ -29,11 +29,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
 import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.notifications.Notif_EtDocs_Parcelable;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -147,10 +149,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
             order_vp.setOffscreenPageLimit(6);
             orders_ta.addFragment(new Orders_CH_Material_Fragment(), getResources().getString(R.string.material));
         }
-        orders_ta.addFragment(new Orders_CH_Permits_Fragment(), getResources().getString(R.string.permit));
         orders_ta.addFragment(new Orders_CH_Object_Fragment(), getResources().getString(R.string.object));
         orders_ta.addFragment(new Orders_CH_Attachments_Fragment(), getResources().getString(R.string.attachments));
-        orders_ta.addFragment(new Orders_CH_Map_Fragment(), getResources().getString(R.string.map));
 
 
         order_vp.setAdapter(orders_ta);
@@ -180,7 +180,7 @@ public class Orders_Change_Activity extends AppCompatActivity {
                         fab.hide();
                         break;
                     default:
-                        fab.show();
+                        fab.hide();
                         break;
                 }
             }
@@ -196,12 +196,12 @@ public class Orders_Change_Activity extends AppCompatActivity {
         orderSave_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean WBS = false;
+                boolean WBS = true;
                 if (ohp.getOrdrTypId() != null && !ohp.getOrdrTypId().equals("")) {
                     if (ohp.getOrdrTypId().equals("PM06"))
                         WBS = true;
                     else
-                        WBS = false;
+                        WBS = true;
                     if (ohp.getOrdrShrtTxt() != null && !ohp.getOrdrShrtTxt().equals("")) {
                         if ((ohp.getEquipNum() != null && !ohp.getEquipNum().equals("")) ||
                                 (ohp.getFuncLocId() != null && !ohp.getFuncLocId().equals(""))) {
@@ -209,35 +209,37 @@ public class Orders_Change_Activity extends AppCompatActivity {
                                 if (ohp.getWrkCntrId() != null && !ohp.getWrkCntrId().equals("")) {
                                     if (ohp.getPlnrGrpId() != null &&
                                             !ohp.getPlnrGrpId().equals("")) {
-                                        if (WBS) {
-                                            if (ohp.getPosid() != null &&
-                                                    !ohp.getPosid().equals("")) {
-                                                if (ohp.getRevnr() != null &&
-                                                        !ohp.getRevnr().equals("")) {
-                                                    if (ohp.getOrdrTypId().equals("PM08")) {
-                                                        ohp.setEquipNum("");
-                                                        ohp.setEquipName("");
-                                                        ohp.setOrdrMatrlPrcbls(null);
-                                                    }
-                                                    cd = new ConnectionDetector(Orders_Change_Activity.this);
-                                                    isInternetPresent = cd.isConnectingToInternet();
-                                                    if (isInternetPresent) {
-                                                        confirmationDialog(getString(R.string.update_order));
-                                                    } else {
-                                                        if (ohp.getOrdrPermitPrcbls() != null) {
-                                                            if (ohp.getOrdrPermitPrcbls().size() > 0) {
-                                                                network_connection_dialog.show_network_connection_dialog(Orders_Change_Activity.this);
-                                                            } else {
-                                                                Insert_Offline_Data();
-                                                            }
-                                                        } else {
+                                        if (WBS)
+                                        {
+                                            if (ohp.getPosid() != null && !ohp.getPosid().equals(""))
+                                            {
+                                                cd = new ConnectionDetector(Orders_Change_Activity.this);
+                                                isInternetPresent = cd.isConnectingToInternet();
+                                                if (isInternetPresent)
+                                                {
+                                                    confirmationDialog(getString(R.string.update_order));
+                                                }
+                                                else
+                                                {
+                                                    if (ohp.getOrdrPermitPrcbls() != null)
+                                                    {
+                                                        if (ohp.getOrdrPermitPrcbls().size() > 0)
+                                                        {
+                                                            network_connection_dialog.show_network_connection_dialog(Orders_Change_Activity.this);
+                                                        }
+                                                        else
+                                                        {
                                                             Insert_Offline_Data();
                                                         }
                                                     }
-                                                } else {
-                                                    error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.revision_mandate));
+                                                    else
+                                                    {
+                                                        Insert_Offline_Data();
+                                                    }
                                                 }
-                                            } else {
+                                            }
+                                            else
+                                            {
                                                 error_dialog.show_error_dialog(Orders_Change_Activity.this, getResources().getString(R.string.wbs_mandate));
                                             }
                                         } else {
@@ -294,7 +296,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 ohp = null;
                 deleteAttachments();
-                onBackPressed();
+                onBackButtonPressed();
+                //onBackPressed();
             }
         });
 
@@ -315,7 +318,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 ohp = null;
                 deleteAttachments();
-                onBackPressed();
+                onBackButtonPressed();
+                //onBackPressed();
             }
         });
 
@@ -330,11 +334,57 @@ public class Orders_Change_Activity extends AppCompatActivity {
         /*Authorization For Change Notification */
     }
 
-    @Override
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         deleteAttachments();
         return super.onKeyDown(keyCode, event);
+    }*/
+
+
+    @Override
+    public void onBackPressed()
+    {
+        deleteAttachments();
+        onBackButtonPressed();
     }
+
+
+
+    private void onBackButtonPressed()
+    {
+        final Dialog network_connect_dialog = new Dialog(Orders_Change_Activity.this);
+        network_connect_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        network_connect_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        network_connect_dialog.setCancelable(false);
+        network_connect_dialog.setCanceledOnTouchOutside(false);
+        network_connect_dialog.setContentView(R.layout.network_connection_dialog);
+        ImageView imageview = (ImageView) network_connect_dialog.findViewById(R.id.imageView1);
+        TextView description_textview = (TextView) network_connect_dialog.findViewById(R.id.description_textview);
+        description_textview.setText("Do you want to exit without save?");
+        Button connect_button = (Button) network_connect_dialog.findViewById(R.id.connect_button);
+        connect_button.setText("Yes");
+        Button cancel_button = (Button) network_connect_dialog.findViewById(R.id.cancel_button);
+        cancel_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                network_connect_dialog.dismiss();
+            }
+        });
+        connect_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                network_connect_dialog.dismiss();
+                Orders_Change_Activity.this.finish();
+            }
+        });
+        Glide.with(Orders_Change_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
+        network_connect_dialog.show();
+    }
+
 
     public void Insert_Offline_Data() {
         decision_dialog = new Dialog(Orders_Change_Activity.this);
@@ -706,6 +756,8 @@ public class Orders_Change_Activity extends AppCompatActivity {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
 
+
+
     public class Create_Order extends AsyncTask<String, Integer, Void> {
         String[] Response = new String[2];
         ArrayList<WcdDup_Object> wcdDup_al = new ArrayList<>();
@@ -873,6 +925,67 @@ public class Orders_Change_Activity extends AppCompatActivity {
         }
     }
 
+
+    public class Create_Order_REST extends AsyncTask<String, Integer, Void>
+    {
+        String[] Response = new String[2];
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(Orders_Change_Activity.this,
+                    getResources().getString(R.string.change_order));
+        }
+
+        @Override
+        protected Void doInBackground(String... transmit)
+        {
+            Orders_CH_Attachments_Fragment attachment_tab = (Orders_CH_Attachments_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 4));
+            List<Notif_EtDocs_Parcelable> attachments_arraylist = attachment_tab.getAttachmentsData();
+
+            String transmit_type = transmit[0];
+            Response = new Orders_Change_REST().Post_Create_Order(Orders_Change_Activity.this, ohp, transmit_type,"CHORD", ohp.getOrdrId(), "","", attachments_arraylist);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            customProgressDialog.dismiss_progress_dialog();
+
+            if (Response[0].startsWith("S"))
+            {
+                StringBuilder response = new StringBuilder();
+                String[] sp = Response[0].split("\n");
+                for (int i = 0; i < sp.length; i++)
+                {
+                    if (i >= 1)
+                        response.append("\n");
+                    response.append(sp[0].substring(2));
+                }
+                successDialog.dismissActivity(Orders_Change_Activity.this, response.toString());
+            }
+            else if (Response[0].startsWith("E"))
+            {
+                StringBuilder response = new StringBuilder();
+                String[] sp = Response[0].split("\n");
+                for (int i = 0; i < sp.length; i++) {
+                    if (i >= 1)
+                        response.append("\n");
+                    response.append(sp[0].substring(2));
+                }
+                error_dialog.show_error_dialog(Orders_Change_Activity.this,
+                        response.toString());
+            }
+            else
+            {
+                error_dialog.show_error_dialog(Orders_Change_Activity.this, Response[0]);
+            }
+        }
+    }
+
+
+
     private class WcdDupAdapter extends RecyclerView.Adapter<WcdDupAdapter.MyViewHolder> {
         private Context mContext;
         private List<WcdDup_Object> wcdDup_data;
@@ -939,7 +1052,15 @@ public class Orders_Change_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cancel_dialog.dismiss();
-                new GetToken().execute();
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    new GetToken().execute();
+                }
+                else
+                {
+                    new Create_Order_REST().execute("");
+                }
             }
         });
     }

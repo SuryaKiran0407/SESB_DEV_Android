@@ -31,9 +31,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
+import com.enstrapp.fieldtekpro.InitialLoad_Rest.InitialLoad_REST_Activity;
+import com.enstrapp.fieldtekpro.InitialLoad_Rest.REST_Notifications;
 import com.enstrapp.fieldtekpro.Initialload.Token;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.notifications.Notif_EtDocs_Parcelable;
+import com.enstrapp.fieldtekpro.notifications.Notifications_Create_Activity;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
@@ -190,7 +195,6 @@ public class Orders_Create_Activity extends AppCompatActivity {
         orders_ta.addFragment(new Orders_CR_General_Fragment(), getResources().getString(R.string.general));
         orders_ta.addFragment(new Orders_CR_Operation_Fragment(), getResources().getString(R.string.operations));
         orders_ta.addFragment(new Orders_CR_Material_Fragment(), getResources().getString(R.string.material));
-        orders_ta.addFragment(new Orders_CR_Permits_Fragment(), getResources().getString(R.string.permit));
         orders_ta.addFragment(new Orders_CR_Attachments_Fragment(), getResources().getString(R.string.attachments));
         order_vp.setAdapter(orders_ta);
         order_vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -210,6 +214,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     case 2:
                         break;
                     case 3:
+                        fab.show();
                         break;
                     default:
                         fab.show();
@@ -230,12 +235,12 @@ public class Orders_Create_Activity extends AppCompatActivity {
         orderSave_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean WBS = false;
+                boolean WBS = true;
                 if (ohp.getOrdrTypId() != null && !ohp.getOrdrTypId().equals("")) {
                     if (ohp.getOrdrTypId().equals("PM06"))
                         WBS = true;
                     else
-                        WBS = false;
+                        WBS = true;
                     if (ohp.getOrdrShrtTxt() != null && !ohp.getOrdrShrtTxt().equals("")) {
                         if ((ohp.getEquipNum() != null && !ohp.getEquipNum().equals("")) ||
                                 (ohp.getFuncLocId() != null && !ohp.getFuncLocId().equals(""))) {
@@ -243,53 +248,38 @@ public class Orders_Create_Activity extends AppCompatActivity {
                                 if (ohp.getWrkCntrId() != null && !ohp.getWrkCntrId().equals("")) {
                                     if (ohp.getPlnrGrpId() != null && !ohp.getPlnrGrpId().equals("")) {
                                         if (WBS) {
-                                            if (ohp.getPosid() != null && !ohp.getPosid().equals("")) {
-                                                if (ohp.getRevnr() != null && !ohp.getRevnr().equals("")) {
-                                                    if (ohp.getOrdrTypId().equals("PM08")) {
-                                                        ohp.setEquipNum("");
-                                                        ohp.setEquipName("");
-                                                        ohp.setPosid("");
-                                                        ohp.setRevnr("");
-                                                        ohp.setOrdrMatrlPrcbls(null);
-                                                    }
-                                                    cd = new ConnectionDetector(Orders_Create_Activity.this);
-                                                    isInternetPresent = cd.isConnectingToInternet();
-                                                    if (isInternetPresent) {
-                                                        addOprtn();
-                                                        confirmationDialog(getString(R.string.create_order_msg));
-                                                    } else {
-                                                        addOprtn();
-                                                        if (ohp.getOrdrPermitPrcbls() != null) {
-                                                            if (ohp.getOrdrPermitPrcbls().size() > 0) {
-                                                                network_connection_dialog.show_network_connection_dialog(Orders_Create_Activity.this);
-                                                            } else {
-                                                                if (ohp.getOrdrTypId().equals("PM08")) {
-                                                                    ohp.setEquipNum("");
-                                                                    ohp.setEquipName("");
-                                                                    ohp.setPosid("");
-                                                                    ohp.setRevnr("");
-                                                                    ohp.setOrdrMatrlPrcbls(null);
-                                                                }
-                                                                addOprtn();
-                                                                Insert_Offline_Data();
-                                                            }
-                                                        } else {
-                                                            if (ohp.getOrdrTypId().equals("PM08")) {
-                                                                ohp.setEquipNum("");
-                                                                ohp.setEquipName("");
-                                                                ohp.setPosid("");
-                                                                ohp.setRevnr("");
-                                                                ohp.setOrdrMatrlPrcbls(null);
-                                                            }
+                                            if (ohp.getPosid() != null && !ohp.getPosid().equals(""))
+                                            {
+                                                cd = new ConnectionDetector(Orders_Create_Activity.this);
+                                                isInternetPresent = cd.isConnectingToInternet();
+                                                if (isInternetPresent)
+                                                {
+                                                    addOprtn();
+                                                    confirmationDialog(getString(R.string.create_order_msg));
+                                                }
+                                                else
+                                                {
+                                                    addOprtn();
+                                                    if (ohp.getOrdrPermitPrcbls() != null)
+                                                    {
+                                                        if (ohp.getOrdrPermitPrcbls().size() > 0)
+                                                        {
+                                                            network_connection_dialog.show_network_connection_dialog(Orders_Create_Activity.this);
+                                                        }
+                                                        else
+                                                        {
                                                             addOprtn();
                                                             Insert_Offline_Data();
                                                         }
                                                     }
-                                                } else {
-                                                    error_dialog.show_error_dialog(Orders_Create_Activity.this,
-                                                            getResources().getString(R.string.revision_mandate));
+                                                    else
+                                                    {
+                                                        addOprtn();
+                                                        Insert_Offline_Data();
+                                                    }
                                                 }
-                                            } else {
+                                            }
+                                            else {
                                                 error_dialog.show_error_dialog(Orders_Create_Activity.this,
                                                         getResources().getString(R.string.wbs_mandate));
                                             }
@@ -366,7 +356,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 ohp = null;
                 deleteAttachments();
-                onBackPressed();
+                onBackButtonPressed();
             }
         });
 
@@ -376,17 +366,64 @@ public class Orders_Create_Activity extends AppCompatActivity {
                     public void onClick(View v) {
                         ohp = null;
                         deleteAttachments();
-                        onBackPressed();
+                        onBackButtonPressed();
                     }
                 });
 
     }
 
+
     @Override
+    public void onBackPressed()
+    {
+        deleteAttachments();
+        onBackButtonPressed();
+    }
+
+
+
+    private void onBackButtonPressed()
+    {
+        final Dialog network_connect_dialog = new Dialog(Orders_Create_Activity.this);
+        network_connect_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        network_connect_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        network_connect_dialog.setCancelable(false);
+        network_connect_dialog.setCanceledOnTouchOutside(false);
+        network_connect_dialog.setContentView(R.layout.network_connection_dialog);
+        ImageView imageview = (ImageView) network_connect_dialog.findViewById(R.id.imageView1);
+        TextView description_textview = (TextView) network_connect_dialog.findViewById(R.id.description_textview);
+        description_textview.setText("Do you want to exit without save?");
+        Button connect_button = (Button) network_connect_dialog.findViewById(R.id.connect_button);
+        connect_button.setText("Yes");
+        Button cancel_button = (Button) network_connect_dialog.findViewById(R.id.cancel_button);
+        cancel_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                network_connect_dialog.dismiss();
+            }
+        });
+        connect_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                network_connect_dialog.dismiss();
+                Orders_Create_Activity.this.finish();
+            }
+        });
+        Glide.with(Orders_Create_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
+        network_connect_dialog.show();
+    }
+
+
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         deleteAttachments();
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
+
 
     public void Insert_Offline_Data() {
         decision_dialog = new Dialog(Orders_Create_Activity.this);
@@ -688,10 +725,13 @@ public class Orders_Create_Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (Response.equals("success")) {
+            if (Response.equals("success"))
+            {
                 customProgressDialog.dismiss_progress_dialog();
                 new Create_Order().execute("");
-            } else {
+            }
+            else
+            {
                 customProgressDialog.dismiss_progress_dialog();
                 error_dialog.show_error_dialog(Orders_Create_Activity.this,
                         getResources().getString(R.string.unable_create));
@@ -702,6 +742,7 @@ public class Orders_Create_Activity extends AppCompatActivity {
     private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
+
 
     public class Create_Order extends AsyncTask<String, Integer, Void> {
         String[] Response = new String[2];
@@ -897,6 +938,127 @@ public class Orders_Create_Activity extends AppCompatActivity {
         }
     }
 
+
+
+    public class Create_Order_REST extends AsyncTask<String, Integer, Void>
+    {
+        String[] Response = new String[2];
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(Orders_Create_Activity.this,
+                    getResources().getString(R.string.creating_order));
+        }
+
+        @Override
+        protected Void doInBackground(String... transmit)
+        {
+            Orders_CR_Attachments_Fragment attachment_tab = (Orders_CR_Attachments_Fragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.order_vp, 3));
+            List<Notif_EtDocs_Parcelable> attachments_arraylist = attachment_tab.getAttachmentsData();
+
+            String transmit_type = transmit[0];
+            Response = new Orders_Create_REST().Post_Create_Order(Orders_Create_Activity.this, ohp, transmit_type,"CRORD", "", "",uniqeId, attachments_arraylist);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            customProgressDialog.dismiss_progress_dialog();
+
+            if (Response[0].startsWith("S"))
+            {
+                try
+                {
+                    Bundle extras = getIntent().getExtras();
+                    if (extras != null)
+                    {
+                        String qmnum = extras.getString("Notification_id");
+                        if (qmnum != null && !qmnum.equals(""))
+                        {
+                            String aufnr = Response[1];
+                            if (aufnr != null && !aufnr.equals(""))
+                            {
+                                ContentValues values = new ContentValues();
+                                values.put("Aufnr", aufnr);
+                                App_db.update("DUE_NOTIFICATION_NotifHeader", values,
+                                        "Qmnum" + "=?", new String[]{qmnum});
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+                StringBuilder response = new StringBuilder();
+                String[] sp = Response[0].split("\n");
+                for (int i = 0; i < sp.length; i++)
+                {
+                    if (i >= 1)
+                        response.append("\n");
+                    response.append(sp[0].substring(2));
+                }
+                String notif_id = Response[3];
+                if (notif_id != null && !notif_id.equals(""))
+                {
+                    new Get_Notification_Data().execute(notif_id, response.toString());
+                }
+                else
+                {
+                    successDialog.dismissActivity(Orders_Create_Activity.this,response.toString());
+                }
+            }
+            else if (Response[0].startsWith("E"))
+            {
+                StringBuilder response = new StringBuilder();
+                String[] sp = Response[0].split("\n");
+                for (int i = 0; i < sp.length; i++)
+                {
+                    if (i >= 1)
+                        response.append("\n");
+                    response.append(sp[0].substring(2));
+                }
+                error_dialog.show_error_dialog(Orders_Create_Activity.this,response.toString());
+            }
+            else
+            {
+                error_dialog.show_error_dialog(Orders_Create_Activity.this, Response[0]);
+            }
+        }
+    }
+
+
+
+    public class Get_Notification_Data extends AsyncTask<String, Integer, Void>
+    {
+        String DNOT_Status = "";
+        String status = "";
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(Orders_Create_Activity.this,getResources().getString(R.string.creating_order));
+        }
+
+        @Override
+        protected Void doInBackground(String... transmit)
+        {
+            String notif_id = transmit[0];
+            status = transmit[1];
+            DNOT_Status = REST_Notifications.Get_DNOT_Data(Orders_Create_Activity.this,"Single",notif_id);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            customProgressDialog.dismiss_progress_dialog();
+            successDialog.dismissActivity(Orders_Create_Activity.this,status);
+        }
+    }
+
+
     private class WcdDupAdapter extends RecyclerView.Adapter<WcdDupAdapter.MyViewHolder> {
         private Context mContext;
         private List<WcdDup_Object> wcdDup_data;
@@ -981,9 +1143,10 @@ public class Orders_Create_Activity extends AppCompatActivity {
         fab.startAnimation(shrink);
     }
 
-    private void confirmationDialog(String message) {
-        final Dialog cancel_dialog = new Dialog(Orders_Create_Activity.this,
-                R.style.PauseDialog);
+
+    private void confirmationDialog(String message)
+    {
+        final Dialog cancel_dialog = new Dialog(Orders_Create_Activity.this,R.style.PauseDialog);
         cancel_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         cancel_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         cancel_dialog.setCancelable(false);
@@ -1004,7 +1167,15 @@ public class Orders_Create_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cancel_dialog.dismiss();
-                new GetToken().execute();
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    new GetToken().execute();
+                }
+                else
+                {
+                    new Create_Order_REST().execute("");
+                }
             }
         });
     }

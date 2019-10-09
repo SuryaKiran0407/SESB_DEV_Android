@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.Utilities.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class Material_Components_Activity extends AppCompatActivity {
 
     TabLayout matrl_tl;
     ViewPager matrl_vp;
-    String equip = "", iwerk = "";
+    String equip = "", plant_id = "", iwerk = "";
     ImageView back_iv;
     TextView title_tv;
     String[] tabTitle = {"BOM", "General"};
@@ -46,9 +46,11 @@ public class Material_Components_Activity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
 
-        if (bundle != null) {
+        if (bundle != null)
+        {
             equip = bundle.getString("equipment");
             iwerk = bundle.getString("iwerk");
+            plant_id = bundle.getString("plant_id");
         }
 
         DATABASE_NAME = getString(R.string.database_name);
@@ -74,9 +76,19 @@ public class Material_Components_Activity extends AppCompatActivity {
         }
         unreadCount[0] = bom_list.size();
 
-        try {
-            Cursor cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks" +
-                    " = ?", new String[]{iwerk});
+        try
+        {
+            Cursor cursor = null;
+            if (plant_id != null && !plant_id.equals(""))
+            {
+                cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks" +
+                        " = ?", new String[]{plant_id});
+            }
+            else
+            {
+                cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks" +
+                        " = ?", new String[]{iwerk});
+            }
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
                     do {

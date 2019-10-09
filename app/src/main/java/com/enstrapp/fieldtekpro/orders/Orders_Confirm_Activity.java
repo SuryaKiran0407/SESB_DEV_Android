@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 
@@ -45,7 +45,7 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
     private static String DATABASE_NAME = "";
     Error_Dialog errorDialog = new Error_Dialog();
     Success_Dialog success_dialog = new Success_Dialog();
-    String strDt = "", endDt = "",ctrlKeyId = "",ctrlKeyText = "",plantId = "",plantTxt = "",wrkcntId = "",wrkcntTxt = "",actTypId = "",actTypTxt = "",durId = "",durUnit = "";
+    String strDt = "", durationunit = "", endDt = "",ctrlKeyId = "",ctrlKeyText = "",plantId = "",plantTxt = "",wrkcntId = "",wrkcntTxt = "",actTypId = "",actTypTxt = "",durId = "",durUnit = "";
     TextInputLayout confirmation_longtext_layout;
 
 
@@ -94,6 +94,7 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
             oop = bundle.getParcelable("cnfoprtn");
             strDt = bundle.getString("strDt");
             endDt = bundle.getString("endDt");
+            durationunit = bundle.getString("durationunit");
             orderNo_tv.setText(oop.getOrdrId());
             oprtnNo_tv.setText(oop.getOprtnId());
             oprtnShrtTxt_tiet.setText(oop.getOprtnShrtTxt());
@@ -182,8 +183,7 @@ public class Orders_Confirm_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 pauseFunc();
-                Intent intent = new Intent(Orders_Confirm_Activity.this,
-                        Orders_ConfirmPartial_Activity.class);
+                Intent intent = new Intent(Orders_Confirm_Activity.this,Orders_ConfirmPartial_Activity.class);
                 intent.putExtra("time_confrm", oop);
                 intent.putExtra("strDt", strDt);
                 intent.putExtra("endDt", endDt);

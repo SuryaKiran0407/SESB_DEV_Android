@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 import java.text.DateFormat;
@@ -28,14 +28,18 @@ import java.util.HashMap;
 public class Operations_Add_Update_Activity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolBar;
-    TextInputEditText start_date_edittext, end_date_edittext, oprtnShrtTxt_tiet, duration_tiet,
-            durationUnit_tiet, plant_tiet, wrkCntr_tiet;
-    ImageView duration_iv, wrkCntr_iv, longtext_imageview;
+    TextInputEditText calculationkey_edittext, number_edittext, start_date_edittext, activitytype_edittext, end_date_edittext, oprtnShrtTxt_tiet, duration_tiet,
+            costelement_tiet, controlkey_tiet, durationUnit_tiet, plant_tiet, wrkCntr_tiet;
+    ImageView calculationkey_imageview, activitytype_imageview, costelement_iv, controlkey_iv, duration_iv, wrkCntr_iv, longtext_imageview;
     OrdrOprtnPrcbl oop = new OrdrOprtnPrcbl();
     String plant_id = "", longtext_text = "", order_id = "";
     Button cancel_bt, submit_bt, operations_custominfo_button;
     static final int DURATION = 110;
+    static final int controlkey = 111;
     static final int PLANT_WRKCNTR = 120;
+    static final int COST_ELEMENT = 121;
+    static final int ACTIVITY_TYPE = 122;
+    static final int CALCUATIONKEY_TYPE = 123;
     static final int OPERATION_CUSTOMINFO = 130;
     Error_Dialog errorDialog = new Error_Dialog();
     Bundle bundle;
@@ -53,7 +57,11 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         setContentView(R.layout.order_operation_create_change);
 
         oprtnShrtTxt_tiet = findViewById(R.id.oprtnShrtTxt_tiet);
+        number_edittext = findViewById(R.id.number_edittext);
+        calculationkey_edittext = findViewById(R.id.calculationkey_edittext);
         duration_tiet = findViewById(R.id.duration_tiet);
+        controlkey_tiet = findViewById(R.id.controlkey_tiet);
+        costelement_tiet = findViewById(R.id.costelement_tiet);
         durationUnit_tiet = findViewById(R.id.durationUnit_tiet);
         plant_tiet = findViewById(R.id.plant_tiet);
         wrkCntr_tiet = findViewById(R.id.wrkCntr_tiet);
@@ -66,7 +74,12 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         end_date_layout = (TextInputLayout) findViewById(R.id.end_date_layout);
         start_date_edittext = (TextInputEditText) findViewById(R.id.start_date_edittext);
         end_date_edittext = (TextInputEditText) findViewById(R.id.end_date_edittext);
+        activitytype_edittext = (TextInputEditText) findViewById(R.id.activitytype_edittext);
         longtext_imageview = (ImageView) findViewById(R.id.longtext_imageview);
+        controlkey_iv = (ImageView) findViewById(R.id.controlkey_iv);
+        costelement_iv = (ImageView) findViewById(R.id.costelement_iv);
+        activitytype_imageview = (ImageView) findViewById(R.id.activitytype_imageview);
+        calculationkey_imageview = (ImageView) findViewById(R.id.calculationkey_imageview);
 
 
         DATABASE_NAME = getString(R.string.database_name);
@@ -91,10 +104,12 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
 
         bundle = getIntent().getExtras();
 
-        if (bundle != null) {
+        if (bundle != null)
+        {
             plant_id = "";
             order_id = bundle.getString("order_id");
-            if (bundle.getString("type_oprtn").equalsIgnoreCase("C")) {
+            if (bundle.getString("type_oprtn").equalsIgnoreCase("C"))
+            {
                 plant_tiet.setText(bundle.getString("ordrPlant"));
                 wrkCntr_tiet.setText(bundle.getString("ordrWrkCntr"));
                 plant_id = bundle.getString("ordrPlant");
@@ -102,7 +117,27 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 oop.setPlantTxt(bundle.getString("ordrPlantName"));
                 oop.setWrkCntrId(bundle.getString("ordrWrkCntr"));
                 oop.setWrkCntrTxt(bundle.getString("ordrWrkCntrName"));
-            } else {
+                try
+                {
+                    Cursor cursor = FieldTekPro_db.rawQuery("select * from ETLSTAR order by id",null);
+                    if (cursor != null && cursor.getCount() > 0)
+                    {
+                        cursor.moveToFirst();
+                        activitytype_edittext.setText(cursor.getString(4)+" - "+cursor.getString(5));
+                        oop.setLarnt(cursor.getString(4));
+                        oop.setLarnt_text(cursor.getString(5));
+                    }
+                    else
+                    {
+                        cursor.close();
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            else
+            {
                 oop = bundle.getParcelable("cnfoprtn");
                 if (oop.getOprtnLngTxt() != null && !oop.getOprtnLngTxt().equals("")) {
                     //longtext_text = oop.getOprtnLngTxt();
@@ -151,9 +186,41 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 }
                 wrkCntr_tiet.setText(oop.getWrkCntrId() + " - " + loc_text);
 
+                controlkey_tiet.setText(oop.getCntrlKeyId()+ " - " + oop.getCntrlKeyTxt());
+
+                costelement_tiet.setText(oop.getCostelement());
+
+                activitytype_edittext.setText(oop.getLarnt());
+
+                number_edittext.setText(oop.getUsr02());
+
+
+                if (oop.getUsr03() != null && !oop.getUsr03().equals(""))
+                {
+                    String calkey = oop.getUsr03();
+                    if(calkey.equalsIgnoreCase("0"))
+                    {
+                        calculationkey_edittext.setText(oop.getUsr03()+" "+"Maintain Manually");
+                    }
+                    else if(calkey.equalsIgnoreCase("1"))
+                    {
+                        calculationkey_edittext.setText(oop.getUsr03()+" "+"Calculation Duration");
+                    }
+                    else if(calkey.equalsIgnoreCase("2"))
+                    {
+                        calculationkey_edittext.setText(oop.getUsr03()+" "+"Calculation Work");
+                    }
+                    else if(calkey.equalsIgnoreCase("3"))
+                    {
+                        calculationkey_edittext.setText(oop.getUsr03()+" "+"Calculation Number Of Capacities");
+                    }
+                }
+
                 String action = oop.getStatus();
                 if (action.equalsIgnoreCase("I")) {
-                } else {
+                }
+                else
+                {
                     String StartDate_format = "", starttime_format = "";
                     String startdate = oop.getFsavd();
                     if (startdate.equals("00000000")) {
@@ -168,7 +235,7 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                             String outputDateStr = outputFormat.format(date1);
                             StartDate_format = outputDateStr;
 
-                            String starttime = oop.getUsr02();
+                            /*String starttime = oop.getUsr02();
                             if (starttime.equals("000000")) {
                                 starttime_format = "";
                             } else {
@@ -178,12 +245,13 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                                 SimpleDateFormat outputFormat1 = new SimpleDateFormat(outputPattern1);
                                 Date date2 = inputFormat1.parse(starttime);
                                 starttime_format = outputFormat1.format(date2);
-                            }
+                            }*/
                         } catch (ParseException e) {
                             StartDate_format = "";
                             starttime_format = "";
                         }
-                        start_date_edittext.setText(StartDate_format + "   " + starttime_format);
+                        //start_date_edittext.setText(StartDate_format + "   " + starttime_format);
+                        start_date_edittext.setText(StartDate_format);
                         start_date_layout.setVisibility(View.VISIBLE);
                     }
 
@@ -201,7 +269,7 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                             String outputDateStr = outputFormat.format(date1);
                             EndDate_format = outputDateStr;
 
-                            String endtime = oop.getUsr03();
+                            /*String endtime = oop.getUsr03();
                             if (endtime.equals("000000")) {
                                 endtime_format = "";
                             } else {
@@ -211,12 +279,13 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                                 SimpleDateFormat outputFormat1 = new SimpleDateFormat(outputPattern1);
                                 Date date2 = inputFormat1.parse(endtime);
                                 endtime_format = outputFormat1.format(date2);
-                            }
+                            }*/
                         } catch (ParseException e) {
                             EndDate_format = "";
                             endtime_format = "";
                         }
-                        end_date_edittext.setText(EndDate_format + "   " + endtime_format);
+                        //end_date_edittext.setText(EndDate_format + "   " + endtime_format);
+                        end_date_edittext.setText(EndDate_format);
                         end_date_layout.setVisibility(View.VISIBLE);
                     }
                 }
@@ -234,6 +303,10 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
         submit_bt.setOnClickListener(this);
         cancel_bt.setOnClickListener(this);
         longtext_imageview.setOnClickListener(this);
+        controlkey_iv.setOnClickListener(this);
+        costelement_iv.setOnClickListener(this);
+        activitytype_imageview.setOnClickListener(this);
+        calculationkey_imageview.setOnClickListener(this);
 
         /*Written By SuryaKiran for Custom Info*/
         operations_custominfo_button.setOnClickListener(this);
@@ -256,8 +329,7 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
 
             /*Written By SuryaKiran for Operation Long Text OnCLick*/
             case (R.id.longtext_imageview):
-                Intent longtext_intent = new Intent(Operations_Add_Update_Activity.this,
-                        Order_LongText_Activity.class);
+                Intent longtext_intent = new Intent(Operations_Add_Update_Activity.this,Order_LongText_Activity.class);
                 longtext_intent.putExtra("aufnr", order_id);
                 longtext_intent.putExtra("operation_id", oop.getOprtnId());
                 longtext_intent.putExtra("tdid", "");
@@ -266,37 +338,47 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                 break;
             /*Written By SuryaKiran for Operation Long Text OnCLick*/
 
-            /*Written By SuryaKiran for Custom Info OnCLick*/
-            case (R.id.operations_custominfo_button):
-                Intent custominfo_intent = new Intent(Operations_Add_Update_Activity.this,
-                        CustomInfo_Activity.class);
-                custominfo_intent.putExtra("Zdoctype", "W");
-                custominfo_intent.putExtra("ZdoctypeItem", "WO");
-                custominfo_intent.putExtra("custom_info_arraylist",
-                        selected_operation_custom_info_arraylist);
-                custominfo_intent.putExtra("request_id",
-                        Integer.toString(OPERATION_CUSTOMINFO));
-                startActivityForResult(custominfo_intent, OPERATION_CUSTOMINFO);
-                break;
-            /*Written By SuryaKiran for Custom Info OnCLick*/
 
+            case (R.id.controlkey_iv):
+                Intent controlkeyIntent = new Intent(Operations_Add_Update_Activity.this,ControlKey_Activity.class);
+                startActivityForResult(controlkeyIntent, controlkey);
+                break;
 
             case (R.id.duration_iv):
-                Intent durationIntent = new Intent(Operations_Add_Update_Activity.this,
-                        Duration_Activity.class);
+                Intent durationIntent = new Intent(Operations_Add_Update_Activity.this,Duration_Activity.class);
                 startActivityForResult(durationIntent, DURATION);
                 break;
 
+            case (R.id.costelement_iv):
+                Intent intent1 = new Intent(Operations_Add_Update_Activity.this,CostElement_Activity.class);
+                intent1.putExtra("werks", plant_id);
+                startActivityForResult(intent1, COST_ELEMENT);
+                break;
+
+
+            case (R.id.activitytype_imageview):
+                Intent intent2 = new Intent(Operations_Add_Update_Activity.this,ActivityType_Activity.class);
+                startActivityForResult(intent2, ACTIVITY_TYPE);
+                break;
+
+
+            case (R.id.calculationkey_imageview):
+                Intent intent3 = new Intent(Operations_Add_Update_Activity.this,CalculationKey_Activity.class);
+                startActivityForResult(intent3, CALCUATIONKEY_TYPE);
+                break;
+
+
             case (R.id.wrkCntr_iv):
-                Intent wrkCntrIntent = new Intent(Operations_Add_Update_Activity.this,
-                        WrkCntrPlant_Activity.class);
+                Intent wrkCntrIntent = new Intent(Operations_Add_Update_Activity.this,WrkCntrPlant_Activity.class);
                 wrkCntrIntent.putExtra("werks", plant_id);
                 startActivityForResult(wrkCntrIntent, PLANT_WRKCNTR);
                 break;
 
             case (R.id.submit_bt):
-                if (bundle.getString("type_oprtn").equalsIgnoreCase("C")) {
-                    if (!oprtnShrtTxt_tiet.getText().toString().equals("")) {
+                if (bundle.getString("type_oprtn").equalsIgnoreCase("C"))
+                {
+                    if (!oprtnShrtTxt_tiet.getText().toString().equals(""))
+                    {
                         oop.setOprtnShrtTxt(oprtnShrtTxt_tiet.getText().toString());
                         if (duration_tiet.getText().toString().equals(""))
                             oop.setDuration("0");
@@ -305,22 +387,27 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                         oop.setOprtnLngTxt(longtext_text);
                         oop.setDurationUnit(durationUnit_tiet.getText().toString());
                         oop.setStatus("I");
+                        oop.setUsr02(number_edittext.getText().toString());
                         Intent intent = new Intent();
                         intent.putExtra("oop", oop);
-                        intent.putExtra("selected_operation_custom_info_arraylist",
-                                selected_operation_custom_info_arraylist);
+                        intent.putExtra("selected_operation_custom_info_arraylist",selected_operation_custom_info_arraylist);
                         setResult(RESULT_OK, intent);
                         Operations_Add_Update_Activity.this.finish();
-                    } else {
+                    }
+                    else
+                    {
                         errorDialog.show_error_dialog(Operations_Add_Update_Activity.this,
                                 getResources().getString(R.string.oprtnTxt_mandate));
                     }
-                } else {
+                }
+                else
+                {
                     if (!oprtnShrtTxt_tiet.getText().toString().equals("")) {
                         oop.setOprtnShrtTxt(oprtnShrtTxt_tiet.getText().toString());
                         oop.setDuration(duration_tiet.getText().toString());
                         oop.setOprtnLngTxt(oop.getOprtnLngTxt());
                         oop.setDurationUnit(durationUnit_tiet.getText().toString());
+                        oop.setUsr02(number_edittext.getText().toString());
                         if (!oop.getStatus().equals("I"))
                             oop.setStatus("U");
                         Intent intent = new Intent();
@@ -329,7 +416,9 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                                 selected_operation_custom_info_arraylist);
                         setResult(RESULT_OK, intent);
                         Operations_Add_Update_Activity.this.finish();
-                    } else {
+                    }
+                    else
+                    {
                         errorDialog.show_error_dialog(Operations_Add_Update_Activity.this,
                                 getResources().getString(R.string.oprtnTxt_mandate));
                     }
@@ -355,6 +444,49 @@ public class Operations_Add_Update_Activity extends AppCompatActivity implements
                     durationUnit_tiet.setText(data.getStringExtra("duration_unit"));
                 }
                 break;
+
+            case (controlkey):
+                if (resultCode == RESULT_OK)
+                {
+                    oop.setCntrlKeyId(data.getStringExtra("controlkey_id"));
+                    oop.setCntrlKeyTxt(data.getStringExtra("controlkey_text"));
+                    controlkey_tiet.setText(data.getStringExtra("controlkey_id")+" - "+data.getStringExtra("controlkey_text"));
+                }
+                break;
+
+
+            case (COST_ELEMENT):
+                if (resultCode == RESULT_OK)
+                {
+                    oop.setCostelement(data.getStringExtra("costelement_id"));
+                    oop.setCostelement_text(data.getStringExtra("costelement_text"));
+                    costelement_tiet.setText(data.getStringExtra("costelement_id")+" - "+data.getStringExtra("costelement_text"));
+                }
+                break;
+
+
+
+
+            case (CALCUATIONKEY_TYPE):
+                if (resultCode == RESULT_OK)
+                {
+                    oop.setUsr03(data.getStringExtra("calculationkey_id"));
+                    oop.setUsr03_text(data.getStringExtra("calculationkey_text"));
+                    calculationkey_edittext.setText(data.getStringExtra("calculationkey_id")+" - "+data.getStringExtra("calculationkey_text"));
+                }
+                break;
+
+
+            case (ACTIVITY_TYPE):
+                if (resultCode == RESULT_OK)
+                {
+                    oop.setLarnt(data.getStringExtra("activitytype_id"));
+                    oop.setLarnt_text(data.getStringExtra("activitytype_text"));
+                    activitytype_edittext.setText(data.getStringExtra("activitytype_id")+" - "+data.getStringExtra("activitytype_text"));
+                }
+                break;
+
+
             case (PLANT_WRKCNTR):
                 if (resultCode == RESULT_OK) {
                     oop.setPlantId(data.getStringExtra("plant_id"));

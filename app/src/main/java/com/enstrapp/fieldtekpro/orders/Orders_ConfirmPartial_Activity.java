@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.DateTime.DatePickerDialog;
 import com.enstrapp.fieldtekpro.DateTime.TimePickerDialog;
 import com.enstrapp.fieldtekpro.Initialload.Token;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -120,7 +120,9 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
             endDt_tiet.setText(dateDisplayFormat(endDt));
             noRmngWrk_Cb.setChecked(true);
             fnlCnfrm_Cb.setChecked(true);
+            actlUnt_tiet.setText(oop.getDurationUnit());
         }
+
 
         cancel_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,7 +189,26 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         submit_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmationDialog(getString(R.string.oprtn_cnfrm_msg));
+
+                if (cnfrmTxt_tiet.getText().toString() != null && !cnfrmTxt_tiet.getText().toString().equals(""))
+                {
+                    cd = new ConnectionDetector(Orders_ConfirmPartial_Activity.this);
+                    isInternetPresent = cd.isConnectingToInternet();
+                    if (isInternetPresent)
+                    {
+                        confirmationDialog(getString(R.string.oprtn_cnfrm_msg));
+                    }
+                    else
+                    {
+                        new Network_Connection_Dialog()
+                                .show_network_connection_dialog(Orders_ConfirmPartial_Activity.this);
+                    }
+                }
+                else
+                {
+                    errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this,"Please Enter Confirmation Text.");
+                }
+
             }
         });
 
@@ -213,7 +234,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         switch (requestCode) {
             case (DURATION):
                 if (resultCode == RESULT_OK) {
-                    actlUnt_tiet.setText(data.getStringExtra("duration_unit"));
+                    actlUnt_tiet .setText(data.getStringExtra("duration_unit"));
                 }
                 break;
 
@@ -488,6 +509,7 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         }
     }
 
+
     private class POST_TK_CONFIRM extends AsyncTask<Void, Integer, Void> {
         ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
 
@@ -562,6 +584,89 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         }
     }
 
+
+
+    private class POST_TK_CONFIRM_REST extends AsyncTask<Void, Integer, Void> {
+        ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(Orders_ConfirmPartial_Activity.this,
+                    getResources().getString(R.string.confirm_progs));
+            cop_al.clear();
+            ConfirmOrder_Prcbl cop = new ConfirmOrder_Prcbl();
+            cop.setAufnr(oop.getOrdrId());
+            cop.setVornr(oop.getOprtnId());
+            cop.setConfNo("");
+            cop.setConfText(cnfrmTxt_tiet.getText().toString());
+            if (!actlWrkUnt_tiet.getText().toString().equals(""))
+                cop.setActWork(actlWrkUnt_tiet.getText().toString());
+            else
+                cop.setActWork("0");
+            cop.setUnWork(actlUnt_tiet.getText().toString());
+            cop.setPlanWork("0");
+            cop.setLearr("");
+            cop.setBemot("");
+            cop.setGrund(ReasonId);
+            if (noRmngWrk_Cb.isChecked())
+                cop.setLeknw("X");
+            else
+                cop.setLeknw("");
+            if (fnlCnfrm_Cb.isChecked())
+                cop.setAueru("X");
+            else
+                cop.setAueru("");
+            cop.setAusor("");
+            cop.setPernr(employee_tiet.getText().toString());
+            cop.setLoart("");
+            cop.setStatus("");
+            cop.setRsnum("");
+            cop.setRspos("");
+            cop.setPosnr("");
+            cop.setMatnr("");
+            cop.setBwart("");
+            cop.setPlant("");
+            cop.setLgort("");
+            cop.setErfmg("0");
+            cop.setErfme("");
+            cop.setWorkCntr(oop.getWrkCntrId());
+            cop.setExecStartDate(dateFormat(strtDt_tiet.getText().toString()));
+            cop.setExecStartTime(timeFormat(strtTm_tiet.getText().toString()));
+            cop.setExecFinDate(dateFormat(endDt_tiet.getText().toString()));
+            cop.setExecFinTime(timeFormat(endTm_tiet.getText().toString()));
+            cop.setPernr("");
+            cop_al.add(cop);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Response = new Order_CConfirmation_REST().Get_Data(Orders_ConfirmPartial_Activity.this,
+                    cop_al, null, "", "CNORD", oop.getOrdrId(),
+                    "pc", longtext_text);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            customProgressDialog.dismiss_progress_dialog();
+            if (Response.startsWith("S")) {
+                dismissActivity(Orders_ConfirmPartial_Activity.this, Response.substring(2));
+            }
+            else if (Response.startsWith("E")) {
+                errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this,
+                        Response.substring(2));
+            }
+            else {
+                errorDialog.show_error_dialog(Orders_ConfirmPartial_Activity.this, Response);
+            }
+        }
+    }
+
+
+
+
     private void confirmationDialog(String message) {
         final Dialog cancel_dialog = new Dialog(Orders_ConfirmPartial_Activity.this,
                 R.style.PauseDialog);
@@ -585,14 +690,16 @@ public class Orders_ConfirmPartial_Activity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cd = new ConnectionDetector(Orders_ConfirmPartial_Activity.this);
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    cancel_dialog.dismiss();
+
+                cancel_dialog.dismiss();
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
                     new GetToken().execute();
-                } else {
-                    new Network_Connection_Dialog()
-                            .show_network_connection_dialog(Orders_ConfirmPartial_Activity.this);
+                }
+                else
+                {
+                    new POST_TK_CONFIRM_REST().execute();
                 }
             }
         });

@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.DateTime.DateTimePickerDialog;
 import com.enstrapp.fieldtekpro.Initialload.Token;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -194,7 +194,7 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
                     ImageView imageView1 = (ImageView) submit_decision_dialog.findViewById(R.id.imageView1);
                     Glide.with(Equipment_StartInspection_Activity.this).load(R.drawable.error_dialog_gif).into(imageView1);
                     TextView description_textview = (TextView) submit_decision_dialog.findViewById(R.id.description_textview);
-                    description_textview.setText(getString(R.string.submit_inspchklist));
+                    description_textview.setText("Do you want to submit measurement readings data?");
                     Button ok_button = (Button) submit_decision_dialog.findViewById(R.id.yes_button);
                     Button cancel_button = (Button) submit_decision_dialog.findViewById(R.id.no_button);
                     submit_decision_dialog.show();
@@ -727,6 +727,7 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            custom_progress_dialog.show_progress_dialog(Equipment_StartInspection_Activity.this, getResources().getString(R.string.insp_chk_submit));
         }
         @Override
         protected Void doInBackground(String... params)
@@ -749,10 +750,14 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (post_insp_check_status.get("response_status") != null && !post_insp_check_status.get("response_status").equals("")) {
-                if (post_insp_check_status.get("response_status").equalsIgnoreCase("success")) {
+            if (post_insp_check_status.get("response_status") != null && !post_insp_check_status.get("response_status").equals(""))
+            {
+                if (post_insp_check_status.get("response_status").equalsIgnoreCase("success"))
+                {
                     String response_data = post_insp_check_status.get("response_data");
-                    if (response_data.startsWith("S")) {
+                    if (response_data.startsWith("S"))
+                    {
+                        custom_progress_dialog.dismiss_progress_dialog();
                         final Dialog success_dialog = new Dialog(Equipment_StartInspection_Activity.this);
                         success_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                         success_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -772,19 +777,27 @@ public class Equipment_StartInspection_Activity extends AppCompatActivity implem
                                 Equipment_StartInspection_Activity.this.finish();
                             }
                         });
-                    } else if (response_data.startsWith("E")) {
+                    }
+                    else if (response_data.startsWith("E"))
+                    {
                         custom_progress_dialog.dismiss_progress_dialog();
                         error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this, response_data.substring(1).toString());
-                    } else {
+                    }
+                    else
+                    {
                         custom_progress_dialog.dismiss_progress_dialog();
                         error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this, response_data);
                     }
-                } else {
+                }
+                else
+                {
                     custom_progress_dialog.dismiss_progress_dialog();
                     error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this,
                             getString(R.string.unable_inspchklst));
                 }
-            } else {
+            }
+            else
+            {
                 custom_progress_dialog.dismiss_progress_dialog();
                 error_dialog.show_error_dialog(Equipment_StartInspection_Activity.this,
                         getString(R.string.unable_inspchklst));

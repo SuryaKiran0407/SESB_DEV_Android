@@ -250,7 +250,8 @@
                 android:background="@drawable/blueborder"
                 android:orientation="horizontal"
                 android:padding="@dimen/textPadding"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:visibility="gone">
 
                 <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="0dp"
@@ -315,7 +316,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent"
-                    android:hint="@string/confirm_text"
+                    android:hint="@string/confirm_text1"
                     android:maxLength="40"
                     android:textSize="@dimen/textSize" />
             </android.support.design.widget.TextInputLayout>
@@ -339,7 +340,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent"
                     android:hint="@string/employee"
-                    android:maxLength="8"
+                    android:maxLength="15"
                     android:inputType="number"
                     android:textSize="@dimen/textSize" />
             </android.support.design.widget.TextInputLayout>

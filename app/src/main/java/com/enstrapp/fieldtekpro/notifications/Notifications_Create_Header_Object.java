@@ -123,6 +123,10 @@ final class Notifications_Create_Header_Object
 		return custom_info_arraylist;
 	}
 
+	public String getBreakdown_status() {
+		return breakdown_status;
+	}
+
 	private final String notification_type_id;
 	private final String notification_type_text;
 	private final String notifshtTxt;
@@ -152,10 +156,11 @@ final class Notifications_Create_Header_Object
 	private final String effect_text;
 	private final String plant_id;
 	private final String longtext_text;
+	private final String breakdown_status;
 	private final ArrayList<HashMap<String, String>> custom_info_arraylist;
 
 
-	public Notifications_Create_Header_Object(String notification_type_id, String notification_type_text, String notifshtTxt, String functionlocation_id, String functionlocation_text, String equipment_id, String equipment_text, String workcenter_id, String workcenter_text, String priority_type_id, String priority_type_text, String plannergroup_id, String plannergroup_text, String reportedby, String primUsrResp, String personresponsible_id, String personresponsible_text, String req_stdate_date_formated, String req_stdate_time_formatted, String req_end_date_formatted, String req_end_time_formatted, String mal_st_date_formatted, String mal_st_time_formatted, String mal_end_date_formatted, String mal_end_time_formatted, String effect_id, String effect_text, String plant_id, String longtext_text, ArrayList<HashMap<String, String>> custom_info_arraylist)
+	public Notifications_Create_Header_Object(String notification_type_id, String notification_type_text, String notifshtTxt, String functionlocation_id, String functionlocation_text, String equipment_id, String equipment_text, String workcenter_id, String workcenter_text, String priority_type_id, String priority_type_text, String plannergroup_id, String plannergroup_text, String reportedby, String primUsrResp, String personresponsible_id, String personresponsible_text, String req_stdate_date_formated, String req_stdate_time_formatted, String req_end_date_formatted, String req_end_time_formatted, String mal_st_date_formatted, String mal_st_time_formatted, String mal_end_date_formatted, String mal_end_time_formatted, String effect_id, String effect_text, String plant_id, String longtext_text, ArrayList<HashMap<String, String>> custom_info_arraylist, String breakdown_status)
 	{
 		this.notification_type_id = notification_type_id;
 		this.notification_type_text = notification_type_text;
@@ -187,6 +192,7 @@ final class Notifications_Create_Header_Object
 		this.plant_id = plant_id;
 		this.longtext_text = longtext_text;
 		this.custom_info_arraylist = custom_info_arraylist;
+		this.breakdown_status = breakdown_status;
 	}
 
 

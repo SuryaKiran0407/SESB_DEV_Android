@@ -37,7 +37,7 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:text="@string/rel"
-                        android:textSize="15sp"/>
+                        android:textSize="14sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/postpone_layout"
@@ -47,7 +47,8 @@
                     android:background="@drawable/blueborder"
                     android:backgroundTint="@color/orange1"
                     android:padding="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -58,7 +59,7 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:text="@string/nopo"
-                        android:textSize="15sp"/>
+                        android:textSize="14sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/teco_layout"
@@ -79,21 +80,21 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:text="@string/teco"
-                        android:textSize="15sp"/>
+                        android:textSize="14sp"/>
                 </LinearLayout>
             </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/blueborder"
+                android:background="@drawable/blueborder2"
                 android:backgroundTint="@color/blue"
                 android:id="@+id/data_layout">
                 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/blueborder"
+                    android:background="@drawable/blueborder2"
                     android:paddingBottom="6dp"
                     android:paddingStart="8dp">
 

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 import java.util.ArrayList;
@@ -69,34 +69,37 @@ public class Orders_CR_Operation_Fragment extends Fragment {
             onResume();
     }
 
+
+
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
 
         if (!getUserVisibleHint())
             return;
-        if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
-            if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
-                ma.ohp.setOrdrOprtnPrcbls(oop_al);
-                if (ma.empty) {
-                    for(int  i= 0;i<oop_al.size();i++) {
-                    if(oop_al.get(i).getOrdrId().equals("PM03"))
+        if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals(""))
+        {
+            if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null)
+            {
+                if (ma.ohp.getOrdrOprtnPrcbls() != null)
+                {
+                    //oop_al.addAll(ma.ohp.getOrdrOprtnPrcbls());
+                }
+                else
+                {
+                    ma.ohp.setOrdrOprtnPrcbls(oop_al);
+                    if (!(ma.ohp.getOrdrOprtnPrcbls().size() > 0))
                     {
-                        ma.ohp.getOrdrOprtnPrcbls().clear();
-                        oop_al.clear();
-                    }
-                    }
-                    if (!(ma.ohp.getOrdrOprtnPrcbls().size() > 0)) {
-                        oop_al.clear();
                         OrdrOprtnPrcbl oop = new OrdrOprtnPrcbl();
                         oop.setSelected(false);
-                        oop.setOrdrId(ma.ohp.getOrdrTypId());
+                        oop.setOrdrId("");
                         oop.setOrdrSatus("");
                         oop.setOprtnId("0010");
                         oop.setOprtnShrtTxt(ma.ohp.getOrdrShrtTxt());
                         oop.setOprtnLngTxt(ma.ohp.getOrdrLngTxt());
                         oop.setDuration("0");
-                        oop.setDurationUnit("HR");
+                        oop.setDurationUnit("H");
                         oop.setPlantId(ma.ohp.getPlant());
                         oop.setPlantTxt(ma.ohp.getPlantName());
                         oop.setWrkCntrId(ma.ohp.getWrkCntrId());
@@ -106,116 +109,101 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                         oop.setAueru("");
                         oop.setUsr01("");
                         oop.setStatus("I");
+                        oop.setLarnt("");
+                        oop.setLarnt_text("");
                         oop_al.add(oop);
                         ma.ohp.setOrdrOprtnPrcbls(oop_al);
                         operationsAdapter = new OperationsAdapter(getActivity(), oop_al);
                         operations_rv.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager =
-                                new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         operations_rv.setLayoutManager(layoutManager);
                         operations_rv.setItemAnimator(new DefaultItemAnimator());
                         operations_rv.setAdapter(operationsAdapter);
-                        operationsAdapter.notifyDataSetChanged();
-                }
-                operationsAdapter.notifyDataSetChanged();
-            } else {
-                for (int i = 0; i < oop_al.size(); i++) {
-                    if (ma.ohp.getOrdrOprtnPrcbls() != null && oop_al.get(i).getOrdrId().equals("PM03")) {
-                        operationsAdapter.notifyDataSetChanged();
-                    } else {
-                        oop_al.clear();
-                        ma.ohp.getOrdrOprtnPrcbls().clear();
-                        operationsAdapter.notifyDataSetChanged();
                     }
                 }
             }
         }
-    }
-
 
         ma.updateTabDataCount();
         ma.fab.show();
-        if(isSelected)
-
-    {
-        ma.animateFab(true);
-    } else
-
-    {
         ma.animateFab(false);
-    }
-        ma.fab.setOnClickListener(new View.OnClickListener()
+        if(isSelected)
+        {
+            ma.animateFab(true);
+        }
+        else
+        {
+            ma.animateFab(false);
+        }
 
-    {
-        @Override
-        public void onClick (View v){
-        if (isSelected) {
-            ArrayList<OrdrOprtnPrcbl> rmoop = new ArrayList<>();
-            rmoop.addAll(oop_al);
-            for (OrdrOprtnPrcbl oo : rmoop) {
-                if (oo.isSelected()) {
-                    ma.remove_component(oo.getOprtnId());
-                    oop_al.remove(oo);
 
-                    /*Written By SuryaKiran for Deleting Custom Info Data based on Operation ID*/
-                    String Operation_id = oo.getOprtnId();
-                    if (selected_operation_custom_info_arraylist.size() > 0) {
-                        for (int i = selected_operation_custom_info_arraylist.size() - 1;
-                             i >= 0; i--) {
-                            String op_id = selected_operation_custom_info_arraylist.get(i)
-                                    .get("Operation_id");
-                            if (op_id.equalsIgnoreCase(Operation_id)) {
-                                selected_operation_custom_info_arraylist.remove(i);
-                            }
+        ma.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSelected)
+                {
+                    ArrayList<OrdrOprtnPrcbl> rmoop = new ArrayList<>();
+                    rmoop.addAll(oop_al);
+                    for (OrdrOprtnPrcbl oo : rmoop)
+                    {
+                        if (oo.isSelected())
+                        {
+                            oop_al.remove(oo);
                         }
                     }
-                    /*Written By SuryaKiran for Deleting Custom Info Data based on Operation ID*/
+                    if (oop_al.size() > 0)
+                        for (int i = 0; i < oop_al.size(); i++)
+                        {
+                            oop_al.get(i).setOprtnId(gnrtOprtnId(i));
+                        }
+                    ma.animateFab(false);
+                    isSelected = false;
+                    ma.ohp.setOrdrOprtnPrcbls(oop_al);
+                    operationsAdapter.notifyDataSetChanged();
+                    rmoop = null;
+                    ma.updateTabDataCount();
+                }
+                else
+                {
+                    if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals(""))
+                    {
+                        if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null)
+                        {
+                            Intent intent = new Intent(getActivity(), Operations_Add_Update_Activity.class);
+                            intent.putExtra("order_id", ma.ohp.getOrdrId());
+                            intent.putExtra("order_type", ma.ohp.getOrdrTypId());
+                            intent.putExtra("type_oprtn", "C");
+                            intent.putExtra("ordrPlant", ma.ohp.getPlant());
+                            intent.putExtra("ordrPlantName", ma.ohp.getPlantName());
+                            intent.putExtra("ordrWrkCntrName", ma.ohp.getWrkCntrName());
+                            intent.putExtra("ordrWrkCntr", ma.ohp.getWrkCntrId());
+                            startActivityForResult(intent, OPRTN_CRT);
+                        }
+                        else
+                        {
+                            errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.equipFunc_mandate));
+                        }
+                    }
+                    else
+                    {
+                        errorDialog.show_error_dialog(getActivity(), getResources().getString(R.string.text_mandate));
+                    }
                 }
             }
-            if (oop_al.size() > 0)
-                for (int i = 0; i < oop_al.size(); i++) {
-                    ma.replaceOprtnIds(oop_al.get(i).getOprtnId(),
-                            gnrtOprtnId(i), oop_al.get(i).getOprtnShrtTxt());
-                    oop_al.get(i).setOprtnId(gnrtOprtnId(i));
-                }
-            ma.animateFab(false);
-            isSelected = false;
-            ma.ohp.setOrdrOprtnPrcbls(oop_al);
-            operationsAdapter.notifyDataSetChanged();
-            rmoop = null;
-            ma.updateTabDataCount();
-        } else {
-            if (ma.ohp.getOrdrShrtTxt() != null && !ma.ohp.getOrdrShrtTxt().equals("")) {
-                if (ma.ohp.getEquipNum() != null || ma.ohp.getFuncLocId() != null) {
-                    Intent intent = new Intent(getActivity(),
-                            Operations_Add_Update_Activity.class);
-                    intent.putExtra("order_id", ma.ohp.getOrdrId());
-                    intent.putExtra("type_oprtn", "C");
-                    intent.putExtra("ordrPlant", ma.ohp.getPlant());
-                    intent.putExtra("ordrPlantName", ma.ohp.getPlantName());
-                    intent.putExtra("ordrWrkCntrName", ma.ohp.getWrkCntrName());
-                    intent.putExtra("ordrWrkCntr", ma.ohp.getWrkCntrId());
-                    startActivityForResult(intent, OPRTN_CRT);
-                } else {
-                    errorDialog.show_error_dialog(getActivity(),
-                            getResources().getString(R.string.equipFunc_mandate));
-                }
-            } else {
-                errorDialog.show_error_dialog(getActivity(),
-                        getResources().getString(R.string.text_mandate));
-            }
-        }
+        });
     }
-    });
-}
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (OPRTN_CRT):
-                if (resultCode == RESULT_OK) {
-                    if (ma.empty) {
+                if (resultCode == RESULT_OK)
+                {
+                    if (ma.empty)
+                    {
                         OrdrOprtnPrcbl oop = data.getParcelableExtra("oop");
                         /*Written By SuryaKiran for Adding Custom Info Data based on Operation ID*/
                         String Operation_id = gnrtOprtnId(oop_al.size());
@@ -251,7 +239,7 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                         }
                         /*Written By SuryaKiran for Adding Custom Info Data based on Operation ID*/
                         oop.setSelected(false);
-                        oop.setOprtnId(gnrtOprtnId(oop_al.size()));
+                        oop.setOprtnId(Operation_id);
                         oop.setAueru("");
                         oop.setOrdrId(ma.ohp.getOrdrTypId());
                         oop_al.add(oop);
@@ -264,58 +252,31 @@ public class Orders_CR_Operation_Fragment extends Fragment {
                         operations_rv.setItemAnimator(new DefaultItemAnimator());
                         operations_rv.setAdapter(operationsAdapter);
                         ma.updateTabDataCount();
-                    } else {
+                    }
+                    else
+                    {
                         OrdrOprtnPrcbl oop = data.getParcelableExtra("oop");
-                        /*Written By SuryaKiran for Adding Custom Info Data based on Operation ID*/
                         String Operation_id = gnrtOprtnId(oop_al.size());
-                        if (selected_operation_custom_info_arraylist.size() > 0) {
-                            for (int i = selected_operation_custom_info_arraylist.size() - 1;
-                                 i >= 0; i--) {
-                                String op_id = selected_operation_custom_info_arraylist.get(i)
-                                        .get("Operation_id");
-                                if (op_id.equalsIgnoreCase(Operation_id)) {
-                                    selected_operation_custom_info_arraylist.remove(i);
-                                }
-                            }
-                        }
-                        ArrayList<HashMap<String, String>> operation_custom_info_arraylist =
-                                (ArrayList<HashMap<String, String>>) data
-                                        .getSerializableExtra("selected_operation_custom_info_arraylist");
-                        if (operation_custom_info_arraylist.size() > 0) {
-                            for (int i = 0; i < operation_custom_info_arraylist.size(); i++) {
-                                HashMap<String, String> custom_info_hashMap = new HashMap<String, String>();
-                                custom_info_hashMap.put("Operation_id", Operation_id);
-                                custom_info_hashMap.put("Fieldname", operation_custom_info_arraylist.get(i).get("Fieldname"));
-                                custom_info_hashMap.put("ZdoctypeItem", operation_custom_info_arraylist.get(i).get("ZdoctypeItem"));
-                                custom_info_hashMap.put("Datatype", operation_custom_info_arraylist.get(i).get("Datatype"));
-                                custom_info_hashMap.put("Tabname", operation_custom_info_arraylist.get(i).get("Tabname"));
-                                custom_info_hashMap.put("Zdoctype", operation_custom_info_arraylist.get(i).get("Zdoctype"));
-                                custom_info_hashMap.put("Sequence", operation_custom_info_arraylist.get(i).get("Sequence"));
-                                custom_info_hashMap.put("Flabel", operation_custom_info_arraylist.get(i).get("Flabel"));
-                                custom_info_hashMap.put("Spras", operation_custom_info_arraylist.get(i).get("Spras"));
-                                custom_info_hashMap.put("Length", operation_custom_info_arraylist.get(i).get("Length"));
-                                custom_info_hashMap.put("Value", operation_custom_info_arraylist.get(i).get("Value"));
-                                selected_operation_custom_info_arraylist.add(custom_info_hashMap);
-                            }
-                        }
-                        /*Written By SuryaKiran for Adding Custom Info Data based on Operation ID*/
                         oop.setSelected(false);
                         oop.setOrdrId(ma.ohp.getOrdrTypId());
-                        if (oop_al.size() == 0) {
-                            oop.setOprtnId(gnrtOprtnId(1));
-                        } else {
-                            oop.setOprtnId(gnrtOprtnId(oop_al.size() + 1));
+                        if (oop_al.size() == 0)
+                        {
+                            oop.setOprtnId("0010");
+                        }
+                        else
+                        {
+                            oop.setOprtnId(Operation_id);
                         }
                         oop.setAueru("");
                         oop_al.add(oop);
                         ma.ohp.setOrdrOprtnPrcbls(oop_al);
                         operationsAdapter = new OperationsAdapter(getActivity(), oop_al);
                         operations_rv.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager =
-                                new LinearLayoutManager(getActivity());
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         operations_rv.setLayoutManager(layoutManager);
                         operations_rv.setItemAnimator(new DefaultItemAnimator());
                         operations_rv.setAdapter(operationsAdapter);
+                        operations_rv.setVisibility(View.VISIBLE);
                         temp = true;
                         ma.updateTabDataCount();
                     }
@@ -517,7 +478,7 @@ private class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.M
 
 }
 
-    private String gnrtOprtnId(int size) {
+    /*private String gnrtOprtnId(int size) {
         if (ma.empty) {
             if (size < 9) {
                 return "00" + String.valueOf(size + 1) + "0";
@@ -531,7 +492,38 @@ private class OperationsAdapter extends RecyclerView.Adapter<OperationsAdapter.M
                 return "0" + String.valueOf(size + 1) + "0";
             }
         }
+    }*/
+
+
+    private String gnrtOprtnId(int size)
+    {
+        if(size > 0)
+        {
+            ArrayList<Integer> arrayList = new ArrayList<Integer>();
+            for(int i = 0; i < oop_al.size(); i++)
+            {
+                arrayList.add(new Integer(oop_al.get(i).getOprtnId()));
+            }
+            Object obj = Collections.max(arrayList);
+            int last_value = (Integer) obj;
+            int new_value = last_value + 10;
+            if (size < 9)
+            {
+                //return "00" + String.valueOf(size + 1) + "0";
+                return "00" + new_value;
+            }
+            else
+            {
+                //return "0" + String.valueOf(size + 1) + "0";
+                return "0" + new_value;
+            }
+        }
+        else
+        {
+            return "0010";
+        }
     }
+
 
     /*Written By SuryaKiran to Return Custom Info Data*/
     public ArrayList<HashMap<String, String>> getOperationCustominfoData() {

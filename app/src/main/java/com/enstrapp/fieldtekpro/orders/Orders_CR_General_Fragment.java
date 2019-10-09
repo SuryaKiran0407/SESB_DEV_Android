@@ -24,7 +24,7 @@ import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
 import com.enstrapp.fieldtekpro.DateTime.DatePickerDialog1;
 import com.enstrapp.fieldtekpro.PersonResponsible.Personresponsible_Activity;
 import com.enstrapp.fieldtekpro.PlannerGroup.PlannerGroup_Activity;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.WorkCenter.WorkCenter_Type_Activity;
 import com.enstrapp.fieldtekpro.equipment.Equipment_Activity;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
@@ -420,7 +420,7 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                 if (!equipName_tiet.getText().toString().equals("") ||
                         (!funcLocId_tiet.getText().toString().equals(""))) {
                     Intent WBSIntent = new Intent(getActivity(), WBS_Element_Activity.class);
-                    WBSIntent.putExtra("iwerk", ma.ohp.getIwerk());
+                    WBSIntent.putExtra("iwerk", ma.ohp.getPlant());
                     startActivityForResult(WBSIntent, WBS_ELE);
                 } else {
                     error_dialog.show_error_dialog(getActivity(),
@@ -463,9 +463,9 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                             data.getStringExtra("ordrTypId"),
                             data.getStringExtra("ordrTypTxt")));
                     if (data.getStringExtra("ordrTypId").equals("PM08")) {
-                        equipId_ll.setVisibility(View.GONE);
-                        equipName_til.setVisibility(View.GONE);
-                        wbs_ll.setVisibility(View.GONE);
+                        equipId_ll.setVisibility(View.VISIBLE);
+                        equipName_til.setVisibility(View.VISIBLE);
+                        wbs_ll.setVisibility(View.VISIBLE);
                         revision_ll.setVisibility(View.GONE);
                     } else if (data.getStringExtra("ordrTypId").equals("PM06")) {
                         equipId_ll.setVisibility(View.VISIBLE);
@@ -475,8 +475,34 @@ public class Orders_CR_General_Fragment extends Fragment implements View.OnClick
                     } else {
                         equipId_ll.setVisibility(View.VISIBLE);
                         equipName_til.setVisibility(View.VISIBLE);
-                        wbs_ll.setVisibility(View.GONE);
+                        wbs_ll.setVisibility(View.VISIBLE);
                         revision_ll.setVisibility(View.GONE);
+                    }
+
+                    String ord_id = data.getStringExtra("ordrTypId");
+                    try
+                    {
+                        Cursor cursor = App_db.rawQuery("select * from EtIlart where Auart = ? ORDER BY id DESC",new String[]{ord_id});
+                        if (cursor != null && cursor.getCount() > 0)
+                        {
+                            if (cursor.moveToFirst())
+                            {
+                                do
+                                {
+                                    ma.ohp.setActivitytype_id(cursor.getString(2));
+                                    ma.ohp.setActivitytype_text(cursor.getString(3));
+                                    activity_type_edittext.setText(cursor.getString(2)+" - "+cursor.getString(3));
+                                }
+                                while (cursor.moveToNext());
+                            }
+                        }
+                        else
+                        {
+                            cursor.close();
+                        }
+                    }
+                    catch (Exception e)
+                    {
                     }
                 }
                 break;

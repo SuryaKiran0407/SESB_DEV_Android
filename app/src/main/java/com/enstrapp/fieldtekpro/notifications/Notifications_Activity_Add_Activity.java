@@ -8,26 +8,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.support.v4.app.FragmentActivity;
 
-import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
 import com.enstrapp.fieldtekpro.DateTime.DateTimePickerDialog;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
 public class Notifications_Activity_Add_Activity extends FragmentActivity implements View.OnClickListener {
 
-    LinearLayout end_datetime_layout, start_datetime_layout, code_layout, codegroup_layout,
-            itemkey_layout;
-    EditText end_datetime_edittext, start_datetime_edittext, text_edittext, code_edittext,
-            codegroup_edittext, event_edittext, objectpart_edittext, itemkey_edittext;
+    EditText text_edittext, event_edittext, objectpart_edittext;
     String activity_itemkey = "", status = "I", position = "", enddate_time_formatted = "",
             enddate_time = "", enddate_date_formated = "", enddate_date = "",
             stdate_time_formatted = "", stdate_time = "", stdate_date_formated = "",
@@ -38,12 +34,12 @@ public class Notifications_Activity_Add_Activity extends FragmentActivity implem
     private SQLiteDatabase FieldTekPro_db;
     private static String DATABASE_NAME = "";
     Error_Dialog error_dialog = new Error_Dialog();
-    int activity_custom_info = 6, itemkey_type = 1, codegroup_type = 2, code_type = 3,
+    int itemkey_type = 1, codegroup_type = 2, code_type = 3,
             start_datetime = 4, end_datetime = 5;
     Button cancel_button, add_button;
-    ImageView back_imageview, itemkey_dropdown_iv;
+    ImageView back_imageview;
     ArrayList<HashMap<String, String>> causecode_array_list = new ArrayList<HashMap<String, String>>();
-    Button activity_custominfo_button;
+    Button end_datetime_button,start_datetime_button,code_button,codegroup_button,itemkey_button;
     ArrayList<HashMap<String, String>> selected_activity_custom_info_arraylist = new ArrayList<>();
 
     @Override
@@ -54,53 +50,48 @@ public class Notifications_Activity_Add_Activity extends FragmentActivity implem
         cancel_button = (Button) findViewById(R.id.cancel_button);
         add_button = (Button) findViewById(R.id.add_button);
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
-        itemkey_edittext = (EditText) findViewById(R.id.itemkey_edittext);
-        itemkey_layout = (LinearLayout) findViewById(R.id.itemkey_layout);
         objectpart_edittext = (EditText) findViewById(R.id.objectpart_edittext);
         event_edittext = (EditText) findViewById(R.id.event_edittext);
-        codegroup_layout = (LinearLayout) findViewById(R.id.codegroup_layout);
-        codegroup_edittext = (EditText) findViewById(R.id.codegroup_edittext);
-        code_layout = (LinearLayout) findViewById(R.id.code_layout);
-        code_edittext = (EditText) findViewById(R.id.code_edittext);
         text_edittext = (EditText) findViewById(R.id.text_edittext);
-        start_datetime_layout = (LinearLayout) findViewById(R.id.start_datetime_layout);
-        start_datetime_edittext = (EditText) findViewById(R.id.start_datetime_edittext);
-        end_datetime_layout = (LinearLayout) findViewById(R.id.end_datetime_layout);
-        end_datetime_edittext = (EditText) findViewById(R.id.end_datetime_edittext);
-        itemkey_dropdown_iv = (ImageView) findViewById(R.id.itemkey_dropdown_iv);
-        activity_custominfo_button = (Button) findViewById(R.id.activity_custominfo_button);
+        itemkey_button = (Button) findViewById(R.id.itemkey_button);
+        codegroup_button = (Button) findViewById(R.id.codegroup_button);
+        code_button = (Button) findViewById(R.id.code_button);
+        start_datetime_button = (Button) findViewById(R.id.start_datetime_button);
+        end_datetime_button = (Button) findViewById(R.id.end_datetime_button);
 
         selected_activity_custom_info_arraylist.clear();
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             functionlocation_id = extras.getString("functionlocation_id");
             equipment_id = extras.getString("equipment_id");
             String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals("")) {
+            if (request_ids != null && !request_ids.equals(""))
+            {
                 request_id = Integer.parseInt(request_ids);
             }
             causecode_array_list = (ArrayList<HashMap<String, String>>) getIntent()
                     .getSerializableExtra("causecode_array_list");
             position = extras.getString("position");
-            if (position != null && !position.equals("")) {
+            if (position != null && !position.equals(""))
+            {
                 activity_itemkey = extras.getString("activity_itemkey");
-                itemkey_dropdown_iv.setVisibility(View.GONE);
                 add_button.setText("Update");
                 status = extras.getString("status");
                 cause_itemkey = extras.getString("cause_itemkey");
                 cause_text = extras.getString("cause_text");
-                itemkey_edittext.setText(cause_itemkey + " - " + cause_text);
-                itemkey_layout.setBackground(getResources().getDrawable(R.drawable.bluedashborder));
-                itemkey_layout.setEnabled(false);
+                itemkey_button.setText(cause_itemkey + " - " + cause_text);
+                itemkey_button.setBackground(getResources().getDrawable(R.drawable.bluedashborder));
+                itemkey_button.setEnabled(false);
                 objectpart_edittext.setText(extras.getString("objectpartcode_id"));
                 event_edittext.setText(extras.getString("event_id"));
                 codegroup_id = extras.getString("codegroup_id");
                 codegroup_text = extras.getString("codegroup_text");
-                codegroup_edittext.setText(codegroup_id + " - " + codegroup_text);
+                codegroup_button.setText(codegroup_id + " - " + codegroup_text);
                 code_id = extras.getString("code_id");
                 code_text = extras.getString("code_text");
-                code_edittext.setText(code_id + " - " + code_text);
+                code_button.setText(code_id + " - " + code_text);
                 text_edittext.setText(extras.getString("shttext"));
 
                 stdate_date_formated = extras.getString("stdate_date");
@@ -155,20 +146,82 @@ public class Notifications_Activity_Add_Activity extends FragmentActivity implem
                     }
                 }
 
-                start_datetime_edittext.setText(getString(R.string.hypen_text, stdate_date,
+                start_datetime_button.setText(getString(R.string.hypen_text, stdate_date,
                         stdate_time));
-                end_datetime_edittext.setText(getString(R.string.hypen_text, enddate_date,
+                end_datetime_button.setText(getString(R.string.hypen_text, enddate_date,
                         enddate_time));
-                selected_activity_custom_info_arraylist =
-                        (ArrayList<HashMap<String, String>>) getIntent()
-                                .getSerializableExtra("selected_activity_custom_info_arraylist");
+            }
+            else
+            {
+                try
+                {
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+                    String formattedDate = df.format(c.getTime());
+                    SimpleDateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+                    String formattedDate_format = df1.format(c.getTime());
+                    SimpleDateFormat time_df = new SimpleDateFormat("HH:mm:ss");
+                    String formattedTime = time_df.format(c.getTime());
+                    SimpleDateFormat time_df1 = new SimpleDateFormat("HHmmss");
+                    String formattedTime_format = time_df1.format(c.getTime());
+                    start_datetime_button.setText(formattedDate + "  -  " + formattedTime);
+                    stdate_date = formattedDate;
+                    stdate_date_formated = formattedDate_format;
+                    stdate_time = formattedTime;
+                    stdate_time_formatted = formattedTime_format;
+
+                    c.add(Calendar.DATE, 1);
+                    String formattedDate_new = df.format(c.getTime());
+                    String formattedDate_format_new = df1.format(c.getTime());
+                    enddate_date = formattedDate_new;
+                    enddate_date_formated = formattedDate_format_new;
+                    enddate_time = formattedTime;
+                    enddate_time_formatted = formattedTime_format;
+                    end_datetime_button.setText(enddate_date + "  -  " + formattedTime);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        }
+        else
+        {
+            try
+            {
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+                String formattedDate = df.format(c.getTime());
+                SimpleDateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+                String formattedDate_format = df1.format(c.getTime());
+                SimpleDateFormat time_df = new SimpleDateFormat("HH:mm:ss");
+                String formattedTime = time_df.format(c.getTime());
+                SimpleDateFormat time_df1 = new SimpleDateFormat("HHmmss");
+                String formattedTime_format = time_df1.format(c.getTime());
+                start_datetime_button.setText(formattedDate + "  -  " + formattedTime);
+                stdate_date = formattedDate;
+                stdate_date_formated = formattedDate_format;
+                stdate_time = formattedTime;
+                stdate_time_formatted = formattedTime_format;
+
+                c.add(Calendar.DATE, 1);
+                String formattedDate_new = df.format(c.getTime());
+                String formattedDate_format_new = df1.format(c.getTime());
+                enddate_date = formattedDate_new;
+                enddate_date_formated = formattedDate_format_new;
+                enddate_time = formattedTime;
+                enddate_time_formatted = formattedTime_format;
+                end_datetime_button.setText(enddate_date + "  -  " + formattedTime);
+            }
+            catch (Exception e)
+            {
             }
         }
 
         DATABASE_NAME = getString(R.string.database_name);
         FieldTekPro_db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
 
-        try {
+        try
+        {
             if (equipment_id != null && !equipment_id.equals("")) {
                 Cursor cursor = FieldTekPro_db.rawQuery("select * from EtEqui where " +
                         "Equnr = ?", new String[]{equipment_id});
@@ -204,28 +257,17 @@ public class Notifications_Activity_Add_Activity extends FragmentActivity implem
         cancel_button.setOnClickListener(this);
         add_button.setOnClickListener(this);
         back_imageview.setOnClickListener(this);
-        itemkey_layout.setOnClickListener(this);
-        codegroup_layout.setOnClickListener(this);
-        code_layout.setOnClickListener(this);
-        start_datetime_layout.setOnClickListener(this);
-        end_datetime_layout.setOnClickListener(this);
-        activity_custominfo_button.setOnClickListener(this);
+        itemkey_button.setOnClickListener(this);
+        codegroup_button.setOnClickListener(this);
+        code_button.setOnClickListener(this);
+        start_datetime_button.setOnClickListener(this);
+        end_datetime_button.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-        if (v == activity_custominfo_button) {
-            Intent custominfo_intent =
-                    new Intent(Notifications_Activity_Add_Activity.this,
-                            CustomInfo_Activity.class);
-            custominfo_intent.putExtra("Zdoctype", "Q");
-            custominfo_intent.putExtra("ZdoctypeItem", "QA");
-            custominfo_intent.putExtra("custom_info_arraylist",
-                    selected_activity_custom_info_arraylist);
-            custominfo_intent.putExtra("request_id", Integer.toString(activity_custom_info));
-            startActivityForResult(custominfo_intent, activity_custom_info);
-        } else if (v == add_button) {
+        if (v == add_button) {
             if (cause_itemkey != null && !cause_itemkey.equals("")) {
                 if (codegroup_id != null && !codegroup_id.equals("")) {
                     if (code_id != null && !code_id.equals("")) {
@@ -271,34 +313,35 @@ public class Notifications_Activity_Add_Activity extends FragmentActivity implem
             Notifications_Activity_Add_Activity.this.finish();
         } else if (v == cancel_button) {
             Notifications_Activity_Add_Activity.this.finish();
-        } else if (v == itemkey_layout) {
+        } else if (v == itemkey_button) {
             Intent itemkey_intent = new Intent(Notifications_Activity_Add_Activity.this,
                     Notifications_Activity_ItemKey_Activity.class);
             itemkey_intent.putExtra("causecode_array_list", causecode_array_list);
             startActivityForResult(itemkey_intent, itemkey_type);
-        } else if (v == codegroup_layout) {
+        } else if (v == codegroup_button) {
             Intent objectpart_intent = new Intent(Notifications_Activity_Add_Activity.this,
                     Notifications_Activity_Codegroup_Activity.class);
             objectpart_intent.putExtra("catelog_profile", catelog_profile);
             objectpart_intent.putExtra("request_id", Integer.toString(codegroup_type));
             startActivityForResult(objectpart_intent, codegroup_type);
-        } else if (v == code_layout) {
+        } else if (v == code_button) {
             if (codegroup_id != null && !codegroup_id.equals("")) {
                 Intent objectpart_intent = new Intent(Notifications_Activity_Add_Activity.this,
                         Notifications_Activity_Code_Activity.class);
                 objectpart_intent.putExtra("codegroup_id", codegroup_id);
+                objectpart_intent.putExtra("catelog_profile", catelog_profile);
                 objectpart_intent.putExtra("request_id", Integer.toString(code_type));
                 startActivityForResult(objectpart_intent, code_type);
             } else {
                 error_dialog.show_error_dialog(Notifications_Activity_Add_Activity.this,
                         getString(R.string.notifactivity_selectcodegrp));
             }
-        } else if (v == start_datetime_layout) {
+        } else if (v == start_datetime_button) {
             Intent intent = new Intent(Notifications_Activity_Add_Activity.this,
                     DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(start_datetime));
             startActivityForResult(intent, start_datetime);
-        } else if (v == end_datetime_layout) {
+        } else if (v == end_datetime_button) {
             Intent intent = new Intent(Notifications_Activity_Add_Activity.this,
                     DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(end_datetime));
@@ -314,36 +357,32 @@ public class Notifications_Activity_Add_Activity extends FragmentActivity implem
             if (requestCode == itemkey_type) {
                 cause_itemkey = data.getStringExtra("itemkey");
                 cause_text = data.getStringExtra("text");
-                itemkey_edittext.setText(cause_itemkey + " - " + cause_text);
+                itemkey_button.setText(cause_itemkey + " - " + cause_text);
                 objectpart_edittext.setText(data.getStringExtra("objpart_id"));
                 event_edittext.setText(data.getStringExtra("event_id"));
             } else if (requestCode == codegroup_type) {
                 codegroup_id = data.getStringExtra("codegroup_id");
                 codegroup_text = data.getStringExtra("codegroup_text");
-                codegroup_edittext.setText(codegroup_id + " - " + codegroup_text);
+                codegroup_button.setText(codegroup_id + " - " + codegroup_text);
                 code_id = "";
                 code_text = "";
-                code_edittext.setText("");
+                code_button.setText("");
             } else if (requestCode == code_type) {
                 code_id = data.getStringExtra("code_id");
                 code_text = data.getStringExtra("code_text");
-                code_edittext.setText(code_id + " - " + code_text);
+                code_button.setText(code_id + " - " + code_text);
             } else if (requestCode == start_datetime) {
                 stdate_date = data.getStringExtra("date");
                 stdate_date_formated = data.getStringExtra("date_formatted");
                 stdate_time = data.getStringExtra("time");
                 stdate_time_formatted = data.getStringExtra("time_formatted");
-                start_datetime_edittext.setText(stdate_date + "  -  " + stdate_time);
+                start_datetime_button.setText(stdate_date + "  -  " + stdate_time);
             } else if (requestCode == end_datetime) {
                 enddate_date = data.getStringExtra("date");
                 enddate_date_formated = data.getStringExtra("date_formatted");
                 enddate_time = data.getStringExtra("time");
                 enddate_time_formatted = data.getStringExtra("time_formatted");
-                end_datetime_edittext.setText(enddate_date + "  -  " + enddate_time);
-            } else if (requestCode == activity_custom_info) {
-                selected_activity_custom_info_arraylist =
-                        (ArrayList<HashMap<String, String>>) data
-                                .getSerializableExtra("selected_custom_info_arraylist");
+                end_datetime_button.setText(enddate_date + "  -  " + enddate_time);
             }
         }
     }

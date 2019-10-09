@@ -16,7 +16,7 @@ import android.provider.DocumentsProvider;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;

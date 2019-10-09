@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 public class Order_LongText_Activity extends Activity implements View.OnClickListener {
@@ -39,18 +39,22 @@ public class Order_LongText_Activity extends Activity implements View.OnClickLis
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             longtext_new = extras.getString("longtext_new");
             aufnr = extras.getString("aufnr");
             operation_id = extras.getString("operation_id");
             tdid = extras.getString("tdid");
-            if (tdid != null && !tdid.equals("")) {
-                if (aufnr != null && !aufnr.equals("")) {
+            if (tdid != null && !tdid.equals(""))
+            {
+                if (aufnr != null && !aufnr.equals(""))
+                {
                     StringBuilder longtext_sBuilder = new StringBuilder();
-                    try {
+                    try
+                    {
                         Cursor cursor = FieldTekPro_db.rawQuery("select * from " +
                                 "DUE_ORDERS_Longtext where Aufnr = ? and Activity = ? and Tdid = ?" +
-                                " order by id", new String[]{aufnr, operation_id, "RMEL"});
+                                " order by id", new String[]{aufnr, operation_id, ""});
                         if (cursor != null && cursor.getCount() > 0) {
                             if (cursor.moveToFirst()) {
                                 do {
@@ -66,8 +70,11 @@ public class Order_LongText_Activity extends Activity implements View.OnClickLis
                     }
                     textView.setText(longtext_sBuilder.toString());
                 }
-            } else if (operation_id != null && !operation_id.equals("")) {
-                if (aufnr != null && !aufnr.equals("")) {
+            }
+            else if (operation_id != null && !operation_id.equals(""))
+            {
+                if (aufnr != null && !aufnr.equals(""))
+                {
                     StringBuilder longtext_sBuilder = new StringBuilder();
                     try {
                         Cursor cursor = FieldTekPro_db.rawQuery("select * from " +
@@ -88,24 +95,32 @@ public class Order_LongText_Activity extends Activity implements View.OnClickLis
                     }
                     textView.setText(longtext_sBuilder.toString());
                 }
-            } else {
+            }
+            else
+            {
                 StringBuilder longtext_sBuilder = new StringBuilder();
-                try {
-                    Cursor cursor = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_Longtext" +
-                                    " where Aufnr = ? and Activity = ? and Tdid = ? order by id",
-                            new String[]{aufnr, "", ""});
-                    if (cursor != null && cursor.getCount() > 0) {
-                        if (cursor.moveToFirst()) {
-                            do {
+                try
+                {
+                    Cursor cursor = FieldTekPro_db.rawQuery("select * from DUE_ORDERS_Longtext" +" where Aufnr = ? and Activity = ? and Tdid = ? order by id",new String[]{aufnr, "null", ""});
+                    if (cursor != null && cursor.getCount() > 0)
+                    {
+                        if (cursor.moveToFirst())
+                        {
+                            do
+                            {
                                 longtext_sBuilder.append(cursor.getString(4));
                                 longtext_sBuilder.append("\n");
                             }
                             while (cursor.moveToNext());
                         }
-                    } else {
+                    }
+                    else
+                    {
                         cursor.close();
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                 }
                 textView.setText(longtext_sBuilder.toString());
             }

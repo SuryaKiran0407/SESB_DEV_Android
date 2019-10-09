@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class Notifications_ObjectPart_Code_Activity extends AppCompatActivity im
     TYPE_ADAPTER adapter;
     LinearLayout no_data_layout;
     int request_id = 0;
-    String objectpart_id = "";
+    String catelog_profile = "", objectpart_id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +47,13 @@ public class Notifications_ObjectPart_Code_Activity extends AppCompatActivity im
         setContentView(R.layout.f4_list_activity);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             objectpart_id = extras.getString("objectpart_id");
+            catelog_profile = extras.getString("catelog_profile");
             String request_ids = extras.getString("request_id");
-            if (request_ids != null && !request_ids.equals("")) {
+            if (request_ids != null && !request_ids.equals(""))
+            {
                 request_id = Integer.parseInt(request_ids);
             }
         }
@@ -100,7 +103,7 @@ public class Notifications_ObjectPart_Code_Activity extends AppCompatActivity im
             try {
                 Cursor cursor = null;
                 cursor = FieldTekPro_db.rawQuery("select * from Get_NOTIFCODES_ObjectCodes " +
-                        "where Codegruppe = ?", new String[]{objectpart_id});
+                        "where Codegruppe = ? and Rbnr = ?", new String[]{objectpart_id,catelog_profile});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {

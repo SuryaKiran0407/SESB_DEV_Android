@@ -192,7 +192,8 @@
                 android:src="@drawable/ic_sort_arrow_icons"
                 fab:fab_colorNormal="#003333"
                 fab:fab_label="@string/sort"
-                fab:fab_size="mini" />
+                fab:fab_size="mini"
+                android:visibility="gone"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/scan_fab_button"
@@ -211,7 +212,8 @@
                 android:src="@drawable/ic_location_icon"
                 fab:fab_colorNormal="#16a085"
                 fab:fab_label="Map"
-                fab:fab_size="mini" />
+                fab:fab_size="mini"
+                android:visibility="gone"/>
 
 
             <com.github.clans.fab.FloatingActionButton

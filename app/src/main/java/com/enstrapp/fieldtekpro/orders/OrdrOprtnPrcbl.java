@@ -31,6 +31,33 @@ public class OrdrOprtnPrcbl implements Parcelable {
     public String usr02;
     public String usr03;
     public String usr04;
+    public String costelement;
+    public String costelement_text;
+    public String usr03_text;
+
+    public String getUsr03_text() {
+        return usr03_text;
+    }
+
+    public void setUsr03_text(String usr03_text) {
+        this.usr03_text = usr03_text;
+    }
+
+    public String getCostelement_text() {
+        return costelement_text;
+    }
+
+    public void setCostelement_text(String costelement_text) {
+        this.costelement_text = costelement_text;
+    }
+
+    public String getCostelement() {
+        return costelement;
+    }
+
+    public void setCostelement(String costelement) {
+        this.costelement = costelement;
+    }
 
     public String getUsr04() {
         return usr04;
@@ -322,6 +349,9 @@ public class OrdrOprtnPrcbl implements Parcelable {
         dest.writeString(this.usr02);
         dest.writeString(this.usr03);
         dest.writeString(this.usr04);
+        dest.writeString(this.costelement);
+        dest.writeString(this.costelement_text);
+        dest.writeString(this.usr03_text);
     }
 
     protected OrdrOprtnPrcbl(Parcel in) {
@@ -350,6 +380,9 @@ public class OrdrOprtnPrcbl implements Parcelable {
         this.usr02 = in.readString();
         this.usr03 = in.readString();
         this.usr04 = in.readString();
+        this.costelement = in.readString();
+        this.costelement_text = in.readString();
+        this.usr03_text = in.readString();
     }
 
     public static final Creator<OrdrOprtnPrcbl> CREATOR = new Creator<OrdrOprtnPrcbl>() {

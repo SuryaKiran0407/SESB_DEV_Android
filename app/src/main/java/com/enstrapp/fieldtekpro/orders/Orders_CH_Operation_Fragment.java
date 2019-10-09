@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 import java.text.SimpleDateFormat;
@@ -436,11 +436,33 @@ public class Orders_CH_Operation_Fragment extends Fragment {
         }
     }
 
-    private String gnrtOprtnId(int size) {
-        if (size < 9) {
-            return "00" + String.valueOf(size + 1) + "0";
-        } else {
-            return "0" + String.valueOf(size + 1) + "0";
+
+    private String gnrtOprtnId(int size)
+    {
+        if(size > 0)
+        {
+            ArrayList<Integer> arrayList = new ArrayList<Integer>();
+            for(int i = 0; i < oop_al.size(); i++)
+            {
+                arrayList.add(new Integer(oop_al.get(i).getOprtnId()));
+            }
+            Object obj = Collections.max(arrayList);
+            int last_value = (Integer) obj;
+            int new_value = last_value + 10;
+            if (size < 9)
+            {
+                //return "00" + String.valueOf(size + 1) + "0";
+                return "00" + new_value;
+            }
+            else
+            {
+                //return "0" + String.valueOf(size + 1) + "0";
+                return "0" + new_value;
+            }
+        }
+        else
+        {
+            return "0010";
         }
     }
 

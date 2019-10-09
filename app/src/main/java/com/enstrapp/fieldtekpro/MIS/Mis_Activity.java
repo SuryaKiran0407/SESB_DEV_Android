@@ -8,13 +8,13 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 
 public class Mis_Activity extends AppCompatActivity {
     GridView grid;
     String[] web;
-    int[] imageId = {R.drawable.notif_analysis_mis_icon, R.drawable.breakdown_mis_icon, R.drawable.order_analysis_ico};
+    int[] imageId = {R.drawable.notif_analysis_mis_icon, R.drawable.order_analysis_ico,R.drawable.breakdown_mis_icon};
     ImageView back_imageview;
 
     @Override
@@ -22,9 +22,7 @@ public class Mis_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mis_home);
 
-        web = new String[] {
-                getString(R.string.mis_notif_analysis), getString(R.string.mis_break),
-                getString(R.string.order_analysis)};
+        web = new String[] {getString(R.string.mis_notif_analysis), getString(R.string.order_analysis), getString(R.string.mis_break)};
 
         back_imageview = (ImageView) findViewById(R.id.back_imageview);
 

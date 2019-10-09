@@ -21,8 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.enstrapp.fieldtekpro.InitialLoad_Rest.REST_BOM;
 import com.enstrapp.fieldtekpro.Initialload.BOM;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
@@ -128,6 +129,7 @@ public class Material_BOM_Fragment extends Fragment {
         }
     };
 
+
     private class Get_BOMS_Detailed_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -139,8 +141,7 @@ public class Material_BOM_Fragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?",
-                        new String[]{bom_id});
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from EtBomItem where Bom =?",new String[]{bom_id});
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -178,17 +179,23 @@ public class Material_BOM_Fragment extends Fragment {
                 search.setOnQueryTextListener(listener);
                 no_data_layout.setVisibility(View.GONE);
                 bom_list_recycleview.setVisibility(View.VISIBLE);
-            } else {
-//                title_textview.setText(bom_id + " (0)");
+            }
+            else
+            {
                 no_data_layout.setVisibility(View.VISIBLE);
                 bom_list_recycleview.setVisibility(View.GONE);
-                cd = new ConnectionDetector(getActivity());
-                isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
-                    new Get_BOM_CloudSearch_Data().execute();
-                } else {
-                    //showing network error and navigating to wifi settings.
-                    network_connection_dialog.show_network_connection_dialog(getActivity());
+                if (bom_id != null && !bom_id.equals(""))
+                {
+                    cd = new ConnectionDetector(getActivity());
+                    isInternetPresent = cd.isConnectingToInternet();
+                    if (isInternetPresent)
+                    {
+                        new Get_BOM_CloudSearch_Data().execute();
+                    }
+                    else
+                    {
+                        network_connection_dialog.show_network_connection_dialog(getActivity());
+                    }
                 }
             }
         }
@@ -319,6 +326,7 @@ public class Material_BOM_Fragment extends Fragment {
         }
     }
 
+
     public class Get_BOM_CloudSearch_Data extends AsyncTask<Void, Integer, Void> {
         @Override
         protected void onPreExecute() {
@@ -328,9 +336,12 @@ public class Material_BOM_Fragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            try {
-                BOMITEM_status = BOM.Get_BOM_Data(getActivity(), "", bom_id);
-            } catch (Exception e) {
+            try
+            {
+                BOMITEM_status = REST_BOM.Get_BOM_Data(getActivity(), "", bom_id);
+            }
+            catch (Exception e)
+            {
             }
             return null;
         }

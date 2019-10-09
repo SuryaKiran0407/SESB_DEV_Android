@@ -37,10 +37,12 @@ import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
 import com.enstrapp.fieldtekpro.BarcodeScanner.Barcode_Scanner_Activity;
 import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
+import com.enstrapp.fieldtekpro.InitialLoad_Rest.REST_Orders;
 import com.enstrapp.fieldtekpro.Initialload.Orders;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.notifications.Notifications_MaintPlant_Activity;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.getOrderDetail.GetOrderDetail;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
@@ -113,10 +115,10 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             attachment_clicked_status = "", filt_selected_wckt_ids = "", filt_wckt_text = "",
             filt_wckt_ids = "", filt_selected_status_ids = "", filt_status_ids = "",
             filt_selected_prior_ids = "", filt_priority_ids = "", filt_selected_notif_ids = "",
-            filt_notification_ids = "";
-    Button filt_notif_type_button, filt_priority_type_button, filt_status_type_button,
+            filt_notification_ids = "", filt_maintplant_ids = "", filt_selected_maintplant_ids = "";
+    Button maintenance_plant_button,filt_notif_type_button, filt_priority_type_button, filt_status_type_button,
             filt_workcenter_type_button;
-    static final int fil_notif_type = 7, fil_prior_type = 8, fil_status_type = 9,
+    static final int fil_maintplant_type = 55, fil_notif_type = 7, fil_prior_type = 8, fil_status_type = 9,
             fil_wckt_type = 10, scan_status = 11;
     String equipment_id = "", functionlocation_id = "";
     boolean clearAll;
@@ -476,6 +478,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 filt_status_type_button.setText(filt_status_ids);
                 filt_workcenter_type_button = dialog.findViewById(R.id.workcenter_type_button);
                 filt_workcenter_type_button.setText(filt_wckt_ids);
+                maintenance_plant_button = (Button) dialog.findViewById(R.id.maintenance_plant_button);
+                maintenance_plant_button.setText(filt_maintplant_ids);
                 TextView clearAll_textview = (TextView) dialog.findViewById(R.id.clearAll_textview);
                 final CheckBox attachments_checkbox = dialog.findViewById(R.id.attachments_checkbox);
                 final CheckBox pers_resp_checkbox = dialog.findViewById(R.id.pers_resp_checkbox);
@@ -492,6 +496,16 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 Button filterBt = (Button) dialog.findViewById(R.id.filterBt);
                 Button closeBt = (Button) dialog.findViewById(R.id.closeBt);
                 dialog.show();
+                maintenance_plant_button.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        Intent notification_type_intent = new Intent(Orders_Activity.this, Notifications_MaintPlant_Activity.class);
+                        notification_type_intent.putExtra("filt_maintplant_ids",filt_maintplant_ids);
+                        startActivityForResult(notification_type_intent, fil_maintplant_type);
+                    }
+                });
                 filt_notif_type_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -551,6 +565,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                         filt_status_ids = "";
                         filt_wckt_text = "";
                         filt_wckt_ids = "";
+                        filt_maintplant_ids = "";
                         attachment_clicked_status = "";
                         clearAll=true;
                         dialog.dismiss();
@@ -580,6 +595,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                                 (filt_priority_ids != null && !filt_priority_ids.equals("")) ||
                                 (filt_status_ids != null && !filt_status_ids.equals("")) ||
                                 (filt_wckt_ids != null && !filt_wckt_ids.equals("")) ||
+                                (filt_maintplant_ids != null && !filt_maintplant_ids.equals("")) ||
                                 (attachment_clicked_status != null &&
                                         !attachment_clicked_status.equals("") ||
                                         (pers_resp_status != null && !pers_resp_status.equals("")))) {
@@ -713,7 +729,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                     new Get_Orders_Refresh_Data().execute();
                 }
             });
-        } else {
+        }
+        else
+        {
             swiperefreshlayout.setRefreshing(false);
             network_connection_dialog.show_network_connection_dialog(Orders_Activity.this);
         }
@@ -728,10 +746,20 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected Void doInBackground(Void... params) {
-            try {
-                DO_STATUS = Orders.Get_DORD_Data(Orders_Activity.this, "REFR",
-                        "");
-            } catch (Exception e) {
+            try
+            {
+                String webservice_type = getString(R.string.webservice_type);
+                if(webservice_type.equalsIgnoreCase("odata"))
+                {
+                    DO_STATUS = Orders.Get_DORD_Data(Orders_Activity.this, "REFR","");
+                }
+                else
+                {
+                    DO_STATUS = REST_Orders.Get_DORD_Data(Orders_Activity.this, "REFR","");
+                }
+            }
+            catch (Exception e)
+            {
             }
             return null;
         }
@@ -946,7 +974,7 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 }
             });
 
-            if (olo.getAttachment().equals("X"))
+            if (olo.getAttachment().equals("true"))
                 holder.attachment_iv.setVisibility(View.VISIBLE);
             else
                 holder.attachment_iv.setVisibility(View.GONE);
@@ -1651,24 +1679,42 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
                 cd = new ConnectionDetector(Orders_Activity.this);
                 isInternetPresent = cd.isConnectingToInternet();
-                if (isInternetPresent) {
+                if (isInternetPresent)
+                {
                     cancel_dialog.dismiss();
-                    if (type.equals("REL")) {
-                        if (pernr != null && !pernr.equals("")) {
+                    if (type.equals("REL"))
+                    {
+                        String webservice_type = getString(R.string.webservice_type);
+                        if(webservice_type.equalsIgnoreCase("odata"))
+                        {
                             new POST_REL().execute();
-                        } else {
-                            error_dialog.show_error_dialog(Orders_Activity.this,
-                                    getString(R.string.prsnresp_select));
                         }
-                    } else if (type.equals("WOCO")) {
+                        else
+                        {
+                            new POST_REL_REST().execute();
+                        }
+                    }
+                    else if (type.equals("WOCO"))
+                    {
                         TYP = "WOCO";
                         new GetToken().execute();
-                    } else if (type.equals("TECO")) {
+                    }
+                    else if (type.equals("TECO"))
+                    {
                         TYP = "TECO";
-                        new GetToken().execute();
-                    } else if (type.equals("CNF")) {
-                        Intent intent = new Intent(Orders_Activity.this,
-                                OrderTkConfirmActivity.class);
+                        String webservice_type = getString(R.string.webservice_type);
+                        if(webservice_type.equalsIgnoreCase("odata"))
+                        {
+                            new GetToken().execute();
+                        }
+                        else
+                        {
+                            new POST_TECO_REST().execute();
+                        }
+                    }
+                    else if (type.equals("CNF"))
+                    {
+                        Intent intent = new Intent(Orders_Activity.this,OrderTkConfirmActivity.class);
                         intent.putExtra("uuid", orderUUID);
                         intent.putExtra("orderId", orderId);
                         intent.putExtra("equip", Equipment);
@@ -1677,7 +1723,9 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                         intent.putExtra("edDt", ordrEdDt);
                         startActivity(intent);
                     }
-                } else {
+                }
+                else
+                {
                     if (type.equals("REL")) {
                         if (pernr != null && !pernr.equals("")) {
                             cancel_dialog.dismiss();
@@ -1932,6 +1980,8 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+
+
     private class POST_REL extends AsyncTask<Void, Integer, Void> {
         String Response = "";
 
@@ -1963,6 +2013,45 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 error_dialog.show_error_dialog(Orders_Activity.this, Response);
         }
     }
+
+
+
+    private class POST_REL_REST extends AsyncTask<Void, Integer, Void> {
+        String Response = "";
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(Orders_Activity.this,
+                    getResources().getString(R.string.release_order));
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Response = new Order_Rel_REST().Get_Data(Orders_Activity.this, "",
+                    "X", "RLORD", orderId);
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            super.onPostExecute(aVoid);
+            customProgressDialog.dismiss_progress_dialog();
+            if (Response.startsWith("S"))
+            {
+                successDialog.show_success_dialog(Orders_Activity.this,Response.substring(2));
+                new Get_Order_List().execute();
+            }
+            else if (Response.startsWith("E"))
+            {
+                error_dialog.show_error_dialog(Orders_Activity.this, Response.substring(2));
+            }
+            else
+            {
+                error_dialog.show_error_dialog(Orders_Activity.this, Response);
+            }
+        }
+    }
+
+
 
     private class POST_TECO extends AsyncTask<Void, Integer, Void> {
         String Response = "";
@@ -2000,6 +2089,51 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 error_dialog.show_error_dialog(Orders_Activity.this, Response);
         }
     }
+
+
+
+    private class POST_TECO_REST extends AsyncTask<Void, Integer, Void> {
+        String Response = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            customProgressDialog.show_progress_dialog(Orders_Activity.this,
+                    getResources().getString(R.string.compl_inprog));
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            ArrayList<ConfirmOrder_Prcbl> cop_al = new ArrayList<>();
+            ConfirmOrder_Prcbl cop = new ConfirmOrder_Prcbl();
+            cop.setAufnr(orderId);
+            cop.setStatus("TECO");
+            cop_al.add(cop);
+            if (cop_al.size() > 0)
+                Response = new Order_CConfirmation_REST().Get_Data(Orders_Activity.this, cop_al,
+                        null, "", "CCORD", orderId, "TECO",
+                        "");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            customProgressDialog.dismiss_progress_dialog();
+            if (Response.startsWith("S")) {
+                successDialog.show_success_dialog(Orders_Activity.this,
+                        Response.substring(2));
+                new Get_Order_List().execute();
+            }
+            else if (Response.startsWith("E")) {
+                error_dialog.show_error_dialog(Orders_Activity.this, Response.substring(2));
+            }
+            else {
+                error_dialog.show_error_dialog(Orders_Activity.this, Response);
+            }
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -2061,6 +2195,14 @@ public class Orders_Activity extends AppCompatActivity implements View.OnClickLi
                 if (data != null && !data.equals("")) {
                     filt_notification_ids = data.getStringExtra("notification_ids");
                     filt_notif_type_button.setText(filt_notification_ids);
+                }
+                break;
+
+
+            case (fil_maintplant_type):
+                if (data != null && !data.equals("")) {
+                    filt_maintplant_ids = data.getStringExtra("maintplant_ids");
+                    maintenance_plant_button.setText(filt_maintplant_ids);
                 }
                 break;
 

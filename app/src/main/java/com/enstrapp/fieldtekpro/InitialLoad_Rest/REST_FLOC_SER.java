@@ -303,6 +303,39 @@ public class REST_FLOC_SER
         @SerializedName("SPRAS")
         @Expose
         private String Spras;
+        @SerializedName("HERLD")
+        @Expose
+        private String HERLD;
+        @SerializedName("BAUJJ")
+        @Expose
+        private String BAUJJ;
+        @SerializedName("BAUMM")
+        @Expose
+        private String BAUMM;
+
+        public String getHERLD() {
+            return HERLD;
+        }
+
+        public void setHERLD(String HERLD) {
+            this.HERLD = HERLD;
+        }
+
+        public String getBAUJJ() {
+            return BAUJJ;
+        }
+
+        public void setBAUJJ(String BAUJJ) {
+            this.BAUJJ = BAUJJ;
+        }
+
+        public String getBAUMM() {
+            return BAUMM;
+        }
+
+        public void setBAUMM(String BAUMM) {
+            this.BAUMM = BAUMM;
+        }
 
         public String getTplnr() {
             return tplnr;

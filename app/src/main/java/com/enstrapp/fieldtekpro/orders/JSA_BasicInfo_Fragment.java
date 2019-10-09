@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 public class JSA_BasicInfo_Fragment extends Fragment implements View.OnClickListener {
 

@@ -68,6 +68,39 @@ public class REST_BOM_SER
         @SerializedName("STLKZ")
         @Expose
         private String stlkz;
+        @SerializedName("LABST")
+        @Expose
+        private String LABST;
+        @SerializedName("BWTAR")
+        @Expose
+        private String BWTAR;
+        @SerializedName("CHARG")
+        @Expose
+        private String CHARG;
+
+        public String getLABST() {
+            return LABST;
+        }
+
+        public void setLABST(String LABST) {
+            this.LABST = LABST;
+        }
+
+        public String getBWTAR() {
+            return BWTAR;
+        }
+
+        public void setBWTAR(String BWTAR) {
+            this.BWTAR = BWTAR;
+        }
+
+        public String getCHARG() {
+            return CHARG;
+        }
+
+        public void setCHARG(String CHARG) {
+            this.CHARG = CHARG;
+        }
 
         public String getBom() {
             return bom;
@@ -199,6 +232,17 @@ public class REST_BOM_SER
         @SerializedName("EKGRP")
         @Expose
         private String Ekgrp;
+        @SerializedName("CHARG")
+        @Expose
+        private String CHARG;
+
+        public String getCHARG() {
+            return CHARG;
+        }
+
+        public void setCHARG(String CHARG) {
+            this.CHARG = CHARG;
+        }
 
         public String getLabst() {
             return Labst;

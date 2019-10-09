@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Initialload.Calibration;
 import com.enstrapp.fieldtekpro.Initialload.Orders;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;

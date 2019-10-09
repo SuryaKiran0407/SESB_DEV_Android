@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/causecode"
+                android:text="Items"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/white"
@@ -54,337 +54,177 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <LinearLayout
-                    android:id="@+id/objpart_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".9"
-                        android:paddingEnd="@dimen/textInputSidePadd"
-                        android:paddingStart="@dimen/textInputSidePadd"
-                        android:paddingTop="@dimen/textInputTopPadd"
-                        android:textColorHint="@color/colorPrimary"
-                        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                        <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                            android:id="@+id/objpart_edittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:hint="@string/obj_part"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textSize="@dimen/textSize" />
-                    </android.support.design.widget.TextInputLayout>
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dropDownIconEndMarg"
-                        android:layout_marginTop="@dimen/dropDownIconTopMarg"
-                        android:layout_weight=".1"
-                        android:src="@drawable/ic_arrow_drop_down_blue_24px" />
-                </LinearLayout>
+                android:orientation="vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
 
 
-                <LinearLayout
-                    android:id="@+id/objectpart_code_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".9"
-                        android:paddingEnd="@dimen/textInputSidePadd"
-                        android:paddingStart="@dimen/textInputSidePadd"
-                        android:paddingTop="@dimen/textInputTopPadd"
-                        android:textColorHint="@color/colorPrimary"
-                        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                        <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                            android:id="@+id/objectpart_code_edittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:hint="@string/obj_part_code"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textSize="@dimen/textSize" />
-                    </android.support.design.widget.TextInputLayout>
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dropDownIconEndMarg"
-                        android:layout_marginTop="@dimen/dropDownIconTopMarg"
-                        android:layout_weight=".1"
-                        android:src="@drawable/ic_arrow_drop_down_blue_24px" />
-                </LinearLayout>
-
-
-                <com.enstrapp.fieldtekpro.customfont.Font_Button
-                    android:id="@+id/object_custominfo_button"
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_green"
-                    android:text="Item Custom Info"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/ic_custominfo_icon"
-                    android:drawablePadding="5dp"
-                    android:background="@color/light_grey1"
-                    android:layout_gravity="left"/>
-
-
-                <LinearLayout
-                    android:id="@+id/event_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".9"
-                        android:paddingEnd="@dimen/textInputSidePadd"
-                        android:paddingStart="@dimen/textInputSidePadd"
-                        android:paddingTop="@dimen/textInputTopPadd"
-                        android:textColorHint="@color/colorPrimary"
-                        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                        <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                            android:id="@+id/event_edittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:hint="@string/event"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textSize="@dimen/textSize" />
-                    </android.support.design.widget.TextInputLayout>
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dropDownIconEndMarg"
-                        android:layout_marginTop="@dimen/dropDownIconTopMarg"
-                        android:layout_weight=".1"
-                        android:src="@drawable/ic_arrow_drop_down_blue_24px" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/eventcode_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".9"
-                        android:paddingEnd="@dimen/textInputSidePadd"
-                        android:paddingStart="@dimen/textInputSidePadd"
-                        android:paddingTop="@dimen/textInputTopPadd"
-                        android:textColorHint="@color/colorPrimary"
-                        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                        <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                            android:id="@+id/eventcode_edittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:hint="@string/event_code"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textSize="@dimen/textSize" />
-                    </android.support.design.widget.TextInputLayout>
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dropDownIconEndMarg"
-                        android:layout_marginTop="@dimen/dropDownIconTopMarg"
-                        android:layout_weight=".1"
-                        android:src="@drawable/ic_arrow_drop_down_blue_24px" />
-                </LinearLayout>
-
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:paddingEnd="@dimen/textInputSidePadd"
-                    android:paddingStart="@dimen/textInputSidePadd"
-                    android:paddingTop="@dimen/textInputTopPadd"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                    <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                        android:id="@+id/eventdescription_edittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/transparent"
-                        android:hint="@string/event_des"
-                        android:maxLength="40"
-                        android:textSize="@dimen/textSize" />
-                </android.support.design.widget.TextInputLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/cause_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".9"
-                        android:paddingEnd="@dimen/textInputSidePadd"
-                        android:paddingStart="@dimen/textInputSidePadd"
-                        android:paddingTop="@dimen/textInputTopPadd"
-                        android:textColorHint="@color/colorPrimary"
-                        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                        <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                            android:id="@+id/cause_edittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:hint="@string/cause"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textSize="@dimen/textSize" />
-                    </android.support.design.widget.TextInputLayout>
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dropDownIconEndMarg"
-                        android:layout_marginTop="@dimen/dropDownIconTopMarg"
-                        android:layout_weight=".1"
-                        android:src="@drawable/ic_arrow_drop_down_blue_24px" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/causecode_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".9"
-                        android:paddingEnd="@dimen/textInputSidePadd"
-                        android:paddingStart="@dimen/textInputSidePadd"
-                        android:paddingTop="@dimen/textInputTopPadd"
-                        android:textColorHint="@color/colorPrimary"
-                        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                        <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                            android:id="@+id/causecode_edittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/transparent"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:hint="@string/cause_code"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textSize="@dimen/textSize" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dropDownIconEndMarg"
-                        android:layout_marginTop="@dimen/dropDownIconTopMarg"
-                        android:layout_weight=".1"
-                        android:src="@drawable/ic_arrow_drop_down_blue_24px" />
-                </LinearLayout>
-
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/textInputSideMargins"
-                    android:layout_marginStart="@dimen/textInputSideMargins"
-                    android:layout_marginTop="@dimen/textInputTopMargin"
-                    android:background="@drawable/blueborder"
-                    android:paddingEnd="@dimen/textInputSidePadd"
-                    android:paddingStart="@dimen/textInputSidePadd"
-                    android:paddingTop="@dimen/textInputTopPadd"
-                    android:textColorHint="@color/colorPrimary"
-                    android:layout_marginBottom="10dp"
-                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                    <com.enstrapp.fieldtekpro.customfont.Font_TextInputEditText
-                        android:id="@+id/causedescription_edittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/transparent"
-                        android:hint="@string/cause_des"
-                        android:maxLength="40"
-                        android:textSize="@dimen/textSize" />
-                </android.support.design.widget.TextInputLayout>
-
-
+                    android:text="@string/obj_part"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_star_black"/>
                 <com.enstrapp.fieldtekpro.customfont.Font_Button
-                    android:id="@+id/causecode_custominfo_button"
+                    android:id="@+id/objpart_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="5dp"
+                    android:gravity="left|center"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"/>
+
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_green"
-                    android:text="Cause Custom Info"
-                    android:textSize="16sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:drawableLeft="@drawable/ic_custominfo_icon"
-                    android:drawablePadding="5dp"
-                    android:background="@color/light_grey1"
-                    android:layout_gravity="left"/>
+                    android:text="@string/obj_part_code"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_star_black"/>
+                <com.enstrapp.fieldtekpro.customfont.Font_Button
+                    android:id="@+id/objpartcode_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="5dp"
+                    android:gravity="left|center"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"/>
+
+
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="10dp"/>
+                <com.enstrapp.fieldtekpro.customfont.Font_Button
+                    android:id="@+id/event_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="5dp"
+                    android:gravity="left|center"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"/>
+
+
+
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_code"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="10dp"/>
+                <com.enstrapp.fieldtekpro.customfont.Font_Button
+                    android:id="@+id/eventcode_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="5dp"
+                    android:gravity="left|center"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"/>
+
+
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_des"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:layout_marginTop="12dp"/>
+                <com.enstrapp.fieldtekpro.customfont.Font_Edittext
+                    android:id="@+id/eventdescription_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="40"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="7dp"/>
+
+
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cause"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="10dp"/>
+                <com.enstrapp.fieldtekpro.customfont.Font_Button
+                    android:id="@+id/cause_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="5dp"
+                    android:gravity="left|center"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"/>
+
+
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cause_code"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="10dp"/>
+                <com.enstrapp.fieldtekpro.customfont.Font_Button
+                    android:id="@+id/causecode_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="5dp"
+                    android:gravity="left|center"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_blue_24px"/>
+
+
+
+
+                <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cause_des"
+                    android:textColor="@color/text_color"
+                    android:textSize="15sp"
+                    android:layout_marginTop="12dp"/>
+                <com.enstrapp.fieldtekpro.customfont.Font_Edittext
+                    android:id="@+id/causedescription_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="40"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blueborder"
+                    android:padding="7dp"
+                    android:layout_marginBottom="20dp"/>
+
 
             </LinearLayout>
 
@@ -397,7 +237,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/footer_color"
         android:orientation="vertical" >
         <LinearLayout android:layout_height="fill_parent" android:layout_width="match_parent">
             <com.enstrapp.fieldtekpro.customfont.Font_Button
@@ -410,7 +250,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:background="@color/colorPrimary"/>
+                android:background="@color/footer_color"/>
             <View
                 android:layout_width="2dp"
                 android:layout_height="20dp"
@@ -426,7 +266,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:background="@color/colorPrimary"/>
+                android:background="@color/footer_color"/>
         </LinearLayout>
     </LinearLayout>
 

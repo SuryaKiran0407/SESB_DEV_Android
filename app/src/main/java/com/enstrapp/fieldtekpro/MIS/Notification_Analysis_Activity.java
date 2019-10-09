@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 public class Notification_Analysis_Activity extends AppCompatActivity {
 
@@ -46,11 +46,11 @@ public class Notification_Analysis_Activity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 PieFragment fag1 = (PieFragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                 String month_year = fag1.getMonth_year();//Month&Year for Compliance Chart
-                ComplianceBarFragment tab1 = (ComplianceBarFragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
-                if (position == 1) {
+                //ComplianceBarFragment tab1 = (ComplianceBarFragment) getSupportFragmentManager().findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
+               /* if (position == 1) {
                     tab1.setMonthYear(month_year);
                     tab1.getData(); //when tab swiped to get the data for bar chart
-                }
+                }*/
             }
 
             @Override

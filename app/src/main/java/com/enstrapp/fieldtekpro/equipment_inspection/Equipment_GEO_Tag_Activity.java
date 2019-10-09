@@ -27,11 +27,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Interface.Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro.Interface.REST_Interface;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.login.SER_Login;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
+import com.enstrapp.fieldtekpro.notifications.Model_Notif_Create_REST;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 import com.enstrapp.fieldtekpro.successdialog.Success_Dialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -135,11 +137,15 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
         capture_location_button.setOnClickListener(this);
         back_imageview.setOnClickListener(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkPermissions()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkPermissions())
+            {
                 initViews();
             }
-        } else {
+        }
+        else
+        {
             initViews();
         }
     }
@@ -172,16 +178,27 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
                 @Override
                 public void onClick(View v) {
                     decision_dialog.dismiss();
-                    new Get_Token().execute();
+                    String webservice_type = getString(R.string.webservice_type);
+                    if(webservice_type.equalsIgnoreCase("odata"))
+                    {
+                        new Get_Token().execute();
+                    }
+                    else
+                    {
+                        new Post_GEO_Tag_REST().execute();
+                    }
                 }
             });
-        } else if (v == back_imageview) {
+        }
+        else if (v == back_imageview)
+        {
             Equipment_GEO_Tag_Activity.this.finish();
         }
     }
 
 
-    private void initViews() {
+    private void initViews()
+    {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.routemap_mapview);
         mapFragment.getMapAsync(this);
     }
@@ -454,6 +471,122 @@ public class Equipment_GEO_Tag_Activity extends FragmentActivity implements View
 
                     @Override
                     public void onFailure(Call<SER_Login> call, Throwable t) {
+                        custom_progress_dialog.dismiss_progress_dialog();
+                    }
+                });
+
+            } catch (Exception e) {
+                custom_progress_dialog.dismiss_progress_dialog();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+
+
+    private class Post_GEO_Tag_REST extends AsyncTask<Void, Integer, Void> {
+        String url_link = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            custom_progress_dialog.show_progress_dialog(Equipment_GEO_Tag_Activity.this,
+                    getString(R.string.geo_tagprgs));
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            try
+            {
+                String webservice_type = app_sharedpreferences.getString("webservice_type", null);
+                Cursor cursor = FieldTekPro_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"G", "U", webservice_type});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    cursor.moveToNext();
+                    url_link = cursor.getString(5);
+                }
+                String URL = Equipment_GEO_Tag_Activity.this.getString(R.string.ip_address);
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(120000, TimeUnit.SECONDS).writeTimeout(120000, TimeUnit.SECONDS).readTimeout(120000, TimeUnit.SECONDS).build();
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(URL).client(client).build();
+                REST_Interface service = retrofit.create(REST_Interface.class);
+
+                /*For Send Data in POST Header*/
+                Map<String, String> map = new HashMap<>();
+                map.put("Accept", "application/json;odata=verbose");
+                map.put("Content-Type", "application/json");
+                /*For Send Data in POST Header*/
+
+
+                ItGeoData_REST itGeoData = new ItGeoData_REST();
+                itGeoData.setTplnr(function_location_id);
+                itGeoData.setEqupNum(equip_id);
+                itGeoData.setLatitude(current_lat + "");
+                itGeoData.setLongitude(current_lng + "");
+                itGeoData.setAltitude(current_alt + "");
+
+                List<ItGeoData_REST> dd = new ArrayList<>();
+                dd.add(itGeoData);
+
+                Model_Notif_Create_REST.IsDevice isDevice = new Model_Notif_Create_REST.IsDevice();
+                isDevice.setMUSER(username.toUpperCase().toString());
+                isDevice.setDEVICEID(device_id);
+                isDevice.setDEVICESNO(device_serial_number);
+                isDevice.setUDID(device_uuid);
+
+
+                Geo_Tag_Details_Model_REST geo_tag_details_model = new Geo_Tag_Details_Model_REST();
+                geo_tag_details_model.setIsDevice(isDevice);
+                geo_tag_details_model.setIvTransmitType("LOAD");
+                geo_tag_details_model.setIvCommit(true);
+                geo_tag_details_model.setIt_geo(dd);
+
+
+                String credentials = username + ":" + password;
+                final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+
+                Call<SER_Login> call = service.PostGeoTagData(url_link, geo_tag_details_model, basic, map);
+                call.enqueue(new Callback<SER_Login>() {
+                    @Override
+                    public void onResponse(Call<SER_Login> call, Response<SER_Login> response)
+                    {
+                        int login_response_status_code = response.code();
+                        Log.v("kiran_sss", login_response_status_code + "....");
+                        /*int login_response_status_code = response.code();
+                        if(login_response_status_code == 201)
+                        {
+                        }
+                        else if(login_response_status_code == 400)
+                        {
+                            custom_progress_dialog.dismiss_progress_dialog();
+                        }
+                        else if(login_response_status_code == 401)
+                        {
+                            custom_progress_dialog.dismiss_progress_dialog();
+                        }
+                        else
+                        {
+                            custom_progress_dialog.dismiss_progress_dialog();
+                        }*/
+                        custom_progress_dialog.dismiss_progress_dialog();
+                        Success_Dialog success_dialog = new Success_Dialog();
+                        success_dialog.show_success_dialog(Equipment_GEO_Tag_Activity.this,
+                                getString(R.string.geotag_success, equip_id));
+                    }
+
+                    @Override
+                    public void onFailure(Call<SER_Login> call, Throwable t) {
+                        Log.v("kiran_ss",t.getMessage()+"...");
                         custom_progress_dialog.dismiss_progress_dialog();
                     }
                 });

@@ -250,7 +250,8 @@
 
 					<LinearLayout
 						android:layout_width="fill_parent"
-						android:layout_height="wrap_content" >
+						android:layout_height="wrap_content"
+						android:visibility="gone">
 						<com.enstrapp.fieldtekpro.customfont.Font_TextView
 							android:layout_width="0dp"
 							android:layout_height="fill_parent"

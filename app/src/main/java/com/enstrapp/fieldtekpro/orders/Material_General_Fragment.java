@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -56,7 +56,7 @@ public class Material_General_Fragment extends Fragment {
     FloatingActionButton filter_fab_button;
     Button filt_storageloc_type_button;
     int fil_storageloc_type = 0;
-    String filt_storageloc_ids = "", selected_storageloc_ids;
+    String plant_id = "", filt_storageloc_ids = "", selected_storageloc_ids;
     Error_Dialog error_dialog = new Error_Dialog();
 
     @Override
@@ -75,6 +75,7 @@ public class Material_General_Fragment extends Fragment {
         bottom_panel.setVisibility(View.VISIBLE);
 
         ma = (Material_Components_Activity) this.getActivity();
+        plant_id = ma.plant_id;
 
         filter_fab_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,11 +187,19 @@ public class Material_General_Fragment extends Fragment {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(Void... params)
+        {
             Cursor cursor = null;
-            try {
-                cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks = ?;",
-                        new String[]{ma.iwerk});
+            try
+            {
+                if (plant_id != null && !plant_id.equals(""))
+                {
+                    cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks = ?;",new String[]{plant_id});
+                }
+                else
+                {
+                    cursor = FieldTekPro_db.rawQuery("select * from GET_STOCK_DATA where Werks = ?;",new String[]{ma.iwerk});
+                }
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
@@ -200,7 +209,8 @@ public class Material_General_Fragment extends Fragment {
                                     cursor.getString(2),
                                     cursor.getString(4),
                                     cursor.getString(5),
-                                    cursor.getString(7));
+                                    cursor.getString(7),
+                                    cursor.getString(10));
                             stockListObjects.add(cp);
                         }
                         while (cursor.moveToNext());
@@ -220,7 +230,8 @@ public class Material_General_Fragment extends Fragment {
                                             cursor.getString(2),
                                             cursor.getString(4),
                                             cursor.getString(5),
-                                            cursor.getString(7));
+                                            cursor.getString(7),
+                                            cursor.getString(10));
                                     stockListObjects.add(cp);
                                 }
                                 while (cursor.moveToNext());
@@ -280,7 +291,9 @@ public class Material_General_Fragment extends Fragment {
                                     stockListObjects.get(i).getPlant(),
                                     stockListObjects.get(i).getLocation(),
                                     stockListObjects.get(i).getUnrestricted(),
-                                    stockListObjects.get(i).getValu_typ());
+                                    stockListObjects.get(i).getValu_typ(),
+                                    stockListObjects.get(i).getCharg()
+                                    );
                     filteredList.add(blo);
                 }
             }
@@ -309,17 +322,22 @@ public class Material_General_Fragment extends Fragment {
         private List<STOCK_List_Object> bom_list_data;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView matrlId_tv, matrlName_tv, unrestricted_tv, plant_tv, location_tv,
-                    valuTyp_tv;
+            public TextView charge_tv, matrlId_tv, matrlName_tv, unrestricted_tv, plant_tv, location_tv,
+                    Batch_textview, availstock_textview, location_textview, plant_textview, valuTyp_tv;
             LinearLayout bom_list_data_layout;
 
             public MyViewHolder(View view) {
                 super(view);
                 matrlId_tv = (TextView) view.findViewById(R.id.matrlId_tv);
+                location_textview = (TextView) view.findViewById(R.id.location_textview);
+                availstock_textview = (TextView) view.findViewById(R.id.availstock_textview);
+                Batch_textview = (TextView) view.findViewById(R.id.Batch_textview);
+                plant_textview = (TextView) view.findViewById(R.id.plant_textview);
                 matrlName_tv = (TextView) view.findViewById(R.id.matrlName_tv);
                 unrestricted_tv = (TextView) view.findViewById(R.id.unrestricted_tv);
                 plant_tv = (TextView) view.findViewById(R.id.plant_tv);
                 location_tv = (TextView) view.findViewById(R.id.location_tv);
+                charge_tv = (TextView) view.findViewById(R.id.charge_tv);
                 bom_list_data_layout = (LinearLayout) view.findViewById(R.id.bom_list_data_layout);
                 valuTyp_tv = view.findViewById(R.id.valuTyp_tv);
             }
@@ -344,8 +362,13 @@ public class Material_General_Fragment extends Fragment {
             holder.matrlName_tv.setText(blo.getMaterial_txt());
             holder.unrestricted_tv.setText(blo.getUnrestricted());
             holder.location_tv.setText(blo.getLocation());
+            holder.location_textview.setText(blo.getLocation());
             holder.plant_tv.setText(blo.getPlant());
+            holder.plant_textview.setText(blo.getPlant());
             holder.valuTyp_tv.setText(blo.getValu_typ());
+            holder.charge_tv.setText(blo.getCharg());
+            holder.availstock_textview.setText(blo.getUnrestricted());
+            holder.Batch_textview.setText(blo.getCharg());
 
             holder.bom_list_data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -355,6 +378,7 @@ public class Material_General_Fragment extends Fragment {
                     intent.putExtra("component_txt", holder.matrlName_tv.getText().toString());
                     intent.putExtra("plant", holder.plant_tv.getText().toString());
                     intent.putExtra("location", holder.location_tv.getText().toString());
+                    intent.putExtra("charg", holder.charge_tv.getText().toString());
                     getActivity().setResult(Activity.RESULT_OK, intent);
                     getActivity().finish();
                 }
@@ -374,18 +398,26 @@ public class Material_General_Fragment extends Fragment {
         private String Location;
         private String Unrestricted;
         private String Valu_typ;
+        private String Charg;
 
-        public STOCK_List_Object() {
-        }
 
         public STOCK_List_Object(String material_Id, String material_txt, String plant,
-                                 String location, String unrestricted, String valu_typ) {
+                                 String location, String unrestricted, String valu_typ, String charg) {
             Material_Id = material_Id;
             Material_txt = material_txt;
             Plant = plant;
             Location = location;
             Unrestricted = unrestricted;
             Valu_typ = valu_typ;
+            Charg = charg;
+        }
+
+        public String getCharg() {
+            return Charg;
+        }
+
+        public void setCharg(String charg) {
+            Charg = charg;
         }
 
         public String getValu_typ() {

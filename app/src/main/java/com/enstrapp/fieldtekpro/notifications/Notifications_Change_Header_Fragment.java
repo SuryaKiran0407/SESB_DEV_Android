@@ -20,13 +20,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.BarcodeScanner.Barcode_Scanner_Activity;
 import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
 import com.enstrapp.fieldtekpro.DateTime.DateTimePickerDialog;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.equipment.Equipment_Activity;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.functionlocation.FunctionLocation_Activity;
@@ -50,20 +51,16 @@ import java.util.HashMap;
 public class Notifications_Change_Header_Fragment extends Fragment implements View.OnClickListener {
 
     TextInputLayout status_til;
-    LinearLayout notif_Date_layout, ord_num_layout, effect_layout, malFunctnEnDt_layout,
-            malFunctnStDt_layout, reqEnDt_layout, reqStDt_layout, personResp_layout,
-            plannerGroup_layout, notiftype_layout, floc_layout, workCenter_layout, priority_layout;
-    EditText status_tiet, notifshtTxt_edittext, effect_edittext, malFunctnEnDt_edittext,
-            malFunctnStDt_edittext, reqEnDt_edittext, reqStDt_edittext, personResp_edittext,
-            primUsrResp_edittext, reportedby_edittext, plannerGroup_edittext, priority_edittext,
-            workCenter_edittext, notiftyp_edittext, floc_edittext, flocname_edittext,
-            equipid_edittext, equiptext_edittext,iwerk_tiet, plant_tiet;
-    int custom_info = 14, longtext = 13, effect = 12, malf_end_date = 11, malf_st_date = 10,
+    LinearLayout notif_Date_layout, ord_num_layout;
+    EditText status_tiet, notifshtTxt_edittext,
+                     primUsrResp_edittext, reportedby_edittext,
+            equipid_edittext;
+    int longtext = 13,malf_end_date = 11, malf_st_date = 10,
             req_enddate = 9, req_stdate = 8, personResp = 7, planner_group = 6,
             functionlocation_type = 1, equipment_type = 2, barcode_scan = 3, workcenter_type = 4,
             notification_priority = 5;
     String selected_orderstatus = "", selected_Iwerk = "", selected_orderID = "",
-            selected_orderUUID = "", longtext_text = "", effect_id = "", effect_text = "",
+            selected_orderUUID = "", longtext_text = "",
             mal_end_date = "", mal_end_time = "", mal_end_date_formatted = "",
             mal_end_time_formatted = "", mal_st_date = "", mal_st_time = "",
             mal_st_date_formatted = "", mal_st_time_formatted = "", req_end_date = "",
@@ -74,19 +71,21 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             workcenter_text = "", plannergroup_text = "", plannergroup_id = "", plant_id = "",
             notification_type_id = "", notification_type_text = "", functionlocation_id = "",iwerk = "",
             functionlocation_text = "", equipment_id = "", equipment_text = "";
-    ImageView notiftype_dropdown_iv, equipmentsearch_imageview, equipmentscan_imageview,
+    ImageView equipmentsearch_imageview, equipmentscan_imageview,
             longtext_imageview;
     private static final int ZXING_CAMERA_PERMISSION = 3;
     Error_Dialog error_dialog = new Error_Dialog();
     NotifHeaderPrcbl nhp = new NotifHeaderPrcbl();
-    TextView ord_num_edittext, notif_Date_edittext;
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
     String created_aufnr = "";
-    Button header_custominfo_button;
+    Button malfuncenddate_button,malfuncstdate_button,reqenddate_button, reqStDt_button, person_resp_button, planningplant_button,plannergroup_type_button,maintenance_plant_button, workcenter_type_button, equiptext_button, flocname_button, func_loc_button, notif_Date_button, ord_num_button, priority_type_button, notification_type_button;
     ArrayList<HashMap<String, String>> selected_custom_info_arraylist = new ArrayList<>();
+    RadioButton breakdown_no_radiobutton, breakdown_yes_radiobutton;
 
-    public Notifications_Change_Header_Fragment() {
+
+    public Notifications_Change_Header_Fragment()
+    {
     }
 
     @Override
@@ -94,51 +93,39 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         View rootView = inflater.inflate(R.layout.notifications_header_fragment, container,
                 false);
 
-        notiftype_layout = (LinearLayout) rootView.findViewById(R.id.notiftype_layout);
-        notiftyp_edittext = (EditText) rootView.findViewById(R.id.notiftyp_edittext);
-        floc_layout = (LinearLayout) rootView.findViewById(R.id.floc_layout);
-        floc_edittext = (EditText) rootView.findViewById(R.id.floc_edittext);
-        flocname_edittext = (EditText) rootView.findViewById(R.id.flocname_edittext);
         equipmentsearch_imageview = (ImageView) rootView.findViewById(R.id.equipmentsearch_imageview);
         equipmentscan_imageview = (ImageView) rootView.findViewById(R.id.equipmentscan_imageview);
         equipid_edittext = (EditText) rootView.findViewById(R.id.equipid_edittext);
-        equiptext_edittext = (EditText) rootView.findViewById(R.id.equiptext_edittext);
-        workCenter_edittext = (EditText) rootView.findViewById(R.id.workCenter_edittext);
-        workCenter_layout = (LinearLayout) rootView.findViewById(R.id.workCenter_layout);
-        priority_layout = (LinearLayout) rootView.findViewById(R.id.priority_layout);
-        priority_edittext = (EditText) rootView.findViewById(R.id.priority_edittext);
-        plannerGroup_layout = (LinearLayout) rootView.findViewById(R.id.plannerGroup_layout);
-        plannerGroup_edittext = (EditText) rootView.findViewById(R.id.plannerGroup_edittext);
         reportedby_edittext = (EditText) rootView.findViewById(R.id.reportedby_edittext);
         primUsrResp_edittext = (EditText) rootView.findViewById(R.id.primUsrResp_edittext);
-        personResp_layout = (LinearLayout) rootView.findViewById(R.id.personResp_layout);
-        personResp_edittext = (EditText) rootView.findViewById(R.id.personResp_edittext);
-        reqStDt_layout = (LinearLayout) rootView.findViewById(R.id.reqStDt_layout);
-        reqStDt_edittext = (EditText) rootView.findViewById(R.id.reqStDt_edittext);
-        reqEnDt_layout = (LinearLayout) rootView.findViewById(R.id.reqEnDt_layout);
-        reqEnDt_edittext = (EditText) rootView.findViewById(R.id.reqEnDt_edittext);
-        malFunctnStDt_layout = (LinearLayout) rootView.findViewById(R.id.malFunctnStDt_layout);
-        malFunctnStDt_edittext = (EditText) rootView.findViewById(R.id.malFunctnStDt_edittext);
-        malFunctnEnDt_layout = (LinearLayout) rootView.findViewById(R.id.malFunctnEnDt_layout);
-        malFunctnEnDt_edittext = (EditText) rootView.findViewById(R.id.malFunctnEnDt_edittext);
-        effect_layout = (LinearLayout) rootView.findViewById(R.id.effect_layout);
-        effect_edittext = (EditText) rootView.findViewById(R.id.effect_edittext);
         notifshtTxt_edittext = (EditText) rootView.findViewById(R.id.notifshtTxt_edittext);
         status_til = (TextInputLayout) rootView.findViewById(R.id.status_til);
         status_tiet = (EditText) rootView.findViewById(R.id.status_tiet);
-        notiftype_dropdown_iv = (ImageView) rootView.findViewById(R.id.notiftype_dropdown_iv);
         ord_num_layout = (LinearLayout) rootView.findViewById(R.id.ord_num_layout);
-        ord_num_edittext = (TextView) rootView.findViewById(R.id.ord_num_edittext);
         notif_Date_layout = (LinearLayout) rootView.findViewById(R.id.notif_Date_layout);
-        notif_Date_edittext = (TextView) rootView.findViewById(R.id.notif_Date_edittext);
         longtext_imageview = (ImageView) rootView.findViewById(R.id.longtext_imageview);
-        header_custominfo_button = (Button) rootView.findViewById(R.id.header_custominfo_button);
-        iwerk_tiet = (EditText) rootView.findViewById(R.id.iwerk_tiet);
-        plant_tiet = (EditText) rootView.findViewById(R.id.plant_tiet);
+        notification_type_button = (Button) rootView.findViewById(R.id.notification_type_button);
+        priority_type_button = (Button) rootView.findViewById(R.id.priority_type_button);
+        ord_num_button = (Button) rootView.findViewById(R.id.ord_num_button);
+        notif_Date_button = (Button) rootView.findViewById(R.id.notif_Date_button);
+        func_loc_button = (Button) rootView.findViewById(R.id.func_loc_button);
+        flocname_button = (Button) rootView.findViewById(R.id.flocname_button);
+        equiptext_button = (Button) rootView.findViewById(R.id.equiptext_button);
+        workcenter_type_button = (Button) rootView.findViewById(R.id.workcenter_type_button);
+        maintenance_plant_button = (Button) rootView.findViewById(R.id.maintenance_plant_button);
+        plannergroup_type_button = (Button) rootView.findViewById(R.id.plannergroup_type_button);
+        planningplant_button = (Button) rootView.findViewById(R.id.planningplant_button);
+        person_resp_button = (Button) rootView.findViewById(R.id.person_resp_button);
+        reqStDt_button = (Button) rootView.findViewById(R.id.reqStDt_button);
+        reqenddate_button = (Button) rootView.findViewById(R.id.reqenddate_button);
+        malfuncstdate_button = (Button) rootView.findViewById(R.id.malfuncstdate_button);
+        malfuncenddate_button = (Button) rootView.findViewById(R.id.malfuncenddate_button);
+        breakdown_no_radiobutton = (RadioButton) rootView.findViewById(R.id.breakdown_no_radiobutton);
+        breakdown_yes_radiobutton = (RadioButton) rootView.findViewById(R.id.breakdown_yes_radiobutton);
+
 
         status_til.setVisibility(View.GONE);
-        notiftype_dropdown_iv.setVisibility(View.GONE);
-        notiftype_layout.setBackground(getResources().getDrawable(R.drawable.bluedashborder));
+        notification_type_button.setBackground(getResources().getDrawable(R.drawable.bluedashborder));
 
         DATABASE_NAME = getActivity().getString(R.string.database_name);
         App_db = getActivity().openOrCreateDatabase(DATABASE_NAME,
@@ -147,62 +134,75 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         selected_custom_info_arraylist.clear();
 
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null) {
+        if (bundle != null)
+        {
             nhp = bundle.getParcelable("notif_parcel");
 
             status_tiet.setText(nhp.getNotf_Status());
             notification_type_id = nhp.getNotifType();
             notification_type_text = nhp.getQmartx();
-            notiftyp_edittext.setText(getString(R.string.hypen_text,
+            notification_type_button.setText(getString(R.string.hypen_text,
                     nhp.getNotifType(), nhp.getQmartx()));
-            notiftyp_edittext.setTextColor(getResources().getColor(R.color.dark_grey2));
+            notification_type_button.setTextColor(getResources().getColor(R.color.dark_grey2));
             notifshtTxt_edittext.setText(nhp.getNotifShrtTxt());
             functionlocation_id = nhp.getFuncLoc();
             functionlocation_text = nhp.getPltxt();
-            floc_edittext.setText(nhp.getFuncLoc());
-            flocname_edittext.setText(functionlocation_text);
+            func_loc_button.setText(nhp.getFuncLoc());
+            flocname_button.setText(functionlocation_text);
             equipment_id = nhp.getEquip();
             equipment_text = nhp.getEquipTxt();
             equipid_edittext.setText(equipment_id);
-            equiptext_edittext.setText(equipment_text);
+            equiptext_button.setText(equipment_text);
+
+            String breakdown_status = nhp.getBrkDwnInd();
+            if(breakdown_status.equalsIgnoreCase("X"))
+            {
+                breakdown_yes_radiobutton.setChecked(true);
+                breakdown_no_radiobutton.setChecked(false);
+            }
+            else
+            {
+                breakdown_yes_radiobutton.setChecked(false);
+                breakdown_no_radiobutton.setChecked(true);
+            }
 
             plant_id = nhp.getWerks();
             iwerk = nhp.getIwerk();
 
             if (plant_id != null && !plant_id.equals(""))
-                plant_tiet.setText(plant_id);
+                maintenance_plant_button.setText(plant_id);
 
             if (iwerk != null && !iwerk.equals(""))
-                iwerk_tiet.setText(iwerk);
+                planningplant_button.setText(iwerk);
 
             plannergroup_id = nhp.getIngrp();
             plannergroup_text = nhp.getIngrpName();
             if (plannergroup_id != null && !plannergroup_id.equals(""))
                 if (plannergroup_text != null && !plannergroup_text.equals(""))
-                    plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                    plannergroup_type_button.setText(getString(R.string.hypen_text, plannergroup_id,
                             plannergroup_text));
                 else
-                    plannerGroup_edittext.setText(plannergroup_id);
+                    plannergroup_type_button.setText(plannergroup_id);
             else
-                plannerGroup_edittext.setText("");
+                plannergroup_type_button.setText("");
             workcenter_id = nhp.getArbpl();
             workcenter_text = nhp.getWrkCntrTxt();
             if (workcenter_id != null && !workcenter_id.equals(""))
                 if (workcenter_text != null && !workcenter_text.equals(""))
-                    workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                    workcenter_type_button.setText(getString(R.string.hypen_text, workcenter_id,
                             workcenter_text));
                 else
-                    workCenter_edittext.setText(workcenter_id);
+                    workcenter_type_button.setText(workcenter_id);
             else
-                workCenter_edittext.setText("");
+                workcenter_type_button.setText("");
             priority_type_id = nhp.getPriority();
             priority_type_text = nhp.getPriorityTxt();
             if (priority_type_id != null && !priority_type_id.equals(""))
                 if (priority_type_text != null && !priority_type_text.equals(""))
-                    priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
+                    priority_type_button.setText(getString(R.string.hypen_text, priority_type_id,
                             priority_type_text));
                 else
-                    priority_edittext.setText(priority_type_id);
+                    priority_type_button.setText(priority_type_id);
 
             reportedby_edittext.setText(nhp.getReportedBy());
             primUsrResp_edittext.setText(nhp.getUsr01());
@@ -210,10 +210,10 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             personresponsible_text = nhp.getNameVw();
             if (personresponsible_id != null && !personresponsible_id.equals(""))
                 if (personresponsible_text != null && !personresponsible_text.equals(""))
-                    personResp_edittext.setText(getString(R.string.hypen_text, personresponsible_id,
+                    person_resp_button.setText(getString(R.string.hypen_text, personresponsible_id,
                             personresponsible_text));
                 else
-                    personResp_edittext.setText(personresponsible_id);
+                    person_resp_button.setText(personresponsible_id);
             String req_stdate = nhp.getStrmn();
             if (req_stdate != null && !req_stdate.equals("")) {
                 if (req_stdate.equalsIgnoreCase("00000000")) {
@@ -243,7 +243,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         req_stdate_date_formated = req_stdate;
                         req_stdate_time = req_starttime;
                         req_stdate_time_formatted = req_sttime;
-                        reqStDt_edittext.setText(getString(R.string.hypen_text, req_stdate_date,
+                        reqStDt_button.setText(getString(R.string.hypen_text, req_stdate_date,
                                 req_stdate_time));
                     } catch (ParseException e) {
                     }
@@ -279,7 +279,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         req_end_date_formatted = req_eddate;
                         req_end_time = req_endtime;
                         req_end_time_formatted = req_edtime;
-                        reqEnDt_edittext.setText(getString(R.string.hypen_text, req_end_date,
+                        reqenddate_button.setText(getString(R.string.hypen_text, req_end_date,
                                 req_end_time));
                     } catch (ParseException e) {
                     }
@@ -315,7 +315,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         mal_st_date_formatted = mal_stdate;
                         mal_st_time = mal_start_time;
                         mal_st_time_formatted = mal_sttime;
-                        malFunctnStDt_edittext.setText(getString(R.string.hypen_text, mal_st_date,
+                        malfuncstdate_button.setText(getString(R.string.hypen_text, mal_st_date,
                                 mal_st_time));
                     } catch (ParseException e) {
                     }
@@ -351,31 +351,21 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         mal_end_date_formatted = mal_enddate;
                         mal_end_time = mal_endtime;
                         mal_end_time_formatted = mal_ed_time;
-                        malFunctnEnDt_edittext.setText(getString(R.string.hypen_text, mal_end_date,
+                        malfuncenddate_button.setText(getString(R.string.hypen_text, mal_end_date,
                                 mal_end_time));
                     } catch (ParseException e) {
                     }
                 }
             }
 
-            effect_id = nhp.getAuswk();
-            effect_text = nhp.getAuswkt();
-            if (effect_id != null && !effect_id.equals(""))
-                if (effect_text != null && !effect_text.equals(""))
-                    effect_edittext.setText(getString(R.string.hypen_text, effect_id,
-                            effect_text));
-                else
-                    effect_edittext.setText(effect_id);
-            else
-                plannerGroup_edittext.setText("");
             final String aufnr = nhp.getAufnr();
             selected_orderID = aufnr;
             if (aufnr != null && !aufnr.equals("")) {
                 ord_num_layout.setVisibility(View.VISIBLE);
                 SpannableString content = new SpannableString(aufnr);
                 content.setSpan(new UnderlineSpan(), 0, aufnr.length(), 0);
-                ord_num_edittext.setText(content);
-                ord_num_edittext.setOnClickListener(new View.OnClickListener() {
+                ord_num_button.setText(content);
+                ord_num_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
@@ -423,7 +413,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                     Date date = inputFormat.parse(Qmdat);
                     String selected_date = outputFormat.format(date);
                     notif_Date_layout.setVisibility(View.VISIBLE);
-                    notif_Date_edittext.setText(selected_date);
+                    notif_Date_button.setText(selected_date);
                 } catch (ParseException e) {
                 }
             } else {
@@ -521,20 +511,18 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             } catch (Exception e) {
             }
         }
-        floc_layout.setOnClickListener(this);
+        func_loc_button.setOnClickListener(this);
         equipmentsearch_imageview.setOnClickListener(this);
         equipmentscan_imageview.setOnClickListener(this);
-        workCenter_layout.setOnClickListener(this);
-        priority_layout.setOnClickListener(this);
-        plannerGroup_layout.setOnClickListener(this);
-        personResp_layout.setOnClickListener(this);
-        reqStDt_layout.setOnClickListener(this);
-        reqEnDt_layout.setOnClickListener(this);
-        malFunctnStDt_layout.setOnClickListener(this);
-        malFunctnEnDt_layout.setOnClickListener(this);
-        effect_layout.setOnClickListener(this);
+        priority_type_button.setOnClickListener(this);
+        plannergroup_type_button.setOnClickListener(this);
+        person_resp_button.setOnClickListener(this);
+        reqStDt_button.setOnClickListener(this);
+        malfuncstdate_button.setOnClickListener(this);
+        malfuncenddate_button.setOnClickListener(this);
         longtext_imageview.setOnClickListener(this);
-        header_custominfo_button.setOnClickListener(this);
+        reqenddate_button.setOnClickListener(this);
+        workcenter_type_button.setOnClickListener(this);
 
         return rootView;
     }
@@ -554,14 +542,14 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                         ord_num_layout.setVisibility(View.VISIBLE);
                         SpannableString content = new SpannableString(created_aufnr);
                         content.setSpan(new UnderlineSpan(), 0, created_aufnr.length(), 0);
-                        ord_num_edittext.setText(content);
+                        ord_num_button.setText(content);
                     }
                     while (cursor.moveToNext());
                 }
             } else {
                 cursor.close();
             }
-            ord_num_edittext.setOnClickListener(new View.OnClickListener() {
+            ord_num_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
@@ -598,22 +586,14 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
 
     @Override
     public void onClick(View v) {
-        if (v == header_custominfo_button) {
-            Intent custominfo_intent = new Intent(getActivity(), CustomInfo_Activity.class);
-            custominfo_intent.putExtra("Zdoctype", "Q");
-            custominfo_intent.putExtra("ZdoctypeItem", "QH");
-            custominfo_intent.putExtra("custom_info_arraylist",
-                    selected_custom_info_arraylist);
-            custominfo_intent.putExtra("request_id", Integer.toString(custom_info));
-            startActivityForResult(custominfo_intent, custom_info);
-        } else if (v == longtext_imageview) {
+         if (v == longtext_imageview) {
             Intent notification_type_intent = new Intent(getActivity(),
                     Notifications_LongText_Activity.class);
             notification_type_intent.putExtra("request_id", Integer.toString(longtext));
             notification_type_intent.putExtra("qmnum", nhp.getQmnum());
             notification_type_intent.putExtra("longtext_new", longtext_text);
             startActivityForResult(notification_type_intent, longtext);
-        } else if (v == floc_layout) {
+        } else if (v == func_loc_button) {
             Intent notification_type_intent = new Intent(getActivity(),
                     FunctionLocation_Activity.class);
             notification_type_intent.putExtra("request_id",
@@ -623,7 +603,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             Intent equipment_intent = new Intent(getActivity(), Equipment_Activity.class);
             equipment_intent.putExtra("request_id", Integer.toString(equipment_type));
             equipment_intent.putExtra("functionlocation_id",
-                    floc_edittext.getText().toString());
+                    func_loc_button.getText().toString());
             startActivityForResult(equipment_intent, equipment_type);
         } else if (v == equipmentscan_imageview) {
             if (ContextCompat.checkSelfPermission(getActivity(),
@@ -634,7 +614,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 Intent intent = new Intent(getActivity(), Barcode_Scanner_Activity.class);
                 startActivityForResult(intent, barcode_scan);
             }
-        } else if (v == workCenter_layout) {
+        } else if (v == workcenter_type_button) {
             if ((equipment_id != null && !equipment_id.equals("")) ||
                     (functionlocation_id != null && !functionlocation_id.equals(""))) {
                 Intent notification_type_intent = new Intent(getActivity(),
@@ -647,15 +627,15 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 error_dialog.show_error_dialog(getActivity(),
                         getString(R.string.equipFunc_mandate));
             }
-        } else if (v == priority_layout) {
+        } else if (v == priority_type_button) {
             Intent notification_type_intent = new Intent(getActivity(),
                     Notifications_Priority_Activity.class);
             notification_type_intent.putExtra("request_id",
                     Integer.toString(notification_priority));
             startActivityForResult(notification_type_intent, notification_priority);
-        } else if (v == plannerGroup_layout) {
-            if (equiptext_edittext.getText().toString() != null &&
-                    !equiptext_edittext.getText().toString().equals("")) {
+        } else if (v == plannergroup_type_button) {
+            if (equipid_edittext.getText().toString() != null &&
+                    !equipid_edittext.getText().toString().equals("")) {
                 Intent planner_group_intent = new Intent(getActivity(),
                         Notifications_PlannerGroup_Activity.class);
                 planner_group_intent.putExtra("equip_id",
@@ -668,7 +648,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 error_dialog.show_error_dialog(getActivity(),
                         getString(R.string.equipFunc_mandate));
             }
-        } else if (v == personResp_layout) {
+        } else if (v == person_resp_button) {
             if (plant_id != null && !plant_id.equals("")) {
                 if (workcenter_id != null && !workcenter_id.equals("")) {
                     Intent planner_group_intent = new Intent(getActivity(),
@@ -687,27 +667,22 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 error_dialog.show_error_dialog(getActivity(),
                         getString(R.string.equipFunc_mandate));
             }
-        } else if (v == reqStDt_layout) {
+        } else if (v == reqStDt_button) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(req_stdate));
             startActivityForResult(intent, req_stdate);
-        } else if (v == reqEnDt_layout) {
+        } else if (v == reqenddate_button) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(req_enddate));
             startActivityForResult(intent, req_enddate);
-        } else if (v == malFunctnStDt_layout) {
+        } else if (v == malfuncstdate_button) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(malf_st_date));
             startActivityForResult(intent, malf_st_date);
-        } else if (v == malFunctnEnDt_layout) {
+        } else if (v == malfuncenddate_button) {
             Intent intent = new Intent(getActivity(), DateTimePickerDialog.class);
             intent.putExtra("request_id", Integer.toString(malf_end_date));
             startActivityForResult(intent, malf_end_date);
-        } else if (v == effect_layout) {
-            Intent notification_type_intent = new Intent(getActivity(),
-                    Notifications_Effect_Activity.class);
-            notification_type_intent.putExtra("request_id", Integer.toString(effect));
-            startActivityForResult(notification_type_intent, effect);
         }
     }
 
@@ -726,34 +701,34 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 equipment_id = "";
                 equipment_text = "";
                 equipid_edittext.setText("");
-                equiptext_edittext.setText("");
-                floc_edittext.setText(functionlocation_id);
-                flocname_edittext.setText(functionlocation_text);
+                equiptext_button.setText("");
+                func_loc_button.setText(functionlocation_id);
+                flocname_button.setText(functionlocation_text);
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                 if (plannergroup_id != null && !plannergroup_id.equals(""))
                     if (plannergroup_text != null && !plannergroup_text.equals(""))
-                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                        plannergroup_type_button.setText(getString(R.string.hypen_text, plannergroup_id,
                                 plannergroup_text));
                     else
-                        plannerGroup_edittext.setText(plannergroup_id);
+                        plannergroup_type_button.setText(plannergroup_id);
                 else
-                    plannerGroup_edittext.setText("");
+                    plannergroup_type_button.setText("");
                 workcenter_id = data.getStringExtra("work_center");
-                workCenter_edittext.setText(workcenter_id);
+                workcenter_type_button.setText(workcenter_id);
                 if (plant_id != null && !plant_id.equals(""))
-                    plant_tiet.setText(plant_id);
+                    maintenance_plant_button.setText(plant_id);
                 if (iwerk != null && !iwerk.equals(""))
-                    iwerk_tiet.setText(iwerk);
+                    planningplant_button.setText(iwerk);
             } else if (requestCode == equipment_type) {
                 equipment_id = data.getStringExtra("equipment_id");
                 equipment_text = data.getStringExtra("equipment_text");
                 functionlocation_id = data.getStringExtra("functionlocation_id");
                 functionlocation_text = funcLocName(data.getStringExtra("functionlocation_id"));
                 equipid_edittext.setText(equipment_id);
-                equiptext_edittext.setText(equipment_text);
-                floc_edittext.setText(functionlocation_id);
-                flocname_edittext.setText(functionlocation_text);
+                equiptext_button.setText(equipment_text);
+                func_loc_button.setText(functionlocation_id);
+                flocname_button.setText(functionlocation_text);
                 plant_id = data.getStringExtra("plant_id");
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = "";
@@ -762,26 +737,26 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 workcenter_text = wrkCntrName(workcenter_id, plant_id);
                 if (workcenter_id != null && !workcenter_id.equals(""))
                     if (workcenter_text != null && !workcenter_text.equals(""))
-                        workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                        workcenter_type_button.setText(getString(R.string.hypen_text, workcenter_id,
                                 workcenter_text));
                     else
-                        workCenter_edittext.setText(workcenter_id);
+                        workcenter_type_button.setText(workcenter_id);
                 else
-                    workCenter_edittext.setText("");
+                    workcenter_type_button.setText("");
                 if (plant_id != null && !plant_id.equals(""))
-                    plant_tiet.setText(plant_id);
+                    maintenance_plant_button.setText(plant_id);
                 if (iwerk != null && !iwerk.equals(""))
-                    iwerk_tiet.setText(iwerk);
+                    planningplant_button.setText(iwerk);
                 plannergroup_id = data.getStringExtra("ingrp_id");
                 plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                 if (plannergroup_id != null && !plannergroup_id.equals(""))
                     if (plannergroup_text != null && !plannergroup_text.equals(""))
-                        plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                        plannergroup_type_button.setText(getString(R.string.hypen_text, plannergroup_id,
                                 plannergroup_text));
                     else
-                        plannerGroup_edittext.setText(plannergroup_id);
+                        plannergroup_type_button.setText(plannergroup_id);
                 else
-                    plannerGroup_edittext.setText("");
+                    plannergroup_type_button.setText("");
             } else if (requestCode == barcode_scan) {
                 String message = data.getStringExtra("MESSAGE");
                 equipid_edittext.setText(message);
@@ -797,34 +772,34 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                     functionlocation_id = cursor.getString(1);
                                     plant_id = cursor.getString(29);
                                     plannergroup_id = cursor.getString(13);
-                                    floc_edittext.setText(functionlocation_id);
+                                    func_loc_button.setText(functionlocation_id);
                                     workcenter_id = cursor.getString(11);
                                     workcenter_text = wrkCntrName(workcenter_id, plant_id);
                                     iwerk = cursor.getString(29);
                                     if (workcenter_id != null && !workcenter_id.equals(""))
                                         if (workcenter_text != null && !workcenter_text.equals(""))
-                                            workCenter_edittext.setText(getString(R.string.hypen_text, workcenter_id,
+                                            workcenter_type_button.setText(getString(R.string.hypen_text, workcenter_id,
                                                     workcenter_text));
                                         else
-                                            workCenter_edittext.setText(workcenter_id);
+                                            workcenter_type_button.setText(workcenter_id);
                                     else
-                                        workCenter_edittext.setText("");
+                                        workcenter_type_button.setText("");
                                     if (plant_id != null && !plant_id.equals(""))
-                                        plant_tiet.setText(plant_id);
+                                        maintenance_plant_button.setText(plant_id);
                                     if (iwerk != null && !iwerk.equals(""))
-                                        iwerk_tiet.setText(iwerk);
-                                    floc_edittext.setText(functionlocation_id);
+                                        planningplant_button.setText(iwerk);
+                                    func_loc_button.setText(functionlocation_id);
 
                                     plannergroup_text = plnrGrpName(plannergroup_id, iwerk);
                                     if (plannergroup_id != null && !plannergroup_id.equals(""))
                                         if (plannergroup_text != null && !plannergroup_text.equals(""))
-                                            plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                                            plannergroup_type_button.setText(getString(R.string.hypen_text, plannergroup_id,
                                                     plannergroup_text));
                                         else
-                                            plannerGroup_edittext.setText(plannergroup_id);
+                                            plannergroup_type_button.setText(plannergroup_id);
                                     else
-                                        plannerGroup_edittext.setText("");
-                                    equiptext_edittext.setText(equipment_text);
+                                        plannergroup_type_button.setText("");
+                                    equiptext_button.setText(equipment_text);
                                 }
                                 while (cursor.moveToNext());
                             }
@@ -841,7 +816,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                                 if (cursor.moveToFirst()) {
                                     do {
                                         functionlocation_text = cursor.getString(2);
-                                        flocname_edittext.setText(functionlocation_text);
+                                        flocname_button.setText(functionlocation_text);
                                     }
                                     while (cursor.moveToNext());
                                 }
@@ -855,60 +830,53 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
             } else if (requestCode == workcenter_type) {
                 workcenter_id = data.getStringExtra("workcenter_id");
                 workcenter_text = data.getStringExtra("workcenter_text");
-                workCenter_edittext.setText(workcenter_id);
+                workcenter_type_button.setText(workcenter_id);
             } else if (requestCode == notification_priority) {
                 priority_type_id = data.getStringExtra("priority_type_id");
                 priority_type_text = data.getStringExtra("priority_type_text");
-                priority_edittext.setText(getString(R.string.hypen_text, priority_type_id,
+                priority_type_button.setText(getString(R.string.hypen_text, priority_type_id,
                         priority_type_text));
             } else if (requestCode == planner_group) {
                 plannergroup_id = data.getStringExtra("plannergroup_id");
                 plannergroup_text = data.getStringExtra("plannergroup_text");
-                plannerGroup_edittext.setText(getString(R.string.hypen_text, plannergroup_id,
+                plannergroup_type_button.setText(getString(R.string.hypen_text, plannergroup_id,
                         plannergroup_text));
             } else if (requestCode == personResp) {
                 personresponsible_id = data.getStringExtra("personresponsible_id");
                 personresponsible_text = data.getStringExtra("personresponsible_text");
-                personResp_edittext.setText(getString(R.string.hypen_text, personresponsible_id,
+                person_resp_button.setText(getString(R.string.hypen_text, personresponsible_id,
                         personresponsible_text));
             } else if (requestCode == req_stdate) {
                 req_stdate_date = data.getStringExtra("date");
                 req_stdate_date_formated = data.getStringExtra("date_formatted");
                 req_stdate_time = data.getStringExtra("time");
                 req_stdate_time_formatted = data.getStringExtra("time_formatted");
-                reqStDt_edittext.setText(getString(R.string.hypen_text, req_stdate_date,
+                reqStDt_button.setText(getString(R.string.hypen_text, req_stdate_date,
                         req_stdate_time));
             } else if (requestCode == req_enddate) {
                 req_end_date = data.getStringExtra("date");
                 req_end_date_formatted = data.getStringExtra("date_formatted");
                 req_end_time = data.getStringExtra("time");
                 req_end_time_formatted = data.getStringExtra("time_formatted");
-                reqEnDt_edittext.setText(getString(R.string.hypen_text, req_end_date,
+                reqenddate_button.setText(getString(R.string.hypen_text, req_end_date,
                         req_end_time));
             } else if (requestCode == malf_st_date) {
                 mal_st_date = data.getStringExtra("date");
                 mal_st_date_formatted = data.getStringExtra("date_formatted");
                 mal_st_time = data.getStringExtra("time");
                 mal_st_time_formatted = data.getStringExtra("time_formatted");
-                malFunctnStDt_edittext.setText(getString(R.string.hypen_text, mal_st_date,
-                        mal_st_time));
+                malfuncstdate_button.setText(getString(R.string.hypen_text, mal_st_date,mal_st_time));
             } else if (requestCode == malf_end_date) {
                 mal_end_date = data.getStringExtra("date");
                 mal_end_date_formatted = data.getStringExtra("date_formatted");
                 mal_end_time = data.getStringExtra("time");
                 mal_end_time_formatted = data.getStringExtra("time_formatted");
-                malFunctnEnDt_edittext.setText(getString(R.string.hypen_text, mal_end_date,
+                malfuncenddate_button.setText(getString(R.string.hypen_text, mal_end_date,
                         mal_end_time));
-            } else if (requestCode == effect) {
-                effect_id = data.getStringExtra("effect_id");
-                effect_text = data.getStringExtra("effect_text");
-                effect_edittext.setText(getString(R.string.hypen_text, effect_id, effect_text));
-            } else if (requestCode == custom_info) {
-                selected_custom_info_arraylist = (ArrayList<HashMap<String, String>>) data
-                        .getSerializableExtra("selected_custom_info_arraylist");
             }
         }
     }
+
 
     private class Get_Order_Data extends AsyncTask<Void, Integer, Void> {
         OrdrHeaderPrcbl ohp;
@@ -1967,9 +1935,19 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
         }
     }
 
-    public Notifications_Create_Header_Object getData() {
+    public Notifications_Create_Header_Object getData()
+    {
+        String breakdown_status = "";
+        if(breakdown_yes_radiobutton.isChecked())
+        {
+            breakdown_status = "X";
+        }
+        else if(breakdown_no_radiobutton.isChecked())
+        {
+            breakdown_status = "";
+        }
         return new Notifications_Create_Header_Object(notification_type_id, notification_type_text,
-                notifshtTxt_edittext.getText().toString(), floc_edittext.getText().toString(),
+                notifshtTxt_edittext.getText().toString(), func_loc_button.getText().toString(),
                 functionlocation_text, equipid_edittext.getText().toString(), equipment_text,
                 workcenter_id, workcenter_text, priority_type_id, priority_type_text,
                 plannergroup_id, plannergroup_text, reportedby_edittext.getText().toString(),
@@ -1977,7 +1955,7 @@ public class Notifications_Change_Header_Fragment extends Fragment implements Vi
                 personresponsible_text, req_stdate_date_formated, req_stdate_time_formatted,
                 req_end_date_formatted, req_end_time_formatted, mal_st_date_formatted,
                 mal_st_time_formatted, mal_end_date_formatted, mal_end_time_formatted,
-                effect_id, effect_text, plant_id, longtext_text, selected_custom_info_arraylist);
+                "", "", plant_id, longtext_text, selected_custom_info_arraylist,breakdown_status);
     }
 
     private String funcLocName(String funcLocId) {

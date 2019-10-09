@@ -35,7 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enstrapp.fieldtekpro.FileUpload.FileUtils;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.notifications.Notif_EtDocs_Parcelable;
 
@@ -290,8 +290,8 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
 
                                             Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
                                             notif_etDocs_parcelable.setZobjid(" ");
-                                            notif_etDocs_parcelable.setZdoctype("Q");
-                                            notif_etDocs_parcelable.setZdoctypeitem("QH");
+                                            notif_etDocs_parcelable.setZdoctype("W");
+                                            notif_etDocs_parcelable.setZdoctypeitem("WH");
                                             notif_etDocs_parcelable.setFilename(filee_name);
                                             notif_etDocs_parcelable.setFiletype(mimeType);
                                             notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
@@ -301,7 +301,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                             notif_etDocs_parcelable.setDoctype("");
                                             notif_etDocs_parcelable.setObjtype("EQUI");
                                             attachments_list.add(notif_etDocs_parcelable);
-                                            try {
+                                            /*try {
                                                 App_db.beginTransaction();
                                                 String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id, doctype) values(?,?,?,?,?,?);";
                                                 SQLiteStatement statement11 = App_db.compileStatement(sql11);
@@ -318,7 +318,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                             } catch (Exception e) {
                                                 Log.v("order insert response",""+e.getMessage());
 
-                                            }
+                                            }*/
                                             Display_Attachments();
                                         } else {
                                             error_dialog.show_error_dialog(getActivity(), "Please Enter Description");
@@ -369,8 +369,8 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
 
                                     Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
                                     notif_etDocs_parcelable.setZobjid("");
-                                    notif_etDocs_parcelable.setZdoctype("Q");
-                                    notif_etDocs_parcelable.setZdoctypeitem("QH");
+                                    notif_etDocs_parcelable.setZdoctype("W");
+                                    notif_etDocs_parcelable.setZdoctypeitem("WH");
                                     notif_etDocs_parcelable.setFilename(filee_name);
                                     notif_etDocs_parcelable.setFiletype(mimeType);
                                     notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
@@ -378,9 +378,9 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                     notif_etDocs_parcelable.setContent(encodedImage);
                                     notif_etDocs_parcelable.setDocid("");
                                     notif_etDocs_parcelable.setDoctype("");
-                                    notif_etDocs_parcelable.setObjtype("BUS2038");
+                                    notif_etDocs_parcelable.setObjtype("EQUI");
                                     attachments_list.add(notif_etDocs_parcelable);
-                                    try {
+                                    /*try {
                                         App_db.beginTransaction();
                                         String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id, doctype) values(?,?,?,?,?,?);";
                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
@@ -395,7 +395,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                         App_db.setTransactionSuccessful();
                                         App_db.endTransaction();
                                     } catch (Exception e) {
-                                    }
+                                    }*/
                                     Display_Attachments();
                                 } else {
                                     error_dialog.show_error_dialog(getActivity(), "Please select correct format file. (TXT, PDF, PNG, DOC, DOCX, JPG, XLS, XLSX, DXF, DWF, DWG)");
@@ -433,8 +433,8 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
 
                                     Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
                                     notif_etDocs_parcelable.setZobjid("");
-                                    notif_etDocs_parcelable.setZdoctype("Q");
-                                    notif_etDocs_parcelable.setZdoctypeitem("QH");
+                                    notif_etDocs_parcelable.setZdoctype("W");
+                                    notif_etDocs_parcelable.setZdoctypeitem("WH");
                                     notif_etDocs_parcelable.setFilename(filee_name);
                                     notif_etDocs_parcelable.setFiletype(mimeType);
                                     notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
@@ -444,7 +444,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                     notif_etDocs_parcelable.setDoctype("");
                                     notif_etDocs_parcelable.setObjtype("EQUI");
                                     attachments_list.add(notif_etDocs_parcelable);
-                                    try {
+                                    /*try {
                                         App_db.beginTransaction();
                                         String sql11 = "Insert into Orders_Attachments (UUID, Object_id, Object_type, file_path, jsa_id,doctype) values(?,?,?,?,?,?);";
                                         SQLiteStatement statement11 = App_db.compileStatement(sql11);
@@ -459,7 +459,7 @@ public class Orders_CR_Attachments_Fragment extends Fragment {
                                         App_db.setTransactionSuccessful();
                                         App_db.endTransaction();
                                     } catch (Exception e) {
-                                    }
+                                    }*/
                                     Display_Attachments();
 
                                 } else {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +14,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +36,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
 import com.enstrapp.fieldtekpro.FileUpload.FileUtils;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -42,12 +45,14 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class Notifications_Change_Attachments_Fragment extends Fragment {
 
@@ -69,6 +74,8 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
     int count = 0;
     boolean isSelected = false;
     Notifications_Change_Activity nca;
+    private static SQLiteDatabase App_db;
+    private static String DATABASE_NAME = "";
 
     public Notifications_Change_Attachments_Fragment() {
     }
@@ -86,10 +93,16 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
         noData_tv = (TextView) rootView.findViewById(R.id.nofiles_textview);
         nca = (Notifications_Change_Activity) this.getActivity();
 
+
+        DATABASE_NAME = getActivity().getString(R.string.database_name);
+        App_db = getActivity().openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+
+
         attachments_list.clear();
 
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null) {
+        /*Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null)
+        {
             nhp = bundle.getParcelable("notif_parcel");
             etdocs_parcablearray = nhp.getEtDocsParcelables();
             if (etdocs_parcablearray.size() > 0) {
@@ -102,7 +115,7 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                     notif_etDocs_parcelable.setFiletype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
                     notif_etDocs_parcelable.setFsize(etdocs_parcablearray.get(i).getFsize().trim());
                     notif_etDocs_parcelable.setFilepath(etdocs_parcablearray.get(i).getFilepath());
-                    notif_etDocs_parcelable.setContentX(etdocs_parcablearray.get(i).getContentX());
+                    notif_etDocs_parcelable.setContent(etdocs_parcablearray.get(i).getContent());
                     notif_etDocs_parcelable.setDocid(etdocs_parcablearray.get(i).getDocid());
                     notif_etDocs_parcelable.setDoctype(etdocs_parcablearray.get(i).getFiletype().toLowerCase().toString());
                     notif_etDocs_parcelable.setObjtype(etdocs_parcablearray.get(i).getObjtype());
@@ -131,6 +144,86 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                     attachments_list.add(notif_etDocs_parcelable);
                 }
             }
+        }*/
+
+
+
+        Cursor EtDocs_cursor = null;
+        try {
+            EtDocs_cursor = App_db.rawQuery("select * from DUE_NOTIFICATION_EtDocs " +"where Zobjid = ?", new String[]{nca.qmnum});
+            if (EtDocs_cursor != null && EtDocs_cursor.getCount() > 0)
+            {
+                if (EtDocs_cursor.moveToFirst())
+                {
+                    do
+                    {
+                        Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
+                        notif_etDocs_parcelable.setZobjid(EtDocs_cursor.getString(2));
+                        notif_etDocs_parcelable.setZdoctype(EtDocs_cursor.getString(3));
+                        notif_etDocs_parcelable.setZdoctypeitem(EtDocs_cursor.getString(4));
+                        notif_etDocs_parcelable.setFilename(EtDocs_cursor.getString(5));
+                        notif_etDocs_parcelable.setFiletype(EtDocs_cursor.getString(6));
+                        notif_etDocs_parcelable.setFsize(EtDocs_cursor.getString(7));
+                        notif_etDocs_parcelable.setFilepath(EtDocs_cursor.getString(12));
+                        notif_etDocs_parcelable.setContent(EtDocs_cursor.getString(8));
+                        notif_etDocs_parcelable.setDocid(EtDocs_cursor.getString(9));
+                        notif_etDocs_parcelable.setDoctype(EtDocs_cursor.getString(10));
+                        notif_etDocs_parcelable.setObjtype(EtDocs_cursor.getString(11));
+                        notif_etDocs_parcelable.setStatus(EtDocs_cursor.getString(13));
+                        String status = EtDocs_cursor.getString(13);
+                        if (status.equalsIgnoreCase("New"))
+                        {
+                            try
+                            {
+                                String file_path = EtDocs_cursor.getString(12);
+                                byte[] byteArray = null;
+                                InputStream inputStream = new FileInputStream(file_path);
+                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                byte[] b = new byte[4096 * 8];
+                                int bytesRead = 0;
+                                while ((bytesRead = inputStream.read(b)) != -1)
+                                {
+                                    bos.write(b, 0, bytesRead);
+                                }
+                                byteArray = bos.toByteArray();
+                                String encodeddata = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                                notif_etDocs_parcelable.setContent(encodeddata);
+                            }
+                            catch (Exception e)
+                            {
+                                notif_etDocs_parcelable.setContent("");
+                            }
+                        }
+                        else
+                        {
+                            notif_etDocs_parcelable.setContent(EtDocs_cursor.getString(8));
+                        }
+                        attachments_list.add(notif_etDocs_parcelable);
+                    }
+                    while (EtDocs_cursor.moveToNext());
+                }
+            }
+            else
+            {
+                if (EtDocs_cursor != null)
+                {
+                    EtDocs_cursor.close();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            if (EtDocs_cursor != null)
+            {
+                EtDocs_cursor.close();
+            }
+        }
+        finally
+        {
+            if (EtDocs_cursor != null)
+            {
+                EtDocs_cursor.close();
+            }
         }
 
         Display_Attachments();
@@ -152,7 +245,7 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
         super.onResume();
         if (!getUserVisibleHint())
             return;
-        String xstatus = nhp.getXStatus();
+        /*String xstatus = nhp.getXStatus();
         if (xstatus.equalsIgnoreCase("NOCO")) {
             Notifications_Change_Activity mainActivity = (Notifications_Change_Activity) getActivity();
             String auth_status = Authorizations.Get_Authorizations_Data(getActivity(), "Q", "U");
@@ -177,78 +270,74 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
             } else {
                 mainActivity.fab.hide();
             }
-            mainActivity.fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isSelected) {
-                        final Dialog delete_decision_dialog = new Dialog(getActivity());
-                        delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                        delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        delete_decision_dialog.setCancelable(false);
-                        delete_decision_dialog.setCanceledOnTouchOutside(false);
-                        delete_decision_dialog.setContentView(R.layout.decision_dialog);
-                        TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
-                        description_textview.setText("Do you want to delete the selected attachment?");
-                        Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
-                        Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
-                        delete_decision_dialog.show();
-                        ok_button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ArrayList<Notif_EtDocs_Parcelable> rmoop = new ArrayList<>();
-                                rmoop.addAll(attachments_list);
+        }*/
 
-                                for (Notif_EtDocs_Parcelable oo : rmoop) {
-                                    if (oo.isSelected()) {
-                                        attachments_list.remove(oo);
+
+
+        nca.fab.show();
+        nca.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSelected) {
+                    final Dialog delete_decision_dialog = new Dialog(getActivity());
+                    delete_decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    delete_decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    delete_decision_dialog.setCancelable(false);
+                    delete_decision_dialog.setCanceledOnTouchOutside(false);
+                    delete_decision_dialog.setContentView(R.layout.decision_dialog);
+                    TextView description_textview = (TextView) delete_decision_dialog.findViewById(R.id.description_textview);
+                    description_textview.setText("Do you want to delete the selected attachment?");
+                    Button ok_button = (Button) delete_decision_dialog.findViewById(R.id.yes_button);
+                    Button cancel_button = (Button) delete_decision_dialog.findViewById(R.id.no_button);
+                    delete_decision_dialog.show();
+                    ok_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ArrayList<Notif_EtDocs_Parcelable> rmoop = new ArrayList<>();
+                            rmoop.addAll(attachments_list);
+
+                            for (Notif_EtDocs_Parcelable oo : rmoop) {
+                                if (oo.isSelected()) {
+                                    attachments_list.remove(oo);
+                                } else {
+                                    oo.setSelected(false);
+                                }
+                            }
+
+                            nca.animateFab(false);
+                            isSelected = false;
+
+                            Display_Attachments();
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
+                    cancel_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            delete_decision_dialog.dismiss();
+                        }
+                    });
+                } else {
+                    final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+                    dialog.setContentView(R.layout.notifications_attachments_select_dialog);
+                    TextView camera_textview = (TextView) dialog.findViewById(R.id.camera_textview);
+                    TextView gallery_textview = (TextView) dialog.findViewById(R.id.gallery_textview);
+                    TextView file_textview = (TextView) dialog.findViewById(R.id.file_textview);
+                    dialog.show();
+                    camera_textview.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (attachments_list.size() >= 5) {
+                                List<String> list = new ArrayList<String>();
+                                for (int i = 0; i < attachments_list.size(); i++) {
+                                    String status = attachments_list.get(i).getStatus();
+                                    if (status.equalsIgnoreCase("old")) {
                                     } else {
-                                        oo.setSelected(false);
+                                        list.add("new");
                                     }
                                 }
-
-                                nca.animateFab(false);
-                                isSelected = false;
-
-                                Display_Attachments();
-                                delete_decision_dialog.dismiss();
-                            }
-                        });
-                        cancel_button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                delete_decision_dialog.dismiss();
-                            }
-                        });
-                    } else {
-                        final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-                        dialog.setContentView(R.layout.notifications_attachments_select_dialog);
-                        TextView camera_textview = (TextView) dialog.findViewById(R.id.camera_textview);
-                        TextView gallery_textview = (TextView) dialog.findViewById(R.id.gallery_textview);
-                        TextView file_textview = (TextView) dialog.findViewById(R.id.file_textview);
-                        dialog.show();
-                        camera_textview.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (attachments_list.size() >= 5) {
-                                    List<String> list = new ArrayList<String>();
-                                    for (int i = 0; i < attachments_list.size(); i++) {
-                                        String status = attachments_list.get(i).getStatus();
-                                        if (status.equalsIgnoreCase("old")) {
-                                        } else {
-                                            list.add("new");
-                                        }
-                                    }
-                                    if (list.size() >= 5) {
-                                        error_dialog.show_error_dialog(getActivity(), "You cannot attach more than 5 files");
-                                    } else {
-                                        if (!isDeviceSupportCamera()) {
-                                            error_dialog.show_error_dialog(getActivity(), "Sorry! Your device doesn't support camera");
-                                        } else {
-                                            dialog.dismiss();
-                                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                            startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-                                        }
-                                    }
+                                if (list.size() >= 5) {
+                                    error_dialog.show_error_dialog(getActivity(), "You cannot attach more than 5 files");
                                 } else {
                                     if (!isDeviceSupportCamera()) {
                                         error_dialog.show_error_dialog(getActivity(), "Sorry! Your device doesn't support camera");
@@ -258,61 +347,61 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                                         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
                                     }
                                 }
-                            }
-                        });
-                        gallery_textview.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (attachments_list.size() >= 5) {
-                                    List<String> list = new ArrayList<String>();
-                                    for (int i = 0; i < attachments_list.size(); i++) {
-                                        String status = attachments_list.get(i).getStatus();
-                                        if (status.equalsIgnoreCase("old")) {
-                                        } else {
-                                            list.add("new");
-                                        }
-                                    }
-                                    if (list.size() >= 5) {
-                                        error_dialog.show_error_dialog(getActivity(), "You cannot attach more than 5 files");
-                                    } else {
-                                        if (!isDeviceSupportCamera()) {
-                                            error_dialog.show_error_dialog(getActivity(), "Sorry! Your device doesn't support camera");
-                                        } else {
-                                            dialog.dismiss();
-                                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                            startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-                                        }
-                                    }
+                            } else {
+                                if (!isDeviceSupportCamera()) {
+                                    error_dialog.show_error_dialog(getActivity(), "Sorry! Your device doesn't support camera");
                                 } else {
                                     dialog.dismiss();
-                                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                    startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
                                 }
                             }
-                        });
-                        file_textview.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (attachments_list.size() >= 5) {
-                                    List<String> list = new ArrayList<String>();
-                                    for (int i = 0; i < attachments_list.size(); i++) {
-                                        String status = attachments_list.get(i).getStatus();
-                                        if (status.equalsIgnoreCase("old")) {
-                                        } else {
-                                            list.add("new");
-                                        }
-                                    }
-                                    if (list.size() >= 5) {
-                                        error_dialog.show_error_dialog(getActivity(), "You cannot attach more than 5 files");
+                        }
+                    });
+                    gallery_textview.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (attachments_list.size() >= 5) {
+                                List<String> list = new ArrayList<String>();
+                                for (int i = 0; i < attachments_list.size(); i++) {
+                                    String status = attachments_list.get(i).getStatus();
+                                    if (status.equalsIgnoreCase("old")) {
                                     } else {
-                                        Intent target = FileUtils.createGetContentIntent();
-                                        Intent intent = Intent.createChooser(target, "Choose File");
-                                        try {
-                                            dialog.dismiss();
-                                            startActivityForResult(intent, REQUEST_CODE);
-                                        } catch (ActivityNotFoundException e) {
-                                        }
+                                        list.add("new");
                                     }
+                                }
+                                if (list.size() >= 5) {
+                                    error_dialog.show_error_dialog(getActivity(), "You cannot attach more than 5 files");
+                                } else {
+                                    if (!isDeviceSupportCamera()) {
+                                        error_dialog.show_error_dialog(getActivity(), "Sorry! Your device doesn't support camera");
+                                    } else {
+                                        dialog.dismiss();
+                                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                                    }
+                                }
+                            } else {
+                                dialog.dismiss();
+                                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                            }
+                        }
+                    });
+                    file_textview.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (attachments_list.size() >= 5) {
+                                List<String> list = new ArrayList<String>();
+                                for (int i = 0; i < attachments_list.size(); i++) {
+                                    String status = attachments_list.get(i).getStatus();
+                                    if (status.equalsIgnoreCase("old")) {
+                                    } else {
+                                        list.add("new");
+                                    }
+                                }
+                                if (list.size() >= 5) {
+                                    error_dialog.show_error_dialog(getActivity(), "You cannot attach more than 5 files");
                                 } else {
                                     Intent target = FileUtils.createGetContentIntent();
                                     Intent intent = Intent.createChooser(target, "Choose File");
@@ -322,12 +411,22 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                                     } catch (ActivityNotFoundException e) {
                                     }
                                 }
+                            } else {
+                                Intent target = FileUtils.createGetContentIntent();
+                                Intent intent = Intent.createChooser(target, "Choose File");
+                                try {
+                                    dialog.dismiss();
+                                    startActivityForResult(intent, REQUEST_CODE);
+                                } catch (ActivityNotFoundException e) {
+                                }
                             }
-                        });
-                    }
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
+
+
     }
 
 
@@ -401,72 +500,22 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                                                 filee_name = file_rename.getText().toString() + ".jpg";
                                             }
 
-                                            final Dialog add_file_dialog = new Dialog(getActivity());
-                                            add_file_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                                            add_file_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                            add_file_dialog.setCancelable(false);
-                                            add_file_dialog.setCanceledOnTouchOutside(false);
-                                            add_file_dialog.setContentView(R.layout.add_file_dialog);
-                                            final TextView favoritetextview = (TextView) add_file_dialog.findViewById(R.id.description_textview);
-                                            Button equip_button = (Button) add_file_dialog.findViewById(R.id.equip_button);
-                                            Button notif_button = (Button) add_file_dialog.findViewById(R.id.notif_button);
-                                            Button cancel_button = (Button) add_file_dialog.findViewById(R.id.cancel_button);
-                                            favoritetextview.setText("Would like to add selected file for ?");
-                                            equip_button.setText("Equipment");
-                                            notif_button.setText("Notification");
-                                            add_file_dialog.show();
+                                            Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
+                                            notif_etDocs_parcelable.setZobjid("");
+                                            notif_etDocs_parcelable.setZdoctype("Q");
+                                            notif_etDocs_parcelable.setZdoctypeitem("QH");
+                                            notif_etDocs_parcelable.setFilename(filee_name);
+                                            notif_etDocs_parcelable.setFiletype(mimeType);
+                                            notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
+                                            notif_etDocs_parcelable.setFilepath(path);
+                                            notif_etDocs_parcelable.setContent(encodedImage);
+                                            notif_etDocs_parcelable.setDocid("");
+                                            notif_etDocs_parcelable.setDoctype(fileExtension);
+                                            notif_etDocs_parcelable.setObjtype("BUS2038");
+                                            notif_etDocs_parcelable.setStatus("New");
+                                            attachments_list.add(notif_etDocs_parcelable);
+                                            Display_Attachments();
 
-                                            equip_button.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                                                    notif_etDocs_parcelable.setZobjid("");
-                                                    notif_etDocs_parcelable.setZdoctype("Q");
-                                                    notif_etDocs_parcelable.setZdoctypeitem("QH");
-                                                    notif_etDocs_parcelable.setFilename(filee_name);
-                                                    notif_etDocs_parcelable.setFiletype(mimeType);
-                                                    notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
-                                                    notif_etDocs_parcelable.setFilepath(path);
-                                                    notif_etDocs_parcelable.setContent(encodedImage);
-                                                    notif_etDocs_parcelable.setDocid("");
-                                                    notif_etDocs_parcelable.setDoctype(fileExtension);
-                                                    notif_etDocs_parcelable.setObjtype("EQUI");
-                                                    notif_etDocs_parcelable.setStatus("New");
-                                                    attachments_list.add(notif_etDocs_parcelable);
-                                                    add_file_dialog.dismiss();
-                                                    Display_Attachments();
-                                                }
-                                            });
-
-                                            notif_button.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                                                    notif_etDocs_parcelable.setZobjid("");
-                                                    notif_etDocs_parcelable.setZdoctype("Q");
-                                                    notif_etDocs_parcelable.setZdoctypeitem("QH");
-                                                    notif_etDocs_parcelable.setFilename(filee_name);
-                                                    notif_etDocs_parcelable.setFiletype(mimeType);
-                                                    notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
-                                                    notif_etDocs_parcelable.setFilepath(path);
-                                                    notif_etDocs_parcelable.setContent(encodedImage);
-                                                    notif_etDocs_parcelable.setDocid("");
-                                                    notif_etDocs_parcelable.setDoctype(fileExtension);
-                                                    notif_etDocs_parcelable.setObjtype("BUS2038");
-                                                    notif_etDocs_parcelable.setStatus("New");
-                                                    attachments_list.add(notif_etDocs_parcelable);
-                                                    add_file_dialog.dismiss();
-                                                    Display_Attachments();
-                                                }
-                                            });
-
-                                            cancel_button.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    add_file_dialog.dismiss();
-                                                    file_rename_dialog.dismiss();
-                                                }
-                                            });
                                         } else {
                                             error_dialog.show_error_dialog(getActivity(), "Please Enter Description");
                                         }
@@ -513,69 +562,23 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                                     }
                                     byteArray = bos.toByteArray();
                                     final String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                                    final Dialog add_file_dialog = new Dialog(getActivity());
-                                    add_file_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                                    add_file_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                    add_file_dialog.setCancelable(false);
-                                    add_file_dialog.setCanceledOnTouchOutside(false);
-                                    add_file_dialog.setContentView(R.layout.add_file_dialog);
-                                    final TextView favoritetextview = (TextView) add_file_dialog.findViewById(R.id.description_textview);
-                                    Button equip_button = (Button) add_file_dialog.findViewById(R.id.equip_button);
-                                    Button notif_button = (Button) add_file_dialog.findViewById(R.id.notif_button);
-                                    Button cancel_button = (Button) add_file_dialog.findViewById(R.id.cancel_button);
-                                    favoritetextview.setText("Would like to add selected file for ?");
-                                    equip_button.setText("Equipment");
-                                    notif_button.setText("Notification");
-                                    add_file_dialog.show();
-                                    equip_button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                                            notif_etDocs_parcelable.setZobjid("");
-                                            notif_etDocs_parcelable.setZdoctype("Q");
-                                            notif_etDocs_parcelable.setZdoctypeitem("QH");
-                                            notif_etDocs_parcelable.setFilename(filee_name);
-                                            notif_etDocs_parcelable.setFiletype(mimeType);
-                                            notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
-                                            notif_etDocs_parcelable.setFilepath(file_path);
-                                            notif_etDocs_parcelable.setContent(encodedImage);
-                                            notif_etDocs_parcelable.setDocid("");
-                                            notif_etDocs_parcelable.setDoctype(fileExtension);
-                                            notif_etDocs_parcelable.setObjtype("EQUI");
-                                            notif_etDocs_parcelable.setStatus("New");
-                                            attachments_list.add(notif_etDocs_parcelable);
-                                            add_file_dialog.dismiss();
-                                            Display_Attachments();
-                                        }
-                                    });
 
-                                    notif_button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                                            notif_etDocs_parcelable.setZobjid("");
-                                            notif_etDocs_parcelable.setZdoctype("Q");
-                                            notif_etDocs_parcelable.setZdoctypeitem("QH");
-                                            notif_etDocs_parcelable.setFilename(filee_name);
-                                            notif_etDocs_parcelable.setFiletype(mimeType);
-                                            notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
-                                            notif_etDocs_parcelable.setFilepath(file_path);
-                                            notif_etDocs_parcelable.setContent(encodedImage);
-                                            notif_etDocs_parcelable.setDocid("");
-                                            notif_etDocs_parcelable.setDoctype(fileExtension);
-                                            notif_etDocs_parcelable.setObjtype("BUS2038");
-                                            notif_etDocs_parcelable.setStatus("New");
-                                            attachments_list.add(notif_etDocs_parcelable);
-                                            add_file_dialog.dismiss();
-                                            Display_Attachments();
-                                        }
-                                    });
-                                    cancel_button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            add_file_dialog.dismiss();
-                                        }
-                                    });
+                                    Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
+                                    notif_etDocs_parcelable.setZobjid("");
+                                    notif_etDocs_parcelable.setZdoctype("Q");
+                                    notif_etDocs_parcelable.setZdoctypeitem("QH");
+                                    notif_etDocs_parcelable.setFilename(filee_name);
+                                    notif_etDocs_parcelable.setFiletype(mimeType);
+                                    notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
+                                    notif_etDocs_parcelable.setFilepath(file_path);
+                                    notif_etDocs_parcelable.setContent(encodedImage);
+                                    notif_etDocs_parcelable.setDocid("");
+                                    notif_etDocs_parcelable.setDoctype(fileExtension);
+                                    notif_etDocs_parcelable.setObjtype("BUS2038");
+                                    notif_etDocs_parcelable.setStatus("New");
+                                    attachments_list.add(notif_etDocs_parcelable);
+                                    Display_Attachments();
+
                                 } else {
                                     error_dialog.show_error_dialog(getActivity(), "Please select correct format file. (TXT, PDF, PNG, DOC, DOCX, JPG, XLS, XLSX, DXF, DWF, DWG)");
                                 }
@@ -609,69 +612,23 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                                     }
                                     byteArray = bos.toByteArray();
                                     final String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                                    final Dialog add_file_dialog = new Dialog(getActivity());
-                                    add_file_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                                    add_file_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                    add_file_dialog.setCancelable(false);
-                                    add_file_dialog.setCanceledOnTouchOutside(false);
-                                    add_file_dialog.setContentView(R.layout.add_file_dialog);
-                                    final TextView favoritetextview = (TextView) add_file_dialog.findViewById(R.id.description_textview);
-                                    Button equip_button = (Button) add_file_dialog.findViewById(R.id.equip_button);
-                                    Button notif_button = (Button) add_file_dialog.findViewById(R.id.notif_button);
-                                    Button cancel_button = (Button) add_file_dialog.findViewById(R.id.cancel_button);
-                                    favoritetextview.setText("Would like to add selected file for ?");
-                                    equip_button.setText("Equipment");
-                                    notif_button.setText("Notification");
-                                    add_file_dialog.show();
-                                    equip_button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                                            notif_etDocs_parcelable.setZobjid("");
-                                            notif_etDocs_parcelable.setZdoctype("Q");
-                                            notif_etDocs_parcelable.setZdoctypeitem("QH");
-                                            notif_etDocs_parcelable.setFilename(filee_name);
-                                            notif_etDocs_parcelable.setFiletype(mimeType);
-                                            notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
-                                            notif_etDocs_parcelable.setFilepath(path);
-                                            notif_etDocs_parcelable.setContent(path);
-                                            notif_etDocs_parcelable.setDocid("");
-                                            notif_etDocs_parcelable.setDoctype(fileExtension);
-                                            notif_etDocs_parcelable.setObjtype("EQUI");
-                                            notif_etDocs_parcelable.setStatus("New");
-                                            attachments_list.add(notif_etDocs_parcelable);
-                                            add_file_dialog.dismiss();
-                                            Display_Attachments();
-                                        }
-                                    });
 
-                                    notif_button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
-                                            notif_etDocs_parcelable.setZobjid("");
-                                            notif_etDocs_parcelable.setZdoctype("Q");
-                                            notif_etDocs_parcelable.setZdoctypeitem("QH");
-                                            notif_etDocs_parcelable.setFilename(filee_name);
-                                            notif_etDocs_parcelable.setFiletype(mimeType);
-                                            notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
-                                            notif_etDocs_parcelable.setFilepath(path);
-                                            notif_etDocs_parcelable.setContent(path);
-                                            notif_etDocs_parcelable.setDocid("");
-                                            notif_etDocs_parcelable.setDoctype(fileExtension);
-                                            notif_etDocs_parcelable.setObjtype("BUS2038");
-                                            notif_etDocs_parcelable.setStatus("New");
-                                            attachments_list.add(notif_etDocs_parcelable);
-                                            add_file_dialog.dismiss();
-                                            Display_Attachments();
-                                        }
-                                    });
-                                    cancel_button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            add_file_dialog.dismiss();
-                                        }
-                                    });
+                                    Notif_EtDocs_Parcelable notif_etDocs_parcelable = new Notif_EtDocs_Parcelable();
+                                    notif_etDocs_parcelable.setZobjid("");
+                                    notif_etDocs_parcelable.setZdoctype("Q");
+                                    notif_etDocs_parcelable.setZdoctypeitem("QH");
+                                    notif_etDocs_parcelable.setFilename(filee_name);
+                                    notif_etDocs_parcelable.setFiletype(mimeType);
+                                    notif_etDocs_parcelable.setFsize(String.valueOf(file_size));
+                                    notif_etDocs_parcelable.setFilepath(path);
+                                    notif_etDocs_parcelable.setContent(path);
+                                    notif_etDocs_parcelable.setDocid("");
+                                    notif_etDocs_parcelable.setDoctype(fileExtension);
+                                    notif_etDocs_parcelable.setObjtype("BUS2038");
+                                    notif_etDocs_parcelable.setStatus("New");
+                                    attachments_list.add(notif_etDocs_parcelable);
+                                    Display_Attachments();
+
                                 } else {
                                     error_dialog.show_error_dialog(getActivity(), "Please select correct format file. (TXT, PDF, PNG, DOC, DOCX, JPG, XLS, XLSX, DXF, DWF, DWG)");
                                 }
@@ -761,7 +718,7 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                 holder.checkbox.setVisibility(View.VISIBLE);
                 holder.file_size_textview.setVisibility(View.VISIBLE);
             }
-            holder.content_textview.setText(nep.getContentX());
+            holder.content_textview.setText(nep.getContent());
             String object_type = nep.getObjtype();
             if (object_type.equalsIgnoreCase("EQUI")) {
                 holder.file_objtype_textview.setText("Equipment");
@@ -813,6 +770,11 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
                 int productImageId = getResources().getIdentifier("ic_txt_icon", "drawable", getActivity().getPackageName());
                 Picasso.with(getContext()).load(productImageId).error(R.drawable.ic_txt_icon).placeholder(R.drawable.ic_loading_icon1).resize(60, 60).centerCrop().into(holder.pic_imageview);
             }
+            else
+            {
+                int productImageId = getResources().getIdentifier("ic_jpg_icon", "drawable", getActivity().getPackageName());
+                Picasso.with(getContext()).load(productImageId).error(R.drawable.ic_jpg_icon).placeholder(R.drawable.ic_loading_icon1).resize(60, 60).centerCrop().into(holder.pic_imageview);
+            }
 
             if (holder.status_textview.getText().toString().equalsIgnoreCase("old")) {
                 holder.download_imageview.setVisibility(View.VISIBLE);
@@ -823,48 +785,102 @@ public class Notifications_Change_Attachments_Fragment extends Fragment {
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (holder.status_textview.getText().toString().equalsIgnoreCase("old")) {
-                        cd = new ConnectionDetector(getActivity());
-                        isInternetPresent = cd.isConnectingToInternet();
-                        if (isInternetPresent) {
-                            final Dialog decision_dialog = new Dialog(getActivity());
-                            decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                            decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            decision_dialog.setCancelable(false);
-                            decision_dialog.setCanceledOnTouchOutside(false);
-                            decision_dialog.setContentView(R.layout.decision_dialog);
-                            ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
-                            TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
-                            Glide.with(getActivity()).load(R.drawable.error_dialog_gif).into(imageview);
-                            Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
-                            Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
-                            description_textview.setText("Do you want to Download the selected attatchment?");
-                            decision_dialog.show();
-                            cancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    decision_dialog.dismiss();
+                    if (holder.status_textview.getText().toString().equalsIgnoreCase("old"))
+                    {
+                        final Dialog decision_dialog = new Dialog(getActivity());
+                        decision_dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        decision_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        decision_dialog.setCancelable(false);
+                        decision_dialog.setCanceledOnTouchOutside(false);
+                        decision_dialog.setContentView(R.layout.decision_dialog);
+                        ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
+                        TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
+                        Glide.with(getActivity()).load(R.drawable.error_dialog_gif).into(imageview);
+                        Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
+                        Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
+                        description_textview.setText("Do you want to Download the selected attatchment?");
+                        decision_dialog.show();
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                decision_dialog.dismiss();
+                            }
+                        });
+                        confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                decision_dialog.dismiss();
+                                String contentX = nep.getContent();
+                                if (contentX != null && !contentX.equals(""))
+                                {
+                                    try
+                                    {
+                                        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "FTekPro_SESB");
+                                        if (!file.exists())
+                                        {
+                                            file.mkdirs();
+                                        }
+                                        File Doc = new File(file.getAbsolutePath(), nep.getFilename());
+                                        if (!Doc.exists())
+                                        {
+                                            Doc.createNewFile();
+                                        }
+                                        String mimeType = "";
+                                        if (nep.getFiletype().equalsIgnoreCase("DOC")) {
+                                            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("docx");
+                                        }
+                                        else if (nep.getFiletype().equalsIgnoreCase("XLX")) {
+                                            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("xlsx");
+                                        }
+                                        else {
+                                            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(nep.getFiletype());
+                                        }
+                                        FileOutputStream fos = new FileOutputStream(Doc);
+                                        fos.write(Base64.decode(contentX, Base64.DEFAULT));
+                                        fos.flush();
+                                        fos.close();
+                                        if (nep.getFiletype().equals("png") || nep.getFiletype().equals("jpg") || nep.getFiletype().equals("jpeg"))
+                                        {
+                                            Uri uri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".fileprovider", Doc.getAbsoluteFile());
+                                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                                            intent.setDataAndType(uri, mimeType);
+                                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            try
+                                            {
+                                                startActivity(intent);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Toast.makeText(getActivity(),getString(R.string.file_not_supported),Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Uri uri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".fileprovider", Doc.getAbsoluteFile());
+                                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                                            intent.setDataAndType(uri, mimeType);
+                                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            try
+                                            {
+                                                startActivity(intent);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Toast.makeText(getActivity(),getString(R.string.file_not_supported),Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Log.v("kiran_aa",e.getMessage()+"...");
+                                    }
                                 }
-                            });
-                            confirm.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    decision_dialog.dismiss();
-                                    Intent viewattachments_intent = new Intent(getActivity(), Notifications_View_Attachements_Activity.class);
-                                    viewattachments_intent.putExtra("url", holder.content_textview.getText().toString());
-                                    viewattachments_intent.putExtra("filename", holder.filename_textview.getText().toString());
-                                    viewattachments_intent.putExtra("filetype", file_type);
-                                    viewattachments_intent.putExtra("doc_id", nep.getDocid());
-                                    viewattachments_intent.putExtra("objtype", nep.getObjtype());
-                                    startActivity(viewattachments_intent);
-                                }
-                            });
-                            decision_dialog.show();
-                        } else {
-                            network_connection_dialog.show_network_connection_dialog(getActivity());
-                        }
-                    } else {
-
+                            }
+                        });
+                        decision_dialog.show();
+                    }
+                    else
+                    {
                     }
                 }
             });

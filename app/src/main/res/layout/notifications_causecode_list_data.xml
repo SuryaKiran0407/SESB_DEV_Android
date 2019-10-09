@@ -31,6 +31,66 @@
 							android:layout_width="0dp"
 							android:layout_height="fill_parent"
 							android:layout_weight="0.5"
+							android:text="Object Part"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.1"
+							android:text="@string/colon"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:id="@+id/objectpart_textview"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="left|top"
+							android:textColor="@color/black"
+							android:textSize="13sp" />
+					</LinearLayout>
+
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.5"
+							android:text="Part Code"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.1"
+							android:text="@string/colon"
+							android:textColor="@color/light_grey2"
+							android:textSize="13sp"
+							android:gravity="left|top" />
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:id="@+id/objectpartcode_textview"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="left|top"
+							android:textColor="@color/black"
+							android:textSize="13sp" />
+					</LinearLayout>
+
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
+						<com.enstrapp.fieldtekpro.customfont.Font_TextView
+							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+							android:layout_weight="0.5"
 							android:text="@string/event1"
 							android:textColor="@color/light_grey2"
 							android:textSize="13sp"

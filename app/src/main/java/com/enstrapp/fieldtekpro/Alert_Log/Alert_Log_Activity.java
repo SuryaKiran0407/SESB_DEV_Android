@@ -28,7 +28,7 @@ import com.enstrapp.fieldtekpro.CustomInfo.Model_CustomInfo;
 import com.enstrapp.fieldtekpro.Initialload.Orders;
 import com.enstrapp.fieldtekpro.Initialload.Token;
 import com.enstrapp.fieldtekpro.Parcelable_Objects.NotifOrdrStatusPrcbl;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.Utilities.BOM_Reservation;
 import com.enstrapp.fieldtekpro.Utilities.Material_Availability_Check;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
@@ -2619,7 +2619,6 @@ public class Alert_Log_Activity extends AppCompatActivity implements View.OnClic
                 decision_dialog.setContentView(R.layout.decision_dialog);
                 ImageView imageview = (ImageView) decision_dialog.findViewById(R.id.imageView1);
                 TextView description_textview = (TextView) decision_dialog.findViewById(R.id.description_textview);
-                Glide.with(Alert_Log_Activity.this).load(R.drawable.error_dialog_gif).into(imageview);
                 Button confirm = (Button) decision_dialog.findViewById(R.id.yes_button);
                 Button cancel = (Button) decision_dialog.findViewById(R.id.no_button);
                 description_textview.setText(getString(R.string.sync_data));

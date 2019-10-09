@@ -12,7 +12,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 
 import java.util.HashMap;
@@ -162,14 +162,19 @@ public class BOM {
                 App_db.execSQL(CREATE_TABLE_BOM_RESERVE_HEADER);
                 /* BOM_RESERVE_HEADER Table and Fields Names */
 
-            } else {
-                if (bom_id != null && !bom_id.equals("")) {
+            }
+            else
+            {
+                if (bom_id != null && !bom_id.equals(""))
+                {
                     App_db.execSQL("delete from EtBomHeader where Bom = ?", new String[]{bom_id});
                     App_db.execSQL("delete from EtBomItem where Bom = ?", new String[]{bom_id});
-                } else {
-                    App_db.execSQL("delete from EtBomHeader");
+                }
+                else
+                {
+                    /*App_db.execSQL("delete from EtBomHeader");
                     App_db.execSQL("delete from EtBomItem");
-                    App_db.execSQL("delete from GET_STOCK_DATA");
+                    App_db.execSQL("delete from GET_STOCK_DATA");*/
                 }
             }
             /* Initializing Shared Preferences */
@@ -224,9 +229,16 @@ public class BOM {
             int response_status_code = response.code();
             Log.v("kiran_BOM_code", response_status_code + "...");
             if (response_status_code == 200) {
-                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0) {
+                if (response.body().getD().getResults() != null && response.body().getD().getResults().size() > 0)
+                {
+
+                    App_db.execSQL("delete from EtBomHeader");
+                    App_db.execSQL("delete from EtBomItem");
+                    App_db.execSQL("delete from GET_STOCK_DATA");
+
                     App_db.beginTransaction();
-                    try {
+                    try
+                    {
                         /*EtBomHeader*/
                         if (response.body().getD().getResults().get(0).getEtBomHeader() != null) {
                             if (response.body().getD().getResults().get(0).getEtBomHeader().getResults() != null

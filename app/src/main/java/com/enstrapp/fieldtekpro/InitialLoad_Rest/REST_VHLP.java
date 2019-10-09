@@ -11,7 +11,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
@@ -39,6 +39,14 @@ public class REST_VHLP
     private static Check_Empty c_e = new Check_Empty();
 
 
+    private static final String TABLE_ETKSTAR = "ETKSTAR";
+    private static final String KEY_ETKSTAR_ID = "id";
+    private static final String KEY_ETKSTAR_KOKRS = "KOKRS";
+    private static final String KEY_ETKSTAR_WERKS= "WERKS";
+    private static final String KEY_ETKSTAR_KSTAR = "KSTAR";
+    private static final String KEY_ETKSTAR_KOSTL = "KOSTL";
+    private static final String KEY_ETKSTAR_LTEXT = "LTEXT";
+
 
     private static final String TABLE_EtGlacc = "EtGlacc";
     private static final String KEY_EtGlacc_ID = "id";
@@ -59,6 +67,11 @@ public class REST_VHLP
     private static final String KEY_EtValType_ID = "id";
     private static final String KEY_EtValType_Bukrs = "Batch";
 
+
+    private static final String TABLE_ET_POSTP = "ET_POSTP";
+    private static final String KEY_ET_POSTP_ID = "id";
+    private static final String KEY_ET_POSTP_POSTP = "POSTP";
+    private static final String KEY_ET_POSTP_PTEXT = "PTEXT";
 
 
     /* EtUdecCodes Table and Fields Names */
@@ -331,6 +344,18 @@ public class REST_VHLP
     private static final String KEY_EtIlart_Ilart = "Ilart";
     private static final String KEY_EtIlart_Ilatx = "Ilatx";
 
+
+
+    private static final String TABLE_ETLSTAR = "ETLSTAR";
+    private static final String KEY_ETLSTAR_ID = "id";
+    private static final String KEY_EtIlart_KOKRS = "KOKRS";
+    private static final String KEY_EtIlart_KOSTL = "KOSTL";
+    private static final String KEY_EtIlart_LATYP = "LATYP";
+    private static final String KEY_EtIlart_LSTAR = "LSTAR";
+    private static final String KEY_EtIlart_KTEXT = "KTEXT";
+
+
+
     private static long startTime = 0;
 
 
@@ -407,6 +432,35 @@ public class REST_VHLP
                 App_db.execSQL(CREATE_TABLE_EtUsers);
 
 
+
+                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_ETKSTAR);
+                String CREATE_TABLE_ETKSTAR = "CREATE TABLE IF NOT EXISTS "+ TABLE_ETKSTAR+ ""
+                        + "( "
+                        + KEY_ETKSTAR_ID+ " INTEGER PRIMARY KEY,"
+                        + KEY_ETKSTAR_KOKRS+ " TEXT,"
+                        + KEY_ETKSTAR_WERKS + " TEXT,"
+                        + KEY_ETKSTAR_KSTAR + " TEXT,"
+                        + KEY_ETKSTAR_KOSTL + " TEXT,"
+                        + KEY_ETKSTAR_LTEXT + " TEXT"
+                        + ")";
+                App_db.execSQL(CREATE_TABLE_ETKSTAR);
+
+
+
+                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_ETLSTAR);
+                String CREATE_TABLE_ETLSTAR = "CREATE TABLE IF NOT EXISTS "+ TABLE_ETLSTAR+ ""
+                        + "( "
+                        + KEY_ETLSTAR_ID+ " INTEGER PRIMARY KEY,"
+                        + KEY_EtIlart_KOKRS+ " TEXT,"
+                        + KEY_EtIlart_KOSTL + " TEXT,"
+                        + KEY_EtIlart_LATYP + " TEXT,"
+                        + KEY_EtIlart_LSTAR + " TEXT,"
+                        + KEY_EtIlart_KTEXT + " TEXT"
+                        + ")";
+                App_db.execSQL(CREATE_TABLE_ETLSTAR);
+
+
+
                 /* EtGlacc Table and Fields Names */
                 App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EtGlacc);
                 String CREATE_GET_TABLE_EtGlacc = "CREATE TABLE IF NOT EXISTS "+ TABLE_EtGlacc+ ""
@@ -446,6 +500,18 @@ public class REST_VHLP
                         + ")";
                 App_db.execSQL(CREATE_GET_TABLE_GET_EtTq80);
                 /* EtTq80 Table and Fields Names */
+
+
+
+                App_db.execSQL("DROP TABLE IF EXISTS "+ TABLE_ET_POSTP);
+                String CREATE_GET_TABLE_ET_POSTP = "CREATE TABLE IF NOT EXISTS "+ TABLE_ET_POSTP+ ""
+                        + "( "
+                        + KEY_ET_POSTP_ID+ " INTEGER PRIMARY KEY,"
+                        + KEY_ET_POSTP_POSTP+ " TEXT,"
+                        + KEY_ET_POSTP_PTEXT + " TEXT"
+                        + ")";
+                App_db.execSQL(CREATE_GET_TABLE_ET_POSTP);
+
 
 
                 /* GET_EtConfReason Table and Fields Names */
@@ -807,7 +873,7 @@ public class REST_VHLP
             modelLoginDeviceRest.setUDID(device_uuid);
 
             Rest_Model_Login modelLoginRest = new Rest_Model_Login();
-            modelLoginRest.setIv_transmit_type("LOAD");
+            modelLoginRest.setIv_transmit_type(transmit_type);
             modelLoginRest.setIv_user(username);
             modelLoginRest.setIs_device(modelLoginDeviceRest);
 
@@ -885,6 +951,32 @@ public class REST_VHLP
 
 
 
+                    /*Reading and Inserting Data into Database Table for ET_KSTAR*/
+                    try
+                    {
+                        List<REST_VHLP_SER.ET_KSTAR> ETKSTAR_results = response.body().getETKSTAR();
+                        if (ETKSTAR_results != null && ETKSTAR_results.size() > 0)
+                        {
+                            String EtUsers_sql = "Insert into ETKSTAR (KOKRS, WERKS, KSTAR, KOSTL, LTEXT) values(?,?,?,?,?);";
+                            SQLiteStatement ETKSTAR_statement = App_db.compileStatement(EtUsers_sql);
+                            ETKSTAR_statement.clearBindings();
+                            for (REST_VHLP_SER.ET_KSTAR etKstar : ETKSTAR_results)
+                            {
+                                ETKSTAR_statement.bindString(1, c_e.check_empty(etKstar.getKOKRS()));
+                                ETKSTAR_statement.bindString(2, c_e.check_empty(etKstar.getWERKS()));
+                                ETKSTAR_statement.bindString(3, c_e.check_empty(etKstar.getKSTAR()));
+                                ETKSTAR_statement.bindString(4, c_e.check_empty(etKstar.getKOSTL()));
+                                ETKSTAR_statement.bindString(5, c_e.check_empty(etKstar.getLTEXT()));
+                                ETKSTAR_statement.execute();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    /*Reading and Inserting Data into Database Table for ET_KSTAR*/
+
+
 
                     /*Reading and Inserting Data into Database Table for ET_USERS*/
                     try
@@ -914,6 +1006,33 @@ public class REST_VHLP
 
 
 
+                    /*Reading and Inserting Data into Database Table for ET_LSTAR*/
+                    try
+                    {
+                        List<REST_VHLP_SER.ETLSTAR> ETLSTAR_results = response.body().getETLSTAR();
+                        if (ETLSTAR_results != null && ETLSTAR_results.size() > 0)
+                        {
+                            String ETLSTAR_sql = "Insert into ETLSTAR (KOKRS, KOSTL, LATYP, LSTAR, KTEXT) values(?,?,?,?,?);";
+                            SQLiteStatement ETLSTAR_statement = App_db.compileStatement(ETLSTAR_sql);
+                            ETLSTAR_statement.clearBindings();
+                            for (REST_VHLP_SER.ETLSTAR etUsersResult : ETLSTAR_results)
+                            {
+                                ETLSTAR_statement.bindString(1, c_e.check_empty(etUsersResult.getKOKRS()));
+                                ETLSTAR_statement.bindString(2, c_e.check_empty(etUsersResult.getKOSTL()));
+                                ETLSTAR_statement.bindString(3, c_e.check_empty(etUsersResult.getLATYP()));
+                                ETLSTAR_statement.bindString(4, c_e.check_empty(etUsersResult.getLSTAR()));
+                                ETLSTAR_statement.bindString(5, c_e.check_empty(etUsersResult.getKTEXT()));
+                                ETLSTAR_statement.execute();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    /*Reading and Inserting Data into Database Table for ET_LSTAR*/
+
+
+
                     /*Reading and Inserting Data into Database Table for EtTq80*/
                     try
                     {
@@ -937,6 +1056,29 @@ public class REST_VHLP
                     /*Reading and Inserting Data into Database Table for EtTq80*/
 
 
+
+
+                    /*Reading and Inserting Data into Database Table for ET_POSTP*/
+                    try
+                    {
+                        List<REST_VHLP_SER.ETPOSTP> ETPOSTP_results = response.body().getEtpostps();
+                        if (ETPOSTP_results != null && ETPOSTP_results.size() > 0)
+                        {
+                            String ETPOSTP_sql = "Insert into ET_POSTP (POSTP, PTEXT) values(?,?);";
+                            SQLiteStatement ETPOSTP_statement = App_db.compileStatement(ETPOSTP_sql);
+                            ETPOSTP_statement.clearBindings();
+                            for (REST_VHLP_SER.ETPOSTP etpostp : ETPOSTP_results)
+                            {
+                                ETPOSTP_statement.bindString(1, c_e.check_empty(etpostp.getPOSTP()));
+                                ETPOSTP_statement.bindString(2, c_e.check_empty(etpostp.getPTEXT()));
+                                ETPOSTP_statement.execute();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                    /*Reading and Inserting Data into Database Table for ET_POSTP*/
 
 
 
@@ -1522,20 +1664,20 @@ public class REST_VHLP
 
 
                                         /*Reading and Inserting Data into Database Table for ActCodes*/
-                                        /*List<VHLP_SER.ActCodes_Result> actCodes_results = etNotifCodes_result.getActCodes().getResults();
-                                        if (actCodes_results != null && actCodes_results.size() > 0)
+                                        List<REST_VHLP_SER.OBJECTCODE> ActCODES_results = etNotifCodes_result.getActCODES();
+                                        if (ActCODES_results != null && ActCODES_results.size() > 0)
                                         {
-                                            for (VHLP_SER.ActCodes_Result codesResult : actCodes_results)
+                                            for (REST_VHLP_SER.OBJECTCODE codesResult : ActCODES_results)
                                             {
-                                                String Codegruppe = codesResult.getCodegruppe();
-                                                String Kurztext = codesResult.getKurztext();
-                                                List<VHLP_SER.Codes_Result> itemCodesResults = codesResult.getACall().getResults();
+                                                String Codegruppe = codesResult.getCODEGRUPPE();
+                                                String Kurztext = codesResult.getKURZTEXT();
+                                                List<REST_VHLP_SER.CODE__> itemCodesResults = codesResult.getCODES();
                                                 if (itemCodesResults != null && itemCodesResults.size() > 0)
                                                 {
-                                                    for (VHLP_SER.Codes_Result iCodes_result : itemCodesResults)
+                                                    for (REST_VHLP_SER.CODE__ iCodes_result : itemCodesResults)
                                                     {
-                                                        String Code = iCodes_result.getCode();
-                                                        String Kurztext1 = iCodes_result.getKurztext1();
+                                                        String Code = iCodes_result.getCODE();
+                                                        String Kurztext1 = iCodes_result.getKURZTEXT1();
                                                         ActCodes_statement.bindString(1, NotifType);
                                                         ActCodes_statement.bindString(2, Rbnr);
                                                         ActCodes_statement.bindString(3, Codegruppe);
@@ -1546,26 +1688,26 @@ public class REST_VHLP
                                                     }
                                                 }
                                             }
-                                        }*/
+                                        }
                                         /*Reading and Inserting Data into Database Table for ActCodes*/
 
 
 
                                         /*Reading and Inserting Data into Database Table for TaskCodes*/
-                                        /*List<VHLP_SER.TaskCodes_Result> taskCodes_results = etNotifCodes_result.getTaskCodes().getResults();
-                                        if (taskCodes_results != null && taskCodes_results.size() > 0)
+                                        List<REST_VHLP_SER.OBJECTCODE> TaskCodes_results = etNotifCodes_result.getTaskCODES();
+                                        if (TaskCodes_results != null && TaskCodes_results.size() > 0)
                                         {
-                                            for (VHLP_SER.TaskCodes_Result codesResult : taskCodes_results)
+                                            for (REST_VHLP_SER.OBJECTCODE codesResult : TaskCodes_results)
                                             {
-                                                String Codegruppe = codesResult.getCodegruppe();
-                                                String Kurztext = codesResult.getKurztext();
-                                                List<VHLP_SER.Codes_Result> itemCodesResults = codesResult.getACall().getResults();
+                                                String Codegruppe = codesResult.getCODEGRUPPE();
+                                                String Kurztext = codesResult.getKURZTEXT();
+                                                List<REST_VHLP_SER.CODE__> itemCodesResults = codesResult.getCODES();
                                                 if (itemCodesResults != null && itemCodesResults.size() > 0)
                                                 {
-                                                    for (VHLP_SER.Codes_Result iCodes_result : itemCodesResults)
+                                                    for (REST_VHLP_SER.CODE__ iCodes_result : itemCodesResults)
                                                     {
-                                                        String Code = iCodes_result.getCode();
-                                                        String Kurztext1 = iCodes_result.getKurztext1();
+                                                        String Code = iCodes_result.getCODE();
+                                                        String Kurztext1 = iCodes_result.getKURZTEXT1();
                                                         TasktCodes_statement.bindString(1, Codegruppe);
                                                         TasktCodes_statement.bindString(2, Kurztext);
                                                         TasktCodes_statement.bindString(3, Code);
@@ -1574,10 +1716,8 @@ public class REST_VHLP
                                                     }
                                                 }
                                             }
-                                        }*/
+                                        }
                                         /*Reading and Inserting Data into Database Table for TaskCodes*/
-
-
                             }
                         }
                     }
@@ -1669,39 +1809,31 @@ public class REST_VHLP
 
 
                     /*Reading and Inserting Data into Database Table for EtWbs*/
-                    /*try
-                    {
-                        List<REST_VHLP_SER.ETREVNR> ETREVNR_results = response.body().getETREVNR();
-                        if (ETREVNR_results != null && ETREVNR_results.size() > 0)
-                        {
 
-                        }
-                        VHLP_SER.EtWbs EtWbs = response.body().getD().getResults().get(0).getEtWbs();
-                        if (EtWbs != null)
+                    try
+                    {
+                        List<REST_VHLP_SER.ETWBS> ETWBS_results = response.body().getEtwbs();
+                        if (ETWBS_results != null && ETWBS_results.size() > 0)
                         {
-                            List<VHLP_SER.EtWbs_Result> etWbs_results = response.body().getD().getResults().get(0).getEtWbs().getResults();
-                            if (etWbs_results != null && etWbs_results.size() > 0)
+                            String ETWBS_sql = "Insert into EtWbs (Iwerk, Gsber, Posid, Poski, Post1, Pspnr, Pspid) values(?,?,?,?,?,?,?);";
+                            SQLiteStatement ETWBS_statement = App_db.compileStatement(ETWBS_sql);
+                            ETWBS_statement.clearBindings();
+                            for (REST_VHLP_SER.ETWBS result : ETWBS_results)
                             {
-                                String EtWbs_sql = "Insert into EtWbs (Iwerk, Gsber, Posid, Poski, Post1, Pspnr, Pspid) values(?,?,?,?,?,?,?);";
-                                SQLiteStatement EtWbs_statement = App_db.compileStatement(EtWbs_sql);
-                                EtWbs_statement.clearBindings();
-                                for (VHLP_SER.EtWbs_Result result : etWbs_results)
-                                {
-                                    EtWbs_statement.bindString(1, c_e.check_empty(result.getIwerk()));
-                                    EtWbs_statement.bindString(2, c_e.check_empty(result.getGsber()));
-                                    EtWbs_statement.bindString(3, c_e.check_empty(result.getPosid()));
-                                    EtWbs_statement.bindString(4, c_e.check_empty(result.getPoski()));
-                                    EtWbs_statement.bindString(5, c_e.check_empty(result.getPost1()));
-                                    EtWbs_statement.bindString(6, c_e.check_empty(result.getPspnr()));
-                                    EtWbs_statement.bindString(7, c_e.check_empty(result.getPspid()));
-                                    EtWbs_statement.execute();
-                                }
+                                ETWBS_statement.bindString(1, c_e.check_empty(result.getIwerk()));
+                                ETWBS_statement.bindString(2, c_e.check_empty(result.getGsber()));
+                                ETWBS_statement.bindString(3, c_e.check_empty(result.getPosid()));
+                                ETWBS_statement.bindString(4, c_e.check_empty(result.getPoski()));
+                                ETWBS_statement.bindString(5, c_e.check_empty(result.getPost1()));
+                                ETWBS_statement.bindString(6, c_e.check_empty(result.getPspnr()));
+                                ETWBS_statement.bindString(7, c_e.check_empty(result.getPspid()));
+                                ETWBS_statement.execute();
                             }
                         }
                     }
                     catch (Exception e)
                     {
-                    }*/
+                    }
                     /*Reading and Inserting Data into Database Table for EtWbs*/
 
 

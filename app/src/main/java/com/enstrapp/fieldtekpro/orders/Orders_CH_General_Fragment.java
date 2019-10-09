@@ -26,7 +26,7 @@ import com.enstrapp.fieldtekpro.CustomInfo.CustomInfo_Activity;
 import com.enstrapp.fieldtekpro.DateTime.DatePickerDialog1;
 import com.enstrapp.fieldtekpro.PersonResponsible.Personresponsible_Activity;
 import com.enstrapp.fieldtekpro.PlannerGroup.PlannerGroup_Activity;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.WorkCenter.WorkCenter_Type_Activity;
 import com.enstrapp.fieldtekpro.equipment.Equipment_Activity;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
@@ -50,7 +50,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Orders_CH_General_Fragment extends Fragment implements View.OnClickListener {
 
-    TextInputEditText activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet,
+    TextInputEditText reservation_edittext, activity_type_edittext, ordrTyp_tiet, ordrLngTxt_tiet, funcLocId_tiet,
             funcLocName_tiet, equipId_tiet, equipName_tiet, wrkCntr_tiet, respCostCntr_tiet,
             priority_tiet, plannerGroup_tiet, personResp_tiet, basicStDt_tiet, basicEnDt_tiet,
             sysCond_tiet, status_tiet, revision_tiet, wbs_tiet,iwerk_tiet, plant_tiet;;
@@ -59,7 +59,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
             basicEdDt_iv, sysCond_iv, wbs_iv, revision_iv, longtext_imageview;
     TextView notifNum_tv;
     LinearLayout equipId_ll, notifNum_ll, ordrTyp_ll, wbs_ll, revision_ll;
-    TextInputLayout equipName_til, status_til;
+    TextInputLayout reservation_layout, equipName_til, status_til;
     String plant_id = "",iwerk = "";
     private static SQLiteDatabase App_db;
     private static String DATABASE_NAME = "";
@@ -143,6 +143,9 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         activity_type_edittext = rootView.findViewById(R.id.activity_type_edittext);
         iwerk_tiet = (TextInputEditText) rootView.findViewById(R.id.iwerk_tiet);
         plant_tiet = (TextInputEditText) rootView.findViewById(R.id.plant_tiet);
+        reservation_edittext = (TextInputEditText) rootView.findViewById(R.id.reservation_edittext);
+        reservation_layout = (TextInputLayout) rootView.findViewById(R.id.reservation_layout);
+        reservation_layout.setVisibility(View.VISIBLE);
 
         ma = (Orders_Change_Activity) this.getActivity();
         ordrTyp_tiet.setEnabled(false);
@@ -168,33 +171,38 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
         selected_custom_info_arraylist.clear();
 
-        if (ma.ohp != null) {
+        if (ma.ohp != null)
+        {
             ordrTyp_tiet.setText(getResources().getString(R.string.hypen_text, ma.ohp.getOrdrTypId(), ma.ohp.getOrdrTypName()));
             ordrLngTxt_tiet.setText(ma.ohp.getOrdrShrtTxt());
-            if (ma.ohp.getOrdrTypId().equals("PM08")) {
+            if (ma.ohp.getOrdrTypId().equals("PM08"))
+            {
                 equipId_ll.setVisibility(View.GONE);
                 equipName_til.setVisibility(View.GONE);
-                wbs_ll.setVisibility(View.GONE);
+                wbs_ll.setVisibility(View.VISIBLE);
                 revision_ll.setVisibility(View.GONE);
-            } else if (ma.ohp.getOrdrTypId().equals("PM06")) {
+            }
+            else if (ma.ohp.getOrdrTypId().equals("PM06"))
+            {
                 equipId_ll.setVisibility(View.VISIBLE);
                 equipName_til.setVisibility(View.VISIBLE);
                 wbs_ll.setVisibility(View.VISIBLE);
                 revision_ll.setVisibility(View.VISIBLE);
                 equipId_tiet.setText(ma.ohp.getEquipNum());
                 equipName_tiet.setText(ma.ohp.getEquipName());
-                wbs_tiet.setText(ma.ohp.getPosid());
                 revision_tiet.setText(ma.ohp.getRevnr());
-
-            } else {
+            }
+            else
+            {
                 equipId_ll.setVisibility(View.VISIBLE);
                 equipName_til.setVisibility(View.VISIBLE);
                 equipId_tiet.setText(ma.ohp.getEquipNum());
                 equipName_tiet.setText(ma.ohp.getEquipName());
-                wbs_ll.setVisibility(View.GONE);
+                wbs_ll.setVisibility(View.VISIBLE);
                 revision_ll.setVisibility(View.GONE);
             }
-            if (ma.ohp.getNotifId() != null && !ma.ohp.getNotifId().equals("")) {
+            if (ma.ohp.getNotifId() != null && !ma.ohp.getNotifId().equals(""))
+            {
                 SpannableString content = new SpannableString(ma.ohp.getNotifId());
                 content.setSpan(new UnderlineSpan(), 0, ma.ohp.getNotifId().length(), 0);
                 notifNum_tv.setText(content);
@@ -229,7 +237,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                     }
                 });
             }
-            status_til.setVisibility(View.VISIBLE);
+            status_til.setVisibility(View.GONE);
             if (ma.ohp.getStatusALL() != null && !ma.ohp.getStatusALL().equals(""))
                 status_tiet.setText(ma.ohp.getStatusALL());
             funcLocId_tiet.setText(ma.ohp.getFuncLocId());
@@ -256,6 +264,29 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
 
             if (iwerk != null && !iwerk.equals(""))
                 iwerk_tiet.setText(iwerk);
+
+
+            try
+            {
+                Cursor cursor = App_db.rawQuery("select * from EtOrderComponents where Aufnr = ?", new String[]{ma.ohp.getOrdrId()});
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    if (cursor.moveToFirst())
+                    {
+                        do
+                        {
+                            reservation_edittext.setText(cursor.getString(5));
+                        }
+                        while (cursor.moveToNext());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+
+
+            wbs_tiet.setText(ma.ohp.getPosid());
         }
 
         ordrLngTxt_tiet.addTextChangedListener(new TextWatcher() {
@@ -511,7 +542,7 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
                 if (!equipName_tiet.getText().toString().equals("") ||
                         (!funcLocId_tiet.getText().toString().equals(""))) {
                     Intent WBSIntent = new Intent(getActivity(), WBS_Element_Activity.class);
-                    WBSIntent.putExtra("iwerk", ma.ohp.getIwerk());
+                    WBSIntent.putExtra("iwerk", ma.ohp.getPlant());
                     startActivityForResult(WBSIntent, WBS_ELE);
                 } else {
                     error_dialog.show_error_dialog(getActivity(),
@@ -538,24 +569,6 @@ public class Orders_CH_General_Fragment extends Fragment implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-
-            case (ORDR_TYP):
-                if (resultCode == RESULT_OK) {
-                    ma.ohp.setOrdrTypId(data.getStringExtra("ordrTypId"));
-                    ma.ohp.setOrdrTypName(data.getStringExtra("ordrTypTxt"));
-                    ordrTyp_tiet
-                            .setText(getResources().getString(R.string.hypen_text,
-                                    data.getStringExtra("ordrTypId"),
-                                    data.getStringExtra("ordrTypTxt")));
-                    if (data.getStringExtra("ordrTypId").equals("PM08")) {
-                        equipId_ll.setVisibility(View.GONE);
-                        equipName_til.setVisibility(View.GONE);
-                    } else {
-                        equipId_ll.setVisibility(View.VISIBLE);
-                        equipName_til.setVisibility(View.VISIBLE);
-                    }
-                }
-                break;
 
             case (FUNC_LOC):
                 if (resultCode == RESULT_OK) {

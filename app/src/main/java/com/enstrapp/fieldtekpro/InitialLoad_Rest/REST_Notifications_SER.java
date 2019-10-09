@@ -41,12 +41,33 @@ public class REST_Notifications_SER
     @SerializedName("ET_DOCS")
     @Expose
     private List<ETDOC> eTDOCS = null;
-    /*@SerializedName("ET_NOTIF_ACTVS")
+    @SerializedName("ET_NOTIF_ACTVS")
     @Expose
     private List<ETNOTIFACTVS> etnotifactvs = null;
     @SerializedName("ET_NOTIF_TASKS")
     @Expose
-    private List<ET_NOTIF_TASKS> et_notif_tasks = null;*/
+    private List<ET_NOTIF_TASKS> et_notif_tasks = null;
+    /*@SerializedName("ET_NOTIF_ACTVS")
+    @Expose
+    private List<ETNOTIFACTVS> etnotifactvs = null;
+    */
+
+
+    public List<ET_NOTIF_TASKS> getEt_notif_tasks() {
+        return et_notif_tasks;
+    }
+
+    public void setEt_notif_tasks(List<ET_NOTIF_TASKS> et_notif_tasks) {
+        this.et_notif_tasks = et_notif_tasks;
+    }
+
+    public List<ETNOTIFACTVS> getEtnotifactvs() {
+        return etnotifactvs;
+    }
+
+    public void setEtnotifactvs(List<ETNOTIFACTVS> etnotifactvs) {
+        this.etnotifactvs = etnotifactvs;
+    }
 
     public List<ETMESSAGE> geteTMESSAGE() {
         return eTMESSAGE;
@@ -173,7 +194,7 @@ public class REST_Notifications_SER
         private String iTEMDEFECTSHTXT;
         @SerializedName("TASK_KEY")
         @Expose
-        private Integer tASKKEY;
+        private String tASKKEY;
         @SerializedName("TASK_GRP")
         @Expose
         private String tASKGRP;
@@ -346,11 +367,11 @@ public class REST_Notifications_SER
             this.iTEMDEFECTSHTXT = iTEMDEFECTSHTXT;
         }
 
-        public Integer getTASKKEY() {
+        public String getTASKKEY() {
             return tASKKEY;
         }
 
-        public void setTASKKEY(Integer tASKKEY) {
+        public void setTASKKEY(String tASKKEY) {
             this.tASKKEY = tASKKEY;
         }
 
@@ -622,7 +643,7 @@ public class REST_Notifications_SER
         private String cAUSEKEY;
         @SerializedName("ACT_KEY")
         @Expose
-        private Integer aCTKEY;
+        private String aCTKEY;
         @SerializedName("ACT_CODEGRP")
         @Expose
         private String aCTVGRP;
@@ -804,7 +825,7 @@ public class REST_Notifications_SER
             return String.valueOf(aCTKEY);
         }
 
-        public void setACTKEY(Integer aCTKEY) {
+        public void setACTKEY(String aCTKEY) {
             this.aCTKEY = aCTKEY;
         }
 
@@ -923,13 +944,13 @@ public class REST_Notifications_SER
         private String sTSMA;
         @SerializedName("STONR")
         @Expose
-        private Integer sTONR;
+        private String sTONR;
         @SerializedName("HSONR")
         @Expose
-        private Integer hSONR;
+        private String hSONR;
         @SerializedName("NSONR")
         @Expose
-        private Integer nSONR;
+        private String nSONR;
         @SerializedName("STAT")
         @Expose
         private String sTAT;
@@ -941,7 +962,7 @@ public class REST_Notifications_SER
         private String tXT30;
         @SerializedName("ACT")
         @Expose
-        private Boolean aCT;
+        private String aCT;
         @SerializedName("INIST")
         @Expose
         private String iNIST;
@@ -970,27 +991,27 @@ public class REST_Notifications_SER
             this.sTSMA = sTSMA;
         }
 
-        public Integer getSTONR() {
+        public String getSTONR() {
             return sTONR;
         }
 
-        public void setSTONR(Integer sTONR) {
+        public void setSTONR(String sTONR) {
             this.sTONR = sTONR;
         }
 
-        public Integer getHSONR() {
+        public String getHSONR() {
             return hSONR;
         }
 
-        public void setHSONR(Integer hSONR) {
+        public void setHSONR(String hSONR) {
             this.hSONR = hSONR;
         }
 
-        public Integer getNSONR() {
+        public String getNSONR() {
             return nSONR;
         }
 
-        public void setNSONR(Integer nSONR) {
+        public void setNSONR(String nSONR) {
             this.nSONR = nSONR;
         }
 
@@ -1018,11 +1039,11 @@ public class REST_Notifications_SER
             this.tXT30 = tXT30;
         }
 
-        public Boolean getACT() {
+        public String getACT() {
             return aCT;
         }
 
-        public void setACT(Boolean aCT) {
+        public void setACT(String aCT) {
             this.aCT = aCT;
         }
 
@@ -1371,7 +1392,7 @@ public class REST_Notifications_SER
         private String nOOFPERSON;
         @SerializedName("DOCS")
         @Expose
-        private Boolean dOCS;
+        private String dOCS;
         @SerializedName("ALTITUDE")
         @Expose
         private String aLTITUDE;
@@ -1795,7 +1816,7 @@ public class REST_Notifications_SER
             return String.valueOf(dOCS);
         }
 
-        public void setDOCS(Boolean dOCS) {
+        public void setDOCS(String dOCS) {
             this.dOCS = dOCS;
         }
 
@@ -2018,6 +2039,17 @@ public class REST_Notifications_SER
         @SerializedName("CONTENTX")
         @Expose
         private String cONTENTX;
+        @SerializedName("ZDOCTYPEITEM")
+        @Expose
+        private String ZDOCTYPEITEM;
+
+        public String getZDOCTYPEITEM() {
+            return ZDOCTYPEITEM;
+        }
+
+        public void setZDOCTYPEITEM(String ZDOCTYPEITEM) {
+            this.ZDOCTYPEITEM = ZDOCTYPEITEM;
+        }
 
         public String getOBJTYPE() {
             return oBJTYPE;

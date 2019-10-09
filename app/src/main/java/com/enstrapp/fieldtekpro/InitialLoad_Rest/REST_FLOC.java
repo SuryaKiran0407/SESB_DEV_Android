@@ -14,7 +14,7 @@ import android.util.Log;
 import com.enstrapp.fieldtekpro.Initialload.FLOC_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.checkempty.Check_Empty;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
@@ -96,6 +96,9 @@ public class REST_FLOC {
     private static final String KEY_SEARCH_FLOC_EQUIP_Equip_Invzu = "Invzu";
     private static final String KEY_SEARCH_FLOC_EQUIP_Equip_Iwerk = "Iwerk";
     private static final String KEY_SEARCH_FLOC_EQUIP_Equip_Bukrs = "Bukrs";
+    private static final String KEY_SEARCH_FLOC_EQUIP_Equip_HERLD = "HERLD";
+    private static final String KEY_SEARCH_FLOC_EQUIP_Equip_BAUJJ = "BAUJJ";
+    private static final String KEY_SEARCH_FLOC_EQUIP_Equip_BAUMM = "BAUMM";
     /* EtEqui and Fields Names */
 
     public static String Get_FLOC_Data(Activity activity, String transmit_type)
@@ -163,7 +166,10 @@ public class REST_FLOC {
                         + KEY_SEARCH_FLOC_EQUIP_Equip_Ivdat + " TEXT,"
                         + KEY_SEARCH_FLOC_EQUIP_Equip_Invzu + " TEXT,"
                         + KEY_SEARCH_FLOC_EQUIP_Equip_Iwerk + " TEXT,"
-                        + KEY_SEARCH_FLOC_EQUIP_Equip_Bukrs + " TEXT"
+                        + KEY_SEARCH_FLOC_EQUIP_Equip_Bukrs + " TEXT,"
+                        + KEY_SEARCH_FLOC_EQUIP_Equip_HERLD + " TEXT,"
+                        + KEY_SEARCH_FLOC_EQUIP_Equip_BAUJJ + " TEXT,"
+                        + KEY_SEARCH_FLOC_EQUIP_Equip_BAUMM + " TEXT"
                         + ")";
                 App_db.execSQL(CREATE_SEARCH_FLOC_EQUIP_Equip_TABLE);
                 /* Creating EtEqui Table with Fields */
@@ -207,7 +213,7 @@ public class REST_FLOC {
             modelLoginDeviceRest.setUDID(device_uuid);
 
             Rest_Model_Login modelLoginRest = new Rest_Model_Login();
-            modelLoginRest.setIv_transmit_type("LOAD");
+            modelLoginRest.setIv_transmit_type(transmit_type);
             modelLoginRest.setIv_user(username);
             modelLoginRest.setIs_device(modelLoginDeviceRest);
 
@@ -277,7 +283,7 @@ public class REST_FLOC {
                         List<REST_FLOC_SER.ET_EQUI> EtEqui_results = response.body().getET_EQUI();
                         if (EtEqui_results != null && EtEqui_results.size() > 0)
                         {
-                            String Equip_sql = "Insert into EtEqui (Tplnr, Pltxt, Equnr, Spras, Eqktx, Rbnr, Eqtyp, Herst, Eqart, Werks, Arbpl, Kostl, Ingrp, Serge, Typbz, Mapar, Inactive, Permit, Hequi, Stlkz, Level, Sequi, Stort, Beber, Anlnr, Anlun, Ivdat, Invzu, Iwerk, Bukrs) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                            String Equip_sql = "Insert into EtEqui (Tplnr, Pltxt, Equnr, Spras, Eqktx, Rbnr, Eqtyp, Herst, Eqart, Werks, Arbpl, Kostl, Ingrp, Serge, Typbz, Mapar, Inactive, Permit, Hequi, Stlkz, Level, Sequi, Stort, Beber, Anlnr, Anlun, Ivdat, Invzu, Iwerk, Bukrs,HERLD,BAUJJ,BAUMM) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                             SQLiteStatement Equip_statement = App_db.compileStatement(Equip_sql);
                             Equip_statement.clearBindings();
                             for (REST_FLOC_SER.ET_EQUI etUsersResult : EtEqui_results)
@@ -312,6 +318,9 @@ public class REST_FLOC {
                                 Equip_statement.bindString(28, c_e.check_empty(etUsersResult.getInvzu()));
                                 Equip_statement.bindString(29, c_e.check_empty(etUsersResult.getIwerk()));
                                 Equip_statement.bindString(30, c_e.check_empty(etUsersResult.getBukrs()));
+                                Equip_statement.bindString(31, c_e.check_empty(etUsersResult.getHERLD()));
+                                Equip_statement.bindString(32, c_e.check_empty(etUsersResult.getBAUJJ()));
+                                Equip_statement.bindString(33, c_e.check_empty(etUsersResult.getBAUMM()));
                                 Equip_statement.execute();
                             }
                         }

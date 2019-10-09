@@ -6,7 +6,7 @@ import android.app.Dialog;
 import android.view.Window;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 public class Custom_Progress_Dialog
 {

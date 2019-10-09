@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.Utilities.is_device;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login;
 import com.enstrapp.fieldtekpro.login.Rest_Model_Login_Device;
@@ -520,20 +520,16 @@ public class History_Activity extends AppCompatActivity
         {
             try
             {
-                /* Initializing Shared Preferences */
                 app_sharedpreferences = History_Activity.this.getSharedPreferences("FieldTekPro_SharedPreferences", MODE_PRIVATE);
                 app_editor = app_sharedpreferences.edit();
                 username = app_sharedpreferences.getString("Username", null);
                 password = app_sharedpreferences.getString("Password", null);
                 String webservice_type = app_sharedpreferences.getString("webservice_type", null);
-                /* Initializing Shared Preferences */
-                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
                 device_id = Settings.Secure.getString(History_Activity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
                 device_serial_number = Build.SERIAL;
                 String androidId = "" + Settings.Secure.getString(History_Activity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
                 UUID deviceUuid = new UUID(androidId.hashCode(), ((long) device_id.hashCode() << 32) | device_serial_number.hashCode());
                 device_uuid = deviceUuid.toString();
-                /* Fetching Device Details like Device ID, Device Serial Number and Device UUID */
                 Cursor cursor = App_db.rawQuery("select * from Get_SYNC_MAP_DATA where Zdoctype = ? and Zactivity = ? and Endpoint = ?", new String[]{"D2", "F4", webservice_type});
                 if (cursor != null && cursor.getCount() > 0)
                 {
@@ -582,7 +578,7 @@ public class History_Activity extends AppCompatActivity
                                         if (date.equals("00000000")) {
                                             date_formateed = "";
                                         } else {
-                                            DateFormat inputFormat = new SimpleDateFormat("yyyyMMdd");
+                                            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                                             DateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy");
                                             Date date1;
                                             try {
@@ -602,7 +598,7 @@ public class History_Activity extends AppCompatActivity
                                         if (time.equals("000000")) {
                                             time_formatted = "";
                                         } else {
-                                            DateFormat inputFormat = new SimpleDateFormat("HHmmss");
+                                            DateFormat inputFormat = new SimpleDateFormat("HH:mm:ss");
                                             DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
                                             Date date1;
                                             try {

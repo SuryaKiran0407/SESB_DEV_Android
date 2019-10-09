@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.util.ArrayList;
@@ -386,7 +387,10 @@ public class Equipment_Activity extends Activity implements View.OnClickListener
         @Override
         public void onBindViewHolder(final EQUI_ADAPTER.MyViewHolder holder, int position) {
             final EQUI_Object nto = details_list.get(position);
-            holder.id_textview.setText(nto.getEquip_no());
+            SpannableString spanString = new SpannableString(nto.getEquip_no());
+            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+            holder.id_textview.setText(spanString);
+            //holder.id_textview.setText(nto.getEquip_no());
             holder.value_textview.setText(nto.getEquip_text());
             holder.textview1.setText(nto.getSequi());
             holder.floc_textview.setText(nto.getFloc_id());
@@ -397,7 +401,7 @@ public class Equipment_Activity extends Activity implements View.OnClickListener
             holder.textview6.setText(nto.getLevel());
             holder.textview7.setText(nto.getIngrp());
             holder.eqart_textview.setText(nto.getEqart());
-            if (holder.textview1.getText().toString().equalsIgnoreCase("X")) {
+            if (holder.textview1.getText().toString().equalsIgnoreCase("X") || holder.textview1.getText().toString().equalsIgnoreCase("true")) {
                 holder.data_layout.setBackgroundResource(R.drawable.border_fail);
                 SpannableString content = new SpannableString(nto.getEquip_no());
                 content.setSpan(new UnderlineSpan(), 0, nto.getEquip_no().length(), 0);
@@ -432,7 +436,7 @@ public class Equipment_Activity extends Activity implements View.OnClickListener
             holder.data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (holder.textview1.getText().toString().equalsIgnoreCase("X")) {
+                    if (holder.textview1.getText().toString().equalsIgnoreCase("X") || holder.textview1.getText().toString().equalsIgnoreCase("true")) {
                         int equi_count_size = equi_count_list.size();
                         HashMap<String, String> equi_count = new HashMap<String, String>();
                         equi_count.put("equi_level", Integer.toString(equi_count_size + 1));

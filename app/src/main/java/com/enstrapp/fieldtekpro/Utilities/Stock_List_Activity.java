@@ -33,7 +33,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.enstrapp.fieldtekpro.Initialload.BOM;
 import com.enstrapp.fieldtekpro.Initialload.LoadSettings;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 import com.enstrapp.fieldtekpro.networkconnection.ConnectionDetector;
 import com.enstrapp.fieldtekpro.networkconnectiondialog.Network_Connection_Dialog;
@@ -423,7 +423,7 @@ public class Stock_List_Activity extends Fragment {
                 if (cursor != null && cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         do {
-                            STOCK_List_Object blo = new STOCK_List_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7));
+                            STOCK_List_Object blo = new STOCK_List_Object(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(8), cursor.getString(7), cursor.getString(10));
                             stock_list.add(blo);
                         }
                         while (cursor.moveToNext());
@@ -481,7 +481,7 @@ public class Stock_List_Activity extends Fragment {
                 String matkx = stock_list.get(i).getMaktx().toLowerCase();
                 String plant = stock_list.get(i).getWerks().toLowerCase();
                 if (matnr.contains(query) || matkx.contains(query) || plant.contains(query)) {
-                    STOCK_List_Object blo = new STOCK_List_Object(stock_list.get(i).getMatnr().toString(), stock_list.get(i).getWerks().toString(), stock_list.get(i).getMaktx().toString(), stock_list.get(i).getLgort().toString(), stock_list.get(i).getLabst().toString(), stock_list.get(i).getSpeme().toString(), stock_list.get(i).getLgpbe().toString());
+                    STOCK_List_Object blo = new STOCK_List_Object(stock_list.get(i).getMatnr().toString(), stock_list.get(i).getWerks().toString(), stock_list.get(i).getMaktx().toString(), stock_list.get(i).getLgort().toString(), stock_list.get(i).getLabst().toString(), stock_list.get(i).getSpeme().toString(), stock_list.get(i).getLgpbe().toString(), stock_list.get(i).getBwtar(), stock_list.get(i).getCharg());
                     filteredList.add(blo);
                 }
             }
@@ -511,7 +511,7 @@ public class Stock_List_Activity extends Fragment {
         private List<STOCK_List_Object> bom_list_data;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView material_number_textview, desc_textview, unrestricted_textview,strgBin_tv,strgLoc_tv, plant_tv;
+            public TextView batch_textview, valuation_type_textview,material_number_textview, desc_textview, unrestricted_textview,strgBin_tv,strgLoc_tv, plant_tv;
             LinearLayout bom_list_data_layout;
 
             public MyViewHolder(View view) {
@@ -522,6 +522,8 @@ public class Stock_List_Activity extends Fragment {
                 strgBin_tv = (TextView) view.findViewById(R.id.strgBin_tv);
                 strgLoc_tv = (TextView) view.findViewById(R.id.strgLoc_tv);
                 plant_tv = (TextView) view.findViewById(R.id.plant_tv);
+                valuation_type_textview = (TextView) view.findViewById(R.id.valuation_type_textview);
+                batch_textview = (TextView) view.findViewById(R.id.batch_textview);
                 bom_list_data_layout = (LinearLayout) view.findViewById(R.id.bom_list_data_layout);
             }
         }
@@ -546,6 +548,8 @@ public class Stock_List_Activity extends Fragment {
             holder.strgBin_tv.setText(blo.getLgpbe());
             holder.strgLoc_tv.setText(blo.getLgort());
             holder.plant_tv.setText(blo.getWerks());
+            holder.valuation_type_textview.setText(blo.getBwtar());
+            holder.batch_textview.setText(blo.getCharg());
 
             holder.bom_list_data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -558,6 +562,8 @@ public class Stock_List_Activity extends Fragment {
                     intent.putExtra("Labst", blo.getLabst());
                     intent.putExtra("Speme", blo.getSpeme());
                     intent.putExtra("Lgpbe", blo.getLgpbe());
+                    intent.putExtra("Val_type", blo.getBwtar());
+                    intent.putExtra("Batch", blo.getCharg());
                     startActivity(intent);
                 }
             });
@@ -579,6 +585,24 @@ public class Stock_List_Activity extends Fragment {
         private String Labst;
         private String Speme;
         private String Lgpbe;
+        private String Bwtar;
+        private String Charg;
+
+        public String getCharg() {
+            return Charg;
+        }
+
+        public void setCharg(String charg) {
+            Charg = charg;
+        }
+
+        public String getBwtar() {
+            return Bwtar;
+        }
+
+        public void setBwtar(String bwtar) {
+            Bwtar = bwtar;
+        }
 
         public String getMatnr() {
             return Matnr;
@@ -639,7 +663,7 @@ public class Stock_List_Activity extends Fragment {
         public STOCK_List_Object() {
         }
 
-        public STOCK_List_Object(String Matnr, String Werks, String Maktx, String Lgort, String Labst, String Speme, String Lgpbe) {
+        public STOCK_List_Object(String Matnr, String Werks, String Maktx, String Lgort, String Labst, String Speme, String Lgpbe, String Bwtar, String Charg) {
             this.Matnr = Matnr;
             this.Werks = Werks;
             this.Maktx = Maktx;
@@ -647,6 +671,8 @@ public class Stock_List_Activity extends Fragment {
             this.Labst = Labst;
             this.Speme = Speme;
             this.Lgpbe = Lgpbe;
+            this.Bwtar = Bwtar;
+            this.Charg = Charg;
         }
 
     }

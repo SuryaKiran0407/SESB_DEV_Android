@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 import java.util.ArrayList;
@@ -270,7 +270,9 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                     filteredList.add(nto);
                 }
             }
-            if (filteredList.size() > 0) {
+            if (filteredList.size() > 0)
+            {
+                title_textview.setText(getResources().getString(R.string.func_loc) + " (" + filteredList.size() + ")");
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(FunctionLocation_Activity.this);
                 list_recycleview.setLayoutManager(layoutManager);
                 adapter = new FLOC_ADAPTER(FunctionLocation_Activity.this, filteredList);
@@ -280,7 +282,10 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
                 list_recycleview.setVisibility(View.VISIBLE);
                 no_data_layout.setVisibility(View.GONE);
                 search.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else
+            {
+                title_textview.setText(getResources().getString(R.string.func_loc) + " (" + filteredList.size() + ")");
                 no_data_textview.setVisibility(View.VISIBLE);
                 list_recycleview.setVisibility(View.GONE);
                 no_data_layout.setVisibility(View.VISIBLE);
@@ -330,7 +335,7 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
             holder.value_textview.setText(nto.getLocation_Name());
             holder.textview1.setText(nto.getStatus());
             holder.textview2.setText(nto.getPlant());
-            if (holder.textview1.getText().toString().equalsIgnoreCase("X")) {
+            if (holder.textview1.getText().toString().equalsIgnoreCase("X") || holder.textview1.getText().toString().equalsIgnoreCase("true")) {
                 holder.data_layout.setBackgroundResource(R.drawable.border_fail);
                 SpannableString content = new SpannableString(nto.getLocation_ID());
                 content.setSpan(new UnderlineSpan(), 0, nto.getLocation_ID().length(), 0);
@@ -377,7 +382,7 @@ public class FunctionLocation_Activity extends AppCompatActivity implements View
             holder.data_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (holder.textview1.getText().toString().equalsIgnoreCase("X")) {
+                    if (holder.textview1.getText().toString().equalsIgnoreCase("X") || holder.textview1.getText().toString().equalsIgnoreCase("true")) {
                         int floc_count_size = floc_count_list.size();
                         HashMap<String, String> floc_count = new HashMap<String, String>();
                         floc_count.put("floc_level", Integer.toString(floc_count_size + 1));

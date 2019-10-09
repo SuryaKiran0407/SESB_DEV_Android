@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.enstrapp.fieldtekpro.DashBoard.DashBoard_Activity;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.progressdialog.Custom_Progress_Dialog;
 
 public class InitialLoad_Activity extends AppCompatActivity {

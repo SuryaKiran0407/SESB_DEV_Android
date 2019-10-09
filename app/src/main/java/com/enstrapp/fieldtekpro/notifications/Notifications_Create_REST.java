@@ -16,7 +16,7 @@ import com.enstrapp.fieldtekpro.InitialLoad_Rest.REST_Notifications_SER;
 import com.enstrapp.fieldtekpro.Initialload.Notifications_SER;
 import com.enstrapp.fieldtekpro.Interface.Interface;
 import com.enstrapp.fieldtekpro.Interface.REST_Interface;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -45,7 +45,7 @@ public class Notifications_Create_REST
     private static String cookie = "", token = "", password = "", url_link = "", username = "", device_serial_number = "", device_id = "", device_uuid = "", Get_Response = "", Get_Data = "";
     private static Map<String, String> response = new HashMap<String, String>();
 
-    public static Map<String, String> Post_NotifCreate_Data(Context activity, String transmit_type, String notification_type_id, String long_text, String functionlocation_id, String equipment_id, String equipment_text, String priority_type_id, String priority_type_text, String plannergroup_id, String plannergroup_text, String Reported_by, String personresponsible_id, String personresponsible_text, String req_st_date, String req_st_time, String req_end_date, String req_end_time, String mal_st_date, String mal_st_time, String mal_end_date, String mal_end_time, String effect_id, String effect_text, String plant_id, String workcenter_id, String primary_user_resp, ArrayList<Model_Notif_Causecode> causecodeArrayList, ArrayList<Model_Notif_Activity> ActivityArrayList, ArrayList<Model_Notif_Attachments> AttachmentsArrayList, ArrayList<Model_Notif_Longtext> LongtextsArrayList, ArrayList<Model_Notif_Task> TasksArrayList, ArrayList<Model_CustomInfo> header_custominfo) {
+    public static Map<String, String> Post_NotifCreate_Data(Context activity, String transmit_type, String notification_type_id, String long_text, String functionlocation_id, String equipment_id, String equipment_text, String priority_type_id, String priority_type_text, String plannergroup_id, String plannergroup_text, String Reported_by, String personresponsible_id, String personresponsible_text, String req_st_date, String req_st_time, String req_end_date, String req_end_time, String mal_st_date, String mal_st_time, String mal_end_date, String mal_end_time, String effect_id, String effect_text, String plant_id, String workcenter_id, String primary_user_resp, ArrayList<Model_Notif_Causecode> causecodeArrayList, ArrayList<Model_Notif_Activity> ActivityArrayList, ArrayList<Model_Notif_Attachments> AttachmentsArrayList, ArrayList<Model_Notif_Longtext> LongtextsArrayList, ArrayList<Model_Notif_Task> TasksArrayList, ArrayList<Model_CustomInfo> header_custominfo, String Breakdown_status) {
         try
         {
             Get_Response = "";
@@ -185,6 +185,7 @@ public class Notifications_Create_REST
             model_notif_header.setArbpl(workcenter_id);
             model_notif_header.setUsr01(primary_user_resp);
             model_notif_header.setQmdat("00000000");
+            model_notif_header.setBreakdownInd(Breakdown_status);
             model_notif_header.setItNotifHeaderFields(header_custominfo);
             /*Objects for Assigning Notification Header and Sending Data in BODY*/
 
@@ -195,69 +196,158 @@ public class Notifications_Create_REST
             /*Adding Notification Header to Arraylist*/
 
 
-            /*Adding EvMessage to Arraylist*/
-            ArrayList EvMessage_ArrayList = new ArrayList<>();
-            /*Adding EvMessage to Arraylist*/
-
-
-            /*Adding EtNotifHeader to Arraylist*/
-            ArrayList EtNotifHeader_ArrayList = new ArrayList<>();
-            /*Adding EtNotifHeader to Arraylist*/
-
-
-            /*Adding EtNotifItems to Arraylist*/
-            ArrayList EtNotifItems_ArrayList = new ArrayList<>();
-            /*Adding EtNotifItems to Arraylist*/
-
-
-            /*Adding EtNotifActvs to Arraylist*/
-            ArrayList EtNotifActvs_ArrayList = new ArrayList<>();
-            /*Adding EtNotifActvs to Arraylist*/
-
-
-            /*Adding EtDocs to Arraylist*/
-            ArrayList EtDocs_ArrayList = new ArrayList<>();
-            /*Adding EtDocs to Arraylist*/
-
-            /*Adding EtNotifStatus to Arraylist*/
-            ArrayList EtNotifStatus_ArrayList = new ArrayList<>();
-            /*Adding EtNotifStatus to Arraylist*/
-
-            /*Adding EtNotifDup to Arraylist*/
-            ArrayList EtNotifDup_ArrayList = new ArrayList<>();
-            /*Adding EtNotifDup to Arraylist*/
-
-
-            /*Adding EtNotifLongtext to Arraylist*/
-            ArrayList EtNotifLongtext_ArrayList = new ArrayList<>();
-            /*Adding EtNotifLongtext to Arraylist*/
-
-
-            /*Adding EtNotifTask to Arraylist*/
-            ArrayList EtNotifTask_ArrayList = new ArrayList<>();
-            /*Adding EtNotifTask to Arraylist*/
-
-            /*Adding Arraylist*/
             ArrayList arrayList = new ArrayList<>();
-            /*Adding Arraylist*/
-
-            Model_Notif_Header_Custominfo custominfo = new Model_Notif_Header_Custominfo();
-            custominfo.setEtNotifHeaderFields(arrayList);
-            EtNotifHeader_ArrayList.add(custominfo);
-
-            Model_Notif_Causecode_Custominfo causecode_custominfo = new Model_Notif_Causecode_Custominfo();
-            causecode_custominfo.setEtNotifItemsFields(arrayList);
-            EtNotifItems_ArrayList.add(causecode_custominfo);
 
 
-            Model_Notif_Activity_Custominfo activity_custominfo = new Model_Notif_Activity_Custominfo();
-            activity_custominfo.setEtNotifActvsFields(arrayList);
-            EtNotifActvs_ArrayList.add(activity_custominfo);
+            ArrayList<Model_Notif_Longtext_REST> longtextRests = new ArrayList<>();
+            if(LongtextsArrayList.size() > 0)
+            {
+                for(int i = 0; i < LongtextsArrayList.size(); i++)
+                {
+                    Model_Notif_Longtext_REST mnc = new Model_Notif_Longtext_REST();
+                    mnc.setQmnum("");
+                    mnc.setObjkey(LongtextsArrayList.get(i).getObjkey());
+                    mnc.setObjtype(LongtextsArrayList.get(i).getObjtype());
+                    mnc.setTextLine(LongtextsArrayList.get(i).getTextLine());
+                    longtextRests.add(mnc);
+                }
+            }
 
 
-            Model_Notif_Task_Custominfo task_custominfo = new Model_Notif_Task_Custominfo();
-            task_custominfo.setEtNotifTasksFields(arrayList);
-            EtNotifTask_ArrayList.add(task_custominfo);
+
+            ArrayList<Model_Notif_Attachments_REST> attachmentsRestArrayList = new ArrayList<>();
+            if(AttachmentsArrayList.size() > 0)
+            {
+                for(int i = 0; i < AttachmentsArrayList.size(); i++)
+                {
+                    Model_Notif_Attachments_REST mnc = new Model_Notif_Attachments_REST();
+                    mnc.setObjtype(AttachmentsArrayList.get(i).getObjtype());
+                    mnc.setZobjid(AttachmentsArrayList.get(i).getZobjid());
+                    mnc.setZdoctype(AttachmentsArrayList.get(i).getZdoctype());
+                    mnc.setZdoctypeItem(AttachmentsArrayList.get(i).getZdoctypeItem());
+                    mnc.setFilename(AttachmentsArrayList.get(i).getFilename());
+                    mnc.setFiletype(AttachmentsArrayList.get(i).getFiletype());
+                    mnc.setFsize(AttachmentsArrayList.get(i).getFsize());
+                    mnc.setContent(AttachmentsArrayList.get(i).getContent());
+                    mnc.setDocId(AttachmentsArrayList.get(i).getDocId());
+                    mnc.setDocType(AttachmentsArrayList.get(i).getDocType());
+                    attachmentsRestArrayList.add(mnc);
+                }
+            }
+
+
+            ArrayList<Model_Notif_Causecode_REST> causecodeRests = new ArrayList<>();
+            if(causecodeArrayList.size() > 0)
+            {
+                for(int i = 0; i < causecodeArrayList.size(); i++)
+                {
+                    Model_Notif_Causecode_REST mnc = new Model_Notif_Causecode_REST();
+                    mnc.setQmnum("");
+                    mnc.setItemKey(causecodeArrayList.get(i).getItemKey());
+                    mnc.setItempartGrp(causecodeArrayList.get(i).getItempartGrp());
+                    mnc.setPartgrptext(causecodeArrayList.get(i).getPartgrptext());
+                    mnc.setItempartCod(causecodeArrayList.get(i).getItempartCod());
+                    mnc.setPartcodetext(causecodeArrayList.get(i).getPartcodetext());
+                    mnc.setItemdefectGrp(causecodeArrayList.get(i).getItemdefectGrp());
+                    mnc.setDefectgrptext(causecodeArrayList.get(i).getDefectgrptext());
+                    mnc.setItemdefectCod(causecodeArrayList.get(i).getItemdefectCod());
+                    mnc.setDefectcodetext(causecodeArrayList.get(i).getDefectcodetext());
+                    mnc.setItemdefectShtxt(causecodeArrayList.get(i).getItemdefectShtxt());
+                    mnc.setCauseKey(causecodeArrayList.get(i).getCauseKey());
+                    mnc.setCauseGrp(causecodeArrayList.get(i).getCauseGrp());
+                    mnc.setCausegrptext(causecodeArrayList.get(i).getCausegrptext());
+                    mnc.setCauseCod(causecodeArrayList.get(i).getCauseCod());
+                    mnc.setCausecodetext(causecodeArrayList.get(i).getCausecodetext());
+                    mnc.setCauseShtxt(causecodeArrayList.get(i).getCauseShtxt());
+                    mnc.setUsr01("");
+                    mnc.setUsr02("");
+                    mnc.setUsr03("");
+                    mnc.setUsr04("");
+                    mnc.setUsr05("");
+                    mnc.setAction("I");
+                    causecodeRests.add(mnc);
+                }
+            }
+
+
+            ArrayList<Model_Notif_Activity_REST> activityRests = new ArrayList<>();
+            if(ActivityArrayList.size() > 0)
+            {
+                for(int i = 0; i < ActivityArrayList.size(); i++)
+                {
+                    Model_Notif_Activity_REST mnc = new Model_Notif_Activity_REST();
+                    mnc.setQMNUM("");
+                    mnc.setACTKEY(ActivityArrayList.get(i).getActvKey());
+                    mnc.setITEMKEY(ActivityArrayList.get(i).getItemKey());
+                    mnc.setACTVGRP(ActivityArrayList.get(i).getActvGrp());
+                    mnc.setACTVCOD(ActivityArrayList.get(i).getActvCod());
+                    mnc.setACTCODETEXT(ActivityArrayList.get(i).getActcodetext());
+                    mnc.setACTVSHTXT(ActivityArrayList.get(i).getActvShtxt());
+                    mnc.setSTARTDATE(ActivityArrayList.get(i).getStartDate());
+                    mnc.setENDDATE(ActivityArrayList.get(i).getEndDate());
+                    mnc.setSTARTTIME(ActivityArrayList.get(i).getStartTime());
+                    mnc.setENDTIME(ActivityArrayList.get(i).getEndTime());
+                    mnc.setACTION("I");
+                    activityRests.add(mnc);
+                }
+            }
+
+
+
+            ArrayList<Model_Notif_Task_REST> taskRests = new ArrayList<>();
+            if(TasksArrayList.size() > 0)
+            {
+                for(int i = 0; i < TasksArrayList.size(); i++)
+                {
+                    Model_Notif_Task_REST mnc = new Model_Notif_Task_REST();
+                    mnc.setQMNUM("");
+                    mnc.setITEMKEY(TasksArrayList.get(i).getItemKey());
+                    mnc.setTASKKEY(TasksArrayList.get(i).getTaskKey());
+                    mnc.setTASKGRP(TasksArrayList.get(i).getTaskGrp());
+                    mnc.setTASKGRPTEXT(TasksArrayList.get(i).getTaskgrptext());
+                    mnc.setTASKCOD(TasksArrayList.get(i).getTaskCod());
+                    mnc.setTASKCODETEXT(TasksArrayList.get(i).getTaskcodetext());
+                    mnc.setTASKSHTXT(TasksArrayList.get(i).getTaskShtxt());
+                    mnc.setPSTER(TasksArrayList.get(i).getPster());
+                    mnc.setPETER(TasksArrayList.get(i).getPeter());
+                    mnc.setPSTUR(TasksArrayList.get(i).getPstur());
+                    mnc.setPETUR(TasksArrayList.get(i).getPetur());
+                    mnc.setPARVW(TasksArrayList.get(i).getParvw());
+                    mnc.setPARNR(TasksArrayList.get(i).getParnr());
+                    mnc.setERLNAM(TasksArrayList.get(i).getErlnam());
+                    mnc.setERLDAT(TasksArrayList.get(i).getErldat());
+                    mnc.setERLZEIT(TasksArrayList.get(i).getErlzeit());
+                    String release = TasksArrayList.get(i).getRelease();
+                    if (release.equalsIgnoreCase("X"))
+                    {
+                        mnc.setRELEASE("X");
+                    }
+                    else
+                    {
+                        mnc.setRELEASE("");
+                    }
+                    String Complete = TasksArrayList.get(i).getComplete();
+                    if (Complete.equalsIgnoreCase("X"))
+                    {
+                        mnc.setCOMPLETE("X");
+                    }
+                    else
+                    {
+                        mnc.setCOMPLETE("");
+                    }
+                    String Success = TasksArrayList.get(i).getSuccess();
+                    if (Success.equalsIgnoreCase("X"))
+                    {
+                        mnc.setSUCCESS("X");
+                    }
+                    else
+                    {
+                        mnc.setSUCCESS("");
+                    }
+                    mnc.setACTION("I");
+                    taskRests.add(mnc);
+                }
+            }
 
 
             Model_Notif_Create_REST.IsDevice isDevice = new Model_Notif_Create_REST.IsDevice();
@@ -273,20 +363,20 @@ public class Notifications_Create_REST
             model_notif_create.setIvCommit(true);
             model_notif_create.setOperation("CRNOT");
             model_notif_create.setItNotifHeader(headerArrayList);
-            model_notif_create.setEtNotifHeader(EtNotifHeader_ArrayList);
-            /*model_notif_create.setItNotifItems(causecodeArrayList);
-            model_notif_create.setEtNotifItems(EtNotifItems_ArrayList);
-            model_notif_create.setEtNotifActvs(EtNotifActvs_ArrayList);
-            model_notif_create.setItNotifActvs(ActivityArrayList);
-            model_notif_create.setEtDocs(EtDocs_ArrayList);
-            model_notif_create.setItDocs(AttachmentsArrayList);
-            model_notif_create.setEtNotifTasks(EtNotifTask_ArrayList);
-            model_notif_create.setItNotifTasks(TasksArrayList);
-            model_notif_create.setEtNotifStatus(EtNotifStatus_ArrayList);
-            model_notif_create.setEvMessage(EvMessage_ArrayList);
-            model_notif_create.setEtNotifDup(EtNotifDup_ArrayList);
-            model_notif_create.setEtNotifLongtext(EtNotifLongtext_ArrayList);
-            model_notif_create.setItNotifLongtext(LongtextsArrayList);*/
+            model_notif_create.setEtNotifHeader(arrayList);
+            model_notif_create.setItNotifItems(causecodeRests);
+            model_notif_create.setEtNotifItems(arrayList);
+            model_notif_create.setEtNotifActvs(arrayList);
+            model_notif_create.setItNotifActvs(activityRests);
+            model_notif_create.setEtDocs(arrayList);
+            model_notif_create.setItDocs(attachmentsRestArrayList);
+            model_notif_create.setEtNotifTasks(arrayList);
+            model_notif_create.setItNotifTasks(taskRests);
+            model_notif_create.setEtNotifStatus(arrayList);
+            model_notif_create.setEvMessage(arrayList);
+            model_notif_create.setEtNotifDup(arrayList);
+            model_notif_create.setEtNotifLongtext(arrayList);
+            model_notif_create.setItNotifLongtext(longtextRests);
             /*Calling Notification Create Model with Data*/
 
             String credentials = username + ":" + password;
@@ -299,7 +389,7 @@ public class Notifications_Create_REST
             {
                 if (response.isSuccessful() && response.body() != null)
                 {
-                    String response_data = new Gson().toJson(response.body().geteVMESSAGE());
+                    String response_data = response.body().geteVMESSAGE();
                     String EtNotifDup_data = new Gson().toJson(response.body().geteTNOTIFDUP());
                     if (EtNotifDup_data != null && !EtNotifDup_data.equals("") && !EtNotifDup_data.equals("null"))
                     {

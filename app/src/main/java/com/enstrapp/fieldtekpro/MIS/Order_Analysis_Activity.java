@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 
 public class Order_Analysis_Activity extends AppCompatActivity {
 
@@ -54,12 +54,12 @@ public class Order_Analysis_Activity extends AppCompatActivity {
                 OrderPieFragment fag1 = (OrderPieFragment) getSupportFragmentManager()
                         .findFragmentByTag(makeFragmentName(R.id.viewpager, 0));
                 String month_year = fag1.getMonth_year();                                           //Month&Year for Compliance Chart
-                OrderComplianceBarFragment tab1 = (OrderComplianceBarFragment) getSupportFragmentManager()
+                /*OrderComplianceBarFragment tab1 = (OrderComplianceBarFragment) getSupportFragmentManager()
                         .findFragmentByTag(makeFragmentName(R.id.viewpager, 1));
                 if (position == 1) {
                     tab1.setMonthYear(month_year);
                     tab1.getData();                                                                 //when tab swiped to get the data for bar chart
-                }
+                }*/
             }
 
             @Override

@@ -21,7 +21,7 @@
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
                         android:layout_height="fill_parent"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.7"
                         android:text="@string/material"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
@@ -50,7 +50,7 @@
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
                         android:layout_height="fill_parent"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.7"
                         android:text="@string/description"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
@@ -73,17 +73,18 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="0.5"
-                        android:text="@string/unrestricted"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="@string/plant"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
-                        android:gravity="left|top" />
+                        android:gravity="top|left" />
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
                         android:layout_height="fill_parent"
@@ -91,23 +92,26 @@
                         android:text="@string/colon"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
-                        android:gravity="left|top" />
+                        android:gravity="start|center_vertical" />
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
-                        android:id="@+id/unrestricted_textview"
+                        android:id="@+id/plant_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="left|top"
+                        android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
                 </LinearLayout>
+
+
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
                         android:layout_height="fill_parent"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.7"
                         android:text="@string/strg_bin"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
@@ -136,8 +140,8 @@
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="@string/storage_location"
+                        android:layout_weight="0.7"
+                        android:text="@string/location"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
                         android:gravity="top|left" />
@@ -164,12 +168,12 @@
                     android:layout_height="wrap_content" >
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="@string/plant"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.7"
+                        android:text="Available Stock"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
-                        android:gravity="top|left" />
+                        android:gravity="left|top" />
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
                         android:layout_width="0dp"
                         android:layout_height="fill_parent"
@@ -177,16 +181,78 @@
                         android:text="@string/colon"
                         android:textColor="@color/light_grey2"
                         android:textSize="14sp"
-                        android:gravity="start|center_vertical" />
+                        android:gravity="left|top" />
                     <com.enstrapp.fieldtekpro.customfont.Font_TextView
-                        android:id="@+id/plant_tv"
+                        android:id="@+id/unrestricted_textview"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_gravity="center"
+                        android:gravity="left|top"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
                 </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.7"
+                        android:text="Valuation Type"
+                        android:textColor="@color/light_grey2"
+                        android:textSize="14sp"
+                        android:gravity="left|top" />
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.1"
+                        android:text="@string/colon"
+                        android:textColor="@color/light_grey2"
+                        android:textSize="14sp"
+                        android:gravity="left|top" />
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:id="@+id/valuation_type_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|top"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.7"
+                        android:text="Batch"
+                        android:textColor="@color/light_grey2"
+                        android:textSize="14sp"
+                        android:gravity="left|top" />
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0.1"
+                        android:text="@string/colon"
+                        android:textColor="@color/light_grey2"
+                        android:textSize="14sp"
+                        android:gravity="left|top" />
+                    <com.enstrapp.fieldtekpro.customfont.Font_TextView
+                        android:id="@+id/batch_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|top"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout android:gravity="center"

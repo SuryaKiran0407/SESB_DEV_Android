@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enstrapp.fieldtekpro.Authorizations.Authorizations;
-import com.enstrapp.fieldtekpro.R;
+import com.enstrapp.fieldtekpro_sesb_dev.R;
 import com.enstrapp.fieldtekpro.errordialog.Error_Dialog;
 
 import java.text.SimpleDateFormat;
@@ -37,7 +37,7 @@ public class Notifications_Change_Causecode_Fragment extends Fragment {
     private List<Cause_Code_Object> causecode_list = new ArrayList<>();
     private List<Cause_Code_Object> causecode_list_delete = new ArrayList<>();
     List cc_list = new ArrayList();
-    String selected_status = "", selected_pos = "", cause_id = "", cause_text = "",
+    String selected_status = "", selected_pos = "", causekey = "", cause_id = "", cause_text = "",
             causecode_id = "", causecode_text = "", cause_desc = "", item_key = "0001",
             object_part_id = "", object_part_text = "", objectcode_id = "", object_code_text = "",
             event_id = "", event_text = "", eventcode_id = "", eventcode_text = "", event_desc = "";
@@ -413,6 +413,7 @@ public class Notifications_Change_Causecode_Fragment extends Fragment {
                 eventcode_id = data.getStringExtra("eventcode_id");
                 eventcode_text = data.getStringExtra("eventcode_text");
                 event_desc = data.getStringExtra("event_descritpion");
+                causekey = data.getStringExtra("causekey");
                 cause_id = data.getStringExtra("cause_id");
                 cause_text = data.getStringExtra("cause_text");
                 causecode_id = data.getStringExtra("causecode_id");
@@ -476,7 +477,7 @@ public class Notifications_Change_Causecode_Fragment extends Fragment {
                     Cause_Code_Object to = new Cause_Code_Object(item_key, object_part_id,
                             object_part_text, objectcode_id, object_code_text, event_id, event_text,
                             eventcode_id, eventcode_text, event_desc, cause_id, cause_text,
-                            causecode_id, causecode_text, cause_desc, item_key, selected_status,
+                            causecode_id, causecode_text, cause_desc, causekey, selected_status,
                             selected_object_custom_info_arraylist,
                             selected_cause_custom_info_arraylist, false);
                     causecode_list.add(selected_position, to);
@@ -484,7 +485,7 @@ public class Notifications_Change_Causecode_Fragment extends Fragment {
                     Cause_Code_Object to = new Cause_Code_Object(item_key, object_part_id,
                             object_part_text, objectcode_id, object_code_text, event_id, event_text,
                             eventcode_id, eventcode_text, event_desc, cause_id, cause_text,
-                            causecode_id, causecode_text, cause_desc, item_key, selected_status,
+                            causecode_id, causecode_text, cause_desc, causekey, selected_status,
                             selected_object_custom_info_arraylist,
                             selected_cause_custom_info_arraylist, false);
                     causecode_list.add(to);
@@ -733,7 +734,7 @@ public class Notifications_Change_Causecode_Fragment extends Fragment {
         private List<Cause_Code_Object> type_details_list;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView cause_key, item_key, causecode_text, causecode_desc, causecode_id,
+            public TextView objectpartcode_textview, objectpart_textview,cause_key, item_key, causecode_text, causecode_desc, causecode_id,
                     cause_text, cause_id, event_desc, event_code_text, event_code_id, event_text,
                     event_id, objpart_code_text_tv, objpart_code_id_tv, objpart_text_tv,
                     objpart_id_tv, cause_code_textview, cause_textview, event_textview,
@@ -766,6 +767,8 @@ public class Notifications_Change_Causecode_Fragment extends Fragment {
                 cause_key = (TextView) view.findViewById(R.id.cause_key);
                 data_layout = (LinearLayout) view.findViewById(R.id.data_layout);
                 checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+                objectpart_textview = view.findViewById(R.id.objectpart_textview);
+                objectpartcode_textview = view.findViewById(R.id.objectpartcode_textview);
             }
         }
 
@@ -784,6 +787,8 @@ public class Notifications_Change_Causecode_Fragment extends Fragment {
         @Override
         public void onBindViewHolder(final CAUSE_CODE_ADAPTER.MyViewHolder holder, final int position) {
             final Cause_Code_Object nto = type_details_list.get(position);
+            holder.objectpart_textview.setText(nto.getobject_part_id()+" - "+nto.getobject_part_text());
+            holder.objectpartcode_textview.setText(nto.getobjectcode_id()+" - "+nto.getobject_code_text());
             holder.event_textview.setText(nto.getevent_text());
             holder.event_code_textview.setText(nto.geteventcode_text());
             holder.event_description_textview.setText(nto.getevent_desc());
